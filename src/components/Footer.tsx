@@ -6,19 +6,19 @@ const Footer = () => {
       <div className="container-blog py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h2 className="text-lg font-bold text-foreground">nexus</h2>
+            <h2 className="text-lg font-bold text-foreground">Jefney Ongeri<span className="text-secondary">, PA-C</span></h2>
             <p className="text-sm text-muted-foreground">
-              A personal blog exploring fashion, technology, business, and lifestyle trends.
+              Physician Assistant, Clinical Researcher, and Healthcare Innovator sharing insights on medicine, research, and professional development.
             </p>
           </div>
           
           <div className="space-y-4">
-            <h3 className="font-medium text-foreground">Categories</h3>
+            <h3 className="font-medium text-foreground">Topics</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/posts" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Fashion</Link></li>
-              <li><Link to="/technology" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Technology</Link></li>
-              <li><Link to="/business" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Business</Link></li>
-              <li><Link to="/posts" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Lifestyle</Link></li>
+              <li><Link to="/professional" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Portfolio</Link></li>
+              <li><Link to="/technology" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Healthcare Tech</Link></li>
+              <li><Link to="/business" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Research</Link></li>
+              <li><Link to="/posts" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">All Posts</Link></li>
             </ul>
           </div>
           
@@ -34,18 +34,12 @@ const Footer = () => {
           
           <div className="space-y-4">
             <h3 className="font-medium text-foreground">Connect</h3>
-            <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded" aria-label="Follow us on Facebook">
-                <span className="sr-only">Facebook</span>
-                Facebook
+            <div className="flex flex-col space-y-2 text-sm">
+              <a href="https://www.linkedin.com/in/jefney-ongeri/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">
+                LinkedIn
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded" aria-label="Follow us on Twitter">
-                <span className="sr-only">Twitter</span>
-                Twitter
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded" aria-label="Follow us on Instagram">
-                <span className="sr-only">Instagram</span>
-                Instagram
+              <a href="mailto:jeffongeri@gmail.com" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">
+                Email
               </a>
             </div>
           </div>
@@ -53,7 +47,7 @@ const Footer = () => {
         
         <div className="border-t border-border mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2023 Nexus Blog. All rights reserved.
+            © {new Date().getFullYear()} Jefney Ongeri, PA-C. All rights reserved.
           </p>
         </div>
       </div>
