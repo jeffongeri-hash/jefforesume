@@ -17,6 +17,7 @@ import {
   FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import profileHeadshot from '@/assets/profile-headshot.png';
 
 const Professional = () => {
   const experiences = [
@@ -218,8 +219,12 @@ const Professional = () => {
         <section className="relative py-20 bg-gradient-to-br from-primary/5 via-background to-accent/20">
           <div className="container-blog">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-                <Stethoscope className="h-16 w-16 text-primary" />
+              <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
+                <img 
+                  src={profileHeadshot} 
+                  alt="Jefney Ongeri - Physician Assistant" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                 Jefney Ongeri, PA-C
