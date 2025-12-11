@@ -9,10 +9,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: 'ALL POST', href: '/posts' },
+    { name: 'PORTFOLIO', href: '/professional' },
+    { name: 'ALL POSTS', href: '/posts' },
     { name: 'BUSINESS', href: '/business' },
     { name: 'TECHNOLOGY', href: '/technology' },
-    { name: 'PODCAST', href: '/podcast' },
   ];
 
   const socialLinks = [

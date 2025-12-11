@@ -14,6 +14,7 @@ const AllPosts = lazy(() => import("./pages/AllPosts"));
 const Business = lazy(() => import("./pages/Business"));
 const Technology = lazy(() => import("./pages/Technology"));
 const Podcast = lazy(() => import("./pages/Podcast"));
+const Professional = lazy(() => import("./pages/Professional"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
@@ -39,6 +40,7 @@ const App = () => (
                 <Route path="/business" element={<Business />} />
                 <Route path="/technology" element={<Technology />} />
                 <Route path="/podcast" element={<Podcast />} />
+                <Route path="/professional" element={<Professional />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/sitemap" element={<Sitemap />} />
