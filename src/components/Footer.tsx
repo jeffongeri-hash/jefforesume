@@ -13,12 +13,11 @@ const Footer = () => {
           </div>
           
           <div className="space-y-4">
-            <h3 className="font-medium text-foreground">Topics</h3>
+            <h3 className="font-medium text-foreground">Navigate</h3>
             <ul className="space-y-2 text-sm">
               <li><Link to="/professional" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Portfolio</Link></li>
-              <li><Link to="/technology" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Healthcare Tech</Link></li>
-              <li><Link to="/business" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Research</Link></li>
-              <li><Link to="/posts" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">All Posts</Link></li>
+              <li><Link to="/investments" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Investments</Link></li>
+              <li><Link to="/posts" className="text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">Blog</Link></li>
             </ul>
           </div>
           
