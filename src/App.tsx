@@ -14,6 +14,8 @@ const AllPosts = lazy(() => import("./pages/AllPosts"));
 const Investments = lazy(() => import("./pages/Investments"));
 const Podcast = lazy(() => import("./pages/Podcast"));
 const Professional = lazy(() => import("./pages/Professional"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Admin = lazy(() => import("./pages/Admin"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
@@ -39,6 +41,8 @@ const App = () => (
                 <Route path="/investments" element={<Investments />} />
                 <Route path="/podcast" element={<Podcast />} />
                 <Route path="/professional" element={<Professional />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/sitemap" element={<Sitemap />} />
