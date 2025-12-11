@@ -10,9 +10,8 @@ const Header = () => {
 
   const navItems = [
     { name: 'PORTFOLIO', href: '/professional' },
-    { name: 'ALL POSTS', href: '/posts' },
-    { name: 'BUSINESS', href: '/business' },
-    { name: 'TECHNOLOGY', href: '/technology' },
+    { name: 'INVESTMENTS', href: '/investments' },
+    { name: 'BLOG', href: '/posts' },
   ];
 
   const socialLinks = [

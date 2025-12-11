@@ -11,8 +11,7 @@ import Index from "./pages/Index";
 // Lazy load non-critical pages
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const AllPosts = lazy(() => import("./pages/AllPosts"));
-const Business = lazy(() => import("./pages/Business"));
-const Technology = lazy(() => import("./pages/Technology"));
+const Investments = lazy(() => import("./pages/Investments"));
 const Podcast = lazy(() => import("./pages/Podcast"));
 const Professional = lazy(() => import("./pages/Professional"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -37,8 +36,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/posts" element={<AllPosts />} />
-                <Route path="/business" element={<Business />} />
-                <Route path="/technology" element={<Technology />} />
+                <Route path="/investments" element={<Investments />} />
                 <Route path="/podcast" element={<Podcast />} />
                 <Route path="/professional" element={<Professional />} />
                 <Route path="/terms" element={<Terms />} />
