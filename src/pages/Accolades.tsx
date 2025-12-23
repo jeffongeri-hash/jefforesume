@@ -41,18 +41,18 @@ const Accolades = () => {
             <CardContent className="p-8 text-center">
               <div className="flex justify-center mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-8 h-8 text-primary fill-primary" />
+                  <Star key={i} className={`w-8 h-8 ${i < 4 ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} />
                 ))}
               </div>
               <div className="text-6xl font-bold text-foreground mb-2">
-                97.5%
+                3 of 4
               </div>
               <p className="text-lg text-muted-foreground mb-4">
-                Average Patient Satisfaction Score
+                Patients Rated 9/10 or Higher
               </p>
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <TrendingUp className="w-4 h-4 text-primary" />
-                <span>75% of reviews received a perfect 10/10 rating</span>
+                <span>50% of reviews received a perfect 10/10 rating</span>
               </div>
             </CardContent>
           </Card>
