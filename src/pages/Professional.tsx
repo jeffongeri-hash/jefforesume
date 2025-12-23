@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WaveDivider from '@/components/WaveDivider';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -260,6 +261,8 @@ const Professional = () => {
             </div>
           </div>
         </section>
+        
+        <WaveDivider color="fill-primary/10" className="-mb-1" flip />
 
         {/* Open to Opportunities Banner */}
         <section className="py-6 bg-primary/10 border-y border-primary/20">
@@ -323,7 +326,7 @@ const Professional = () => {
           </div>
         </section>
 
-        <Separator />
+        <WaveDivider color="fill-muted/30" className="-mb-1" flip />
 
         {/* Education Section */}
         <section className="py-16 bg-muted/30" aria-labelledby="education-heading">

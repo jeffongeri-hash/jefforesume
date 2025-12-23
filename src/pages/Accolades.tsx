@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WaveDivider from '@/components/WaveDivider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Award, Quote, Star, TrendingUp } from 'lucide-react';
@@ -36,6 +37,8 @@ const Accolades = () => {
             </p>
           </div>
         </section>
+        
+        <WaveDivider color="fill-background" className="-mt-1" />
 
         <div className="container-blog py-16">
           {/* Patient Satisfaction Score */}
