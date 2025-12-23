@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
+import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail } from 'lucide-react';
@@ -16,7 +17,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]" />
           <div className="container-blog relative">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
+              <AnimatedSection className="space-y-6">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 rounded-full text-secondary text-sm font-medium">
                   <Stethoscope className="h-4 w-4" />
                   Physician Assistant | Clinical Researcher
@@ -40,8 +41,8 @@ const Index = () => {
                     </Link>
                   </Button>
                 </div>
-              </div>
-              <div className="flex justify-center lg:justify-end">
+              </AnimatedSection>
+              <AnimatedSection delay={200} className="flex justify-center lg:justify-end">
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-full blur-2xl" />
                   <img 
@@ -50,7 +51,7 @@ const Index = () => {
                     className="relative w-64 h-64 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-secondary/50 shadow-2xl"
                   />
                 </div>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -61,35 +62,41 @@ const Index = () => {
         <section className="py-20 bg-background">
           <div className="container-blog">
             <div className="grid md:grid-cols-3 gap-8">
-              <Link to="/professional" className="group">
-                <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
-                    <Stethoscope className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+              <AnimatedSection>
+                <Link to="/professional" className="group block">
+                  <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+                      <Stethoscope className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Professional Portfolio</h3>
+                    <p className="text-muted-foreground">Clinical experience, education, certifications, and publications.</p>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">Professional Portfolio</h3>
-                  <p className="text-muted-foreground">Clinical experience, education, certifications, and publications.</p>
-                </div>
-              </Link>
+                </Link>
+              </AnimatedSection>
               
-              <Link to="/investments" className="group">
-                <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
-                    <TrendingUp className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+              <AnimatedSection delay={100}>
+                <Link to="/investments" className="group block">
+                  <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+                      <TrendingUp className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Investment Portfolio</h3>
+                    <p className="text-muted-foreground">Current holdings, trade history, and investment insights.</p>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">Investment Portfolio</h3>
-                  <p className="text-muted-foreground">Current holdings, trade history, and investment insights.</p>
-                </div>
-              </Link>
+                </Link>
+              </AnimatedSection>
               
-              <Link to="/posts" className="group">
-                <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
-                    <BookOpen className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+              <AnimatedSection delay={200}>
+                <Link to="/posts" className="group block">
+                  <div className="p-8 bg-card border border-border rounded-lg hover:border-secondary hover:shadow-lg transition-all">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+                      <BookOpen className="h-6 w-6 text-primary group-hover:text-secondary transition-colors" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Blog & Insights</h3>
+                    <p className="text-muted-foreground">Thoughts on medicine, healthcare, and professional development.</p>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">Blog & Insights</h3>
-                  <p className="text-muted-foreground">Thoughts on medicine, healthcare, and professional development.</p>
-                </div>
-              </Link>
+                </Link>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -99,7 +106,7 @@ const Index = () => {
         {/* About Preview Section */}
         <section className="py-20 bg-muted/30">
           <div className="container-blog">
-            <div className="max-w-3xl mx-auto text-center">
+            <AnimatedSection className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-foreground mb-6">About Me</h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 I'm a certified Physician Assistant with a passion for patient-centered care and clinical research. 
@@ -121,7 +128,7 @@ const Index = () => {
                   </a>
                 </Button>
               </div>
-            </div>
+            </AnimatedSection>
           </div>
         </section>
       </main>

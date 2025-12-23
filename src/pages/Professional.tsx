@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
+import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -219,7 +220,7 @@ const Professional = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10">
           <div className="container-blog">
-            <div className="max-w-4xl mx-auto text-center">
+            <AnimatedSection className="max-w-4xl mx-auto text-center">
               <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
                 <img 
                   src={profileHeadshot} 
@@ -258,7 +259,7 @@ const Professional = () => {
                   </a>
                 </Button>
               </div>
-            </div>
+            </AnimatedSection>
           </div>
         </section>
         
@@ -279,48 +280,52 @@ const Professional = () => {
         {/* Clinical Experience Section */}
         <section className="py-16" aria-labelledby="experience-heading">
           <div className="container-blog">
-            <div className="flex items-center gap-3 mb-8">
-              <Briefcase className="h-6 w-6 text-primary" />
-              <h2 id="experience-heading" className="section-title mb-0">Clinical & Professional Experience</h2>
-            </div>
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-8">
+                <Briefcase className="h-6 w-6 text-primary" />
+                <h2 id="experience-heading" className="section-title mb-0">Clinical & Professional Experience</h2>
+              </div>
+            </AnimatedSection>
             <div className="space-y-6">
               {experiences.map((exp, index) => (
-                <Card key={index} className={`border-l-4 ${
-                  exp.type === 'clinical' ? 'border-l-green-500' :
-                  exp.type === 'research' ? 'border-l-blue-500' :
-                  exp.type === 'leadership' ? 'border-l-purple-500' :
-                  'border-l-primary'
-                }`}>
-                  <CardHeader>
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <CardTitle className="text-xl">{exp.title}</CardTitle>
-                          <Badge variant="secondary" className="text-xs">
-                            {exp.type === 'clinical' ? 'Clinical' :
-                             exp.type === 'research' ? 'Research' :
-                             exp.type === 'leadership' ? 'Leadership' : 'Academic'}
-                          </Badge>
+                <AnimatedSection key={index} delay={index * 50}>
+                  <Card className={`border-l-4 ${
+                    exp.type === 'clinical' ? 'border-l-green-500' :
+                    exp.type === 'research' ? 'border-l-blue-500' :
+                    exp.type === 'leadership' ? 'border-l-purple-500' :
+                    'border-l-primary'
+                  }`}>
+                    <CardHeader>
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <CardTitle className="text-xl">{exp.title}</CardTitle>
+                            <Badge variant="secondary" className="text-xs">
+                              {exp.type === 'clinical' ? 'Clinical' :
+                               exp.type === 'research' ? 'Research' :
+                               exp.type === 'leadership' ? 'Leadership' : 'Academic'}
+                            </Badge>
+                          </div>
+                          <p className="text-muted-foreground font-medium">{exp.company}</p>
                         </div>
-                        <p className="text-muted-foreground font-medium">{exp.company}</p>
+                        <div className="text-sm text-muted-foreground text-right">
+                          <div>{exp.period}</div>
+                          <div>{exp.location}</div>
+                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground text-right">
-                        <div>{exp.period}</div>
-                        <div>{exp.location}</div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {exp.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                          <span className="text-primary mt-1.5">•</span>
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {exp.highlights.map((highlight, i) => (
+                          <li key={i} className="flex items-start gap-2 text-muted-foreground">
+                            <span className="text-primary mt-1.5">•</span>
+                            {highlight}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -331,22 +336,26 @@ const Professional = () => {
         {/* Education Section */}
         <section className="py-16 bg-muted/30" aria-labelledby="education-heading">
           <div className="container-blog">
-            <div className="flex items-center gap-3 mb-8">
-              <GraduationCap className="h-6 w-6 text-primary" />
-              <h2 id="education-heading" className="section-title mb-0">Education</h2>
-            </div>
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-8">
+                <GraduationCap className="h-6 w-6 text-primary" />
+                <h2 id="education-heading" className="section-title mb-0">Education</h2>
+              </div>
+            </AnimatedSection>
             <div className="grid md:grid-cols-2 gap-6">
               {education.map((edu, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardContent className="pt-6">
-                    <h3 className="font-bold text-foreground text-lg">{edu.degree}</h3>
-                    <p className="text-muted-foreground font-medium">{edu.institution}</p>
-                    <div className="flex items-center justify-between mt-3">
-                      <Badge variant="outline">{edu.focus}</Badge>
-                      <span className="text-sm text-muted-foreground">{edu.year}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <AnimatedSection key={index} delay={index * 100}>
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardContent className="pt-6">
+                      <h3 className="font-bold text-foreground text-lg">{edu.degree}</h3>
+                      <p className="text-muted-foreground font-medium">{edu.institution}</p>
+                      <div className="flex items-center justify-between mt-3">
+                        <Badge variant="outline">{edu.focus}</Badge>
+                        <span className="text-sm text-muted-foreground">{edu.year}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -355,20 +364,24 @@ const Professional = () => {
         {/* Publications Section */}
         <section className="py-16" aria-labelledby="publications-heading">
           <div className="container-blog">
-            <div className="flex items-center gap-3 mb-8">
-              <FileText className="h-6 w-6 text-primary" />
-              <h2 id="publications-heading" className="section-title mb-0">Publications</h2>
-            </div>
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-8">
+                <FileText className="h-6 w-6 text-primary" />
+                <h2 id="publications-heading" className="section-title mb-0">Publications</h2>
+              </div>
+            </AnimatedSection>
             <div className="grid md:grid-cols-2 gap-6">
               {publications.map((pub, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardContent className="pt-6">
-                    <Badge variant="secondary" className="mb-3">{pub.date}</Badge>
-                    <h3 className="font-bold text-foreground mb-2">{pub.title}</h3>
-                    <p className="text-primary font-medium text-sm mb-3">{pub.journal}</p>
-                    <p className="text-muted-foreground text-sm">{pub.description}</p>
-                  </CardContent>
-                </Card>
+                <AnimatedSection key={index} delay={index * 100}>
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardContent className="pt-6">
+                      <Badge variant="secondary" className="mb-3">{pub.date}</Badge>
+                      <h3 className="font-bold text-foreground mb-2">{pub.title}</h3>
+                      <p className="text-primary font-medium text-sm mb-3">{pub.journal}</p>
+                      <p className="text-muted-foreground text-sm">{pub.description}</p>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -379,13 +392,15 @@ const Professional = () => {
         {/* Clinical Skills & Specialties */}
         <section className="py-16 bg-muted/30" aria-labelledby="skills-heading">
           <div className="container-blog">
-            <div className="flex items-center gap-3 mb-8">
-              <Stethoscope className="h-6 w-6 text-primary" />
-              <h2 id="skills-heading" className="section-title mb-0">Clinical Skills & Expertise</h2>
-            </div>
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-8">
+                <Stethoscope className="h-6 w-6 text-primary" />
+                <h2 id="skills-heading" className="section-title mb-0">Clinical Skills & Expertise</h2>
+              </div>
+            </AnimatedSection>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div>
+              <AnimatedSection>
                 <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Heart className="h-4 w-4 text-red-500" />
                   Life Support & Emergency
@@ -397,9 +412,9 @@ const Professional = () => {
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div>
+              <AnimatedSection delay={100}>
                 <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Stethoscope className="h-4 w-4 text-blue-500" />
                   Specialties
@@ -411,9 +426,9 @@ const Professional = () => {
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div>
+              <AnimatedSection delay={200}>
                 <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                   <FlaskConical className="h-4 w-4 text-green-500" />
                   Research
@@ -425,9 +440,9 @@ const Professional = () => {
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div>
+              <AnimatedSection delay={300}>
                 <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Briefcase className="h-4 w-4 text-purple-500" />
                   Leadership
@@ -439,7 +454,7 @@ const Professional = () => {
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -447,23 +462,27 @@ const Professional = () => {
         {/* Certifications */}
         <section className="py-16" aria-labelledby="certifications-heading">
           <div className="container-blog">
-            <div className="flex items-center gap-3 mb-8">
-              <Award className="h-6 w-6 text-primary" />
-              <h2 id="certifications-heading" className="section-title mb-0">Certifications</h2>
-            </div>
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-8">
+                <Award className="h-6 w-6 text-primary" />
+                <h2 id="certifications-heading" className="section-title mb-0">Certifications</h2>
+              </div>
+            </AnimatedSection>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {certifications.map((cert, index) => (
-                <Card key={index} className="hover:shadow-sm transition-shadow">
-                  <CardContent className="pt-4 pb-4">
-                    <div className="flex items-start gap-3">
-                      <Award className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-foreground text-sm">{cert.name}</p>
-                        <p className="text-xs text-muted-foreground">{cert.issuer}</p>
+                <AnimatedSection key={index} delay={(index % 3) * 50}>
+                  <Card className="hover:shadow-sm transition-shadow">
+                    <CardContent className="pt-4 pb-4">
+                      <div className="flex items-start gap-3">
+                        <Award className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium text-foreground text-sm">{cert.name}</p>
+                          <p className="text-xs text-muted-foreground">{cert.issuer}</p>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -475,7 +494,7 @@ const Professional = () => {
         <section className="py-16 bg-muted/30" aria-labelledby="volunteer-heading">
           <div className="container-blog">
             <div className="grid md:grid-cols-2 gap-12">
-              <div>
+              <AnimatedSection>
                 <div className="flex items-center gap-3 mb-8">
                   <Heart className="h-6 w-6 text-primary" />
                   <h2 id="volunteer-heading" className="section-title mb-0">Volunteer Experience</h2>
@@ -496,9 +515,9 @@ const Professional = () => {
                     </Card>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div>
+              <AnimatedSection delay={150}>
                 <div className="flex items-center gap-3 mb-8">
                   <BookOpen className="h-6 w-6 text-primary" />
                   <h2 className="section-title mb-0">Organizations</h2>
@@ -515,7 +534,7 @@ const Professional = () => {
                     </ul>
                   </CardContent>
                 </Card>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -523,25 +542,27 @@ const Professional = () => {
         {/* CTA Section */}
         <section className="py-20 bg-primary text-primary-foreground">
           <div className="container-blog text-center">
-            <h2 className="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Interested in discussing clinical opportunities, research collaborations, or healthcare innovation? 
-              I'd love to hear from you.
-            </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Button variant="secondary" size="lg" asChild>
-                <a href="mailto:jeffongeri@gmail.com">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Email Me
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <a href="https://www.linkedin.com/in/jefney-ongeri/" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-4 w-4 mr-2" />
-                  LinkedIn Profile
-                </a>
-              </Button>
-            </div>
+            <AnimatedSection>
+              <h2 className="text-3xl font-bold mb-4">Let's Connect</h2>
+              <p className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+                Interested in discussing clinical opportunities, research collaborations, or healthcare innovation? 
+                I'd love to hear from you.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <Button variant="secondary" size="lg" asChild>
+                  <a href="mailto:jeffongeri@gmail.com">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Email Me
+                  </a>
+                </Button>
+                <Button variant="outline" size="lg" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                  <a href="https://www.linkedin.com/in/jefney-ongeri/" target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="h-4 w-4 mr-2" />
+                    LinkedIn Profile
+                  </a>
+                </Button>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
       </main>
