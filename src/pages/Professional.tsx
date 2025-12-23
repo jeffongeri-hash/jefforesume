@@ -20,7 +20,7 @@ import {
   FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import profileHeadshot from '@/assets/profile-headshot.png';
+import headshot from '@/assets/headshot.jpeg';
 
 const Professional = () => {
   const experiences = [
@@ -224,7 +224,7 @@ const Professional = () => {
             <AnimatedSection className="max-w-4xl mx-auto text-center">
               <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
                 <img 
-                  src={profileHeadshot} 
+                  src={headshot} 
                   alt="Jefney Ongeri - Physician Assistant" 
                   className="w-full h-full object-cover"
                 />
