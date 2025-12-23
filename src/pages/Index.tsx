@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WaveDivider from '@/components/WaveDivider';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail } from 'lucide-react';
@@ -53,6 +54,8 @@ const Index = () => {
             </div>
           </div>
         </section>
+        
+        <WaveDivider color="fill-background" className="-mt-1" />
 
         {/* Quick Links Section */}
         <section className="py-20 bg-background">
@@ -91,6 +94,8 @@ const Index = () => {
           </div>
         </section>
 
+        <WaveDivider color="fill-muted/30" className="-mb-1" flip />
+        
         {/* About Preview Section */}
         <section className="py-20 bg-muted/30">
           <div className="container-blog">
