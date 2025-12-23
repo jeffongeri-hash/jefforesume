@@ -6,7 +6,7 @@ import { ParallaxHero } from '@/hooks/useParallax';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail } from 'lucide-react';
-import profileHeadshot from '@/assets/profile-headshot.png';
+import headshot from '@/assets/headshot.jpeg';
 
 const Index = () => {
   return (
@@ -46,7 +46,7 @@ const Index = () => {
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-full blur-2xl" />
                   <img 
-                    src={profileHeadshot} 
+                    src={headshot} 
                     alt="Jefney Ongeri - Physician Assistant" 
                     className="relative w-64 h-64 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-secondary/50 shadow-2xl"
                   />
