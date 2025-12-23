@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
+import { ParallaxHero } from '@/hooks/useParallax';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -218,7 +219,7 @@ const Professional = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10">
+        <ParallaxHero className="py-20 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10">
           <div className="container-blog">
             <AnimatedSection className="max-w-4xl mx-auto text-center">
               <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
@@ -261,7 +262,7 @@ const Professional = () => {
               </div>
             </AnimatedSection>
           </div>
-        </section>
+        </ParallaxHero>
         
         <WaveDivider color="fill-primary/10" className="-mb-1" flip />
 
