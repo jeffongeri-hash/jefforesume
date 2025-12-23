@@ -388,7 +388,131 @@ const Professional = () => {
           </div>
         </section>
 
-        <Separator />
+        <WaveDivider color="fill-accent/10" className="-mb-1" flip />
+
+        {/* Clinical Training Experience */}
+        <section className="py-16 bg-accent/10" aria-labelledby="training-heading">
+          <div className="container-blog">
+            <AnimatedSection>
+              <div className="flex items-center gap-3 mb-2">
+                <Stethoscope className="h-6 w-6 text-primary" />
+                <h2 id="training-heading" className="section-title mb-0">Clinical Training Experience</h2>
+              </div>
+              <p className="text-muted-foreground mb-8">Hands-on procedures and cases from 2 months of clinical rotations</p>
+            </AnimatedSection>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Procedures Performed */}
+              <AnimatedSection>
+                <Card className="h-full border-l-4 border-l-green-500">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <span className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                        <Heart className="h-4 w-4 text-green-600" />
+                      </span>
+                      Procedures Performed
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Sutures</span>
+                        <Badge variant="secondary">10+</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Incision & Drainage</span>
+                        <Badge variant="secondary">6</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Epistaxis Management</span>
+                        <Badge variant="secondary">4</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Cast Placements (Fiberglass)</span>
+                        <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Open Fracture Management</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Nursemaid's Elbow Reduction</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Left Anterior Shoulder Reduction</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Digital Disimpaction + Enema</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+
+              {/* Cases Observed */}
+              <AnimatedSection delay={100}>
+                <Card className="h-full border-l-4 border-l-blue-500">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <span className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                        <BookOpen className="h-4 w-4 text-blue-600" />
+                      </span>
+                      Cases Observed
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Syncope</span>
+                        <Badge variant="secondary">10+</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">CHF Exacerbation</span>
+                        <Badge variant="secondary">5+</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">COPD Exacerbation</span>
+                        <Badge variant="secondary">5+</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Seizures</span>
+                        <Badge variant="secondary">5</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">STEMI</span>
+                        <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Pneumothorax</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Aortic Aneurysm (incl. AAA)</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">NSTEMI</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                    </ul>
+                    <p className="text-xs text-muted-foreground mt-4 italic">
+                      Plus multiple cases of benign chest pain, dizziness, and abdominal pain
+                    </p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+            </div>
+          </div>
+        </section>
+
+        <WaveDivider color="fill-muted/30" className="-mb-1" flip />
 
         {/* Clinical Skills & Specialties */}
         <section className="py-16 bg-muted/30" aria-labelledby="skills-heading">
