@@ -10,6 +10,7 @@ const Header = () => {
 
   const navItems = [
     { name: 'PORTFOLIO', href: '/professional' },
+    { name: 'ACCOLADES', href: '/accolades' },
     { name: 'INVESTMENTS', href: '/investments' },
     { name: 'BLOG', href: '/posts' },
   ];
