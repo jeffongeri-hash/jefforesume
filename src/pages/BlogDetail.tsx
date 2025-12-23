@@ -2,313 +2,160 @@ import { useParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import BlogCard from '@/components/BlogCard';
 import SocialShare from '@/components/SocialShare';
 import ReadingProgress from '@/components/ReadingProgress';
-import TableOfContents from '@/components/TableOfContents';
-import RelatedPosts from '@/components/RelatedPosts';
 import BackToTop from '@/components/BackToTop';
-import fashionPost from '@/assets/fashion-post.jpg';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
-import lifestylePost from '@/assets/lifestyle-post.jpg';
-import workLifestyle from '@/assets/work-lifestyle.jpg';
-import fashionLifestyle from '@/assets/fashion-lifestyle.jpg';
 
 const blogPosts = {
-  "rise-of-fashion-blogging": {
-    title: "The Rise of Fashion Blogging: The Role of Influencers in the Industry",
-    category: "FASHION",
-    date: "September 20, 2025",
-    readTime: "8 min read",
-    author: "MELVILLE",
-    authorAvatar: "/placeholder-avatar.jpg",
-    heroImage: fashionPost,
-    content: `
-      <p>The fashion industry has undergone a seismic shift in the past decade, with fashion blogging emerging as one of the most influential forces reshaping how we discover, consume, and interact with style. What began as personal style diaries has evolved into a billion-dollar industry that directly impacts fashion trends, consumer behavior, and brand strategies worldwide.</p>
-      
-      <p>From the early days of pioneering bloggers like Susanna Lau of Style Bubble and Tavi Gevinson of Style Rookie, to today's Instagram influencers with millions of followers, fashion blogging has democratized fashion commentary and created new pathways to influence that bypass traditional gatekeepers.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Evolution of Fashion Influence</h2>
-      
-      <p>Traditional fashion journalism once held exclusive power over trend-setting and style validation. Magazine editors and fashion critics were the sole arbiters of what was considered fashionable. However, the rise of digital platforms has fundamentally disrupted this hierarchy.</p>
-      
-      <img src="/src/assets/fashion-post.jpg" alt="Fashion blogger creating content" class="w-full rounded-lg my-6" />
-      
-      <p>Today's fashion influencers operate with unprecedented autonomy, building direct relationships with their audiences and creating authentic content that resonates on a personal level. This shift has forced established fashion media to adapt, with many traditional publications now collaborating with digital creators to maintain relevance.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Anatomy of Modern Fashion Influence</h2>
-      
-      <p>Contemporary fashion influencers operate across multiple platforms, each serving different purposes in their overall strategy:</p>
-      
-      <ul class="list-disc pl-6 my-4">
-        <li><strong>Instagram:</strong> Visual storytelling through curated feeds and Stories</li>
-        <li><strong>TikTok:</strong> Trend creation and viral fashion content</li>
-        <li><strong>YouTube:</strong> Long-form content including lookbooks and shopping hauls</li>
-        <li><strong>Blogs:</strong> In-depth fashion analysis and personal narratives</li>
-        <li><strong>Pinterest:</strong> Style inspiration and trend forecasting</li>
-      </ul>
-      
-      <img src="/src/assets/work-lifestyle.jpg" alt="Multi-platform content creation setup" class="w-full rounded-lg my-6" />
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Business of Fashion Blogging</h2>
-      
-      <p>What started as passion projects have transformed into sophisticated business enterprises. Successful fashion influencers now operate as media companies, employing teams for content creation, brand partnerships, and business development.</p>
-      
-      <p>The monetization strategies have diversified significantly:</p>
-      
-      <ul class="list-disc pl-6 my-4">
-        <li><strong>Brand Partnerships:</strong> Sponsored content and ambassadorships</li>
-        <li><strong>Affiliate Marketing:</strong> Commission-based product recommendations</li>
-        <li><strong>Product Lines:</strong> Private label fashion and beauty collaborations</li>
-        <li><strong>Digital Products:</strong> Style guides, courses, and exclusive content</li>
-        <li><strong>Event Hosting:</strong> Fashion shows, meet-and-greets, and brand activations</li>
-      </ul>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Impact on Consumer Behavior</h2>
-      
-      <p>Fashion influencers have fundamentally altered how consumers discover and purchase clothing. The traditional seasonal fashion cycle has given way to constant content creation and immediate shopping opportunities through features like Instagram Shopping and "link in bio" tools.</p>
-      
-      <img src="/src/assets/fashion-lifestyle.jpg" alt="Consumer shopping on mobile device" class="w-full rounded-lg my-6" />
-      
-      <p>Research indicates that 72% of Gen Z and millennial consumers have made fashion purchases directly influenced by social media content. This immediate connection between inspiration and purchase has created new challenges and opportunities for both brands and consumers.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Challenges in the Influencer Economy</h2>
-      
-      <p>Despite its growth, the fashion influencer industry faces significant challenges:</p>
-      
-      <ul class="list-disc pl-6 my-4">
-        <li><strong>Authenticity Concerns:</strong> Balancing genuine recommendations with commercial partnerships</li>
-        <li><strong>Market Saturation:</strong> Standing out in an increasingly crowded field</li>
-        <li><strong>Platform Dependencies:</strong> Vulnerability to algorithm changes and platform policies</li>
-        <li><strong>Sustainability Issues:</strong> Pressure to constantly showcase new products</li>
-        <li><strong>Mental Health:</strong> The psychological impact of constant public scrutiny</li>
-      </ul>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Sustainability Movement</h2>
-      
-      <p>A growing number of fashion influencers are pivoting toward sustainable fashion advocacy, using their platforms to promote conscious consumption, vintage shopping, and ethical brands. This shift reflects broader consumer awareness about fashion's environmental impact.</p>
-      
-      <p>Influencers like Venetia La Manna and Aditi Mayer have built substantial followings by focusing on sustainable fashion education, proving that conscious content can be both engaging and commercially successful.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Technology and the Future of Fashion Influence</h2>
-      
-      <p>Emerging technologies are reshaping the landscape once again. Virtual reality shopping experiences, AI-powered style recommendations, and augmented reality try-on features are creating new possibilities for fashion content creation and consumer engagement.</p>
-      
-      <p>The rise of virtual influencers like Lil Miquela and the integration of NFTs in fashion are pushing the boundaries of what constitutes fashion influence in the digital age.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Looking Ahead: The Next Chapter</h2>
-      
-      <p>As we look toward the future, fashion blogging and influence will likely become even more integrated with e-commerce, sustainability initiatives, and immersive technologies. The most successful influencers will be those who can adapt to changing platforms while maintaining authentic connections with their audiences.</p>
-      
-      <p>The democratization of fashion influence has permanently changed the industry landscape, creating opportunities for diverse voices and perspectives that were previously marginalized. This evolution continues to challenge traditional fashion hierarchies and create new pathways for creative expression and commercial success.</p>
-      
-      <p>Fashion blogging has proven that influence in the digital age is not about gatekeeping access to style, but about fostering communities, inspiring creativity, and making fashion more accessible to everyone.</p>
-    `
-  },
-  "self-driving-cars-everything-you-need-to-know": {
-    title: "Self-Driving Cars: Everything You Need to Know",
+  "ai-bubble-concerns": {
+    title: "The AI Bubble: Should We Be Concerned?",
     category: "TECHNOLOGY",
-    date: "SEP 12, 2023",
-    readTime: "7 min read",
-    author: "NEXUS",
+    date: "December 15, 2025",
+    readTime: "8 min read",
+    author: "Jefney Ongeri",
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: techPost,
     content: `
-      <p>The automotive industry is experiencing a revolutionary transformation with the advent of self-driving cars. This technology promises to reshape how we think about transportation, safety, and urban planning.</p>
+      <p>The artificial intelligence sector has experienced unprecedented growth over the past few years, with valuations reaching stratospheric levels. From startups to tech giants, everyone seems to be racing to integrate AI into their products and services. But as someone who closely follows both technology and investment trends, I find myself asking: are we witnessing genuine innovation, or are we inflating another bubble?</p>
       
-      <p>From Tesla's Autopilot to Waymo's fully autonomous vehicles, the race to develop reliable self-driving technology has accelerated dramatically in recent years. But what exactly are self-driving cars, and how close are we to seeing them on every street?</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Numbers Behind the Hype</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Five Levels of Autonomous Driving</h2>
+      <p>Investment in AI companies has skyrocketed. Venture capital funding for AI startups exceeded $50 billion in 2024 alone, with some companies receiving valuations that seem disconnected from their actual revenue or even their path to profitability. This pattern is eerily reminiscent of the dot-com bubble of the late 1990s and early 2000s.</p>
       
-      <p>The Society of Automotive Engineers (SAE) has defined five levels of driving automation, ranging from no automation to full automation:</p>
+      <p>The key difference, proponents argue, is that AI delivers tangible value. Unlike many dot-com companies that promised future utility, AI tools like ChatGPT and various enterprise solutions are already transforming how millions of people work. But does current utility justify current valuations?</p>
+      
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Lessons from Healthcare Technology</h2>
+      
+      <p>In my work in healthcare, I've seen firsthand how technology adoption often follows a predictable pattern. Initial enthusiasm leads to massive investment, followed by a period of disillusionment when the technology doesn't immediately deliver on all its promises. Eventually, a more realistic understanding emerges, and the technology finds its proper place in the ecosystem.</p>
+      
+      <p>AI in healthcare is going through this cycle right now. Early promises of AI replacing physicians have given way to more nuanced discussions about AI as a tool that augments clinical decision-making. This is healthy and necessary maturation.</p>
+      
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Signs of Bubble Behavior</h2>
+      
+      <p>Several warning signs suggest we may be in bubble territory:</p>
       
       <ul class="list-disc pl-6 my-4">
-        <li><strong>Level 0:</strong> No automation - human driver controls everything</li>
-        <li><strong>Level 1:</strong> Driver assistance - features like cruise control</li>
-        <li><strong>Level 2:</strong> Partial automation - car can steer and accelerate/brake</li>
-        <li><strong>Level 3:</strong> Conditional automation - car handles most driving tasks</li>
-        <li><strong>Level 4:</strong> High automation - car can handle all driving in specific conditions</li>
-        <li><strong>Level 5:</strong> Full automation - car can drive anywhere, anytime</li>
+        <li><strong>FOMO-driven investment:</strong> Companies are adding "AI" to their descriptions to attract funding, regardless of whether AI is central to their product</li>
+        <li><strong>Unsustainable burn rates:</strong> Many AI startups are spending far more than they earn, betting on future market dominance</li>
+        <li><strong>Talent wars:</strong> AI engineers command salaries that seem detached from the value they can immediately create</li>
+        <li><strong>Concentration risk:</strong> A few large players control the foundational models, creating potential fragility in the ecosystem</li>
       </ul>
       
-      <img src="/src/assets/tech-post.jpg" alt="Self-driving car sensors and technology" class="w-full rounded-lg my-6" />
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Case Against the Bubble Narrative</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Technology Behind Autonomous Vehicles</h2>
+      <p>However, there are compelling arguments against the bubble theory. AI represents a genuine technological paradigm shift, not just incremental improvement. The productivity gains from AI are measurable and significant. Enterprise adoption is accelerating, suggesting real demand rather than speculative interest.</p>
       
-      <p>Self-driving cars rely on a combination of sophisticated technologies to navigate safely. These include LiDAR sensors for 3D mapping, cameras for visual recognition, radar for object detection, and advanced AI algorithms for decision-making.</p>
+      <p>Moreover, the infrastructure being built—data centers, specialized chips, new software frameworks—represents lasting value that will persist regardless of short-term market fluctuations.</p>
       
-      <p>Machine learning plays a crucial role, as these vehicles must process enormous amounts of data in real-time to make split-second decisions about steering, braking, and acceleration.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">A Balanced Perspective</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Benefits and Challenges</h2>
+      <p>My view is nuanced. I believe AI is transformative technology with genuine long-term value. However, current valuations for many AI companies likely exceed their realistic near-term potential. This doesn't mean a dramatic crash is inevitable—a gradual correction and consolidation is equally possible.</p>
       
-      <p>The potential benefits of autonomous vehicles are significant: reduced traffic accidents, improved mobility for disabled individuals, and more efficient traffic flow. However, challenges remain in terms of regulatory approval, public acceptance, and technical reliability in complex urban environments.</p>
+      <p>For investors and professionals alike, the key is to focus on fundamentals: which companies are building sustainable businesses, which applications of AI deliver genuine value, and which trends are driven by hype rather than utility.</p>
       
-      <p>As we move forward, the integration of self-driving cars into our transportation infrastructure will require careful consideration of safety, ethics, and societal impact.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Implications for Healthcare Professionals</h2>
+      
+      <p>For those of us in healthcare, this analysis has practical implications. We should embrace AI tools that genuinely improve patient care and clinical efficiency. At the same time, we should maintain healthy skepticism about AI solutions that promise more than they can deliver.</p>
+      
+      <p>The goal isn't to resist technological change but to adopt it thoughtfully, ensuring that innovation serves our patients and our profession rather than simply enriching investors.</p>
+      
+      <p>As I continue to work at the intersection of healthcare and technology, I remain optimistic about AI's potential while staying vigilant about its limitations. That balance, I believe, is the healthiest approach to navigating this transformative moment in technology history.</p>
     `
   },
-  "the-importance-of-corporate-social-responsibility": {
-    title: "The Importance of Corporate Social Responsibility",
-    category: "BUSINESS",
-    date: "SEP 10, 2023",
-    readTime: "6 min read",
-    author: "NEXUS",
+  "seamless-ehr-transfers-benefits": {
+    title: "The Benefits of Seamless EHR Transfers: Improving Patient Care",
+    category: "HEALTHCARE",
+    date: "December 10, 2025",
+    readTime: "7 min read",
+    author: "Jefney Ongeri",
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: businessPost,
     content: `
-      <p>In today's interconnected world, businesses are increasingly expected to operate with a sense of social responsibility that extends beyond profit maximization. Corporate Social Responsibility (CSR) has evolved from a nice-to-have initiative to a business imperative.</p>
+      <p>As a practicing physician assistant, I've witnessed countless situations where incomplete or delayed access to patient health records has compromised care quality. The promise of electronic health records (EHRs) was to solve this problem, but fragmented systems and poor interoperability have often created new challenges. However, the movement toward seamless EHR transfers offers genuine hope for transforming patient care.</p>
       
-      <p>Companies that embrace CSR are finding that it not only benefits society and the environment but also enhances their brand reputation, employee satisfaction, and long-term financial performance.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Current State of Health Information Exchange</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">What is Corporate Social Responsibility?</h2>
+      <p>Today's healthcare landscape is characterized by information silos. A patient may have records scattered across multiple providers, hospitals, and health systems, each using different EHR platforms that don't communicate effectively with each other. The result is incomplete clinical pictures, redundant testing, and potential safety risks.</p>
       
-      <p>CSR refers to a company's commitment to conducting business in an ethical manner that considers the social, environmental, and economic impact of its operations. It involves taking responsibility for the company's effects on society and the environment.</p>
+      <p>In my clinical practice, I regularly encounter patients who can't remember their complete medication lists or who are unaware of critical findings from previous visits to other providers. This fragmentation doesn't just inconvenience healthcare workers—it puts patients at risk.</p>
       
-      <img src="/src/assets/business-post.jpg" alt="Corporate responsibility meeting" class="w-full rounded-lg my-6" />
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">What Seamless EHR Transfer Looks Like</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Key Areas of CSR</h2>
+      <p>Seamless EHR transfer means that when a patient moves between providers, their complete health information follows them—instantly and accurately. This includes:</p>
       
-      <p>Modern CSR programs typically focus on four main areas:</p>
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Complete medication history:</strong> Including dosages, prescribing dates, and any documented allergies or adverse reactions</li>
+        <li><strong>Laboratory and imaging results:</strong> With full historical context and trends</li>
+        <li><strong>Clinical notes:</strong> From specialists, primary care, and hospital encounters</li>
+        <li><strong>Immunization records:</strong> Critical for preventive care</li>
+        <li><strong>Social and family history:</strong> Important context for clinical decision-making</li>
+      </ul>
       
-        <ul class="list-disc pl-6 my-4">
-          <li><strong>Environmental Responsibility:</strong> Reducing carbon footprint, waste management, sustainable sourcing</li>
-          <li><strong>Social Responsibility:</strong> Fair labor practices, community development, diversity and inclusion</li>
-          <li><strong>Economic Responsibility:</strong> Fair business practices, supporting local economies, transparent reporting</li>
-          <li><strong>Philanthropic Responsibility:</strong> Charitable giving, volunteer programs, community partnerships</li>
-        </ul>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Benefits for Patient Safety</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Business Case for CSR</h2>
+      <p>The safety implications of seamless data transfer are profound. Consider a patient presenting to an emergency department with chest pain. With complete access to their cardiology records from another system, the emergency physician can immediately see previous stress test results, cardiac catheterization findings, and established treatment plans. This context can be life-saving.</p>
       
-      <p>Research consistently shows that companies with strong CSR programs outperform their peers in multiple areas. They attract and retain top talent, build stronger customer loyalty, and often enjoy better financial performance over the long term.</p>
+      <p>Drug-drug interactions represent another critical area. When providers can see complete medication lists across all prescribers, they can identify potentially dangerous combinations that might otherwise be missed.</p>
       
-      <p>Moreover, consumers increasingly prefer to do business with companies that share their values, making CSR a competitive advantage in today's market.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Reducing Healthcare Costs</h2>
       
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Implementing Effective CSR Strategies</h2>
+      <p>Redundant testing is a massive source of healthcare waste. Patients frequently undergo repeated imaging studies, laboratory panels, and diagnostic procedures because their results from other institutions aren't accessible. Seamless EHR transfer can eliminate much of this redundancy.</p>
       
-      <p>Successful CSR programs require genuine commitment from leadership, clear goals and metrics, stakeholder engagement, and transparent reporting. Companies must avoid "greenwashing" and ensure their CSR efforts are authentic and impactful.</p>
+      <p>Beyond direct cost savings, improved information flow can reduce hospital readmissions by ensuring that discharge summaries and follow-up plans are immediately available to outpatient providers.</p>
       
-      <p>As we face global challenges like climate change and social inequality, the role of businesses in driving positive change has never been more important. CSR is no longer optional – it's essential for sustainable business success.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Improving Clinical Efficiency</h2>
+      
+      <p>As a clinician, significant portions of my day are spent gathering information—calling other offices, requesting records, and waiting for faxes (yes, faxes are still common in healthcare). Seamless data transfer would reclaim this time for direct patient care.</p>
+      
+      <p>The documentation burden on providers could also decrease, as relevant historical information would auto-populate rather than requiring manual re-entry.</p>
+      
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Challenges and Considerations</h2>
+      
+      <p>Of course, seamless EHR transfer isn't without challenges. Privacy and security concerns are paramount—health information is among the most sensitive data types, and any transfer system must maintain rigorous protections. Patient consent frameworks need to be clear and accessible.</p>
+      
+      <p>Technical standards, while improving, still need work. The FHIR (Fast Healthcare Interoperability Resources) standard represents significant progress, but widespread adoption remains incomplete.</p>
+      
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Path Forward</h2>
+      
+      <p>Recent federal regulations, including the 21st Century Cures Act, are pushing the industry toward greater interoperability by prohibiting "information blocking." Health systems that previously resisted data sharing are now required to enable it.</p>
+      
+      <p>As healthcare technology continues to evolve, seamless EHR transfer will become the norm rather than the exception. This transition represents one of the most meaningful improvements we can make to healthcare delivery—not through new treatments or procedures, but through better coordination of the care we already provide.</p>
+      
+      <p>For patients, this means safer, more efficient care. For providers, it means more time for what matters most: the patient relationship. And for the healthcare system as a whole, it means better outcomes at lower cost. That's a vision worth pursuing.</p>
     `
   },
-  "mindful-living-finding-balance-in-a-busy-world": {
-    title: "Mindful Living: Finding Balance in a Busy World",
-    category: "LIFESTYLE",
-    date: "SEP 8, 2023",
-    readTime: "4 min read",
-    author: "MELVILLE",
-    authorAvatar: "/placeholder-avatar.jpg",
-    heroImage: lifestylePost,
-    content: `
-      <p>In our fast-paced world, finding moments of peace and balance has become more challenging than ever. The constant buzz of notifications, endless to-do lists, and societal pressures can leave us feeling overwhelmed and disconnected from what truly matters.</p>
-      
-      <p>Mindful living offers a path to reclaim our sense of balance and well-being. It's about being present in the moment, making conscious choices, and cultivating a deeper awareness of our thoughts, feelings, and surroundings.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">What is Mindful Living?</h2>
-      
-      <p>Mindful living is the practice of bringing conscious awareness to our daily activities and experiences. It involves slowing down, paying attention, and making intentional choices rather than operating on autopilot.</p>
-      
-      <img src="/src/assets/lifestyle-post.jpg" alt="Person practicing mindfulness in nature" class="w-full rounded-lg my-6" />
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Simple Ways to Practice Mindfulness</h2>
-      
-      <p>Incorporating mindfulness into your daily routine doesn't require dramatic lifestyle changes. Here are some simple practices to get started:</p>
-      
-        <ul class="list-disc pl-6 my-4">
-          <li><strong>Morning Rituals:</strong> Start your day with five minutes of deep breathing or meditation</li>
-          <li><strong>Mindful Eating:</strong> Pay attention to the taste, texture, and aroma of your food</li>
-          <li><strong>Digital Detox:</strong> Set aside specific times each day to disconnect from technology</li>
-          <li><strong>Nature Connection:</strong> Spend time outdoors and observe the natural world around you</li>
-          <li><strong>Gratitude Practice:</strong> Reflect on three things you're grateful for each day</li>
-        </ul>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Benefits of Mindful Living</h2>
-      
-      <p>Research has shown that mindfulness practices can reduce stress, improve mental clarity, enhance emotional regulation, and boost overall well-being. People who practice mindful living often report feeling more content, focused, and resilient in the face of challenges.</p>
-      
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Creating Your Personal Balance</h2>
-      
-      <p>Remember that mindful living looks different for everyone. The key is to find practices that resonate with you and fit into your lifestyle. Start small, be consistent, and be patient with yourself as you develop these new habits.</p>
-      
-      <p>In a world that often values busyness over well-being, choosing to live mindfully is a radical act of self-care and consciousness.</p>
-    `
-  },
-  // Add more blog posts as needed
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
-    date: "SEP 15, 2023",
-    readTime: "3 min read",
-    author: "NEXUS",
+    date: "December 1, 2025",
+    readTime: "1 min read",
+    author: "Jefney Ongeri",
     authorAvatar: "/placeholder-avatar.jpg",
-    heroImage: fashionPost,
+    heroImage: techPost,
     content: `<p>This blog post could not be found. Please check the URL or return to the homepage.</p>`
   }
 };
 
 const popularPosts = [
   {
-    title: "The Importance of Corporate Social Responsibility",
-    category: "BUSINESS",
-    date: "SEP 12, 2023",
-    image: businessPost
-  },
-  {
-    title: "Fashion and Celebrity Culture: The Influence of Celebrities on Style Trends",
-    category: "FASHION", 
-    date: "SEP 10, 2023",
-    image: fashionLifestyle
-  },
-  {
-    title: "Self-Driving Cars: Everything You Need to Know",
+    title: "The AI Bubble: Should We Be Concerned?",
     category: "TECHNOLOGY",
-    date: "SEP 6, 2023", 
+    date: "December 15, 2025",
     image: techPost
+  },
+  {
+    title: "The Benefits of Seamless EHR Transfers",
+    category: "HEALTHCARE", 
+    date: "December 10, 2025",
+    image: businessPost
   }
 ];
 
-// Create all posts data for RelatedPosts component
-const allPosts = [
-  {
-    slug: "rise-of-fashion-blogging",
-    title: "The Rise of Fashion Blogging: The Role of Influencers in the Industry",
-    category: "FASHION",
-    date: "September 20, 2025",
-    readTime: "8 min read",
-    image: fashionPost,
-    excerpt: "Fashion blogging has emerged as one of the most influential forces reshaping how we discover, consume, and interact with style."
-  },
-  {
-    slug: "self-driving-cars-everything-you-need-to-know",
-    title: "Self-Driving Cars: Everything You Need to Know",
-    category: "TECHNOLOGY", 
-    date: "SEP 12, 2023",
-    readTime: "7 min read",
-    image: techPost,
-    excerpt: "The automotive industry is experiencing a revolutionary transformation with the advent of self-driving cars."
-  },
-  {
-    slug: "the-importance-of-corporate-social-responsibility",
-    title: "The Importance of Corporate Social Responsibility",
-    category: "BUSINESS",
-    date: "SEP 10, 2023", 
-    readTime: "6 min read",
-    image: businessPost,
-    excerpt: "Businesses are increasingly expected to operate with a sense of social responsibility that extends beyond profit maximization."
-  },
-  {
-    slug: "mindful-living-finding-balance-in-a-busy-world",
-    title: "Mindful Living: Finding Balance in a Busy World",
-    category: "LIFESTYLE",
-    date: "SEP 8, 2023",
-    readTime: "4 min read", 
-    image: lifestylePost,
-    excerpt: "In our fast-paced world, finding moments of peace and balance has become more challenging than ever."
-  },
-];
-
 const BlogDetail = () => {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const post = blogPosts[slug as keyof typeof blogPosts] || blogPosts.default;
 
   return (
@@ -316,144 +163,85 @@ const BlogDetail = () => {
       <ReadingProgress />
       <Header />
       
-      <main id="main-content" className="container-blog py-8">
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            <article>
-              {/* Article Header */}
-              <header className="mb-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-medium text-muted-foreground">{post.category}</span>
-                  <span className="text-muted-foreground text-xs">—</span>
-                  <time className="text-xs text-muted-foreground" dateTime="2023-09-15">{post.date}</time>
-                </div>
-                
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-6 leading-tight">
-                  {post.title}
-                </h1>
-                
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                      <span className="text-sm font-medium">{post.author.charAt(0)}</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{post.author}</p>
-                      <p className="text-xs text-muted-foreground">{post.readTime}</p>
-                    </div>
-                  </div>
-                  
-                  <SocialShare 
-                    title={post.title}
-                    description={`Read "${post.title}" on Nexus Blog`}
-                  />
-                </div>
-              </header>
-
-              {/* Hero Image */}
-              <div className="mb-8">
-                <img
-                  src={post.heroImage}
-                  alt={post.title}
-                  className="w-full aspect-[16/10] object-cover"
-                />
+      <main id="main-content">
+        {/* Hero Section */}
+        <div className="relative w-full h-[50vh] overflow-hidden">
+          <img 
+            src={post.heroImage} 
+            alt={post.title} 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+            <div className="container-blog">
+              <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded mb-4">
+                {post.category}
+              </span>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 max-w-4xl">
+                {post.title}
+              </h1>
+              <div className="flex items-center gap-4 text-muted-foreground">
+                <span>{post.author}</span>
+                <span>•</span>
+                <span>{post.date}</span>
+                <span>•</span>
+                <span>{post.readTime}</span>
               </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Article Content */}
+        {/* Content */}
+        <div className="container-blog py-12">
+          <div className="grid lg:grid-cols-3 gap-12">
+            {/* Main Content */}
+            <article className="lg:col-span-2">
               <div 
-                className="prose prose-lg max-w-none text-foreground article-content
-                  prose-headings:text-foreground prose-headings:font-bold prose-headings:mb-4 prose-headings:mt-8
-                  prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6
-                  prose-ul:text-muted-foreground prose-li:text-muted-foreground
-                  prose-img:rounded-lg prose-img:my-6"
-                data-article-content
+                className="prose prose-lg max-w-none text-foreground
+                  prose-headings:text-foreground 
+                  prose-p:text-muted-foreground 
+                  prose-p:leading-relaxed
+                  prose-ul:text-muted-foreground
+                  prose-li:text-muted-foreground
+                  prose-strong:text-foreground"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
+              
+              {/* Share */}
+              <div className="mt-12 pt-8 border-t border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Share this article</h3>
+                <SocialShare title={post.title} />
+              </div>
             </article>
 
-            {/* Related Posts */}
-            <section className="mt-16 pt-8 border-t border-border">
-              <RelatedPosts
-                currentPost={{ category: post.category, title: post.title }}
-                allPosts={allPosts}
-                maxPosts={3}
-              />
-            </section>
+            {/* Sidebar */}
+            <aside className="space-y-8">
+              {/* Popular Posts */}
+              <div>
+                <h3 className="text-lg font-bold text-foreground mb-4">More Articles</h3>
+                <div className="space-y-4">
+                  {popularPosts
+                    .filter(p => p.title !== post.title)
+                    .map((popular, index) => (
+                    <BlogCard
+                      key={index}
+                      title={popular.title}
+                      category={popular.category}
+                      date={popular.date}
+                      image={popular.image}
+                      href={`/blog/${popular.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      isSmall={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            </aside>
           </div>
-
-          {/* Sidebar */}
-          <aside className="lg:col-span-1 space-y-8">
-            {/* Table of Contents */}
-            <TableOfContents content={post.content} />
-
-            {/* Newsletter Signup */}
-            <div className="bg-black text-white p-6 mb-8">
-              <h3 className="text-lg font-bold mb-4">Newsletter</h3>
-              <p className="text-sm mb-4 opacity-90">
-                Subscribe to our newsletter to get our newest articles instantly!
-              </p>
-              <div className="space-y-3">
-                <Input
-                  type="email"
-                  placeholder="Your email"
-                  className="bg-white text-black border-0"
-                />
-                <Button variant="outline" className="w-full bg-white text-black hover:bg-gray-100">
-                  SIGNUP
-                </Button>
-              </div>
-            </div>
-
-            {/* Popular Posts */}
-            <div className="mb-8">
-              <h3 className="text-lg font-bold text-foreground mb-6">Popular Posts</h3>
-              <div className="space-y-6">
-                {popularPosts.map((popularPost, index) => (
-                  <article key={index} className="flex gap-4">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={popularPost.image}
-                        alt={popularPost.title}
-                        className="w-20 h-20 object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs text-muted-foreground">{popularPost.category}</span>
-                        <span className="text-muted-foreground text-xs">—</span>
-                        <time className="text-xs text-muted-foreground">{popularPost.date}</time>
-                      </div>
-                      <h4 className="text-sm font-medium text-foreground leading-tight">
-                        {popularPost.title}
-                      </h4>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-
-            {/* Categories */}
-            <div>
-              <h3 className="text-lg font-bold text-foreground mb-6">Categories</h3>
-              <div className="space-y-3">
-                {['Fashion', 'Technology', 'Business', 'Lifestyle'].map((category) => (
-                  <a
-                    key={category}
-                    href={`/${category.toLowerCase()}`}
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {category}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </aside>
         </div>
       </main>
-
-      <Footer />
+      
       <BackToTop />
+      <Footer />
     </div>
   );
 };
