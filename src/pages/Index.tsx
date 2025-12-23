@@ -23,7 +23,7 @@ const Index = () => {
                   Physician Assistant | Clinical Researcher
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  Jefney Ongeri<span className="text-secondary">, PA-C</span>
+                  Jefney Ongeri<span className="text-foreground dark:text-secondary">, PA-C</span>
                 </h1>
                 <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-lg">
                   Healthcare professional passionate about patient care, clinical research, and building innovative solutions for modern medicine.
