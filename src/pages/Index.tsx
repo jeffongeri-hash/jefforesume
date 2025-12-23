@@ -14,18 +14,18 @@ const Index = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <ParallaxHero className="py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50 text-primary-foreground">
+        <ParallaxHero className="py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50">
           <div className="container-blog relative">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <AnimatedSection className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 rounded-full text-secondary text-sm font-medium">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-background/20 dark:bg-secondary/20 rounded-full text-foreground dark:text-secondary text-sm font-medium">
                   <Stethoscope className="h-4 w-4" />
                   Physician Assistant | Clinical Researcher
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground dark:text-primary-foreground">
                   Jefney Ongeri<span className="text-foreground dark:text-secondary">, PA-C</span>
                 </h1>
-                <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-lg">
+                <p className="text-xl text-muted-foreground dark:text-primary-foreground/80 leading-relaxed max-w-lg">
                   Healthcare professional passionate about patient care, clinical research, and building innovative solutions for modern medicine.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
@@ -34,7 +34,7 @@ const Index = () => {
                       View Portfolio
                     </Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+                  <Button size="lg" variant="outline" className="bg-transparent border-foreground/30 text-foreground hover:bg-foreground/10 dark:border-primary-foreground/30 dark:text-primary-foreground dark:hover:bg-primary-foreground/10" asChild>
                     <Link to="/investments">
                       <TrendingUp className="h-4 w-4 mr-2" />
                       Investments
