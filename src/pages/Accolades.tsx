@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
+import { ParallaxHero } from '@/hooks/useParallax';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Award, Quote, Star, TrendingUp } from 'lucide-react';
@@ -24,7 +25,7 @@ const Accolades = () => {
       
       <main id="main-content">
         {/* Hero Section */}
-        <section className="text-center py-16 bg-gradient-to-br from-primary/15 via-primary/5 to-accent/10">
+        <ParallaxHero className="text-center py-16 bg-gradient-to-br from-primary/15 via-primary/5 to-accent/10">
           <div className="container-blog">
             <AnimatedSection>
               <Badge variant="secondary" className="mb-4">
@@ -39,7 +40,7 @@ const Accolades = () => {
               </p>
             </AnimatedSection>
           </div>
-        </section>
+        </ParallaxHero>
         
         <WaveDivider color="fill-background" className="-mt-1" />
 

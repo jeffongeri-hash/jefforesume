@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
+import { ParallaxHero } from '@/hooks/useParallax';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail } from 'lucide-react';
@@ -13,8 +14,7 @@ const Index = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50 text-primary-foreground overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]" />
+        <ParallaxHero className="py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50 text-primary-foreground">
           <div className="container-blog relative">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <AnimatedSection className="space-y-6">
@@ -54,7 +54,7 @@ const Index = () => {
               </AnimatedSection>
             </div>
           </div>
-        </section>
+        </ParallaxHero>
         
         <WaveDivider color="fill-background" className="-mt-1" />
 
