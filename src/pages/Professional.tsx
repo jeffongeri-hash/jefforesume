@@ -452,7 +452,7 @@ const Professional = () => {
                 </Card>
               </AnimatedSection>
 
-              {/* Cases Observed */}
+              {/* Cases Managed */}
               <AnimatedSection delay={100}>
                 <Card className="h-full border-l-4 border-l-blue-500">
                   <CardHeader>
@@ -460,7 +460,7 @@ const Professional = () => {
                       <span className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
                         <BookOpen className="h-4 w-4 text-blue-600" />
                       </span>
-                      Cases Observed
+                      Cases Managed
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
