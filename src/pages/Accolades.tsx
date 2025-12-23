@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Award, Quote } from 'lucide-react';
+import { Award, Quote, Star, TrendingUp } from 'lucide-react';
 
 const Accolades = () => {
   const testimonials = [
@@ -33,6 +33,29 @@ const Accolades = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Patient feedback and professional recognition that reflect my commitment to compassionate, thorough care.
           </p>
+        </section>
+
+        {/* Patient Satisfaction Score */}
+        <section className="mb-16">
+          <Card className="max-w-2xl mx-auto border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
+            <CardContent className="p-8 text-center">
+              <div className="flex justify-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-8 h-8 text-primary fill-primary" />
+                ))}
+              </div>
+              <div className="text-6xl font-bold text-foreground mb-2">
+                97.5%
+              </div>
+              <p className="text-lg text-muted-foreground mb-4">
+                Average Patient Satisfaction Score
+              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <span>75% of reviews received a perfect 10/10 rating</span>
+              </div>
+            </CardContent>
+          </Card>
         </section>
 
         {/* Testimonials Grid */}
