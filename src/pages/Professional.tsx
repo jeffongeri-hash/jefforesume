@@ -216,7 +216,7 @@ const Professional = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/5 via-background to-accent/20">
+        <section className="relative py-20 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10">
           <div className="container-blog">
             <div className="max-w-4xl mx-auto text-center">
               <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">

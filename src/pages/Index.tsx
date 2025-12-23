@@ -11,8 +11,8 @@ const Index = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary via-primary/95 to-primary/90 text-primary-foreground overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.15),transparent_50%)]" />
+        <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50 text-primary-foreground overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]" />
           <div className="container-blog relative">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
