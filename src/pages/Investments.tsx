@@ -89,6 +89,10 @@ const Investments = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Transparency in my investment journey. View my current holdings and recent trades.
           </p>
+          <Badge variant="outline" className="mt-4">
+            <Calendar className="h-3 w-3 mr-1" />
+            Portfolio as of Q4 2024
+          </Badge>
         </div>
 
         {/* Portfolio Summary Cards */}
