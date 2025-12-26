@@ -87,7 +87,7 @@ const Investments = () => {
             Investment Portfolio
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Transparency in my investment journey. View my current holdings and recent trades.
+            A transparent look at my personal investment journey on Nexus. View my current holdings and recent trades.
           </p>
           <Badge variant="outline" className="mt-4">
             <Calendar className="h-3 w-3 mr-1" />
