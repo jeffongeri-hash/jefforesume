@@ -95,6 +95,17 @@ const Investments = () => {
           </Badge>
         </div>
 
+        {/* Investment Philosophy */}
+        <div className="max-w-3xl mx-auto mb-12 p-6 bg-card rounded-lg border border-border">
+          <h2 className="text-xl font-semibold text-foreground mb-3">Investment Philosophy</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            My approach blends trend-following strategies with fundamental analysis. I focus on identifying companies 
+            with favorable financial ratios—strong earnings, healthy balance sheets, and attractive valuations—while 
+            riding bullish market trends. This combination of momentum and value helps balance growth potential with 
+            risk management in my long-term portfolio.
+          </p>
+        </div>
+
         {/* Portfolio Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <Card>
