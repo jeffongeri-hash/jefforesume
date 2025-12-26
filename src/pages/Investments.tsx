@@ -91,7 +91,7 @@ const Investments = () => {
           </p>
           <Badge variant="outline" className="mt-4">
             <Calendar className="h-3 w-3 mr-1" />
-            Portfolio as of Q4 2024
+            Retirement Account Portfolio as of Q4 2024
           </Badge>
         </div>
 
