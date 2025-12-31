@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,13 +8,13 @@ import {
   TrendingUp, 
   TrendingDown, 
   DollarSign, 
-  PieChart,
+  PieChart as PieChartIcon,
   ArrowUpRight,
   ArrowDownRight,
   Calendar
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 interface Holding {
   id: string;
   symbol: string;
@@ -67,6 +67,23 @@ const Investments = () => {
   const totalGainLoss = totalValue - totalCost;
   const totalGainLossPercent = totalCost > 0 ? ((totalGainLoss / totalCost) * 100) : 0;
 
+  // Calculate sector allocation for pie chart
+  const CHART_COLORS = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#64748b'];
+  
+  const sectorAllocation = useMemo(() => {
+    const sectorMap: Record<string, number> = {};
+    holdings.forEach((h) => {
+      const price = h.current_price || h.average_cost;
+      const value = h.shares * price;
+      const sector = h.sector || 'Other';
+      sectorMap[sector] = (sectorMap[sector] || 0) + value;
+    });
+    return Object.entries(sectorMap).map(([name, value]) => ({
+      name,
+      value: parseFloat(value.toFixed(2)),
+    }));
+  }, [holdings]);
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -96,17 +113,77 @@ const Investments = () => {
         </div>
 
         {/* Investment Philosophy */}
-        <div className="max-w-3xl mx-auto mb-12 p-6 bg-card rounded-lg border border-border">
+        <div className="max-w-4xl mx-auto mb-12 p-6 bg-card rounded-lg border border-border">
           <h2 className="text-xl font-semibold text-foreground mb-3">Investment Philosophy</h2>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed mb-4">
             My approach blends trend-following strategies with fundamental analysis. I focus on identifying companies 
-            with favorable financial ratios—strong earnings, healthy balance sheets, and attractive valuations—while 
-            riding bullish market trends. This combination of momentum and value helps balance growth potential with 
-            risk management in my long-term portfolio.
+            with favorable financial ratios while riding bullish market trends. This combination of momentum and value 
+            helps balance growth potential with risk management in my long-term portfolio.
           </p>
+          
+          <h3 className="text-lg font-medium text-foreground mb-3">Key Ratios I Analyze</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="font-semibold text-foreground">P/E Ratio</p>
+              <p className="text-sm text-muted-foreground">Price-to-Earnings: Measures stock price relative to earnings. I look for reasonable valuations compared to industry peers.</p>
+            </div>
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="font-semibold text-foreground">Debt-to-Equity</p>
+              <p className="text-sm text-muted-foreground">Assesses financial leverage. I prefer companies with manageable debt levels relative to shareholder equity.</p>
+            </div>
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="font-semibold text-foreground">ROE</p>
+              <p className="text-sm text-muted-foreground">Return on Equity: Measures profitability. Higher ROE indicates efficient use of shareholder capital.</p>
+            </div>
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="font-semibold text-foreground">ROA</p>
+              <p className="text-sm text-muted-foreground">Return on Assets: Shows how efficiently a company uses its assets to generate profit.</p>
+            </div>
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <p className="font-semibold text-foreground">P/S Ratio</p>
+              <p className="text-sm text-muted-foreground">Price-to-Sales: Useful for evaluating growth companies that may not yet be profitable.</p>
+            </div>
+          </div>
         </div>
 
-        {/* Portfolio Summary Cards */}
+        {/* Portfolio Allocation Chart */}
+        {!loading && sectorAllocation.length > 0 && (
+          <Card className="max-w-4xl mx-auto mb-12">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PieChartIcon className="h-5 w-5 text-secondary" />
+                Portfolio Allocation by Sector
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={sectorAllocation}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {sectorAllocation.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      formatter={(value: number) => formatCurrency(value)} 
+                      contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }}
+                    />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           <Card>
             <CardContent className="pt-6">
@@ -133,8 +210,8 @@ const Investments = () => {
                     {loading ? '—' : formatCurrency(totalCost)}
                   </p>
                 </div>
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <PieChart className="h-5 w-5 text-primary" />
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <PieChartIcon className="h-5 w-5 text-primary" />
                 </div>
               </div>
             </CardContent>
@@ -192,7 +269,7 @@ const Investments = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <PieChart className="h-5 w-5 text-secondary" />
+                  <PieChartIcon className="h-5 w-5 text-secondary" />
                   Current Holdings
                 </CardTitle>
               </CardHeader>
