@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Facebook, Twitter, Instagram, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
+import { cn } from '@/lib/utils';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { name: 'PORTFOLIO', href: '/professional' },
@@ -22,13 +33,33 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
+    <header 
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-500 ease-out",
+        isScrolled 
+          ? "bg-background/80 backdrop-blur-lg border-b border-border/50 shadow-sm" 
+          : "bg-background border-b border-border"
+      )}
+    >
       <div className="container-blog">
-        <div className="flex items-center justify-between h-20">
+        <div 
+          className={cn(
+            "flex items-center justify-between transition-all duration-500",
+            isScrolled ? "h-16" : "h-20"
+          )}
+        >
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="block">
-              <h1 className="text-xl font-bold text-foreground">Jefney Ongeri<span className="text-secondary">, PA-C</span></h1>
+            <Link to="/" className="block group">
+              <h1 
+                className={cn(
+                  "font-bold text-foreground transition-all duration-500 font-serif",
+                  isScrolled ? "text-lg" : "text-xl"
+                )}
+              >
+                Jefney Ongeri
+                <span className="text-muted-foreground transition-colors duration-300 group-hover:text-primary">, PA-C</span>
+              </h1>
             </Link>
           </div>
 
@@ -38,7 +69,10 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="nav-link"
+                className={cn(
+                  "nav-link transition-all duration-300",
+                  isScrolled ? "text-xs" : "text-sm"
+                )}
               >
                 {item.name}
               </Link>
@@ -46,14 +80,82 @@ const Header = () => {
           </nav>
 
           {/* Social Links & Search */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
             {socialLinks.map(({ icon: Icon, href, label }) => (
-              <Button key={label} variant="outline" size="sm" asChild>
+              <Button 
+                key={label} 
+                variant="ghost" 
+                size="sm" 
+                className={cn(
+                  "transition-all duration-300 hover:bg-primary/10 hover:text-primary",
+                  isScrolled ? "h-8 w-8 p-0" : "h-9 w-9 p-0"
+                )}
+                asChild
+              >
                 <a href={href} aria-label={label}>
-                  <Icon className="h-4 w-4" />
+                  <Icon className={cn("transition-all duration-300", isScrolled ? "h-3.5 w-3.5" : "h-4 w-4")} />
                 </a>
               </Button>
             ))}
+            
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className={cn(
+                "transition-all duration-300 hover:bg-primary/10 hover:text-primary",
+                isScrolled ? "h-8 w-8 p-0" : "h-9 w-9 p-0"
+              )}
+              aria-label="Search articles"
+              onClick={() => navigate('/search')}
+            >
+              <Search className={cn("transition-all duration-300", isScrolled ? "h-3.5 w-3.5" : "h-4 w-4")} />
+            </Button>
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div 
+          className={cn(
+            "lg:hidden overflow-hidden transition-all duration-300 ease-out",
+            isMenuOpen ? "max-h-96 opacity-100 pb-4" : "max-h-0 opacity-0"
+          )}
+        >
+          <nav className="flex flex-col space-y-4 border-t border-border pt-4" role="navigation" aria-label="Mobile navigation">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="mt-6 space-y-4">
+            <div className="flex space-x-2 items-center">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <Button key={label} variant="outline" size="sm" asChild>
+                  <a href={href} aria-label={label}>
+                    <Icon className="h-4 w-4" />
+                  </a>
+                </Button>
+              ))}
+            </div>
             
             <Button 
               variant="outline" 
@@ -63,60 +165,8 @@ const Header = () => {
             >
               <Search className="h-4 w-4" />
             </Button>
-            <ThemeToggle />
           </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="lg:hidden border-t border-border py-4">
-            <nav className="flex flex-col space-y-4" role="navigation" aria-label="Mobile navigation">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="nav-link"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-            
-            <div className="mt-6 space-y-4">
-              <div className="flex space-x-2 items-center">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <Button key={label} variant="outline" size="sm" asChild>
-                    <a href={href} aria-label={label}>
-                      <Icon className="h-4 w-4" />
-                    </a>
-                  </Button>
-                ))}
-                
-                <ThemeToggle />
-              </div>
-              
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  aria-label="Search articles"
-                  onClick={() => navigate('/search')}
-                >
-                  <Search className="h-4 w-4" />
-                </Button>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

@@ -26,8 +26,11 @@ const Index = () => {
                   <Stethoscope className="h-4 w-4" />
                   Physician Assistant | Clinical Researcher
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground dark:text-primary-foreground font-serif">
-                  Jefney Ongeri<span className="text-foreground/80 dark:text-secondary">, PA-C</span>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight font-serif">
+                  <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent dark:from-primary-foreground dark:via-primary dark:to-accent">
+                    Jefney Ongeri
+                  </span>
+                  <span className="text-foreground/80 dark:text-secondary">, PA-C</span>
                 </h1>
                 <p className="text-xl text-muted-foreground dark:text-primary-foreground/80 leading-relaxed max-w-lg">
                   Healthcare professional passionate about patient care, clinical research, and building innovative solutions for modern medicine.
