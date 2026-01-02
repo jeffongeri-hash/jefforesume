@@ -73,18 +73,6 @@ const Professional = () => {
       ]
     },
     {
-      title: "Research Assistant",
-      company: "Indiana University Bloomington",
-      period: "Aug 2019 - Jul 2020",
-      location: "Bloomington, Indiana",
-      type: "research",
-      highlights: [
-        "Conducted research under Dr. Sharlene Newman",
-        "Studied relationship between toy block play and spatial/cognitive development",
-        "Co-authored publication in Mathematical Thinking and Learning Journal"
-      ]
-    },
-    {
       title: "Virtual Summer Research Program (APSA VSRP)",
       company: "American Physician Scientists Association",
       period: "Jul 2020 - Oct 2020",
@@ -130,14 +118,11 @@ const Professional = () => {
     { name: "Advanced Cardiovascular Life Support (ACLS)", issuer: "American Heart Association" },
     { name: "Pediatric Advanced Life Support (PALS)", issuer: "American Heart Association" },
     { name: "Certified Clinical Research Associate", issuer: "ACRP - Association of Clinical Research Professionals" },
-    { name: "Bloomberg Terminal License", issuer: "Bloomberg LP" },
     { name: "MRI Level 1", issuer: "Indiana University Bloomington" },
     { name: "Fundamental Neuroscience for Neuroimaging", issuer: "Johns Hopkins University - Coursera" },
     { name: "Introduction to Breast Cancer", issuer: "Yale - Coursera" },
     { name: "Sleep: Neurobiology, Medicine, and Society", issuer: "University of Michigan - Coursera" },
-    { name: "COVID-19 Contact Tracing", issuer: "Johns Hopkins University - Coursera" },
-    { name: "Introduction to Programming Using HTML and CSS", issuer: "Sololearn" },
-    { name: "Python for Finance", issuer: "Sololearn" }
+    { name: "COVID-19 Contact Tracing", issuer: "Johns Hopkins University - Coursera" }
   ];
 
   const clinicalSkills = [
@@ -168,18 +153,10 @@ const Professional = () => {
   ];
 
   const otherSkills = [
-    "Team Leadership",
-    "Customer Service",
-    "Retail"
+    "Team Leadership"
   ];
 
   const publications = [
-    {
-      title: "Spatial training using game play in preschoolers improves computational skills",
-      journal: "Mathematical Thinking and Learning Journal",
-      date: "August 2021",
-      description: "Research examining the relationship between spatial training through game play and the development of computational skills in preschool-aged children."
-    },
     {
       title: "Opportunity for pharmacogenetics testing in patients with sickle cell anemia",
       journal: "Future Medicine Pharmacogenomics",
@@ -188,31 +165,9 @@ const Professional = () => {
     }
   ];
 
-  const volunteerWork = [
-    {
-      role: "Member",
-      organization: "Honors Bloomington Outreach",
-      period: "Jan 2020 - Present",
-      category: "Social Services"
-    },
-    {
-      role: "Member",
-      organization: "Hutton Bloomington Outreach",
-      period: "Jan 2020 - Present",
-      category: "Social Services"
-    },
-    {
-      role: "OEM Ambassador",
-      organization: "Office of Enrollment Management",
-      period: "Aug 2018 - Present",
-      category: "Education"
-    }
-  ];
+  const volunteerWork: { role: string; organization: string; period: string; category: string }[] = [];
 
-  const organizations = [
-    "Intercollegiate Neuroscience Research Journal Club",
-    "Hoosier Scholar Ambassadors"
-  ];
+  const organizations: string[] = [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -613,56 +568,64 @@ const Professional = () => {
           </div>
         </section>
 
-        <Separator />
 
-        {/* Volunteer & Organizations */}
-        <section className="py-16 bg-muted/30" aria-labelledby="volunteer-heading">
-          <div className="container-blog">
-            <div className="grid md:grid-cols-2 gap-12">
-              <AnimatedSection>
-                <div className="flex items-center gap-3 mb-8">
-                  <Heart className="h-6 w-6 text-primary" />
-                  <h2 id="volunteer-heading" className="section-title mb-0">Volunteer Experience</h2>
-                </div>
-                <div className="space-y-4">
-                  {volunteerWork.map((vol, index) => (
-                    <Card key={index}>
-                      <CardContent className="pt-4 pb-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium text-foreground">{vol.role}</p>
-                            <p className="text-muted-foreground">{vol.organization}</p>
-                            <Badge variant="outline" className="mt-2 text-xs">{vol.category}</Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{vol.period}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </AnimatedSection>
+        {/* Volunteer & Organizations - Only show if there's content */}
+        {(volunteerWork.length > 0 || organizations.length > 0) && (
+          <>
+            <Separator />
+            <section className="py-16 bg-muted/30" aria-labelledby="volunteer-heading">
+              <div className="container-blog">
+                <div className="grid md:grid-cols-2 gap-12">
+                  {volunteerWork.length > 0 && (
+                    <AnimatedSection>
+                      <div className="flex items-center gap-3 mb-8">
+                        <Heart className="h-6 w-6 text-primary" />
+                        <h2 id="volunteer-heading" className="section-title mb-0">Volunteer Experience</h2>
+                      </div>
+                      <div className="space-y-4">
+                        {volunteerWork.map((vol, index) => (
+                          <Card key={index}>
+                            <CardContent className="pt-4 pb-4">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="font-medium text-foreground">{vol.role}</p>
+                                  <p className="text-muted-foreground">{vol.organization}</p>
+                                  <Badge variant="outline" className="mt-2 text-xs">{vol.category}</Badge>
+                                </div>
+                                <span className="text-xs text-muted-foreground">{vol.period}</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </AnimatedSection>
+                  )}
 
-              <AnimatedSection delay={150}>
-                <div className="flex items-center gap-3 mb-8">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  <h2 className="section-title mb-0">Organizations</h2>
+                  {organizations.length > 0 && (
+                    <AnimatedSection delay={150}>
+                      <div className="flex items-center gap-3 mb-8">
+                        <BookOpen className="h-6 w-6 text-primary" />
+                        <h2 className="section-title mb-0">Organizations</h2>
+                      </div>
+                      <Card>
+                        <CardContent className="pt-6">
+                          <ul className="space-y-4">
+                            {organizations.map((org, index) => (
+                              <li key={index} className="flex items-start gap-3">
+                                <BookOpen className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                                <span className="text-foreground">{org}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    </AnimatedSection>
+                  )}
                 </div>
-                <Card>
-                  <CardContent className="pt-6">
-                    <ul className="space-y-4">
-                      {organizations.map((org, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <BookOpen className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-foreground">{org}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* CTA Section */}
         <section className="py-20 bg-primary text-primary-foreground">
