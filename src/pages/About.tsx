@@ -2,7 +2,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Calendar, Heart } from 'lucide-react';
+import { Mail, MapPin, GraduationCap, Stethoscope, FlaskConical, Heart } from 'lucide-react';
+import profileHeadshot from '@/assets/profile-headshot.png';
 
 const About = () => {
   return (
@@ -13,85 +14,86 @@ const About = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              About Nexus
+              About Me
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Exploring the intersection of fashion, technology, business, and lifestyle
+              Physician Assistant | Emergency Medicine | Researcher
             </p>
           </div>
 
-          {/* Hero Section */}
+          {/* Hero Section with Photo */}
           <div className="mb-16">
-            <div className="aspect-video rounded-lg bg-muted mb-8 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-24 h-24 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Heart className="h-12 w-12 text-primary-foreground" />
-                </div>
-                <p className="text-muted-foreground">Author Photo Placeholder</p>
-              </div>
+            <div className="aspect-video rounded-lg bg-muted mb-8 flex items-center justify-center overflow-hidden">
+              <img 
+                src={profileHeadshot} 
+                alt="Jefney Ongeri" 
+                className="w-full h-full object-cover object-top"
+              />
             </div>
           </div>
 
           {/* About Content */}
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-foreground">Our Story</h2>
+              <h2 className="text-3xl font-bold text-foreground">My Journey</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Welcome to Nexus, where diverse worlds converge. Founded with a passion for exploring 
-                  the connections between fashion, technology, business, and lifestyle, we believe that 
-                  the most interesting insights happen at the intersections.
+                  I'm Jefney Ongeri, a Physician Assistant who graduated in July 2025 with a 
+                  passion for emergency medicine. My journey into healthcare was driven by a 
+                  deep desire to make a meaningful impact in patients' lives during their most 
+                  critical moments.
                 </p>
                 <p>
-                  Our mission is to provide thoughtful, well-researched content that helps you navigate 
-                  the complex landscape of modern life. Whether you're interested in the latest fashion 
-                  trends, emerging technologies, business strategies, or lifestyle optimization, we're 
-                  here to guide your journey.
+                  Throughout my training, I discovered that emergency medicine offers the unique 
+                  opportunity to provide immediate, life-changing care across a diverse range of 
+                  conditions. The fast-paced environment and the ability to help patients from 
+                  all walks of life continues to inspire my dedication to this specialty.
                 </p>
                 <p>
-                  We curate content that matters, diving deep into topics that shape our world while 
-                  maintaining an accessible, engaging approach that speaks to curious minds everywhere.
+                  Beyond clinical practice, I'm committed to advancing emergency medicine through 
+                  research. I believe that evidence-based practice is essential for improving 
+                  patient outcomes and pushing the boundaries of what's possible in acute care.
                 </p>
               </div>
             </div>
 
             <div className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold text-foreground mb-4">What We Cover</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-4">Areas of Focus</h3>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">Fashion trends and style insights</span>
+                    <Stethoscope className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Emergency Medicine</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">Technology and innovation</span>
+                    <FlaskConical className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Clinical Research</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">Business strategy and entrepreneurship</span>
+                    <Heart className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Patient-Centered Care</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">Lifestyle and personal development</span>
+                    <GraduationCap className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Evidence-Based Practice</span>
                   </li>
                 </ul>
               </div>
 
               <div className="bg-muted p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-foreground mb-4">Quick Stats</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-4">At a Glance</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-primary" />
-                    <span className="text-muted-foreground">Publishing since 2023</span>
+                    <GraduationCap className="h-5 w-5 text-primary" />
+                    <span className="text-muted-foreground">PA Graduate, Class of 2025</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    <span className="text-muted-foreground">Based globally, thinking locally</span>
+                    <Stethoscope className="h-5 w-5 text-primary" />
+                    <span className="text-muted-foreground">Emergency Medicine Focus</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Mail className="h-5 w-5 text-primary" />
-                    <span className="text-muted-foreground">Weekly newsletter subscribers</span>
+                    <FlaskConical className="h-5 w-5 text-primary" />
+                    <span className="text-muted-foreground">Research-Driven Approach</span>
                   </div>
                 </div>
               </div>
@@ -101,18 +103,18 @@ const About = () => {
           {/* CTA Section */}
           <div className="text-center bg-muted p-8 rounded-lg">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              Ready to Join Our Community?
+              Let's Connect
             </h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Stay updated with our latest insights and discoveries. Connect with like-minded individuals 
-              who share your curiosity about the world around us.
+              Whether you're interested in discussing emergency medicine, research collaborations, 
+              or simply want to connect, I'd love to hear from you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/contact">Get in Touch</Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/posts">Browse Articles</Link>
+                <Link to="/professional">View Experience</Link>
               </Button>
             </div>
           </div>
