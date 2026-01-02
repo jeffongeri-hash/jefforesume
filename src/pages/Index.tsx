@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
 import FloatingShapes from '@/components/FloatingShapes';
 import GlassCard from '@/components/GlassCard';
+import ParallaxShapes from '@/components/ParallaxShapes';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { ParallaxHero } from '@/hooks/useParallax';
 import { Button } from '@/components/ui/button';
@@ -122,10 +123,7 @@ const Index = () => {
         
         {/* About Preview Section */}
         <section className="py-20 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 -left-20 w-40 h-40 rounded-full bg-primary/5 blur-3xl animate-pulse-glow" />
-            <div className="absolute bottom-1/4 -right-20 w-56 h-56 rounded-full bg-accent/10 blur-3xl animate-float" />
-          </div>
+          <ParallaxShapes />
           <div className="container-blog relative z-10">
             <AnimatedSection className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 font-serif">About Me</h2>
