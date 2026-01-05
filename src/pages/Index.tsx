@@ -27,7 +27,7 @@ const Index = () => {
                   Physician Assistant | Clinical Researcher
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight font-serif">
-                  <span className="bg-gradient-to-r from-white via-amber-200 to-orange-300 bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent drop-shadow-lg dark:from-white dark:via-amber-100 dark:to-orange-200">
+                  <span className="bg-gradient-to-r from-teal-300 via-cyan-200 to-purple-400 bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent drop-shadow-lg dark:from-teal-200 dark:via-cyan-100 dark:to-purple-300">
                     Jefney Ongeri
                   </span>
                   <span className="text-white/90 drop-shadow-md dark:text-white/90">, PA-C</span>
