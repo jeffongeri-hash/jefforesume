@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import PortfolioAssistant from '@/components/PortfolioAssistant';
 interface Holding {
   id: string;
   symbol: string;
@@ -392,6 +393,7 @@ const Investments = () => {
         </div>
       </main>
       <Footer />
+      <PortfolioAssistant />
     </div>
   );
 };
