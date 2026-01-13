@@ -21,7 +21,7 @@ const Header = () => {
 
   const navItems = [
     { name: 'PORTFOLIO', href: '/professional' },
-    { name: 'CV', href: '/resume' },
+    { name: 'RESUME', href: '/resume' },
     { name: 'ACCOLADES', href: '/accolades' },
     { name: 'INVESTMENTS', href: '/investments' },
     { name: 'BLOG', href: '/posts' },
