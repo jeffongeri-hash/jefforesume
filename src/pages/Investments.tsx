@@ -16,6 +16,8 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import PortfolioAssistant from '@/components/PortfolioAssistant';
+import PerformanceChart from '@/components/PerformanceChart';
+import StockPriceUpdater from '@/components/StockPriceUpdater';
 interface Holding {
   id: string;
   symbol: string;
@@ -44,18 +46,18 @@ const Investments = () => {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = async () => {
+    const [holdingsRes, tradesRes] = await Promise.all([
+      supabase.from('holdings').select('*').order('symbol'),
+      supabase.from('trades').select('*').order('trade_date', { ascending: false })
+    ]);
+
+    if (holdingsRes.data) setHoldings(holdingsRes.data);
+    if (tradesRes.data) setTrades(tradesRes.data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const [holdingsRes, tradesRes] = await Promise.all([
-        supabase.from('holdings').select('*').order('symbol'),
-        supabase.from('trades').select('*').order('trade_date', { ascending: false })
-      ]);
-
-      if (holdingsRes.data) setHoldings(holdingsRes.data);
-      if (tradesRes.data) setTrades(tradesRes.data);
-      setLoading(false);
-    };
-
     fetchData();
   }, []);
 
@@ -111,6 +113,11 @@ const Investments = () => {
             <Calendar className="h-3 w-3 mr-1" />
             Retirement Account Portfolio as of Q4 2024
           </Badge>
+        </div>
+
+        {/* Stock Price Updater */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <StockPriceUpdater onPricesUpdated={fetchData} />
         </div>
 
         {/* Investment Philosophy */}
@@ -183,6 +190,13 @@ const Investments = () => {
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {/* Performance Chart */}
+        {!loading && (
+          <div className="max-w-4xl mx-auto mb-12">
+            <PerformanceChart trades={trades} holdings={holdings} />
+          </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
