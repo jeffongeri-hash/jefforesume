@@ -16,6 +16,11 @@ const Accolades = () => {
     {
       quote: "The young physician assistant's was extremely thorough.",
       type: "FOCUS Award"
+    },
+    {
+      quote: "It was a 2 1/2 hour wait to get a room... kinda felt like they didn't take patients in order of arrival... Once in a room, young physician's assistant was extremely thorough.",
+      type: "Emergency Dept",
+      score: "10/10 - Extremely likely"
     }
   ];
 
@@ -75,9 +80,17 @@ const Accolades = () => {
                 <Card className="relative overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm h-full">
                   <CardContent className="p-8">
                     <Quote className="w-10 h-10 text-primary/20 mb-4" />
-                    <Badge variant="outline" className="mb-4">
-                      {item.type}
-                    </Badge>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <Badge variant="outline">
+                        {item.type}
+                      </Badge>
+                      {item.score && (
+                        <Badge variant="secondary" className="bg-primary/10 text-primary">
+                          <Star className="w-3 h-3 mr-1 fill-primary" />
+                          {item.score}
+                        </Badge>
+                      )}
+                    </div>
                     <blockquote className="text-lg md:text-xl text-foreground italic leading-relaxed">
                       "{item.quote}"
                     </blockquote>
