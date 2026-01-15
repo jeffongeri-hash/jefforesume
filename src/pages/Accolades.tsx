@@ -18,7 +18,7 @@ const Accolades = () => {
       type: "FOCUS Award"
     },
     {
-      quote: "It was a 2 1/2 hour wait to get a room... kinda felt like they didn't take patients in order of arrival... Once in a room, young physician's assistant was extremely thorough.",
+      quote: "Despite a long wait, once I was seen, the young PA took his time and was incredibly detailed in his examination and explanations.",
       type: "Emergency Dept",
       score: "10/10 - Extremely likely"
     }
