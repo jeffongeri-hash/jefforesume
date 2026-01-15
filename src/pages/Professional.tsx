@@ -437,8 +437,40 @@ const Professional = () => {
                         <Badge variant="secondary">5</Badge>
                       </li>
                       <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Epistaxis Management</span>
+                        <Badge variant="secondary">4</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Urinary Retention</span>
+                        <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Obstipation</span>
+                        <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">NSTEMI</span>
+                        <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">STEMI</span>
                         <Badge variant="secondary">3</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Intractable Vomiting</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Corneal Abrasion</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">1st Trimester Bleeding</span>
+                        <Badge variant="secondary">2</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Assault Victims</span>
+                        <Badge variant="secondary">2</Badge>
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">Pneumothorax</span>
@@ -449,11 +481,39 @@ const Professional = () => {
                         <Badge variant="secondary">2</Badge>
                       </li>
                       <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
+                        <span className="text-muted-foreground">Ischemic Stroke</span>
                         <Badge variant="secondary">1</Badge>
                       </li>
                       <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">NSTEMI</span>
+                        <span className="text-muted-foreground">Failure to Thrive (15+ lb loss)</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Metabolic Acidosis</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Deep Wound Laceration (Assisted)</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Pulmonary Sarcoidosis</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Strep Anal Infection</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Osteogenesis Imperfecta</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Infected Cervical Neck Cyst (I&D)</span>
+                        <Badge variant="secondary">1</Badge>
+                      </li>
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
                         <Badge variant="secondary">1</Badge>
                       </li>
                     </ul>
