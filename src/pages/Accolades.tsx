@@ -21,6 +21,11 @@ const Accolades = () => {
       quote: "Despite a long wait, once I was seen, the young PA took his time and was incredibly detailed in his examination and explanations.",
       type: "Emergency Dept",
       score: "10/10 - Extremely likely"
+    },
+    {
+      quote: "Very professional. Very concerned about my welfare.",
+      type: "WLA Emergency Dept",
+      score: "10/10 - Extremely likely"
     }
   ];
 
