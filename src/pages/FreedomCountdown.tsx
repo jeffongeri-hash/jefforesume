@@ -47,6 +47,9 @@ const FreedomCountdown = () => {
     }
   }, [doneDays]);
 
+  const completedCount = doneDays.size;
+  const completedPercent = Math.round((completedCount / TOTAL_DAYS) * 100);
+
   const monthData = useMemo(() => {
     let remaining = TOTAL_DAYS;
     return months.map((name, mIdx) => {
@@ -84,7 +87,7 @@ const FreedomCountdown = () => {
           <div className="grid grid-cols-3 gap-3 md:gap-5 w-full max-w-2xl mb-10">
             {[
               { num: months.length, label: "Months to Go" },
-              { num: TOTAL_DAYS, label: "Work Days Left" },
+              { num: TOTAL_DAYS - completedCount, label: "Days Remaining" },
               { num: 10, label: "Days Per Month" },
             ].map(s => (
               <div key={s.label} className="bg-white/10 rounded-xl p-3 md:p-5 border border-white/20">
@@ -93,6 +96,19 @@ const FreedomCountdown = () => {
               </div>
             ))}
           </div>
+
+          {/* Completed counter */}
+          <div className="w-full max-w-2xl mb-10">
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-sm text-gray-400 uppercase tracking-wider">Progress</span>
+              <span className="text-2xl md:text-3xl font-bold text-yellow-400">{completedCount} <span className="text-base font-normal text-gray-400">/ {TOTAL_DAYS}</span></span>
+            </div>
+            <div className="bg-white/10 rounded-full h-4 overflow-hidden border border-white/20">
+              <div className="bg-gradient-to-r from-yellow-500 to-yellow-300 h-full rounded-full transition-all duration-500" style={{ width: `${completedPercent}%` }} />
+            </div>
+            <p className="text-right text-xs text-gray-500 mt-1">{completedPercent}% complete</p>
+          </div>
+
           <p className="text-gray-500 italic max-w-md text-sm md:text-base">"The secret of getting ahead is getting started. Cross off one day at a time."</p>
         </section>
 
