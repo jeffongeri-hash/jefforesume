@@ -46,7 +46,7 @@ const Footer = () => {
         
         <div className="border-t border-border mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Jefney Ongeri, PA-C. All rights reserved.
+            © <Link to="/freedom-countdown" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">{new Date().getFullYear()}</Link> Jefney Ongeri, PA-C. All rights reserved.
           </p>
         </div>
       </div>
