@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Printer, Rocket, Trophy, Target, Star, Flame, Zap, Crown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import confetti from 'canvas-confetti';
 
 const months = [
   "March 2026", "April 2026", "May 2026", "June 2026", "July 2026",
@@ -17,6 +18,7 @@ const TOTAL_DAYS = months.length * 10;
 const FreedomCountdown = () => {
   const [doneDays, setDoneDays] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const prevPercentRef = useRef<number>(0);
 
   // Load progress from DB
   useEffect(() => {
@@ -57,6 +59,18 @@ const FreedomCountdown = () => {
     if (completedPercent >= 25) return { icon: Zap, text: "⚡ 25% crushed — Keep that momentum!", color: "text-blue-400" };
     return null;
   }, [completedPercent]);
+
+  // Fire confetti when crossing a milestone threshold
+  useEffect(() => {
+    if (loading) return;
+    const thresholds = [25, 50, 75, 100];
+    const prevBucket = thresholds.filter(t => prevPercentRef.current >= t).length;
+    const currBucket = thresholds.filter(t => completedPercent >= t).length;
+    if (currBucket > prevBucket) {
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+    }
+    prevPercentRef.current = completedPercent;
+  }, [completedPercent, loading]);
 
   const monthData = useMemo(() => {
     let remaining = TOTAL_DAYS;
