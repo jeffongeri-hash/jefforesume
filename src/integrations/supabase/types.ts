@@ -35,6 +35,24 @@ export type Database = {
         }
         Relationships: []
       }
+      countdown_progress: {
+        Row: {
+          day_key: string
+          id: string
+          marked_at: string
+        }
+        Insert: {
+          day_key: string
+          id?: string
+          marked_at?: string
+        }
+        Update: {
+          day_key?: string
+          id?: string
+          marked_at?: string
+        }
+        Relationships: []
+      }
       holdings: {
         Row: {
           asset_type: string | null
