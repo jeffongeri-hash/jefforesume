@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Printer, Rocket, Trophy, Target } from 'lucide-react';
+import { Printer, Rocket, Trophy, Target, Star, Flame, Zap, Crown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const months = [
@@ -49,6 +49,14 @@ const FreedomCountdown = () => {
 
   const completedCount = doneDays.size;
   const completedPercent = Math.round((completedCount / TOTAL_DAYS) * 100);
+
+  const milestone = useMemo(() => {
+    if (completedPercent >= 100) return { icon: Crown, text: "🎉 YOU DID IT! Freedom is yours!", color: "text-yellow-300" };
+    if (completedPercent >= 75) return { icon: Crown, text: "👑 75% done — The finish line is in sight!", color: "text-yellow-300" };
+    if (completedPercent >= 50) return { icon: Flame, text: "🔥 Halfway there — You're unstoppable!", color: "text-orange-400" };
+    if (completedPercent >= 25) return { icon: Zap, text: "⚡ 25% crushed — Keep that momentum!", color: "text-blue-400" };
+    return null;
+  }, [completedPercent]);
 
   const monthData = useMemo(() => {
     let remaining = TOTAL_DAYS;
@@ -108,6 +116,15 @@ const FreedomCountdown = () => {
             </div>
             <p className="text-right text-xs text-gray-500 mt-1">{completedPercent}% complete</p>
           </div>
+
+          {/* Milestone message */}
+          {milestone && (
+            <div className={`w-full max-w-2xl mb-8 bg-white/10 border border-white/20 rounded-xl p-4 md:p-5 text-center animate-fade-in`}>
+              <milestone.icon className={`h-8 w-8 mx-auto mb-2 ${milestone.color}`} />
+              <p className={`text-lg md:text-xl font-bold ${milestone.color}`}>{milestone.text}</p>
+              <p className="text-xs text-gray-400 mt-1">{completedCount} of {TOTAL_DAYS} days completed</p>
+            </div>
+          )}
 
           <p className="text-gray-500 italic max-w-md text-sm md:text-base">"The secret of getting ahead is getting started. Cross off one day at a time."</p>
         </section>
