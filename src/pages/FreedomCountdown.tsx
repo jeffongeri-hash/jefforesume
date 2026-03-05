@@ -2,9 +2,10 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Printer, Rocket, Trophy, Target, Star, Flame, Zap, Crown } from 'lucide-react';
+import { Printer, Rocket, Trophy, Target, Star, Flame, Zap, Crown, Save } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import confetti from 'canvas-confetti';
+import { toast } from '@/hooks/use-toast';
 
 const months = [
   "March 2026", "April 2026", "May 2026", "June 2026", "July 2026",
@@ -18,35 +19,58 @@ const TOTAL_DAYS = months.length * 10;
 const FreedomCountdown = () => {
   const [doneDays, setDoneDays] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const prevPercentRef = useRef<number>(0);
+  const initialLoadRef = useRef<Set<string>>(new Set());
 
   // Load progress from DB
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase.from('countdown_progress').select('day_key');
       if (data) {
-        setDoneDays(new Set(data.map(r => r.day_key)));
+        const keys = new Set(data.map(r => r.day_key));
+        setDoneDays(keys);
+        initialLoadRef.current = new Set(keys);
       }
       setLoading(false);
     };
     load();
   }, []);
 
-  const toggleDay = useCallback(async (key: string) => {
-    const isDone = doneDays.has(key);
-    // Optimistic update
+  const toggleDay = useCallback((key: string) => {
     setDoneDays(prev => {
       const next = new Set(prev);
-      if (isDone) next.delete(key);
+      if (next.has(key)) next.delete(key);
       else next.add(key);
       return next;
     });
+  }, []);
 
-    if (isDone) {
-      await supabase.from('countdown_progress').delete().eq('day_key', key);
-    } else {
-      await supabase.from('countdown_progress').insert({ day_key: key });
+  const saveProgress = useCallback(async () => {
+    setSaving(true);
+    try {
+      const initial = initialLoadRef.current;
+      const current = doneDays;
+
+      // Find added and removed keys
+      const added = [...current].filter(k => !initial.has(k));
+      const removed = [...initial].filter(k => !current.has(k));
+
+      // Delete removed
+      for (const key of removed) {
+        await supabase.from('countdown_progress').delete().eq('day_key', key);
+      }
+      // Insert added
+      if (added.length > 0) {
+        await supabase.from('countdown_progress').insert(added.map(k => ({ day_key: k })));
+      }
+
+      initialLoadRef.current = new Set(current);
+      toast({ title: "Progress saved!", description: `${current.size} days marked complete.` });
+    } catch {
+      toast({ title: "Error saving", description: "Please try again.", variant: "destructive" });
     }
+    setSaving(false);
   }, [doneDays]);
 
   const completedCount = doneDays.size;
@@ -119,7 +143,45 @@ const FreedomCountdown = () => {
             ))}
           </div>
 
-          {/* Completed counter */}
+          {/* Circular Progress Ring */}
+          <div className="relative w-48 h-48 md:w-64 md:h-64 mb-10">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" />
+              <circle
+                cx="60" cy="60" r="52" fill="none"
+                stroke="url(#progressGradient)" strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 52}`}
+                strokeDashoffset={`${2 * Math.PI * 52 * (1 - completedPercent / 100)}`}
+                className="transition-all duration-700 ease-out"
+              />
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#eab308" />
+                  <stop offset="100%" stopColor="#fde047" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-4xl md:text-5xl font-bold text-yellow-400">{completedPercent}%</span>
+              <span className="text-xs text-gray-400 mt-1">{completedCount} / {TOTAL_DAYS} days</span>
+            </div>
+          </div>
+
+          {/* Save + Print buttons */}
+          <div className="flex gap-3 mb-10">
+            <Button
+              variant="default"
+              onClick={saveProgress}
+              disabled={saving}
+              className="bg-yellow-500 hover:bg-yellow-600 text-black border-yellow-500 font-bold"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              {saving ? "Saving..." : "Save Progress"}
+            </Button>
+          </div>
+
+          {/* Progress bar */}
           <div className="w-full max-w-2xl mb-10">
             <div className="flex justify-between items-end mb-2">
               <span className="text-sm text-gray-400 uppercase tracking-wider">Progress</span>
