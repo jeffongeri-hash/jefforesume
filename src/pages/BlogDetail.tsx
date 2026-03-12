@@ -212,6 +212,145 @@ const blogPosts = {
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">The Clean Practical Takeaway</h3>
 
       <p><strong>Texas best, Arizona second, Iowa third, Hamilton County fourth, California last</strong> for pure income-tax drag on a $130k single W-2 salary.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Relocation Decision Model: ED Pay, Rent & Monthly Cash Flow</h2>
+
+      <p>Here's a decision model for moving from Waterloo using ED pay assumptions, 1BR vs 2BR rent, retirement deductions, and monthly leftover cash.</p>
+
+      <p>This is built as a <strong>planning model, not a paycheck quote</strong>. Assumptions: single filer, traditional 401k at 12%, self-only HSA at $4,400 for 2026, and no health premium, parking, student loan, or bonus/overtime adjustments. For taxes, I used the current federal 2025 bracket structure and standard deduction, Social Security 6.2% plus Medicare 1.45%, California's 2025 standard deduction and rate schedule, Arizona's 2.5% flat tax, Iowa's 3.8% flat tax, Indiana's 3.0% state rate plus Hamilton County's 1.1% county rate, and Texas's no personal income tax. California is a special case because it does not conform to HSA deductions, so the HSA is treated as reducing federal and FICA taxable wages but not California taxable income.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Salary Assumptions</h3>
+
+      <p>These are ED-leaning market estimates, not generic all-specialties PA averages:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Waterloo:</strong> Anchored to the Cedar Falls PA market as a local proxy because Waterloo-specific transparent ED pay is sparse.</li>
+        <li><strong>Sacramento:</strong> Based on nearby emergency APP postings and UC Davis emergency PA compensation signals.</li>
+        <li><strong>Phoenix:</strong> Anchored to a current Phoenix Children emergency/urgent care posting showing a $166,000–$186,000 base.</li>
+        <li><strong>Houston:</strong> Anchored to Houston Methodist PA hourly pay and IES Texas PA hourly pay.</li>
+        <li><strong>Hamilton County:</strong> Anchored to the Indianapolis emergency PA market because Hamilton functions as the Carmel/Fishers/Indy employment orbit.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Rent Assumptions (Zillow Data)</h3>
+
+      <p>1BR / 2BR averages:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Waterloo:</strong> $639 / $825</li>
+        <li><strong>Sacramento:</strong> $1,510 / $1,900</li>
+        <li><strong>Phoenix:</strong> $1,204 / $1,550</li>
+        <li><strong>Houston:</strong> $1,150 / $1,500</li>
+        <li><strong>Hamilton County (Carmel/Fishers blend):</strong> $1,504 / $1,776</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Relocation Model</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Market</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">ED Pay</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">401k 12%</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">HSA</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Monthly Take-Home</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">1BR Rent</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">2BR Rent</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Left after 1BR</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Left after 2BR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Waterloo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$113,999</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$13,680/yr</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,400/yr</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$5,995/mo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$639</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$825</td>
+              <td class="text-right py-3 px-3 text-foreground">$5,356/mo</td>
+              <td class="text-right py-3 px-3 text-foreground">$5,170/mo</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Sacramento</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$160,000</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$19,200/yr</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,400/yr</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$7,812/mo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,510</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,900</td>
+              <td class="text-right py-3 px-3 text-foreground">$6,302/mo</td>
+              <td class="text-right py-3 px-3 text-foreground">$5,912/mo</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground font-semibold">Phoenix</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$176,000</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$21,120/yr</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,400/yr</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$9,067/mo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,204</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,550</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$7,863/mo</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$7,517/mo</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$162,000</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$19,440/yr</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,400/yr</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$8,657/mo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,150</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,500</td>
+              <td class="text-right py-3 px-3 text-foreground">$7,507/mo</td>
+              <td class="text-right py-3 px-3 text-foreground">$7,157/mo</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Hamilton County / Indy</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$156,568</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$18,788/yr</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,400/yr</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$7,987/mo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,504</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,776</td>
+              <td class="text-right py-3 px-3 text-foreground">$6,483/mo</td>
+              <td class="text-right py-3 px-3 text-foreground">$6,211/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">What Jumps Out</h3>
+
+      <p><strong>Phoenix is the strongest pure cash-flow play in this model.</strong> It wins because the modeled ED pay is strong, Arizona's state tax is only 2.5%, and rent is still meaningfully below Sacramento and roughly in line with Houston on a practical apartment basis.</p>
+
+      <p><strong>Houston is a very close second</strong> and probably the best tax story. No state income tax matters a lot once your compensation gets into the mid-$100k range, and Houston rent is still relatively manageable compared with California.</p>
+
+      <p><strong>Hamilton County is solid,</strong> but it no longer looks like the winner once you model ED-leaning pay in Phoenix and Houston. It still beats Sacramento on taxes and likely gives you a cleaner Midwest transition, but the Hamilton county tax layer and higher suburban rent blunt some of the advantage.</p>
+
+      <p><strong>Sacramento is the most expensive tax environment here,</strong> but it is not dead-on-arrival. The city's rent is higher and California taxes hit harder, especially because California does not conform to HSA treatment, yet the market can still work if you land a stronger ED job or want the California career upside badly enough.</p>
+
+      <p><strong>Waterloo is still the cheapest place to live,</strong> but not the best place to maximize monthly surplus if you can materially increase pay elsewhere. The local rent is excellent, but the modeled compensation ceiling is lower than Phoenix, Houston, and Hamilton/Indy.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Blunt Ranking: Monthly Leftover Cash</h3>
+
+      <p>After taxes, 401k, HSA, and rent:</p>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Phoenix</strong></li>
+        <li><strong>Houston</strong></li>
+        <li><strong>Hamilton County / Indy orbit</strong></li>
+        <li><strong>Sacramento</strong></li>
+        <li><strong>Waterloo</strong></li>
+      </ol>
+
+      <p class="text-sm text-muted-foreground italic">If you add a backdoor Roth bucket of about $583/month, subtract that equally from each city's leftover cash. That does not change the ranking.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Best Practical Read</h3>
+
+      <p>If your goal is to leave Waterloo and maximize financial room while staying in a real hospital market, <strong>Phoenix and Houston are the cleanest choices</strong> in this model. Hamilton County is still respectable, especially if you want a shorter cultural jump from Iowa, but it is not the top cash-flow winner once assumptions are pushed toward actual ED compensation.</p>
+
+      <p>The next most useful version of this would be a more personalized model using your likely setup: 10 shifts/month, your actual current retirement plan, student loans if any, and a target rent budget for you and your fiancée.</p>
     `
   },
   "ai-bubble-concerns": {
