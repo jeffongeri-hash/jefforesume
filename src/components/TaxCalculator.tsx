@@ -193,8 +193,8 @@ export default function TaxCalculator() {
 
   const chartData = results.map((r) => ({
     name: r.name.replace(', ', '\n'),
-    '1BR': r.leftAfter1BR,
-    '2BR': r.leftAfter2BR,
+    'Rent Only': rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR,
+    'All COL': rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol,
   }));
 
   return (
