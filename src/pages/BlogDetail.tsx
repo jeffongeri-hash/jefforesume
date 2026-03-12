@@ -345,7 +345,7 @@ const BlogDetail = () => {
                       category={popular.category}
                       date={popular.date}
                       image={popular.image}
-                      href={`/blog/${popular.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      href={`/blog/${popular.slug}`}
                       isSmall={true}
                     />
                   ))}
