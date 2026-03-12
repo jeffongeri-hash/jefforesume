@@ -6,6 +6,7 @@ import BlogCard from '@/components/BlogCard';
 import SocialShare from '@/components/SocialShare';
 import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
+import TaxCalculator from '@/components/TaxCalculator';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
