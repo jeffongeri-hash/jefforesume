@@ -13,6 +13,14 @@ interface LocationResult {
   leftAfter2BR: number;
   rent1BR: number;
   rent2BR: number;
+  colTotal: number;
+  leftAfter1BRCol: number;
+  leftAfter2BRCol: number;
+  groceries: number;
+  utilities: number;
+  transportation: number;
+  internet: number;
+  insurance: number;
 }
 
 type FilingStatus = 'single' | 'married';
