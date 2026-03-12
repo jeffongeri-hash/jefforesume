@@ -10,8 +10,260 @@ import TaxCalculator from '@/components/TaxCalculator';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
+import relocationPost from '@/assets/relocation-budget.jpg';
 
 const blogPosts = {
+  "relocation-budget-3br-move-ready-cash": {
+    title: "2-Adult Relocation Budget: 3BR House, Groceries & Move-Ready Cash by Market",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    readTime: "12 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: relocationPost,
+    content: `
+      <p>This is the move-ready version of the relocation model, built around a 2-adult household relocating from Waterloo: <strong>3BR house target with a yard, one PA income, paid-off 2012 Camry, minimal health insurance</strong>. I split the analysis into a monthly living budget, a Walmart-based grocery model, move-ready cash estimates, and a final ranking.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Grocery Budget: Walmart Staples for 2 Adults</h2>
+
+      <p>Rather than using a generic grocery average, I anchored to current Walmart prices for staple items:</p>
+
+      <div class="overflow-x-auto my-6">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-4 font-bold text-foreground">Item</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Great Value Rice, 20 lb</td><td class="text-right py-2 px-4 text-muted-foreground">$11.46</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Eggs, 18 ct</td><td class="text-right py-2 px-4 text-muted-foreground">$2.92</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Oats, 42 oz</td><td class="text-right py-2 px-4 text-muted-foreground">$4.18</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Bread, 20 oz</td><td class="text-right py-2 px-4 text-muted-foreground">$1.27</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Spaghetti, 16 oz</td><td class="text-right py-2 px-4 text-muted-foreground">$0.98</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Mixed Vegetables, 32 oz</td><td class="text-right py-2 px-4 text-muted-foreground">$2.58</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Plain Greek Yogurt, 32 oz</td><td class="text-right py-2 px-4 text-muted-foreground">$2.94</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Bananas, per lb</td><td class="text-right py-2 px-4 text-muted-foreground">~$0.50</td></tr>
+            <tr class="border-b border-foreground/10"><td class="py-2 px-4 text-muted-foreground">Gala Apples, 3 lb</td><td class="text-right py-2 px-4 text-muted-foreground">$2.38</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Based on these prices, a reasonable Walmart grocery budget for 2 adults is:</p>
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Lean but realistic:</strong> ~$500/month</li>
+        <li><strong>More comfortable / fuller cart:</strong> ~$650/month</li>
+      </ul>
+      <p class="text-sm text-muted-foreground italic">This is budget-minded: mostly Walmart staples, limited eating out, not much premium meat, snack, or specialty-food spending. Prices vary by store and pickup/delivery timing.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">3BR Housing: Zillow Market Data</h2>
+
+      <p>For housing, I used Zillow's live 3-bedroom rental pages. Here are the direct market pages:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Waterloo:</strong> Listings mostly around the low-$1,000s — <a href="https://www.zillow.com/waterloo-ia/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Waterloo 3BR</a></li>
+        <li><strong>Sacramento:</strong> Commonly mid-$2,000s to low-$3,000s — <a href="https://www.zillow.com/sacramento-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Sacramento 3BR</a></li>
+        <li><strong>Phoenix:</strong> Low-to-mid $2,000s — <a href="https://www.zillow.com/phoenix-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Phoenix 3BR</a></li>
+        <li><strong>Houston:</strong> Low-to-mid $2,000s — <a href="https://www.zillow.com/houston-tx/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Houston 3BR</a></li>
+        <li><strong>Hamilton County (Carmel/Fishers):</strong>
+          <ul class="list-disc pl-6 mt-1">
+            <li><a href="https://www.zillow.com/carmel-in/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Carmel 3BR</a></li>
+            <li><a href="https://www.zillow.com/fishers-in/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Zillow Fishers 3BR</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Updated Monthly Budget Model</h2>
+
+      <p>These use the monthly take-home figures from the prior ED-pay/tax model and swap in a 3BR house target plus Walmart groceries for 2 adults.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Market</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Monthly Take-Home</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Groceries (2)</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Other Costs</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Total Spend</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Leftover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Waterloo</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$5,995</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,425</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,250</td>
+              <td class="text-right py-3 px-3 text-foreground">$2,745</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Sacramento</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$7,812</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,800</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$600</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,700</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,100</td>
+              <td class="text-right py-3 px-3 text-foreground">$2,712</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground font-semibold">Phoenix</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$9,067</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$4,567</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$8,657</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,525</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,350</td>
+              <td class="text-right py-3 px-3 text-foreground">$4,307</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Hamilton County / Indy</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$7,987</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,200</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,275</td>
+              <td class="text-right py-3 px-3 text-foreground">$3,712</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-muted-foreground italic">The "Other monthly living costs" bucket covers utilities, internet, phones, gas, car insurance and maintenance for a paid-off 2012 Camry, minimal employee health insurance, renters insurance, and household odds and ends. It's kept lower than a typical 2-car household.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Move-Ready Cash Model</h2>
+
+      <p>This section answers: <strong>how much cash do you actually need to sign a lease and move from Waterloo?</strong> I split it into minimum cash to get the keys versus a safer amount to have saved before signing.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Key Assumptions</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Driving distances from Waterloo:</strong> ~445 mi to Indianapolis/Hamilton County, ~1,063 mi to Houston, ~1,531 mi to Phoenix, ~1,845 mi to Sacramento</li>
+        <li><strong>Truck costs:</strong> Planning estimates based on national averages — ~$1,005 average, with long-distance runs often $3,700+</li>
+        <li><strong>Security deposits:</strong> California caps at one month's rent for most rentals; Texas has no statewide cap but one month is common</li>
+        <li><strong>Pet deposits:</strong> Typically $100–$500 per pet; pet rent commonly $25–$100/month</li>
+        <li><strong>Utility setup:</strong> Utility deposits can range from under $100 to several hundred; Xfinity technician install ~$100</li>
+      </ul>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Market</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent Ceiling</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Security Deposit</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Utility + Internet</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Truck + Travel</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Minimum Cash</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Pet Reserve</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Safer Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Waterloo</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$900</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$3,950</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">+$300</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$7,200</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Hamilton County / Indy</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,000</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$5,800</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">+$300</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$10,100</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,200</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$7,050</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">+$300</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$11,400</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Phoenix</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,450</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,450</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,800</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$8,050</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">+$300</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$12,550</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Sacramento</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,900</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,900</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,200</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$9,400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">+$0–$200</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$14,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">How to Read This</h3>
+
+      <p><strong>Minimum cash to sign + move</strong> means enough for first month's rent, security deposit, basic utility/internet startup, and a realistic one-way self-move by truck from Waterloo. That is the bare-minimum workable number, not the comfortable number.</p>
+
+      <p><strong>Safer cash saved before signing</strong> adds about one month of basic living cushion after arrival, so you are not immediately squeezed by groceries, fuel, insurance, or a delayed first paycheck.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Blunt Recommendation: Real Cash Targets</h2>
+
+      <p>If you want the move to feel <strong>financially controlled</strong>, use these real targets:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Hamilton County:</strong> aim for $10k–$11k</li>
+        <li><strong>Houston:</strong> aim for $11.5k–$13k</li>
+        <li><strong>Phoenix:</strong> aim for $12.5k–$14k</li>
+        <li><strong>Sacramento:</strong> aim for $14.5k–$16k</li>
+      </ul>
+
+      <p>Sacramento is the hardest because the upfront housing stack is simply bigger. Houston and Phoenix are easier than Sacramento, but the truck/travel leg from Iowa is still material. Hamilton is the easiest true relocation of the higher-opportunity markets because the distance is much shorter.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Final Ranking: Best Fit for Your Setup</h2>
+
+      <p>With one PA income, 2 adults, 3BR house target, yard/fence preference, paid-off Camry, and budget groceries via Walmart:</p>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Phoenix</strong> — strongest monthly surplus ($4,567), manageable move costs</li>
+        <li><strong>Houston</strong> — very close second ($4,307), best tax story</li>
+        <li><strong>Hamilton County / Indy orbit</strong> — solid ($3,712), shortest move from Iowa</li>
+        <li><strong>Waterloo</strong> — cheapest to live ($2,745), but lowest income ceiling</li>
+        <li><strong>Sacramento</strong> — toughest for 3BR lifestyle without compressing margin ($2,712)</li>
+      </ol>
+
+      <p>The biggest reason is still <strong>housing plus taxes</strong>. Sacramento is the toughest place to get the 3BR fenced-house lifestyle without compressing your monthly margin. Phoenix and Houston give you much more room for that setup.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">What Comes Next</h3>
+
+      <p>The next most useful version of this would be a <strong>timeline model</strong> showing exactly how much cash you need by 30 days before move, lease-signing day, move week, and first paycheck after arrival.</p>
+    `
+  },
   "pslf-qualifying-hospitals-california-arizona": {
     title: "PSLF-Qualifying Hospitals in California & Arizona: A Comprehensive Guide",
     category: "HEALTHCARE",
@@ -484,6 +736,13 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "2-Adult Relocation Budget: 3BR House & Move-Ready Cash",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    image: relocationPost,
+    slug: "relocation-budget-3br-move-ready-cash"
+  },
   {
     title: "PSLF-Qualifying Hospitals in California & Arizona",
     category: "HEALTHCARE",
