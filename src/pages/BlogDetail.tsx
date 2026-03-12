@@ -248,16 +248,25 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "PSLF-Qualifying Hospitals in California & Arizona",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    image: pslfPost,
+    slug: "pslf-qualifying-hospitals-california-arizona"
+  },
+  {
     title: "The AI Bubble: Should We Be Concerned?",
     category: "TECHNOLOGY",
     date: "December 15, 2025",
-    image: techPost
+    image: techPost,
+    slug: "ai-bubble-concerns"
   },
   {
     title: "The Benefits of Seamless EHR Transfers",
     category: "HEALTHCARE", 
     date: "December 10, 2025",
-    image: businessPost
+    image: businessPost,
+    slug: "seamless-ehr-transfers-benefits"
   }
 ];
 
