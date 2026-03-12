@@ -85,6 +85,15 @@ const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number }> = {
   'Waterloo, IA': { rent1BR: 639, rent2BR: 825 },
 };
 
+// Monthly cost-of-living estimates beyond rent (for 2 adults, budget-minded)
+const COL_DATA: Record<string, { groceries: number; utilities: number; transportation: number; internet: number; insurance: number }> = {
+  'Sacramento, CA': { groceries: 600, utilities: 220, transportation: 280, internet: 70, insurance: 190 },
+  'Phoenix, AZ': { groceries: 575, utilities: 250, transportation: 250, internet: 65, insurance: 170 },
+  'Houston, TX': { groceries: 575, utilities: 230, transportation: 260, internet: 65, insurance: 180 },
+  'Hamilton Co, IN': { groceries: 575, utilities: 200, transportation: 230, internet: 60, insurance: 160 },
+  'Waterloo, IA': { groceries: 575, utilities: 180, transportation: 200, internet: 55, insurance: 140 },
+};
+
 const BAR_COLORS = [
   'hsl(var(--primary))',
   'hsl(142 71% 45%)',
