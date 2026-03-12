@@ -166,6 +166,8 @@ export default function TaxCalculator() {
       const annualTakeHome = salary - retirementAmt - hsaAmount - federalTax - fica - stateTax;
       const monthlyTakeHome = annualTakeHome / 12;
       const { rent1BR, rent2BR } = RENT_DATA[loc];
+      const col = COL_DATA[loc];
+      const colTotal = col.groceries + col.utilities + col.transportation + col.internet + col.insurance;
 
       return {
         name: loc,
@@ -175,8 +177,16 @@ export default function TaxCalculator() {
         leftAfter2BR: Math.round(monthlyTakeHome - rent2BR),
         rent1BR,
         rent2BR,
+        colTotal,
+        leftAfter1BRCol: Math.round(monthlyTakeHome - rent1BR - colTotal),
+        leftAfter2BRCol: Math.round(monthlyTakeHome - rent2BR - colTotal),
+        groceries: col.groceries,
+        utilities: col.utilities,
+        transportation: col.transportation,
+        internet: col.internet,
+        insurance: col.insurance,
       };
-    }).sort((a, b) => b.leftAfter1BR - a.leftAfter1BR);
+    }).sort((a, b) => b.leftAfter1BRCol - a.leftAfter1BRCol);
   }, [salary, retirement401k, hsaAmount, filing]);
 
   const bestLocation = results[0];
