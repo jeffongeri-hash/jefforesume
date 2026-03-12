@@ -320,7 +320,7 @@ export default function TaxCalculator() {
       {/* Bar Chart */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="text-sm font-bold text-foreground">Monthly Leftover After Rent</h4>
+          <h4 className="text-sm font-bold text-foreground">Monthly Leftover: Rent Only vs All Living Costs</h4>
           <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
             <button
               onClick={() => setRentView('1BR')}
@@ -340,7 +340,7 @@ export default function TaxCalculator() {
             </button>
           </div>
         </div>
-        <div className="h-64">
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <XAxis
@@ -356,7 +356,7 @@ export default function TaxCalculator() {
                 tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
               />
               <Tooltip
-                formatter={(value: number) => [`$${value.toLocaleString()}/mo`, `After ${rentView}`]}
+                formatter={(value: number, name: string) => [`$${value.toLocaleString()}/mo`, name]}
                 contentStyle={{
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
@@ -365,7 +365,9 @@ export default function TaxCalculator() {
                 }}
                 labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 600 }}
               />
-              <Bar dataKey={rentView} radius={[6, 6, 0, 0]}>
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Bar dataKey="Rent Only" fill="hsl(var(--muted-foreground))" radius={[6, 6, 0, 0]} opacity={0.4} />
+              <Bar dataKey="All COL" radius={[6, 6, 0, 0]}>
                 {chartData.map((_, i) => (
                   <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />
                 ))}
@@ -375,40 +377,93 @@ export default function TaxCalculator() {
         </div>
       </div>
 
-      {/* Results Table */}
+      {/* Cost of Living Breakdown */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <ShoppingCart className="w-4 h-4 text-primary" />
+          <h4 className="text-sm font-bold text-foreground">Monthly Cost-of-Living Breakdown (2 Adults)</h4>
+        </div>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/50 border-b border-border">
+                <th className="text-left py-3 px-4 font-bold text-foreground">Location</th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">
+                  <span className="flex items-center justify-end gap-1"><ShoppingCart className="w-3 h-3" />Groceries</span>
+                </th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">
+                  <span className="flex items-center justify-end gap-1"><Zap className="w-3 h-3" />Utilities</span>
+                </th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">
+                  <span className="flex items-center justify-end gap-1"><Car className="w-3 h-3" />Transport</span>
+                </th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">Internet</th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">Insurance</th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map((r, i) => (
+                <tr
+                  key={r.name}
+                  className={`border-b border-border transition-colors ${
+                    i === 0 ? 'bg-primary/5' : 'hover:bg-muted/30'
+                  }`}
+                >
+                  <td className="py-3 px-4 text-foreground font-medium">{r.name}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.groceries}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.utilities}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.transportation}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.internet}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.insurance}</td>
+                  <td className="text-right py-3 px-4 text-foreground font-semibold">${r.colTotal.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-muted-foreground mt-2 italic">
+          Groceries based on Walmart staples. Transport assumes paid-off vehicle (gas, maintenance). Utilities include electric, gas, water. Insurance is renters + basic auto.
+        </p>
+      </div>
+
+      {/* Full Results Table */}
       <div className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-muted/50 border-b border-border">
               <th className="text-left py-3 px-4 font-bold text-foreground">Location</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">State/Local Tax</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">Monthly Take-Home</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">1BR Rent</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">After 1BR</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">2BR Rent</th>
-              <th className="text-right py-3 px-4 font-bold text-foreground">After 2BR</th>
+              <th className="text-right py-3 px-4 font-bold text-foreground">Take-Home</th>
+              <th className="text-right py-3 px-4 font-bold text-foreground">{rentView} Rent</th>
+              <th className="text-right py-3 px-4 font-bold text-foreground">Living Costs</th>
+              <th className="text-right py-3 px-4 font-bold text-foreground">After Rent</th>
+              <th className="text-right py-3 px-4 font-bold text-foreground">After All COL</th>
             </tr>
           </thead>
           <tbody>
-            {results.map((r, i) => (
-              <tr
-                key={r.name}
-                className={`border-b border-border transition-colors ${
-                  i === 0 ? 'bg-primary/5 font-semibold' : 'hover:bg-muted/30'
-                }`}
-              >
-                <td className="py-3 px-4 text-foreground">
-                  {i === 0 && <span className="inline-block mr-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded font-bold">BEST</span>}
-                  {r.name}
-                </td>
-                <td className="text-right py-3 px-4 text-muted-foreground">${Math.round(r.stateTax).toLocaleString()}/yr</td>
-                <td className="text-right py-3 px-4 text-foreground font-semibold">${r.monthlyTakeHome.toLocaleString()}/mo</td>
-                <td className="text-right py-3 px-4 text-muted-foreground">${r.rent1BR.toLocaleString()}</td>
-                <td className="text-right py-3 px-4 text-foreground font-semibold">${r.leftAfter1BR.toLocaleString()}/mo</td>
-                <td className="text-right py-3 px-4 text-muted-foreground">${r.rent2BR.toLocaleString()}</td>
-                <td className="text-right py-3 px-4 text-foreground">${r.leftAfter2BR.toLocaleString()}/mo</td>
-              </tr>
-            ))}
+            {results.map((r, i) => {
+              const rent = rentView === '1BR' ? r.rent1BR : r.rent2BR;
+              const afterRent = rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR;
+              const afterAll = rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol;
+              return (
+                <tr
+                  key={r.name}
+                  className={`border-b border-border transition-colors ${
+                    i === 0 ? 'bg-primary/5 font-semibold' : 'hover:bg-muted/30'
+                  }`}
+                >
+                  <td className="py-3 px-4 text-foreground">
+                    {i === 0 && <span className="inline-block mr-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded font-bold">BEST</span>}
+                    {r.name}
+                  </td>
+                  <td className="text-right py-3 px-4 text-foreground">${r.monthlyTakeHome.toLocaleString()}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${rent.toLocaleString()}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.colTotal.toLocaleString()}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${afterRent.toLocaleString()}</td>
+                  <td className="text-right py-3 px-4 text-foreground font-bold">${afterAll.toLocaleString()}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -417,13 +472,15 @@ export default function TaxCalculator() {
       <div className="mt-6 p-4 rounded-xl bg-muted/30 border border-border">
         <p className="text-sm text-muted-foreground">
           <strong className="text-foreground">At ${salary.toLocaleString()}/year ({filing === 'married' ? 'MFJ' : 'Single'}):</strong>{' '}
-          {bestLocation.name} gives you the most monthly cash after rent at{' '}
-          <strong className="text-primary">${bestLocation.leftAfter1BR.toLocaleString()}/mo</strong> (1BR) or{' '}
-          <strong className="text-primary">${bestLocation.leftAfter2BR.toLocaleString()}/mo</strong> (2BR).
+          {bestLocation.name} gives you the most monthly surplus after rent + all living costs at{' '}
+          <strong className="text-primary">
+            ${(rentView === '1BR' ? bestLocation.leftAfter1BRCol : bestLocation.leftAfter2BRCol).toLocaleString()}/mo
+          </strong>{' '}
+          ({rentView}).
         </p>
         <p className="text-xs text-muted-foreground mt-2 italic">
           Planning model only — uses 2025 federal brackets, standard deduction, and simplified state tax rates.
-          CA does not conform to HSA deductions. MFJ uses doubled brackets where applicable. Verify with a tax professional.
+          CA does not conform to HSA deductions. Living costs are budget-minded estimates for 2 adults with a paid-off vehicle. Verify with a tax professional.
         </p>
       </div>
     </div>
