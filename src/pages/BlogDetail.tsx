@@ -6,6 +6,7 @@ import BlogCard from '@/components/BlogCard';
 import SocialShare from '@/components/SocialShare';
 import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
+import TaxCalculator from '@/components/TaxCalculator';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
@@ -558,6 +559,11 @@ const BlogDetail = () => {
                   prose-strong:text-foreground"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
+
+              {/* Tax Calculator - only on PSLF post */}
+              {slug === 'pslf-qualifying-hospitals-california-arizona' && (
+                <TaxCalculator />
+              )}
               
               {/* Share */}
               <div className="mt-12 pt-8 border-t border-border">
