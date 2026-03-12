@@ -2,7 +2,8 @@ import { useState, useMemo } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Calculator, TrendingUp, DollarSign, Home } from 'lucide-react';
+import { Calculator, TrendingUp, DollarSign, Home, Users, User } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface LocationResult {
   name: string;
@@ -14,43 +15,85 @@ interface LocationResult {
   rent2BR: number;
 }
 
-const FEDERAL_BRACKETS_2025 = [
-  { min: 0, max: 11925, rate: 0.10 },
-  { min: 11925, max: 48475, rate: 0.12 },
-  { min: 48475, max: 103350, rate: 0.22 },
-  { min: 103350, max: 197300, rate: 0.24 },
-  { min: 197300, max: 250525, rate: 0.32 },
-  { min: 250525, max: 626350, rate: 0.35 },
-  { min: 626350, max: Infinity, rate: 0.37 },
-];
+type FilingStatus = 'single' | 'married';
 
-const STANDARD_DEDUCTION_2025 = 15750;
-const CA_STANDARD_DEDUCTION = 5706;
+const FEDERAL_BRACKETS: Record<FilingStatus, { min: number; max: number; rate: number }[]> = {
+  single: [
+    { min: 0, max: 11925, rate: 0.10 },
+    { min: 11925, max: 48475, rate: 0.12 },
+    { min: 48475, max: 103350, rate: 0.22 },
+    { min: 103350, max: 197300, rate: 0.24 },
+    { min: 197300, max: 250525, rate: 0.32 },
+    { min: 250525, max: 626350, rate: 0.35 },
+    { min: 626350, max: Infinity, rate: 0.37 },
+  ],
+  married: [
+    { min: 0, max: 23850, rate: 0.10 },
+    { min: 23850, max: 96950, rate: 0.12 },
+    { min: 96950, max: 206700, rate: 0.22 },
+    { min: 206700, max: 394600, rate: 0.24 },
+    { min: 394600, max: 501050, rate: 0.32 },
+    { min: 501050, max: 751600, rate: 0.35 },
+    { min: 751600, max: Infinity, rate: 0.37 },
+  ],
+};
+
+const STANDARD_DEDUCTION: Record<FilingStatus, number> = {
+  single: 15750,
+  married: 31500,
+};
+
+const CA_STANDARD_DEDUCTION: Record<FilingStatus, number> = {
+  single: 5706,
+  married: 11412,
+};
+
+const CA_BRACKETS: Record<FilingStatus, { min: number; max: number; rate: number }[]> = {
+  single: [
+    { min: 0, max: 10412, rate: 0.01 },
+    { min: 10412, max: 24684, rate: 0.02 },
+    { min: 24684, max: 38959, rate: 0.04 },
+    { min: 38959, max: 54081, rate: 0.06 },
+    { min: 54081, max: 68350, rate: 0.08 },
+    { min: 68350, max: 349137, rate: 0.093 },
+    { min: 349137, max: 418961, rate: 0.103 },
+    { min: 418961, max: 698271, rate: 0.113 },
+    { min: 698271, max: Infinity, rate: 0.123 },
+  ],
+  married: [
+    { min: 0, max: 20824, rate: 0.01 },
+    { min: 20824, max: 49368, rate: 0.02 },
+    { min: 49368, max: 77918, rate: 0.04 },
+    { min: 77918, max: 108162, rate: 0.06 },
+    { min: 108162, max: 136700, rate: 0.08 },
+    { min: 136700, max: 698274, rate: 0.093 },
+    { min: 698274, max: 837922, rate: 0.103 },
+    { min: 837922, max: 1396542, rate: 0.113 },
+    { min: 1396542, max: Infinity, rate: 0.123 },
+  ],
+};
+
 const SS_RATE = 0.062;
 const SS_WAGE_BASE = 176100;
 const MEDICARE_RATE = 0.0145;
-
-const CA_BRACKETS = [
-  { min: 0, max: 10412, rate: 0.01 },
-  { min: 10412, max: 24684, rate: 0.02 },
-  { min: 24684, max: 38959, rate: 0.04 },
-  { min: 38959, max: 54081, rate: 0.06 },
-  { min: 54081, max: 68350, rate: 0.08 },
-  { min: 68350, max: 349137, rate: 0.093 },
-  { min: 349137, max: 418961, rate: 0.103 },
-  { min: 418961, max: 698271, rate: 0.113 },
-  { min: 698271, max: Infinity, rate: 0.123 },
-];
 
 const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number }> = {
   'Sacramento, CA': { rent1BR: 1510, rent2BR: 1900 },
   'Phoenix, AZ': { rent1BR: 1204, rent2BR: 1550 },
   'Houston, TX': { rent1BR: 1150, rent2BR: 1500 },
-  'Hamilton County, IN': { rent1BR: 1504, rent2BR: 1776 },
+  'Hamilton Co, IN': { rent1BR: 1504, rent2BR: 1776 },
   'Waterloo, IA': { rent1BR: 639, rent2BR: 825 },
 };
 
-function calcBracketTax(income: number, brackets: typeof FEDERAL_BRACKETS_2025): number {
+const BAR_COLORS = [
+  'hsl(var(--primary))',
+  'hsl(142 71% 45%)',
+  'hsl(217 91% 60%)',
+  'hsl(38 92% 50%)',
+  'hsl(280 67% 55%)',
+];
+
+function calcBracketTax(income: number, brackets: { min: number; max: number; rate: number }[]): number {
   let tax = 0;
   for (const bracket of brackets) {
     if (income <= bracket.min) break;
@@ -66,7 +109,7 @@ function calcFICA(wages: number): number {
   return ss + medicare;
 }
 
-function calcStateTax(location: string, salary: number, retirement: number, hsa: number): number {
+function calcStateTax(location: string, salary: number, retirement: number, hsa: number, filing: FilingStatus): number {
   switch (location) {
     case 'Houston, TX':
       return 0;
@@ -74,13 +117,12 @@ function calcStateTax(location: string, salary: number, retirement: number, hsa:
       return Math.max(0, salary - retirement - hsa) * 0.025;
     case 'Waterloo, IA':
       return Math.max(0, salary - retirement - hsa) * 0.038;
-    case 'Hamilton County, IN':
-      return Math.max(0, salary - retirement - hsa) * 0.041; // 3.0% state + 1.1% county
+    case 'Hamilton Co, IN':
+      return Math.max(0, salary - retirement - hsa) * 0.041;
     case 'Sacramento, CA': {
-      // CA doesn't conform to HSA — only retirement reduces CA income
       const caAGI = salary - retirement;
-      const caTaxable = Math.max(0, caAGI - CA_STANDARD_DEDUCTION);
-      return calcBracketTax(caTaxable, CA_BRACKETS);
+      const caTaxable = Math.max(0, caAGI - CA_STANDARD_DEDUCTION[filing]);
+      return calcBracketTax(caTaxable, CA_BRACKETS[filing]);
     }
     default:
       return 0;
@@ -91,26 +133,23 @@ export default function TaxCalculator() {
   const [salary, setSalary] = useState(130000);
   const [retirement401k, setRetirement401k] = useState(12);
   const [hsaAmount, setHsaAmount] = useState(4400);
+  const [filing, setFiling] = useState<FilingStatus>('single');
+  const [rentView, setRentView] = useState<'1BR' | '2BR'>('1BR');
 
   const results = useMemo<LocationResult[]>(() => {
     const locations = Object.keys(RENT_DATA);
     return locations.map((loc) => {
       const retirementAmt = salary * (retirement401k / 100);
       const federalAGI = salary - retirementAmt - hsaAmount;
-      const federalTaxable = Math.max(0, federalAGI - STANDARD_DEDUCTION_2025);
-      const federalTax = calcBracketTax(federalTaxable, FEDERAL_BRACKETS_2025);
-      
-      // FICA is on gross wages (before 401k for traditional, but HSA is pre-tax for FICA)
+      const federalTaxable = Math.max(0, federalAGI - STANDARD_DEDUCTION[filing]);
+      const federalTax = calcBracketTax(federalTaxable, FEDERAL_BRACKETS[filing]);
       const ficaWages = salary - hsaAmount;
       const fica = calcFICA(ficaWages);
-      
-      const stateTax = calcStateTax(loc, salary, retirementAmt, hsaAmount);
-      
+      const stateTax = calcStateTax(loc, salary, retirementAmt, hsaAmount, filing);
       const annualTakeHome = salary - retirementAmt - hsaAmount - federalTax - fica - stateTax;
       const monthlyTakeHome = annualTakeHome / 12;
-      
       const { rent1BR, rent2BR } = RENT_DATA[loc];
-      
+
       return {
         name: loc,
         stateTax,
@@ -121,19 +160,55 @@ export default function TaxCalculator() {
         rent2BR,
       };
     }).sort((a, b) => b.leftAfter1BR - a.leftAfter1BR);
-  }, [salary, retirement401k, hsaAmount]);
+  }, [salary, retirement401k, hsaAmount, filing]);
 
   const bestLocation = results[0];
 
+  const chartData = results.map((r) => ({
+    name: r.name.replace(', ', '\n'),
+    '1BR': r.leftAfter1BR,
+    '2BR': r.leftAfter2BR,
+  }));
+
   return (
     <div className="my-12 rounded-2xl border-2 border-primary/20 bg-card p-6 md:p-8 shadow-lg">
+      {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2.5 rounded-xl bg-primary/10">
           <Calculator className="w-6 h-6 text-primary" />
         </div>
         <div>
           <h3 className="text-xl font-bold text-foreground">Interactive Tax Calculator</h3>
-          <p className="text-sm text-muted-foreground">Adjust your salary and deductions to compare take-home pay</p>
+          <p className="text-sm text-muted-foreground">Adjust inputs to compare take-home pay across locations</p>
+        </div>
+      </div>
+
+      {/* Filing Status Toggle */}
+      <div className="mb-6">
+        <Label className="text-sm font-semibold text-foreground mb-2 block">Filing Status</Label>
+        <div className="inline-flex rounded-lg border border-border overflow-hidden">
+          <button
+            onClick={() => setFiling('single')}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors ${
+              filing === 'single'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-card text-muted-foreground hover:bg-muted/50'
+            }`}
+          >
+            <User className="w-4 h-4" />
+            Single
+          </button>
+          <button
+            onClick={() => setFiling('married')}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors border-l border-border ${
+              filing === 'married'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-card text-muted-foreground hover:bg-muted/50'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Married Filing Jointly
+          </button>
         </div>
       </div>
 
@@ -198,7 +273,7 @@ export default function TaxCalculator() {
           <Input
             type="number"
             min={0}
-            max={8550}
+            max={filing === 'married' ? 9300 : 4400}
             step={100}
             value={hsaAmount}
             onChange={(e) => setHsaAmount(Math.max(0, Number(e.target.value)))}
@@ -207,11 +282,69 @@ export default function TaxCalculator() {
           <Slider
             value={[hsaAmount]}
             min={0}
-            max={8550}
+            max={filing === 'married' ? 9300 : 4400}
             step={100}
             onValueChange={([v]) => setHsaAmount(v)}
           />
           <p className="text-xs text-muted-foreground">${hsaAmount.toLocaleString()}/year</p>
+        </div>
+      </div>
+
+      {/* Bar Chart */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-sm font-bold text-foreground">Monthly Leftover After Rent</h4>
+          <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
+            <button
+              onClick={() => setRentView('1BR')}
+              className={`px-3 py-1.5 font-medium transition-colors ${
+                rentView === '1BR' ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:bg-muted/50'
+              }`}
+            >
+              1BR
+            </button>
+            <button
+              onClick={() => setRentView('2BR')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-border ${
+                rentView === '2BR' ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:bg-muted/50'
+              }`}
+            >
+              2BR
+            </button>
+          </div>
+        </div>
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                formatter={(value: number) => [`$${value.toLocaleString()}/mo`, `After ${rentView}`]}
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                }}
+                labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 600 }}
+              />
+              <Bar dataKey={rentView} radius={[6, 6, 0, 0]}>
+                {chartData.map((_, i) => (
+                  <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -256,14 +389,14 @@ export default function TaxCalculator() {
       {/* Summary */}
       <div className="mt-6 p-4 rounded-xl bg-muted/30 border border-border">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-foreground">At ${salary.toLocaleString()}/year:</strong>{' '}
+          <strong className="text-foreground">At ${salary.toLocaleString()}/year ({filing === 'married' ? 'MFJ' : 'Single'}):</strong>{' '}
           {bestLocation.name} gives you the most monthly cash after rent at{' '}
           <strong className="text-primary">${bestLocation.leftAfter1BR.toLocaleString()}/mo</strong> (1BR) or{' '}
           <strong className="text-primary">${bestLocation.leftAfter2BR.toLocaleString()}/mo</strong> (2BR).
         </p>
         <p className="text-xs text-muted-foreground mt-2 italic">
-          Planning model only — uses 2025 federal brackets, standard deduction ($15,750), and simplified state tax rates. 
-          CA does not conform to HSA deductions. Verify with a tax professional.
+          Planning model only — uses 2025 federal brackets, standard deduction, and simplified state tax rates.
+          CA does not conform to HSA deductions. MFJ uses doubled brackets where applicable. Verify with a tax professional.
         </p>
       </div>
     </div>
