@@ -115,6 +115,103 @@ const blogPosts = {
       </ul>
 
       <p>These government and federal employers offer the most straightforward path to PSLF qualification, as there is no ambiguity about their nonprofit or public status. For all other employers on this list, always verify the exact W-2 entity through the <a href="https://studentaid.gov/pslf/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">federal PSLF Help Tool</a> before committing.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Tax Comparison: Take-Home Pay Across Locations</h2>
+
+      <p>Adding Hamilton County, Indiana to our comparison — using the same baseline assumptions: single filer, $130,000 W-2 wages, 2025 rules, no 401k/HSA adjustments, no itemizing, no special credits.</p>
+
+      <p>Hamilton County lands slightly worse than Black Hawk County, Iowa, but still better than California. Indiana has a 3.00% state individual income tax rate for 2025, and Hamilton County's 2025 county income tax rate is 1.1%, for a combined nominal state+county rate of 4.1%. Indiana starts from federal AGI, not a California-style taxable-income system with the same standard-deduction structure, so this is best treated as a close planning estimate rather than a return-prep number.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-4 font-bold text-foreground">Location</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">Federal Income Tax</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">FICA</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">State/Local Income Tax</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">Total Est. Tax</th>
+              <th class="text-right py-3 px-4 font-bold text-foreground">Approx. Take-Home</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-4 text-muted-foreground">Sacramento / El Dorado County, CA</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$20,267</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$9,945</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$7,845</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$38,057</td>
+              <td class="text-right py-3 px-4 font-semibold text-foreground">~$91,943</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-4 text-muted-foreground">Hamilton County, IN</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$20,267</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$9,945</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$5,330</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$35,542</td>
+              <td class="text-right py-3 px-4 font-semibold text-foreground">~$94,458</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-4 text-muted-foreground">Black Hawk County, IA</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$20,267</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$9,945</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$4,342</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$34,554</td>
+              <td class="text-right py-3 px-4 font-semibold text-foreground">~$95,446</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-4 text-muted-foreground">Phoenix / Scottsdale, AZ</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$20,267</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$9,945</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$2,856</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$33,068</td>
+              <td class="text-right py-3 px-4 font-semibold text-foreground">~$96,932</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-4 text-muted-foreground">Houston, TX</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$20,267</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$9,945</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">$0</td>
+              <td class="text-right py-3 px-4 text-muted-foreground">~$30,212</td>
+              <td class="text-right py-3 px-4 font-bold text-foreground">~$99,788</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-muted-foreground italic">The federal figures above are based on the IRS 2025 single brackets and the $15,750 standard deduction. California's estimate uses its 2025 single standard deduction of $5,706 and the published 2025 rate schedules. Arizona uses a flat 2.5% rate. Iowa uses a flat 3.8% rate for 2025. Texas has no personal income tax.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ranking by Best Take-Home at $130,000</h3>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Houston, TX</strong> — ~$99,788</li>
+        <li><strong>Phoenix / Scottsdale, AZ</strong> — ~$96,932</li>
+        <li><strong>Black Hawk County, IA</strong> — ~$95,446</li>
+        <li><strong>Hamilton County, IN</strong> — ~$94,458</li>
+        <li><strong>Sacramento / El Dorado County, CA</strong> — ~$91,943</li>
+      </ol>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Annual Advantage vs. California</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Houston over California:</strong> about $7,845</li>
+        <li><strong>Phoenix over California:</strong> about $4,989</li>
+        <li><strong>Black Hawk County over California:</strong> about $3,503</li>
+        <li><strong>Hamilton County over California:</strong> about $2,515</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Hamilton County vs. Iowa</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li>Hamilton County trails Black Hawk County by about <strong>$988 per year</strong></li>
+        <li>That is about <strong>$82 per month</strong> less take-home than Iowa under these assumptions</li>
+      </ul>
+
+      <p><strong>One nuance that matters:</strong> Indiana does have a county income tax, so Hamilton County is not interchangeable with the rest of Indiana the way Sacramento and El Dorado are within California for income tax. Hamilton County specifically uses the 1.1% county rate shown in Indiana's 2025 county chart.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">The Clean Practical Takeaway</h3>
+
+      <p><strong>Texas best, Arizona second, Iowa third, Hamilton County fourth, California last</strong> for pure income-tax drag on a $130k single W-2 salary.</p>
     `
   },
   "ai-bubble-concerns": {
