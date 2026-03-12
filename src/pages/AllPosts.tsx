@@ -13,6 +13,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "2-Adult Relocation Budget: 3BR House, Groceries & Move-Ready Cash by Market",
+      category: "HEALTHCARE",
+      subcategory: "Career Planning",
+      date: "March 12, 2026",
+      excerpt: "A full relocation budget comparing 3BR housing, Walmart grocery costs, monthly living expenses, and move-ready cash targets across five markets.",
+      image: relocationPost,
+      slug: "relocation-budget-3br-move-ready-cash",
+      tags: ["Relocation", "Budgeting", "Healthcare Careers"]
+    },
+    {
       title: "PSLF-Qualifying Hospitals in California & Arizona: A Comprehensive Guide",
       category: "HEALTHCARE",
       subcategory: "Student Loans",

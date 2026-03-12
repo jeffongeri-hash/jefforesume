@@ -737,6 +737,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "2-Adult Relocation Budget: 3BR House & Move-Ready Cash",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    image: relocationPost,
+    slug: "relocation-budget-3br-move-ready-cash"
+  },
+  {
     title: "PSLF-Qualifying Hospitals in California & Arizona",
     category: "HEALTHCARE",
     date: "March 12, 2026",
