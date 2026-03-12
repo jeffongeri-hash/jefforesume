@@ -8,8 +8,115 @@ import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
+import pslfPost from '@/assets/pslf-hospitals.jpg';
 
 const blogPosts = {
+  "pslf-qualifying-hospitals-california-arizona": {
+    title: "PSLF-Qualifying Hospitals in California & Arizona: A Comprehensive Guide",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    readTime: "10 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: pslfPost,
+    content: `
+      <p><strong>Important:</strong> PSLF is based on your actual employer/W-2 entity, not just the hospital building. Government employers and 501(c)(3) nonprofit systems are the strongest bets, but you should still verify the exact employer in the federal PSLF tool before signing.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">California</h2>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Sacramento / El Dorado County</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>UC Davis Health / UC Davis Medical Center</strong> — public nonprofit UC institution.</li>
+        <li><strong>Sutter Health hospitals</strong>, including:
+          <ul class="list-disc pl-6 mt-2">
+            <li>Sutter Medical Center, Sacramento</li>
+            <li>Sutter Davis Hospital</li>
+            <li>California Pacific Medical Center in San Francisco</li>
+          </ul>
+          <p class="mt-1 text-sm italic">Sutter says it is a not-for-profit health system.</p>
+        </li>
+        <li><strong>Dignity Health / CommonSpirit hospitals</strong>, including:
+          <ul class="list-disc pl-6 mt-2">
+            <li>Mercy General Hospital</li>
+            <li>Methodist Hospital of Sacramento</li>
+            <li>Mercy San Juan Medical Center</li>
+            <li>Mercy Hospital of Folsom</li>
+            <li>St. Mary's Medical Center</li>
+            <li>Saint Francis Memorial Hospital</li>
+          </ul>
+          <p class="mt-1 text-sm italic">CommonSpirit describes itself as a nonprofit health system.</p>
+        </li>
+        <li><strong>Marshall Medical Center</strong> — nonprofit corporation.</li>
+        <li><strong>Barton Memorial Hospital / Barton Health</strong> — El Dorado County identifies Barton Memorial Hospital as the county's designated base hospital and a Level III Trauma Center; prior county and nonprofit-sector sources identify Barton Health as not-for-profit.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">San Francisco / Bay Area</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>UCSF Health</strong> — UCSF says it is a public nonprofit institution exempt under 501(c)(3).</li>
+        <li><strong>Zuckerberg San Francisco General Hospital and Trauma Center</strong> — part of the San Francisco Department of Public Health, so government employment.</li>
+        <li><strong>Laguna Honda Hospital and Rehabilitation Center</strong> — also part of San Francisco DPH.</li>
+        <li><strong>San Francisco VA Medical Center / VA system</strong> — federal government employer.</li>
+        <li><strong>Alameda Health System hospitals</strong> — public health system.</li>
+        <li><strong>Contra Costa Regional Medical Center</strong> — county health system.</li>
+        <li><strong>Santa Clara Valley Medical Center</strong> — county health system.</li>
+        <li><strong>San Mateo Medical Center</strong> — county health system.</li>
+        <li><strong>MarinHealth Medical Center</strong> — nonprofit-backed system; MarinHealth Foundation is 501(c)(3). Verify exact employing entity on the offer.</li>
+        <li><strong>Stanford Health Care</strong> — California nonprofit public benefit corporation described in 501(c)(3).</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Arizona</h2>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Phoenix / Mesa / Scottsdale</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Valleywise Health Medical Center</strong> — public system tied to the Maricopa County Special Health Care District.</li>
+        <li><strong>Banner Health hospitals</strong>, including:
+          <ul class="list-disc pl-6 mt-2">
+            <li>Banner Desert Medical Center</li>
+            <li>Banner University Medical Center Phoenix</li>
+          </ul>
+          <p class="mt-1 text-sm italic">Banner says it is a nonprofit health system.</p>
+        </li>
+        <li><strong>HonorHealth hospitals</strong>, including:
+          <ul class="list-disc pl-6 mt-2">
+            <li>HonorHealth Scottsdale Osborn Medical Center</li>
+            <li>HonorHealth Deer Valley Medical Center</li>
+          </ul>
+          <p class="mt-1 text-sm italic">HonorHealth says it is a nonprofit 501(c)(3) organization.</p>
+        </li>
+        <li><strong>Dignity Health / CommonSpirit Arizona hospitals</strong>, including:
+          <ul class="list-disc pl-6 mt-2">
+            <li>Arizona General Hospital Mesa</li>
+          </ul>
+          <p class="mt-1 text-sm italic">Dignity Health Arizona's hospital network is part of nonprofit CommonSpirit.</p>
+        </li>
+        <li><strong>Mayo Clinic Hospital, Phoenix</strong> — Mayo Clinic is nonprofit; verify exact employing entity.</li>
+        <li><strong>Phoenix Children's Hospital</strong> — nonprofit 501(c)(3) hospital.</li>
+        <li><strong>Phoenix VA Health Care System</strong> — federal government employer.</li>
+        <li><strong>Phoenix Indian Medical Center</strong> — Indian Health Service federal employer.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Safest PSLF Bets from This Whole List</h2>
+
+      <p>The least ambiguous options are the government/federal hospitals:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li>Zuckerberg San Francisco General</li>
+        <li>Laguna Honda</li>
+        <li>VA hospitals</li>
+        <li>Alameda Health System</li>
+        <li>Contra Costa Regional Medical Center</li>
+        <li>Santa Clara Valley Medical Center</li>
+        <li>San Mateo Medical Center</li>
+        <li>Valleywise Health Medical Center</li>
+        <li>Phoenix Indian Medical Center</li>
+      </ul>
+
+      <p>These government and federal employers offer the most straightforward path to PSLF qualification, as there is no ambiguity about their nonprofit or public status. For all other employers on this list, always verify the exact W-2 entity through the <a href="https://studentaid.gov/pslf/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">federal PSLF Help Tool</a> before committing.</p>
+    `
+  },
   "ai-bubble-concerns": {
     title: "The AI Bubble: Should We Be Concerned?",
     category: "TECHNOLOGY",
@@ -141,16 +248,25 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "PSLF-Qualifying Hospitals in California & Arizona",
+    category: "HEALTHCARE",
+    date: "March 12, 2026",
+    image: pslfPost,
+    slug: "pslf-qualifying-hospitals-california-arizona"
+  },
+  {
     title: "The AI Bubble: Should We Be Concerned?",
     category: "TECHNOLOGY",
     date: "December 15, 2025",
-    image: techPost
+    image: techPost,
+    slug: "ai-bubble-concerns"
   },
   {
     title: "The Benefits of Seamless EHR Transfers",
     category: "HEALTHCARE", 
     date: "December 10, 2025",
-    image: businessPost
+    image: businessPost,
+    slug: "seamless-ehr-transfers-benefits"
   }
 ];
 
@@ -229,7 +345,7 @@ const BlogDetail = () => {
                       category={popular.category}
                       date={popular.date}
                       image={popular.image}
-                      href={`/blog/${popular.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      href={`/blog/${popular.slug}`}
                       isSmall={true}
                     />
                   ))}

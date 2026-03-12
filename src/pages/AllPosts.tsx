@@ -5,11 +5,22 @@ import PageFilter, { Post } from '@/components/PageFilter';
 import { useState } from 'react';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
+import pslfPost from '@/assets/pslf-hospitals.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "PSLF-Qualifying Hospitals in California & Arizona: A Comprehensive Guide",
+      category: "HEALTHCARE",
+      subcategory: "Student Loans",
+      date: "March 12, 2026",
+      excerpt: "A consolidated guide to PSLF-qualifying hospitals in California and Arizona, with verification tips for government and nonprofit employers.",
+      image: pslfPost,
+      slug: "pslf-qualifying-hospitals-california-arizona",
+      tags: ["PSLF", "Student Loans", "Healthcare Careers"]
+    },
     {
       title: "The AI Bubble: Should We Be Concerned?",
       category: "TECHNOLOGY",
