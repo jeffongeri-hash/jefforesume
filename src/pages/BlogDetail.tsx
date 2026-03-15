@@ -1142,6 +1142,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "Find PSLF-Qualifying Hospitals by City or Zip",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    image: pslfFinder,
+    slug: "pslf-hospital-finder-by-city-zip"
+  },
+  {
     title: "Sacramento Suburb Guide: 3BR Housing & Commute",
     category: "HEALTHCARE",
     date: "March 15, 2026",
