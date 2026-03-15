@@ -2283,6 +2283,11 @@ const BlogDetail = () => {
                 <SuburbCalculator />
               )}
 
+              {/* Phoenix Suburb Calculator */}
+              {slug === 'phoenix-metro-suburb-guide-3br-housing-hospital-commute' && (
+                <PhoenixSuburbCalculator />
+              )}
+
               {/* PSLF Hospital Finder - only on finder post */}
               {slug === 'pslf-hospital-finder-by-city-zip' && (
                 <PSLFHospitalFinder />
