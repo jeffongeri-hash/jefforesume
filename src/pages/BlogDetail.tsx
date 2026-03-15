@@ -1075,6 +1075,59 @@ const blogPosts = {
       <p>For patients, this means safer, more efficient care. For providers, it means more time for what matters most: the patient relationship. And for the healthcare system as a whole, it means better outcomes at lower cost. That's a vision worth pursuing.</p>
     `
   },
+  "pslf-hospital-finder-by-city-zip": {
+    title: "Find PSLF-Qualifying Hospitals by City or Zip Code",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    readTime: "5 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: pslfFinder,
+    content: `
+      <p>If you're a healthcare professional with federal student loans, <strong>Public Service Loan Forgiveness (PSLF)</strong> can eliminate your remaining balance after 120 qualifying payments while working for a qualifying employer. The challenge? Figuring out which hospitals actually qualify.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">How PSLF Employer Qualification Works</h2>
+
+      <p>PSLF eligibility is based on your <strong>actual W-2 employer</strong>, not the hospital building you work in. Two categories of employers qualify:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Government employers</strong> — Federal (VA, IHS), state (university systems), county/city health systems. These are the <em>least ambiguous</em> and safest bets for PSLF.</li>
+        <li><strong>501(c)(3) nonprofit organizations</strong> — Most major health systems (Sutter, Banner, HonorHealth, etc.) are structured as nonprofits. However, you must verify the exact employing entity, as some hospitals may use staffing agencies or for-profit subsidiaries.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Common Pitfalls</h2>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Staffing agencies:</strong> If you're employed through a staffing company rather than the hospital directly, the staffing company's tax status determines PSLF eligibility — not the hospital's.</li>
+        <li><strong>For-profit subsidiaries:</strong> Some nonprofit systems have for-profit physician practice groups or management companies. Your offer letter and W-2 entity matter.</li>
+        <li><strong>Contract vs. employed:</strong> Independent contractors (1099) do not qualify for PSLF. You must be a W-2 employee.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Verification Steps</h2>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li>Use the <a href="https://studentaid.gov/pslf/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Federal PSLF Help Tool</a> — enter your employer's EIN to check qualification.</li>
+        <li>Ask HR for the exact legal entity name on your W-2 before accepting a position.</li>
+        <li>Submit your <strong>Employment Certification Form (ECF)</strong> annually to track qualifying payments.</li>
+        <li>Ensure you're on an <strong>Income-Driven Repayment (IDR)</strong> plan — standard 10-year plans will pay off the loan before forgiveness kicks in.</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Markets Covered in This Finder</h2>
+
+      <p>The interactive tool below covers PSLF-qualifying hospitals across the markets most relevant for PA relocation planning:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Sacramento / El Dorado County, CA</strong> — UC Davis, Sutter, Dignity Health/CommonSpirit, Marshall, Barton, Kaiser</li>
+        <li><strong>San Francisco / Bay Area, CA</strong> — UCSF, SF General, VA, county systems, Stanford</li>
+        <li><strong>Phoenix / Mesa / Scottsdale, AZ</strong> — Valleywise, Banner, HonorHealth, Mayo, Phoenix Children's, VA, IHS</li>
+        <li><strong>Houston, TX</strong> — Houston Methodist, Memorial Hermann, Ben Taub, VA, Texas Children's, MD Anderson</li>
+        <li><strong>Indianapolis / Hamilton County, IN</strong> — IU Health, Eskenazi, VA, Ascension, Community Health</li>
+        <li><strong>Waterloo / Iowa City, IA</strong> — UnityPoint, MercyOne, VA, University of Iowa</li>
+      </ul>
+
+      <p class="text-sm text-muted-foreground italic">Use the search tool below to find hospitals by city, zip code, state, or system name. Government employers are flagged with a shield icon as the safest PSLF bets.</p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
