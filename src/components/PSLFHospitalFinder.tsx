@@ -1,7 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Building2, Shield, CheckCircle2, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Search, Building2, Shield, CheckCircle2, Loader2, Globe } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Hospital {
   name: string;
@@ -12,10 +14,11 @@ interface Hospital {
   system: string;
   confidence: 'high' | 'medium';
   notes: string;
-  region: string;
+  region?: string;
 }
 
-const PSLF_HOSPITALS: Hospital[] = [
+// Curated hospitals for instant local filtering
+const CURATED_HOSPITALS: Hospital[] = [
   // Sacramento / El Dorado County
   { name: "UC Davis Medical Center", city: "Sacramento", state: "CA", zip: "95817", type: "nonprofit", system: "UC Davis Health", confidence: "high", notes: "Public nonprofit UC institution", region: "Sacramento" },
   { name: "Sutter Medical Center, Sacramento", city: "Sacramento", state: "CA", zip: "95816", type: "nonprofit", system: "Sutter Health", confidence: "high", notes: "Not-for-profit health system", region: "Sacramento" },
@@ -28,7 +31,7 @@ const PSLF_HOSPITALS: Hospital[] = [
   { name: "Barton Memorial Hospital", city: "South Lake Tahoe", state: "CA", zip: "96150", type: "nonprofit", system: "Barton Health", confidence: "medium", notes: "El Dorado County base hospital, identified as not-for-profit", region: "Sacramento" },
   { name: "Kaiser Permanente Roseville Medical Center", city: "Roseville", state: "CA", zip: "95661", type: "nonprofit", system: "Kaiser Permanente", confidence: "high", notes: "Nonprofit HMO, 24/7 emergency services", region: "Sacramento" },
   { name: "Sutter Roseville Medical Center", city: "Roseville", state: "CA", zip: "95661", type: "nonprofit", system: "Sutter Health", confidence: "high", notes: "Level II trauma center", region: "Sacramento" },
-  // San Francisco / Bay Area
+  // Bay Area
   { name: "UCSF Medical Center", city: "San Francisco", state: "CA", zip: "94143", type: "nonprofit", system: "UCSF Health", confidence: "high", notes: "Public nonprofit, 501(c)(3)", region: "Bay Area" },
   { name: "Zuckerberg San Francisco General Hospital", city: "San Francisco", state: "CA", zip: "94110", type: "government", system: "SF Dept of Public Health", confidence: "high", notes: "Government employer — safest PSLF bet", region: "Bay Area" },
   { name: "Laguna Honda Hospital", city: "San Francisco", state: "CA", zip: "94116", type: "government", system: "SF Dept of Public Health", confidence: "high", notes: "Government employer — safest PSLF bet", region: "Bay Area" },
@@ -73,29 +76,74 @@ const PSLF_HOSPITALS: Hospital[] = [
 const PSLFHospitalFinder = () => {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<'all' | 'government' | 'nonprofit'>('all');
+  const [aiResults, setAiResults] = useState<Hospital[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchedQuery, setSearchedQuery] = useState('');
+  const [aiError, setAiError] = useState('');
 
-  const results = useMemo(() => {
-    if (!search.trim() && typeFilter === 'all') return PSLF_HOSPITALS;
+  // Local curated filter (instant)
+  const curatedResults = useMemo(() => {
+    if (!search.trim()) return CURATED_HOSPITALS;
+    const q = search.toLowerCase().trim();
+    return CURATED_HOSPITALS.filter(h =>
+      h.name.toLowerCase().includes(q) ||
+      h.city.toLowerCase().includes(q) ||
+      h.state.toLowerCase().includes(q) ||
+      h.zip.startsWith(q) ||
+      h.system.toLowerCase().includes(q) ||
+      (h.region && h.region.toLowerCase().includes(q))
+    );
+  }, [search]);
 
-    return PSLF_HOSPITALS.filter(h => {
-      const matchesType = typeFilter === 'all' || h.type === typeFilter;
-      if (!search.trim()) return matchesType;
+  // Combine curated + AI results, deduplicating
+  const allResults = useMemo(() => {
+    if (!searchedQuery) return curatedResults;
+    
+    const curatedNames = new Set(curatedResults.map(h => h.name.toLowerCase()));
+    const uniqueAi = aiResults.filter(h => !curatedNames.has(h.name.toLowerCase()));
+    
+    return [...curatedResults, ...uniqueAi];
+  }, [curatedResults, aiResults, searchedQuery]);
 
-      const q = search.toLowerCase().trim();
-      const matchesSearch =
-        h.name.toLowerCase().includes(q) ||
-        h.city.toLowerCase().includes(q) ||
-        h.state.toLowerCase().includes(q) ||
-        h.zip.startsWith(q) ||
-        h.system.toLowerCase().includes(q) ||
-        h.region.toLowerCase().includes(q);
+  const filteredResults = useMemo(() => {
+    if (typeFilter === 'all') return allResults;
+    return allResults.filter(h => h.type === typeFilter);
+  }, [allResults, typeFilter]);
 
-      return matchesSearch && matchesType;
-    });
-  }, [search, typeFilter]);
+  const govCount = filteredResults.filter(h => h.type === 'government').length;
+  const npCount = filteredResults.filter(h => h.type === 'nonprofit').length;
 
-  const govCount = results.filter(h => h.type === 'government').length;
-  const npCount = results.filter(h => h.type === 'nonprofit').length;
+  const handleAISearch = useCallback(async () => {
+    if (!search.trim() || search.trim().length < 2) return;
+    
+    setIsSearching(true);
+    setAiError('');
+    setSearchedQuery(search.trim());
+
+    try {
+      const { data, error } = await supabase.functions.invoke('pslf-search', {
+        body: { query: search.trim() },
+      });
+
+      if (error) throw error;
+      
+      if (data?.hospitals && Array.isArray(data.hospitals)) {
+        setAiResults(data.hospitals);
+      } else {
+        setAiResults([]);
+      }
+    } catch (err) {
+      console.error('PSLF search error:', err);
+      setAiError('Search service temporarily unavailable. Showing curated results only.');
+      setAiResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [search]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleAISearch();
+  };
 
   return (
     <div className="my-12 p-6 md:p-8 rounded-xl border border-border bg-card">
@@ -104,21 +152,49 @@ const PSLFHospitalFinder = () => {
         <h2 className="text-2xl font-bold text-foreground">PSLF Hospital Finder</h2>
       </div>
       <p className="text-sm text-muted-foreground mb-6">
-        Search by city, zip code, state, or hospital name to find PSLF-qualifying employers. 
-        Always verify with the <a href="https://studentaid.gov/pslf/" className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">federal PSLF Help Tool</a> before committing.
+        Search <strong>any US city, zip code, or state</strong> to find PSLF-qualifying employers. 
+        Type to filter curated results instantly, or press <strong>Search All Markets</strong> to find hospitals nationwide using AI.
+        Always verify with the <a href="https://studentaid.gov/pslf/" className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">federal PSLF Help Tool</a>.
       </p>
 
       {/* Search */}
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder="Search by city, zip code, state, or hospital name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      <div className="flex gap-2 mb-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Any city, zip code, or state (e.g., Denver, 30301, FL)..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="pl-10"
+          />
+        </div>
+        <Button
+          onClick={handleAISearch}
+          disabled={isSearching || search.trim().length < 2}
+          size="default"
+          className="flex-shrink-0 gap-2"
+        >
+          {isSearching ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Globe className="h-4 w-4" />
+          )}
+          <span className="hidden sm:inline">{isSearching ? 'Searching...' : 'Search All Markets'}</span>
+          <span className="sm:hidden">{isSearching ? '...' : 'Search'}</span>
+        </Button>
       </div>
+
+      {aiError && (
+        <p className="text-xs text-destructive mb-4">{aiError}</p>
+      )}
+
+      {searchedQuery && !isSearching && aiResults.length > 0 && (
+        <p className="text-xs text-muted-foreground mb-4">
+          Showing {filteredResults.length} results for "<strong>{searchedQuery}</strong>" — {curatedResults.length} curated + {aiResults.filter(h => !curatedResults.some(c => c.name.toLowerCase() === h.name.toLowerCase())).length} AI-discovered
+        </p>
+      )}
 
       {/* Filters */}
       <div className="flex items-center gap-2 mb-6 flex-wrap">
@@ -132,48 +208,56 @@ const PSLFHospitalFinder = () => {
                 : 'bg-background text-muted-foreground border-border hover:border-primary/50'
             }`}
           >
-            {type === 'all' ? `All (${results.length})` : type === 'government' ? `Government (${govCount})` : `Nonprofit (${npCount})`}
+            {type === 'all'
+              ? `All (${filteredResults.length})`
+              : type === 'government'
+              ? `Government (${govCount})`
+              : `Nonprofit (${npCount})`}
           </button>
         ))}
       </div>
 
       {/* Results */}
-      {results.length === 0 ? (
+      {isSearching ? (
+        <div className="text-center py-12 text-muted-foreground">
+          <Loader2 className="h-8 w-8 mx-auto mb-3 animate-spin text-primary" />
+          <p className="font-semibold">Searching hospitals nationwide...</p>
+          <p className="text-sm">Finding PSLF-qualifying employers near "{search}"</p>
+        </div>
+      ) : filteredResults.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Building2 className="h-10 w-10 mx-auto mb-3 opacity-40" />
           <p className="font-semibold">No hospitals found</p>
-          <p className="text-sm">Try a different city, zip code, or state abbreviation (e.g., "CA", "AZ", "TX")</p>
+          <p className="text-sm">Try a different city, zip code, or click "Search All Markets" to search nationwide</p>
         </div>
       ) : (
         <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
-          {results.map((hospital, i) => (
+          {filteredResults.map((hospital, i) => (
             <div
-              key={`${hospital.name}-${i}`}
+              key={`${hospital.name}-${hospital.zip}-${i}`}
               className="rounded-lg border border-border p-4 hover:border-primary/30 transition-colors bg-background"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-semibold text-sm text-foreground">{hospital.name}</span>
-                    {hospital.confidence === 'high' ? (
+                    {hospital.confidence === 'high' && (
                       <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                    ) : null}
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground">
                     {hospital.city}, {hospital.state} {hospital.zip} · {hospital.system}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1 italic">{hospital.notes}</p>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <Badge
-                    variant={hospital.type === 'government' ? 'default' : 'secondary'}
-                    className="text-[10px] px-1.5"
-                  >
-                    {hospital.type === 'government' ? (
-                      <><Shield className="h-3 w-3 mr-1" />Gov</>
-                    ) : 'Nonprofit'}
-                  </Badge>
-                </div>
+                <Badge
+                  variant={hospital.type === 'government' ? 'default' : 'secondary'}
+                  className="text-[10px] px-1.5 flex-shrink-0"
+                >
+                  {hospital.type === 'government' ? (
+                    <><Shield className="h-3 w-3 mr-1" />Gov</>
+                  ) : 'Nonprofit'}
+                </Badge>
               </div>
             </div>
           ))}
@@ -185,6 +269,7 @@ const PSLFHospitalFinder = () => {
           <strong className="text-foreground">⚠️ Important:</strong> PSLF qualification is based on your actual W-2 employer, not the hospital building. 
           Government employers (VA, county health systems, IHS) are the least ambiguous. For nonprofits, always verify the exact employing entity 
           through the <a href="https://studentaid.gov/pslf/" className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">federal PSLF Help Tool</a>.
+          AI-discovered results should be independently verified.
         </p>
       </div>
     </div>
