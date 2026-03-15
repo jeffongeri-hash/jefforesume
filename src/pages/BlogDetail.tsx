@@ -16,6 +16,8 @@ import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
+import sjCommuteMap1 from '@/assets/sj-commute-map-1.png';
+import sjCommuteMap2 from '@/assets/sj-commute-map-2.png';
 
 const blogPosts = {
   "sacramento-suburb-guide-3br-housing-commute-budget": {
