@@ -1129,6 +1129,456 @@ const blogPosts = {
       <p class="text-sm text-muted-foreground italic">Use the search tool below to find hospitals by city, zip code, state, or system name. Government employers are flagged with a shield icon as the safest PSLF bets.</p>
     `
   },
+  "san-jose-suburb-guide-3br-housing-commute-hospital": {
+    title: "San Jose Suburb Guide: 3BR Housing, Hospital Commute & Move-Ready Cash",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: sanJoseSuburbs,
+    content: `
+      <p>This is the San Jose orbit version of the Sacramento suburb breakdown — same framework, same PA-income model. I covered 8 suburbs within about 40 minutes of downtown San Jose on a no-traffic basis: <strong>Santa Clara, Campbell, Milpitas, Cupertino, Los Gatos, Sunnyvale, Mountain View, and Morgan Hill</strong>.</p>
+
+      <p class="text-sm text-muted-foreground italic">All suburbs are in California, so state income tax is effectively the same. The real differences are rent, commute, hospital access, and neighborhood feel.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Suburb Comparison: Rent, Commute & Hospital Access</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Drive to SJ</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Distance</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Zillow 3BR</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Planning Number</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Hospital Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground font-semibold">Campbell</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">11 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~7 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,995</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,100–$4,600</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">Excellent</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Santa Clara</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">11 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">4 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,850</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,900–$5,400</td>
+              <td class="text-right py-3 px-3 text-foreground">Excellent</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Milpitas</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">16 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~8 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,200</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,300–$4,800</td>
+              <td class="text-right py-3 px-3 text-foreground">Very good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Los Gatos</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">12 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">11 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,900</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,000–$5,700</td>
+              <td class="text-right py-3 px-3 text-foreground">Very good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Sunnyvale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">18 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">12 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,700</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,800–$5,400</td>
+              <td class="text-right py-3 px-3 text-foreground">Very good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Cupertino</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">13 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">10 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,140</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,200–$5,800</td>
+              <td class="text-right py-3 px-3 text-foreground">Very good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Morgan Hill</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">26 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~23 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,200–$4,800</td>
+              <td class="text-right py-3 px-3 text-foreground">Good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Mountain View</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">19 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~13 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,950</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$6,000–$6,700</td>
+              <td class="text-right py-3 px-3 text-foreground">Excellent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The Zillow numbers are current 3-bedroom market averages. The "planning number" is what I'd realistically underwrite for a single-family 3BR house with a yard, not just a generic apartment.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Tax Read</h2>
+
+      <p>There is <strong>no meaningful city-by-city income-tax edge</strong> inside this group. They are all California suburbs in the same state tax system. Moving from Campbell to Sunnyvale or Morgan Hill does not create an Arizona-vs-California type of tax difference.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Hospital Access Deep Dive</h2>
+
+      <p>Key hospitals in this orbit:</p>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Santa Clara Valley Medical Center</strong> — 751 S Bascom Ave, San Jose. County health system.</li>
+        <li><strong>O'Connor Hospital</strong> — 2105 Forest Ave, San Jose. 358 licensed beds.</li>
+        <li><strong>Good Samaritan Hospital</strong> — 2425 Samaritan Dr, San Jose.</li>
+        <li><strong>Regional Medical Center</strong> — 225 N Jackson Ave, San Jose.</li>
+        <li><strong>Kaiser Santa Clara ER</strong> — 700 Lawrence Expy, Santa Clara. 24/7 emergency department.</li>
+        <li><strong>El Camino Mountain View</strong> — 2500 Grant Rd, Mountain View. Emergency care on site.</li>
+        <li><strong>El Camino Los Gatos</strong> — 24-hour ER, 143 licensed beds.</li>
+        <li><strong>St. Louise Regional Hospital</strong> — Morgan Hill. 24/7 ER, 93 licensed beds.</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Best-Fit Awards: Category Winners</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Category</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Winner</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Why</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Runner-Up</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Young couple / attractions</td>
+              <td class="py-3 px-3 text-muted-foreground">Campbell</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Best mix of walkable downtown, events, restaurants, farmers market energy.</td>
+              <td class="py-3 px-3 text-muted-foreground">Sunnyvale, then Los Gatos</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Affordability</td>
+              <td class="py-3 px-3 text-muted-foreground">Campbell</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Lowest current 3BR market signal in the close-in group at $3,995.</td>
+              <td class="py-3 px-3 text-muted-foreground">Morgan Hill, then Milpitas</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Hospital commute</td>
+              <td class="py-3 px-3 text-muted-foreground">Santa Clara</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Closest to SJ/SC hospital core. Kaiser Santa Clara ER on site.</td>
+              <td class="py-3 px-3 text-muted-foreground">Campbell</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Nature / outdoors</td>
+              <td class="py-3 px-3 text-muted-foreground">Los Gatos</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Strongest trail/open-space profile. Los Gatos Creek Trail is a real asset.</td>
+              <td class="py-3 px-3 text-muted-foreground">Morgan Hill</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Getting a yard</td>
+              <td class="py-3 px-3 text-muted-foreground">Morgan Hill</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Best chance at true house feel without Los Gatos/Cupertino pricing.</td>
+              <td class="py-3 px-3 text-muted-foreground">Campbell</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Best overall compromise</td>
+              <td class="py-3 px-3 text-muted-foreground">Campbell</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Most balanced mix of commute, cost, and livability.</td>
+              <td class="py-3 px-3 text-muted-foreground">Santa Clara</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Area-by-Area Read</h2>
+
+      <p><strong>Santa Clara</strong> — Best "work-first" suburb. Tiny commute, Kaiser Santa Clara right there. Housing is very high (~$4,850 3BR). If hospital access matters most, this is one of the strongest picks.</p>
+
+      <p><strong>Campbell</strong> — Best all-around compromise. Very close to San Jose, active downtown with events and a weekly farmers' market, and the cheapest 3BR signal among core west-side suburbs. For a young couple that still wants a life outside work, Campbell is the cleanest answer.</p>
+
+      <p><strong>Milpitas</strong> — Practical more than romantic. Close enough, cheaper than Cupertino/Los Gatos/Sunnyvale/Mountain View, but less charm than Campbell. "Good logistics, decent value, less character."</p>
+
+      <p><strong>Cupertino</strong> — Polished, high-performing, expensive. Strong parks-and-recreation system. ~$5,140 for a 3BR. Great if you want a very polished west-valley suburb and can absorb the rent.</p>
+
+      <p><strong>Los Gatos</strong> — Best close-in nature/lifestyle suburb. Parks, trails, open-space areas, Los Gatos Creek Trail. Has its own hospital access. The problem is cost: premium-suburb pricing.</p>
+
+      <p><strong>Sunnyvale</strong> — Strong practical option if you care about the broader Silicon Valley corridor. Less charming than Campbell or Los Gatos, but functional. Cost is high, still below Mountain View and Cupertino.</p>
+
+      <p><strong>Mountain View</strong> — Excellent hospital access via El Camino, but the clear housing outlier at $5,950 for a 3BR, highest in this table. Tough to justify on one income unless the offer pays materially more.</p>
+
+      <p><strong>Morgan Hill</strong> — Best shot at a real house-and-yard feel without premium pricing. Parks/open-space identity and south-county hospital access via St. Louise. Tradeoff: longer commute, fewer nearby major hospitals.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Hospital Commute Fit by Suburb</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-2 font-bold text-foreground">Suburb</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">SCVMC</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">O'Connor</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">Good Sam</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">Regional</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">Kaiser SC</th>
+              <th class="text-center py-3 px-2 font-bold text-foreground text-xs">El Camino MV</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-2 px-2 text-muted-foreground font-semibold">Campbell</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Santa Clara</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Los Gatos</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Milpitas</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Sunnyvale</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Cupertino</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★½</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Mountain View</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★★★</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-2 px-2 text-muted-foreground">Morgan Hill</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★½</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+              <td class="text-center py-2 px-2 text-xs text-muted-foreground">★</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Best Suburb by Hospital</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>SCVMC or O'Connor:</strong> Campbell → Santa Clara → Los Gatos</li>
+        <li><strong>Good Samaritan:</strong> Los Gatos → Campbell → Cupertino</li>
+        <li><strong>Regional Medical Center:</strong> Milpitas → Santa Clara → Sunnyvale</li>
+        <li><strong>Kaiser Santa Clara:</strong> Santa Clara → Sunnyvale → Campbell/Cupertino</li>
+        <li><strong>El Camino Mountain View:</strong> Mountain View → Sunnyvale → Cupertino</li>
+      </ul>
+
+      <p>If you want <strong>one suburb that keeps the most hospital options open</strong>: Campbell → Santa Clara → Sunnyvale → Los Gatos → Milpitas.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Move-Ready Cash Model</h2>
+
+      <p>Same planning assumptions: ~$7,812/month take-home (California PA model), $2,450/month for non-rent living costs, California security deposit capped at one month's rent, and DIY moving-truck estimate from Waterloo.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent Ceiling</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Security Dep.</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Setup</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Truck + Travel</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Min. Cash</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Monthly Left</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Safer Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground font-semibold">Campbell</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,600</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$12,550</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$1,062</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$15,000</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Morgan Hill</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,800</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$13,200</td>
+              <td class="text-right py-3 px-3 text-foreground">$862</td>
+              <td class="text-right py-3 px-3 text-foreground">$15,650</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Milpitas</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,700</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$13,050</td>
+              <td class="text-right py-3 px-3 text-foreground">$862</td>
+              <td class="text-right py-3 px-3 text-foreground">$15,500</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Sunnyvale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,000</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,000</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,700</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$14,050</td>
+              <td class="text-right py-3 px-3 text-foreground">$362</td>
+              <td class="text-right py-3 px-3 text-foreground">$16,500</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Santa Clara</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,700</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$14,250</td>
+              <td class="text-right py-3 px-3 text-foreground">$262</td>
+              <td class="text-right py-3 px-3 text-foreground">$16,700</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Los Gatos</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,700</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$14,700</td>
+              <td class="text-right py-3 px-3 text-foreground">$62</td>
+              <td class="text-right py-3 px-3 text-foreground">$17,150</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Cupertino</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$5,500</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,700</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$15,100</td>
+              <td class="text-right py-3 px-3 text-foreground">−$138</td>
+              <td class="text-right py-3 px-3 text-foreground">$17,550</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Mountain View</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$6,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$6,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,800</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$16,800</td>
+              <td class="text-right py-3 px-3 text-foreground">−$938</td>
+              <td class="text-right py-3 px-3 text-foreground">$19,250</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">What Jumps Out</h3>
+
+      <p><strong>Best move-ready value: Campbell.</strong> Lowest 3BR signal among close-in west-side suburbs, keeps move-in cash lower, and still leaves a usable monthly cushion.</p>
+
+      <p><strong>Best house-and-yard option: Morgan Hill.</strong> Farther out but materially cheaper, similar monthly margin to Milpitas.</p>
+
+      <p><strong>Best logistics without luxury pricing: Milpitas.</strong> Lower move-in cash than Santa Clara/Sunnyvale/Los Gatos/Cupertino/Mountain View while staying close to the SJ core.</p>
+
+      <p><strong>Most dangerous for one-income margin: Mountain View and Cupertino.</strong> Both are negative-margin or too tight on the conservative model.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Pet Note</h3>
+
+      <p>Pet deposits commonly run $200–$500 and pet rent $25–$100/month. In California, the landlord may only charge a security deposit of up to one month's rent for most residential rentals, so what some call a "pet deposit" is still part of that deposit bucket.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Final Ranking: All 8 Suburbs</h2>
+
+      <p>For one income + 3BR house target + wanting actual breathing room:</p>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Campbell</strong> — Most balanced mix of commute, cost, and livability</li>
+        <li><strong>Morgan Hill</strong> — Best house-and-yard play without premium pricing</li>
+        <li><strong>Milpitas</strong> — Practical, close, decent value</li>
+        <li><strong>Sunnyvale</strong> — Functional Silicon Valley positioning, pricey</li>
+        <li><strong>Santa Clara</strong> — Best hospital logistics, utilitarian feel</li>
+        <li><strong>Los Gatos</strong> — Great lifestyle suburb, tight on one income</li>
+        <li><strong>Cupertino</strong> — Polished, negative margin on conservative model</li>
+        <li><strong>Mountain View</strong> — Only makes sense for El Camino, worst value</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Housing Links: Zillow 3BR Rentals</h2>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><a href="https://www.zillow.com/campbell-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Campbell 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/santa-clara-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Santa Clara 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/milpitas-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Milpitas 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/cupertino-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Cupertino 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/los-gatos-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Los Gatos 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Sunnyvale 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/mountain-view-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Mountain View 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Morgan Hill 3BR rentals</a></li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
+
+      <p>If you want the <strong>least painful Bay Area launch</strong>: Campbell, Morgan Hill, and Milpitas.</p>
+
+      <p>If you want the <strong>nicest close-in lifestyle</strong> and can tolerate a tighter budget: Los Gatos.</p>
+
+      <p>If you want the <strong>best hospital proximity</strong> and accept that the numbers get tight: Santa Clara.</p>
+
+      <p>The single best all-around compromise for a PA relocating to the San Jose orbit with a partner is <strong>Campbell</strong>. It avoids being absurdly expensive while giving you strong hospital access and an actual lifestyle.</p>
+
+      <p class="text-sm text-muted-foreground italic mt-6">All rent figures from current Zillow market-trend pages. Commute estimates are no-traffic baselines from Travelmath. Take-home uses the same $160k gross / 12% 401k / HSA / single-filer California model. Move-ready cash assumes DIY truck move from Waterloo, IA.</p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
@@ -1137,7 +1587,7 @@ const blogPosts = {
     author: "Jefney Ongeri",
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: techPost,
-    content: `<p>This blog post could not be found. Please check the URL or return to the homepage.</p>`
+    content: \`<p>This blog post could not be found. Please check the URL or return to the homepage.</p>\`
   }
 };
 
