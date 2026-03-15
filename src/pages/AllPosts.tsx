@@ -7,11 +7,22 @@ import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
 import relocationPost from '@/assets/relocation-budget.jpg';
+import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
+      category: "HEALTHCARE",
+      subcategory: "Career Planning",
+      date: "March 15, 2026",
+      excerpt: "A suburb-by-suburb comparison of 12 Sacramento-area communities ranked by 3BR rent, commute time, and monthly surplus on a single PA income.",
+      image: sacramentoSuburbs,
+      slug: "sacramento-suburb-guide-3br-housing-commute-budget",
+      tags: ["Relocation", "Sacramento", "Healthcare Careers"]
+    },
     {
       title: "2-Adult Relocation Budget: 3BR House, Groceries & Move-Ready Cash by Market",
       category: "HEALTHCARE",
