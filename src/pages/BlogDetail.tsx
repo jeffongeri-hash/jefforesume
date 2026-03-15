@@ -1423,6 +1423,21 @@ const blogPosts = {
 
       <p>If you want <strong>one suburb that keeps the most hospital options open</strong>: Campbell → Santa Clara → Sunnyvale → Los Gatos → Milpitas.</p>
 
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Visual Commute Maps</h3>
+
+      <p>These schematic maps show the relative positions of suburbs and hospitals around the San Jose core. Hospitals are shown as squares, suburbs as circles. Dashed lines connect each suburb to its best-fit hospital.</p>
+
+      <div class="my-8 space-y-6">
+        <div class="rounded-lg overflow-hidden border border-border">
+          <img src="${sjCommuteMap1}" alt="San Jose Hospital Commute Map — schematic layout for suburb and hospital orientation" class="w-full h-auto" />
+          <p class="text-xs text-muted-foreground p-3 bg-muted/30">Schematic layout showing suburb and hospital positions relative to downtown San Jose. Not to scale.</p>
+        </div>
+        <div class="rounded-lg overflow-hidden border border-border">
+          <img src="${sjCommuteMap2}" alt="San Jose Hospital Commute Map — color-coded by best suburb for each hospital" class="w-full h-auto" />
+          <p class="text-xs text-muted-foreground p-3 bg-muted/30">Color-coded by best suburb for each hospital based on commute analysis. Dashed lines show best suburb-hospital pairings.</p>
+        </div>
+      </div>
+
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Move-Ready Cash Model</h2>
 
       <p>Same planning assumptions: ~$7,812/month take-home (California PA model), $2,450/month for non-rent living costs, California security deposit capped at one month's rent, and DIY moving-truck estimate from Waterloo.</p>
