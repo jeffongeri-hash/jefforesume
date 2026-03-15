@@ -1587,7 +1587,7 @@ const blogPosts = {
     author: "Jefney Ongeri",
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: techPost,
-    content: \`<p>This blog post could not be found. Please check the URL or return to the homepage.</p>\`
+    content: `<p>This blog post could not be found. Please check the URL or return to the homepage.</p>`
   }
 };
 
