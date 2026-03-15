@@ -3,11 +3,17 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Mail, MapPin, GraduationCap, Stethoscope, FlaskConical, Heart } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import profileHeadshot from '@/assets/profile-headshot.png';
 
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>About Jefney Ongeri, PA-C | Physician Assistant & Emergency Medicine</title>
+        <meta name="description" content="Learn about Jefney Ongeri — a Physician Assistant specializing in emergency medicine, clinical research, and patient-centered care. PA graduate, Class of 2025." />
+        <link rel="canonical" href="https://jefneyongeri.com/about" />
+      </Helmet>
       <Header />
       
       <main id="main-content" className="container-blog py-12">
