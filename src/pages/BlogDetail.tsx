@@ -1242,6 +1242,16 @@ const BlogDetail = () => {
               {slug === 'pslf-qualifying-hospitals-california-arizona' && (
                 <TaxCalculator />
               )}
+
+              {/* Suburb Calculator - only on Sacramento suburbs post */}
+              {slug === 'sacramento-suburb-guide-3br-housing-commute-budget' && (
+                <SuburbCalculator />
+              )}
+
+              {/* PSLF Hospital Finder - only on finder post */}
+              {slug === 'pslf-hospital-finder-by-city-zip' && (
+                <PSLFHospitalFinder />
+              )}
               
               {/* Share */}
               <div className="mt-12 pt-8 border-t border-border">
