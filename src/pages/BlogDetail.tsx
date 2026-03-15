@@ -10,6 +10,7 @@ import BackToTop from '@/components/BackToTop';
 import TaxCalculator from '@/components/TaxCalculator';
 import SuburbCalculator from '@/components/SuburbCalculator';
 import PhoenixSuburbCalculator from '@/components/PhoenixSuburbCalculator';
+import SanJoseSuburbCalculator from '@/components/SanJoseSuburbCalculator';
 import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
