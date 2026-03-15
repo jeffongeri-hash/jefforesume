@@ -8,11 +8,22 @@ import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
 import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
+import pslfFinder from '@/assets/pslf-finder.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "Find PSLF-Qualifying Hospitals by City or Zip Code",
+      category: "HEALTHCARE",
+      subcategory: "Student Loans",
+      date: "March 15, 2026",
+      excerpt: "Search PSLF-qualifying hospitals and clinics across 6 markets by city, zip code, or health system. Includes government and nonprofit employer verification guidance.",
+      image: pslfFinder,
+      slug: "pslf-hospital-finder-by-city-zip",
+      tags: ["PSLF", "Student Loans", "Healthcare Careers"]
+    },
     {
       title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
       category: "HEALTHCARE",
