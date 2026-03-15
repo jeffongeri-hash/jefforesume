@@ -7,11 +7,14 @@ import SocialShare from '@/components/SocialShare';
 import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
 import TaxCalculator from '@/components/TaxCalculator';
+import SuburbCalculator from '@/components/SuburbCalculator';
+import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
 import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
+import pslfFinder from '@/assets/pslf-finder.jpg';
 
 const blogPosts = {
   "sacramento-suburb-guide-3br-housing-commute-budget": {
