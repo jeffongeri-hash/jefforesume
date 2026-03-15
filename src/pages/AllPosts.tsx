@@ -9,11 +9,22 @@ import pslfPost from '@/assets/pslf-hospitals.jpg';
 import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 import pslfFinder from '@/assets/pslf-finder.jpg';
+import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "San Jose Suburb Guide: 3BR Housing, Hospital Commute & Move-Ready Cash",
+      category: "HEALTHCARE",
+      subcategory: "Career Planning",
+      date: "March 15, 2026",
+      excerpt: "A suburb-by-suburb comparison of 8 San Jose-area communities ranked by 3BR rent, hospital commute fit, move-ready cash, and monthly surplus on a single PA income.",
+      image: sanJoseSuburbs,
+      slug: "san-jose-suburb-guide-3br-housing-commute-hospital",
+      tags: ["Relocation", "San Jose", "Healthcare Careers"]
+    },
     {
       title: "Find PSLF-Qualifying Hospitals by City or Zip Code",
       category: "HEALTHCARE",
