@@ -1593,6 +1593,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "San Jose Suburb Guide: 3BR Housing & Hospital Commute",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    image: sanJoseSuburbs,
+    slug: "san-jose-suburb-guide-3br-housing-commute-hospital"
+  },
+  {
     title: "Find PSLF-Qualifying Hospitals by City or Zip",
     category: "HEALTHCARE",
     date: "March 15, 2026",
