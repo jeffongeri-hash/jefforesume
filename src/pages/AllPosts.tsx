@@ -10,6 +10,7 @@ import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
+import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
