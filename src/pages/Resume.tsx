@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -113,6 +114,12 @@ const Resume = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Jefney Ongeri — Resume | PA-C, Emergency Medicine & Clinical Research</title>
+        <meta name="description" content="Resume of Jefney Ongeri, PA-C — education, certifications, clinical experience in emergency medicine, and professional accomplishments." />
+        <meta name="keywords" content="Jefney Ongeri, resume, PA-C, physician assistant resume, emergency medicine" />
+        <link rel="canonical" href="https://jefneyongeri.com/resume" />
+      </Helmet>
       <Header />
       <main id="main-content" className="container-blog py-12">
         {/* Hero Section */}

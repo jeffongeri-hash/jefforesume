@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -2226,6 +2227,15 @@ const BlogDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{post.title} — Jefney Ongeri</title>
+        <meta name="description" content={`${post.title} by Jefney Ongeri. ${post.category} insights on healthcare, relocation, and professional development.`} />
+        <meta name="keywords" content={`Jefney Ongeri, ${post.category}, ${post.title}`} />
+        <meta property="og:title" content={`${post.title} — Jefney Ongeri`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:author" content="Jefney Ongeri" />
+        <link rel="canonical" href={`https://jefneyongeri.com/blog/${slug}`} />
+      </Helmet>
       <ReadingProgress />
       <Header />
       

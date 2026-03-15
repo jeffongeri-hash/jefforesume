@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -40,6 +41,12 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Contact Jefney Ongeri | Get in Touch</title>
+        <meta name="description" content="Contact Jefney Ongeri — reach out for questions, collaborations, or professional inquiries." />
+        <meta name="keywords" content="Jefney Ongeri, contact, physician assistant, get in touch" />
+        <link rel="canonical" href="https://jefneyongeri.com/contact" />
+      </Helmet>
       <Header />
       
       <main id="main-content" className="container-blog py-12">

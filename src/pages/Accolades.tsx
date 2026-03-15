@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
@@ -31,6 +32,12 @@ const Accolades = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Jefney Ongeri — Accolades | Patient Testimonials & Recognition</title>
+        <meta name="description" content="Patient testimonials and professional recognition for Jefney Ongeri, PA-C — reflecting a commitment to compassionate, thorough emergency care." />
+        <meta name="keywords" content="Jefney Ongeri, accolades, patient testimonials, PA-C recognition, healthcare awards" />
+        <link rel="canonical" href="https://jefneyongeri.com/accolades" />
+      </Helmet>
       <Header />
       
       <main id="main-content">

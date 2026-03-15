@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WaveDivider from '@/components/WaveDivider';
@@ -171,6 +172,12 @@ const Professional = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Jefney Ongeri — Professional Background | PA-C, Healthcare & Technology</title>
+        <meta name="description" content="Jefney Ongeri's professional background as a Physician Assistant (PA-C) with experience in emergency medicine, clinical research, and healthcare technology." />
+        <meta name="keywords" content="Jefney Ongeri, Physician Assistant, PA-C, emergency medicine, healthcare professional" />
+        <link rel="canonical" href="https://jefneyongeri.com/professional" />
+      </Helmet>
       <Header />
       <main id="main-content">
         {/* Hero Section */}
