@@ -8,6 +8,7 @@ import ReadingProgress from '@/components/ReadingProgress';
 import BackToTop from '@/components/BackToTop';
 import TaxCalculator from '@/components/TaxCalculator';
 import SuburbCalculator from '@/components/SuburbCalculator';
+import PhoenixSuburbCalculator from '@/components/PhoenixSuburbCalculator';
 import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
