@@ -10,6 +10,7 @@ import BackToTop from '@/components/BackToTop';
 import TaxCalculator from '@/components/TaxCalculator';
 import SuburbCalculator from '@/components/SuburbCalculator';
 import PhoenixSuburbCalculator from '@/components/PhoenixSuburbCalculator';
+import SanJoseSuburbCalculator from '@/components/SanJoseSuburbCalculator';
 import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
@@ -2296,6 +2297,11 @@ const BlogDetail = () => {
               {/* Phoenix Suburb Calculator */}
               {slug === 'phoenix-metro-suburb-guide-3br-housing-hospital-commute' && (
                 <PhoenixSuburbCalculator />
+              )}
+
+              {/* San Jose Suburb Calculator */}
+              {slug === 'san-jose-suburb-guide-3br-housing-commute-hospital' && (
+                <SanJoseSuburbCalculator />
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}
