@@ -1086,6 +1086,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "Sacramento Suburb Guide: 3BR Housing & Commute",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    image: sacramentoSuburbs,
+    slug: "sacramento-suburb-guide-3br-housing-commute-budget"
+  },
+  {
     title: "2-Adult Relocation Budget: 3BR House & Move-Ready Cash",
     category: "HEALTHCARE",
     date: "March 12, 2026",
