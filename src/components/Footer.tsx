@@ -8,7 +8,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-foreground">Jefney Ongeri<span className="text-secondary">, PA-C</span></h2>
             <p className="text-sm text-muted-foreground">
-              Physician Assistant, Clinical Researcher, and Healthcare Innovator sharing insights on medicine, research, and professional development.
+              Jefney Ongeri is a Physician Assistant, Clinical Researcher, and Healthcare Innovator sharing insights on emergency medicine, research, and professional development.
             </p>
           </div>
           

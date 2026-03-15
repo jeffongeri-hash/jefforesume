@@ -9,11 +9,17 @@ import { ParallaxHero } from '@/hooks/useParallax';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import headshot from '@/assets/headshot.jpeg';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Jefney Ongeri, PA-C | Physician Assistant, Emergency Medicine & Investor</title>
+        <meta name="description" content="Jefney Ongeri is a Certified Physician Assistant specializing in emergency medicine, clinical research, and investment strategy. Explore Jefney Ongeri's professional portfolio." />
+        <link rel="canonical" href="https://jefneyongeri.com/" />
+      </Helmet>
       <Header />
       <main id="main-content">
         {/* Hero Section */}
