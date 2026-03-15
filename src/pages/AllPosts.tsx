@@ -10,11 +10,22 @@ import relocationPost from '@/assets/relocation-budget.jpg';
 import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
+import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "Phoenix Metro Suburb Guide: 3BR Housing, Hospital Commute & Neighborhood Breakdown",
+      category: "HEALTHCARE",
+      subcategory: "Career Planning",
+      date: "March 15, 2026",
+      excerpt: "A city-by-city and neighborhood-level breakdown of Phoenix, Mesa, Chandler, Scottsdale, and Glendale — ranked by 3BR rent, hospital access, ER PA salary signals, and move-ready cash on a single income.",
+      image: phoenixSuburbs,
+      slug: "phoenix-metro-suburb-guide-3br-housing-hospital-commute",
+      tags: ["Relocation", "Phoenix", "Healthcare Careers"]
+    },
     {
       title: "San Jose Suburb Guide: 3BR Housing, Hospital Commute & Move-Ready Cash",
       category: "HEALTHCARE",

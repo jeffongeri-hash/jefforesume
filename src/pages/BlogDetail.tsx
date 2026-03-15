@@ -18,6 +18,7 @@ import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
 import sjCommuteMap1 from '@/assets/sj-commute-map-1.png';
 import sjCommuteMap2 from '@/assets/sj-commute-map-2.png';
+import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 
 const blogPosts = {
   "sacramento-suburb-guide-3br-housing-commute-budget": {
@@ -1596,6 +1597,557 @@ const blogPosts = {
       <p class="text-sm text-muted-foreground italic mt-6">All rent figures from current Zillow market-trend pages. Commute estimates are no-traffic baselines from Travelmath. Take-home uses the same $160k gross / 12% 401k / HSA / single-filer California model. Move-ready cash assumes DIY truck move from Waterloo, IA.</p>
     `
   },
+  "phoenix-metro-suburb-guide-3br-housing-hospital-commute": {
+    title: "Phoenix Metro Suburb Guide: 3BR Housing, Hospital Commute & Neighborhood Breakdown",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: phoenixSuburbs,
+    content: `
+      <p>The Phoenix metro is one of the strongest relocation markets for a PA targeting hospital work with a 3BR house and yard. The big structural advantage over California: <strong>Arizona has a flat 2.5% state income tax</strong>, and there's no meaningful city-by-city tax difference across Phoenix, Mesa, Chandler, Scottsdale, or Glendale. The real decision points are rent, commute, hospital access, vibe, and yard value.</p>
+
+      <p class="text-sm text-muted-foreground italic">All cities share the same Arizona flat tax, so this is a housing + commute + lifestyle decision, not a tax one.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Quick Comparison</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">City</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Drive to Phoenix</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Zillow 3BR</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Planning Number</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Hospital Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Phoenix</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">In-city</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,195</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250–$2,600</td>
+              <td class="py-3 px-3 text-muted-foreground">Excellent</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Mesa</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">27 min</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,250</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,300–$2,650</td>
+              <td class="py-3 px-3 text-muted-foreground">Excellent</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Chandler</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">30 min / 22 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,381</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,450–$2,850</td>
+              <td class="py-3 px-3 text-muted-foreground">Very Good</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Scottsdale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">24 min / 19 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,850</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,900–$4,500</td>
+              <td class="py-3 px-3 text-muted-foreground">Excellent</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Glendale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">24 min / 10 mi</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,150–$2,500</td>
+              <td class="py-3 px-3 text-muted-foreground">Excellent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Hospital / ED Access</h2>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Phoenix</h3>
+      <p>Best overall hospital density. Major anchors include <strong>Banner – University Medical Center Phoenix</strong> (698 beds, 72,000+ annual ED visits) and <strong>Valleywise Health Medical Center</strong> (627 staffed beds, 24/7 ED, governmental hospital district).</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Mesa</h3>
+      <p>Best East Valley hospital anchor. <strong>Banner Desert Medical Center</strong> is one of the biggest hospitals in the state and a major East Valley referral center (459+ beds).</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Chandler</h3>
+      <p>Strong suburban hospital option. <strong>Chandler Regional Medical Center</strong> has a full emergency department with broad specialty backup.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Scottsdale</h3>
+      <p>Very strong hospital access, but expensive. <strong>HonorHealth Scottsdale Shea Medical Center</strong> has 427 beds and a 24-hour emergency department network.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Glendale</h3>
+      <p>Strong West Valley hospital anchor. <strong>Banner Thunderbird Medical Center</strong> includes a Level I Adult Trauma Center, an 84-exam-room emergency department, and a 200-bed expansion tower.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Best-Fit Awards</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Category</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best Pick</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Young couple / attractions</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Scottsdale</td>
+              <td class="py-3 px-3 text-muted-foreground">Best nightlife, dining, polish, and date-night density</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Affordability</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Glendale</td>
+              <td class="py-3 px-3 text-muted-foreground">Cheapest 3BR signal in this group</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Hospital commute</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Phoenix</td>
+              <td class="py-3 px-3 text-muted-foreground">Most central and densest hospital cluster</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Nature / outdoors</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Scottsdale</td>
+              <td class="py-3 px-3 text-muted-foreground">Best desert recreation access</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Yard potential</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Glendale</td>
+              <td class="py-3 px-3 text-muted-foreground">Best house + yard value without Scottsdale pricing</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Overall compromise</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Mesa</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong hospital access, manageable rent, decent livability</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">City-by-City Read</h2>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Phoenix</h3>
+      <p>Best if you want maximum employer flexibility. If you're targeting multiple hospital systems, Phoenix keeps the board the widest. Rent is not the cheapest, but it is nowhere near Scottsdale bad.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Mesa</h3>
+      <p>Probably the strongest "balanced" play. Rent is still reasonable by metro standards, and Banner Desert gives Mesa real hospital gravity rather than just commuter-suburb status.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Chandler</h3>
+      <p>More polished than Mesa in a lot of people's eyes, but a bit pricier. Good if you want suburban quality and are okay paying a moderate premium. Chandler Regional helps it stay relevant for your job search.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Scottsdale</h3>
+      <p>Best fun, best polish, worst value. It absolutely wins on lifestyle if you want the most active young-couple environment, but the Zillow 3BR number is dramatically higher than the others. On one-income house math, this is the most dangerous option in this set.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Glendale</h3>
+      <p>Best money play in this group. Cheaper than Phoenix, Mesa, Chandler, and way cheaper than Scottsdale, while still having real hospital infrastructure through Banner Thunderbird. If you care about yard value, Glendale is very attractive.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Move-Ready Cash Model</h2>
+
+      <p>Arizona generally allows a security deposit up to 1.5 months' rent. Waterloo to Phoenix metro is roughly 1,517–1,531 driving miles (~24 hours drive time).</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">City</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Target</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Deposit</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Setup</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Truck + Travel</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Phoenix</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,350–$2,700</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,525–$4,050</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$300–$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,800–$3,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$8,975–$10,250</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,400–$12,700</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Mesa</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,350–$2,700</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,525–$4,050</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$300–$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,800–$3,100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$8,975–$10,250</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,400–$12,700</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Chandler</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,500–$2,900</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,750–$4,350</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$300–$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,850–$3,150</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$9,400–$10,800</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,900–$13,300</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Scottsdale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,000–$4,600</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$6,000–$6,900</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$350–$450</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,850–$3,150</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$13,200–$15,100</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$15,700–$17,600</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Glendale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,200–$2,550</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,300–$3,825</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$300–$400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,750–$3,050</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$8,550–$9,825</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,950–$12,225</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Best move-ready value:</strong> Glendale, then Mesa. They keep your lease-up stack lowest while still giving you real house inventory.</p>
+      <p><strong>Most dangerous for one-income margin:</strong> Scottsdale. The move-in cash needed is in a totally different tier.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Neighborhood Breakdown</h2>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Phoenix Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best For</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Ahwatukee / 85044</td>
+              <td class="py-3 px-3 text-muted-foreground">Balance, outdoor access</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,575</td>
+              <td class="py-3 px-3 text-muted-foreground">Best Phoenix fit — South Mountain access, calmer suburban feel</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Arcadia / 85018</td>
+              <td class="py-3 px-3 text-muted-foreground">Restaurants, charm</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,295</td>
+              <td class="py-3 px-3 text-muted-foreground">Best vibe in Phoenix, but pricier</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Roosevelt Row / 85004</td>
+              <td class="py-3 px-3 text-muted-foreground">Walkability, arts, fun</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,500</td>
+              <td class="py-3 px-3 text-muted-foreground">Best fun, weak yard/house fit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Ahwatukee sits at the base of South Mountain Park — 100+ miles of trails and 16,000+ acres of preserve. Best Phoenix proper compromise for a calmer suburban pocket with real outdoor access.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Mesa Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best For</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Downtown Mesa / 85201</td>
+              <td class="py-3 px-3 text-muted-foreground">Affordability, arts</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,900</td>
+              <td class="py-3 px-3 text-muted-foreground">Cheapest serious option in the metro</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Eastmark / 85212</td>
+              <td class="py-3 px-3 text-muted-foreground">Newer homes, yards</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,300</td>
+              <td class="py-3 px-3 text-muted-foreground">Best overall Mesa fit — newer, yard-friendly</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Red Mountain / 85207</td>
+              <td class="py-3 px-3 text-muted-foreground">Outdoor access, hiking</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,398</td>
+              <td class="py-3 px-3 text-muted-foreground">Near Usery Mountain (3,648 acres), best Mesa nature pick</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Chandler Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best For</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Downtown Chandler / 85296</td>
+              <td class="py-3 px-3 text-muted-foreground">Date night, events</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,224</td>
+              <td class="py-3 px-3 text-muted-foreground">Best fun-to-cost ratio</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">South Chandler / 85249</td>
+              <td class="py-3 px-3 text-muted-foreground">Yards, family homes</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,270</td>
+              <td class="py-3 px-3 text-muted-foreground">Best Chandler fit for house + yard goal</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Ocotillo / 85248</td>
+              <td class="py-3 px-3 text-muted-foreground">Polished, upscale</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,750</td>
+              <td class="py-3 px-3 text-muted-foreground">Nice but "pay extra for polish"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Scottsdale Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best For</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Old Town / 85251</td>
+              <td class="py-3 px-3 text-muted-foreground">Nightlife, galleries</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,500</td>
+              <td class="py-3 px-3 text-muted-foreground">Best young-couple energy, worst value</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">McCormick Ranch / 85258</td>
+              <td class="py-3 px-3 text-muted-foreground">Polished, central</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,850</td>
+              <td class="py-3 px-3 text-muted-foreground">Mature and central, still expensive</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">North Scottsdale / 85255</td>
+              <td class="py-3 px-3 text-muted-foreground">Luxury, desert, hiking</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$4,500</td>
+              <td class="py-3 px-3 text-muted-foreground">McDowell Sonoran Preserve access, but severe rent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Glendale Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best For</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Arrowhead / 85308</td>
+              <td class="py-3 px-3 text-muted-foreground">Suburb comfort, value</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,245</td>
+              <td class="py-3 px-3 text-muted-foreground">Best yard + value combo in the metro</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Westgate / 85305</td>
+              <td class="py-3 px-3 text-muted-foreground">Entertainment, events</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,295</td>
+              <td class="py-3 px-3 text-muted-foreground">Stadium/arena district, best Glendale fun</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Historic Downtown</td>
+              <td class="py-3 px-3 text-muted-foreground">Charm, boutiques</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">Mixed</td>
+              <td class="py-3 px-3 text-muted-foreground">Old Towne + Catlin Court, charming but less yard-suburb</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">ER PA Salary Table — Phoenix Metro</h2>
+
+      <p class="text-sm text-muted-foreground italic mb-4">True ER-specific PA salary transparency is spotty. These are planning ranges from Glassdoor, Indeed, and employer postings — not contract quotes.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best Signal</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Planning Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Phoenix</td>
+              <td class="py-3 px-3 text-muted-foreground">$141K median (Glassdoor EM PA); Banner $123K–$162K</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">~$140K</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Mesa</td>
+              <td class="py-3 px-3 text-muted-foreground">Banner PA $58.70/hr (~$122K); citywide avg $131K</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">~$125K</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Chandler</td>
+              <td class="py-3 px-3 text-muted-foreground">Chandler Regional PA posting $65.90/hr (~$137K)</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">~$135K</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Scottsdale</td>
+              <td class="py-3 px-3 text-muted-foreground">HonorHealth ER PA $101K–$137K; general PA $72.66/hr</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">~$130K–$145K</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Glendale</td>
+              <td class="py-3 px-3 text-muted-foreground">Banner PA $57.52/hr (~$120K); citywide avg $131K</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">~$125K</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Salary-to-Rent: Neighborhood View</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Neighborhood</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Salary Target</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent % of Gross</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Read</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Downtown Chandler / 85296</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$135K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,224</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">19.8%</td>
+              <td class="py-3 px-3 text-muted-foreground">Best fun-to-cost ratio</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">South Chandler / 85249</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$135K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,270</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">20.2%</td>
+              <td class="py-3 px-3 text-muted-foreground">Best Chandler yard fit</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Arrowhead / 85308</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$125K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,245</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">21.6%</td>
+              <td class="py-3 px-3 text-muted-foreground">Best yard/value combo</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Ahwatukee / 85044</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$140K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,575</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">22.1%</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong Phoenix compromise</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Eastmark / 85212</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$125K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,300</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">22.1%</td>
+              <td class="py-3 px-3 text-muted-foreground">Best all-around fit</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Mesa 85207 / Usery</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$125K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,398</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">23.0%</td>
+              <td class="py-3 px-3 text-muted-foreground">Best Mesa nature pick</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Old Town Scottsdale / 85251</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$137.5K</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,500</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">30.5%</td>
+              <td class="py-3 px-3 text-muted-foreground">Great lifestyle, weak value</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Final Ranking for Your Setup</h2>
+
+      <p>For one PA income + partner + 3BR house + yard preferred + wanting some life outside work:</p>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Eastmark / Mesa</strong> — best all-around blend of newer housing, neighborhood feel, and still-reasonable 3BR pricing</li>
+        <li><strong>Arrowhead / Glendale</strong> — best pure value-for-yard play</li>
+        <li><strong>South Chandler / 85249</strong> — very solid, usually a bit pricier than best Mesa/Glendale value zones</li>
+        <li><strong>Downtown Chandler / 85296</strong> — best "fun but still sane" pick</li>
+        <li><strong>Ahwatukee / 85044</strong> — best Phoenix proper compromise with desert access</li>
+        <li><strong>Mesa 85207 / Usery side</strong> — best nature-oriented practical choice</li>
+        <li><strong>Old Town Scottsdale</strong> — awesome for fun, not efficient on one income</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">City-Level Ranking</h2>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Mesa</strong> — wins on balance</li>
+        <li><strong>Glendale</strong> — wins on affordability and yard value</li>
+        <li><strong>Phoenix</strong> — wins on hospital flexibility</li>
+        <li><strong>Chandler</strong> — solid but not clearly better than Mesa for the money</li>
+        <li><strong>Scottsdale</strong> — the fun premium play, but the weakest value</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Housing Links</h2>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><a href="https://www.zillow.com/phoenix-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Phoenix 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/mesa-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Mesa 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/chandler-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Chandler 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/scottsdale-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Scottsdale 3BR rentals</a></li>
+        <li><a href="https://www.zillow.com/glendale-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Glendale 3BR rentals</a></li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
+
+      <p>If you want the <strong>best overall neighborhood</strong>: Eastmark / Mesa.</p>
+      <p>If you want the <strong>best value</strong>: Arrowhead / Glendale.</p>
+      <p>If you want the <strong>best balance of fun and realism</strong>: Downtown Chandler.</p>
+      <p>If you want the <strong>best nature-oriented practical choice</strong>: Ahwatukee or Mesa 85207.</p>
+
+      <p>The Phoenix metro gives you dramatically more breathing room than California on one PA income. The tax burden is lighter, the housing is cheaper, and the hospital infrastructure is deep enough to keep multiple employer options open.</p>
+
+      <p class="text-sm text-muted-foreground italic mt-6">All rent figures from current Zillow market-trend pages. Salary signals from Glassdoor, Indeed, and employer postings. Arizona flat 2.5% state income tax applies uniformly across all cities. Move-ready cash assumes DIY truck move from Waterloo, IA with AZ deposit cap of 1.5x rent.</p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
@@ -1609,6 +2161,13 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "Phoenix Metro Suburb Guide: 3BR Housing & Neighborhoods",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    image: phoenixSuburbs,
+    slug: "phoenix-metro-suburb-guide-3br-housing-hospital-commute"
+  },
   {
     title: "San Jose Suburb Guide: 3BR Housing & Hospital Commute",
     category: "HEALTHCARE",
