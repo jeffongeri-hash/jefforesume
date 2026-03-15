@@ -2299,6 +2299,11 @@ const BlogDetail = () => {
                 <PhoenixSuburbCalculator />
               )}
 
+              {/* San Jose Suburb Calculator */}
+              {slug === 'san-jose-suburb-guide-3br-housing-commute-hospital' && (
+                <SanJoseSuburbCalculator />
+              )}
+
               {/* PSLF Hospital Finder - only on finder post */}
               {slug === 'pslf-hospital-finder-by-city-zip' && (
                 <PSLFHospitalFinder />
