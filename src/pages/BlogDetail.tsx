@@ -2162,6 +2162,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "Phoenix Metro Suburb Guide: 3BR Housing & Neighborhoods",
+    category: "HEALTHCARE",
+    date: "March 15, 2026",
+    image: phoenixSuburbs,
+    slug: "phoenix-metro-suburb-guide-3br-housing-hospital-commute"
+  },
+  {
     title: "San Jose Suburb Guide: 3BR Housing & Hospital Commute",
     category: "HEALTHCARE",
     date: "March 15, 2026",
