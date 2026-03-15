@@ -7,6 +7,7 @@ import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
 import relocationPost from '@/assets/relocation-budget.jpg';
+import sacramentoSuburbs from '@/assets/sacramento-suburbs.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
