@@ -11,6 +11,7 @@ import TaxCalculator from '@/components/TaxCalculator';
 import SuburbCalculator from '@/components/SuburbCalculator';
 import PhoenixSuburbCalculator from '@/components/PhoenixSuburbCalculator';
 import SanJoseSuburbCalculator from '@/components/SanJoseSuburbCalculator';
+import HoustonSuburbCalculator from '@/components/HoustonSuburbCalculator';
 import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
@@ -22,6 +23,7 @@ import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
 import sjCommuteMap1 from '@/assets/sj-commute-map-1.png';
 import sjCommuteMap2 from '@/assets/sj-commute-map-2.png';
 import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
+import houstonSuburbs from '@/assets/houston-suburbs.jpg';
 
 const blogPosts = {
   "sacramento-suburb-guide-3br-housing-commute-budget": {
@@ -2151,6 +2153,518 @@ const blogPosts = {
       <p class="text-sm text-muted-foreground italic mt-6">All rent figures from current Zillow market-trend pages. Salary signals from Glassdoor, Indeed, and employer postings. Arizona flat 2.5% state income tax applies uniformly across all cities. Move-ready cash assumes DIY truck move from Waterloo, IA with AZ deposit cap of 1.5x rent.</p>
     `
   },
+  "houston-suburb-guide-3br-housing-tmc-commute": {
+    title: "Houston Suburb & TMC Neighborhood Guide: 3BR Housing, Commute & Monthly Budget",
+    category: "HEALTHCARE",
+    date: "March 16, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: houstonSuburbs,
+    content: `
+      <p>Houston is a uniquely strong relocation market for a PA because it combines two things most cities can't: <strong>no state income tax</strong> and one of the deepest hospital clusters in the country at Texas Medical Center. The housing decision here splits into two distinct strategies — suburban rings for a 3BR house with a yard, and close-in TMC-adjacent neighborhoods for hospital commute efficiency.</p>
+
+      <p class="text-sm text-muted-foreground italic">Texas has no state income tax. The real decision here is housing strategy: suburban ring vs. TMC-adjacent inner loop.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Best Picks by Category</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Goal</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Best Pick</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Best overall fit</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
+              <td class="py-3 px-3 text-muted-foreground">Closest strong suburb to TMC with realistic 3BR house pricing</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Best polished suburb</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
+              <td class="py-3 px-3 text-muted-foreground">Best suburban "finished product" feel</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Best yard value</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Katy or Cypress</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong house inventory, more room, better bang for the dollar</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Best upscale suburb</td>
+              <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
+              <td class="py-3 px-3 text-muted-foreground">Strongest amenities and polished lifestyle</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Best TMC commute</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Medical Center / Museum District / Bellaire</td>
+              <td class="py-3 px-3 text-muted-foreground">Fastest access to the hospital core</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Best close-in compromise</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
+              <td class="py-3 px-3 text-muted-foreground">Near TMC but more residential than Midtown/Montrose</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Best young-couple inner-loop lifestyle</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Montrose</td>
+              <td class="py-3 px-3 text-muted-foreground">Most character, bars, restaurants, arts</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Best nature close-in</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
+              <td class="py-3 px-3 text-muted-foreground">Memorial Park is a huge outdoor asset</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Main Comparison Table</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Miles to TMC</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Attractions</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">My Take</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">14.7</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,000–$2,600</td>
+              <td class="py-3 px-3 text-muted-foreground">Pearland Town Center, parks</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Best overall fit</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">17.4</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,150</td>
+              <td class="py-3 px-3 text-muted-foreground">Town Square, Constellation Field</td>
+              <td class="py-3 px-3 text-foreground">Best polished suburb</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">30</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,249</td>
+              <td class="py-3 px-3 text-muted-foreground">LaCenterra, Katy Mills</td>
+              <td class="py-3 px-3 text-foreground">Best yard value west side</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Cypress</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">27</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,277</td>
+              <td class="py-3 px-3 text-muted-foreground">Towne Lake Boardwalk</td>
+              <td class="py-3 px-3 text-foreground">Strong yard/value play</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Spring</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">28.5</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$1,965</td>
+              <td class="py-3 px-3 text-muted-foreground">Old Town Spring</td>
+              <td class="py-3 px-3 text-foreground">Solid if north side appeals</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">31</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,500</td>
+              <td class="py-3 px-3 text-muted-foreground">Waterway, Pavilion, Mall</td>
+              <td class="py-3 px-3 text-foreground">Best upscale suburb</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">League City / Clear Lake</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">27</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,200</td>
+              <td class="py-3 px-3 text-muted-foreground">Kemah, bayous, water rec</td>
+              <td class="py-3 px-3 text-foreground">Coastal play, weaker TMC</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Medical Center</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">0</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,181</td>
+              <td class="py-3 px-3 text-muted-foreground">Direct hospital access</td>
+              <td class="py-3 px-3 text-foreground">Work-first choice</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Museum District</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~2</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,356</td>
+              <td class="py-3 px-3 text-muted-foreground">Hermann Park, Zoo, museums</td>
+              <td class="py-3 px-3 text-foreground">Best close-in culture</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">West U / University Place</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~3</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$3,575</td>
+              <td class="py-3 px-3 text-muted-foreground">Rice Village, residential</td>
+              <td class="py-3 px-3 text-foreground">Close-in but expensive</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">12</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,400–$3,000</td>
+              <td class="py-3 px-3 text-muted-foreground">Nature Discovery Center, quiet</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Favorite close-in fit</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Midtown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~5</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$1,694</td>
+              <td class="py-3 px-3 text-muted-foreground">Bars, restaurants, urban</td>
+              <td class="py-3 px-3 text-foreground">Best cheap inner-loop</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Montrose / Neartown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~4</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$2,281</td>
+              <td class="py-3 px-3 text-muted-foreground">Menil, Rothko, murals, bars</td>
+              <td class="py-3 px-3 text-foreground">Best inner-loop lifestyle</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Upper Kirby / Greenway</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~4</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$1,938</td>
+              <td class="py-3 px-3 text-muted-foreground">Levy Park, central dining</td>
+              <td class="py-3 px-3 text-foreground">Quietly strong compromise</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~8</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">~$1,866</td>
+              <td class="py-3 px-3 text-muted-foreground">Memorial Park, trails, bars</td>
+              <td class="py-3 px-3 text-foreground">Best close-in outdoors</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Suburban Ring: Area-by-Area Read</h2>
+
+      <p><strong>Pearland</strong> is the strongest suburb for your setup because it stays unusually close to TMC while still giving you real suburban-house inventory. Rome2Rio shows 14.7 road miles from Pearland to TMC, and Zillow's live 3BR house listings cluster heavily in the low-to-mid $2,000s. Attractions are more practical than glamorous, but Pearland Town Center and the city's park/event base make it more than just a bedroom suburb. Memorial Hermann also has a 24/7 emergency center in Pearland.</p>
+
+      <p><strong>Sugar Land</strong> is the most polished suburb in the list. The commute is still workable at 17.4 road miles to TMC, the Zillow 3BR average is about $2,150, and the lifestyle anchors are stronger than Pearland's — Sugar Land Town Square plus Constellation Field, home of the Space Cowboys. Houston Methodist Sugar Land's ED is open 24/7.</p>
+
+      <p><strong>Katy</strong> is a house-and-yard value play, not a medical-center commute play. Zillow rent trends show a 3BR average around $2,249, while LaCenterra and Katy Mills give it a stronger suburban attraction base. But TMC access is the weak point — even Rome2Rio's transit routing is over an hour, and in real driving conditions the west-side commute is the biggest tax on quality of life.</p>
+
+      <p><strong>Cypress</strong> is similar to Katy: it shines for space, newer-house feel, and family-style suburban layout rather than TMC commute efficiency. Zillow's 3BR average is about $2,277, and Towne Lake's Boardwalk gives Cypress a legitimate attraction anchor.</p>
+
+      <p><strong>Spring</strong> works best if you like the north side and want a softer, less expensive-feeling alternative to The Woodlands. The strongest attraction anchor is Old Town Spring. The downside is commute: 28.5 road miles to TMC.</p>
+
+      <p><strong>The Woodlands</strong> is the nicest suburb in a vacuum. Its attraction base is far stronger than most suburbs: The Waterway, Waterway Square, Cynthia Woods Mitchell Pavilion, and lots of public art. Zillow shows average rent around $2,500. It simply is farther out — about 31 miles to Houston core.</p>
+
+      <p><strong>League City / Clear Lake</strong> is the coastal/waterfront alternative. Zillow shows a 3BR average around $2,200, and the city's tourism pages emphasize bayous, kayaking, water activities, and nearby Kemah Boardwalk. Attractive if you want a Gulf-adjacent feel, but not a TMC-commute optimization choice.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">TMC-Adjacent Neighborhoods: Close-In Read</h2>
+
+      <p><strong>Medical Center</strong> is the pure work-first move. RentCafe puts average apartment rent around $2,181. The obvious advantage is that you are right on top of the hospitals. For a 3BR house with a yard, this is the "easiest possible work commute" winner, not the lifestyle winner.</p>
+
+      <p><strong>Museum District</strong> is the best close-in culture play. Average rent around $2,356, and 3BR apartments around $2,906. The attractions are elite: Hermann Park, Houston Zoo, and the museum cluster. Best neighborhood for a young couple who care about doing things.</p>
+
+      <p><strong>West University / University Place</strong> is the strongest close-in residential compromise. Average rent around $2,556, with 3BR apartments roughly $1,978 to $2,925. Close to TMC, more residential than Midtown or Montrose — but it is not a budget play.</p>
+
+      <p><strong>Bellaire</strong> is the close-in area I like best for this setup. About 16 minutes and 12 miles to Houston core, Zillow shows overall average rent around $3,000, and live rental listings include 3BR houses around $2,400 to $3,000. The attraction set is quieter — Nature Discovery Center and a very residential feel — exactly why it fits a couple wanting a house, yard, and near-TMC practicality.</p>
+
+      <p><strong>Midtown</strong> is the best cheap inner-loop lifestyle play. Average rent around $1,694, close to both Downtown and TMC with restaurants, bars, and urban convenience. Much more of an apartment/townhome neighborhood than a "yard and fence" neighborhood.</p>
+
+      <p><strong>Montrose / Neartown</strong> is the strongest inner-loop neighborhood for young-couple appeal. Average rent around $2,281, with the city's deepest mix of bars, restaurants, independent character, murals, the Menil Collection, and Rothko Chapel. Best answer if your top priority is lifestyle.</p>
+
+      <p><strong>Upper Kirby / Greenway</strong> is the underrated compromise. Rent around $1,938 to $2,087, and Levy Park is a real amenity. More polished and quieter than Midtown, less bohemian than Montrose, and very central.</p>
+
+      <p><strong>Washington Ave / Memorial Park</strong> is the best close-in outdoors pick. Average rent around $1,866, and Memorial Park is enormous — 1,500 acres and 30+ miles of trails. Strong fit if you want inner-loop access without giving up green space.</p>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Monthly Budget: Suburbs & Close-In Areas</h2>
+
+      <p class="text-sm text-muted-foreground italic mb-4">Budget model for 2 adults: $575/mo groceries (Walmart-heavy), $175–$210 electric, $100–$110 water+sewer, $40 internet, $550–$650 other bills (gas, car insurance, phones, renters insurance, misc).</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Suburbs</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Groceries</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Electric</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Water</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Internet</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Other</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$195</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$105</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$625</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,840</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$195</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$105</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$625</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,690</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,240</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$210</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$110</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$650</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,825</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Cypress</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,277</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$210</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$110</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$650</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,862</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Spring</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,965</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$205</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$110</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$650</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,545</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,400</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$205</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$110</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$650</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,980</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">League City / Clear Lake</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,145</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$200</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$110</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$650</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,720</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,300</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$190</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$105</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$600</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,810</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">TMC-Adjacent / Inner Loop</h3>
+
+      <p class="text-sm text-muted-foreground italic mb-4">Inner-loop rent numbers are mostly apartment/neighborhood averages (RentCafe proxies). Treat as location-cost signals, not exact 3BR house rents.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">3BR Proxy</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Groceries</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Electric</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Water</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Internet</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Other</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Medical Center</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,181</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$175</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,646</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Museum District</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,356</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$175</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,821</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">West U / University Place</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$180</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$105</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$5,050</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Midtown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,694</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$170</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$550</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,129</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Montrose / Neartown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,281</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$175</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,746</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Upper Kirby / Greenway</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,938</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$175</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,403</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,866</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$175</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$100</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$40</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$575</td>
+              <td class="text-right py-3 px-3 font-bold text-foreground">$3,331</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Attractions by Area</h2>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Main Attractions</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">What That Means</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
+              <td class="py-3 px-3 text-muted-foreground">Pearland Town Center, city events, parks & trails</td>
+              <td class="py-3 px-3 text-muted-foreground">More practical than glamorous. Good for errands, casual date nights.</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
+              <td class="py-3 px-3 text-muted-foreground">Town Square, Constellation Field, Smart Financial Centre</td>
+              <td class="py-3 px-3 text-muted-foreground">One of the strongest polished suburb attraction sets in Houston.</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
+              <td class="py-3 px-3 text-muted-foreground">LaCenterra, Katy Mills, Typhoon Texas</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong suburban entertainment, more spread out and car-dependent.</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
+              <td class="py-3 px-3 text-muted-foreground">Waterway, Pavilion, Mall, Market Street</td>
+              <td class="py-3 px-3 text-muted-foreground">Best suburban lifestyle package. Lots to do without leaving.</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Museum District</td>
+              <td class="py-3 px-3 text-muted-foreground">Hermann Park, Houston Zoo, 19 museums, Miller Outdoor Theatre</td>
+              <td class="py-3 px-3 text-muted-foreground">Best close-in choice for culture and daytime activities.</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Montrose</td>
+              <td class="py-3 px-3 text-muted-foreground">Menil Collection, Rothko Chapel, murals, bars, restaurants</td>
+              <td class="py-3 px-3 text-muted-foreground">Best inner-loop neighborhood for personality and couple-friendly outings.</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
+              <td class="py-3 px-3 text-muted-foreground">Memorial Park (1,500 acres, 30+ mi trails), Washington corridor</td>
+              <td class="py-3 px-3 text-muted-foreground">Best close-in mix of nightlife + major outdoor space.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">My Ranking for Your Setup</h2>
+
+      <p>For one PA income, partner, 3BR house, yard preferred, and likely hospital work:</p>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Pearland</strong> — Best suburb-to-TMC compromise</li>
+        <li><strong>Bellaire</strong> — Best close-in house compromise</li>
+        <li><strong>Sugar Land</strong> — Best polished suburban alternative</li>
+        <li><strong>West U / University Place</strong> — Close-in residential, but pricey</li>
+        <li><strong>Katy</strong> — Best house + yard value</li>
+        <li><strong>Cypress</strong> — Strong yard/space play</li>
+        <li><strong>The Woodlands</strong> — Best upscale lifestyle suburb</li>
+        <li><strong>Washington Ave / Memorial Park</strong> — Best close-in outdoors</li>
+        <li><strong>Museum District</strong> — Best close-in culture</li>
+        <li><strong>Upper Kirby / Greenway</strong> — Underrated compromise</li>
+        <li><strong>League City / Clear Lake</strong> — Coastal play</li>
+        <li><strong>Montrose</strong> — Best lifestyle, weaker yard fit</li>
+        <li><strong>Midtown</strong> — Cheapest inner-loop, apartment-heavy</li>
+        <li><strong>Medical Center</strong> — Work-first, not lifestyle</li>
+        <li><strong>Spring</strong> — Softer north option, far from TMC</li>
+      </ol>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
+
+      <p>If you want the <strong>best overall fit</strong>: Pearland.</p>
+      <p>If you want the <strong>best close-in house compromise</strong>: Bellaire.</p>
+      <p>If you want the <strong>best polished suburb</strong>: Sugar Land.</p>
+      <p>If you want the <strong>best yard value</strong>: Katy or Cypress.</p>
+      <p>If you want the <strong>best lifestyle suburb</strong>: The Woodlands.</p>
+
+      <p>Houston gives you the strongest financial breathing room of any major market because of zero state income tax. The hospital infrastructure at TMC is unmatched, and the suburban ring offers realistic 3BR house options without blowing up the budget.</p>
+
+      <p><strong>Blunt shortlist: Pearland, Bellaire, Sugar Land, and Katy.</strong></p>
+
+      <p class="text-sm text-muted-foreground italic mt-6">Rent figures from Zillow and RentCafe. Commute estimates from Rome2Rio and Travelmath. Texas has no state income tax. Budget model uses Walmart-based grocery pricing and Houston utility rate estimates.</p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
@@ -2164,6 +2678,13 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "Houston Suburb & TMC Neighborhood Guide",
+    category: "HEALTHCARE",
+    date: "March 16, 2026",
+    image: houstonSuburbs,
+    slug: "houston-suburb-guide-3br-housing-tmc-commute"
+  },
   {
     title: "Phoenix Metro Suburb Guide: 3BR Housing & Neighborhoods",
     category: "HEALTHCARE",
@@ -2318,6 +2839,11 @@ const BlogDetail = () => {
               {/* San Jose Suburb Calculator */}
               {slug === 'san-jose-suburb-guide-3br-housing-commute-hospital' && (
                 <SanJoseSuburbCalculator />
+              )}
+
+              {/* Houston Suburb Calculator */}
+              {slug === 'houston-suburb-guide-3br-housing-tmc-commute' && (
+                <HoustonSuburbCalculator />
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}
