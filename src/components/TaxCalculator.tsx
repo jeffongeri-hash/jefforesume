@@ -11,16 +11,20 @@ interface LocationResult {
   monthlyTakeHome: number;
   leftAfter1BR: number;
   leftAfter2BR: number;
+  leftAfter3BR: number;
   rent1BR: number;
   rent2BR: number;
+  rent3BR: number;
   colTotal: number;
   leftAfter1BRCol: number;
   leftAfter2BRCol: number;
+  leftAfter3BRCol: number;
   groceries: number;
   utilities: number;
   transportation: number;
   internet: number;
   insurance: number;
+  gasPerGallon: number;
 }
 
 type FilingStatus = 'single' | 'married';
