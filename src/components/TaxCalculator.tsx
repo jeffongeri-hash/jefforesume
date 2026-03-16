@@ -163,7 +163,7 @@ export default function TaxCalculator() {
   const [retirement401k, setRetirement401k] = useState(12);
   const [hsaAmount, setHsaAmount] = useState(4400);
   const [filing, setFiling] = useState<FilingStatus>('single');
-  const [rentView, setRentView] = useState<'1BR' | '2BR'>('1BR');
+  const [rentView, setRentView] = useState<'1BR' | '2BR' | '3BR'>('1BR');
 
   const results = useMemo<LocationResult[]>(() => {
     const locations = Object.keys(RENT_DATA);
