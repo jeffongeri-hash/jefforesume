@@ -86,15 +86,28 @@ const Accolades = () => {
                     <Star key={i} className={`w-8 h-8 ${i < 4 ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} />
                   ))}
                 </div>
-                <div className="text-6xl font-bold text-foreground mb-2">
-                  3 of 4
+                <div className="text-6xl font-bold text-primary mb-2">
+                  78.6
                 </div>
                 <p className="text-lg text-muted-foreground mb-4">
-                  Patients Rated 9/10 or Higher
+                  NPS Score — Based on 14 Patient Returns
                 </p>
-                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-4 italic">
+                  March 2025 – February 2026
+                </p>
+                <div className="grid grid-cols-2 gap-4 max-w-xs mx-auto text-sm">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">64.3%</div>
+                    <div className="text-muted-foreground">Scored 10/10</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">85.7%</div>
+                    <div className="text-muted-foreground">Scored 9+</div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mt-4">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  <span>50% of reviews received a perfect 10/10 rating</span>
+                  <span>92.8% of patients rated 8 or higher</span>
                 </div>
               </CardContent>
             </Card>
