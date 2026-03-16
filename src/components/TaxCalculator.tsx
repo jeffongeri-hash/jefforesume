@@ -358,6 +358,14 @@ export default function TaxCalculator() {
             >
               2BR
             </button>
+            <button
+              onClick={() => setRentView('3BR')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-border ${
+                rentView === '3BR' ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:bg-muted/50'
+              }`}
+            >
+              3BR
+            </button>
           </div>
         </div>
         <div className="h-72">
