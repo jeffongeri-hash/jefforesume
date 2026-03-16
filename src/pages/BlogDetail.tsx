@@ -3128,45 +3128,15 @@ const BlogDetail = () => {
                 <PhoenixSuburbCalculator />
               )}
 
-              {/* San Jose Suburb Calculator + Map */}
+              {/* San Jose Suburb Calculator */}
               {slug === 'san-jose-suburb-guide-3br-housing-commute-hospital' && (
-                <>
-                  <SanJoseSuburbCalculator />
-                  <div className="my-12 rounded-xl overflow-hidden border border-border shadow-sm">
-                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">📍 San Jose Suburb & Hospital Map</h3>
-                    <p className="text-sm text-muted-foreground px-6 pb-4">Interactive map of San Jose-area suburbs, hospitals, and commute routes.</p>
-                    <iframe
-                      src="https://www.google.com/maps/d/u/0/embed?mid=1Kz9mT4kXq8QGxLz5vJx6rY7nHwNfZcF"
-                      width="100%"
-                      height="480"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="San Jose Suburb and Hospital Map"
-                    />
-                  </div>
-                </>
+                <SanJoseSuburbCalculator />
               )}
 
-              {/* Houston Suburb Calculator + Map + PSLF Finder */}
+              {/* Houston Suburb Calculator + PSLF Finder */}
               {slug === 'houston-suburb-guide-3br-housing-tmc-commute' && (
                 <>
                   <HoustonSuburbCalculator />
-                  <div className="my-12 rounded-xl overflow-hidden border border-border shadow-sm">
-                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">📍 Houston Suburb & TMC Neighborhood Map</h3>
-                    <p className="text-sm text-muted-foreground px-6 pb-4">Interactive map showing Texas Medical Center, surrounding suburbs, and close-in neighborhoods. Zoom and click markers to explore commute routes.</p>
-                    <iframe
-                      src="https://www.google.com/maps/d/u/0/embed?mid=1Rz8kT3kXq9QGxKz4vJx5rY6nHwMfZbE"
-                      width="100%"
-                      height="480"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Houston Suburb and TMC Neighborhood Map"
-                    />
-                  </div>
                   <PSLFHospitalFinder />
                 </>
               )}
