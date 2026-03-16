@@ -2729,7 +2729,7 @@ const blogPosts = {
 
       <p>The Waterloo→Houston move is about <strong>1,063 driving miles</strong> (~16 hours 58 minutes), with Travelmath estimating about $106 in fuel. For the truck itself, current long-distance references put rental-truck moves around $4,620 on average and long-distance moving-company moves around $6,300 for a 2–3 bedroom household. Texas has no statewide cap on security deposit amounts — I used one month's rent as a planning deposit, but some landlords may ask for more.</p>
 
-      <p class="mt-4"><strong>Method:</strong> Minimum cash = first month's rent + 1 month deposit + $350 utility/internet setup + $4,620 rental truck + $106 fuel. Safer cash adds $1,500 for first-month groceries/utilities/other buffer.</p>
+      <p class="mt-4"><strong>Method:</strong> Minimum cash = first month's rent + 1 month deposit + $350 utility/internet setup + $4,620 rental truck + $106 fuel. Safer cash adds $1,500 for first-month groceries/utilities/other buffer. The <strong>Rent-to-Salary %</strong> column uses the conservative $125k base pay ($10,417/mo) to show what share of gross income goes to rent.</p>
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Suburbs & Close-In Residential</h3>
 
