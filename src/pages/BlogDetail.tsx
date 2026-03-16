@@ -3116,9 +3116,12 @@ const BlogDetail = () => {
                 <SanJoseSuburbCalculator />
               )}
 
-              {/* Houston Suburb Calculator */}
+              {/* Houston Suburb Calculator + PSLF Finder */}
               {slug === 'houston-suburb-guide-3br-housing-tmc-commute' && (
-                <HoustonSuburbCalculator />
+                <>
+                  <HoustonSuburbCalculator />
+                  <PSLFHospitalFinder />
+                </>
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}

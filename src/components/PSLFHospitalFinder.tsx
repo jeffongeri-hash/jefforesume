@@ -56,10 +56,14 @@ const CURATED_HOSPITALS: Hospital[] = [
   // Houston / Texas
   { name: "Houston Methodist Hospital", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "Houston Methodist", confidence: "high", notes: "Nonprofit academic medical center", region: "Houston" },
   { name: "Memorial Hermann - Texas Medical Center", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "Memorial Hermann", confidence: "high", notes: "Nonprofit health system", region: "Houston" },
+  { name: "Children's Memorial Hermann Hospital", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "Memorial Hermann", confidence: "high", notes: "Memorial Hermann nonprofit system", region: "Houston" },
+  { name: "TIRR Memorial Hermann", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "Memorial Hermann", confidence: "high", notes: "Rehab-focused, Memorial Hermann nonprofit system", region: "Houston" },
   { name: "Ben Taub Hospital", city: "Houston", state: "TX", zip: "77030", type: "government", system: "Harris Health System", confidence: "high", notes: "County public hospital — safest PSLF bet", region: "Houston" },
+  { name: "Lyndon B. Johnson Hospital", city: "Houston", state: "TX", zip: "77026", type: "government", system: "Harris Health System", confidence: "high", notes: "County public hospital — safest PSLF bet", region: "Houston" },
   { name: "Michael E. DeBakey VA Medical Center", city: "Houston", state: "TX", zip: "77030", type: "government", system: "VA Health", confidence: "high", notes: "Federal government employer — safest PSLF bet", region: "Houston" },
   { name: "Texas Children's Hospital", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "Texas Children's", confidence: "high", notes: "Nonprofit 501(c)(3) hospital", region: "Houston" },
   { name: "MD Anderson Cancer Center", city: "Houston", state: "TX", zip: "77030", type: "government", system: "UT System", confidence: "high", notes: "State government institution", region: "Houston" },
+  { name: "Baylor St. Luke's Medical Center", city: "Houston", state: "TX", zip: "77030", type: "nonprofit", system: "CommonSpirit / Baylor", confidence: "high", notes: "501(c)(3) nonprofit", region: "Houston" },
   // Indianapolis / Hamilton County
   { name: "IU Health Methodist Hospital", city: "Indianapolis", state: "IN", zip: "46202", type: "nonprofit", system: "IU Health", confidence: "high", notes: "Nonprofit health system", region: "Indianapolis" },
   { name: "Eskenazi Health", city: "Indianapolis", state: "IN", zip: "46202", type: "government", system: "Health & Hospital Corp", confidence: "high", notes: "Public hospital — safest PSLF bet", region: "Indianapolis" },
