@@ -177,9 +177,10 @@ export default function TaxCalculator() {
       const stateTax = calcStateTax(loc, salary, retirementAmt, hsaAmount, filing);
       const annualTakeHome = salary - retirementAmt - hsaAmount - federalTax - fica - stateTax;
       const monthlyTakeHome = annualTakeHome / 12;
-      const { rent1BR, rent2BR } = RENT_DATA[loc];
+      const { rent1BR, rent2BR, rent3BR } = RENT_DATA[loc];
       const col = COL_DATA[loc];
       const colTotal = col.groceries + col.utilities + col.transportation + col.internet + col.insurance;
+      const gasPerGallon = GAS_DATA[loc];
 
       return {
         name: loc,
@@ -187,16 +188,20 @@ export default function TaxCalculator() {
         monthlyTakeHome: Math.round(monthlyTakeHome),
         leftAfter1BR: Math.round(monthlyTakeHome - rent1BR),
         leftAfter2BR: Math.round(monthlyTakeHome - rent2BR),
+        leftAfter3BR: Math.round(monthlyTakeHome - rent3BR),
         rent1BR,
         rent2BR,
+        rent3BR,
         colTotal,
         leftAfter1BRCol: Math.round(monthlyTakeHome - rent1BR - colTotal),
         leftAfter2BRCol: Math.round(monthlyTakeHome - rent2BR - colTotal),
+        leftAfter3BRCol: Math.round(monthlyTakeHome - rent3BR - colTotal),
         groceries: col.groceries,
         utilities: col.utilities,
         transportation: col.transportation,
         internet: col.internet,
         insurance: col.insurance,
+        gasPerGallon,
       };
     }).sort((a, b) => b.leftAfter1BRCol - a.leftAfter1BRCol);
   }, [salary, retirement401k, hsaAmount, filing]);
