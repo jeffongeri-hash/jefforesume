@@ -2729,7 +2729,7 @@ const blogPosts = {
 
       <p>The Waterloo→Houston move is about <strong>1,063 driving miles</strong> (~16 hours 58 minutes), with Travelmath estimating about $106 in fuel. For the truck itself, current long-distance references put rental-truck moves around $4,620 on average and long-distance moving-company moves around $6,300 for a 2–3 bedroom household. Texas has no statewide cap on security deposit amounts — I used one month's rent as a planning deposit, but some landlords may ask for more.</p>
 
-      <p class="mt-4"><strong>Method:</strong> Minimum cash = first month's rent + 1 month deposit + $350 utility/internet setup + $4,620 rental truck + $106 fuel. Safer cash adds $1,500 for first-month groceries/utilities/other buffer.</p>
+      <p class="mt-4"><strong>Method:</strong> Minimum cash = first month's rent + 1 month deposit + $350 utility/internet setup + $4,620 rental truck + $106 fuel. Safer cash adds $1,500 for first-month groceries/utilities/other buffer. The <strong>Rent-to-Salary %</strong> column uses the conservative $125k base pay ($10,417/mo) to show what share of gross income goes to rent.</p>
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Suburbs & Close-In Residential</h3>
 
@@ -2739,6 +2739,7 @@ const blogPosts = {
             <tr class="border-b-2 border-foreground/20">
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Housing Figure</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent/Salary %</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash to Move</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
             </tr>
@@ -2747,48 +2748,56 @@ const blogPosts = {
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,399</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">23.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,875</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,375</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">20.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,375</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,875</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,045</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">19.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,175</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,675</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Cypress</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,277</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">21.9%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,640</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,140</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Spring</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$1,850</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">17.8%</td>
               <td class="text-right py-3 px-3 text-foreground">$8,790</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,290</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,400</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">23.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,880</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,380</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">League City / Clear Lake</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">20.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,380</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,880</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,500</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">24.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$10,080</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,580</td>
             </tr>
@@ -2804,6 +2813,7 @@ const blogPosts = {
             <tr class="border-b-2 border-foreground/20">
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Housing Figure</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent/Salary %</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash to Move</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
             </tr>
@@ -2812,42 +2822,49 @@ const blogPosts = {
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">West U / University Place</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$3,575</td>
+              <td class="text-right py-3 px-3 text-destructive font-semibold">34.3%</td>
               <td class="text-right py-3 px-3 text-foreground">$12,230</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$13,730</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Museum District</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,356</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">22.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,790</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,290</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Medical Center</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,181</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">20.9%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,435</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,935</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Montrose / Neartown</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,281</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">21.9%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,640</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,140</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Upper Kirby / Greenway</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$1,938</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">18.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$8,950</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,450</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$1,866</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">17.9%</td>
               <td class="text-right py-3 px-3 text-foreground">$8,810</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,310</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Midtown</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$1,694</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">16.3%</td>
               <td class="text-right py-3 px-3 text-foreground">$8,470</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$9,970</td>
             </tr>
@@ -3111,9 +3128,25 @@ const BlogDetail = () => {
                 <PhoenixSuburbCalculator />
               )}
 
-              {/* San Jose Suburb Calculator */}
+              {/* San Jose Suburb Calculator + Map */}
               {slug === 'san-jose-suburb-guide-3br-housing-commute-hospital' && (
-                <SanJoseSuburbCalculator />
+                <>
+                  <SanJoseSuburbCalculator />
+                  <div className="my-12 rounded-xl overflow-hidden border border-border shadow-sm">
+                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">📍 San Jose Suburb & Hospital Map</h3>
+                    <p className="text-sm text-muted-foreground px-6 pb-4">Interactive map of San Jose-area suburbs, hospitals, and commute routes.</p>
+                    <iframe
+                      src="https://www.google.com/maps/d/u/0/embed?mid=1Kz9mT4kXq8QGxLz5vJx6rY7nHwNfZcF"
+                      width="100%"
+                      height="480"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="San Jose Suburb and Hospital Map"
+                    />
+                  </div>
+                </>
               )}
 
               {/* Houston Suburb Calculator + Map + PSLF Finder */}
