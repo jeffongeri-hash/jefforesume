@@ -2739,6 +2739,7 @@ const blogPosts = {
             <tr class="border-b-2 border-foreground/20">
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Housing Figure</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rent/Salary %</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash to Move</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
             </tr>
@@ -2747,48 +2748,56 @@ const blogPosts = {
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,399</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">23.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,875</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,375</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">20.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,375</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,875</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,045</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">19.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,175</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,675</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Cypress</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,277</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">21.9%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,640</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,140</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">Spring</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$1,850</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">17.8%</td>
               <td class="text-right py-3 px-3 text-foreground">$8,790</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,290</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,400</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">23.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,880</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,380</td>
             </tr>
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 font-semibold text-foreground">League City / Clear Lake</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">20.6%</td>
               <td class="text-right py-3 px-3 text-foreground">$9,380</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$10,880</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,500</td>
+              <td class="text-right py-3 px-3 text-foreground font-semibold">24.0%</td>
               <td class="text-right py-3 px-3 text-foreground">$10,080</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">$11,580</td>
             </tr>
