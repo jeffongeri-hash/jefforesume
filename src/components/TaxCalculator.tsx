@@ -11,16 +11,20 @@ interface LocationResult {
   monthlyTakeHome: number;
   leftAfter1BR: number;
   leftAfter2BR: number;
+  leftAfter3BR: number;
   rent1BR: number;
   rent2BR: number;
+  rent3BR: number;
   colTotal: number;
   leftAfter1BRCol: number;
   leftAfter2BRCol: number;
+  leftAfter3BRCol: number;
   groceries: number;
   utilities: number;
   transportation: number;
   internet: number;
   insurance: number;
+  gasPerGallon: number;
 }
 
 type FilingStatus = 'single' | 'married';
@@ -85,12 +89,20 @@ const SS_RATE = 0.062;
 const SS_WAGE_BASE = 176100;
 const MEDICARE_RATE = 0.0145;
 
-const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number }> = {
-  'Sacramento, CA': { rent1BR: 1510, rent2BR: 1900 },
-  'Phoenix, AZ': { rent1BR: 1204, rent2BR: 1550 },
-  'Houston, TX': { rent1BR: 1150, rent2BR: 1500 },
-  'Hamilton Co, IN': { rent1BR: 1504, rent2BR: 1776 },
-  'Waterloo, IA': { rent1BR: 639, rent2BR: 825 },
+const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number; rent3BR: number }> = {
+  'Sacramento, CA': { rent1BR: 1510, rent2BR: 1900, rent3BR: 2400 },
+  'Phoenix, AZ': { rent1BR: 1204, rent2BR: 1550, rent3BR: 1950 },
+  'Houston, TX': { rent1BR: 1150, rent2BR: 1500, rent3BR: 1850 },
+  'Hamilton Co, IN': { rent1BR: 1504, rent2BR: 1776, rent3BR: 2100 },
+  'Waterloo, IA': { rent1BR: 639, rent2BR: 825, rent3BR: 1050 },
+};
+
+const GAS_DATA: Record<string, number> = {
+  'Sacramento, CA': 4.89,
+  'Phoenix, AZ': 3.45,
+  'Houston, TX': 2.89,
+  'Hamilton Co, IN': 3.25,
+  'Waterloo, IA': 3.15,
 };
 
 // Monthly cost-of-living estimates beyond rent (for 2 adults, budget-minded)
@@ -151,7 +163,7 @@ export default function TaxCalculator() {
   const [retirement401k, setRetirement401k] = useState(12);
   const [hsaAmount, setHsaAmount] = useState(4400);
   const [filing, setFiling] = useState<FilingStatus>('single');
-  const [rentView, setRentView] = useState<'1BR' | '2BR'>('1BR');
+  const [rentView, setRentView] = useState<'1BR' | '2BR' | '3BR'>('1BR');
 
   const results = useMemo<LocationResult[]>(() => {
     const locations = Object.keys(RENT_DATA);
@@ -165,9 +177,10 @@ export default function TaxCalculator() {
       const stateTax = calcStateTax(loc, salary, retirementAmt, hsaAmount, filing);
       const annualTakeHome = salary - retirementAmt - hsaAmount - federalTax - fica - stateTax;
       const monthlyTakeHome = annualTakeHome / 12;
-      const { rent1BR, rent2BR } = RENT_DATA[loc];
+      const { rent1BR, rent2BR, rent3BR } = RENT_DATA[loc];
       const col = COL_DATA[loc];
       const colTotal = col.groceries + col.utilities + col.transportation + col.internet + col.insurance;
+      const gasPerGallon = GAS_DATA[loc];
 
       return {
         name: loc,
@@ -175,26 +188,33 @@ export default function TaxCalculator() {
         monthlyTakeHome: Math.round(monthlyTakeHome),
         leftAfter1BR: Math.round(monthlyTakeHome - rent1BR),
         leftAfter2BR: Math.round(monthlyTakeHome - rent2BR),
+        leftAfter3BR: Math.round(monthlyTakeHome - rent3BR),
         rent1BR,
         rent2BR,
+        rent3BR,
         colTotal,
         leftAfter1BRCol: Math.round(monthlyTakeHome - rent1BR - colTotal),
         leftAfter2BRCol: Math.round(monthlyTakeHome - rent2BR - colTotal),
+        leftAfter3BRCol: Math.round(monthlyTakeHome - rent3BR - colTotal),
         groceries: col.groceries,
         utilities: col.utilities,
         transportation: col.transportation,
         internet: col.internet,
         insurance: col.insurance,
+        gasPerGallon,
       };
     }).sort((a, b) => b.leftAfter1BRCol - a.leftAfter1BRCol);
   }, [salary, retirement401k, hsaAmount, filing]);
 
   const bestLocation = results[0];
 
+  const getRentField = (r: LocationResult) => rentView === '1BR' ? r.leftAfter1BR : rentView === '2BR' ? r.leftAfter2BR : r.leftAfter3BR;
+  const getColField = (r: LocationResult) => rentView === '1BR' ? r.leftAfter1BRCol : rentView === '2BR' ? r.leftAfter2BRCol : r.leftAfter3BRCol;
+
   const chartData = results.map((r) => ({
     name: r.name.replace(', ', '\n'),
-    'Rent Only': rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR,
-    'All COL': rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol,
+    'Rent Only': getRentField(r),
+    'All COL': getColField(r),
   }));
 
   return (
@@ -338,6 +358,14 @@ export default function TaxCalculator() {
             >
               2BR
             </button>
+            <button
+              onClick={() => setRentView('3BR')}
+              className={`px-3 py-1.5 font-medium transition-colors border-l border-border ${
+                rentView === '3BR' ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:bg-muted/50'
+              }`}
+            >
+              3BR
+            </button>
           </div>
         </div>
         <div className="h-72">
@@ -398,7 +426,8 @@ export default function TaxCalculator() {
                   <span className="flex items-center justify-end gap-1"><Car className="w-3 h-3" />Transport</span>
                 </th>
                 <th className="text-right py-3 px-4 font-bold text-foreground">Internet</th>
-                <th className="text-right py-3 px-4 font-bold text-foreground">Insurance</th>
+                 <th className="text-right py-3 px-4 font-bold text-foreground">Insurance</th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">⛽ Gas/gal</th>
                 <th className="text-right py-3 px-4 font-bold text-foreground">Total</th>
               </tr>
             </thead>
@@ -416,6 +445,7 @@ export default function TaxCalculator() {
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.transportation}</td>
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.internet}</td>
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.insurance}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.gasPerGallon.toFixed(2)}</td>
                   <td className="text-right py-3 px-4 text-foreground font-semibold">${r.colTotal.toLocaleString()}</td>
                 </tr>
               ))}
@@ -442,9 +472,9 @@ export default function TaxCalculator() {
           </thead>
           <tbody>
             {results.map((r, i) => {
-              const rent = rentView === '1BR' ? r.rent1BR : r.rent2BR;
-              const afterRent = rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR;
-              const afterAll = rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol;
+              const rent = rentView === '1BR' ? r.rent1BR : rentView === '2BR' ? r.rent2BR : r.rent3BR;
+              const afterRent = getRentField(r);
+              const afterAll = getColField(r);
               return (
                 <tr
                   key={r.name}
@@ -474,7 +504,7 @@ export default function TaxCalculator() {
           <strong className="text-foreground">At ${salary.toLocaleString()}/year ({filing === 'married' ? 'MFJ' : 'Single'}):</strong>{' '}
           {bestLocation.name} gives you the most monthly surplus after rent + all living costs at{' '}
           <strong className="text-primary">
-            ${(rentView === '1BR' ? bestLocation.leftAfter1BRCol : bestLocation.leftAfter2BRCol).toLocaleString()}/mo
+            ${getColField(bestLocation).toLocaleString()}/mo
           </strong>{' '}
           ({rentView}).
         </p>
