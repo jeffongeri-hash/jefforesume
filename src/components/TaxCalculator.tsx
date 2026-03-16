@@ -472,9 +472,9 @@ export default function TaxCalculator() {
           </thead>
           <tbody>
             {results.map((r, i) => {
-              const rent = rentView === '1BR' ? r.rent1BR : r.rent2BR;
-              const afterRent = rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR;
-              const afterAll = rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol;
+              const rent = rentView === '1BR' ? r.rent1BR : rentView === '2BR' ? r.rent2BR : r.rent3BR;
+              const afterRent = getRentField(r);
+              const afterAll = getColField(r);
               return (
                 <tr
                   key={r.name}
