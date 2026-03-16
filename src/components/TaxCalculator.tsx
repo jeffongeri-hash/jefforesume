@@ -208,10 +208,13 @@ export default function TaxCalculator() {
 
   const bestLocation = results[0];
 
+  const getRentField = (r: LocationResult) => rentView === '1BR' ? r.leftAfter1BR : rentView === '2BR' ? r.leftAfter2BR : r.leftAfter3BR;
+  const getColField = (r: LocationResult) => rentView === '1BR' ? r.leftAfter1BRCol : rentView === '2BR' ? r.leftAfter2BRCol : r.leftAfter3BRCol;
+
   const chartData = results.map((r) => ({
     name: r.name.replace(', ', '\n'),
-    'Rent Only': rentView === '1BR' ? r.leftAfter1BR : r.leftAfter2BR,
-    'All COL': rentView === '1BR' ? r.leftAfter1BRCol : r.leftAfter2BRCol,
+    'Rent Only': getRentField(r),
+    'All COL': getColField(r),
   }));
 
   return (
