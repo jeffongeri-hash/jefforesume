@@ -27,6 +27,21 @@ const Accolades = () => {
       quote: "Very professional. Very concerned about my welfare.",
       type: "WLA Emergency Dept",
       score: "10/10 - Extremely likely"
+    },
+    {
+      quote: "Excellent care. Explained symptoms and treatment.",
+      type: "WLA Emergency Dept",
+      score: "10/10 - Extremely likely"
+    },
+    {
+      quote: "Very good experience considering my condition. I was very impressed with timely and thoughtful care given.",
+      type: "WLA Emergency Dept",
+      score: "9/10"
+    },
+    {
+      quote: "Great experience.",
+      type: "WLA Emergency Dept",
+      score: "10/10 - Extremely likely"
     }
   ];
 
