@@ -445,6 +445,7 @@ export default function TaxCalculator() {
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.transportation}</td>
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.internet}</td>
                   <td className="text-right py-3 px-4 text-muted-foreground">${r.insurance}</td>
+                  <td className="text-right py-3 px-4 text-muted-foreground">${r.gasPerGallon.toFixed(2)}</td>
                   <td className="text-right py-3 px-4 text-foreground font-semibold">${r.colTotal.toLocaleString()}</td>
                 </tr>
               ))}
