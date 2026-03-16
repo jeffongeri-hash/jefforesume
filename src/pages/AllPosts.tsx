@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Houston Suburb & TMC Neighborhood Guide: 3BR Housing, Commute & Monthly Budget",
+      category: "HEALTHCARE",
+      subcategory: "Career Planning",
+      date: "March 16, 2026",
+      excerpt: "A full breakdown of 15 Houston suburbs and TMC-adjacent neighborhoods ranked by 3BR rent, hospital commute, yard value, and monthly budget on a single PA income.",
+      image: houstonSuburbs,
+      slug: "houston-suburb-guide-3br-housing-tmc-commute",
+      tags: ["Relocation", "Houston", "Healthcare Careers"]
+    },
+    {
       title: "Phoenix Metro Suburb Guide: 3BR Housing, Hospital Commute & Neighborhood Breakdown",
       category: "HEALTHCARE",
       subcategory: "Career Planning",
