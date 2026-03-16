@@ -2834,6 +2834,11 @@ const BlogDetail = () => {
                 <SanJoseSuburbCalculator />
               )}
 
+              {/* Houston Suburb Calculator */}
+              {slug === 'houston-suburb-guide-3br-housing-tmc-commute' && (
+                <HoustonSuburbCalculator />
+              )}
+
               {/* PSLF Hospital Finder - only on finder post */}
               {slug === 'pslf-hospital-finder-by-city-zip' && (
                 <PSLFHospitalFinder />
