@@ -426,7 +426,8 @@ export default function TaxCalculator() {
                   <span className="flex items-center justify-end gap-1"><Car className="w-3 h-3" />Transport</span>
                 </th>
                 <th className="text-right py-3 px-4 font-bold text-foreground">Internet</th>
-                <th className="text-right py-3 px-4 font-bold text-foreground">Insurance</th>
+                 <th className="text-right py-3 px-4 font-bold text-foreground">Insurance</th>
+                <th className="text-right py-3 px-4 font-bold text-foreground">⛽ Gas/gal</th>
                 <th className="text-right py-3 px-4 font-bold text-foreground">Total</th>
               </tr>
             </thead>
