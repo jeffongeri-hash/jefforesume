@@ -504,7 +504,7 @@ export default function TaxCalculator() {
           <strong className="text-foreground">At ${salary.toLocaleString()}/year ({filing === 'married' ? 'MFJ' : 'Single'}):</strong>{' '}
           {bestLocation.name} gives you the most monthly surplus after rent + all living costs at{' '}
           <strong className="text-primary">
-            ${(rentView === '1BR' ? bestLocation.leftAfter1BRCol : bestLocation.leftAfter2BRCol).toLocaleString()}/mo
+            ${getColField(bestLocation).toLocaleString()}/mo
           </strong>{' '}
           ({rentView}).
         </p>
