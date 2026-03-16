@@ -2291,7 +2291,23 @@ const BlogDetail = () => {
 
               {/* Suburb Calculator - only on Sacramento suburbs post */}
               {slug === 'sacramento-suburb-guide-3br-housing-commute-budget' && (
-                <SuburbCalculator />
+                <>
+                  <SuburbCalculator />
+                  <div className="my-12 rounded-xl overflow-hidden border border-border shadow-sm">
+                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">📍 Sacramento Suburb Map</h3>
+                    <p className="text-sm text-muted-foreground px-6 pb-4">Interactive map of Sacramento-area suburbs, hospitals, and commute routes.</p>
+                    <iframe
+                      src="https://www.google.com/maps/d/u/0/embed?mid=1ioQvfo3cO-3tjZPJw0zr9b_rfl4-kbc"
+                      width="100%"
+                      height="480"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Sacramento Suburb Map"
+                    />
+                  </div>
+                </>
               )}
 
               {/* Phoenix Suburb Calculator */}
