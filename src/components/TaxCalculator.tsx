@@ -89,12 +89,20 @@ const SS_RATE = 0.062;
 const SS_WAGE_BASE = 176100;
 const MEDICARE_RATE = 0.0145;
 
-const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number }> = {
-  'Sacramento, CA': { rent1BR: 1510, rent2BR: 1900 },
-  'Phoenix, AZ': { rent1BR: 1204, rent2BR: 1550 },
-  'Houston, TX': { rent1BR: 1150, rent2BR: 1500 },
-  'Hamilton Co, IN': { rent1BR: 1504, rent2BR: 1776 },
-  'Waterloo, IA': { rent1BR: 639, rent2BR: 825 },
+const RENT_DATA: Record<string, { rent1BR: number; rent2BR: number; rent3BR: number }> = {
+  'Sacramento, CA': { rent1BR: 1510, rent2BR: 1900, rent3BR: 2400 },
+  'Phoenix, AZ': { rent1BR: 1204, rent2BR: 1550, rent3BR: 1950 },
+  'Houston, TX': { rent1BR: 1150, rent2BR: 1500, rent3BR: 1850 },
+  'Hamilton Co, IN': { rent1BR: 1504, rent2BR: 1776, rent3BR: 2100 },
+  'Waterloo, IA': { rent1BR: 639, rent2BR: 825, rent3BR: 1050 },
+};
+
+const GAS_DATA: Record<string, number> = {
+  'Sacramento, CA': 4.89,
+  'Phoenix, AZ': 3.45,
+  'Houston, TX': 2.89,
+  'Hamilton Co, IN': 3.25,
+  'Waterloo, IA': 3.15,
 };
 
 // Monthly cost-of-living estimates beyond rent (for 2 adults, budget-minded)
