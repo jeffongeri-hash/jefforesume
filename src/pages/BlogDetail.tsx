@@ -2662,7 +2662,282 @@ const blogPosts = {
 
       <p><strong>Blunt shortlist: Pearland, Bellaire, Sugar Land, and Katy.</strong></p>
 
-      <p class="text-sm text-muted-foreground italic mt-6">Rent figures from Zillow and RentCafe. Commute estimates from Rome2Rio and Travelmath. Texas has no state income tax. Budget model uses Walmart-based grocery pricing and Houston utility rate estimates.</p>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Houston ER PA Salary Signals</h2>
+
+      <p>ER PA salary usually does not change by neighborhood inside the same metro. The meaningful differences come from employer, acuity, trauma level, schedule, nights/weekends, and whether the figure is base pay vs total comp. That's why I'm using Houston-market salary signals for all neighborhoods rather than pretending Bellaire pays differently than Montrose.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Salary Signal</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Amount</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">How I'd Use It</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston EM PA, Glassdoor median total pay</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$215,123/yr</td>
+              <td class="py-3 px-3 text-muted-foreground">High-end market signal; likely includes total comp</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston EM PA, Glassdoor 25th–75th pctl</td>
+              <td class="text-right py-3 px-3 text-foreground">$161K–$290K</td>
+              <td class="py-3 px-3 text-muted-foreground">Useful ceiling/floor range, too wide for budgeting</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">UTHealth Houston EM PA, Glassdoor avg</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$218,597/yr</td>
+              <td class="py-3 px-3 text-muted-foreground">TMC academic EM signal; likely total comp</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">UTHealth Houston EM PA, 25th–75th pctl</td>
+              <td class="text-right py-3 px-3 text-foreground">$164K–$294K</td>
+              <td class="py-3 px-3 text-muted-foreground">Academic/EM comp variability</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston PA, Indeed city average</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$124,974/yr</td>
+              <td class="py-3 px-3 text-muted-foreground">Better anchor for conservative budgeting</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 text-muted-foreground">Houston Methodist PA, Indeed avg</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$132,937/yr</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong large-system anchor</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 text-muted-foreground">HCA Healthcare PA, Indeed avg (Houston)</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$120,759/yr</td>
+              <td class="py-3 px-3 text-muted-foreground">Another conservative employer anchor</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-muted-foreground italic">Sources: Glassdoor Houston emergency medicine PA pages, Indeed Houston / Houston Methodist / HCA averages.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">My Blunt Salary Underwriting Number</h3>
+
+      <ul class="list-disc pl-6 my-4">
+        <li><strong>Conservative base-pay planning:</strong> $125k–$140k</li>
+        <li><strong>Reasonable target (stronger EM role/system):</strong> $135k–$155k</li>
+        <li><strong>Glassdoor total comp signal:</strong> ~$215k median — don't budget your life around this until you have a real offer in hand</li>
+      </ul>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Moving Expenses: Waterloo, Iowa → Houston</h2>
+
+      <p>The Waterloo→Houston move is about <strong>1,063 driving miles</strong> (~16 hours 58 minutes), with Travelmath estimating about $106 in fuel. For the truck itself, current long-distance references put rental-truck moves around $4,620 on average and long-distance moving-company moves around $6,300 for a 2–3 bedroom household. Texas has no statewide cap on security deposit amounts — I used one month's rent as a planning deposit, but some landlords may ask for more.</p>
+
+      <p class="mt-4"><strong>Method:</strong> Minimum cash = first month's rent + 1 month deposit + $350 utility/internet setup + $4,620 rental truck + $106 fuel. Safer cash adds $1,500 for first-month groceries/utilities/other buffer.</p>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Suburbs & Close-In Residential</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Housing Figure</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash to Move</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Pearland</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,399</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,875</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,375</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Sugar Land</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,375</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,875</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Katy</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,045</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,175</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,675</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Cypress</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,277</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,640</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,140</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Spring</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,850</td>
+              <td class="text-right py-3 px-3 text-foreground">$8,790</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,290</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">The Woodlands</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,400</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,880</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,380</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">League City / Clear Lake</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,150</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,380</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,880</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Bellaire</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,500</td>
+              <td class="text-right py-3 px-3 text-foreground">$10,080</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,580</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">TMC / Inner-Loop Neighborhoods</h3>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Housing Figure</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Min Cash to Move</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Safer Cash</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">West U / University Place</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$3,575</td>
+              <td class="text-right py-3 px-3 text-foreground">$12,230</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$13,730</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Museum District</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,356</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,790</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,290</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Medical Center</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,181</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,435</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,935</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Montrose / Neartown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$2,281</td>
+              <td class="text-right py-3 px-3 text-foreground">$9,640</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$11,140</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Upper Kirby / Greenway</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,938</td>
+              <td class="text-right py-3 px-3 text-foreground">$8,950</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,450</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Washington Ave / Memorial Park</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,866</td>
+              <td class="text-right py-3 px-3 text-foreground">$8,810</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$10,310</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Midtown</td>
+              <td class="text-right py-3 px-3 text-muted-foreground">$1,694</td>
+              <td class="text-right py-3 px-3 text-foreground">$8,470</td>
+              <td class="text-right py-3 px-3 font-semibold text-foreground">$9,970</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">TMC Hospitals Likely PSLF-Eligible</h2>
+
+      <p>PSLF is based on your <strong>employer</strong>, not the building you work in. Even if you work in a qualifying hospital, you may not qualify if you're employed by a separate for-profit staffing group or contract management company. Always confirm the exact employer/EIN with the <a href="https://studentaid.gov/manage-loans/forgiveness-cancellation/public-service/questions" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">federal PSLF Help Tool</a>.</p>
+
+      <div class="overflow-x-auto my-8">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-foreground/20">
+              <th class="text-left py-3 px-3 font-bold text-foreground">TMC Hospital</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Why It Likely Qualifies</th>
+              <th class="text-left py-3 px-3 font-bold text-foreground">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Ben Taub Hospital</td>
+              <td class="py-3 px-3 text-muted-foreground">Harris Health — public hospital district</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong PSLF candidate if paycheck is from Harris Health</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Lyndon B. Johnson Hospital</td>
+              <td class="py-3 px-3 text-muted-foreground">Harris Health — public hospital district</td>
+              <td class="py-3 px-3 text-muted-foreground">Same caution: qualifies if employed by Harris Health</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Memorial Hermann – TMC</td>
+              <td class="py-3 px-3 text-muted-foreground">Non-profit, community-owned health system</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong PSLF candidate if employed by Memorial Hermann</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Children's Memorial Hermann</td>
+              <td class="py-3 px-3 text-muted-foreground">Memorial Hermann nonprofit system</td>
+              <td class="py-3 px-3 text-muted-foreground">Likely qualifying if hired by Memorial Hermann</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">TIRR Memorial Hermann</td>
+              <td class="py-3 px-3 text-muted-foreground">Memorial Hermann nonprofit system</td>
+              <td class="py-3 px-3 text-muted-foreground">More rehab-focused; qualifying if employer is Memorial Hermann</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Houston Methodist Hospital</td>
+              <td class="py-3 px-3 text-muted-foreground">Nonprofit academic medical center</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong PSLF candidate; verify exact employing entity</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Baylor St. Luke's Medical Center</td>
+              <td class="py-3 px-3 text-muted-foreground">501(c)(3) nonprofit</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong PSLF candidate if employer is that nonprofit entity</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Texas Children's Hospital</td>
+              <td class="py-3 px-3 text-muted-foreground">Charitable 501(c)(3) organization</td>
+              <td class="py-3 px-3 text-muted-foreground">Strong PSLF candidate</td>
+            </tr>
+            <tr class="border-b border-foreground/10 bg-accent/10">
+              <td class="py-3 px-3 font-semibold text-foreground">UT MD Anderson Cancer Center</td>
+              <td class="py-3 px-3 text-muted-foreground">University of Texas System</td>
+              <td class="py-3 px-3 text-muted-foreground">Public university-system employment — PSLF-qualifying</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Michael E. DeBakey VA Medical Center</td>
+              <td class="py-3 px-3 text-muted-foreground">Federal VA facility</td>
+              <td class="py-3 px-3 text-muted-foreground">Federal government — PSLF-qualifying</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Highest-Confidence PSLF Employers in TMC</h3>
+
+      <ol class="list-decimal pl-6 my-4">
+        <li><strong>Harris Health:</strong> Ben Taub and LBJ</li>
+        <li><strong>UT MD Anderson</strong></li>
+        <li><strong>Michael E. DeBakey VA</strong></li>
+        <li><strong>Texas Children's</strong></li>
+        <li><strong>Memorial Hermann</strong></li>
+      </ol>
+
+      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Important Caution for PA Jobs</h3>
+
+      <p>If you are hired <strong>directly</strong> by Harris Health, Memorial Hermann, Texas Children's, UT, or the VA, that is usually the clean PSLF scenario. If you staff the ED through a separate physician group, CMG, or outsourced employer, <strong>PSLF may not count</strong> — even if you physically work at Ben Taub or Memorial Hermann.</p>
+
+      <p class="text-sm text-muted-foreground italic mt-6">Rent figures from Zillow and RentCafe. Commute estimates from Rome2Rio and Travelmath. Salary signals from Glassdoor and Indeed. Texas has no state income tax. Budget model uses Walmart-based grocery pricing and Houston utility rate estimates.</p>
     `
   },
   "default": {
@@ -2841,9 +3116,12 @@ const BlogDetail = () => {
                 <SanJoseSuburbCalculator />
               )}
 
-              {/* Houston Suburb Calculator */}
+              {/* Houston Suburb Calculator + PSLF Finder */}
               {slug === 'houston-suburb-guide-3br-housing-tmc-commute' && (
-                <HoustonSuburbCalculator />
+                <>
+                  <HoustonSuburbCalculator />
+                  <PSLFHospitalFinder />
+                </>
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}
