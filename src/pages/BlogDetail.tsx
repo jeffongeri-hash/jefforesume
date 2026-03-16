@@ -2679,6 +2679,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "Houston Suburb & TMC Neighborhood Guide",
+    category: "HEALTHCARE",
+    date: "March 16, 2026",
+    image: houstonSuburbs,
+    slug: "houston-suburb-guide-3br-housing-tmc-commute"
+  },
+  {
     title: "Phoenix Metro Suburb Guide: 3BR Housing & Neighborhoods",
     category: "HEALTHCARE",
     date: "March 15, 2026",
