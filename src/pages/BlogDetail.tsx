@@ -3157,14 +3157,14 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your San Jose Search"
                     listings={[
-                      { name: "Campbell", url: "https://www.zillow.com/campbell-ca/rentals/3-_beds/", rent: "~$4,100/mo", ring: "Core" },
-                      { name: "Santa Clara", url: "https://www.zillow.com/santa-clara-ca/rentals/3-_beds/", rent: "~$4,900/mo", ring: "Core" },
-                      { name: "Los Gatos", url: "https://www.zillow.com/los-gatos-ca/rentals/3-_beds/", rent: "~$5,000/mo", ring: "Core" },
-                      { name: "Milpitas", url: "https://www.zillow.com/milpitas-ca/rentals/3-_beds/", rent: "~$4,300/mo", ring: "Inner" },
-                      { name: "Sunnyvale", url: "https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/", rent: "~$4,800/mo", ring: "Inner" },
-                      { name: "Cupertino", url: "https://www.zillow.com/cupertino-ca/rentals/3-_beds/", rent: "~$5,200/mo", ring: "Inner" },
-                      { name: "Mountain View", url: "https://www.zillow.com/mountain-view-ca/rentals/3-_beds/", rent: "~$5,100/mo", ring: "Outer" },
-                      { name: "Morgan Hill", url: "https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/", rent: "~$3,600/mo", ring: "Outer" },
+                      { name: "Campbell", url: "https://www.zillow.com/campbell-ca/rentals/3-_beds/", rent: "~$4,100", ring: "Core", commute: "12 min", vibe: "Walkable downtown", highlight: "Best walkability" },
+                      { name: "Santa Clara", url: "https://www.zillow.com/santa-clara-ca/rentals/3-_beds/", rent: "~$4,900", ring: "Core", commute: "10 min", vibe: "Near hospitals" },
+                      { name: "Los Gatos", url: "https://www.zillow.com/los-gatos-ca/rentals/3-_beds/", rent: "~$5,000", ring: "Core", commute: "18 min", vibe: "Charming village" },
+                      { name: "Milpitas", url: "https://www.zillow.com/milpitas-ca/rentals/3-_beds/", rent: "~$4,300", ring: "Inner", commute: "15 min", vibe: "Diverse & growing", highlight: "Good value" },
+                      { name: "Sunnyvale", url: "https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/", rent: "~$4,800", ring: "Inner", commute: "14 min", vibe: "Tech hub" },
+                      { name: "Cupertino", url: "https://www.zillow.com/cupertino-ca/rentals/3-_beds/", rent: "~$5,200", ring: "Inner", commute: "16 min", vibe: "Top schools", highlight: "#1 school district" },
+                      { name: "Mountain View", url: "https://www.zillow.com/mountain-view-ca/rentals/3-_beds/", rent: "~$5,100", ring: "Outer", commute: "20 min", vibe: "Caltrain access" },
+                      { name: "Morgan Hill", url: "https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/", rent: "~$3,600", ring: "Outer", commute: "30 min", vibe: "Wine country", highlight: "Most affordable" },
                     ]}
                   />
                 </>
