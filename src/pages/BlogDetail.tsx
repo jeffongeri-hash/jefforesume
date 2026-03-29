@@ -3140,11 +3140,11 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your Phoenix Search"
                     listings={[
-                      { name: "Phoenix", url: "https://www.zillow.com/phoenix-az/rentals/3-_beds/", rent: "$1,800–$2,200/mo" },
-                      { name: "Mesa", url: "https://www.zillow.com/mesa-az/rentals/3-_beds/", rent: "$1,900–$2,300/mo" },
-                      { name: "Chandler", url: "https://www.zillow.com/chandler-az/rentals/3-_beds/", rent: "$2,100–$2,500/mo" },
-                      { name: "Scottsdale", url: "https://www.zillow.com/scottsdale-az/rentals/3-_beds/", rent: "$2,400–$3,000/mo" },
-                      { name: "Glendale", url: "https://www.zillow.com/glendale-az/rentals/3-_beds/", rent: "$1,700–$2,100/mo" },
+                      { name: "Phoenix", url: "https://www.zillow.com/phoenix-az/rentals/3-_beds/", rent: "$1,800–$2,200", commute: "20 min", vibe: "Urban core", highlight: "Most options" },
+                      { name: "Mesa", url: "https://www.zillow.com/mesa-az/rentals/3-_beds/", rent: "$1,900–$2,300", commute: "25 min", vibe: "Affordable sprawl" },
+                      { name: "Chandler", url: "https://www.zillow.com/chandler-az/rentals/3-_beds/", rent: "$2,100–$2,500", commute: "28 min", vibe: "Tech corridor", highlight: "Top-rated schools" },
+                      { name: "Scottsdale", url: "https://www.zillow.com/scottsdale-az/rentals/3-_beds/", rent: "$2,400–$3,000", commute: "22 min", vibe: "Upscale dining" },
+                      { name: "Glendale", url: "https://www.zillow.com/glendale-az/rentals/3-_beds/", rent: "$1,700–$2,100", commute: "18 min", vibe: "Budget pick", highlight: "Lowest rents" },
                     ]}
                   />
                 </>
