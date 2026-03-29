@@ -13,6 +13,7 @@ import PhoenixSuburbCalculator from '@/components/PhoenixSuburbCalculator';
 import SanJoseSuburbCalculator from '@/components/SanJoseSuburbCalculator';
 import HoustonSuburbCalculator from '@/components/HoustonSuburbCalculator';
 import PSLFHospitalFinder from '@/components/PSLFHospitalFinder';
+import ZillowCards from '@/components/ZillowCards';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
@@ -1583,18 +1584,7 @@ const blogPosts = {
         <li><strong>Mountain View</strong> — Only makes sense for El Camino, worst value</li>
       </ol>
 
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Housing Links: Zillow 3BR Rentals</h2>
-
-      <ul class="list-disc pl-6 my-4">
-        <li><a href="https://www.zillow.com/campbell-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Campbell 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/santa-clara-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Santa Clara 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/milpitas-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Milpitas 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/cupertino-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Cupertino 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/los-gatos-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Los Gatos 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Sunnyvale 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/mountain-view-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Mountain View 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Morgan Hill 3BR rentals</a></li>
-      </ul>
+      <div id="zillow-cards-placeholder"></div>
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
 
@@ -2138,15 +2128,7 @@ const blogPosts = {
         <li><strong>Scottsdale</strong> — the fun premium play, but the weakest value</li>
       </ol>
 
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Housing Links</h2>
-
-      <ul class="list-disc pl-6 my-4">
-        <li><a href="https://www.zillow.com/phoenix-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Phoenix 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/mesa-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Mesa 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/chandler-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Chandler 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/scottsdale-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Scottsdale 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/glendale-az/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Glendale 3BR rentals</a></li>
-      </ul>
+      <div id="zillow-cards-placeholder"></div>
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
 
