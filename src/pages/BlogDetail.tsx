@@ -3117,18 +3117,18 @@ const BlogDetail = () => {
                 <ZillowCards
                   title="Start Your Sacramento Search"
                   listings={[
-                    { name: "Roseville", url: "https://www.zillow.com/roseville-ca/rentals/3-_beds/", rent: "$2,850–$3,050/mo", ring: "Ring 1" },
-                    { name: "Folsom", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "$3,000–$3,200/mo", ring: "Ring 1" },
-                    { name: "El Dorado Hills", url: "https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/", rent: "$3,450–$3,800/mo", ring: "Ring 1" },
-                    { name: "Citrus Heights", url: "https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/", rent: "~$2,450/mo", ring: "Ring 2" },
-                    { name: "Rancho Cordova", url: "https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/", rent: "~$2,700/mo", ring: "Ring 2" },
-                    { name: "Elk Grove", url: "https://www.zillow.com/elk-grove-ca/rentals/3-_beds/", rent: "~$2,733/mo", ring: "Ring 2" },
-                    { name: "Rocklin", url: "https://www.zillow.com/rocklin-ca/rentals/3-_beds/", rent: "~$2,800/mo", ring: "Ring 2" },
-                    { name: "Lincoln", url: "https://www.zillow.com/lincoln-ca/rentals/3-_beds/", rent: "~$2,895/mo", ring: "Ring 2" },
-                    { name: "Granite Bay", url: "https://www.zillow.com/granite-bay-ca/rentals/", rent: "~$3,895/mo", ring: "Ring 2" },
-                    { name: "Auburn", url: "https://www.zillow.com/auburn-ca/rentals/3-_beds/", rent: "~$2,950/mo", ring: "Ring 3" },
-                    { name: "Folsom Ranch", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "~$2,999/mo", ring: "Ring 3" },
-                    { name: "Cameron Park", url: "https://www.zillow.com/cameron-park-ca/rentals/3-_beds/", rent: "$2,700–$3,000/mo", ring: "Ring 3" },
+                    { name: "Roseville", url: "https://www.zillow.com/roseville-ca/rentals/3-_beds/", rent: "$2,850–$3,050", ring: "Ring 1", commute: "24 min", vibe: "Family-friendly", highlight: "Best overall value" },
+                    { name: "Folsom", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "$3,000–$3,200", ring: "Ring 1", commute: "28 min", vibe: "Trails & lakes", highlight: "Top school districts" },
+                    { name: "El Dorado Hills", url: "https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/", rent: "$3,450–$3,800", ring: "Ring 1", commute: "32 min", vibe: "Upscale suburban", highlight: "Premium feel" },
+                    { name: "Citrus Heights", url: "https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/", rent: "~$2,450", ring: "Ring 2", commute: "18 min", vibe: "Budget-friendly" },
+                    { name: "Rancho Cordova", url: "https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/", rent: "~$2,700", ring: "Ring 2", commute: "15 min", vibe: "Close to downtown" },
+                    { name: "Elk Grove", url: "https://www.zillow.com/elk-grove-ca/rentals/3-_beds/", rent: "~$2,733", ring: "Ring 2", commute: "22 min", vibe: "Diverse community" },
+                    { name: "Rocklin", url: "https://www.zillow.com/rocklin-ca/rentals/3-_beds/", rent: "~$2,800", ring: "Ring 2", commute: "30 min", vibe: "Great schools", highlight: "Rocklin USD" },
+                    { name: "Lincoln", url: "https://www.zillow.com/lincoln-ca/rentals/3-_beds/", rent: "~$2,895", ring: "Ring 2", commute: "38 min", vibe: "New construction" },
+                    { name: "Granite Bay", url: "https://www.zillow.com/granite-bay-ca/rentals/", rent: "~$3,895", ring: "Ring 2", commute: "26 min", vibe: "Affluent, quiet" },
+                    { name: "Auburn", url: "https://www.zillow.com/auburn-ca/rentals/3-_beds/", rent: "~$2,950", ring: "Ring 3", commute: "42 min", vibe: "Foothill charm" },
+                    { name: "Folsom Ranch", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "~$2,999", ring: "Ring 3", commute: "30 min", vibe: "Brand new builds" },
+                    { name: "Cameron Park", url: "https://www.zillow.com/cameron-park-ca/rentals/3-_beds/", rent: "$2,700–$3,000", ring: "Ring 3", commute: "35 min", vibe: "Rural-suburban" },
                   ]}
                 />
               )}
