@@ -3177,15 +3177,15 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your Houston Search"
                     listings={[
-                      { name: "Pearland", url: "https://www.zillow.com/pearland-tx/rentals/3-_beds/", rent: "$1,800–$2,200/mo", ring: "Suburb" },
-                      { name: "Sugar Land", url: "https://www.zillow.com/sugar-land-tx/rentals/3-_beds/", rent: "$2,000–$2,500/mo", ring: "Suburb" },
-                      { name: "Katy", url: "https://www.zillow.com/katy-tx/rentals/3-_beds/", rent: "$1,800–$2,300/mo", ring: "Suburb" },
-                      { name: "League City", url: "https://www.zillow.com/league-city-tx/rentals/3-_beds/", rent: "$1,900–$2,400/mo", ring: "Suburb" },
-                      { name: "The Woodlands", url: "https://www.zillow.com/the-woodlands-tx/rentals/3-_beds/", rent: "$2,200–$2,800/mo", ring: "Suburb" },
-                      { name: "Bellaire", url: "https://www.zillow.com/bellaire-tx/rentals/3-_beds/", rent: "$2,500–$3,200/mo", ring: "Close-In" },
-                      { name: "Montrose", url: "https://www.zillow.com/montrose-houston-tx/rentals/3-_beds/", rent: "$2,000–$2,600/mo", ring: "Close-In" },
-                      { name: "Medical Center", url: "https://www.zillow.com/medical-center-houston-tx/rentals/3-_beds/", rent: "$1,600–$2,200/mo", ring: "Close-In" },
-                      { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000/mo", ring: "Close-In" },
+                      { name: "Pearland", url: "https://www.zillow.com/pearland-tx/rentals/3-_beds/", rent: "$1,800–$2,200", ring: "Suburb", commute: "25 min to TMC", vibe: "Family suburb", highlight: "Best for families" },
+                      { name: "Sugar Land", url: "https://www.zillow.com/sugar-land-tx/rentals/3-_beds/", rent: "$2,000–$2,500", ring: "Suburb", commute: "28 min to TMC", vibe: "Master-planned", highlight: "Fort Bend ISD" },
+                      { name: "Katy", url: "https://www.zillow.com/katy-tx/rentals/3-_beds/", rent: "$1,800–$2,300", ring: "Suburb", commute: "35 min to TMC", vibe: "New builds" },
+                      { name: "League City", url: "https://www.zillow.com/league-city-tx/rentals/3-_beds/", rent: "$1,900–$2,400", ring: "Suburb", commute: "30 min to TMC", vibe: "Coastal feel" },
+                      { name: "The Woodlands", url: "https://www.zillow.com/the-woodlands-tx/rentals/3-_beds/", rent: "$2,200–$2,800", ring: "Suburb", commute: "40 min to TMC", vibe: "Wooded luxury" },
+                      { name: "Bellaire", url: "https://www.zillow.com/bellaire-tx/rentals/3-_beds/", rent: "$2,500–$3,200", ring: "Close-In", commute: "10 min to TMC", vibe: "Upscale enclave", highlight: "Shortest commute" },
+                      { name: "Montrose", url: "https://www.zillow.com/montrose-houston-tx/rentals/3-_beds/", rent: "$2,000–$2,600", ring: "Close-In", commute: "12 min to TMC", vibe: "Artsy & walkable" },
+                      { name: "Medical Center", url: "https://www.zillow.com/medical-center-houston-tx/rentals/3-_beds/", rent: "$1,600–$2,200", ring: "Close-In", commute: "5 min to TMC", vibe: "Walk to work", highlight: "Zero commute" },
+                      { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000", ring: "Close-In", commute: "8 min to TMC", vibe: "Nightlife hub", highlight: "Lowest rents" },
                     ]}
                   />
                   <PSLFHospitalFinder />
