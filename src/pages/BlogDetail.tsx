@@ -3117,18 +3117,18 @@ const BlogDetail = () => {
                 <ZillowCards
                   title="Start Your Sacramento Search"
                   listings={[
-                    { name: "Roseville", url: "https://www.zillow.com/roseville-ca/rentals/3-_beds/", rent: "$2,850–$3,050/mo", ring: "Ring 1" },
-                    { name: "Folsom", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "$3,000–$3,200/mo", ring: "Ring 1" },
-                    { name: "El Dorado Hills", url: "https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/", rent: "$3,450–$3,800/mo", ring: "Ring 1" },
-                    { name: "Citrus Heights", url: "https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/", rent: "~$2,450/mo", ring: "Ring 2" },
-                    { name: "Rancho Cordova", url: "https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/", rent: "~$2,700/mo", ring: "Ring 2" },
-                    { name: "Elk Grove", url: "https://www.zillow.com/elk-grove-ca/rentals/3-_beds/", rent: "~$2,733/mo", ring: "Ring 2" },
-                    { name: "Rocklin", url: "https://www.zillow.com/rocklin-ca/rentals/3-_beds/", rent: "~$2,800/mo", ring: "Ring 2" },
-                    { name: "Lincoln", url: "https://www.zillow.com/lincoln-ca/rentals/3-_beds/", rent: "~$2,895/mo", ring: "Ring 2" },
-                    { name: "Granite Bay", url: "https://www.zillow.com/granite-bay-ca/rentals/", rent: "~$3,895/mo", ring: "Ring 2" },
-                    { name: "Auburn", url: "https://www.zillow.com/auburn-ca/rentals/3-_beds/", rent: "~$2,950/mo", ring: "Ring 3" },
-                    { name: "Folsom Ranch", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "~$2,999/mo", ring: "Ring 3" },
-                    { name: "Cameron Park", url: "https://www.zillow.com/cameron-park-ca/rentals/3-_beds/", rent: "$2,700–$3,000/mo", ring: "Ring 3" },
+                    { name: "Roseville", url: "https://www.zillow.com/roseville-ca/rentals/3-_beds/", rent: "$2,850–$3,050", ring: "Ring 1", commute: "24 min", vibe: "Family-friendly", highlight: "Best overall value" },
+                    { name: "Folsom", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "$3,000–$3,200", ring: "Ring 1", commute: "28 min", vibe: "Trails & lakes", highlight: "Top school districts" },
+                    { name: "El Dorado Hills", url: "https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/", rent: "$3,450–$3,800", ring: "Ring 1", commute: "32 min", vibe: "Upscale suburban", highlight: "Premium feel" },
+                    { name: "Citrus Heights", url: "https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/", rent: "~$2,450", ring: "Ring 2", commute: "18 min", vibe: "Budget-friendly" },
+                    { name: "Rancho Cordova", url: "https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/", rent: "~$2,700", ring: "Ring 2", commute: "15 min", vibe: "Close to downtown" },
+                    { name: "Elk Grove", url: "https://www.zillow.com/elk-grove-ca/rentals/3-_beds/", rent: "~$2,733", ring: "Ring 2", commute: "22 min", vibe: "Diverse community" },
+                    { name: "Rocklin", url: "https://www.zillow.com/rocklin-ca/rentals/3-_beds/", rent: "~$2,800", ring: "Ring 2", commute: "30 min", vibe: "Great schools", highlight: "Rocklin USD" },
+                    { name: "Lincoln", url: "https://www.zillow.com/lincoln-ca/rentals/3-_beds/", rent: "~$2,895", ring: "Ring 2", commute: "38 min", vibe: "New construction" },
+                    { name: "Granite Bay", url: "https://www.zillow.com/granite-bay-ca/rentals/", rent: "~$3,895", ring: "Ring 2", commute: "26 min", vibe: "Affluent, quiet" },
+                    { name: "Auburn", url: "https://www.zillow.com/auburn-ca/rentals/3-_beds/", rent: "~$2,950", ring: "Ring 3", commute: "42 min", vibe: "Foothill charm" },
+                    { name: "Folsom Ranch", url: "https://www.zillow.com/folsom-ca/rentals/3-_beds/", rent: "~$2,999", ring: "Ring 3", commute: "30 min", vibe: "Brand new builds" },
+                    { name: "Cameron Park", url: "https://www.zillow.com/cameron-park-ca/rentals/3-_beds/", rent: "$2,700–$3,000", ring: "Ring 3", commute: "35 min", vibe: "Rural-suburban" },
                   ]}
                 />
               )}
@@ -3140,11 +3140,11 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your Phoenix Search"
                     listings={[
-                      { name: "Phoenix", url: "https://www.zillow.com/phoenix-az/rentals/3-_beds/", rent: "$1,800–$2,200/mo" },
-                      { name: "Mesa", url: "https://www.zillow.com/mesa-az/rentals/3-_beds/", rent: "$1,900–$2,300/mo" },
-                      { name: "Chandler", url: "https://www.zillow.com/chandler-az/rentals/3-_beds/", rent: "$2,100–$2,500/mo" },
-                      { name: "Scottsdale", url: "https://www.zillow.com/scottsdale-az/rentals/3-_beds/", rent: "$2,400–$3,000/mo" },
-                      { name: "Glendale", url: "https://www.zillow.com/glendale-az/rentals/3-_beds/", rent: "$1,700–$2,100/mo" },
+                      { name: "Phoenix", url: "https://www.zillow.com/phoenix-az/rentals/3-_beds/", rent: "$1,800–$2,200", commute: "20 min", vibe: "Urban core", highlight: "Most options" },
+                      { name: "Mesa", url: "https://www.zillow.com/mesa-az/rentals/3-_beds/", rent: "$1,900–$2,300", commute: "25 min", vibe: "Affordable sprawl" },
+                      { name: "Chandler", url: "https://www.zillow.com/chandler-az/rentals/3-_beds/", rent: "$2,100–$2,500", commute: "28 min", vibe: "Tech corridor", highlight: "Top-rated schools" },
+                      { name: "Scottsdale", url: "https://www.zillow.com/scottsdale-az/rentals/3-_beds/", rent: "$2,400–$3,000", commute: "22 min", vibe: "Upscale dining" },
+                      { name: "Glendale", url: "https://www.zillow.com/glendale-az/rentals/3-_beds/", rent: "$1,700–$2,100", commute: "18 min", vibe: "Budget pick", highlight: "Lowest rents" },
                     ]}
                   />
                 </>
@@ -3157,14 +3157,14 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your San Jose Search"
                     listings={[
-                      { name: "Campbell", url: "https://www.zillow.com/campbell-ca/rentals/3-_beds/", rent: "~$4,100/mo", ring: "Core" },
-                      { name: "Santa Clara", url: "https://www.zillow.com/santa-clara-ca/rentals/3-_beds/", rent: "~$4,900/mo", ring: "Core" },
-                      { name: "Los Gatos", url: "https://www.zillow.com/los-gatos-ca/rentals/3-_beds/", rent: "~$5,000/mo", ring: "Core" },
-                      { name: "Milpitas", url: "https://www.zillow.com/milpitas-ca/rentals/3-_beds/", rent: "~$4,300/mo", ring: "Inner" },
-                      { name: "Sunnyvale", url: "https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/", rent: "~$4,800/mo", ring: "Inner" },
-                      { name: "Cupertino", url: "https://www.zillow.com/cupertino-ca/rentals/3-_beds/", rent: "~$5,200/mo", ring: "Inner" },
-                      { name: "Mountain View", url: "https://www.zillow.com/mountain-view-ca/rentals/3-_beds/", rent: "~$5,100/mo", ring: "Outer" },
-                      { name: "Morgan Hill", url: "https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/", rent: "~$3,600/mo", ring: "Outer" },
+                      { name: "Campbell", url: "https://www.zillow.com/campbell-ca/rentals/3-_beds/", rent: "~$4,100", ring: "Core", commute: "12 min", vibe: "Walkable downtown", highlight: "Best walkability" },
+                      { name: "Santa Clara", url: "https://www.zillow.com/santa-clara-ca/rentals/3-_beds/", rent: "~$4,900", ring: "Core", commute: "10 min", vibe: "Near hospitals" },
+                      { name: "Los Gatos", url: "https://www.zillow.com/los-gatos-ca/rentals/3-_beds/", rent: "~$5,000", ring: "Core", commute: "18 min", vibe: "Charming village" },
+                      { name: "Milpitas", url: "https://www.zillow.com/milpitas-ca/rentals/3-_beds/", rent: "~$4,300", ring: "Inner", commute: "15 min", vibe: "Diverse & growing", highlight: "Good value" },
+                      { name: "Sunnyvale", url: "https://www.zillow.com/sunnyvale-ca/rentals/3-_beds/", rent: "~$4,800", ring: "Inner", commute: "14 min", vibe: "Tech hub" },
+                      { name: "Cupertino", url: "https://www.zillow.com/cupertino-ca/rentals/3-_beds/", rent: "~$5,200", ring: "Inner", commute: "16 min", vibe: "Top schools", highlight: "#1 school district" },
+                      { name: "Mountain View", url: "https://www.zillow.com/mountain-view-ca/rentals/3-_beds/", rent: "~$5,100", ring: "Outer", commute: "20 min", vibe: "Caltrain access" },
+                      { name: "Morgan Hill", url: "https://www.zillow.com/morgan-hill-ca/rentals/3-_beds/", rent: "~$3,600", ring: "Outer", commute: "30 min", vibe: "Wine country", highlight: "Most affordable" },
                     ]}
                   />
                 </>
@@ -3177,15 +3177,15 @@ const BlogDetail = () => {
                   <ZillowCards
                     title="Start Your Houston Search"
                     listings={[
-                      { name: "Pearland", url: "https://www.zillow.com/pearland-tx/rentals/3-_beds/", rent: "$1,800–$2,200/mo", ring: "Suburb" },
-                      { name: "Sugar Land", url: "https://www.zillow.com/sugar-land-tx/rentals/3-_beds/", rent: "$2,000–$2,500/mo", ring: "Suburb" },
-                      { name: "Katy", url: "https://www.zillow.com/katy-tx/rentals/3-_beds/", rent: "$1,800–$2,300/mo", ring: "Suburb" },
-                      { name: "League City", url: "https://www.zillow.com/league-city-tx/rentals/3-_beds/", rent: "$1,900–$2,400/mo", ring: "Suburb" },
-                      { name: "The Woodlands", url: "https://www.zillow.com/the-woodlands-tx/rentals/3-_beds/", rent: "$2,200–$2,800/mo", ring: "Suburb" },
-                      { name: "Bellaire", url: "https://www.zillow.com/bellaire-tx/rentals/3-_beds/", rent: "$2,500–$3,200/mo", ring: "Close-In" },
-                      { name: "Montrose", url: "https://www.zillow.com/montrose-houston-tx/rentals/3-_beds/", rent: "$2,000–$2,600/mo", ring: "Close-In" },
-                      { name: "Medical Center", url: "https://www.zillow.com/medical-center-houston-tx/rentals/3-_beds/", rent: "$1,600–$2,200/mo", ring: "Close-In" },
-                      { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000/mo", ring: "Close-In" },
+                      { name: "Pearland", url: "https://www.zillow.com/pearland-tx/rentals/3-_beds/", rent: "$1,800–$2,200", ring: "Suburb", commute: "25 min to TMC", vibe: "Family suburb", highlight: "Best for families" },
+                      { name: "Sugar Land", url: "https://www.zillow.com/sugar-land-tx/rentals/3-_beds/", rent: "$2,000–$2,500", ring: "Suburb", commute: "28 min to TMC", vibe: "Master-planned", highlight: "Fort Bend ISD" },
+                      { name: "Katy", url: "https://www.zillow.com/katy-tx/rentals/3-_beds/", rent: "$1,800–$2,300", ring: "Suburb", commute: "35 min to TMC", vibe: "New builds" },
+                      { name: "League City", url: "https://www.zillow.com/league-city-tx/rentals/3-_beds/", rent: "$1,900–$2,400", ring: "Suburb", commute: "30 min to TMC", vibe: "Coastal feel" },
+                      { name: "The Woodlands", url: "https://www.zillow.com/the-woodlands-tx/rentals/3-_beds/", rent: "$2,200–$2,800", ring: "Suburb", commute: "40 min to TMC", vibe: "Wooded luxury" },
+                      { name: "Bellaire", url: "https://www.zillow.com/bellaire-tx/rentals/3-_beds/", rent: "$2,500–$3,200", ring: "Close-In", commute: "10 min to TMC", vibe: "Upscale enclave", highlight: "Shortest commute" },
+                      { name: "Montrose", url: "https://www.zillow.com/montrose-houston-tx/rentals/3-_beds/", rent: "$2,000–$2,600", ring: "Close-In", commute: "12 min to TMC", vibe: "Artsy & walkable" },
+                      { name: "Medical Center", url: "https://www.zillow.com/medical-center-houston-tx/rentals/3-_beds/", rent: "$1,600–$2,200", ring: "Close-In", commute: "5 min to TMC", vibe: "Walk to work", highlight: "Zero commute" },
+                      { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000", ring: "Close-In", commute: "8 min to TMC", vibe: "Nightlife hub", highlight: "Lowest rents" },
                     ]}
                   />
                   <PSLFHospitalFinder />
