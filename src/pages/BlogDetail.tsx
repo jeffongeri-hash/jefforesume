@@ -35,13 +35,23 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: sacramentoSuburbs,
     content: `
-      <p>If you're considering the Sacramento area for a PA relocation, the city proper isn't your only option — and often isn't the best one. This guide covers <strong>12 Sacramento-orbit suburbs</strong> across three rings, all analyzed with the same framework: commute to Sacramento, 3BR house feasibility, and monthly surplus on a single PA income (~$7,812/month take-home after taxes, 12% traditional 401k, and HSA).</p>
+      <p>If you're a <strong>physician assistant considering a relocation to Sacramento</strong>, the city proper isn't your only option — and often isn't the best one. This guide covers <strong>12 Sacramento-orbit suburbs</strong> across three rings, all analyzed with the same framework: commute to Sacramento hospitals, 3BR house feasibility, and monthly surplus on a single PA income (~$7,812/month take-home after taxes, 12% traditional 401k, and HSA).</p>
 
-      <p class="text-sm text-muted-foreground italic">All suburbs are in California, so state income tax is the same. The real differences are housing cost, commute, and suburban feel.</p>
+      <div class="my-6 p-5 rounded-lg border border-primary/30 bg-primary/5">
+        <h3 class="text-base font-bold text-foreground mb-2">TL;DR — Best Sacramento Suburbs for a PA Relocation</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-foreground">
+          <li><strong>Best all-around:</strong> Roseville (hospital hub, solid value, 24 min baseline to Sacramento — budget 40–50 min during I-80 rush hour)</li>
+          <li><strong>Best lifestyle balance:</strong> Folsom (lakes, 49 parks, manageable commute, $3,000 3BR)</li>
+          <li><strong>Best pure savings:</strong> Citrus Heights ($2,450 3BR, 20 min in, ~$2,700+/mo leftover)</li>
+        </ul>
+        <p class="text-xs text-muted-foreground mt-2 italic">Keep reading for the full breakdown across all 12 suburbs — the ranking updates based on what you prioritize.</p>
+      </div>
+
+      <p class="text-sm text-muted-foreground italic">All suburbs are in California, so state income tax is the same. The real differences are housing cost, commute reality, school district, and suburban character.</p>
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Ring 1: Inner Suburbs — Roseville, Folsom & El Dorado Hills</h2>
 
-      <p>These three are within about 50 minutes of Sacramento on a no-traffic basis. None gives you a California income-tax break versus Sacramento — Roseville is in Placer County, Folsom in Sacramento County, and El Dorado Hills in El Dorado County, but California personal income tax is state-level.</p>
+      <p>These three are within about 50 minutes of Sacramento on a no-traffic basis. Roseville is in Placer County, Folsom in Sacramento County, and El Dorado Hills in El Dorado County — California personal income tax is state-level, so no county difference there.</p>
 
       <div class="overflow-x-auto my-8">
         <table class="w-full text-sm border-collapse">
@@ -50,6 +60,7 @@ const blogPosts = {
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-left py-3 px-3 font-bold text-foreground">County</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Drive to Sac</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rush-Hour Add</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">3BR Rent</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Take-Home</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Monthly Leftover</th>
@@ -57,25 +68,28 @@ const blogPosts = {
           </thead>
           <tbody>
             <tr class="border-b border-foreground/10 bg-accent/10">
-              <td class="py-3 px-3 text-muted-foreground font-semibold">Roseville</td>
+              <td class="py-3 px-3 text-muted-foreground font-semibold"><a href="https://www.zillow.com/roseville-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Roseville</a></td>
               <td class="py-3 px-3 text-muted-foreground">Placer</td>
               <td class="text-right py-3 px-3 text-muted-foreground">24 min / 19 mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+15–25 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,850–$3,050</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">~$7,812</td>
               <td class="text-right py-3 px-3 font-bold text-foreground">~$2,450–$2,650</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Folsom</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/folsom-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Folsom</a></td>
               <td class="py-3 px-3 text-muted-foreground">Sacramento</td>
               <td class="text-right py-3 px-3 text-muted-foreground">31 min / 24 mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+10–20 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$3,000–$3,200</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">~$7,812</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,250–$2,450</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">El Dorado Hills</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">El Dorado Hills</a></td>
               <td class="py-3 px-3 text-muted-foreground">El Dorado</td>
               <td class="text-right py-3 px-3 text-muted-foreground">33 min / 30 mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+10–20 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$3,450–$3,800</td>
               <td class="text-right py-3 px-3 font-semibold text-foreground">~$7,812</td>
               <td class="text-right py-3 px-3 text-foreground">~$1,550–$1,900</td>
@@ -89,9 +103,9 @@ const blogPosts = {
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 1 Verdict</h3>
 
       <ul class="list-disc pl-6 my-4">
-        <li><strong>Roseville:</strong> Best all-around fit — strongest value, easiest to keep monthly cushion while staying close to Sacramento jobs. Sutter Roseville Medical Center (Level II trauma) and Kaiser Permanente Roseville are right there.</li>
-        <li><strong>Folsom:</strong> Good middle ground. Slightly pricier, but manageable. Mercy Hospital of Folsom is local (106 beds).</li>
-        <li><strong>El Dorado Hills:</strong> Best upscale suburban-house feel. Worst for pure budget efficiency — compresses your margin the most.</li>
+        <li><strong>Roseville:</strong> Best all-around fit — strongest value, easiest to keep monthly cushion while staying close to Sacramento jobs. Sutter Roseville Medical Center (Level II trauma) and Kaiser Permanente Roseville are right there. <em>School districts:</em> Roseville City School District and Dry Creek Joint Elementary — both well-regarded. I-80 at 5 PM is a different animal than the 24-minute baseline; budget 40–50 minutes if you're commuting into downtown Sacramento during peak.</li>
+        <li><strong>Folsom:</strong> Good middle ground. Slightly pricier, but manageable. Mercy Hospital of Folsom is local (106 beds). <em>School districts:</em> Folsom-Cordova USD is one of the strongest in the region — a real differentiator if you're thinking about kids or resale value. Hwy 50 rush hour adds 10–20 min.</li>
+        <li><strong>El Dorado Hills:</strong> Best upscale suburban-house feel. Worst for pure budget efficiency — compresses your margin the most. <em>School districts:</em> Buckeye Union and part of El Dorado Union High — solid but not a clear step above Folsom-Cordova for the price premium.</li>
       </ul>
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Ring 2: Next-Ring Suburbs — Rocklin, Lincoln, Granite Bay, Rancho Cordova, Citrus Heights & Elk Grove</h2>
@@ -102,6 +116,7 @@ const blogPosts = {
             <tr class="border-b-2 border-foreground/20">
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Drive to Sac</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rush-Hour Add</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Zillow 3BR Avg</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Planning Number</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Leftover</th>
@@ -109,43 +124,49 @@ const blogPosts = {
           </thead>
           <tbody>
             <tr class="border-b border-foreground/10 bg-accent/10">
-              <td class="py-3 px-3 text-muted-foreground font-semibold">Citrus Heights</td>
+              <td class="py-3 px-3 text-muted-foreground font-semibold"><a href="https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Citrus Heights</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">20 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+5–15 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,450</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,450–$2,650</td>
               <td class="text-right py-3 px-3 font-bold text-foreground">~$2,700–$2,950</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Rancho Cordova</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Rancho Cordova</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">19 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+5–15 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,700</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,650–$2,900</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,450–$2,750</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Elk Grove</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/elk-grove-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Elk Grove</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">24 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+10–20 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,733</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,750–$3,000</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,350–$2,650</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Rocklin</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/rocklin-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Rocklin</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">24 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+15–25 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,795–$2,800</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,800–$3,000</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,300–$2,600</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Lincoln</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/lincoln-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Lincoln</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">33 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+15–30 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,895</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,850–$3,050</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,200–$2,500</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Granite Bay</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/granite-bay-ca/rentals/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Granite Bay</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">32 min</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+15–25 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$3,895</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$3,850–$4,250</td>
               <td class="text-right py-3 px-3 text-foreground">~$900–$1,350</td>
@@ -156,17 +177,17 @@ const blogPosts = {
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 2 Area-by-Area Read</h3>
 
-      <p><strong>Citrus Heights</strong> — Cheapest serious contender. Zillow shows ~$2,450 for a 3BR, ~20 min to Sacramento. Strongest "don't overpay for the zip code" option if your priority is a 3BR house without crushing your monthly margin.</p>
+      <p><strong>Citrus Heights</strong> — Cheapest serious contender. Zillow shows ~$2,450 for a 3BR, ~20 min to Sacramento. Strongest "don't overpay for the zip code" option if your priority is a 3BR house without crushing your monthly margin. San Juan USD serves most of the area — functional but not a selling point. Citrus Heights is close enough that rush hour barely registers compared to the I-80 corridor suburbs.</p>
 
-      <p><strong>Rancho Cordova</strong> — Another strong value play. ~$2,700 for a 3BR, ~19 min / 14 mi to Sacramento. Close in, materially cheaper than premium northeast suburbs, and still realistic for your house goal.</p>
+      <p><strong>Rancho Cordova</strong> — Another strong value play. ~$2,700 for a 3BR, ~19 min / 14 mi to Sacramento. Close in, materially cheaper than premium northeast suburbs, and still realistic for your house goal. Folsom-Cordova USD covers parts of Rancho Cordova — a meaningful quality bump over San Juan USD.</p>
 
-      <p><strong>Elk Grove</strong> — Reasonable middle ground: ~24 min baseline, more suburban and family-house oriented than Sacramento proper. ~$2,733 for a 3BR.</p>
+      <p><strong>Elk Grove</strong> — Reasonable middle ground: ~24 min baseline, more suburban and family-house oriented than Sacramento proper. ~$2,733 for a 3BR. Elk Grove USD is large and generally solid. Hwy 99 rush hour adds 10–20 min.</p>
 
-      <p><strong>Rocklin</strong> — One of the more attractive "nicer suburb without going full luxury" options. ~24 min commute, ~$2,795–$2,800 for 3BR. More polished than Rancho Cordova or Citrus Heights, but you pay for it.</p>
+      <p><strong>Rocklin</strong> — One of the more attractive "nicer suburb without going full luxury" options. ~24 min commute, ~$2,795–$2,800 for 3BR. More polished than Rancho Cordova or Citrus Heights, but you pay for it. <em>School districts:</em> Rocklin USD is excellent — consistently one of the top-performing districts in the Sacramento metro. This is the suburb where school quality alone justifies the modest price premium. I-80 rush hour is real here — budget 40–50 min to downtown Sacramento at peak.</p>
 
-      <p><strong>Lincoln</strong> — Farther out at ~33 min / 29 mi. ~$2,895 for 3BR, not notably cheaper than Rocklin despite the longer drive. Less compelling unless you specifically want a farther-out suburban feel.</p>
+      <p><strong>Lincoln</strong> — Farther out at ~33 min / 29 mi. ~$2,895 for 3BR, not notably cheaper than Rocklin despite the longer drive. Less compelling unless you specifically want a farther-out suburban feel. Western Placer USD is decent but not a clear differentiator.</p>
 
-      <p><strong>Granite Bay</strong> — Obvious "nice area" candidate but the clear financial outlier. $3,895 for a 3BR. Doable on a PA income, but meaningfully compresses your margin compared with every other suburb.</p>
+      <p><strong>Granite Bay</strong> — The numbers work on a PA salary, but barely. $3,895 for a 3BR compresses your margin harder than anywhere else in Ring 2. Granite Bay has a Nextdoor-community feel — established families, big lots, quiet streets — not a "young couple discovering a city" vibe. Eureka Union SD (elementary) feeds into Granite Bay High, which is one of the best public high schools in the region. If school prestige matters for future resale, this is the strongest play, but you're paying dearly for it.</p>
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 2 Ranking</h3>
 
@@ -190,7 +211,7 @@ const blogPosts = {
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Ring 3: Foothill Suburbs — Auburn, Folsom Ranch & Cameron Park</h2>
 
-      <p>All three are still within the rough 50-minute orbit on a no-traffic basis.</p>
+      <p>All three are still within the rough 50-minute orbit on a no-traffic basis — though rush hour and winding foothill roads can stretch that meaningfully.</p>
 
       <div class="overflow-x-auto my-8">
         <table class="w-full text-sm border-collapse">
@@ -198,6 +219,7 @@ const blogPosts = {
             <tr class="border-b-2 border-foreground/20">
               <th class="text-left py-3 px-3 font-bold text-foreground">Area</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Commute</th>
+              <th class="text-right py-3 px-3 font-bold text-foreground">Rush-Hour Add</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">3BR Signal</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Planning Number</th>
               <th class="text-right py-3 px-3 font-bold text-foreground">Leftover</th>
@@ -205,15 +227,17 @@ const blogPosts = {
           </thead>
           <tbody>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Auburn</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/auburn-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Auburn</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">33 min / 33 mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+15–30 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,950</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,900–$3,150</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,150–$2,450</td>
             </tr>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 text-muted-foreground">Folsom Ranch</td>
+              <td class="py-3 px-3 text-muted-foreground"><a href="https://www.zillow.com/folsom-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Folsom Ranch</a></td>
               <td class="text-right py-3 px-3 text-muted-foreground">31+ min / 24+ mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+10–20 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">~$2,999</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$3,000–$3,300</td>
               <td class="text-right py-3 px-3 text-foreground">~$2,000–$2,300</td>
@@ -221,6 +245,7 @@ const blogPosts = {
             <tr class="border-b border-foreground/10 bg-accent/10">
               <td class="py-3 px-3 text-muted-foreground font-semibold">Cameron Park</td>
               <td class="text-right py-3 px-3 text-muted-foreground">35 min / 33 mi</td>
+              <td class="text-right py-3 px-3 text-destructive text-xs font-medium">+10–20 min</td>
               <td class="text-right py-3 px-3 text-muted-foreground">Below EDH</td>
               <td class="text-right py-3 px-3 text-muted-foreground">$2,700–$3,000</td>
               <td class="text-right py-3 px-3 font-bold text-foreground">~$2,300–$2,600</td>
@@ -231,11 +256,11 @@ const blogPosts = {
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 3 Area-by-Area Read</h3>
 
-      <p><strong>Auburn</strong> — Best if you want a foothill / small-town feel without going fully rural. ~$2,950 for a 3BR. Workable, but not a screaming bargain relative to inner-ring suburbs like Citrus Heights. Auburn State Recreation Area offers hiking, fishing, camping, and whitewater on the American River. Hidden Falls Regional Park and mountain biking round out the outdoor draws.</p>
+      <p><strong>Auburn</strong> — Best if you want a foothill / small-town feel without going fully rural. ~$2,950 for a 3BR. Workable, but not a screaming bargain relative to inner-ring suburbs like Citrus Heights. Auburn State Recreation Area offers hiking, fishing, camping, and whitewater on the American River. Hidden Falls Regional Park and mountain biking round out the outdoor draws. Auburn Union SD is small and well-liked. I-80 rush hour from Auburn into Sacramento can be punishing — 45–60+ minutes is realistic at peak.</p>
 
-      <p><strong>Folsom Ranch</strong> — The new-build, polished, master-planned option. Folsom's newer plan area south of Highway 50. Standard Folsom 3BRs average ~$2,999, with active listings $2,595–$3,200+. Budget at the upper end of Folsom, not the lower end. Best if you want the nicest, newest suburban environment.</p>
+      <p><strong>Folsom Ranch</strong> — The new-build, polished, master-planned option. Folsom's newer plan area south of Highway 50. Standard Folsom 3BRs average ~$2,999, with active listings $2,595–$3,200+. Budget at the upper end of Folsom, not the lower end. Best if you want the nicest, newest suburban environment. Falls within Folsom-Cordova USD — same strong district as Folsom proper.</p>
 
-      <p><strong>Cameron Park</strong> — El Dorado County feel without full El Dorado Hills pricing. Market-trend data is thinner, but nearby El Dorado County submarkets suggest it sits below EDH and around/slightly below Auburn. Best chance at a good house-value compromise if you're okay with a foothill-suburban feel. Inventory is thinner and the area is less "master-planned polished" than Folsom Ranch.</p>
+      <p><strong>Cameron Park</strong> — El Dorado County feel without full El Dorado Hills pricing. Market-trend data is thinner, but nearby El Dorado County submarkets suggest it sits below EDH and around/slightly below Auburn. Best chance at a good house-value compromise if you're okay with a foothill-suburban feel. Inventory is thinner and the area is less "master-planned polished" than Folsom Ranch. Buckeye Union SD (same as EDH) — decent schools, rural-ish character.</p>
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 3 Ranking</h3>
 
@@ -245,19 +270,20 @@ const blogPosts = {
         <li><strong>Folsom Ranch</strong> — Best "nice suburb" choice, worst on pure efficiency</li>
       </ol>
 
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">MIT Living Wage Context</h2>
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Can a PA Actually Afford Sacramento Suburbs Solo?</h2>
 
-      <p>MIT's 2026 Living Wage data points in the same direction as the rent data. For a 2-adult household with 1 working adult and 0 children:</p>
-
-      <ul class="list-disc pl-6 my-4">
-        <li><strong>Placer County:</strong> ~$118,931 required annual income before taxes</li>
-        <li><strong>El Dorado County:</strong> ~$111,471 required annual income</li>
-        <li><strong>Sacramento County:</strong> Lower than Placer</li>
-      </ul>
+      <p>MIT's 2026 Living Wage data puts the floor for a 2-adult household (1 working, 0 children) at <strong>~$118,931/year in Placer County</strong> and <strong>~$111,471/year in El Dorado County</strong>, with Sacramento County lower than both. A PA earning $160k gross clears those thresholds with room — but not extravagant room. In practice, the margin is real but thin enough that housing cost is the single biggest lever you can pull. That's why the difference between a $2,450 Citrus Heights 3BR and a $3,895 Granite Bay 3BR isn't academic — it's $1,400/month of flexibility, or ~$17,000/year.</p>
 
       <p class="text-sm text-muted-foreground italic">El Dorado Hills itself is much more expensive than the county average, which is why it feels pricier in practice than the county living-wage number alone suggests.</p>
 
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Best-Fit Awards: Category Winners</h2>
+      <div class="my-6 p-4 rounded-lg border border-border bg-muted/30">
+        <h4 class="text-sm font-bold text-foreground mb-2">📋 Property Tax Note</h4>
+        <p class="text-xs text-muted-foreground">If you're considering buying down the road: Placer County, Sacramento County, and El Dorado County have slightly different effective property tax rates (typically 1.1–1.25% of assessed value). The differences are small on a year-to-year basis but compound over a mortgage. Mello-Roos districts in newer developments like Folsom Ranch and Lincoln can add $200–$400/month on top of base property tax — worth checking before signing a purchase contract.</p>
+      </div>
+
+      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Best Suburb for a PA Relocating to Sacramento: Final Ranking</h2>
+
+      <p>For a physician assistant relocating to Sacramento with a partner — 3BR house target, likely yard/fence preferred, single PA income:</p>
 
       <div class="overflow-x-auto my-8">
         <table class="w-full text-sm border-collapse">
@@ -271,28 +297,34 @@ const blogPosts = {
           </thead>
           <tbody>
             <tr class="border-b border-foreground/10">
-              <td class="py-3 px-3 font-semibold text-foreground">Young couple / attractions</td>
+              <td class="py-3 px-3 font-semibold text-foreground">Best all-around</td>
+              <td class="py-3 px-3 text-muted-foreground">Roseville</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Hospital hub + solid value + good schools (Dry Creek, Roseville City SD). 24 min baseline.</td>
               <td class="py-3 px-3 text-muted-foreground">Folsom</td>
-              <td class="py-3 px-3 text-muted-foreground text-xs">Folsom Lake, Lake Natoma, 49 parks, built-out lifestyle base. ~$2,999 3BR.</td>
+            </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Young couple / lifestyle</td>
+              <td class="py-3 px-3 text-muted-foreground">Folsom</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Folsom Lake, Lake Natoma, 49 parks, strong schools (Folsom-Cordova USD). ~$3,000 3BR.</td>
               <td class="py-3 px-3 text-muted-foreground">Roseville, then Rancho Cordova</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Affordability</td>
               <td class="py-3 px-3 text-muted-foreground">Citrus Heights</td>
-              <td class="py-3 px-3 text-muted-foreground text-xs">Cheapest: ~$1,850 avg rent, ~$2,450 3BR. 20 min to Sacramento.</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">~$2,450 3BR, 20 min to Sac, ~$2,700+/mo leftover. School districts weaker.</td>
               <td class="py-3 px-3 text-muted-foreground">Rancho Cordova, then Elk Grove</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Hospital commute</td>
               <td class="py-3 px-3 text-muted-foreground">Roseville</td>
-              <td class="py-3 px-3 text-muted-foreground text-xs">Hospital hub: Sutter Roseville (Level II trauma), Kaiser Roseville. 24 min to Sac.</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Sutter Roseville (Level II trauma), Kaiser Roseville on-site. 24 min to Sac hospitals.</td>
               <td class="py-3 px-3 text-muted-foreground">Folsom (Mercy Folsom, 106 beds)</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Nature / outdoors</td>
               <td class="py-3 px-3 text-muted-foreground">Auburn</td>
               <td class="py-3 px-3 text-muted-foreground text-xs">Auburn SRA, Hidden Falls, American River whitewater, mountain biking.</td>
-              <td class="py-3 px-3 text-muted-foreground">Folsom, then Rancho Cordova</td>
+              <td class="py-3 px-3 text-muted-foreground">Folsom, then Cameron Park</td>
             </tr>
             <tr class="border-b border-foreground/10">
               <td class="py-3 px-3 font-semibold text-foreground">Getting a yard</td>
@@ -300,13 +332,15 @@ const blogPosts = {
               <td class="py-3 px-3 text-muted-foreground text-xs">Best house + yard value without premium zip code pricing.</td>
               <td class="py-3 px-3 text-muted-foreground">Auburn, then Lincoln</td>
             </tr>
+            <tr class="border-b border-foreground/10">
+              <td class="py-3 px-3 font-semibold text-foreground">Schools (no kids yet)</td>
+              <td class="py-3 px-3 text-muted-foreground">Rocklin / Folsom</td>
+              <td class="py-3 px-3 text-muted-foreground text-xs">Rocklin USD and Folsom-Cordova USD are top-tier in the metro. Affects resale too.</td>
+              <td class="py-3 px-3 text-muted-foreground">Granite Bay (GBHS prestige)</td>
+            </tr>
           </tbody>
         </table>
       </div>
-
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Final Ranking: All 12 Suburbs</h2>
-
-      <p>For a young couple on one PA income, 3BR house target, likely yard/fence preferred, paid-off 2012 Camry:</p>
 
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Best All-Around Compromise (Shortlist)</h3>
 
@@ -327,7 +361,7 @@ const blogPosts = {
       <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Nicer Suburb Tier</h3>
 
       <ol class="list-decimal pl-6 my-4" start="7">
-        <li><strong>Rocklin</strong> — Polished without going full luxury</li>
+        <li><strong>Rocklin</strong> — Polished without going full luxury, best school district value</li>
         <li><strong>Auburn</strong> — Best lifestyle if you love outdoors</li>
         <li><strong>Folsom Ranch</strong> — Newest, most polished, premium price</li>
         <li><strong>Lincoln</strong> — Farther out, not notably cheaper than Rocklin</li>
@@ -340,38 +374,11 @@ const blogPosts = {
         <li><strong>Granite Bay</strong> — Weakest value, strongest premium zip code</li>
       </ol>
 
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Housing Links: Zillow 3BR Rentals</h2>
+      <p>If you want the <strong>single best all-around compromise</strong> for a PA relocating to the Sacramento orbit with a partner, the shortlist is <strong>Roseville, Folsom, and Cameron Park</strong>. Roseville wins on hospital logistics and school quality, Folsom wins on lifestyle balance, and Cameron Park wins on yard + space value.</p>
 
-      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 1</h3>
-      <ul class="list-disc pl-6 my-4">
-        <li><a href="https://www.zillow.com/roseville-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Roseville 3BR houses</a></li>
-        <li><a href="https://www.zillow.com/folsom-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Folsom 3BR houses</a></li>
-        <li><a href="https://www.zillow.com/el-dorado-hills-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">El Dorado Hills 3BR houses</a></li>
-      </ul>
+      <p>If pure monthly margin is the priority, <strong>Citrus Heights, Rancho Cordova, and Elk Grove</strong> are the strongest cost-to-commute plays — though the school district tradeoff is real in Citrus Heights.</p>
 
-      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 2</h3>
-      <ul class="list-disc pl-6 my-4">
-        <li><a href="https://www.zillow.com/rocklin-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Rocklin 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/lincoln-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Lincoln 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/granite-bay-ca/rentals/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Granite Bay rentals</a></li>
-        <li><a href="https://www.zillow.com/rancho-cordova-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Rancho Cordova 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/citrus-heights-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Citrus Heights 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/elk-grove-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Elk Grove 3BR rentals</a></li>
-      </ul>
-
-      <h3 class="text-lg font-semibold text-foreground mb-3 mt-6">Ring 3</h3>
-      <ul class="list-disc pl-6 my-4">
-        <li><a href="https://www.zillow.com/auburn-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Auburn 3BR rentals</a></li>
-        <li><a href="https://www.zillow.com/folsom-ca/rentals/3-_beds/" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">Folsom / Folsom Ranch 3BR listings</a></li>
-      </ul>
-
-      <h2 class="text-xl font-bold text-foreground mb-4 mt-8">The Bottom Line</h2>
-
-      <p>If you want the <strong>single best all-around compromise</strong> for a PA relocating to the Sacramento orbit with a partner, the shortlist is <strong>Roseville, Folsom, and Cameron Park</strong>. Roseville wins on hospital logistics, Folsom wins on lifestyle balance, and Cameron Park wins on yard + space value.</p>
-
-      <p>If pure monthly margin is the priority, <strong>Citrus Heights, Rancho Cordova, and Elk Grove</strong> are the strongest cost-to-commute plays.</p>
-
-      <p class="text-sm text-muted-foreground italic mt-6">All rent figures are from current Zillow market-trend pages. Commute estimates are no-traffic baselines from Travelmath; actual rush-hour times to hospitals can run materially longer. Take-home uses the same $160k gross / 12% 401k / HSA / single-filer California model from the prior PSLF analysis.</p>
+      <p class="text-sm text-muted-foreground italic mt-6">All rent figures are from current Zillow market-trend pages. Commute estimates are no-traffic baselines from Travelmath; rush-hour additions are estimates based on typical I-80, Hwy 50, and Hwy 99 congestion patterns — your actual experience will vary by shift schedule. Take-home uses the same $160k gross / 12% 401k / HSA / single-filer California model from the prior PSLF analysis.</p>
     `
   },
   "relocation-budget-3br-move-ready-cash": {
