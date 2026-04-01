@@ -433,8 +433,8 @@ const Professional = () => {
                           <Badge variant="secondary">25</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
-                         <Badge variant="secondary">14</Badge>
+                          <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
+                          <Badge variant="secondary">30</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Trauma / Fractures / Falls</span>
