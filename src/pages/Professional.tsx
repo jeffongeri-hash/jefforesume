@@ -6,6 +6,7 @@ import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { ParallaxHero } from '@/hooks/useParallax';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import { 
   Briefcase, 
@@ -379,7 +380,7 @@ const Professional = () => {
                     <ul className="space-y-3">
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">Sutures</span>
-                        <Badge variant="secondary">10+</Badge>
+                        <Badge variant="secondary">20+</Badge>
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">Incision & Drainage</span>
@@ -428,261 +429,153 @@ const Professional = () => {
                   <CardContent>
                      <ul className="space-y-3">
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Psychiatric (SI, Agitation, Substance-Induced)</span>
+                         <span className="text-muted-foreground">Psychiatric / Behavioral Health</span>
                          <Badge variant="secondary">15</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Syncope</span>
-                         <Badge variant="secondary">10+</Badge>
+                         <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
+                         <Badge variant="secondary">14</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Seizures (incl. Breakthrough)</span>
-                         <Badge variant="secondary">6</Badge>
+                         <span className="text-muted-foreground">Trauma / Fractures / Falls</span>
+                         <Badge variant="secondary">12</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">CHF Exacerbation</span>
-                         <Badge variant="secondary">5+</Badge>
+                         <span className="text-muted-foreground">Abdominal / GI Complaints</span>
+                         <Badge variant="secondary">11</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">COPD Exacerbation</span>
-                         <Badge variant="secondary">5+</Badge>
+                         <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
+                         <Badge variant="secondary">10</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Soft Tissue Injury / Contusion</span>
+                         <span className="text-muted-foreground">Neurologic (Syncope, Seizure, Stroke, TBI)</span>
+                         <Badge variant="secondary">10</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Pulmonary (COPD, Pneumothorax, Sarcoidosis)</span>
+                         <Badge variant="secondary">8</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Renal / GU (Nephrolithiasis, Retention, AKI)</span>
+                         <Badge variant="secondary">7</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Musculoskeletal / Wound Care</span>
+                         <Badge variant="secondary">7</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Ophthalmologic / ENT / Dental</span>
                          <Badge variant="secondary">5</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">UTI (incl. Sepsis Physiology)</span>
+                         <span className="text-muted-foreground">Pediatric (RSV, Varicella, Fever)</span>
                          <Badge variant="secondary">4</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Epistaxis Management</span>
+                         <span className="text-muted-foreground">Other (Oncology, Medication Effect, Elopement)</span>
                          <Badge variant="secondary">4</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Chest Pain (ACS Rule-Out / AMA)</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Gastroenteritis / Viral Illness</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Alcohol-Related Conditions</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Nephrolithiasis / Ureterolithiasis</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Urinary Retention</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Obstipation</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">NSTEMI</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">STEMI</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Influenza (incl. with Migraine)</span>
-                         <Badge variant="secondary">3</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Diabetic Foot Osteomyelitis</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Intractable Vomiting</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Corneal Abrasion</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">1st Trimester Bleeding</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Assault Victims</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pneumothorax</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Aortic Aneurysm (incl. AAA)</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">AMS / Delirium</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Possible Upper GI Bleed / Gastritis</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Dental Infection</span>
-                         <Badge variant="secondary">2</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Mechanical Fall</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Ischemic Stroke</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Concussion / Mild TBI</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Cervical Spine Fracture (Odontoid)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Orbital Fracture</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Distal Clavicle Fracture (Fall)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Severe Anemia (Hgb 4) – GI Bleed</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Exertional Tachycardia (Mild CK Elevation)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Exertional Ischemia (Non-ACS)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Lumbar Radiculopathy / Sciatica</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Constipation / IBS-C Exacerbation</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Rotator Cuff Pathology</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">MSK Back Pain (Post-DKA)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Ileus / Dehydration / Sepsis Concern</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">AKI with Supratherapeutic INR</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Abscess (incl. OR Case)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">RSV Bronchiolitis</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Varicella (Chickenpox)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Uveitis vs Conjunctivitis</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pressure Ulcer</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pleural Effusion with Catheter (Stable)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Droxidopa Adverse Effect (Resolved)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Cancer-Related Pain (Metastatic)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Chronic Wound (No Infection)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pneumonia + Subacute Infarcts</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Acute Bronchitis / Mild Hemoptysis</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Failure to Thrive (15+ lb Loss)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Metabolic Acidosis</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Deep Wound Laceration (Assisted)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pulmonary Sarcoidosis</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Strep Anal Infection</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Osteogenesis Imperfecta</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Infected Cervical Neck Cyst (I&D)</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
-                         <Badge variant="secondary">1</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Elopement (Incomplete Evaluation)</span>
-                         <Badge variant="secondary">1</Badge>
                        </li>
                      </ul>
                      <p className="text-xs text-muted-foreground mt-4 italic">
-                       76+ total cases across psychiatric, abdominal/GI, trauma, infectious, and cardiovascular presentations. Top categories: Psych/Behavioral (~27%), Abdominal/GI (~20%), Trauma (~18%), Infectious (~18%).
+                       100+ total cases across 12 clinical categories. Top: Psych/Behavioral (~15%), Cardiovascular (~14%), Trauma (~12%), Abdominal/GI (~11%).
                      </p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
             </div>
+
+            {/* Detailed Case Breakdown */}
+            <AnimatedSection delay={200} className="mt-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Detailed Case Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Diagnosis</TableHead>
+                        <TableHead className="text-right">Count</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {[
+                        ["Psychiatric (SI, Agitation, Substance-Induced)", "15"],
+                        ["Syncope", "10+"],
+                        ["Seizures (incl. Breakthrough)", "6"],
+                        ["CHF Exacerbation", "5+"],
+                        ["COPD Exacerbation", "5+"],
+                        ["Soft Tissue Injury / Contusion", "5"],
+                        ["UTI (incl. Sepsis Physiology)", "4"],
+                        ["Epistaxis Management", "4"],
+                        ["Chest Pain (ACS Rule-Out / AMA)", "3"],
+                        ["Gastroenteritis / Viral Illness", "3"],
+                        ["Alcohol-Related Conditions", "3"],
+                        ["Nephrolithiasis / Ureterolithiasis", "3"],
+                        ["Urinary Retention", "3"],
+                        ["Obstipation", "3"],
+                        ["NSTEMI", "3"],
+                        ["STEMI", "3"],
+                        ["Influenza (incl. with Migraine)", "3"],
+                        ["Diabetic Foot Osteomyelitis", "2"],
+                        ["Intractable Vomiting", "2"],
+                        ["Corneal Abrasion", "2"],
+                        ["1st Trimester Bleeding", "2"],
+                        ["Assault Victims", "2"],
+                        ["Pneumothorax", "2"],
+                        ["Aortic Aneurysm (incl. AAA)", "2"],
+                        ["AMS / Delirium", "2"],
+                        ["Possible Upper GI Bleed / Gastritis", "2"],
+                        ["Dental Infection", "2"],
+                        ["Mechanical Fall", "1"],
+                        ["Ischemic Stroke", "1"],
+                        ["Concussion / Mild TBI", "1"],
+                        ["Cervical Spine Fracture (Odontoid)", "1"],
+                        ["Orbital Fracture", "1"],
+                        ["Distal Clavicle Fracture (Fall)", "1"],
+                        ["Severe Anemia (Hgb 4) – GI Bleed", "1"],
+                        ["Exertional Tachycardia (Mild CK Elevation)", "1"],
+                        ["Exertional Ischemia (Non-ACS)", "1"],
+                        ["Lumbar Radiculopathy / Sciatica", "1"],
+                        ["Constipation / IBS-C Exacerbation", "1"],
+                        ["Rotator Cuff Pathology", "1"],
+                        ["MSK Back Pain (Post-DKA)", "1"],
+                        ["Ileus / Dehydration / Sepsis Concern", "1"],
+                        ["AKI with Supratherapeutic INR", "1"],
+                        ["Abscess (incl. OR Case)", "1"],
+                        ["RSV Bronchiolitis", "1"],
+                        ["Varicella (Chickenpox)", "1"],
+                        ["Uveitis vs Conjunctivitis", "1"],
+                        ["Pressure Ulcer", "1"],
+                        ["Pleural Effusion with Catheter (Stable)", "1"],
+                        ["Droxidopa Adverse Effect (Resolved)", "1"],
+                        ["Cancer-Related Pain (Metastatic)", "1"],
+                        ["Chronic Wound (No Infection)", "1"],
+                        ["Pneumonia + Subacute Infarcts", "1"],
+                        ["Acute Bronchitis / Mild Hemoptysis", "1"],
+                        ["Failure to Thrive (15+ lb Loss)", "1"],
+                        ["Metabolic Acidosis", "1"],
+                        ["Deep Wound Laceration (Assisted)", "1"],
+                        ["Pulmonary Sarcoidosis", "1"],
+                        ["Strep Anal Infection", "1"],
+                        ["Osteogenesis Imperfecta", "1"],
+                        ["Infected Cervical Neck Cyst (I&D)", "1"],
+                        ["Bilateral Pulmonary Embolism", "1"],
+                        ["Elopement (Incomplete Evaluation)", "1"],
+                      ].map(([diagnosis, count], i) => (
+                        <TableRow key={i}>
+                          <TableCell className="text-muted-foreground">{diagnosis}</TableCell>
+                          <TableCell className="text-right">
+                            <Badge variant="secondary">{count}</Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </AnimatedSection>
           </div>
         </section>
 
