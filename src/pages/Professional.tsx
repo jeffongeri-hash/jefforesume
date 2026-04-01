@@ -430,7 +430,7 @@ const Professional = () => {
                      <ul className="space-y-3">
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Psychiatric / Behavioral Health</span>
-                         <Badge variant="secondary">15</Badge>
+                          <Badge variant="secondary">25</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
