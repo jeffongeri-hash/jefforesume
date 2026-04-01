@@ -478,7 +478,7 @@ const Professional = () => {
                        </li>
                      </ul>
                      <p className="text-xs text-muted-foreground mt-4 italic">
-                       100+ total cases across 12 clinical categories. Top: Psych/Behavioral (~15%), Cardiovascular (~14%), Trauma (~12%), Abdominal/GI (~11%).
+                       150+ total cases across 12 clinical categories. Top: GI (~23%), Cardiovascular (~20%), Infectious (~20%), Psych/Behavioral (~17%).
                      </p>
                   </CardContent>
                 </Card>
