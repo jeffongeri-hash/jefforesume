@@ -484,6 +484,98 @@ const Professional = () => {
                 </Card>
               </AnimatedSection>
             </div>
+
+            {/* Detailed Case Breakdown */}
+            <AnimatedSection delay={200} className="mt-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Detailed Case Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Diagnosis</TableHead>
+                        <TableHead className="text-right">Count</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {[
+                        ["Psychiatric (SI, Agitation, Substance-Induced)", "15"],
+                        ["Syncope", "10+"],
+                        ["Seizures (incl. Breakthrough)", "6"],
+                        ["CHF Exacerbation", "5+"],
+                        ["COPD Exacerbation", "5+"],
+                        ["Soft Tissue Injury / Contusion", "5"],
+                        ["UTI (incl. Sepsis Physiology)", "4"],
+                        ["Epistaxis Management", "4"],
+                        ["Chest Pain (ACS Rule-Out / AMA)", "3"],
+                        ["Gastroenteritis / Viral Illness", "3"],
+                        ["Alcohol-Related Conditions", "3"],
+                        ["Nephrolithiasis / Ureterolithiasis", "3"],
+                        ["Urinary Retention", "3"],
+                        ["Obstipation", "3"],
+                        ["NSTEMI", "3"],
+                        ["STEMI", "3"],
+                        ["Influenza (incl. with Migraine)", "3"],
+                        ["Diabetic Foot Osteomyelitis", "2"],
+                        ["Intractable Vomiting", "2"],
+                        ["Corneal Abrasion", "2"],
+                        ["1st Trimester Bleeding", "2"],
+                        ["Assault Victims", "2"],
+                        ["Pneumothorax", "2"],
+                        ["Aortic Aneurysm (incl. AAA)", "2"],
+                        ["AMS / Delirium", "2"],
+                        ["Possible Upper GI Bleed / Gastritis", "2"],
+                        ["Dental Infection", "2"],
+                        ["Mechanical Fall", "1"],
+                        ["Ischemic Stroke", "1"],
+                        ["Concussion / Mild TBI", "1"],
+                        ["Cervical Spine Fracture (Odontoid)", "1"],
+                        ["Orbital Fracture", "1"],
+                        ["Distal Clavicle Fracture (Fall)", "1"],
+                        ["Severe Anemia (Hgb 4) – GI Bleed", "1"],
+                        ["Exertional Tachycardia (Mild CK Elevation)", "1"],
+                        ["Exertional Ischemia (Non-ACS)", "1"],
+                        ["Lumbar Radiculopathy / Sciatica", "1"],
+                        ["Constipation / IBS-C Exacerbation", "1"],
+                        ["Rotator Cuff Pathology", "1"],
+                        ["MSK Back Pain (Post-DKA)", "1"],
+                        ["Ileus / Dehydration / Sepsis Concern", "1"],
+                        ["AKI with Supratherapeutic INR", "1"],
+                        ["Abscess (incl. OR Case)", "1"],
+                        ["RSV Bronchiolitis", "1"],
+                        ["Varicella (Chickenpox)", "1"],
+                        ["Uveitis vs Conjunctivitis", "1"],
+                        ["Pressure Ulcer", "1"],
+                        ["Pleural Effusion with Catheter (Stable)", "1"],
+                        ["Droxidopa Adverse Effect (Resolved)", "1"],
+                        ["Cancer-Related Pain (Metastatic)", "1"],
+                        ["Chronic Wound (No Infection)", "1"],
+                        ["Pneumonia + Subacute Infarcts", "1"],
+                        ["Acute Bronchitis / Mild Hemoptysis", "1"],
+                        ["Failure to Thrive (15+ lb Loss)", "1"],
+                        ["Metabolic Acidosis", "1"],
+                        ["Deep Wound Laceration (Assisted)", "1"],
+                        ["Pulmonary Sarcoidosis", "1"],
+                        ["Strep Anal Infection", "1"],
+                        ["Osteogenesis Imperfecta", "1"],
+                        ["Infected Cervical Neck Cyst (I&D)", "1"],
+                        ["Bilateral Pulmonary Embolism", "1"],
+                        ["Elopement (Incomplete Evaluation)", "1"],
+                      ].map(([diagnosis, count], i) => (
+                        <TableRow key={i}>
+                          <TableCell className="text-muted-foreground">{diagnosis}</TableCell>
+                          <TableCell className="text-right">
+                            <Badge variant="secondary">{count}</Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </AnimatedSection>
           </div>
         </section>
 
