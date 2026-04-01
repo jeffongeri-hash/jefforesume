@@ -379,7 +379,7 @@ const Professional = () => {
                     <ul className="space-y-3">
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">Sutures</span>
-                        <Badge variant="secondary">10+</Badge>
+                        <Badge variant="secondary">20+</Badge>
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">Incision & Drainage</span>
