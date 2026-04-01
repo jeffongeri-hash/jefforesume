@@ -441,8 +441,8 @@ const Professional = () => {
                          <Badge variant="secondary">12</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Abdominal / GI Complaints</span>
-                         <Badge variant="secondary">11</Badge>
+                          <span className="text-muted-foreground">Abdominal / GI Complaints</span>
+                          <Badge variant="secondary">35</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
