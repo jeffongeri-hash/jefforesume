@@ -360,7 +360,7 @@ const Professional = () => {
                 <Stethoscope className="h-6 w-6 text-primary" />
                 <h2 id="training-heading" className="section-title mb-0">Clinical Training Experience</h2>
               </div>
-              <p className="text-muted-foreground mb-8">Hands-on procedures and cases from 2 months of clinical rotations</p>
+              <p className="text-muted-foreground mb-8">Hands-on procedures and cases from clinical rotations</p>
             </AnimatedSection>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -426,107 +426,155 @@ const Professional = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3">
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Syncope</span>
-                        <Badge variant="secondary">10+</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">CHF Exacerbation</span>
-                        <Badge variant="secondary">5+</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">COPD Exacerbation</span>
-                        <Badge variant="secondary">5+</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Seizures</span>
-                        <Badge variant="secondary">5</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Epistaxis Management</span>
-                        <Badge variant="secondary">4</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Urinary Retention</span>
-                        <Badge variant="secondary">3</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Obstipation</span>
-                        <Badge variant="secondary">3</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">NSTEMI</span>
-                        <Badge variant="secondary">3</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">STEMI</span>
-                        <Badge variant="secondary">3</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Intractable Vomiting</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Corneal Abrasion</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">1st Trimester Bleeding</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Assault Victims</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Pneumothorax</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Aortic Aneurysm (incl. AAA)</span>
-                        <Badge variant="secondary">2</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Ischemic Stroke</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Failure to Thrive (15+ lb loss)</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Metabolic Acidosis</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Deep Wound Laceration (Assisted)</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Pulmonary Sarcoidosis</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Strep Anal Infection</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Osteogenesis Imperfecta</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Infected Cervical Neck Cyst (I&D)</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
-                        <Badge variant="secondary">1</Badge>
-                      </li>
-                    </ul>
-                    <p className="text-xs text-muted-foreground mt-4 italic">
-                      Plus multiple cases of benign chest pain, dizziness, and abdominal pain
-                    </p>
+                     <ul className="space-y-3">
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Syncope</span>
+                         <Badge variant="secondary">10+</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Seizures (incl. breakthrough)</span>
+                         <Badge variant="secondary">6</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">CHF Exacerbation</span>
+                         <Badge variant="secondary">5+</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">COPD Exacerbation</span>
+                         <Badge variant="secondary">5+</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Epistaxis Management</span>
+                         <Badge variant="secondary">4</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Chest Pain (ACS rule-out / AMA)</span>
+                         <Badge variant="secondary">3</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Urinary Retention</span>
+                         <Badge variant="secondary">3</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Obstipation</span>
+                         <Badge variant="secondary">3</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">NSTEMI</span>
+                         <Badge variant="secondary">3</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">STEMI</span>
+                         <Badge variant="secondary">3</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Intractable Vomiting</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Corneal Abrasion</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">1st Trimester Bleeding</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Assault Victims</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Pneumothorax</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Aortic Aneurysm (incl. AAA)</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Diabetic Foot Osteomyelitis</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Acute Psych Episode / Suicidal Ideation</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">AMS / Delirium (incl. UTI-related)</span>
+                         <Badge variant="secondary">2</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Ischemic Stroke</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Failure to Thrive (15+ lb loss)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Metabolic Acidosis</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Deep Wound Laceration (Assisted)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Pulmonary Sarcoidosis</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Strep Anal Infection</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Osteogenesis Imperfecta</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Infected Cervical Neck Cyst (I&D)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Bilateral Pulmonary Embolism</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Pneumonia + Subacute Infarcts (Admission)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Non-obstructing Nephrolithiasis</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Acute Bronchitis / Mild Hemoptysis</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Droxidopa Adverse Effect (Resolved)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Cancer-Related Pain (Metastatic)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Chronic Wound (No Infection)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Distal Clavicle Fracture (Fall)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Elopement (Incomplete Evaluation)</span>
+                         <Badge variant="secondary">1</Badge>
+                       </li>
+                     </ul>
+                     <p className="text-xs text-muted-foreground mt-4 italic">
+                       Plus multiple cases of benign chest pain, dizziness, and abdominal pain. Includes ~6 admissions, ~11 discharges, 2 AMA, 1 elopement.
+                     </p>
                   </CardContent>
                 </Card>
               </AnimatedSection>
