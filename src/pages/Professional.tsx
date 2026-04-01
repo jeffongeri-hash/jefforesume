@@ -430,23 +430,23 @@ const Professional = () => {
                      <ul className="space-y-3">
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Psychiatric / Behavioral Health</span>
-                         <Badge variant="secondary">15</Badge>
+                          <Badge variant="secondary">25</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
-                         <Badge variant="secondary">14</Badge>
+                          <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
+                          <Badge variant="secondary">30</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Trauma / Fractures / Falls</span>
                          <Badge variant="secondary">12</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Abdominal / GI Complaints</span>
-                         <Badge variant="secondary">11</Badge>
+                          <span className="text-muted-foreground">Abdominal / GI Complaints</span>
+                          <Badge variant="secondary">35</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
-                         <Badge variant="secondary">10</Badge>
+                          <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
+                          <Badge variant="secondary">30</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Neurologic (Syncope, Seizure, Stroke, TBI)</span>
@@ -478,7 +478,7 @@ const Professional = () => {
                        </li>
                      </ul>
                      <p className="text-xs text-muted-foreground mt-4 italic">
-                       100+ total cases across 12 clinical categories. Top: Psych/Behavioral (~15%), Cardiovascular (~14%), Trauma (~12%), Abdominal/GI (~11%).
+                       150+ total cases across 12 clinical categories. Top: GI (~23%), Cardiovascular (~20%), Infectious (~20%), Psych/Behavioral (~17%).
                      </p>
                   </CardContent>
                 </Card>
