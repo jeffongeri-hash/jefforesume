@@ -360,7 +360,7 @@ const Professional = () => {
                 <Stethoscope className="h-6 w-6 text-primary" />
                 <h2 id="training-heading" className="section-title mb-0">Clinical Training Experience</h2>
               </div>
-              <p className="text-muted-foreground mb-8">Hands-on procedures and cases from 2 months of clinical rotations</p>
+              <p className="text-muted-foreground mb-8">Hands-on procedures and cases from clinical rotations</p>
             </AnimatedSection>
             
             <div className="grid md:grid-cols-2 gap-8">
