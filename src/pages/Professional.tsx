@@ -430,55 +430,55 @@ const Professional = () => {
                      <ul className="space-y-3">
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Psychiatric / Behavioral Health</span>
-                          <Badge variant="secondary">25</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
-                          <Badge variant="secondary">30</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Trauma / Fractures / Falls</span>
-                         <Badge variant="secondary">12</Badge>
-                       </li>
-                       <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Abdominal / GI Complaints</span>
                           <Badge variant="secondary">35</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
-                          <Badge variant="secondary">30</Badge>
+                          <span className="text-muted-foreground">Cardiovascular (Chest Pain, ACS, PE, STEMI/NSTEMI)</span>
+                          <Badge variant="secondary">60</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Neurologic (Syncope, Seizure, Stroke, TBI)</span>
-                         <Badge variant="secondary">10</Badge>
+                         <span className="text-muted-foreground">Musculoskeletal / Trauma / Fractures / Falls</span>
+                         <Badge variant="secondary">50</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Abdominal / GI Complaints</span>
+                          <Badge variant="secondary">50</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Infectious Disease (UTI, Pneumonia, RSV, Influenza)</span>
+                          <Badge variant="secondary">55</Badge>
+                       </li>
+                       <li className="flex items-center justify-between">
+                         <span className="text-muted-foreground">Neurologic (Syncope, Seizure, Stroke, TBI, Headache, AMS)</span>
+                         <Badge variant="secondary">30</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Pulmonary (COPD, Pneumothorax, Sarcoidosis)</span>
-                         <Badge variant="secondary">8</Badge>
+                         <Badge variant="secondary">15</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Renal / GU (Nephrolithiasis, Retention, AKI)</span>
-                         <Badge variant="secondary">7</Badge>
+                         <span className="text-muted-foreground">Genitourinary / Reproductive (Nephrolithiasis, Pelvic, Pregnancy)</span>
+                         <Badge variant="secondary">20</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Musculoskeletal / Wound Care</span>
-                         <Badge variant="secondary">7</Badge>
+                         <span className="text-muted-foreground">Endocrine / Metabolic (Thyroid, Electrolytes, Dehydration)</span>
+                         <Badge variant="secondary">10</Badge>
                        </li>
                        <li className="flex items-center justify-between">
                          <span className="text-muted-foreground">Ophthalmologic / ENT / Dental</span>
-                         <Badge variant="secondary">5</Badge>
+                         <Badge variant="secondary">10</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Pediatric (RSV, Varicella, Fever)</span>
-                         <Badge variant="secondary">4</Badge>
+                         <span className="text-muted-foreground">Pediatric (RSV, Croup, Varicella, Fever)</span>
+                         <Badge variant="secondary">12</Badge>
                        </li>
                        <li className="flex items-center justify-between">
-                         <span className="text-muted-foreground">Other (Oncology, Medication Effect, Elopement)</span>
-                         <Badge variant="secondary">4</Badge>
+                         <span className="text-muted-foreground">Oncology-Related (Post-Radiation, Cancer Symptoms)</span>
+                         <Badge variant="secondary">8</Badge>
                        </li>
                      </ul>
                      <p className="text-xs text-muted-foreground mt-4 italic">
-                       150+ total cases across 12 clinical categories. Top: GI (~23%), Cardiovascular (~20%), Infectious (~20%), Psych/Behavioral (~17%).
+                       350+ total cases across 12 clinical categories. Top: Cardiopulmonary (~17%), Infectious (~16%), MSK/Trauma (~14%), GI (~14%).
                      </p>
                   </CardContent>
                 </Card>
