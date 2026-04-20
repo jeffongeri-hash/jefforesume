@@ -29,6 +29,21 @@ import { Button } from '@/components/ui/button';
 import headshot from '@/assets/headshot.jpeg';
 
 const Professional = () => {
+  const [chartView, setChartView] = useState<'pie' | 'bar'>('pie');
+  const caseDistribution = [
+    { name: 'Cardiovascular', value: 60, color: 'hsl(210, 80%, 55%)' },
+    { name: 'Infectious Disease', value: 55, color: 'hsl(180, 65%, 45%)' },
+    { name: 'MSK / Trauma', value: 50, color: 'hsl(25, 85%, 55%)' },
+    { name: 'Abdominal / GI', value: 50, color: 'hsl(340, 75%, 55%)' },
+    { name: 'Psychiatric', value: 35, color: 'hsl(270, 65%, 60%)' },
+    { name: 'Neurologic', value: 30, color: 'hsl(45, 90%, 55%)' },
+    { name: 'Genitourinary', value: 20, color: 'hsl(150, 60%, 45%)' },
+    { name: 'Pulmonary', value: 15, color: 'hsl(200, 70%, 65%)' },
+    { name: 'Pediatric', value: 12, color: 'hsl(320, 60%, 65%)' },
+    { name: 'Endocrine', value: 10, color: 'hsl(15, 70%, 60%)' },
+    { name: 'ENT / Dental / Eye', value: 10, color: 'hsl(100, 55%, 50%)' },
+    { name: 'Oncology-Related', value: 8, color: 'hsl(240, 50%, 60%)' },
+  ];
   const experiences = [
     {
       title: "Physician Assistant Certified",
