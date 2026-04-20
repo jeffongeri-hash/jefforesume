@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { 
   Briefcase, 
   GraduationCap, 
@@ -487,6 +488,74 @@ const Professional = () => {
 
             {/* Detailed Case Breakdown */}
             <AnimatedSection delay={200} className="mt-8">
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="text-lg">Case Distribution by Category</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[400px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: 'Cardiovascular', value: 60 },
+                            { name: 'Infectious Disease', value: 55 },
+                            { name: 'MSK / Trauma', value: 50 },
+                            { name: 'Abdominal / GI', value: 50 },
+                            { name: 'Psychiatric', value: 35 },
+                            { name: 'Neurologic', value: 30 },
+                            { name: 'Genitourinary', value: 20 },
+                            { name: 'Pulmonary', value: 15 },
+                            { name: 'Pediatric', value: 12 },
+                            { name: 'Endocrine', value: 10 },
+                            { name: 'ENT / Dental / Eye', value: 10 },
+                            { name: 'Oncology-Related', value: 8 },
+                          ]}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={120}
+                          innerRadius={60}
+                          paddingAngle={2}
+                          label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                        >
+                          {[
+                            'hsl(210, 80%, 55%)',
+                            'hsl(180, 65%, 45%)',
+                            'hsl(25, 85%, 55%)',
+                            'hsl(340, 75%, 55%)',
+                            'hsl(270, 65%, 60%)',
+                            'hsl(45, 90%, 55%)',
+                            'hsl(150, 60%, 45%)',
+                            'hsl(200, 70%, 65%)',
+                            'hsl(320, 60%, 65%)',
+                            'hsl(15, 70%, 60%)',
+                            'hsl(100, 55%, 50%)',
+                            'hsl(240, 50%, 60%)',
+                          ].map((color, index) => (
+                            <Cell key={`cell-${index}`} fill={color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: 'hsl(var(--card))',
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '0.5rem',
+                            color: 'hsl(var(--foreground))',
+                          }}
+                        />
+                        <Legend
+                          layout="vertical"
+                          align="right"
+                          verticalAlign="middle"
+                          wrapperStyle={{ fontSize: '0.75rem' }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Detailed Case Breakdown</CardTitle>
