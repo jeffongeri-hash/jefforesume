@@ -67,7 +67,6 @@ const PACKING = [
   { cat: "Documents",  items: ["Driver's license / REAL ID", "Insurance card", "Rental car confirmation", "Hotel confirmations", "Printed itinerary"] },
   { cat: "Tech",       items: ["Phone + charger", "Power bank", "Car USB-C adapter", "GoPro + mounts", "Kindle"] },
   { cat: "Apparel",    items: ["T-shirts ×5", "Hiking pants ×2", "Swimsuit ×2", "Trail runners", "Light puffer (Tahoe nights)", "Rain shell"] },
-  // (unchanged)
   { cat: "Health",     items: ["Sunscreen SPF 50", "Lip balm SPF", "Electrolytes (altitude)", "Ibuprofen", "Bandaids + moleskin"] },
 ];
 
