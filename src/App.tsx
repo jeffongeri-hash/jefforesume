@@ -27,6 +27,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Resume = lazy(() => import("./pages/Resume"));
 const FreedomCountdown = lazy(() => import("./pages/FreedomCountdown"));
 const DayTrip = lazy(() => import("./pages/DayTrip"));
+const Vacation = lazy(() => import("./pages/Vacation"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -59,7 +60,7 @@ const App = () => (
                 <Route path="/resume" element={<Resume />} />
                 <Route path="/freedom-countdown" element={<FreedomCountdown />} />
                 <Route path="/day-trip" element={<DayTrip />} />
-                <Route path="/vacation" element={<DayTrip />} />
+                <Route path="/vacation" element={<Vacation />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
