@@ -11,68 +11,64 @@ const C = {
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const TRIP = {
-  destination: "Costa Rica",
-  region: "Guanacaste → Arenal → Manuel Antonio",
-  dates: "Mar 14 – Mar 22, 2026",
+  destination: "Sacramento + Lake Tahoe",
+  region: "Sacramento → South Lake Tahoe → Sacramento",
+  dates: "May 30 – Jun 4, 2026",
   travelers: 2,
-  nights: 8,
+  nights: 5,
   status: "Confirmed",
 };
 
 const DAYS = [
-  { day: 1, date: "Mar 14", phase: "arrival",   region: "Liberia (LIR)",      title: "Arrival + Transfer",        lodging: "Andaz Papagayo",        notes: "Land 14:20. Pick up rental SUV. Light dinner at resort." },
-  { day: 2, date: "Mar 15", phase: "coast",     region: "Papagayo Peninsula", title: "Beach + Reset",             lodging: "Andaz Papagayo",        notes: "Playa Blanca morning. Spa block 3pm. Sunset at Prieta Beach Club." },
-  { day: 3, date: "Mar 16", phase: "coast",     region: "Papagayo / Coco",    title: "Catamaran + Snorkel",       lodging: "Andaz Papagayo",        notes: "Half-day catamaran charter. Open bar, snorkel two reefs." },
-  { day: 4, date: "Mar 17", phase: "transit",   region: "Drive to Arenal",    title: "Transfer Day",              lodging: "Nayara Tented Camp",    notes: "~3.5 hr drive via Liberia. Lunch stop in Cañas. Check-in by 4pm." },
-  { day: 5, date: "Mar 18", phase: "jungle",    region: "Arenal Volcano",     title: "Hanging Bridges + Springs", lodging: "Nayara Tented Camp",    notes: "Mistico bridges AM. Tabacón hot springs PM. Volcano-view dinner." },
-  { day: 6, date: "Mar 19", phase: "jungle",    region: "La Fortuna",         title: "Waterfall + Sloth Trek",    lodging: "Nayara Tented Camp",    notes: "La Fortuna waterfall hike. Bogarín sloth trail at dusk." },
-  { day: 7, date: "Mar 20", phase: "transit",   region: "Drive to M. Antonio",title: "Cross-Country Drive",       lodging: "Hotel Si Como No",      notes: "~4.5 hr drive. Pacific coast route. Crocodile bridge stop." },
-  { day: 8, date: "Mar 21", phase: "coast",     region: "Manuel Antonio NP",  title: "National Park + Beach",     lodging: "Hotel Si Como No",      notes: "Park entry 7am with guide. Capuchin + howler monkeys. Espadilla beach PM." },
-  { day: 9, date: "Mar 22", phase: "departure", region: "SJO Airport",        title: "Departure",                 lodging: "—",                     notes: "Drive to SJO ~3 hr. Return rental. Flight 16:40." },
+  { day: 1, date: "May 30", phase: "arrival",   region: "Sacramento (SMF)",      title: "Arrival + Old Sac",          lodging: "Kimpton Sawyer",          notes: "Land SMF mid-day. Pick up rental SUV. Walk Old Sacramento waterfront. Dinner at The Firehouse." },
+  { day: 2, date: "May 31", phase: "city",      region: "Downtown Sacramento",   title: "Capitol + Midtown",          lodging: "Kimpton Sawyer",          notes: "CA State Capitol tour AM. Crocker Art Museum. Midtown food crawl + craft cocktails on R St." },
+  { day: 3, date: "Jun 1",  phase: "transit",   region: "Sac → South Lake Tahoe",title: "Drive to Tahoe",             lodging: "Edgewood Tahoe Resort",   notes: "~2 hr drive via US-50. Lunch stop in Placerville. Check-in Edgewood. Sunset at Lakeside Beach." },
+  { day: 4, date: "Jun 2",  phase: "alpine",    region: "Emerald Bay / West Shore", title: "Emerald Bay + Kayak",     lodging: "Edgewood Tahoe Resort",   notes: "Eagle Falls hike AM. Vikingsholm overlook. Kayak rental at Pope Beach PM." },
+  { day: 5, date: "Jun 3",  phase: "alpine",    region: "Heavenly + East Shore", title: "Gondola + Sand Harbor",      lodging: "Edgewood Tahoe Resort",   notes: "Heavenly gondola to Observation Deck AM. Drive to Sand Harbor (NV) for swim + paddleboard." },
+  { day: 6, date: "Jun 4",  phase: "departure", region: "Tahoe → SMF",           title: "Return + Departure",         lodging: "—",                       notes: "Breakfast lakeside. Drive back to SMF ~2 hr. Return rental. Evening flight home." },
 ];
 
 const PHASE_META: Record<string, { label: string; color: string }> = {
   arrival:   { label: "Arrival",   color: C.blue },
-  coast:     { label: "Coast",     color: C.teal },
+  city:      { label: "City",      color: C.teal },
   transit:   { label: "Transit",   color: C.amber },
-  jungle:    { label: "Jungle",    color: C.green },
+  alpine:    { label: "Alpine",    color: C.green },
   departure: { label: "Departure", color: C.violet },
 };
 
 const LODGING = [
-  { id: "andaz",  name: "Andaz Papagayo",     nights: 3, region: "Guanacaste",     type: "Resort",     conf: "AND-2X9F-441", price: 1840, status: "Confirmed" },
-  { id: "nayara", name: "Nayara Tented Camp", nights: 3, region: "Arenal",          type: "Eco-Lodge",  conf: "NYR-77QX-018", price: 2310, status: "Confirmed" },
-  { id: "sicomo", name: "Hotel Si Como No",   nights: 2, region: "Manuel Antonio",  type: "Boutique",   conf: "SCN-4413-AA",  price: 980,  status: "Confirmed" },
+  { id: "sawyer",   name: "Kimpton Sawyer Hotel",  nights: 2, region: "Downtown Sacramento", type: "Boutique",   conf: "KMP-3318-SAC", price: 540,  status: "Confirmed" },
+  { id: "edgewood", name: "Edgewood Tahoe Resort", nights: 3, region: "South Lake Tahoe",    type: "Resort",     conf: "EDG-9921-LTH", price: 1890, status: "Confirmed" },
 ];
 
 const FLIGHTS = [
-  { id: "out",  leg: "Outbound", route: "IAH → LIR", carrier: "United 1438", dep: "Mar 14 · 09:55", arr: "Mar 14 · 14:20", seats: "12A / 12B", status: "Ticketed" },
-  { id: "back", leg: "Return",   route: "SJO → IAH", carrier: "United 1467", dep: "Mar 22 · 16:40", arr: "Mar 22 · 21:05", seats: "8C / 8D",   status: "Ticketed" },
+  { id: "out",  leg: "Outbound", route: "IAH → SMF", carrier: "United 2214", dep: "May 30 · 08:10", arr: "May 30 · 10:35", seats: "14A / 14B", status: "Ticketed" },
+  { id: "back", leg: "Return",   route: "SMF → IAH", carrier: "United 1827", dep: "Jun 4 · 19:25",  arr: "Jun 5 · 00:50",  seats: "11C / 11D", status: "Ticketed" },
 ];
 
 const ACTIVITIES = [
-  { id: "cat",     title: "Catamaran + Snorkel",       day: 3, status: "Booked",  cost: 320, vendor: "Marlin del Rey" },
-  { id: "bridge",  title: "Mistico Hanging Bridges",   day: 5, status: "Booked",  cost: 80,  vendor: "Mistico Park" },
-  { id: "spring",  title: "Tabacón Hot Springs",       day: 5, status: "Booked",  cost: 160, vendor: "Tabacón Resort" },
-  { id: "fall",    title: "La Fortuna Waterfall Hike", day: 6, status: "Open",    cost: 36,  vendor: "Self-guided" },
-  { id: "sloth",   title: "Bogarín Sloth Trail",       day: 6, status: "Booked",  cost: 60,  vendor: "Bogarín Trail" },
-  { id: "park",    title: "Manuel Antonio + Guide",    day: 8, status: "Booked",  cost: 140, vendor: "Johan Chaves" },
+  { id: "capitol", title: "CA State Capitol Tour",     day: 2, status: "Open",    cost: 0,   vendor: "Self-guided" },
+  { id: "crocker", title: "Crocker Art Museum",        day: 2, status: "Booked",  cost: 30,  vendor: "Crocker Museum" },
+  { id: "eagle",   title: "Eagle Falls / Vikingsholm", day: 4, status: "Open",    cost: 10,  vendor: "CA State Parks" },
+  { id: "kayak",   title: "Pope Beach Kayak Rental",   day: 4, status: "Booked",  cost: 120, vendor: "Kayak Tahoe" },
+  { id: "gondola", title: "Heavenly Gondola Ride",     day: 5, status: "Booked",  cost: 90,  vendor: "Heavenly Resort" },
+  { id: "sand",    title: "Sand Harbor Paddleboard",   day: 5, status: "Booked",  cost: 80,  vendor: "Tahoe Adventure Co." },
 ];
 
 const BUDGET = [
-  { cat: "Flights",    planned: 1450, actual: 1402, color: C.blue },
-  { cat: "Lodging",    planned: 5200, actual: 5130, color: C.green },
-  { cat: "Rental Car", planned: 720,  actual: 685,  color: C.amber },
-  { cat: "Activities", planned: 900,  actual: 796,  color: C.teal },
-  { cat: "Food",       planned: 1100, actual: 0,    color: C.violet },
-  { cat: "Misc",       planned: 400,  actual: 0,    color: C.red },
+  { cat: "Flights",    planned: 780,  actual: 742, color: C.blue },
+  { cat: "Lodging",    planned: 2430, actual: 2430, color: C.green },
+  { cat: "Rental Car", planned: 420,  actual: 388,  color: C.amber },
+  { cat: "Activities", planned: 360,  actual: 330,  color: C.teal },
+  { cat: "Food",       planned: 700,  actual: 0,    color: C.violet },
+  { cat: "Misc",       planned: 250,  actual: 0,    color: C.red },
 ];
 
 const PACKING = [
-  { cat: "Documents",  items: ["Passports (6mo validity)", "Driver's license", "Insurance card", "Vaccination record", "Printed itinerary"] },
-  { cat: "Tech",       items: ["Phone + charger", "Power bank", "Plug adapter (Type A/B)", "GoPro + housing", "Kindle"] },
-  { cat: "Apparel",    items: ["Quick-dry shirts ×5", "Hiking pants ×2", "Swimsuits ×3", "Trail runners", "Sandals", "Light rain shell"] },
-  { cat: "Health",     items: ["Sunscreen SPF 50", "DEET repellent", "Electrolytes", "Ibuprofen", "Bandaids + moleskin"] },
+  { cat: "Documents",  items: ["Driver's license / REAL ID", "Insurance card", "Rental car confirmation", "Hotel confirmations", "Printed itinerary"] },
+  { cat: "Tech",       items: ["Phone + charger", "Power bank", "Car USB-C adapter", "GoPro + mounts", "Kindle"] },
+  { cat: "Apparel",    items: ["T-shirts ×5", "Hiking pants ×2", "Swimsuit ×2", "Trail runners", "Light puffer (Tahoe nights)", "Rain shell"] },
+  { cat: "Health",     items: ["Sunscreen SPF 50", "Lip balm SPF", "Electrolytes (altitude)", "Ibuprofen", "Bandaids + moleskin"] },
 ];
 
 const STATUS_COLOR: Record<string, string> = { Confirmed: C.green, Ticketed: C.green, Booked: C.green, Open: C.amber, Pending: C.amber };
@@ -269,7 +265,7 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
       </Box>
 
       <Box style={{ gridColumn: "1 / -1" }}>
-        <SecHead eyebrow="Day Stream" title="9-DAY ITINERARY" color={C.teal} />
+        <SecHead eyebrow="Day Stream" title="6-DAY ITINERARY" color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 8 }}>
           {DAYS.map(d => {
             const sel = selectedDay?.day === d.day;
