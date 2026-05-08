@@ -12,7 +12,7 @@ const C = {
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const TRIP = {
   destination: "Sacramento + Lake Tahoe",
-  region: "Sacramento → South Lake Tahoe → Sacramento",
+  region: "Sacramento (base) · Lake Tahoe day trip",
   dates: "May 30 – Jun 4, 2026",
   travelers: 2,
   nights: 5,
@@ -20,12 +20,12 @@ const TRIP = {
 };
 
 const DAYS = [
-  { day: 1, date: "May 30", phase: "arrival",   region: "Sacramento (SMF)",      title: "Arrival + Old Sac",          lodging: "Kimpton Sawyer",          notes: "Land SMF mid-day. Pick up rental SUV. Walk Old Sacramento waterfront. Dinner at The Firehouse." },
-  { day: 2, date: "May 31", phase: "city",      region: "Downtown Sacramento",   title: "Capitol + Midtown",          lodging: "Kimpton Sawyer",          notes: "CA State Capitol tour AM. Crocker Art Museum. Midtown food crawl + craft cocktails on R St." },
-  { day: 3, date: "Jun 1",  phase: "transit",   region: "Sac → South Lake Tahoe",title: "Drive to Tahoe",             lodging: "Edgewood Tahoe Resort",   notes: "~2 hr drive via US-50. Lunch stop in Placerville. Check-in Edgewood. Sunset at Lakeside Beach." },
-  { day: 4, date: "Jun 2",  phase: "alpine",    region: "Emerald Bay / West Shore", title: "Emerald Bay + Kayak",     lodging: "Edgewood Tahoe Resort",   notes: "Eagle Falls hike AM. Vikingsholm overlook. Kayak rental at Pope Beach PM." },
-  { day: 5, date: "Jun 3",  phase: "alpine",    region: "Heavenly + East Shore", title: "Gondola + Sand Harbor",      lodging: "Edgewood Tahoe Resort",   notes: "Heavenly gondola to Observation Deck AM. Drive to Sand Harbor (NV) for swim + paddleboard." },
-  { day: 6, date: "Jun 4",  phase: "departure", region: "Tahoe → SMF",           title: "Return + Departure",         lodging: "—",                       notes: "Breakfast lakeside. Drive back to SMF ~2 hr. Return rental. Evening flight home." },
+  { day: 1, date: "May 30", phase: "arrival",   region: "Sacramento (SMF)",         title: "Arrival + Old Sac",     lodging: "Kimpton Sawyer", notes: "Land SMF mid-day. Pick up rental SUV. Check in at Kimpton Sawyer. Walk Old Sacramento waterfront. Dinner at The Firehouse." },
+  { day: 2, date: "May 31", phase: "city",      region: "Downtown Sacramento",      title: "Capitol + Midtown",     lodging: "Kimpton Sawyer", notes: "CA State Capitol tour AM. Crocker Art Museum. Midtown food crawl + craft cocktails on R St." },
+  { day: 3, date: "Jun 1",  phase: "city",      region: "Sacramento River + Land Park", title: "River + Land Park", lodging: "Kimpton Sawyer", notes: "Tower Bridge + riverwalk AM. Lunch in Land Park. Afternoon at Sacramento Zoo / Fairytale Town. Evening Kings/River Cats game or Golden 1 area." },
+  { day: 4, date: "Jun 2",  phase: "alpine",    region: "Lake Tahoe (day trip)",    title: "Tahoe Day Trip",        lodging: "Kimpton Sawyer", notes: "Early start ~6 AM. ~2 hr drive via US-50 to South Lake Tahoe. Emerald Bay / Eagle Falls hike. Lunch lakeside. Sand Harbor (NV) swim + paddleboard PM. Drive back to Sacramento for late dinner." },
+  { day: 5, date: "Jun 3",  phase: "city",      region: "Old Sugar Mill + Davis",   title: "Wine + Davis",          lodging: "Kimpton Sawyer", notes: "Old Sugar Mill wineries in Clarksburg AM. Lunch in Davis. UC Davis arboretum stroll. Return to Sac for farm-to-fork dinner." },
+  { day: 6, date: "Jun 4",  phase: "departure", region: "Sacramento → SMF",         title: "Departure",             lodging: "—",              notes: "Coffee at Temple. Quick Midtown stroll. Return rental at SMF. Evening flight home." },
 ];
 
 const PHASE_META: Record<string, { label: string; color: string }> = {
@@ -37,8 +37,7 @@ const PHASE_META: Record<string, { label: string; color: string }> = {
 };
 
 const LODGING = [
-  { id: "sawyer",   name: "Kimpton Sawyer Hotel",  nights: 2, region: "Downtown Sacramento", type: "Boutique",   conf: "KMP-3318-SAC", price: 540,  status: "Confirmed" },
-  { id: "edgewood", name: "Edgewood Tahoe Resort", nights: 3, region: "South Lake Tahoe",    type: "Resort",     conf: "EDG-9921-LTH", price: 1890, status: "Confirmed" },
+  { id: "sawyer",   name: "Kimpton Sawyer Hotel",  nights: 5, region: "Downtown Sacramento", type: "Boutique",   conf: "KMP-3318-SAC", price: 1350, status: "Confirmed" },
 ];
 
 const FLIGHTS = [
@@ -49,17 +48,17 @@ const FLIGHTS = [
 const ACTIVITIES = [
   { id: "capitol", title: "CA State Capitol Tour",     day: 2, status: "Open",    cost: 0,   vendor: "Self-guided" },
   { id: "crocker", title: "Crocker Art Museum",        day: 2, status: "Booked",  cost: 30,  vendor: "Crocker Museum" },
-  { id: "eagle",   title: "Eagle Falls / Vikingsholm", day: 4, status: "Open",    cost: 10,  vendor: "CA State Parks" },
-  { id: "kayak",   title: "Pope Beach Kayak Rental",   day: 4, status: "Booked",  cost: 120, vendor: "Kayak Tahoe" },
-  { id: "gondola", title: "Heavenly Gondola Ride",     day: 5, status: "Booked",  cost: 90,  vendor: "Heavenly Resort" },
-  { id: "sand",    title: "Sand Harbor Paddleboard",   day: 5, status: "Booked",  cost: 80,  vendor: "Tahoe Adventure Co." },
+  { id: "zoo",     title: "Sacramento Zoo",            day: 3, status: "Booked",  cost: 40,  vendor: "Sacramento Zoo" },
+  { id: "eagle",   title: "Eagle Falls / Emerald Bay", day: 4, status: "Open",    cost: 10,  vendor: "CA State Parks" },
+  { id: "sand",    title: "Sand Harbor Paddleboard",   day: 4, status: "Booked",  cost: 80,  vendor: "Tahoe Adventure Co." },
+  { id: "wine",    title: "Old Sugar Mill Tasting",    day: 5, status: "Booked",  cost: 60,  vendor: "Old Sugar Mill" },
 ];
 
 const BUDGET = [
   { cat: "Flights",    planned: 780,  actual: 742, color: C.blue },
-  { cat: "Lodging",    planned: 2430, actual: 2430, color: C.green },
-  { cat: "Rental Car", planned: 420,  actual: 388,  color: C.amber },
-  { cat: "Activities", planned: 360,  actual: 330,  color: C.teal },
+  { cat: "Lodging",    planned: 1350, actual: 1350, color: C.green },
+  { cat: "Rental Car", planned: 480,  actual: 442,  color: C.amber },
+  { cat: "Activities", planned: 320,  actual: 290,  color: C.teal },
   { cat: "Food",       planned: 700,  actual: 0,    color: C.violet },
   { cat: "Misc",       planned: 250,  actual: 0,    color: C.red },
 ];
@@ -265,7 +264,7 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
       </Box>
 
       <Box style={{ gridColumn: "1 / -1" }}>
-        <SecHead eyebrow="Day Stream" title="6-DAY ITINERARY" color={C.teal} />
+          <SecHead eyebrow="Day Stream" title="6-DAY ITINERARY" color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 8 }}>
           {DAYS.map(d => {
             const sel = selectedDay?.day === d.day;
