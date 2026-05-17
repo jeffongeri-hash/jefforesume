@@ -70,25 +70,121 @@ const PACKING = [
   { cat: "Health",     items: ["Sunscreen SPF 50", "Lip balm SPF", "Electrolytes (altitude)", "Ibuprofen", "Bandaids + moleskin"] },
 ];
 
+// Tahoe day-trip specific packing (rendered separately in Packing tab)
+const TAHOE_PACKING = [
+  { cat: "Layers",         items: ["Base layer long-sleeve ×2", "Mid-layer fleece", "Light puffer jacket", "Wool beanie", "Sun hat / cap", "Lightweight gloves"] },
+  { cat: "Waterproof",     items: ["Rain shell (packable)", "Dry bag 10L for phone/wallet", "Quick-dry towel ×2", "Waterproof phone pouch", "Zip-loc bags for wet swimwear"] },
+  { cat: "Swim + Water",   items: ["Swimsuit ×2 (each)", "Rash guard / UPF top", "Water shoes", "Goggles", "Microfiber beach towel", "Reef-safe sunscreen"] },
+  { cat: "Cables + Power", items: ["USB-C car charger (dual port)", "20K mAh power bank", "Lightning + USB-C cables ×2", "GoPro charging cable", "Spare GoPro batteries ×2", "MicroSD card backup"] },
+  { cat: "Vehicle",        items: ["Tire chains (rental — check trunk)", "Ice scraper", "Jumper cables / portable jump pack", "Roadside emergency kit", "Paper map of Tahoe basin (no signal areas)", "Cash for tolls/parking ($40)"] },
+  { cat: "Trail + Snacks", items: ["2L water per person", "Electrolyte tabs (altitude)", "Trail bars ×6", "Trail mix + jerky", "Daypack 20L", "Trekking poles (optional)", "Headlamp (return after dark)"] },
+];
+
 const STATUS_COLOR: Record<string, string> = { Confirmed: C.green, Ticketed: C.green, Booked: C.green, Open: C.amber, Pending: C.amber };
 
 // ─── TAHOE DAY-TRIP SCHEDULE ──────────────────────────────────────────────────
-const TAHOE_SCHEDULE = [
-  { time: "05:30", kind: "prep",     label: "Wake + Coffee",         loc: "Kimpton Sawyer, Sacramento",   detail: "Quick breakfast at hotel. Fill water bottles. Load car: hiking shoes, swimsuits, towels, GoPro, snacks." },
-  { time: "06:15", kind: "drive",    label: "Depart Sacramento",     loc: "I-80 E → US-50 E",             detail: "Head east on US-50. Beat the weekend Tahoe traffic. ETA South Lake Tahoe ~08:30. Drive time ~2 h 15 m, ~100 mi." },
-  { time: "07:30", kind: "stop",     label: "Pit Stop · Placerville", loc: "Placerville, CA (US-50)",     detail: "Gas + restroom + coffee top-up. ~15 min. Optional pastry at Sweetie Pie's." },
-  { time: "08:45", kind: "arrive",   label: "Arrive South Lake Tahoe", loc: "Stateline / Heavenly Village", detail: "First lake view at Echo Summit overlook. Park near Heavenly Village for orientation photos." },
-  { time: "09:15", kind: "drive",    label: "Drive to Emerald Bay",  loc: "CA-89 N (Emerald Bay Rd)",     detail: "~25 min along the west shore. Pull off at Inspiration Point for the iconic Emerald Bay shot." },
-  { time: "09:45", kind: "hike",     label: "Eagle Falls Trailhead", loc: "Eagle Falls, Emerald Bay SP",  detail: "Short 1-mile out-and-back to Lower Eagle Falls. $10 day-use parking. Bring layers — alpine breeze." },
-  { time: "11:30", kind: "stop",     label: "Vikingsholm Overlook",  loc: "Emerald Bay viewpoint",        detail: "Photo stop above Vikingsholm castle. Skip the full descent (1k ft) to save time." },
-  { time: "12:15", kind: "meal",     label: "Lakeside Lunch",        loc: "The Beacon Bar & Grill, Camp Richardson", detail: "Lakeside patio. Order the Rum Runner. ~1 h 15 m. Reservation at 12:30." },
-  { time: "13:45", kind: "drive",    label: "Drive to Sand Harbor",  loc: "NV-28 N (East Shore)",         detail: "~50 min around the lake into Nevada. Stop at Logan Shoals Vista for east-shore views." },
-  { time: "14:45", kind: "swim",     label: "Sand Harbor SP",        loc: "Sand Harbor, Lake Tahoe NV",   detail: "Paddleboard rental (pre-booked, Tahoe Adventure Co.). Swim the boulder coves. $15 NV park entry." },
-  { time: "17:00", kind: "depart",   label: "Depart Sand Harbor",    loc: "NV-28 S → US-50 W",            detail: "Change into dry clothes. Last lake photos. Head back via Spooner Summit." },
-  { time: "17:45", kind: "stop",     label: "Dinner Pickup · Tahoe", loc: "Burger Lounge, Stateline",     detail: "Quick grab-and-go burgers + fries for the drive back. ~20 min stop." },
-  { time: "18:15", kind: "drive",    label: "Return Drive to Sac",   loc: "US-50 W → I-80 W",             detail: "~2 h 15 m back to Sacramento. Watch for fog through the foothills. Sunset over the Sierras." },
-  { time: "20:45", kind: "arrive",   label: "Arrive Kimpton Sawyer", loc: "Downtown Sacramento",          detail: "Unload car. Hot shower. Quick nightcap at Revival rooftop bar if energy permits." },
-  { time: "22:00", kind: "rest",     label: "Lights Out",            loc: "Kimpton Sawyer",               detail: "Recharge phones + GoPro. Set 08:30 alarm for Day 5 (wine country)." },
+type TahoeStop = {
+  time: string; kind: string; label: string; loc: string; detail: string;
+  cost: number; costNote?: string;
+  links?: { label: string; url: string }[];
+};
+
+const TAHOE_SCHEDULE: TahoeStop[] = [
+  { time: "05:30", kind: "prep",   label: "Wake + Coffee",          loc: "Kimpton Sawyer, Sacramento",   detail: "Quick breakfast at hotel. Fill water bottles. Load car: hiking shoes, swimsuits, towels, GoPro, snacks.",
+    cost: 0, costNote: "Included with hotel",
+    links: [
+      { label: "Hotel Map",   url: "https://maps.google.com/?q=Kimpton+Sawyer+Hotel+Sacramento" },
+      { label: "Hotel Site",  url: "https://www.sawyerhotel.com/" },
+    ] },
+  { time: "06:15", kind: "drive",  label: "Depart Sacramento",      loc: "I-80 E → US-50 E",             detail: "Head east on US-50. Beat the weekend Tahoe traffic. ETA South Lake Tahoe ~08:30. Drive time ~2h 15m, ~100 mi.",
+    cost: 32, costNote: "Fuel leg 1 (~$32)",
+    links: [
+      { label: "Route on Maps",  url: "https://maps.google.com/?saddr=Sacramento,CA&daddr=South+Lake+Tahoe,CA" },
+      { label: "Caltrans US-50", url: "https://quickmap.dot.ca.gov/" },
+    ] },
+  { time: "07:30", kind: "stop",   label: "Pit Stop · Placerville", loc: "Placerville, CA (US-50)",      detail: "Gas + restroom + coffee top-up. ~15 min. Optional pastry at Sweetie Pie's.",
+    cost: 18, costNote: "Coffee + pastries (~$18)",
+    links: [
+      { label: "Map",            url: "https://maps.google.com/?q=Placerville+CA" },
+      { label: "Sweetie Pie's",  url: "https://sweetiepiesplacerville.com/" },
+    ] },
+  { time: "08:45", kind: "arrive", label: "Arrive South Lake Tahoe", loc: "Stateline / Heavenly Village", detail: "First lake view at Echo Summit overlook. Park near Heavenly Village for orientation photos.",
+    cost: 8, costNote: "Heavenly Village parking (~$8/hr)",
+    links: [
+      { label: "Heavenly Village", url: "https://www.theshopsatheavenly.com/" },
+      { label: "Map",              url: "https://maps.google.com/?q=Heavenly+Village+South+Lake+Tahoe" },
+    ] },
+  { time: "09:15", kind: "drive",  label: "Drive to Emerald Bay",   loc: "CA-89 N (Emerald Bay Rd)",     detail: "~25 min along the west shore. Pull off at Inspiration Point for the iconic Emerald Bay shot.",
+    cost: 0,
+    links: [
+      { label: "Inspiration Pt Map", url: "https://maps.google.com/?q=Inspiration+Point+Emerald+Bay" },
+    ] },
+  { time: "09:45", kind: "hike",   label: "Eagle Falls Trailhead",  loc: "Eagle Falls, Emerald Bay SP",  detail: "Short 1-mile out-and-back to Lower Eagle Falls. Day-use parking lot fills early — arrive before 10. Bring layers.",
+    cost: 10, costNote: "CA State Parks day-use ($10)",
+    links: [
+      { label: "Emerald Bay SP",  url: "https://www.parks.ca.gov/?page_id=506" },
+      { label: "Trail Map (AllTrails)", url: "https://www.alltrails.com/trail/us/california/eagle-falls-trail" },
+      { label: "Google Maps",     url: "https://maps.google.com/?q=Eagle+Falls+Trailhead" },
+    ] },
+  { time: "11:30", kind: "stop",   label: "Vikingsholm Overlook",   loc: "Emerald Bay viewpoint",        detail: "Photo stop above Vikingsholm castle. Skip the full 1,000-ft descent to save time.",
+    cost: 0, costNote: "Free overlook",
+    links: [
+      { label: "Vikingsholm info", url: "https://www.parks.ca.gov/?page_id=507" },
+      { label: "Map",              url: "https://maps.google.com/?q=Vikingsholm" },
+    ] },
+  { time: "12:15", kind: "meal",   label: "Lakeside Lunch",         loc: "The Beacon Bar & Grill, Camp Richardson", detail: "Lakeside patio. Order the Rum Runner. ~1h 15m. Reservation at 12:30 (party of 2).",
+    cost: 78, costNote: "Lunch for 2 + drinks (~$78)",
+    links: [
+      { label: "The Beacon",  url: "https://www.camprichardson.com/the-beacon-bar-grill/" },
+      { label: "Reservation", url: "https://www.opentable.com/r/the-beacon-bar-and-grill-south-lake-tahoe" },
+      { label: "Map",         url: "https://maps.google.com/?q=The+Beacon+Bar+%26+Grill+Camp+Richardson" },
+    ] },
+  { time: "13:45", kind: "drive",  label: "Drive to Sand Harbor",   loc: "NV-28 N (East Shore)",         detail: "~50 min around the lake into Nevada. Stop at Logan Shoals Vista for east-shore views.",
+    cost: 14, costNote: "Fuel leg 2 (~$14)",
+    links: [
+      { label: "Route on Maps",      url: "https://maps.google.com/?saddr=Camp+Richardson,CA&daddr=Sand+Harbor,NV" },
+      { label: "Logan Shoals Vista", url: "https://maps.google.com/?q=Logan+Shoals+Vista+Point" },
+    ] },
+  { time: "14:45", kind: "swim",   label: "Sand Harbor SP",         loc: "Sand Harbor, Lake Tahoe NV",   detail: "Paddleboard rental (pre-booked, Tahoe Adventure Co.). Swim the boulder coves. NV park entry $15/car (out-of-state).",
+    cost: 95, costNote: "$15 park entry + $80 SUP rental",
+    links: [
+      { label: "Sand Harbor SP",     url: "https://parks.nv.gov/parks/sand-harbor" },
+      { label: "Tahoe Adventure Co.", url: "https://tahoeadventurecompany.com/" },
+      { label: "Map",                url: "https://maps.google.com/?q=Sand+Harbor+State+Park" },
+    ] },
+  { time: "17:00", kind: "depart", label: "Depart Sand Harbor",     loc: "NV-28 S → US-50 W",            detail: "Change into dry clothes. Last lake photos. Head back via Spooner Summit.",
+    cost: 0,
+    links: [
+      { label: "Spooner Summit", url: "https://maps.google.com/?q=Spooner+Summit" },
+    ] },
+  { time: "17:45", kind: "stop",   label: "Dinner Pickup · Tahoe",  loc: "Burger Lounge, Stateline",     detail: "Quick grab-and-go burgers + fries for the drive back. ~20 min stop.",
+    cost: 36, costNote: "Dinner for 2 (~$36)",
+    links: [
+      { label: "Burger Lounge", url: "https://www.burgerlounge.com/locations/" },
+      { label: "Map",           url: "https://maps.google.com/?q=Burger+Lounge+Stateline+NV" },
+    ] },
+  { time: "18:15", kind: "drive",  label: "Return Drive to Sac",    loc: "US-50 W → I-80 W",             detail: "~2h 15m back to Sacramento. Watch for fog through the foothills. Sunset over the Sierras.",
+    cost: 32, costNote: "Fuel leg 3 (~$32)",
+    links: [
+      { label: "Caltrans QuickMap", url: "https://quickmap.dot.ca.gov/" },
+    ] },
+  { time: "20:45", kind: "arrive", label: "Arrive Kimpton Sawyer",  loc: "Downtown Sacramento",          detail: "Unload car. Hot shower. Quick nightcap at Revival rooftop bar if energy permits.",
+    cost: 24, costNote: "Optional nightcap (~$24)",
+    links: [
+      { label: "Revival Bar", url: "https://www.revivalsacramento.com/" },
+      { label: "Map",         url: "https://maps.google.com/?q=Kimpton+Sawyer+Hotel+Sacramento" },
+    ] },
+  { time: "22:00", kind: "rest",   label: "Lights Out",             loc: "Kimpton Sawyer",               detail: "Recharge phones + GoPro. Set 08:30 alarm for Day 5 (wine country).",
+    cost: 0,
+    links: [] },
+];
+
+type ContingencyNote = { label: string; text: string };
+const TAHOE_CONTINGENCY: ContingencyNote[] = [
+  { label: "Traffic",   text: "If US-50 closed/slow, reroute via I-80 → CA-89 S to Tahoe City (adds ~30m)." },
+  { label: "Weather",   text: "If snow on US-50 (late spring storm possible), carry chains; swap Sand Harbor for Heavenly gondola." },
+  { label: "Fatigue",   text: "Cutoff: depart Tahoe NLT 18:00 to guarantee safe return before midnight." },
+  { label: "Altitude",  text: "Sand Harbor ~6,225 ft. Hydrate aggressively; electrolytes packed." },
 ];
 
 const TAHOE_KIND_COLOR: Record<string, string> = {
