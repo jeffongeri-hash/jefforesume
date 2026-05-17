@@ -449,51 +449,238 @@ function ItineraryTab({ selectedDay, onSelectDay }: { selectedDay: Day | null; o
   );
 }
 
+const LS_SCHEDULE = "vacation.tahoe.schedule.v1";
+const LS_CONTINGENCY = "vacation.tahoe.contingency.v1";
+
+function loadLS<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) as T : fallback; } catch { return fallback; }
+}
+
+function inputStyle(): React.CSSProperties {
+  return {
+    background: C.bg, border: `1px solid ${C.border}`, color: C.text,
+    padding: "4px 6px", fontSize: 10, fontFamily: "inherit", width: "100%", boxSizing: "border-box",
+  };
+}
+
+function ToolbarBtn({ children, onClick, color = C.blue, active }: { children: React.ReactNode; onClick: () => void; color?: string; active?: boolean }) {
+  return (
+    <button onClick={onClick} style={{
+      background: active ? color + "28" : "transparent", color: active ? color : C.text,
+      border: `1px solid ${active ? color : C.border}`, padding: "5px 10px",
+      fontFamily: "inherit", fontSize: 9, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase",
+      cursor: "pointer",
+    }}>{children}</button>
+  );
+}
+
 function TahoeDayTab() {
   const tahoeDay = DAYS.find(d => d.phase === "alpine");
+  const [editing, setEditing] = useState(false);
+  const [schedule, setSchedule] = useState<TahoeStop[]>(() => loadLS(LS_SCHEDULE, TAHOE_SCHEDULE));
+  const [contingency, setContingency] = useState<ContingencyNote[]>(() => loadLS(LS_CONTINGENCY, TAHOE_CONTINGENCY));
+
+  const persist = (s: TahoeStop[], c: ContingencyNote[]) => {
+    try {
+      localStorage.setItem(LS_SCHEDULE, JSON.stringify(s));
+      localStorage.setItem(LS_CONTINGENCY, JSON.stringify(c));
+    } catch { /* ignore */ }
+  };
+
+  const updateStop = (i: number, patch: Partial<TahoeStop>) => {
+    const next = schedule.map((s, idx) => idx === i ? { ...s, ...patch } : s);
+    setSchedule(next); persist(next, contingency);
+  };
+  const moveStop = (i: number, dir: -1 | 1) => {
+    const j = i + dir; if (j < 0 || j >= schedule.length) return;
+    const next = schedule.slice(); [next[i], next[j]] = [next[j], next[i]];
+    setSchedule(next); persist(next, contingency);
+  };
+  const removeStop = (i: number) => {
+    const next = schedule.filter((_, idx) => idx !== i);
+    setSchedule(next); persist(next, contingency);
+  };
+  const addStop = () => {
+    const next: TahoeStop[] = [...schedule, { time: "00:00", kind: "stop", label: "New Stop", loc: "", detail: "", cost: 0, links: [] }];
+    setSchedule(next); persist(next, contingency);
+  };
+  const resetAll = () => {
+    setSchedule(TAHOE_SCHEDULE); setContingency(TAHOE_CONTINGENCY);
+    try { localStorage.removeItem(LS_SCHEDULE); localStorage.removeItem(LS_CONTINGENCY); } catch { /* ignore */ }
+  };
+  const updateContingency = (i: number, patch: Partial<ContingencyNote>) => {
+    const next = contingency.map((n, idx) => idx === i ? { ...n, ...patch } : n);
+    setContingency(next); persist(schedule, next);
+  };
+  const addContingency = () => {
+    const next = [...contingency, { label: "New", text: "" }];
+    setContingency(next); persist(schedule, next);
+  };
+  const removeContingency = (i: number) => {
+    const next = contingency.filter((_, idx) => idx !== i);
+    setContingency(next); persist(schedule, next);
+  };
+
+  const tahoeTotal = useMemo(() => schedule.reduce((s, x) => s + (x.cost || 0), 0), [schedule]);
+
+  // Budget grouping by kind
+  const budgetByKind = useMemo(() => {
+    const groups: Record<string, { kind: string; total: number; items: TahoeStop[] }> = {};
+    schedule.forEach(s => {
+      if (!s.cost) return;
+      const key = s.kind;
+      if (!groups[key]) groups[key] = { kind: key, total: 0, items: [] };
+      groups[key].total += s.cost; groups[key].items.push(s);
+    });
+    return Object.values(groups).sort((a, b) => b.total - a.total);
+  }, [schedule]);
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 14 }}>
       <Box>
-        <SecHead
-          eyebrow="Day 4 · Jun 2"
-          title="LAKE TAHOE DAY TRIP"
-          meta={tahoeDay ? `${tahoeDay.region} · Base: ${tahoeDay.lodging}` : undefined}
-          color={C.green}
-        />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
-          <div><Eyebrow color={C.amber}>Depart Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.departSac}</div></div>
-          <div><Eyebrow color={C.violet}>Return Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.returnSac}</div></div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 14, flexWrap: "wrap", marginBottom: 8 }}>
+          <SecHead
+            eyebrow="Day 4 · Jun 2"
+            title="LAKE TAHOE DAY TRIP"
+            meta={tahoeDay ? `${tahoeDay.region} · Base: ${tahoeDay.lodging}` : undefined}
+            color={C.green}
+          />
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <ToolbarBtn onClick={() => setEditing(e => !e)} color={editing ? C.amber : C.blue} active={editing}>
+              {editing ? "● Editing" : "✎ Edit Mode"}
+            </ToolbarBtn>
+            {editing && <ToolbarBtn onClick={addStop} color={C.green}>+ Add Stop</ToolbarBtn>}
+            {editing && <ToolbarBtn onClick={resetAll} color={C.red}>↺ Reset</ToolbarBtn>}
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 }}>
+          <div><Eyebrow color={C.amber}>Depart Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{schedule[1]?.time || TAHOE_STATS.departSac}</div></div>
+          <div><Eyebrow color={C.violet}>Return Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{schedule[schedule.length - 2]?.time || TAHOE_STATS.returnSac}</div></div>
           <div><Eyebrow color={C.amber}>Drive Time</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.totalDriveHr}</div></div>
           <div><Eyebrow color={C.amber}>Distance</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.totalDriveMi} mi</div></div>
           <div><Eyebrow color={C.green}>Elevation</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.elevationGain}</div></div>
-          <div><Eyebrow color={C.teal}>Park Fees</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>${TAHOE_STATS.parkFees}</div></div>
+          <div><Eyebrow color={C.red}>Day Total</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>${tahoeTotal}</div></div>
         </div>
       </Box>
 
       <Box>
-        <SecHead eyebrow="Timeline" title="MINUTE-BY-MINUTE" meta="Pacific Time · Tue Jun 2, 2026" color={C.teal} />
+        <SecHead
+          eyebrow="Timeline"
+          title={editing ? "EDITING SCHEDULE" : "MINUTE-BY-MINUTE"}
+          meta="Pacific Time · Tue Jun 2, 2026"
+          color={editing ? C.amber : C.teal}
+        />
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {TAHOE_SCHEDULE.map((s, i) => {
+          {schedule.map((s, i) => {
             const color = TAHOE_KIND_COLOR[s.kind] || C.muted;
-            const isLast = i === TAHOE_SCHEDULE.length - 1;
+            const isLast = i === schedule.length - 1;
             return (
               <div key={i} style={{ display: "flex", gap: 14, alignItems: "stretch" }}>
-                <div style={{ minWidth: 60, paddingTop: 10, flexShrink: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 900, color: C.text, letterSpacing: "0.04em" }}>{s.time}</div>
-                  <div style={{ fontSize: 7, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color }}>{s.kind}</div>
+                <div style={{ minWidth: 64, paddingTop: 10, flexShrink: 0 }}>
+                  {editing ? (
+                    <>
+                      <input value={s.time} onChange={e => updateStop(i, { time: e.target.value })} style={{ ...inputStyle(), fontSize: 11, fontWeight: 900 }} />
+                      <input value={s.kind} onChange={e => updateStop(i, { kind: e.target.value })} style={{ ...inputStyle(), marginTop: 4, fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color }} />
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ fontSize: 13, fontWeight: 900, color: C.text, letterSpacing: "0.04em" }}>{s.time}</div>
+                      <div style={{ fontSize: 7, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color }}>{s.kind}</div>
+                    </>
+                  )}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 14, flexShrink: 0 }}>
                   <div style={{ width: 9, height: 9, borderRadius: 999, background: color, boxShadow: `0 0 0 3px ${C.bg}, 0 0 0 4px ${color}55` }} />
                   {!isLast && <div style={{ width: 1, flex: 1, background: C.border, marginTop: 4, minHeight: 28 }} />}
                 </div>
-                <div style={{ flex: 1, padding: "8px 0 16px", borderBottom: isLast ? "none" : `1px dashed ${C.border2}` }}>
-                  <div style={{ fontSize: 11, fontWeight: 900, color: C.text, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 2 }}>{s.label}</div>
-                  <div style={{ fontSize: 9, color: C.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 5 }}>{s.loc}</div>
-                  <div style={{ fontSize: 10, color: C.text, lineHeight: 1.55 }}>{s.detail}</div>
+                <div style={{ flex: 1, padding: "8px 0 16px", borderBottom: isLast ? "none" : `1px dashed ${C.border2}`, minWidth: 0 }}>
+                  {editing ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                      <input value={s.label} onChange={e => updateStop(i, { label: e.target.value })} placeholder="Label" style={{ ...inputStyle(), fontWeight: 900, letterSpacing: "0.05em", textTransform: "uppercase" }} />
+                      <input value={s.loc} onChange={e => updateStop(i, { loc: e.target.value })} placeholder="Location" style={inputStyle()} />
+                      <textarea value={s.detail} onChange={e => updateStop(i, { detail: e.target.value })} placeholder="Details" rows={2} style={{ ...inputStyle(), resize: "vertical", lineHeight: 1.5 }} />
+                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                        <span style={{ fontSize: 9, color: C.dim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Cost $</span>
+                        <input type="number" value={s.cost} onChange={e => updateStop(i, { cost: Number(e.target.value) || 0 })} style={{ ...inputStyle(), width: 70, flex: "0 0 auto" }} />
+                        <input value={s.costNote || ""} onChange={e => updateStop(i, { costNote: e.target.value })} placeholder="Cost note" style={inputStyle()} />
+                      </div>
+                      <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
+                        <ToolbarBtn onClick={() => moveStop(i, -1)} color={C.muted}>↑</ToolbarBtn>
+                        <ToolbarBtn onClick={() => moveStop(i, 1)} color={C.muted}>↓</ToolbarBtn>
+                        <ToolbarBtn onClick={() => removeStop(i)} color={C.red}>✕ Remove</ToolbarBtn>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
+                        <div style={{ fontSize: 11, fontWeight: 900, color: C.text, letterSpacing: "0.05em", textTransform: "uppercase" }}>{s.label}</div>
+                        {s.cost > 0 && <div style={{ fontSize: 10, fontWeight: 900, color: C.amber }}>${s.cost}</div>}
+                      </div>
+                      <div style={{ fontSize: 9, color: C.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginTop: 2, marginBottom: 5 }}>{s.loc}</div>
+                      <div style={{ fontSize: 10, color: C.text, lineHeight: 1.55 }}>{s.detail}</div>
+                      {s.costNote && <div style={{ fontSize: 9, color: C.dim, marginTop: 4, fontStyle: "italic" }}>{s.costNote}</div>}
+                      {s.links && s.links.length > 0 && (
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+                          {s.links.map((l, li) => (
+                            <a key={li} href={l.url} target="_blank" rel="noopener noreferrer" style={{
+                              fontSize: 9, fontWeight: 900, letterSpacing: "0.1em", textTransform: "uppercase",
+                              color: C.blue, border: `1px solid ${C.blue}55`, padding: "3px 7px",
+                              background: C.blue + "10", textDecoration: "none",
+                            }}>↗ {l.label}</a>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             );
           })}
+        </div>
+      </Box>
+
+      {/* TAHOE BUDGET BREAKDOWN */}
+      <Box>
+        <SecHead eyebrow="Tahoe Day Budget" title="ESTIMATED COSTS" meta={`${schedule.filter(s => s.cost > 0).length} line items · Day total $${tahoeTotal}`} color={C.amber} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10, marginBottom: 14 }}>
+          {budgetByKind.map(g => {
+            const color = TAHOE_KIND_COLOR[g.kind] || C.muted;
+            const pct = tahoeTotal ? Math.round((g.total / tahoeTotal) * 100) : 0;
+            return (
+              <div key={g.kind} style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                  <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color }}>{g.kind}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: C.text }}>${g.total}</span>
+                </div>
+                <div style={{ height: 4, background: C.bg, marginBottom: 6 }}>
+                  <div style={{ width: `${pct}%`, height: "100%", background: color }} />
+                </div>
+                <div style={{ fontSize: 9, color: C.dim, letterSpacing: "0.1em" }}>{pct}% of day</div>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ borderTop: `1px solid ${C.border}` }}>
+          {schedule.filter(s => s.cost > 0).map((s, i) => {
+            const color = TAHOE_KIND_COLOR[s.kind] || C.muted;
+            return (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "50px 70px 1fr auto", gap: 10, padding: "7px 0", borderBottom: `1px solid ${C.border2}`, alignItems: "center" }}>
+                <span style={{ fontSize: 10, color: C.muted, fontFamily: "inherit" }}>{s.time}</span>
+                <span style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color }}>{s.kind}</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 10, color: C.text, fontWeight: 900, letterSpacing: "0.04em" }}>{s.label}</div>
+                  {s.costNote && <div style={{ fontSize: 9, color: C.dim }}>{s.costNote}</div>}
+                </div>
+                <span style={{ fontSize: 11, fontWeight: 900, color: C.amber }}>${s.cost}</span>
+              </div>
+            );
+          })}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", padding: "12px 0 4px", alignItems: "center" }}>
+            <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color: C.text }}>Day Trip Total</span>
+            <span style={{ fontSize: 16, fontWeight: 900, color: C.green }}>${tahoeTotal}</span>
+          </div>
+          <div style={{ fontSize: 9, color: C.dim, marginTop: 4, fontStyle: "italic" }}>Estimates for 2 travelers. Excludes incidentals and tips.</div>
         </div>
       </Box>
 
@@ -506,11 +693,23 @@ function TahoeDayTab() {
           <KV label="Return" value="NV-28 S → US-50 W → I-80 W to Sacramento (~2h 15m)" />
         </Box>
         <Box>
-          <SecHead eyebrow="Contingency" title="BACKUP PLAN" color={C.red} />
-          <KV label="Traffic" value="If US-50 closed/slow, reroute via I-80 → CA-89 S to Tahoe City (adds ~30m)." />
-          <KV label="Weather" value="If snow on US-50 (late spring storm possible), carry chains; swap Sand Harbor for Heavenly gondola." />
-          <KV label="Fatigue" value="Cutoff: depart Tahoe NLT 18:00 to guarantee safe return before midnight." />
-          <KV label="Altitude" value="Sand Harbor ~6,225 ft. Hydrate aggressively; electrolytes packed." />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, marginBottom: 4 }}>
+            <SecHead eyebrow="Contingency" title="BACKUP PLAN" color={C.red} />
+            {editing && <ToolbarBtn onClick={addContingency} color={C.green}>+ Add</ToolbarBtn>}
+          </div>
+          {contingency.map((n, i) => (
+            <div key={i} style={{ marginBottom: 10 }}>
+              {editing ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <input value={n.label} onChange={e => updateContingency(i, { label: e.target.value })} placeholder="Label" style={{ ...inputStyle(), fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }} />
+                  <textarea value={n.text} onChange={e => updateContingency(i, { text: e.target.value })} placeholder="Note" rows={2} style={{ ...inputStyle(), resize: "vertical", lineHeight: 1.5 }} />
+                  <div><ToolbarBtn onClick={() => removeContingency(i)} color={C.red}>✕ Remove</ToolbarBtn></div>
+                </div>
+              ) : (
+                <KV label={n.label} value={n.text} />
+              )}
+            </div>
+          ))}
         </Box>
       </div>
     </div>
