@@ -72,6 +72,39 @@ const PACKING = [
 
 const STATUS_COLOR: Record<string, string> = { Confirmed: C.green, Ticketed: C.green, Booked: C.green, Open: C.amber, Pending: C.amber };
 
+// ─── TAHOE DAY-TRIP SCHEDULE ──────────────────────────────────────────────────
+const TAHOE_SCHEDULE = [
+  { time: "05:30", kind: "prep",     label: "Wake + Coffee",         loc: "Kimpton Sawyer, Sacramento",   detail: "Quick breakfast at hotel. Fill water bottles. Load car: hiking shoes, swimsuits, towels, GoPro, snacks." },
+  { time: "06:15", kind: "drive",    label: "Depart Sacramento",     loc: "I-80 E → US-50 E",             detail: "Head east on US-50. Beat the weekend Tahoe traffic. ETA South Lake Tahoe ~08:30. Drive time ~2 h 15 m, ~100 mi." },
+  { time: "07:30", kind: "stop",     label: "Pit Stop · Placerville", loc: "Placerville, CA (US-50)",     detail: "Gas + restroom + coffee top-up. ~15 min. Optional pastry at Sweetie Pie's." },
+  { time: "08:45", kind: "arrive",   label: "Arrive South Lake Tahoe", loc: "Stateline / Heavenly Village", detail: "First lake view at Echo Summit overlook. Park near Heavenly Village for orientation photos." },
+  { time: "09:15", kind: "drive",    label: "Drive to Emerald Bay",  loc: "CA-89 N (Emerald Bay Rd)",     detail: "~25 min along the west shore. Pull off at Inspiration Point for the iconic Emerald Bay shot." },
+  { time: "09:45", kind: "hike",     label: "Eagle Falls Trailhead", loc: "Eagle Falls, Emerald Bay SP",  detail: "Short 1-mile out-and-back to Lower Eagle Falls. $10 day-use parking. Bring layers — alpine breeze." },
+  { time: "11:30", kind: "stop",     label: "Vikingsholm Overlook",  loc: "Emerald Bay viewpoint",        detail: "Photo stop above Vikingsholm castle. Skip the full descent (1k ft) to save time." },
+  { time: "12:15", kind: "meal",     label: "Lakeside Lunch",        loc: "The Beacon Bar & Grill, Camp Richardson", detail: "Lakeside patio. Order the Rum Runner. ~1 h 15 m. Reservation at 12:30." },
+  { time: "13:45", kind: "drive",    label: "Drive to Sand Harbor",  loc: "NV-28 N (East Shore)",         detail: "~50 min around the lake into Nevada. Stop at Logan Shoals Vista for east-shore views." },
+  { time: "14:45", kind: "swim",     label: "Sand Harbor SP",        loc: "Sand Harbor, Lake Tahoe NV",   detail: "Paddleboard rental (pre-booked, Tahoe Adventure Co.). Swim the boulder coves. $15 NV park entry." },
+  { time: "17:00", kind: "depart",   label: "Depart Sand Harbor",    loc: "NV-28 S → US-50 W",            detail: "Change into dry clothes. Last lake photos. Head back via Spooner Summit." },
+  { time: "17:45", kind: "stop",     label: "Dinner Pickup · Tahoe", loc: "Burger Lounge, Stateline",     detail: "Quick grab-and-go burgers + fries for the drive back. ~20 min stop." },
+  { time: "18:15", kind: "drive",    label: "Return Drive to Sac",   loc: "US-50 W → I-80 W",             detail: "~2 h 15 m back to Sacramento. Watch for fog through the foothills. Sunset over the Sierras." },
+  { time: "20:45", kind: "arrive",   label: "Arrive Kimpton Sawyer", loc: "Downtown Sacramento",          detail: "Unload car. Hot shower. Quick nightcap at Revival rooftop bar if energy permits." },
+  { time: "22:00", kind: "rest",     label: "Lights Out",            loc: "Kimpton Sawyer",               detail: "Recharge phones + GoPro. Set 08:30 alarm for Day 5 (wine country)." },
+];
+
+const TAHOE_KIND_COLOR: Record<string, string> = {
+  prep: C.muted, drive: C.amber, stop: C.dim, arrive: C.blue,
+  hike: C.green, meal: C.violet, swim: C.teal, depart: C.amber, rest: C.dim,
+};
+
+const TAHOE_STATS = {
+  totalDriveMi: 235,
+  totalDriveHr: "4 h 45 m",
+  departSac: "06:15",
+  returnSac: "20:45",
+  parkFees: 25,
+  elevationGain: "650 ft (Eagle Falls)",
+};
+
 // ─── TINY COMPONENTS ──────────────────────────────────────────────────────────
 function Pill({ label, color }: { label: string; color: string }) {
   return (
@@ -132,7 +165,7 @@ function Hr() { return <div style={{ borderTop: `1px solid ${C.border}`, margin:
 type Day = typeof DAYS[number];
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const TABS = ["Overview", "Itinerary", "Lodging", "Activities", "Budget", "Packing"] as const;
+const TABS = ["Overview", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
 type Tab = typeof TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
@@ -197,6 +230,7 @@ export default function Vacation() {
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
         {tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
         {tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
+        {tab === "Tahoe Day" && <TahoeDayTab />}
         {tab === "Lodging" && <LodgingTab />}
         {tab === "Activities" && <ActivitiesTab />}
         {tab === "Budget" && <BudgetTab totals={totals} />}
