@@ -788,18 +788,50 @@ function BudgetTab({ totals }: { totals: { planned: number; actual: number; delt
 
 function PackingTab() {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-      {PACKING.map(p => (
-        <Box key={p.cat}>
-          <SecHead eyebrow="Checklist" title={p.cat.toUpperCase()} meta={`${p.items.length} items`} color={C.violet} />
-          {p.items.map((it, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 0", borderBottom: i < p.items.length - 1 ? `1px solid ${C.border2}` : "none" }}>
-              <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0 }} />
-              <span style={{ fontSize: 10, color: C.text }}>{it}</span>
-            </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <div>
+        <div style={{ marginBottom: 10 }}>
+          <Eyebrow color={C.violet}>Vacation · Full Trip</Eyebrow>
+          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Sacramento Packing</div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
+          {PACKING.map(p => (
+            <Box key={p.cat}>
+              <SecHead eyebrow="Checklist" title={p.cat.toUpperCase()} meta={`${p.items.length} items`} color={C.violet} />
+              {p.items.map((it, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 0", borderBottom: i < p.items.length - 1 ? `1px solid ${C.border2}` : "none" }}>
+                  <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0 }} />
+                  <span style={{ fontSize: 10, color: C.text }}>{it}</span>
+                </div>
+              ))}
+            </Box>
           ))}
-        </Box>
-      ))}
+        </div>
+      </div>
+
+      <div>
+        <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <Eyebrow color={C.green}>Day 4 · Jun 2</Eyebrow>
+          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Lake Tahoe Day-Trip Add-Ons</div>
+          <Pill label="Alpine" color={C.green} />
+        </div>
+        <div style={{ fontSize: 10, color: C.muted, marginBottom: 10, maxWidth: 720, lineHeight: 1.5 }}>
+          Layered for 35°F dawn → 75°F afternoon swings. Waterproof gear for paddleboarding. Chains required-carry chart for I-80 / US-50 even in early June.
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
+          {TAHOE_PACKING.map(p => (
+            <Box key={p.cat}>
+              <SecHead eyebrow="Tahoe Day" title={p.cat.toUpperCase()} meta={`${p.items.length} items`} color={C.green} />
+              {p.items.map((it, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 0", borderBottom: i < p.items.length - 1 ? `1px solid ${C.border2}` : "none" }}>
+                  <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0 }} />
+                  <span style={{ fontSize: 10, color: C.text }}>{it}</span>
+                </div>
+              ))}
+            </Box>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
