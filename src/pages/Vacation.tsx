@@ -353,6 +353,74 @@ function ItineraryTab({ selectedDay, onSelectDay }: { selectedDay: Day | null; o
   );
 }
 
+function TahoeDayTab() {
+  const tahoeDay = DAYS.find(d => d.phase === "alpine");
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 14 }}>
+      <Box>
+        <SecHead
+          eyebrow="Day 4 · Jun 2"
+          title="LAKE TAHOE DAY TRIP"
+          meta={tahoeDay ? `${tahoeDay.region} · Base: ${tahoeDay.lodging}` : undefined}
+          color={C.green}
+        />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
+          <div><Eyebrow color={C.amber}>Depart Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.departSac}</div></div>
+          <div><Eyebrow color={C.violet}>Return Sac</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.returnSac}</div></div>
+          <div><Eyebrow color={C.amber}>Drive Time</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.totalDriveHr}</div></div>
+          <div><Eyebrow color={C.amber}>Distance</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.totalDriveMi} mi</div></div>
+          <div><Eyebrow color={C.green}>Elevation</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>{TAHOE_STATS.elevationGain}</div></div>
+          <div><Eyebrow color={C.teal}>Park Fees</Eyebrow><div style={{ fontSize: 16, fontWeight: 900, color: C.text }}>${TAHOE_STATS.parkFees}</div></div>
+        </div>
+      </Box>
+
+      <Box>
+        <SecHead eyebrow="Timeline" title="MINUTE-BY-MINUTE" meta="Pacific Time · Tue Jun 2, 2026" color={C.teal} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {TAHOE_SCHEDULE.map((s, i) => {
+            const color = TAHOE_KIND_COLOR[s.kind] || C.muted;
+            const isLast = i === TAHOE_SCHEDULE.length - 1;
+            return (
+              <div key={i} style={{ display: "flex", gap: 14, alignItems: "stretch" }}>
+                <div style={{ minWidth: 60, paddingTop: 10, flexShrink: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: C.text, letterSpacing: "0.04em" }}>{s.time}</div>
+                  <div style={{ fontSize: 7, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color }}>{s.kind}</div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 14, flexShrink: 0 }}>
+                  <div style={{ width: 9, height: 9, borderRadius: 999, background: color, boxShadow: `0 0 0 3px ${C.bg}, 0 0 0 4px ${color}55` }} />
+                  {!isLast && <div style={{ width: 1, flex: 1, background: C.border, marginTop: 4, minHeight: 28 }} />}
+                </div>
+                <div style={{ flex: 1, padding: "8px 0 16px", borderBottom: isLast ? "none" : `1px dashed ${C.border2}` }}>
+                  <div style={{ fontSize: 11, fontWeight: 900, color: C.text, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 2 }}>{s.label}</div>
+                  <div style={{ fontSize: 9, color: C.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 5 }}>{s.loc}</div>
+                  <div style={{ fontSize: 10, color: C.text, lineHeight: 1.55 }}>{s.detail}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Box>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
+        <Box>
+          <SecHead eyebrow="Route" title="SAC → TAHOE → SAC" color={C.amber} />
+          <KV label="Outbound" value="Sacramento → US-50 E → South Lake Tahoe (~2h 15m)" />
+          <KV label="West Shore" value="CA-89 N to Emerald Bay / Eagle Falls (~25m)" />
+          <KV label="East Shore" value="CA-89 → US-50 → NV-28 to Sand Harbor (~50m)" />
+          <KV label="Return" value="NV-28 S → US-50 W → I-80 W to Sacramento (~2h 15m)" />
+        </Box>
+        <Box>
+          <SecHead eyebrow="Contingency" title="BACKUP PLAN" color={C.red} />
+          <KV label="Traffic" value="If US-50 closed/slow, reroute via I-80 → CA-89 S to Tahoe City (adds ~30m)." />
+          <KV label="Weather" value="If snow on US-50 (late spring storm possible), carry chains; swap Sand Harbor for Heavenly gondola." />
+          <KV label="Fatigue" value="Cutoff: depart Tahoe NLT 18:00 to guarantee safe return before midnight." />
+          <KV label="Altitude" value="Sand Harbor ~6,225 ft. Hydrate aggressively; electrolytes packed." />
+        </Box>
+      </div>
+    </div>
+  );
+}
+
 function LodgingTab() {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
