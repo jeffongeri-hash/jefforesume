@@ -261,7 +261,7 @@ function Hr() { return <div style={{ borderTop: `1px solid ${C.border}`, margin:
 type Day = typeof DAYS[number];
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const TABS = ["Overview", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
+const TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
 type Tab = typeof TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
@@ -325,6 +325,7 @@ export default function Vacation() {
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
         {tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Plans" && <PlansTab totals={totals} />}
         {tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tab === "Tahoe Day" && <TahoeDayTab />}
         {tab === "Lodging" && <LodgingTab />}
@@ -348,6 +349,114 @@ export default function Vacation() {
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
+function PlansTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
+      {/* Executive Summary */}
+      <Box>
+        <SecHead eyebrow="Executive Summary" title={TRIP.destination.toUpperCase()} meta={TRIP.region} color={C.blue} />
+        <KV label="Dates" value={TRIP.dates} />
+        <KV label="Travelers" value={`${TRIP.travelers} adults`} />
+        <KV label="Nights" value={`${TRIP.nights}`} />
+        <KV label="Status" value={<Pill label={TRIP.status} color={C.green} />} />
+        <Hr />
+        <KV label="Base Lodging" value={LODGING[0].name} />
+        <KV label="Confirmation" value={<span style={{ fontFamily: "monospace" }}>{LODGING[0].conf}</span>} />
+        <KV label="Total Budget" value={`$${totals.planned.toLocaleString()} planned · $${totals.actual.toLocaleString()} actual`} />
+      </Box>
+
+      {/* Key Bookings */}
+      <Box>
+        <SecHead eyebrow="Transport" title="FLIGHTS & CONFIRMATIONS" color={C.amber} />
+        {FLIGHTS.map(f => (
+          <div key={f.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border2}` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+              <span style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.1em" }}>{f.leg.toUpperCase()} · {f.route}</span>
+              <Pill label={f.status} color={STATUS_COLOR[f.status] || C.muted} />
+            </div>
+            <div style={{ fontSize: 9, color: C.muted }}>{f.carrier} · Seats {f.seats}</div>
+            <div style={{ fontSize: 9, color: C.dim, marginTop: 2 }}>{f.dep} → {f.arr}</div>
+          </div>
+        ))}
+        <Hr />
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 6 }}>
+          <span style={{ fontSize: 9, fontWeight: 900, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>Lodging</span>
+          <span style={{ fontSize: 10, color: C.text, fontWeight: 900 }}>{LODGING[0].conf}</span>
+        </div>
+        <div style={{ fontSize: 9, color: C.muted, marginTop: 2 }}>{LODGING[0].name} · {LODGING[0].nights} nights</div>
+      </Box>
+
+      {/* Pre-Trip Checklist */}
+      <Box>
+        <SecHead eyebrow="Before Departure" title="PRE-TRIP CHECKLIST" color={C.violet} />
+        {[
+          { label: "Online Check-In", note: "United 24h prior — May 29 @ 08:10" },
+          { label: "Rental Car Confirm", note: "Verify SUV category + snow-chain policy" },
+          { label: "Hotel Check-In", note: "Kimpton Sawyer digital key / early check-in request" },
+          { label: "Dining Reservations", note: "The Firehouse, The Beacon Bar — confirm OpenTable" },
+          { label: "Activity Confirm", note: "Crocker Museum, Zoo, Sugar Mill, Tahoe Adventure Co." },
+          { label: "Weather Check", note: "Sacramento + Tahoe 7-day forecast — pack layers" },
+          { label: "Download Offline Maps", note: "Tahoe basin has dead zones on US-50 / NV-28" },
+          { label: "Cash Withdrawal", note: "$40 for tolls / parking / tips" },
+        ].map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "6px 0", borderBottom: `1px solid ${C.border2}` }}>
+            <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0, marginTop: 2 }} />
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.04em" }}>{item.label}</div>
+              <div style={{ fontSize: 9, color: C.muted, lineHeight: 1.4 }}>{item.note}</div>
+            </div>
+          </div>
+        ))}
+      </Box>
+
+      {/* Day-at-a-Glance */}
+      <Box style={{ gridColumn: "1 / -1" }}>
+        <SecHead eyebrow="Master Schedule" title="6-DAY PLAN AT A GLANCE" color={C.teal} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8 }}>
+          {DAYS.map(d => {
+            const phase = PHASE_META[d.phase];
+            return (
+              <Box key={d.day} style={{ padding: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <span style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.12em", color: C.dim }}>DAY {d.day} · {d.date.toUpperCase()}</span>
+                  <span style={{ width: 6, height: 6, borderRadius: 999, background: phase.color }} />
+                </div>
+                <div style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 4 }}>{d.title}</div>
+                <div style={{ fontSize: 8, color: C.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>{d.region}</div>
+                <div style={{ fontSize: 9, color: C.text, lineHeight: 1.5 }}>{d.notes}</div>
+                <div style={{ marginTop: 6, fontSize: 8, color: C.dim, letterSpacing: "0.08em" }}>🏨 {d.lodging}</div>
+              </Box>
+            );
+          })}
+        </div>
+      </Box>
+
+      {/* Critical Reminders */}
+      <Box style={{ gridColumn: "1 / -1" }}>
+        <SecHead eyebrow="Alerts" title="CRITICAL REMINDERS" color={C.red} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
+          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+            <div style={{ fontSize: 9, fontWeight: 900, color: C.amber, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Chain Carry Requirement</div>
+            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>California requires chain carry in controlled zones through June. Rental SUV must have chains in trunk even if not used.</div>
+          </div>
+          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+            <div style={{ fontSize: 9, fontWeight: 900, color: C.teal, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Altitude Prep</div>
+            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Sand Harbor is ~6,225 ft. Start hydration 24h before Day 4. Pack electrolytes and avoid alcohol the night before.</div>
+          </div>
+          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+            <div style={{ fontSize: 9, fontWeight: 900, color: C.green, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Tahoe Day Cutoff</div>
+            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Depart Tahoe NLT 18:00 to guarantee safe return. If weather or traffic worsens, swap Sand Harbor for Heavenly Village.</div>
+          </div>
+          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+            <div style={{ fontSize: 9, fontWeight: 900, color: C.violet, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Rental Return</div>
+            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Return SUV at SMF by 17:00 on Jun 4. Fill gas near airport. Allow 30 min for shuttle to terminal.</div>
+          </div>
+        </div>
+      </Box>
+    </div>
+  );
+}
+
 function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
