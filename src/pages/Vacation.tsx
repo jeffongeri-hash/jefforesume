@@ -485,24 +485,30 @@ function KV({ label, value }: { label: string; value: React.ReactNode }) {
 
 function Hr() { return <div style={{ borderTop: `1px solid ${C.border}`, margin: "10px 0" }} />; }
 
-type Day = typeof DAYS[number];
+type Day = DayItem;
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
-type Tab = typeof TABS[number];
+const ALL_TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
+type Tab = typeof ALL_TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Vacation() {
   const [tripId, setTripId] = useState<TripId>("california");
   const activeTrip = TRIPS.find(t => t.id === tripId)!;
+  const data = activeTrip.data;
+  const TABS = useMemo<readonly Tab[]>(() => (
+    tripId === "california"
+      ? ALL_TABS
+      : ALL_TABS.filter(t => t !== "Tahoe Day") as Tab[]
+  ), [tripId]);
   const [tab, setTab] = useState<Tab>("Overview");
-  const [selectedDay, setSelectedDay] = useState<Day | null>(DAYS[0]);
+  const [selectedDay, setSelectedDay] = useState<Day | null>(data.days[0]);
 
   const totals = useMemo(() => {
-    const planned = BUDGET.reduce((s, b) => s + b.planned, 0);
-    const actual = BUDGET.reduce((s, b) => s + b.actual, 0);
+    const planned = data.budget.reduce((s, b) => s + b.planned, 0);
+    const actual = data.budget.reduce((s, b) => s + b.actual, 0);
     return { planned, actual, delta: planned - actual };
-  }, []);
+  }, [data]);
 
   return (
     <div style={{
@@ -564,7 +570,6 @@ export default function Vacation() {
       </div>
 
       {/* TABS */}
-      {tripId === "california" && (
       <div style={{ background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, padding: "0 18px", display: "flex", gap: 0, overflowX: "auto" }}>
         {TABS.map(t => (
           <button
@@ -583,19 +588,17 @@ export default function Vacation() {
           </button>
         ))}
       </div>
-      )}
 
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        {tripId !== "california" && <TripArchiveTab trip={activeTrip} />}
-        {tripId === "california" && tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
-        {tripId === "california" && tab === "Plans" && <PlansTab totals={totals} />}
-        {tripId === "california" && tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
+        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Plans" && <PlansTab trip={activeTrip} data={data} totals={totals} />}
+        {tab === "Itinerary" && <ItineraryTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tripId === "california" && tab === "Tahoe Day" && <TahoeDayTab />}
-        {tripId === "california" && tab === "Lodging" && <LodgingTab />}
-        {tripId === "california" && tab === "Activities" && <ActivitiesTab />}
-        {tripId === "california" && tab === "Budget" && <BudgetTab totals={totals} />}
-        {tripId === "california" && tab === "Packing" && <PackingTab />}
+        {tab === "Lodging" && <LodgingTab data={data} />}
+        {tab === "Activities" && <ActivitiesTab data={data} />}
+        {tab === "Budget" && <BudgetTab data={data} totals={totals} />}
+        {tab === "Packing" && <PackingTab trip={activeTrip} data={data} />}
       </div>
 
       {/* FOOTER */}
@@ -613,56 +616,27 @@ export default function Vacation() {
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-function TripArchiveTab({ trip }: { trip: TripSummary }) {
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 14 }}>
-      <Box>
-        <SecHead eyebrow={`${trip.flag} ${trip.label}`} title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
-        <KV label="Dates"     value={trip.dates} />
-        <KV label="Travelers" value={`${trip.travelers} adults`} />
-        <KV label="Nights"    value={`${trip.nights}`} />
-        <KV label="Status"    value={<span style={{ color: trip.color }}>● {trip.status}</span>} />
-        <KV label="Lodging"   value={trip.lodging} />
-        <KV label="Budget"    value={`$${trip.budget.toLocaleString()}`} />
-        <Hr />
-        <div style={{ fontSize: 10, color: C.muted, lineHeight: 1.6 }}>{trip.headline}</div>
-        <div style={{ marginTop: 8, fontSize: 9, color: C.dim, fontStyle: "italic" }}>{trip.notes}</div>
-      </Box>
-      <Box>
-        <SecHead eyebrow="Highlights" title="TRIP HIGHLIGHTS" meta={`${trip.highlights.length} stops`} color={trip.color} />
-        <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-          {trip.highlights.map((h, i) => (
-            <li key={i} style={{ display: "flex", gap: 8, padding: "6px 0", borderBottom: `1px dashed ${C.border2}`, fontSize: 11, color: C.text, lineHeight: 1.5 }}>
-              <span style={{ color: trip.color, fontWeight: 900, minWidth: 18 }}>{String(i + 1).padStart(2, "0")}</span>
-              <span>{h}</span>
-            </li>
-          ))}
-        </ul>
-      </Box>
-    </div>
-  );
-}
-
-function PlansTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
+function PlansTab({ trip, data, totals }: { trip: TripSummary; data: TripData; totals: { planned: number; actual: number; delta: number } }) {
+  const baseLodging = data.lodging[0];
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       {/* Executive Summary */}
       <Box>
-        <SecHead eyebrow="Executive Summary" title={TRIP.destination.toUpperCase()} meta={TRIP.region} color={C.blue} />
-        <KV label="Dates" value={TRIP.dates} />
-        <KV label="Travelers" value={`${TRIP.travelers} adults`} />
-        <KV label="Nights" value={`${TRIP.nights}`} />
-        <KV label="Status" value={<Pill label={TRIP.status} color={C.green} />} />
+        <SecHead eyebrow="Executive Summary" title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
+        <KV label="Dates" value={trip.dates} />
+        <KV label="Travelers" value={`${trip.travelers} adults`} />
+        <KV label="Nights" value={`${trip.nights}`} />
+        <KV label="Status" value={<Pill label={trip.status} color={STATUS_COLOR[trip.status] || trip.color} />} />
         <Hr />
-        <KV label="Base Lodging" value={LODGING[0].name} />
-        <KV label="Confirmation" value={<span style={{ fontFamily: "monospace" }}>{LODGING[0].conf}</span>} />
+        <KV label="Base Lodging" value={baseLodging?.name || "—"} />
+        <KV label="Confirmation" value={<span style={{ fontFamily: "monospace" }}>{baseLodging?.conf || "—"}</span>} />
         <KV label="Total Budget" value={`$${totals.planned.toLocaleString()} planned · $${totals.actual.toLocaleString()} actual`} />
       </Box>
 
       {/* Key Bookings */}
       <Box>
         <SecHead eyebrow="Transport" title="FLIGHTS & CONFIRMATIONS" color={C.amber} />
-        {FLIGHTS.map(f => (
+        {data.flights.map(f => (
           <div key={f.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border2}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
               <span style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.1em" }}>{f.leg.toUpperCase()} · {f.route}</span>
@@ -675,24 +649,15 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
         <Hr />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 6 }}>
           <span style={{ fontSize: 9, fontWeight: 900, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>Lodging</span>
-          <span style={{ fontSize: 10, color: C.text, fontWeight: 900 }}>{LODGING[0].conf}</span>
+          <span style={{ fontSize: 10, color: C.text, fontWeight: 900 }}>{baseLodging?.conf || "—"}</span>
         </div>
-        <div style={{ fontSize: 9, color: C.muted, marginTop: 2 }}>{LODGING[0].name} · {LODGING[0].nights} nights</div>
+        <div style={{ fontSize: 9, color: C.muted, marginTop: 2 }}>{baseLodging ? `${baseLodging.name} · ${baseLodging.nights} nights` : "—"}</div>
       </Box>
 
       {/* Pre-Trip Checklist */}
       <Box>
         <SecHead eyebrow="Before Departure" title="PRE-TRIP CHECKLIST" color={C.violet} />
-        {[
-          { label: "Online Check-In", note: "United 24h prior — May 29 @ 08:10" },
-          { label: "Rental Car Confirm", note: "Verify SUV category + snow-chain policy" },
-          { label: "Hotel Check-In", note: "Kimpton Sawyer digital key / early check-in request" },
-          { label: "Dining Reservations", note: "The Firehouse, The Beacon Bar — confirm OpenTable" },
-          { label: "Activity Confirm", note: "Crocker Museum, Zoo, Sugar Mill, Tahoe Adventure Co." },
-          { label: "Weather Check", note: "Sacramento + Tahoe 7-day forecast — pack layers" },
-          { label: "Download Offline Maps", note: "Tahoe basin has dead zones on US-50 / NV-28" },
-          { label: "Cash Withdrawal", note: "$40 for tolls / parking / tips" },
-        ].map((item, i) => (
+        {data.checklist.map((item, i) => (
           <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "6px 0", borderBottom: `1px solid ${C.border2}` }}>
             <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0, marginTop: 2 }} />
             <div>
@@ -705,9 +670,9 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
 
       {/* Day-at-a-Glance */}
       <Box style={{ gridColumn: "1 / -1" }}>
-        <SecHead eyebrow="Master Schedule" title="6-DAY PLAN AT A GLANCE" color={C.teal} />
+        <SecHead eyebrow="Master Schedule" title={`${data.days.length}-DAY PLAN AT A GLANCE`} color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8 }}>
-          {DAYS.map(d => {
+          {data.days.map(d => {
             const phase = PHASE_META[d.phase];
             return (
               <Box key={d.day} style={{ padding: 10 }}>
@@ -729,46 +694,36 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
       <Box style={{ gridColumn: "1 / -1" }}>
         <SecHead eyebrow="Alerts" title="CRITICAL REMINDERS" color={C.red} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.amber, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Chain Carry Requirement</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>California requires chain carry in controlled zones through June. Rental SUV must have chains in trunk even if not used.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.teal, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Altitude Prep</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Sand Harbor is ~6,225 ft. Start hydration 24h before Day 4. Pack electrolytes and avoid alcohol the night before.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.green, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Tahoe Day Cutoff</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Depart Tahoe NLT 18:00 to guarantee safe return. If weather or traffic worsens, swap Sand Harbor for Heavenly Village.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.violet, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Rental Return</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Return SUV at SMF by 17:00 on Jun 4. Fill gas near airport. Allow 30 min for shuttle to terminal.</div>
-          </div>
+          {data.reminders.map((r, i) => (
+            <div key={i} style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+              <div style={{ fontSize: 9, fontWeight: 900, color: r.color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>{r.label}</div>
+              <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>{r.text}</div>
+            </div>
+          ))}
         </div>
       </Box>
     </div>
   );
 }
 
-function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
+function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
-        <SecHead eyebrow="Mission Brief" title={TRIP.destination.toUpperCase()} meta={TRIP.region} />
-        <KV label="Dates" value={TRIP.dates} />
-        <KV label="Travelers" value={`${TRIP.travelers} adults`} />
-        <KV label="Nights" value={`${TRIP.nights}`} />
-        <KV label="Status" value={<Pill label={TRIP.status} color={C.green} />} />
+        <SecHead eyebrow="Mission Brief" title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
+        <KV label="Dates" value={trip.dates} />
+        <KV label="Travelers" value={`${trip.travelers} adults`} />
+        <KV label="Nights" value={`${trip.nights}`} />
+        <KV label="Status" value={<Pill label={trip.status} color={STATUS_COLOR[trip.status] || trip.color} />} />
         <Hr />
-        <KV label="Lodging" value={`${LODGING.length} properties`} />
-        <KV label="Activities" value={`${ACTIVITIES.length} planned`} />
+        <KV label="Lodging" value={`${data.lodging.length} ${data.lodging.length === 1 ? "property" : "properties"}`} />
+        <KV label="Activities" value={`${data.activities.length} planned`} />
         <KV label="Budget" value={`$${totals.planned.toLocaleString()} planned`} />
       </Box>
 
       <Box>
         <SecHead eyebrow="Flights" title="AIR TRANSPORT" color={C.amber} />
-        {FLIGHTS.map(f => (
+        {data.flights.map(f => (
           <div key={f.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border2}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
               <span style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.1em" }}>{f.leg.toUpperCase()} · {f.route}</span>
@@ -797,9 +752,9 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
       </Box>
 
       <Box style={{ gridColumn: "1 / -1" }}>
-          <SecHead eyebrow="Day Stream" title="6-DAY ITINERARY" color={C.teal} />
+          <SecHead eyebrow="Day Stream" title={`${data.days.length}-DAY ITINERARY`} color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 8 }}>
-          {DAYS.map(d => {
+          {data.days.map(d => {
             const sel = selectedDay?.day === d.day;
             const phase = PHASE_META[d.phase];
             return (
@@ -819,12 +774,12 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
   );
 }
 
-function ItineraryTab({ selectedDay, onSelectDay }: { selectedDay: Day | null; onSelectDay: (d: Day) => void }) {
+function ItineraryTab({ trip, data, selectedDay, onSelectDay }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void }) {
   return (
     <Box>
-      <SecHead eyebrow="Schedule" title="DAY-BY-DAY" meta={`${DAYS.length} days · ${TRIP.nights} nights`} />
+      <SecHead eyebrow="Schedule" title="DAY-BY-DAY" meta={`${data.days.length} days · ${trip.nights} nights`} color={trip.color} />
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {DAYS.map(d => {
+        {data.days.map(d => {
           const sel = selectedDay?.day === d.day;
           const phase = PHASE_META[d.phase];
           return (
@@ -1119,10 +1074,10 @@ function TahoeDayTab() {
   );
 }
 
-function LodgingTab() {
+function LodgingTab({ data }: { data: TripData }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
-      {LODGING.map(l => (
+      {data.lodging.map(l => (
         <Box key={l.id}>
           <SecHead eyebrow={l.type} title={l.name.toUpperCase()} meta={l.region} />
           <KV label="Nights" value={`${l.nights}`} />
@@ -1135,12 +1090,12 @@ function LodgingTab() {
   );
 }
 
-function ActivitiesTab() {
+function ActivitiesTab({ data }: { data: TripData }) {
   return (
     <Box>
-      <SecHead eyebrow="Bookings" title="ACTIVITY ROSTER" meta={`${ACTIVITIES.length} entries`} color={C.teal} />
+      <SecHead eyebrow="Bookings" title="ACTIVITY ROSTER" meta={`${data.activities.length} entries`} color={C.teal} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
-        {ACTIVITIES.map(a => (
+        {data.activities.map(a => (
           <Box key={a.id} style={{ padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
               <span style={{ fontSize: 8, fontWeight: 900, color: C.dim, letterSpacing: "0.14em" }}>DAY {a.day}</span>
@@ -1156,8 +1111,8 @@ function ActivitiesTab() {
   );
 }
 
-function BudgetTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
-  const max = Math.max(...BUDGET.map(b => b.planned));
+function BudgetTab({ data, totals }: { data: TripData; totals: { planned: number; actual: number; delta: number } }) {
+  const max = Math.max(...data.budget.map(b => b.planned));
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
@@ -1168,7 +1123,7 @@ function BudgetTab({ totals }: { totals: { planned: number; actual: number; delt
       </Box>
       <Box style={{ gridColumn: "span 2", minWidth: 0 }}>
         <SecHead eyebrow="Breakdown" title="BY CATEGORY" color={C.amber} />
-        {BUDGET.map(b => {
+        {data.budget.map(b => {
           const pct = (b.planned / max) * 100;
           const apct = max ? (b.actual / max) * 100 : 0;
           return (
@@ -1189,16 +1144,17 @@ function BudgetTab({ totals }: { totals: { planned: number; actual: number; delt
   );
 }
 
-function PackingTab() {
+function PackingTab({ trip, data }: { trip: TripSummary; data: TripData }) {
+  const isCA = trip.id === "california";
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
       <div>
         <div style={{ marginBottom: 10 }}>
-          <Eyebrow color={C.violet}>Vacation · Full Trip</Eyebrow>
-          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Sacramento Packing</div>
+          <Eyebrow color={C.violet}>{trip.flag} {trip.label} · Full Trip</Eyebrow>
+          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>{trip.destination} Packing</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-          {PACKING.map(p => (
+          {data.packing.map(p => (
             <Box key={p.cat}>
               <SecHead eyebrow="Checklist" title={p.cat.toUpperCase()} meta={`${p.items.length} items`} color={C.violet} />
               {p.items.map((it, i) => (
@@ -1212,7 +1168,7 @@ function PackingTab() {
         </div>
       </div>
 
-      <div>
+      {isCA && <div>
         <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <Eyebrow color={C.green}>Day 4 · Jun 2</Eyebrow>
           <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Lake Tahoe Day-Trip Add-Ons</div>
@@ -1234,7 +1190,7 @@ function PackingTab() {
             </Box>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
