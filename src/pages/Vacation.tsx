@@ -325,6 +325,7 @@ export default function Vacation() {
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
         {tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Plans" && <PlansTab totals={totals} />}
         {tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tab === "Tahoe Day" && <TahoeDayTab />}
         {tab === "Lodging" && <LodgingTab />}
