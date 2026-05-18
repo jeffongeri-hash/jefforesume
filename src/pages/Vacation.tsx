@@ -84,6 +84,29 @@ const STATUS_COLOR: Record<string, string> = { Confirmed: C.green, Ticketed: C.g
 
 // ─── TRIP REGISTRY ────────────────────────────────────────────────────────────
 type TripId = "california" | "costa-rica" | "galena";
+
+type DayItem = {
+  day: number; date: string; phase: string; region: string; title: string; lodging: string; notes: string;
+};
+type LodgingItem = { id: string; name: string; nights: number; region: string; type: string; conf: string; price: number; status: string };
+type FlightItem = { id: string; leg: string; route: string; carrier: string; dep: string; arr: string; seats: string; status: string };
+type ActivityItem = { id: string; title: string; day: number; status: string; cost: number; vendor: string };
+type BudgetItem = { cat: string; planned: number; actual: number; color: string };
+type PackingGroup = { cat: string; items: string[] };
+type ChecklistItem = { label: string; note: string };
+type Reminder = { label: string; text: string; color: string };
+
+type TripData = {
+  days: DayItem[];
+  lodging: LodgingItem[];
+  flights: FlightItem[];
+  activities: ActivityItem[];
+  budget: BudgetItem[];
+  packing: PackingGroup[];
+  checklist: ChecklistItem[];
+  reminders: Reminder[];
+};
+
 type TripSummary = {
   id: TripId;
   label: string;            // short label for switcher
@@ -100,6 +123,145 @@ type TripSummary = {
   lodging: string;
   budget: number;
   notes: string;
+  data: TripData;
+};
+
+// ── CALIFORNIA DATA (uses existing globals) ──
+const CA_DATA: TripData = {
+  days: DAYS, lodging: LODGING, flights: FLIGHTS, activities: ACTIVITIES, budget: BUDGET, packing: PACKING,
+  checklist: [
+    { label: "Online Check-In", note: "United 24h prior — May 29 @ 08:10" },
+    { label: "Rental Car Confirm", note: "Verify SUV category + snow-chain policy" },
+    { label: "Hotel Check-In", note: "Kimpton Sawyer digital key / early check-in request" },
+    { label: "Dining Reservations", note: "The Firehouse, The Beacon Bar — confirm OpenTable" },
+    { label: "Activity Confirm", note: "Crocker Museum, Zoo, Sugar Mill, Tahoe Adventure Co." },
+    { label: "Weather Check", note: "Sacramento + Tahoe 7-day forecast — pack layers" },
+    { label: "Download Offline Maps", note: "Tahoe basin has dead zones on US-50 / NV-28" },
+    { label: "Cash Withdrawal", note: "$40 for tolls / parking / tips" },
+  ],
+  reminders: [
+    { label: "Chain Carry Requirement", color: C.amber, text: "California requires chain carry in controlled zones through June. Rental SUV must have chains in trunk even if not used." },
+    { label: "Altitude Prep",           color: C.teal,  text: "Sand Harbor is ~6,225 ft. Start hydration 24h before Day 4. Pack electrolytes and avoid alcohol the night before." },
+    { label: "Tahoe Day Cutoff",        color: C.green, text: "Depart Tahoe NLT 18:00 to guarantee safe return. If weather or traffic worsens, swap Sand Harbor for Heavenly Village." },
+    { label: "Rental Return",           color: C.violet, text: "Return SUV at SMF by 17:00 on Jun 4. Fill gas near airport. Allow 30 min for shuttle to terminal." },
+  ],
+};
+
+// ── COSTA RICA DATA ──
+const CR_DAYS: DayItem[] = [
+  { day: 1, date: "Feb 14", phase: "arrival",   region: "San José (SJO)",         title: "Arrive + Drive to Arenal",  lodging: "Tabacón Resort",   notes: "Land SJO ~13:00. Pick up 4×4. Drive ~3h to La Fortuna. Sunset hot springs + dinner at Tabacón." },
+  { day: 2, date: "Feb 15", phase: "alpine",    region: "Arenal Volcano NP",      title: "Volcano + Hot Springs",     lodging: "Tabacón Resort",   notes: "1968 Trail hike AM. Lunch in La Fortuna. Sky Tram + zipline PM. Hot springs at sunset." },
+  { day: 3, date: "Feb 16", phase: "alpine",    region: "Tenorio NP",             title: "Río Celeste Day Hike",      lodging: "Tabacón Resort",   notes: "Early start. 4 mi RT to the turquoise waterfall. Lunch at Soda La Tica. Return to Arenal." },
+  { day: 4, date: "Feb 17", phase: "transit",   region: "Arenal → Monteverde",    title: "Cloud Forest Transfer",     lodging: "Hotel Belmar",     notes: "Boat-taxi-boat across Lake Arenal. Check in at Belmar. Night walk in Monteverde." },
+  { day: 5, date: "Feb 18", phase: "alpine",    region: "Monteverde Cloud Forest", title: "Hanging Bridges + Quetzal", lodging: "Hotel Belmar",    notes: "Selvatura hanging bridges AM. Coffee + chocolate tour PM. Sunset cocktails at Belmar." },
+  { day: 6, date: "Feb 19", phase: "transit",   region: "Monteverde → Manuel Antonio", title: "Drive to Pacific",     lodging: "Arenas del Mar",   notes: "~4h drive south. Beach check-in at Arenas del Mar. Sunset swim." },
+  { day: 7, date: "Feb 20", phase: "city",      region: "Manuel Antonio NP",      title: "Wildlife + Beach",          lodging: "Arenas del Mar",   notes: "Guided park tour AM (sloths, capuchins, scarlet macaws). Beach + lunch at Playa Manuel Antonio." },
+  { day: 8, date: "Feb 21", phase: "city",      region: "Quepos / Pacific",       title: "Sunset Catamaran",          lodging: "Arenas del Mar",   notes: "Spa morning. Catamaran sunset cruise from Quepos (snorkel + dinner)." },
+  { day: 9, date: "Feb 22", phase: "departure", region: "Manuel Antonio → SJO",   title: "Departure",                 lodging: "—",                notes: "Drive 3h back to SJO. Return rental. Evening flight home." },
+];
+const CR_DATA: TripData = {
+  days: CR_DAYS,
+  lodging: [
+    { id: "tabacon",  name: "Tabacón Thermal Resort",   nights: 3, region: "La Fortuna / Arenal",    type: "Resort",     conf: "TBC-22841-CR", price: 1380, status: "Confirmed" },
+    { id: "belmar",   name: "Hotel Belmar",             nights: 2, region: "Monteverde Cloud Forest", type: "Boutique",  conf: "BLM-7733-CR",  price: 720,  status: "Confirmed" },
+    { id: "arenas",   name: "Arenas del Mar Beachfront", nights: 3, region: "Manuel Antonio",         type: "Beachfront", conf: "ARN-99021-CR", price: 1620, status: "Confirmed" },
+  ],
+  flights: [
+    { id: "out",  leg: "Outbound", route: "IAH → SJO", carrier: "United 1018", dep: "Feb 14 · 07:15", arr: "Feb 14 · 11:48", seats: "9A / 9B",   status: "Ticketed" },
+    { id: "back", leg: "Return",   route: "SJO → IAH", carrier: "United 1421", dep: "Feb 22 · 18:55", arr: "Feb 22 · 23:30", seats: "10C / 10D", status: "Ticketed" },
+  ],
+  activities: [
+    { id: "skytram",   title: "Sky Tram + Zipline",        day: 2, status: "Booked",  cost: 175, vendor: "Sky Adventures Arenal" },
+    { id: "rio",       title: "Río Celeste Guided Hike",   day: 3, status: "Booked",  cost: 130, vendor: "Tenorio Tours" },
+    { id: "bridges",   title: "Selvatura Hanging Bridges", day: 5, status: "Booked",  cost: 90,  vendor: "Selvatura Park" },
+    { id: "coffee",    title: "Coffee + Chocolate Tour",   day: 5, status: "Booked",  cost: 70,  vendor: "Don Juan Tours" },
+    { id: "mapark",    title: "Manuel Antonio NP Guide",   day: 7, status: "Booked",  cost: 110, vendor: "Iguana Tours" },
+    { id: "cat",       title: "Sunset Catamaran",          day: 8, status: "Booked",  cost: 220, vendor: "Planet Dolphin" },
+  ],
+  budget: [
+    { cat: "Flights",    planned: 920,  actual: 912,  color: C.blue },
+    { cat: "Lodging",    planned: 3720, actual: 3720, color: C.green },
+    { cat: "Rental 4×4", planned: 540,  actual: 510,  color: C.amber },
+    { cat: "Activities", planned: 795,  actual: 795,  color: C.teal },
+    { cat: "Food",       planned: 850,  actual: 770,  color: C.violet },
+    { cat: "Misc",       planned: 300,  actual: 240,  color: C.red },
+  ],
+  packing: [
+    { cat: "Documents",  items: ["Passport (6mo validity)", "Travel insurance card", "Hotel + rental confirmations", "Yellow fever proof (if applicable)"] },
+    { cat: "Tech",       items: ["Phone + charger", "Power bank", "Type-A/B plug adapter (CR is Type A/B)", "GoPro + dive housing", "Dry bag for electronics"] },
+    { cat: "Apparel",    items: ["Quick-dry shirts ×6", "Hiking pants ×2", "Swimsuit ×2", "Trail runners", "Sandals", "Light rain shell", "Long sleeves (mosquitoes)"] },
+    { cat: "Health",     items: ["DEET 30%+ insect repellent", "Reef-safe sunscreen SPF 50", "Anti-diarrheal", "Electrolytes", "Motion sickness pills (catamaran)"] },
+  ],
+  checklist: [
+    { label: "Passport Validity", note: "Confirm 6+ months from Feb 22 return date" },
+    { label: "Travel Insurance",  note: "Medical + evacuation coverage (~$80/pp)" },
+    { label: "Notify Card Issuers", note: "Travel alert: Costa Rica Feb 14–22" },
+    { label: "Colones Cash",      note: "Get ~$200 USD in colones at SJO ATM on arrival" },
+    { label: "Driver's License",  note: "Bring physical license for rental pickup" },
+    { label: "Download Maps",     note: "Offline Google Maps for Arenal + Monteverde" },
+    { label: "Reef-Safe Sunscreen", note: "Required at Manuel Antonio NP" },
+    { label: "Confirm Catamaran", note: "Planet Dolphin pickup at Quepos marina 14:00" },
+  ],
+  reminders: [
+    { label: "Rainy Season Tail", color: C.amber, text: "Mid-Feb is dry season but afternoon showers possible in Monteverde — pack rain shell on top." },
+    { label: "4×4 Required",      color: C.teal,  text: "Monteverde access roads are gravel/mountain. Decline downsell to compact at counter." },
+    { label: "NP Entry Cash",     color: C.green, text: "Manuel Antonio caps daily visitors. Buy tickets online 48h ahead or arrive at 07:00." },
+    { label: "Wildlife Distance", color: C.violet, text: "Do not feed monkeys. Fines up to $500. Keep food sealed at Arenas del Mar." },
+  ],
+};
+
+// ── GALENA, IL DATA ──
+const GA_DAYS: DayItem[] = [
+  { day: 1, date: "Oct 10", phase: "arrival",   region: "Dubuque (DBQ) → Galena",  title: "Arrive + Main Street",     lodging: "Goldmoor Inn",  notes: "Land DBQ. Pick up rental. ~30 min drive to Galena. Check in at Goldmoor. Dinner on Main Street at Fried Green Tomatoes." },
+  { day: 2, date: "Oct 11", phase: "city",      region: "Galena, IL",             title: "Galena Historic District",  lodging: "Goldmoor Inn",  notes: "Ulysses S. Grant Home tour AM. Main Street shops. Galena Cellars tasting. Sunset at Chestnut Mountain overlook." },
+  { day: 3, date: "Oct 12", phase: "transit",   region: "Dubuque, IA (day trip)", title: "Dubuque Day Trip",          lodging: "Goldmoor Inn",  notes: "Drive across Mississippi to Dubuque. National Mississippi River Museum AM. Fenelon Place Elevator. Lunch on the riverfront. Optional Field of Dreams in Dyersville. Back to Galena for dinner." },
+  { day: 4, date: "Oct 13", phase: "departure", region: "Galena → DBQ",           title: "Departure",                 lodging: "—",             notes: "Breakfast at the Goldmoor. Drive back to DBQ. Return rental. Mid-day flight home." },
+];
+const GA_DATA: TripData = {
+  days: GA_DAYS,
+  lodging: [
+    { id: "goldmoor", name: "Goldmoor Inn",  nights: 3, region: "Galena, IL", type: "Country Inn", conf: "GMI-4421-IL", price: 690, status: "Confirmed" },
+  ],
+  flights: [
+    { id: "out",  leg: "Outbound", route: "IAH → DBQ", carrier: "American 4118", dep: "Oct 10 · 09:40", arr: "Oct 10 · 13:20", seats: "6A / 6B", status: "Ticketed" },
+    { id: "back", leg: "Return",   route: "DBQ → IAH", carrier: "American 4119", dep: "Oct 13 · 14:05", arr: "Oct 13 · 18:00", seats: "5C / 5D", status: "Ticketed" },
+  ],
+  activities: [
+    { id: "grant",    title: "Ulysses S. Grant Home Tour",        day: 2, status: "Booked", cost: 10,  vendor: "IL Historic Sites" },
+    { id: "cellars",  title: "Galena Cellars Wine Tasting",       day: 2, status: "Booked", cost: 40,  vendor: "Galena Cellars" },
+    { id: "chestnut", title: "Chestnut Mountain Overlook",        day: 2, status: "Open",   cost: 0,   vendor: "Self-guided" },
+    { id: "rivmus",   title: "Nat'l Mississippi River Museum",    day: 3, status: "Booked", cost: 45,  vendor: "River Museum" },
+    { id: "fenelon",  title: "Fenelon Place Elevator",            day: 3, status: "Open",   cost: 8,   vendor: "Fenelon Elevator Co." },
+    { id: "dreams",   title: "Field of Dreams (optional)",        day: 3, status: "Open",   cost: 0,   vendor: "Self-guided" },
+  ],
+  budget: [
+    { cat: "Flights",    planned: 520, actual: 498, color: C.blue },
+    { cat: "Lodging",    planned: 690, actual: 690, color: C.green },
+    { cat: "Rental Car", planned: 180, actual: 165, color: C.amber },
+    { cat: "Activities", planned: 110, actual: 103, color: C.teal },
+    { cat: "Food",       planned: 380, actual: 340, color: C.violet },
+    { cat: "Misc",       planned: 120, actual: 90,  color: C.red },
+  ],
+  packing: [
+    { cat: "Documents",  items: ["Driver's license / REAL ID", "Hotel + rental confirmations", "Printed itinerary"] },
+    { cat: "Tech",       items: ["Phone + charger", "Power bank", "Camera for fall foliage"] },
+    { cat: "Apparel",    items: ["Flannel + sweaters", "Light jacket (50s°F)", "Comfortable walking shoes", "Scarf + beanie (early AM)", "Rain shell"] },
+    { cat: "Health",     items: ["Allergy meds (corn harvest dust)", "Hand warmers", "Lip balm"] },
+  ],
+  checklist: [
+    { label: "Confirm Goldmoor",    note: "Country inn — confirm early check-in" },
+    { label: "Grant Home Tickets",  note: "Time-slot ticketed; book 09:30 slot" },
+    { label: "River Museum",        note: "Book combo ticket online for $5 off" },
+    { label: "Fall Foliage Check",  note: "Peak color in NW IL is typically Oct 10–18" },
+    { label: "Mississippi Bridge",  note: "Julien Dubuque Bridge — check construction status" },
+    { label: "Cash for Elevator",   note: "Fenelon Place is cash-only, $8 RT" },
+  ],
+  reminders: [
+    { label: "Peak Foliage Window", color: C.amber, text: "Visiting at peak fall color — book dinner reservations 1 week ahead, Main Street fills up." },
+    { label: "Two-State Day Trip",  color: C.teal,  text: "Day 3 crosses IL → IA. Confirm rental agreement allows multi-state travel." },
+    { label: "Mississippi Weather", color: C.green, text: "River-valley fog common AM. Add 20m buffer for Dubuque morning drive." },
+    { label: "Goldmoor Dining",     color: C.violet, text: "Inn restaurant requires reservation by 16:00 — book at check-in." },
+  ],
 };
 
 const TRIPS: TripSummary[] = [
@@ -115,6 +277,7 @@ const TRIPS: TripSummary[] = [
     lodging: "Kimpton Sawyer Hotel ×5 nights",
     budget: 3880,
     notes: "Full command center active — see tabs below.",
+    data: CA_DATA,
   },
   {
     id: "costa-rica", label: "Costa Rica",
@@ -128,6 +291,7 @@ const TRIPS: TripSummary[] = [
     lodging: "Tabacón Resort ×3 · Hotel Belmar ×2 · Arenas del Mar ×3",
     budget: 5420,
     notes: "Trip archived — for reference only.",
+    data: CR_DATA,
   },
   {
     id: "galena", label: "Galena, IL",
@@ -141,6 +305,7 @@ const TRIPS: TripSummary[] = [
     lodging: "Goldmoor Inn ×3 nights",
     budget: 1640,
     notes: "Trip archived — for reference only.",
+    data: GA_DATA,
   },
 ];
 
@@ -320,24 +485,30 @@ function KV({ label, value }: { label: string; value: React.ReactNode }) {
 
 function Hr() { return <div style={{ borderTop: `1px solid ${C.border}`, margin: "10px 0" }} />; }
 
-type Day = typeof DAYS[number];
+type Day = DayItem;
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
-type Tab = typeof TABS[number];
+const ALL_TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
+type Tab = typeof ALL_TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Vacation() {
   const [tripId, setTripId] = useState<TripId>("california");
   const activeTrip = TRIPS.find(t => t.id === tripId)!;
+  const data = activeTrip.data;
+  const TABS = useMemo<readonly Tab[]>(() => (
+    tripId === "california"
+      ? ALL_TABS
+      : ALL_TABS.filter(t => t !== "Tahoe Day") as Tab[]
+  ), [tripId]);
   const [tab, setTab] = useState<Tab>("Overview");
-  const [selectedDay, setSelectedDay] = useState<Day | null>(DAYS[0]);
+  const [selectedDay, setSelectedDay] = useState<Day | null>(data.days[0]);
 
   const totals = useMemo(() => {
-    const planned = BUDGET.reduce((s, b) => s + b.planned, 0);
-    const actual = BUDGET.reduce((s, b) => s + b.actual, 0);
+    const planned = data.budget.reduce((s, b) => s + b.planned, 0);
+    const actual = data.budget.reduce((s, b) => s + b.actual, 0);
     return { planned, actual, delta: planned - actual };
-  }, []);
+  }, [data]);
 
   return (
     <div style={{
@@ -399,7 +570,6 @@ export default function Vacation() {
       </div>
 
       {/* TABS */}
-      {tripId === "california" && (
       <div style={{ background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, padding: "0 18px", display: "flex", gap: 0, overflowX: "auto" }}>
         {TABS.map(t => (
           <button
@@ -418,19 +588,17 @@ export default function Vacation() {
           </button>
         ))}
       </div>
-      )}
 
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        {tripId !== "california" && <TripArchiveTab trip={activeTrip} />}
-        {tripId === "california" && tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
-        {tripId === "california" && tab === "Plans" && <PlansTab totals={totals} />}
-        {tripId === "california" && tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
+        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Plans" && <PlansTab trip={activeTrip} data={data} totals={totals} />}
+        {tab === "Itinerary" && <ItineraryTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tripId === "california" && tab === "Tahoe Day" && <TahoeDayTab />}
-        {tripId === "california" && tab === "Lodging" && <LodgingTab />}
-        {tripId === "california" && tab === "Activities" && <ActivitiesTab />}
-        {tripId === "california" && tab === "Budget" && <BudgetTab totals={totals} />}
-        {tripId === "california" && tab === "Packing" && <PackingTab />}
+        {tab === "Lodging" && <LodgingTab data={data} />}
+        {tab === "Activities" && <ActivitiesTab data={data} />}
+        {tab === "Budget" && <BudgetTab data={data} totals={totals} />}
+        {tab === "Packing" && <PackingTab trip={activeTrip} data={data} />}
       </div>
 
       {/* FOOTER */}
@@ -448,56 +616,27 @@ export default function Vacation() {
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-function TripArchiveTab({ trip }: { trip: TripSummary }) {
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 14 }}>
-      <Box>
-        <SecHead eyebrow={`${trip.flag} ${trip.label}`} title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
-        <KV label="Dates"     value={trip.dates} />
-        <KV label="Travelers" value={`${trip.travelers} adults`} />
-        <KV label="Nights"    value={`${trip.nights}`} />
-        <KV label="Status"    value={<span style={{ color: trip.color }}>● {trip.status}</span>} />
-        <KV label="Lodging"   value={trip.lodging} />
-        <KV label="Budget"    value={`$${trip.budget.toLocaleString()}`} />
-        <Hr />
-        <div style={{ fontSize: 10, color: C.muted, lineHeight: 1.6 }}>{trip.headline}</div>
-        <div style={{ marginTop: 8, fontSize: 9, color: C.dim, fontStyle: "italic" }}>{trip.notes}</div>
-      </Box>
-      <Box>
-        <SecHead eyebrow="Highlights" title="TRIP HIGHLIGHTS" meta={`${trip.highlights.length} stops`} color={trip.color} />
-        <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-          {trip.highlights.map((h, i) => (
-            <li key={i} style={{ display: "flex", gap: 8, padding: "6px 0", borderBottom: `1px dashed ${C.border2}`, fontSize: 11, color: C.text, lineHeight: 1.5 }}>
-              <span style={{ color: trip.color, fontWeight: 900, minWidth: 18 }}>{String(i + 1).padStart(2, "0")}</span>
-              <span>{h}</span>
-            </li>
-          ))}
-        </ul>
-      </Box>
-    </div>
-  );
-}
-
-function PlansTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
+function PlansTab({ trip, data, totals }: { trip: TripSummary; data: TripData; totals: { planned: number; actual: number; delta: number } }) {
+  const baseLodging = data.lodging[0];
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       {/* Executive Summary */}
       <Box>
-        <SecHead eyebrow="Executive Summary" title={TRIP.destination.toUpperCase()} meta={TRIP.region} color={C.blue} />
-        <KV label="Dates" value={TRIP.dates} />
-        <KV label="Travelers" value={`${TRIP.travelers} adults`} />
-        <KV label="Nights" value={`${TRIP.nights}`} />
-        <KV label="Status" value={<Pill label={TRIP.status} color={C.green} />} />
+        <SecHead eyebrow="Executive Summary" title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
+        <KV label="Dates" value={trip.dates} />
+        <KV label="Travelers" value={`${trip.travelers} adults`} />
+        <KV label="Nights" value={`${trip.nights}`} />
+        <KV label="Status" value={<Pill label={trip.status} color={STATUS_COLOR[trip.status] || trip.color} />} />
         <Hr />
-        <KV label="Base Lodging" value={LODGING[0].name} />
-        <KV label="Confirmation" value={<span style={{ fontFamily: "monospace" }}>{LODGING[0].conf}</span>} />
+        <KV label="Base Lodging" value={baseLodging?.name || "—"} />
+        <KV label="Confirmation" value={<span style={{ fontFamily: "monospace" }}>{baseLodging?.conf || "—"}</span>} />
         <KV label="Total Budget" value={`$${totals.planned.toLocaleString()} planned · $${totals.actual.toLocaleString()} actual`} />
       </Box>
 
       {/* Key Bookings */}
       <Box>
         <SecHead eyebrow="Transport" title="FLIGHTS & CONFIRMATIONS" color={C.amber} />
-        {FLIGHTS.map(f => (
+        {data.flights.map(f => (
           <div key={f.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border2}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
               <span style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.1em" }}>{f.leg.toUpperCase()} · {f.route}</span>
@@ -510,24 +649,15 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
         <Hr />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 6 }}>
           <span style={{ fontSize: 9, fontWeight: 900, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>Lodging</span>
-          <span style={{ fontSize: 10, color: C.text, fontWeight: 900 }}>{LODGING[0].conf}</span>
+          <span style={{ fontSize: 10, color: C.text, fontWeight: 900 }}>{baseLodging?.conf || "—"}</span>
         </div>
-        <div style={{ fontSize: 9, color: C.muted, marginTop: 2 }}>{LODGING[0].name} · {LODGING[0].nights} nights</div>
+        <div style={{ fontSize: 9, color: C.muted, marginTop: 2 }}>{baseLodging ? `${baseLodging.name} · ${baseLodging.nights} nights` : "—"}</div>
       </Box>
 
       {/* Pre-Trip Checklist */}
       <Box>
         <SecHead eyebrow="Before Departure" title="PRE-TRIP CHECKLIST" color={C.violet} />
-        {[
-          { label: "Online Check-In", note: "United 24h prior — May 29 @ 08:10" },
-          { label: "Rental Car Confirm", note: "Verify SUV category + snow-chain policy" },
-          { label: "Hotel Check-In", note: "Kimpton Sawyer digital key / early check-in request" },
-          { label: "Dining Reservations", note: "The Firehouse, The Beacon Bar — confirm OpenTable" },
-          { label: "Activity Confirm", note: "Crocker Museum, Zoo, Sugar Mill, Tahoe Adventure Co." },
-          { label: "Weather Check", note: "Sacramento + Tahoe 7-day forecast — pack layers" },
-          { label: "Download Offline Maps", note: "Tahoe basin has dead zones on US-50 / NV-28" },
-          { label: "Cash Withdrawal", note: "$40 for tolls / parking / tips" },
-        ].map((item, i) => (
+        {data.checklist.map((item, i) => (
           <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "6px 0", borderBottom: `1px solid ${C.border2}` }}>
             <span style={{ width: 10, height: 10, border: `1px solid ${C.border}`, display: "inline-block", flexShrink: 0, marginTop: 2 }} />
             <div>
@@ -540,9 +670,9 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
 
       {/* Day-at-a-Glance */}
       <Box style={{ gridColumn: "1 / -1" }}>
-        <SecHead eyebrow="Master Schedule" title="6-DAY PLAN AT A GLANCE" color={C.teal} />
+        <SecHead eyebrow="Master Schedule" title={`${data.days.length}-DAY PLAN AT A GLANCE`} color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8 }}>
-          {DAYS.map(d => {
+          {data.days.map(d => {
             const phase = PHASE_META[d.phase];
             return (
               <Box key={d.day} style={{ padding: 10 }}>
@@ -564,46 +694,36 @@ function PlansTab({ totals }: { totals: { planned: number; actual: number; delta
       <Box style={{ gridColumn: "1 / -1" }}>
         <SecHead eyebrow="Alerts" title="CRITICAL REMINDERS" color={C.red} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.amber, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Chain Carry Requirement</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>California requires chain carry in controlled zones through June. Rental SUV must have chains in trunk even if not used.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.teal, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Altitude Prep</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Sand Harbor is ~6,225 ft. Start hydration 24h before Day 4. Pack electrolytes and avoid alcohol the night before.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.green, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Tahoe Day Cutoff</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Depart Tahoe NLT 18:00 to guarantee safe return. If weather or traffic worsens, swap Sand Harbor for Heavenly Village.</div>
-          </div>
-          <div style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
-            <div style={{ fontSize: 9, fontWeight: 900, color: C.violet, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Rental Return</div>
-            <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>Return SUV at SMF by 17:00 on Jun 4. Fill gas near airport. Allow 30 min for shuttle to terminal.</div>
-          </div>
+          {data.reminders.map((r, i) => (
+            <div key={i} style={{ border: `1px solid ${C.border}`, padding: 10, background: C.surfaceAlt }}>
+              <div style={{ fontSize: 9, fontWeight: 900, color: r.color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>{r.label}</div>
+              <div style={{ fontSize: 10, color: C.text, lineHeight: 1.5 }}>{r.text}</div>
+            </div>
+          ))}
         </div>
       </Box>
     </div>
   );
 }
 
-function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
+function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
-        <SecHead eyebrow="Mission Brief" title={TRIP.destination.toUpperCase()} meta={TRIP.region} />
-        <KV label="Dates" value={TRIP.dates} />
-        <KV label="Travelers" value={`${TRIP.travelers} adults`} />
-        <KV label="Nights" value={`${TRIP.nights}`} />
-        <KV label="Status" value={<Pill label={TRIP.status} color={C.green} />} />
+        <SecHead eyebrow="Mission Brief" title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
+        <KV label="Dates" value={trip.dates} />
+        <KV label="Travelers" value={`${trip.travelers} adults`} />
+        <KV label="Nights" value={`${trip.nights}`} />
+        <KV label="Status" value={<Pill label={trip.status} color={STATUS_COLOR[trip.status] || trip.color} />} />
         <Hr />
-        <KV label="Lodging" value={`${LODGING.length} properties`} />
-        <KV label="Activities" value={`${ACTIVITIES.length} planned`} />
+        <KV label="Lodging" value={`${data.lodging.length} ${data.lodging.length === 1 ? "property" : "properties"}`} />
+        <KV label="Activities" value={`${data.activities.length} planned`} />
         <KV label="Budget" value={`$${totals.planned.toLocaleString()} planned`} />
       </Box>
 
       <Box>
         <SecHead eyebrow="Flights" title="AIR TRANSPORT" color={C.amber} />
-        {FLIGHTS.map(f => (
+        {data.flights.map(f => (
           <div key={f.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border2}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
               <span style={{ fontSize: 10, fontWeight: 900, color: C.text, letterSpacing: "0.1em" }}>{f.leg.toUpperCase()} · {f.route}</span>
@@ -632,9 +752,9 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
       </Box>
 
       <Box style={{ gridColumn: "1 / -1" }}>
-          <SecHead eyebrow="Day Stream" title="6-DAY ITINERARY" color={C.teal} />
+          <SecHead eyebrow="Day Stream" title={`${data.days.length}-DAY ITINERARY`} color={C.teal} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 8 }}>
-          {DAYS.map(d => {
+          {data.days.map(d => {
             const sel = selectedDay?.day === d.day;
             const phase = PHASE_META[d.phase];
             return (
@@ -654,12 +774,12 @@ function OverviewTab({ selectedDay, onSelectDay, totals }: { selectedDay: Day | 
   );
 }
 
-function ItineraryTab({ selectedDay, onSelectDay }: { selectedDay: Day | null; onSelectDay: (d: Day) => void }) {
+function ItineraryTab({ trip, data, selectedDay, onSelectDay }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void }) {
   return (
     <Box>
-      <SecHead eyebrow="Schedule" title="DAY-BY-DAY" meta={`${DAYS.length} days · ${TRIP.nights} nights`} />
+      <SecHead eyebrow="Schedule" title="DAY-BY-DAY" meta={`${data.days.length} days · ${trip.nights} nights`} color={trip.color} />
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {DAYS.map(d => {
+        {data.days.map(d => {
           const sel = selectedDay?.day === d.day;
           const phase = PHASE_META[d.phase];
           return (
@@ -954,10 +1074,10 @@ function TahoeDayTab() {
   );
 }
 
-function LodgingTab() {
+function LodgingTab({ data }: { data: TripData }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
-      {LODGING.map(l => (
+      {data.lodging.map(l => (
         <Box key={l.id}>
           <SecHead eyebrow={l.type} title={l.name.toUpperCase()} meta={l.region} />
           <KV label="Nights" value={`${l.nights}`} />
@@ -970,12 +1090,12 @@ function LodgingTab() {
   );
 }
 
-function ActivitiesTab() {
+function ActivitiesTab({ data }: { data: TripData }) {
   return (
     <Box>
-      <SecHead eyebrow="Bookings" title="ACTIVITY ROSTER" meta={`${ACTIVITIES.length} entries`} color={C.teal} />
+      <SecHead eyebrow="Bookings" title="ACTIVITY ROSTER" meta={`${data.activities.length} entries`} color={C.teal} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
-        {ACTIVITIES.map(a => (
+        {data.activities.map(a => (
           <Box key={a.id} style={{ padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
               <span style={{ fontSize: 8, fontWeight: 900, color: C.dim, letterSpacing: "0.14em" }}>DAY {a.day}</span>
@@ -991,8 +1111,8 @@ function ActivitiesTab() {
   );
 }
 
-function BudgetTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
-  const max = Math.max(...BUDGET.map(b => b.planned));
+function BudgetTab({ data, totals }: { data: TripData; totals: { planned: number; actual: number; delta: number } }) {
+  const max = Math.max(...data.budget.map(b => b.planned));
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
@@ -1003,7 +1123,7 @@ function BudgetTab({ totals }: { totals: { planned: number; actual: number; delt
       </Box>
       <Box style={{ gridColumn: "span 2", minWidth: 0 }}>
         <SecHead eyebrow="Breakdown" title="BY CATEGORY" color={C.amber} />
-        {BUDGET.map(b => {
+        {data.budget.map(b => {
           const pct = (b.planned / max) * 100;
           const apct = max ? (b.actual / max) * 100 : 0;
           return (
@@ -1024,16 +1144,17 @@ function BudgetTab({ totals }: { totals: { planned: number; actual: number; delt
   );
 }
 
-function PackingTab() {
+function PackingTab({ trip, data }: { trip: TripSummary; data: TripData }) {
+  const isCA = trip.id === "california";
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
       <div>
         <div style={{ marginBottom: 10 }}>
-          <Eyebrow color={C.violet}>Vacation · Full Trip</Eyebrow>
-          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Sacramento Packing</div>
+          <Eyebrow color={C.violet}>{trip.flag} {trip.label} · Full Trip</Eyebrow>
+          <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>{trip.destination} Packing</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-          {PACKING.map(p => (
+          {data.packing.map(p => (
             <Box key={p.cat}>
               <SecHead eyebrow="Checklist" title={p.cat.toUpperCase()} meta={`${p.items.length} items`} color={C.violet} />
               {p.items.map((it, i) => (
@@ -1047,7 +1168,7 @@ function PackingTab() {
         </div>
       </div>
 
-      <div>
+      {isCA && <div>
         <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <Eyebrow color={C.green}>Day 4 · Jun 2</Eyebrow>
           <div style={{ fontSize: 12, fontWeight: 900, color: C.text, letterSpacing: "0.08em", textTransform: "uppercase" }}>Lake Tahoe Day-Trip Add-Ons</div>
@@ -1069,7 +1190,7 @@ function PackingTab() {
             </Box>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
