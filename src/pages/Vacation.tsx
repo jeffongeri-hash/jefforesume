@@ -261,7 +261,7 @@ function Hr() { return <div style={{ borderTop: `1px solid ${C.border}`, margin:
 type Day = typeof DAYS[number];
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const TABS = ["Overview", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
+const TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
 type Tab = typeof TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
