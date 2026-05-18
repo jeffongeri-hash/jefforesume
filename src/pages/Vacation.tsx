@@ -82,6 +82,68 @@ const TAHOE_PACKING = [
 
 const STATUS_COLOR: Record<string, string> = { Confirmed: C.green, Ticketed: C.green, Booked: C.green, Open: C.amber, Pending: C.amber };
 
+// ─── TRIP REGISTRY ────────────────────────────────────────────────────────────
+type TripId = "california" | "costa-rica" | "galena";
+type TripSummary = {
+  id: TripId;
+  label: string;            // short label for switcher
+  destination: string;
+  region: string;
+  dates: string;
+  travelers: number;
+  nights: number;
+  status: string;
+  flag: string;             // emoji
+  color: string;
+  headline: string;
+  highlights: string[];
+  lodging: string;
+  budget: number;
+  notes: string;
+};
+
+const TRIPS: TripSummary[] = [
+  {
+    id: "california", label: "California",
+    destination: "Sacramento + Lake Tahoe",
+    region: "Sacramento (base) · Lake Tahoe day trip",
+    dates: "May 30 – Jun 4, 2026",
+    travelers: 2, nights: 5, status: "Confirmed",
+    flag: "🐻", color: C.blue,
+    headline: "6-day California capital + alpine day trip",
+    highlights: ["Old Sacramento + State Capitol", "Crocker Art Museum", "Lake Tahoe day trip (Emerald Bay + Sand Harbor)", "Old Sugar Mill wine tasting", "Farm-to-fork dinner"],
+    lodging: "Kimpton Sawyer Hotel ×5 nights",
+    budget: 3880,
+    notes: "Full command center active — see tabs below.",
+  },
+  {
+    id: "costa-rica", label: "Costa Rica",
+    destination: "Costa Rica · Arenal + Manuel Antonio",
+    region: "La Fortuna (Arenal) → Manuel Antonio coast",
+    dates: "Feb 14 – Feb 22, 2026",
+    travelers: 2, nights: 8, status: "Completed",
+    flag: "🌋", color: C.green,
+    headline: "8-day rainforest + Pacific coast loop",
+    highlights: ["Arenal Volcano + La Fortuna hot springs", "Sky Tram + zipline at Sky Adventures", "Río Celeste hike (Tenorio NP)", "Drive coast via Monteverde cloud forest", "Manuel Antonio NP wildlife + beach", "Sunset catamaran (Quepos)"],
+    lodging: "Tabacón Resort ×3 · Hotel Belmar ×2 · Arenas del Mar ×3",
+    budget: 5420,
+    notes: "Trip archived — for reference only.",
+  },
+  {
+    id: "galena", label: "Galena, IL",
+    destination: "Galena + Dubuque",
+    region: "Galena, IL (base) · Dubuque, IA day trip",
+    dates: "Oct 10 – Oct 13, 2025",
+    travelers: 2, nights: 3, status: "Completed",
+    flag: "🍂", color: C.amber,
+    headline: "3-night Midwest fall-color long weekend",
+    highlights: ["Main Street Galena (shops + Ulysses S. Grant home)", "Galena Cellars wine tasting", "Chestnut Mountain overlook of the Mississippi", "Dubuque day trip · National Mississippi River Museum", "Fenelon Place Elevator (4th St)", "Field of Dreams (Dyersville) optional add-on"],
+    lodging: "Goldmoor Inn ×3 nights",
+    budget: 1640,
+    notes: "Trip archived — for reference only.",
+  },
+];
+
 // ─── TAHOE DAY-TRIP SCHEDULE ──────────────────────────────────────────────────
 type TahoeStop = {
   time: string; kind: string; label: string; loc: string; detail: string;
@@ -266,6 +328,8 @@ type Tab = typeof TABS[number];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Vacation() {
+  const [tripId, setTripId] = useState<TripId>("california");
+  const activeTrip = TRIPS.find(t => t.id === tripId)!;
   const [tab, setTab] = useState<Tab>("Overview");
   const [selectedDay, setSelectedDay] = useState<Day | null>(DAYS[0]);
 
@@ -287,22 +351,55 @@ export default function Vacation() {
         padding: "10px 18px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 8, height: 8, background: C.green, borderRadius: 999, boxShadow: `0 0 8px ${C.green}` }} />
+          <div style={{ width: 8, height: 8, background: activeTrip.color, borderRadius: 999, boxShadow: `0 0 8px ${activeTrip.color}` }} />
           <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color: C.text }}>
             Vacation Command Center
           </div>
         </div>
         <div style={{ fontSize: 9, color: C.muted, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          {TRIP.destination} · {TRIP.region}
+          {activeTrip.destination} · {activeTrip.region}
         </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: 14, fontSize: 9, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          <span>{TRIP.dates}</span>
-          <span>{TRIP.nights} nights</span>
-          <span style={{ color: C.green }}>● {TRIP.status}</span>
+          <span>{activeTrip.dates}</span>
+          <span>{activeTrip.nights} nights</span>
+          <span style={{ color: activeTrip.color }}>● {activeTrip.status}</span>
         </div>
       </div>
 
+      {/* TRIP SWITCHER */}
+      <div style={{
+        background: C.bg, borderBottom: `1px solid ${C.border2}`,
+        padding: "8px 18px", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap",
+      }}>
+        <div style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.16em", textTransform: "uppercase", color: C.dim, marginRight: 4 }}>
+          Trips
+        </div>
+        {TRIPS.map(t => {
+          const active = t.id === tripId;
+          return (
+            <button
+              key={t.id}
+              onClick={() => { setTripId(t.id); setTab("Overview"); }}
+              style={{
+                background: active ? t.color + "1a" : C.surfaceAlt,
+                border: `1px solid ${active ? t.color : C.border}`,
+                color: active ? C.text : C.muted,
+                cursor: "pointer", padding: "6px 10px", fontFamily: "inherit",
+                fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
+                display: "flex", alignItems: "center", gap: 6,
+                transition: "border-color .12s, background .12s, color .12s",
+              }}
+            >
+              <span style={{ fontSize: 12 }}>{t.flag}</span>
+              <span>{t.label}</span>
+              <span style={{ fontSize: 8, color: C.dim, letterSpacing: "0.1em" }}>· {t.dates}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* TABS */}
+      {tripId === "california" && (
       <div style={{ background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, padding: "0 18px", display: "flex", gap: 0, overflowX: "auto" }}>
         {TABS.map(t => (
           <button
@@ -321,17 +418,19 @@ export default function Vacation() {
           </button>
         ))}
       </div>
+      )}
 
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        {tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
-        {tab === "Plans" && <PlansTab totals={totals} />}
-        {tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
-        {tab === "Tahoe Day" && <TahoeDayTab />}
-        {tab === "Lodging" && <LodgingTab />}
-        {tab === "Activities" && <ActivitiesTab />}
-        {tab === "Budget" && <BudgetTab totals={totals} />}
-        {tab === "Packing" && <PackingTab />}
+        {tripId !== "california" && <TripArchiveTab trip={activeTrip} />}
+        {tripId === "california" && tab === "Overview" && <OverviewTab selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tripId === "california" && tab === "Plans" && <PlansTab totals={totals} />}
+        {tripId === "california" && tab === "Itinerary" && <ItineraryTab selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
+        {tripId === "california" && tab === "Tahoe Day" && <TahoeDayTab />}
+        {tripId === "california" && tab === "Lodging" && <LodgingTab />}
+        {tripId === "california" && tab === "Activities" && <ActivitiesTab />}
+        {tripId === "california" && tab === "Budget" && <BudgetTab totals={totals} />}
+        {tripId === "california" && tab === "Packing" && <PackingTab />}
       </div>
 
       {/* FOOTER */}
@@ -339,8 +438,8 @@ export default function Vacation() {
         background: C.surface, borderTop: `1px solid ${C.border}`, padding: "8px 18px",
         display: "flex", gap: 18, fontSize: 7, color: C.dim, letterSpacing: "0.12em", textTransform: "uppercase", flexWrap: "wrap",
       }}>
-        <span style={{ color: C.green }}>● System Nominal</span>
-        <span>{TRIP.region}</span>
+        <span style={{ color: activeTrip.color }}>● {activeTrip.status}</span>
+        <span>{activeTrip.region}</span>
         <span>Vacation Ops</span>
         <span style={{ marginLeft: "auto" }}>Unclassified // Trip Ops</span>
       </div>
@@ -349,6 +448,36 @@ export default function Vacation() {
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
+function TripArchiveTab({ trip }: { trip: TripSummary }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 14 }}>
+      <Box>
+        <SecHead eyebrow={`${trip.flag} ${trip.label}`} title={trip.destination.toUpperCase()} meta={trip.region} color={trip.color} />
+        <KV label="Dates"     value={trip.dates} />
+        <KV label="Travelers" value={`${trip.travelers} adults`} />
+        <KV label="Nights"    value={`${trip.nights}`} />
+        <KV label="Status"    value={<span style={{ color: trip.color }}>● {trip.status}</span>} />
+        <KV label="Lodging"   value={trip.lodging} />
+        <KV label="Budget"    value={`$${trip.budget.toLocaleString()}`} />
+        <Hr />
+        <div style={{ fontSize: 10, color: C.muted, lineHeight: 1.6 }}>{trip.headline}</div>
+        <div style={{ marginTop: 8, fontSize: 9, color: C.dim, fontStyle: "italic" }}>{trip.notes}</div>
+      </Box>
+      <Box>
+        <SecHead eyebrow="Highlights" title="TRIP HIGHLIGHTS" meta={`${trip.highlights.length} stops`} color={trip.color} />
+        <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+          {trip.highlights.map((h, i) => (
+            <li key={i} style={{ display: "flex", gap: 8, padding: "6px 0", borderBottom: `1px dashed ${C.border2}`, fontSize: 11, color: C.text, lineHeight: 1.5 }}>
+              <span style={{ color: trip.color, fontWeight: 900, minWidth: 18 }}>{String(i + 1).padStart(2, "0")}</span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      </Box>
+    </div>
+  );
+}
+
 function PlansTab({ totals }: { totals: { planned: number; actual: number; delta: number } }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
