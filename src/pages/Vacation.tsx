@@ -20,12 +20,12 @@ const TRIP = {
 };
 
 const DAYS = [
-  { day: 1, date: "May 30", phase: "arrival",   region: "Sacramento (SMF)",         title: "Arrival + Old Sac",     lodging: "Kimpton Sawyer", notes: "Land SMF mid-day. Pick up rental SUV. Check in at Kimpton Sawyer. Walk Old Sacramento waterfront. Dinner at The Firehouse." },
-  { day: 2, date: "May 31", phase: "city",      region: "Downtown Sacramento",      title: "Capitol + Midtown",     lodging: "Kimpton Sawyer", notes: "CA State Capitol tour AM. Crocker Art Museum. Midtown food crawl + craft cocktails on R St." },
-  { day: 3, date: "Jun 1",  phase: "city",      region: "Sacramento River + Land Park", title: "River + Land Park", lodging: "Kimpton Sawyer", notes: "Tower Bridge + riverwalk AM. Lunch in Land Park. Afternoon at Sacramento Zoo / Fairytale Town. Evening Kings/River Cats game or Golden 1 area." },
-  { day: 4, date: "Jun 2",  phase: "alpine",    region: "Lake Tahoe (day trip)",    title: "Tahoe Day Trip",        lodging: "Kimpton Sawyer", notes: "Early start ~6 AM. ~2 hr drive via US-50 to South Lake Tahoe. Emerald Bay / Eagle Falls hike. Lunch lakeside. Sand Harbor (NV) swim + paddleboard PM. Drive back to Sacramento for late dinner." },
-  { day: 5, date: "Jun 3",  phase: "city",      region: "Old Sugar Mill + Davis",   title: "Wine + Davis",          lodging: "Kimpton Sawyer", notes: "Old Sugar Mill wineries in Clarksburg AM. Lunch in Davis. UC Davis arboretum stroll. Return to Sac for farm-to-fork dinner." },
-  { day: 6, date: "Jun 4",  phase: "departure", region: "Sacramento → SMF",         title: "Departure",             lodging: "—",              notes: "Coffee at Temple. Quick Midtown stroll. Return rental at SMF. Evening flight home." },
+  { day: 1, date: "Sat May 30", phase: "city", region: "Downtown / Midtown Sacramento", title: "Floral Highlights + Central Parks", lodging: "Kimpton Sawyer", notes: "Weather: Sunny · High 82°F / Low 54°F. 10:00 AM — State Capitol Park World Peace Rose Garden (650+ roses, free, 1h). 11:30 AM — McKinley Rose Garden (1,200 bushes, featured in Lady Bird, free, 1h). 1:00 PM — Midtown lunch near Fremont Park (Ink Eats & Drinks / Burgers and Brew / Cafe Bernardo, $15–30 pp). 2:30 PM — John C. Fremont Park 'Fremont Park Bloom' installation (6–9 ft illuminated poppy sculptures, free, 1h)." },
+  { day: 2, date: "Sun May 31", phase: "city", region: "Old Sacramento Waterfront", title: "Waterfront + Historic Exploration", lodging: "Kimpton Sawyer", notes: "Weather: Sunny · High 87°F / Low 56°F. 10:00 AM — Old Sacramento Waterfront (28-acre historic district, free, ~$1.50–3/hr street parking, 2h). 12:15 PM — Waterfront lunch: Rio City Cafe ($20–45) OR Delta King Hotel Pilothouse on 1927 paddlewheeler ($18–40). 2:00 PM — California State Railroad Museum (vintage steam locomotives, A/C escape, $12 adult, 2h). 6:30 PM — Dinner at The Firehouse Restaurant (1850s firehouse, ivy courtyard, $35–65+)." },
+  { day: 3, date: "Mon Jun 1",  phase: "alpine", region: "Lake Tahoe (day trip)", title: "Tahoe Mountain + High-Flying Adventure", lodging: "Kimpton Sawyer", notes: "Weather: Crisp alpine · High 62°F / Low 38°F · 25% light rain — pack layers + rain jacket. Depart Sac 7:00 AM via US-50 E (~2h, 100 mi, sea level → 6,200 ft). 9:15 AM Emerald Bay overlook ($10 parking, 1h). 10:15 AM Vikingsholm Castle tour (1mi steep downhill, $18 adult, 1.5–2h). 12:30 PM lunch Zephyr Cove Restaurant ($15–25 pp). 2:00 PM M.S. Dixie II paddlewheel cruise to Emerald Bay (heated cabins, $99 adult, 2h). 4:30 PM choose: parasailing 400/800/1000 ft ($100.70–$127.20) OR Tahoe Treetop Adventure Parks (27 ziplines, from $75, 2.5h, +45min drive). 6:30 PM dinner near marina / S. Lake Tahoe then 2h drive back to Sacramento." },
+  { day: 4, date: "Tue Jun 2",  phase: "city", region: "Sacramento River + Land Park", title: "River + Land Park", lodging: "Kimpton Sawyer", notes: "Weather: Sunny · High 93°F / Low 60°F — hottest day, hydrate. Tower Bridge + riverwalk AM. Lunch in Land Park. Afternoon at Sacramento Zoo / Fairytale Town. Evening Kings/River Cats game or Golden 1 area." },
+  { day: 5, date: "Wed Jun 3",  phase: "city", region: "Old Sugar Mill + Davis", title: "Wine + Davis", lodging: "Kimpton Sawyer", notes: "Weather: Sunny · High 85°F / Low 56°F. Old Sugar Mill wineries in Clarksburg AM. Lunch in Davis. UC Davis arboretum stroll. Return to Sac for farm-to-fork dinner." },
+  { day: 6, date: "Thu Jun 4",  phase: "departure", region: "Sacramento → SMF", title: "Departure", lodging: "—", notes: "Coffee at Temple. Quick Midtown stroll. Return rental at SMF. Evening flight home." },
 ];
 
 const PHASE_META: Record<string, { label: string; color: string }> = {
@@ -46,12 +46,20 @@ const FLIGHTS = [
 ];
 
 const ACTIVITIES = [
-  { id: "capitol", title: "CA State Capitol Tour",     day: 2, status: "Open",    cost: 0,   vendor: "Self-guided" },
-  { id: "crocker", title: "Crocker Art Museum",        day: 2, status: "Booked",  cost: 30,  vendor: "Crocker Museum" },
-  { id: "zoo",     title: "Sacramento Zoo",            day: 3, status: "Booked",  cost: 40,  vendor: "Sacramento Zoo" },
-  { id: "eagle",   title: "Eagle Falls / Emerald Bay", day: 4, status: "Open",    cost: 10,  vendor: "CA State Parks" },
-  { id: "sand",    title: "Sand Harbor Paddleboard",   day: 4, status: "Booked",  cost: 80,  vendor: "Tahoe Adventure Co." },
-  { id: "wine",    title: "Old Sugar Mill Tasting",    day: 5, status: "Booked",  cost: 60,  vendor: "Old Sugar Mill" },
+const ACTIVITIES = [
+  { id: "peace-rose",  title: "World Peace Rose Garden (Capitol Park)", day: 1, status: "Open",   cost: 0,   vendor: "CA State Parks" },
+  { id: "mckinley",    title: "McKinley Rose Garden",                   day: 1, status: "Open",   cost: 0,   vendor: "City of Sacramento" },
+  { id: "fremont",     title: "Fremont Park Bloom Installation",        day: 1, status: "Open",   cost: 0,   vendor: "Public Art Sac" },
+  { id: "oldsac",      title: "Old Sacramento Waterfront Walk",         day: 2, status: "Open",   cost: 0,   vendor: "Self-guided" },
+  { id: "railroad",    title: "California State Railroad Museum",       day: 2, status: "Open",   cost: 12,  vendor: "CA State Railroad Museum" },
+  { id: "firehouse",   title: "Dinner — The Firehouse Restaurant",      day: 2, status: "Booked", cost: 130, vendor: "The Firehouse (OpenTable)" },
+  { id: "emerald",     title: "Emerald Bay Overlook + Parking",         day: 3, status: "Open",   cost: 10,  vendor: "CA State Parks" },
+  { id: "vikingsholm", title: "Vikingsholm Castle Tour",                day: 3, status: "Booked", cost: 36,  vendor: "CA State Parks (Visitor Ctr)" },
+  { id: "dixie",       title: "M.S. Dixie II Scenic Cruise",            day: 3, status: "Booked", cost: 198, vendor: "Zephyr Cove Marina" },
+  { id: "parasail",    title: "Parasailing (Action Watersports)",       day: 3, status: "Open",   cost: 222, vendor: "Timber Cove Marina" },
+  { id: "treetop",     title: "Tahoe Treetop Adventure Parks (alt.)",   day: 3, status: "Open",   cost: 150, vendor: "Tahoe Treetop, Tahoe City" },
+  { id: "zoo",         title: "Sacramento Zoo",                         day: 4, status: "Booked", cost: 40,  vendor: "Sacramento Zoo" },
+  { id: "wine",        title: "Old Sugar Mill Tasting",                 day: 5, status: "Booked", cost: 60,  vendor: "Old Sugar Mill" },
 ];
 
 const BUDGET = [
