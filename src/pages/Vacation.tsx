@@ -46,7 +46,6 @@ const FLIGHTS = [
 ];
 
 const ACTIVITIES = [
-const ACTIVITIES = [
   { id: "peace-rose",  title: "World Peace Rose Garden (Capitol Park)", day: 1, status: "Open",   cost: 0,   vendor: "CA State Parks" },
   { id: "mckinley",    title: "McKinley Rose Garden",                   day: 1, status: "Open",   cost: 0,   vendor: "City of Sacramento" },
   { id: "fremont",     title: "Fremont Park Bloom Installation",        day: 1, status: "Open",   cost: 0,   vendor: "Public Art Sac" },
