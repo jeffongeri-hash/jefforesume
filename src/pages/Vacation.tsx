@@ -498,6 +498,29 @@ type Day = DayItem;
 const ALL_TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
 type Tab = typeof ALL_TABS[number];
 
+type CompletenessCheck = {
+  tripId: TripId;
+  tripLabel: string;
+  missing: string[];
+  score: number; // 0-100
+};
+
+function checkTripCompleteness(trip: TripSummary): CompletenessCheck {
+  const d = trip.data;
+  const missing: string[] = [];
+  if (!d.days || d.days.length === 0) missing.push("Days");
+  if (!d.lodging || d.lodging.length === 0) missing.push("Lodging");
+  if (!d.flights || d.flights.length === 0) missing.push("Flights");
+  if (!d.activities || d.activities.length === 0) missing.push("Activities");
+  if (!d.budget || d.budget.length === 0) missing.push("Budget");
+  if (!d.packing || d.packing.length === 0) missing.push("Packing");
+  if (!d.checklist || d.checklist.length === 0) missing.push("Checklist");
+  if (!d.reminders || d.reminders.length === 0) missing.push("Reminders");
+  const total = 8;
+  const score = Math.round(((total - missing.length) / total) * 100);
+  return { tripId: trip.id, tripLabel: trip.label, missing, score };
+}
+
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Vacation() {
   const [tripId, setTripId] = useState<TripId>("california");
@@ -516,6 +539,11 @@ export default function Vacation() {
     const actual = data.budget.reduce((s, b) => s + b.actual, 0);
     return { planned, actual, delta: planned - actual };
   }, [data]);
+
+  // Completeness checks for ALL trips
+  const completeness = useMemo(() => TRIPS.map(checkTripCompleteness), []);
+  const incompleteTrips = completeness.filter(c => c.missing.length > 0);
+  const activeCompleteness = completeness.find(c => c.tripId === tripId)!;
 
   return (
     <div style={{
