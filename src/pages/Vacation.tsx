@@ -65,8 +65,8 @@ const BUDGET = [
   { cat: "Flights",    planned: 780,  actual: 742, color: C.blue },
   { cat: "Lodging",    planned: 1350, actual: 1350, color: C.green },
   { cat: "Rental Car", planned: 480,  actual: 442,  color: C.amber },
-  { cat: "Activities", planned: 320,  actual: 290,  color: C.teal },
-  { cat: "Food",       planned: 700,  actual: 0,    color: C.violet },
+  { cat: "Activities", planned: 720,  actual: 0,    color: C.teal },
+  { cat: "Food",       planned: 900,  actual: 0,    color: C.violet },
   { cat: "Misc",       planned: 250,  actual: 0,    color: C.red },
 ];
 
@@ -280,7 +280,7 @@ const TRIPS: TripSummary[] = [
     travelers: 2, nights: 5, status: "Confirmed",
     flag: "🐻", color: C.blue,
     headline: "6-day California capital + alpine day trip",
-    highlights: ["Old Sacramento + State Capitol", "Crocker Art Museum", "Lake Tahoe day trip (Emerald Bay + Sand Harbor)", "Old Sugar Mill wine tasting", "Farm-to-fork dinner"],
+    highlights: ["Capitol Park & McKinley rose gardens", "Old Sacramento + CA State Railroad Museum", "Dinner at The Firehouse (1850s)", "Lake Tahoe day trip — Emerald Bay + Vikingsholm Castle", "M.S. Dixie II paddlewheel cruise", "Parasailing or Treetop ziplines", "Old Sugar Mill wine tasting"],
     lodging: "Kimpton Sawyer Hotel ×5 nights",
     budget: 3880,
     notes: "Full command center active — see tabs below.",
