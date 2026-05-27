@@ -774,7 +774,8 @@ function PlansTab({ trip, data, totals }: { trip: TripSummary; data: TripData; t
   );
 }
 
-function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
+function OverviewTab({ trip, data, selectedDay, onSelectDay, totals, completeness }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number }; completeness: CompletenessCheck }) {
+  const scoreColor = completeness.score >= 80 ? C.green : completeness.score >= 50 ? C.amber : C.red;
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
@@ -787,6 +788,28 @@ function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: T
         <KV label="Lodging" value={`${data.lodging.length} ${data.lodging.length === 1 ? "property" : "properties"}`} />
         <KV label="Activities" value={`${data.activities.length} planned`} />
         <KV label="Budget" value={`$${totals.planned.toLocaleString()} planned`} />
+      </Box>
+
+      <Box>
+        <SecHead eyebrow="Data Health" title="COMPLETENESS SCORE" color={scoreColor} />
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+          <span style={{ fontSize: 28, fontWeight: 900, color: scoreColor }}>{completeness.score}%</span>
+          <span style={{ fontSize: 9, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            {completeness.missing.length === 0 ? "All sections filled" : `${completeness.missing.length} section${completeness.missing.length > 1 ? "s" : ""} missing`}
+          </span>
+        </div>
+        {completeness.missing.length > 0 ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {completeness.missing.map((m, i) => (
+              <div key={i} style={{ fontSize: 10, color: C.amber, display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 5, height: 5, borderRadius: 999, background: C.amber, flexShrink: 0 }} />
+                {m} missing
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 10, color: C.green }}>✓ All 8 key sections populated</div>
+        )}
       </Box>
 
       <Box>
