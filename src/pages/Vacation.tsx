@@ -498,6 +498,29 @@ type Day = DayItem;
 const ALL_TABS = ["Overview", "Plans", "Itinerary", "Tahoe Day", "Lodging", "Activities", "Budget", "Packing"] as const;
 type Tab = typeof ALL_TABS[number];
 
+type CompletenessCheck = {
+  tripId: TripId;
+  tripLabel: string;
+  missing: string[];
+  score: number; // 0-100
+};
+
+function checkTripCompleteness(trip: TripSummary): CompletenessCheck {
+  const d = trip.data;
+  const missing: string[] = [];
+  if (!d.days || d.days.length === 0) missing.push("Days");
+  if (!d.lodging || d.lodging.length === 0) missing.push("Lodging");
+  if (!d.flights || d.flights.length === 0) missing.push("Flights");
+  if (!d.activities || d.activities.length === 0) missing.push("Activities");
+  if (!d.budget || d.budget.length === 0) missing.push("Budget");
+  if (!d.packing || d.packing.length === 0) missing.push("Packing");
+  if (!d.checklist || d.checklist.length === 0) missing.push("Checklist");
+  if (!d.reminders || d.reminders.length === 0) missing.push("Reminders");
+  const total = 8;
+  const score = Math.round(((total - missing.length) / total) * 100);
+  return { tripId: trip.id, tripLabel: trip.label, missing, score };
+}
+
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Vacation() {
   const [tripId, setTripId] = useState<TripId>("california");
@@ -516,6 +539,11 @@ export default function Vacation() {
     const actual = data.budget.reduce((s, b) => s + b.actual, 0);
     return { planned, actual, delta: planned - actual };
   }, [data]);
+
+  // Completeness checks for ALL trips
+  const completeness = useMemo(() => TRIPS.map(checkTripCompleteness), []);
+  const incompleteTrips = completeness.filter(c => c.missing.length > 0);
+  const activeCompleteness = completeness.find(c => c.tripId === tripId)!;
 
   return (
     <div style={{
@@ -554,13 +582,15 @@ export default function Vacation() {
         </div>
         {TRIPS.map(t => {
           const active = t.id === tripId;
+          const c = completeness.find(x => x.tripId === t.id)!;
+          const warn = c.missing.length > 0;
           return (
             <button
               key={t.id}
               onClick={() => { setTripId(t.id); setTab("Overview"); }}
               style={{
                 background: active ? t.color + "1a" : C.surfaceAlt,
-                border: `1px solid ${active ? t.color : C.border}`,
+                border: `1px solid ${active ? t.color : warn ? C.amber : C.border}`,
                 color: active ? C.text : C.muted,
                 cursor: "pointer", padding: "6px 10px", fontFamily: "inherit",
                 fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
@@ -570,11 +600,42 @@ export default function Vacation() {
             >
               <span style={{ fontSize: 12 }}>{t.flag}</span>
               <span>{t.label}</span>
+              {warn && (
+                <span
+                  title={`Missing: ${c.missing.join(", ")}`}
+                  style={{
+                    fontSize: 7, fontWeight: 900, letterSpacing: "0.1em",
+                    color: C.amber, border: `1px solid ${C.amber}55`,
+                    padding: "1px 5px", background: C.amber + "18",
+                  }}
+                >
+                  {c.score}%
+                </span>
+              )}
               <span style={{ fontSize: 8, color: C.dim, letterSpacing: "0.1em" }}>· {t.dates}</span>
             </button>
           );
         })}
       </div>
+
+      {/* COMPLETENESS WARNING BANNER */}
+      {incompleteTrips.length > 0 && (
+        <div style={{
+          background: C.amber + "12",
+          borderBottom: `1px solid ${C.amber}33`,
+          padding: "7px 18px",
+          display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+        }}>
+          <span style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color: C.amber }}>
+            ⚠ Data Incomplete
+          </span>
+          {incompleteTrips.map(c => (
+            <span key={c.tripId} style={{ fontSize: 9, color: C.text }}>
+              <strong style={{ color: C.amber }}>{c.tripLabel}</strong>: missing {c.missing.join(", ")}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* TABS */}
       <div style={{ background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, padding: "0 18px", display: "flex", gap: 0, overflowX: "auto" }}>
@@ -598,7 +659,7 @@ export default function Vacation() {
 
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} completeness={activeCompleteness} />}
         {tab === "Plans" && <PlansTab trip={activeTrip} data={data} totals={totals} />}
         {tab === "Itinerary" && <ItineraryTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tripId === "california" && tab === "Tahoe Day" && <TahoeDayTab />}
@@ -713,7 +774,8 @@ function PlansTab({ trip, data, totals }: { trip: TripSummary; data: TripData; t
   );
 }
 
-function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number } }) {
+function OverviewTab({ trip, data, selectedDay, onSelectDay, totals, completeness }: { trip: TripSummary; data: TripData; selectedDay: Day | null; onSelectDay: (d: Day) => void; totals: { planned: number; actual: number; delta: number }; completeness: CompletenessCheck }) {
+  const scoreColor = completeness.score >= 80 ? C.green : completeness.score >= 50 ? C.amber : C.red;
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
       <Box>
@@ -726,6 +788,28 @@ function OverviewTab({ trip, data, selectedDay, onSelectDay, totals }: { trip: T
         <KV label="Lodging" value={`${data.lodging.length} ${data.lodging.length === 1 ? "property" : "properties"}`} />
         <KV label="Activities" value={`${data.activities.length} planned`} />
         <KV label="Budget" value={`$${totals.planned.toLocaleString()} planned`} />
+      </Box>
+
+      <Box>
+        <SecHead eyebrow="Data Health" title="COMPLETENESS SCORE" color={scoreColor} />
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+          <span style={{ fontSize: 28, fontWeight: 900, color: scoreColor }}>{completeness.score}%</span>
+          <span style={{ fontSize: 9, color: C.dim, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            {completeness.missing.length === 0 ? "All sections filled" : `${completeness.missing.length} section${completeness.missing.length > 1 ? "s" : ""} missing`}
+          </span>
+        </div>
+        {completeness.missing.length > 0 ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {completeness.missing.map((m, i) => (
+              <div key={i} style={{ fontSize: 10, color: C.amber, display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 5, height: 5, borderRadius: 999, background: C.amber, flexShrink: 0 }} />
+                {m} missing
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 10, color: C.green }}>✓ All 8 key sections populated</div>
+        )}
       </Box>
 
       <Box>
