@@ -659,7 +659,7 @@ export default function Vacation() {
 
       {/* BODY */}
       <div style={{ flex: 1, padding: 18, display: "grid", gap: 14, gridTemplateColumns: "minmax(0, 1fr)" }}>
-        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} />}
+        {tab === "Overview" && <OverviewTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} totals={totals} completeness={activeCompleteness} />}
         {tab === "Plans" && <PlansTab trip={activeTrip} data={data} totals={totals} />}
         {tab === "Itinerary" && <ItineraryTab trip={activeTrip} data={data} selectedDay={selectedDay} onSelectDay={setSelectedDay} />}
         {tripId === "california" && tab === "Tahoe Day" && <TahoeDayTab />}
