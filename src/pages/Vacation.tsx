@@ -582,13 +582,15 @@ export default function Vacation() {
         </div>
         {TRIPS.map(t => {
           const active = t.id === tripId;
+          const c = completeness.find(x => x.tripId === t.id)!;
+          const warn = c.missing.length > 0;
           return (
             <button
               key={t.id}
               onClick={() => { setTripId(t.id); setTab("Overview"); }}
               style={{
                 background: active ? t.color + "1a" : C.surfaceAlt,
-                border: `1px solid ${active ? t.color : C.border}`,
+                border: `1px solid ${active ? t.color : warn ? C.amber : C.border}`,
                 color: active ? C.text : C.muted,
                 cursor: "pointer", padding: "6px 10px", fontFamily: "inherit",
                 fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
@@ -598,11 +600,42 @@ export default function Vacation() {
             >
               <span style={{ fontSize: 12 }}>{t.flag}</span>
               <span>{t.label}</span>
+              {warn && (
+                <span
+                  title={`Missing: ${c.missing.join(", ")}`}
+                  style={{
+                    fontSize: 7, fontWeight: 900, letterSpacing: "0.1em",
+                    color: C.amber, border: `1px solid ${C.amber}55`,
+                    padding: "1px 5px", background: C.amber + "18",
+                  }}
+                >
+                  {c.score}%
+                </span>
+              )}
               <span style={{ fontSize: 8, color: C.dim, letterSpacing: "0.1em" }}>· {t.dates}</span>
             </button>
           );
         })}
       </div>
+
+      {/* COMPLETENESS WARNING BANNER */}
+      {incompleteTrips.length > 0 && (
+        <div style={{
+          background: C.amber + "12",
+          borderBottom: `1px solid ${C.amber}33`,
+          padding: "7px 18px",
+          display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+        }}>
+          <span style={{ fontSize: 8, fontWeight: 900, letterSpacing: "0.14em", textTransform: "uppercase", color: C.amber }}>
+            ⚠ Data Incomplete
+          </span>
+          {incompleteTrips.map(c => (
+            <span key={c.tripId} style={{ fontSize: 9, color: C.text }}>
+              <strong style={{ color: C.amber }}>{c.tripLabel}</strong>: missing {c.missing.join(", ")}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* TABS */}
       <div style={{ background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, padding: "0 18px", display: "flex", gap: 0, overflowX: "auto" }}>
