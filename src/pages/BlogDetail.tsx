@@ -27,6 +27,28 @@ import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 import houstonSuburbs from '@/assets/houston-suburbs.jpg';
 
 const blogPosts = {
+  "arrhythmia-origin-atlas": {
+    title: "Arrhythmia Origin Atlas — Where Each One Lives",
+    category: "HEALTHCARE",
+    date: "June 9, 2026",
+    readTime: "12 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A visual atlas mapping each major arrhythmia to its anatomic origin in the conduction system — SA node, AV node, atria, junction, and ventricles — alongside the surface ECG signatures clinicians use to recognize them at the bedside.</p>
+      <p>The interactive diagram below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/arrhythmia-origins.html"
+          title="Arrhythmia Origin Atlas"
+          style="width:100%;height:1400px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/arrhythmia-origins.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "sacramento-suburb-guide-3br-housing-commute-budget": {
     title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
     category: "HEALTHCARE",

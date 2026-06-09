@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Arrhythmia Origin Atlas — Where Each One Lives",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 9, 2026",
+      excerpt: "An interactive visual atlas mapping each major arrhythmia to its anatomic origin in the conduction system, with the ECG signatures clinicians use to recognize them.",
+      image: businessPost,
+      slug: "arrhythmia-origin-atlas",
+      tags: ["Cardiology", "ECG", "Clinical Education"]
+    },
+    {
       title: "Houston Suburb & TMC Neighborhood Guide: 3BR Housing, Commute & Monthly Budget",
       category: "HEALTHCARE",
       subcategory: "Career Planning",

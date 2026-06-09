@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrhythmia Origin Atlas — Where Each One Lives</title>
+<style>
+  /* ---------- LIGHT (default) ---------- */
+  :root{
+    --ink:#16222c;--paper:#f6f4ee;--panel:#ffffff;--line:#d7d1c4;--line2:#e9e4d8;
+    --conduct:#d49b00;--node-stroke:#a07600;
+    --trace:#d62e4c;--teal:#176475;--violet:#6a4d9c;--good:#256a42;--warn:#a23618;
+    --muted:#46535c;--soft:#33424d;--grid:#f0d4d8;
+    --num:#a99f82;--legendbg:#fbfaf6;
+    --chamber:#f3d9de;--chamber2:#e8c2ca;--chstroke:#cba7af;
+    --ra:#dbe9f2;--rv:#cfe2ef;--rastroke:#a9c4d6;
+    --lblfill:#46535c;--dead:#7d7d7d;
+    --axisbg:#f1ecfa;--ped:#0f7d6b;--pedbg:#e6f4f0;
+  }
+  /* ---------- DARK ---------- */
+  html[data-theme="dark"]{
+    --ink:#e9edf0;--paper:#10161c;--panel:#19222b;--line:#2c3a45;--line2:#222d36;
+    --conduct:#f0c24a;--node-stroke:#caa033;
+    --trace:#ff5d77;--teal:#5cc4d6;--violet:#b69be8;--good:#5fd194;--warn:#ff8a5c;
+    --muted:#9fb0bb;--soft:#c4d0d8;--grid:#1b2730;
+    --num:#5a6b76;--legendbg:#141d25;
+    --chamber:#3a2a30;--chamber2:#43303a;--chstroke:#6b4f59;
+    --ra:#23323e;--rv:#1f2e3a;--rastroke:#3d5667;
+    --lblfill:#aebdc7;--dead:#5e6b74;
+    --axisbg:#241d33;--ped:#43c9ad;--pedbg:#13302a;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:light dark;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    line-height:1.58;font-size:17px;
+    transition:background .25s ease,color .25s ease;}
+  /* theme toggle */
+  .toggle{position:fixed;top:16px;right:18px;z-index:50;
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.06em;
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    padding:8px 13px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+  .toggle:hover{border-color:var(--trace);}
+  .toggle .ico{width:15px;height:15px;}
+  header.hero{padding:54px 48px 38px;border-bottom:1px solid var(--line);
+    background:repeating-linear-gradient(0deg,transparent,transparent 13px,var(--grid) 13px,var(--grid) 14px),
+      repeating-linear-gradient(90deg,transparent,transparent 13px,var(--grid) 13px,var(--grid) 14px),var(--panel);}
+  header.hero .eyebrow{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:700;}
+  header.hero h1{font-size:2.5rem;margin:.2em 0;font-weight:600;letter-spacing:-.01em;}
+  header.hero p{max-width:66ch;color:var(--soft);margin:0;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;padding:18px 48px;background:var(--legendbg);border-bottom:1px solid var(--line2);
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:.82rem;color:var(--ink);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .key{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(125,125,125,.4);}
+  .keycirc{width:16px;height:16px;border-radius:50%;border:2px dashed var(--trace);}
+  .keyfocus{background:var(--trace);border-radius:50%;}
+  /* section band */
+  .band{grid-column:1/-1;padding:20px 48px;background:var(--legendbg);border-bottom:1px solid var(--line2);border-top:1px solid var(--line2);}
+  .band .eyebrow{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ped);font-weight:700;}
+  .band h2{font-size:1.5rem;margin:.1em 0 .15em;font-weight:600;}
+  .band p{margin:0;color:var(--soft);max-width:70ch;font-size:.95rem;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
+  @media(max-width:900px){.grid{grid-template-columns:1fr;}}
+  .cell{border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:26px 30px;}
+  .cell:nth-child(2n){border-right:none;}
+  .cell .num{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.66rem;letter-spacing:.18em;color:var(--num);font-weight:700;}
+  .cell h2{font-size:1.32rem;margin:.1em 0 .1em;font-weight:600;}
+  .cell .loc{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.8rem;color:var(--teal);font-weight:700;letter-spacing:.04em;margin-bottom:8px;}
+  .diag{max-width:330px;margin:4px auto 10px;display:block;}
+  .desc{font-size:.96rem;color:var(--ink);}
+  .desc b{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);display:block;margin:10px 0 1px;}
+  .axis{font-family:"Helvetica Neue",Arial,sans-serif;font-size:.82rem;background:var(--axisbg);border-left:3px solid var(--violet);border-radius:0 6px 6px 0;padding:8px 12px;margin-top:9px;color:var(--ink);}
+  .axis b{color:var(--violet);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;display:block;}
+  footer{padding:34px 48px;color:var(--muted);font-family:"Helvetica Neue",Arial,sans-serif;font-size:.8rem;}
+  @media(max-width:680px){header.hero,.legend,footer,.band{padding-left:22px;padding-right:22px;}.cell{padding:22px;}}
+  /* heart shared styles — all themeable */
+  .ra{fill:var(--ra);stroke:var(--rastroke);}
+  .rv{fill:var(--rv);stroke:var(--rastroke);}
+  .la{fill:var(--chamber);stroke:var(--chstroke);}
+  .lv{fill:var(--chamber2);stroke:var(--chstroke);}
+  .cond{fill:none;stroke:var(--conduct);stroke-width:3;stroke-linecap:round;}
+  .condf{fill:none;stroke:var(--conduct);stroke-width:2.4;stroke-linecap:round;}
+  .node{fill:var(--conduct);stroke:var(--node-stroke);}
+  .lbl{font-family:"Helvetica Neue",Arial,sans-serif;font-size:9px;fill:var(--lblfill);}
+  .flash{fill:var(--trace);}
+  .dead{fill:var(--dead);opacity:.55;}
+  @media(prefers-reduced-motion:no-preference){
+    .pulse{animation:pulse 1.6s ease-in-out infinite;transform-origin:center;}
+    @keyframes pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
+    .spin{stroke-dasharray:6 6;animation:flow 1.3s linear infinite;}
+    @keyframes flow{to{stroke-dashoffset:-24;}}
+  }
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle light or dark mode">
+  <svg class="ico" id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg>
+  <span id="themeTxt">Dark</span>
+</button>
+<header class="hero">
+  <div class="eyebrow">Companion atlas</div>
+  <h1>Where Each Arrhythmia Lives</h1>
+  <p>One heart schematic per rhythm, marking the exact anatomic site — the firing focus, the re-entry circuit, or the blocked segment — on the conduction system. Same chamber/conduction layout throughout so you can compare sites at a glance. Spans sinus-node disease, atrial &amp; junctional ectopy, the full ventricular spectrum, inherited channelopathies/cardiomyopathies, and a dedicated pediatric &amp; congenital set.</p>
+</header>
+<div class="legend">
+  <span><span class="key keyfocus"></span>Ectopic / firing focus</span>
+  <span><span class="keycirc"></span>Re-entry circuit (rotating)</span>
+  <span><span class="key" style="background:var(--trace)"></span>×&nbsp;Block / lesion site</span>
+  <span><span class="key" style="background:var(--conduct)"></span>Normal conduction path</span>
+  <span><span class="key" style="background:var(--dead)"></span>Infarcted / silent muscle</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  Schematic and not to anatomic scale; conduction pathways simplified to the clinically relevant segments. Re-entry loops are drawn as representative circuits, not exact isthmus geometry. For study/review — confirm against standard electrophysiology references.
+</footer>
+
+<script>
+/* ---------- shared heart base ---------- */
+function heartBase(){
+  return `
+    <path class="ra" d="M70,118 Q58,46 140,58 Q188,38 198,84 L198,196 Q140,206 92,196 Z"/>
+    <path class="la" d="M204,84 Q220,40 292,58 Q352,64 326,150 L296,204 Q246,206 204,196 Z"/>
+    <path class="rv" d="M84,200 Q60,300 132,338 Q190,356 196,258 L196,202 Q140,210 84,200Z"/>
+    <path class="lv" d="M204,202 L204,262 Q214,356 286,330 Q340,300 318,210 Q262,218 204,202Z"/>
+    <text class="lbl" x="120" y="100">RA</text>
+    <text class="lbl" x="270" y="96">LA</text>
+    <text class="lbl" x="118" y="282">RV</text>
+    <text class="lbl" x="262" y="282">LV</text>`;
+}
+/* normal conduction tree (gold). Coords reused everywhere. */
+const SA=[148,80], AV=[198,156], HIS=[202,196], RBBend=[122,330], LBB=[248,250], LAFend=[318,300], LPFend=[240,335];
+function tree(opts){
+  opts=opts||{};
+  const dim = c => opts.dim&&opts.dim.includes(c) ? ' style="opacity:.25"' : '';
+  return `
+    <circle class="node" cx="${SA[0]}" cy="${SA[1]}" r="8"${dim('SA')}/>
+    <circle class="node" cx="${AV[0]}" cy="${AV[1]}" r="8"${dim('AV')}/>
+    <path class="cond" d="M${AV[0]},${AV[1]+8} L${HIS[0]},${HIS[1]}"${dim('HIS')}/>
+    <path class="cond" d="M${HIS[0]},${HIS[1]} Q150,228 ${RBBend[0]},${RBBend[1]}"${dim('RBB')}/>
+    <path class="cond" d="M${HIS[0]},${HIS[1]} Q248,224 ${LBB[0]},${LBB[1]}"${dim('LBB')}/>
+    <path class="condf" d="M${LBB[0]},${LBB[1]} Q300,260 ${LAFend[0]},${LAFend[1]}"${dim('LAF')}/>
+    <path class="condf" d="M${LBB[0]},${LBB[1]} Q240,300 ${LPFend[0]},${LPFend[1]}"${dim('LPF')}/>`;
+}
+function svg(inner){
+  return `<svg class="diag" viewBox="0 0 380 360">${heartBase()}${inner}</svg>`;
+}
+function X(x,y,color,size){size=size||16;return `<text x="${x}" y="${y}" font-family="Helvetica,Arial" font-weight="700" font-size="${size}" fill="${color}" text-anchor="middle">✕</text>`;}
+function focus(x,y){return `<circle class="flash pulse" cx="${x}" cy="${y}" r="7"/><circle cx="${x}" cy="${y}" r="13" fill="none" stroke="#e23b56" stroke-width="1.4" opacity=".5"/>`;}
+function loop(x,y,r){return `<circle class="spin" cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#e23b56" stroke-width="2.4"/><path d="M${x+r},${y} l-5,-5 m5,5 l-5,5" stroke="#e23b56" stroke-width="2" fill="none"/>`;}
+
+/* ---------- the catalogue ---------- */
+const items = [
+ {
+  name:"Sinus tachy / brady (reference)",
+  loc:"SA node — right atrium roof",
+  inner: tree() + focus(SA[0],SA[1]),
+  desc:"The normal pacemaker. Rate changes here keep a normal P–QRS–T sequence; the impulse still travels the full gold pathway.",
+  axis:"Axis normal — conduction route unchanged."
+ },
+ {
+  name:"Atrial fibrillation",
+  loc:"Atrial myocardium — pulmonary vein ostia (LA)",
+  inner: tree({dim:['SA']}) +
+    // chaotic multi-foci in both atria, triggers at PV ostia
+    focus(300,86)+focus(285,110)+focus(120,120)+focus(160,95)+focus(95,150)+
+    X(198,160,'#b3431f',14),
+  desc:"Multiple disorganized re-entrant wavelets across both atria, classically triggered by ectopic foci near the <b style='display:inline'>pulmonary vein ostia</b> in the left atrium. The AV node (orange ×, partial filter) passes impulses irregularly.",
+  axis:"Ventricular axis normal — only atrial activity is chaotic; QRS conducts normally."
+ },
+ {
+  name:"Atrial flutter (typical)",
+  loc:"Right atrium — cavotricuspid isthmus circuit",
+  inner: tree({dim:['SA']}) +
+    // macro-reentrant loop around tricuspid annulus in RA
+    `<ellipse class="spin" cx="135" cy="140" rx="52" ry="62" fill="none" stroke="#e23b56" stroke-width="2.6"/>`+
+    `<path d="M135,78 l-6,-5 m6,5 l6,-5" stroke="#e23b56" stroke-width="2" fill="none"/>`+
+    `<text class="lbl" x="135" y="205" text-anchor="middle" fill="#e23b56">CTI</text>`,
+  desc:"A single large <b style='display:inline'>macro-reentrant circuit</b> looping around the tricuspid annulus in the right atrium, passing through the <b style='display:inline'>cavotricuspid isthmus (CTI)</b> — the ablation target. Atrial rate ~300; AV node sets the conduction ratio (2:1, etc.).",
+  axis:"QRS axis normal; the sawtooth is an atrial phenomenon."
+ },
+ {
+  name:"AVNRT (most common SVT)",
+  loc:"AV node — dual fast/slow pathways",
+  inner: tree() +
+    loop(198,156,22)+
+    `<text class="lbl" x="240" y="150" fill="#e23b56">slow/fast</text>`,
+  desc:"Micro re-entry <b style='display:inline'>within / around the AV node</b> using functionally distinct fast and slow pathways. The circuit is tiny and confined to the node — which is why vagal maneuvers and adenosine (which block the node) terminate it.",
+  axis:"Normal — ventricles activate normally via the His-Purkinje system."
+ },
+ {
+  name:"AVRT (accessory pathway SVT)",
+  loc:"Large circuit: AV node ↓ + accessory pathway ↑",
+  inner: tree() +
+    // accessory bridge on lateral wall + big loop
+    `<path d="M300,150 Q322,180 300,212" stroke="#e23b56" stroke-width="4" fill="none"/>`+
+    `<text class="lbl" x="332" y="186" fill="#e23b56">AP</text>`+
+    `<path class="spin" d="M198,164 Q250,210 300,210 Q318,180 300,150 Q250,120 200,148" fill="none" stroke="#e23b56" stroke-width="2.4"/>`,
+  desc:"A <b style='display:inline'>macro-reentry</b> loop: down the AV node/His (orthodromic) and back up an <b style='display:inline'>accessory pathway (AP)</b> bridging atrium and ventricle across the valve annulus. Orthodromic = narrow QRS; antidromic (down the AP) = wide.",
+  axis:"Orthodromic normal; antidromic bizarre/wide (ventricle activated from the AP insertion site)."
+ },
+ {
+  name:"WPW / pre-excitation (baseline)",
+  loc:"Accessory pathway (e.g., Bundle of Kent), AV groove",
+  inner: tree() +
+    `<path d="M300,150 Q324,182 300,214" stroke="#e23b56" stroke-width="4" fill="none"/>`+
+    focus(300,182)+
+    `<text class="lbl" x="332" y="188" fill="#e23b56">Kent</text>`,
+  desc:"An extra muscular bridge (<b style='display:inline'>Bundle of Kent</b>) connects atrium to ventricle outside the AV node, pre-exciting ventricular muscle early → short PR + delta wave. The ventricle is depolarized partly from this insertion point.",
+  axis:"Delta wave alters initial forces; pseudo-axis/pseudo-infarct depends on pathway location."
+ },
+ {
+  name:"1° AV block",
+  loc:"AV node — slowed (not blocked)",
+  inner: tree() +
+    `<circle cx="${AV[0]}" cy="${AV[1]}" r="15" fill="none" stroke="#b3431f" stroke-width="2.4" stroke-dasharray="3 3"/>`+
+    `<text class="lbl" x="240" y="158" fill="#b3431f">delay</text>`,
+  desc:"Conduction through the <b style='display:inline'>AV node</b> is uniformly slowed but every impulse eventually gets through (1:1). PR &gt;200 ms, fixed.",
+  axis:"Normal — ventricular activation unaffected."
+ },
+ {
+  name:"2° AV block — Mobitz I",
+  loc:"AV node (above the His bundle)",
+  inner: tree() +
+    X(AV[0],AV[1]+4,'#b3431f',15)+
+    `<text class="lbl" x="244" y="158" fill="#b3431f">progressive</text>`,
+  desc:"Decremental conduction <b style='display:inline'>in the AV node</b>: PR lengthens beat to beat until one P is blocked, then resets. Usually vagal/drug, generally benign.",
+  axis:"Normal — block is above the ventricular conduction tissue."
+ },
+ {
+  name:"2° AV block — Mobitz II",
+  loc:"Infranodal — His-Purkinje system",
+  inner: tree() +
+    X(HIS[0],HIS[1]+8,'#e23b56',16)+
+    `<text class="lbl" x="246" y="200" fill="#e23b56">His-Purkinje</text>`,
+  desc:"Intermittent <b style='display:inline'>sudden failure below the AV node</b> (His bundle/branches) with a constant PR on conducted beats. Diseased conducting tissue → high risk of progression to complete block.",
+  axis:"QRS often wide; if so, reflects the diseased bundle/fascicle morphology."
+ },
+ {
+  name:"3° (complete) AV block",
+  loc:"Complete interruption — node or infranodal",
+  inner: tree({dim:['RBB','LBB','LAF','LPF']}) +
+    X(HIS[0],HIS[1]+6,'#e23b56',17)+
+    focus(250,300)+
+    `<text class="lbl" x="290" y="304" fill="#e23b56">escape</text>`,
+  desc:"<b style='display:inline'>No atrial impulse reaches the ventricles.</b> A subsidiary <b style='display:inline'>escape pacemaker</b> below the block drives the ventricles independently (junctional 40–60 if high; ventricular 20–40 if low). Atria and ventricles fire unrelated.",
+  axis:"Set by the escape focus — a low ventricular escape can produce a bizarre axis."
+ },
+ {
+  name:"RBBB",
+  loc:"Right bundle branch",
+  inner: tree({dim:['RBB']}) +
+    X(150,232,'#1f7a8c',16)+
+    `<text class="lbl" x="150" y="255" text-anchor="middle" fill="#1f7a8c">RBB ✕</text>`,
+  desc:"Block in the <b style='display:inline'>right bundle branch</b>. The RV is reached late by slow muscle-to-muscle spread from the left → wide QRS, terminal rightward/anterior forces (rSR′ in V1).",
+  axis:"Usually normal — the left fascicles still fire normally."
+ },
+ {
+  name:"LBBB",
+  loc:"Left bundle branch (proximal)",
+  inner: tree({dim:['LBB','LAF','LPF']}) +
+    X(228,228,'#e23b56',16)+
+    `<text class="lbl" x="262" y="232" fill="#e23b56">LBB ✕</text>`,
+  desc:"Block in the <b style='display:inline'>main left bundle</b>. Septal depolarization reverses and the whole LV is activated late through the RV/muscle → wide QRS, loss of septal q, broad notched lateral R.",
+  axis:"Often normal or left; LBBB masks infarct (apply Sgarbossa)."
+ },
+ {
+  name:"LAFB",
+  loc:"Left anterior fascicle",
+  inner: tree({dim:['LAF']}) +
+    X(282,272,'#7b5ea7',15)+
+    `<text class="lbl" x="282" y="294" text-anchor="middle" fill="#7b5ea7">LAF ✕</text>`,
+  desc:"Block of the <b style='display:inline'>anterior fascicle</b> of the left bundle. The anterosuperior LV is the last region activated, so terminal forces swing up-and-left. QRS stays &lt;120 ms.",
+  axis:"<b style='display:inline;color:#7b5ea7'>Left axis deviation</b> (−45 to −90°): unopposed late vector points up-and-left."
+ },
+ {
+  name:"LPFB",
+  loc:"Left posterior fascicle",
+  inner: tree({dim:['LPF']}) +
+    X(238,318,'#2f7d4f',15)+
+    `<text class="lbl" x="238" y="340" text-anchor="middle" fill="#2f7d4f">LPF ✕</text>`,
+  desc:"Block of the <b style='display:inline'>posterior fascicle</b> (thicker, dual blood supply — block implies more disease). Inferoposterior LV activates last. Diagnosis of exclusion.",
+  axis:"<b style='display:inline;color:#2f7d4f'>Right axis deviation</b> (+90 to +180°): late vector points down-and-right."
+ },
+ {
+  name:"Bifascicular block",
+  loc:"RBB + one left fascicle",
+  inner: tree({dim:['RBB','LAF']}) +
+    X(150,232,'#1f7a8c',15)+X(282,272,'#7b5ea7',14)+
+    `<text class="lbl" x="150" y="253" text-anchor="middle" fill="#1f7a8c">RBB</text>`+
+    `<text class="lbl" x="282" y="293" text-anchor="middle" fill="#7b5ea7">LAF</text>`,
+  desc:"Two of the three pathways blocked (here RBB + LAFB). Only the <b style='display:inline'>posterior fascicle</b> still conducts to the ventricles — a single thread holding up AV conduction.",
+  axis:"RBBB morphology + the axis of the blocked fascicle (LAD here, RAD if LPFB)."
+ },
+ {
+  name:"Ventricular tachycardia",
+  loc:"Ventricular myocardium (below bifurcation)",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    loop(255,278,26)+
+    `<text class="lbl" x="255" y="320" text-anchor="middle" fill="#e23b56">scar re-entry</text>`,
+  desc:"Re-entry around <b style='display:inline'>ventricular scar</b> (usually prior MI) or an automatic ventricular focus — entirely <b style='display:inline'>below the His bifurcation</b>. Spread is muscle-to-muscle, bypassing the fast system → wide QRS.",
+  axis:"Often bizarre / extreme ('northwest') — origin and spread ignore the normal sequence."
+ },
+ {
+  name:"Torsades de pointes",
+  loc:"Ventricles — triggered activity (long QT)",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    focus(150,290)+focus(255,270)+
+    `<path class="spin" d="M150,290 Q210,250 255,270" stroke="#e23b56" stroke-width="2.2" fill="none"/>`+
+    `<text class="lbl" x="200" y="330" text-anchor="middle" fill="#e23b56">shifting focus</text>`,
+  desc:"Polymorphic VT from <b style='display:inline'>early afterdepolarizations</b> in a long-QT ventricle; the re-entry wavefront's axis continuously rotates, giving the twisting baseline. Substrate is electrolyte/drug/congenital QT prolongation.",
+  axis:"Continuously changing — QRS amplitude/axis twist around the baseline."
+ },
+ {
+  name:"Hyper-/hypokalemia",
+  loc:"Diffuse — all myocardium & conduction tissue",
+  inner: tree() +
+    `<rect x="58" y="40" width="290" height="310" fill="#e23b56" opacity=".10" rx="20"/>`+
+    `<text class="lbl" x="200" y="34" text-anchor="middle" fill="#e23b56">global membrane effect</text>`,
+  desc:"Not a focal site — potassium alters resting membrane potential and repolarization <b style='display:inline'>everywhere at once</b>. HyperK: peaked T → wide QRS → sine wave/asystole. HypoK: U waves, long QU → torsades substrate.",
+  axis:"No specific shift; severe hyperK widens QRS globally and can distort axis."
+ },
+ {
+  name:"Digoxin / Na-channel drugs (TCA)",
+  loc:"Global ion-channel effect; AV-nodal &amp; ventricular",
+  inner: tree() +
+    `<rect x="58" y="40" width="290" height="310" fill="#7b5ea7" opacity=".09" rx="20"/>`+
+    `<circle cx="${AV[0]}" cy="${AV[1]}" r="14" fill="none" stroke="#7b5ea7" stroke-width="2" stroke-dasharray="3 3"/>`+
+    `<text class="lbl" x="200" y="34" text-anchor="middle" fill="#7b5ea7">channel blockade</text>`,
+  desc:"Digoxin enhances vagal tone (AV-nodal slowing) + raises ventricular automaticity → PAT-with-block, junctional, bidirectional VT. <b style='display:inline'>Na-channel blockers (TCAs)</b> widen QRS globally with a terminal-R-in-aVR rightward shift.",
+  axis:"TCA toxicity classically produces a rightward terminal axis (terminal R in aVR)."
+ },
+
+ /* ===================== EXPANDED SET ===================== */
+ {
+  name:"Sinus arrhythmia",
+  loc:"SA node — vagal rate modulation",
+  inner: tree() + focus(SA[0],SA[1]) +
+    `<path d="M168,76 q10,-6 20,0" stroke="#e23b56" stroke-width="2" fill="none"/>`+
+    `<text class="lbl" x="205" y="74" fill="#e23b56">↕ resp</text>`,
+  desc:"Normal variant: the <b style='display:inline'>SA node</b> rate rises with inspiration and falls with expiration via vagal tone. Normal P morphology and PR; only the R–R interval varies. Benign, common in the young.",
+  axis:"Normal."
+ },
+ {
+  name:"Sick sinus syndrome",
+  loc:"SA node — diseased / fibrotic",
+  inner: tree() +
+    X(SA[0],SA[1]+5,'#b3431f',15)+
+    focus(AV[0],AV[1])+
+    `<text class="lbl" x="100" y="70" fill="#b3431f">SA disease</text>`+
+    `<text class="lbl" x="240" y="150" fill="#e23b56">junctional escape</text>`,
+  desc:"Intrinsic <b style='display:inline'>SA node dysfunction</b> (fibrosis/ischemia): sinus pauses, arrest, and the <b style='display:inline'>brady-tachy syndrome</b> (alternating slow sinus and atrial tachy/AF). Junctional escape often takes over during pauses.",
+  axis:"Normal unless an ectopic/escape focus drives the rhythm."
+ },
+ {
+  name:"Sinoatrial (SA) exit block",
+  loc:"SA node–atrial junction",
+  inner: tree() +
+    `<circle class="node" cx="${SA[0]}" cy="${SA[1]}" r="8"/>`+
+    X(SA[0]+14,SA[1]+10,'#b3431f',14)+
+    `<text class="lbl" x="100" y="74" fill="#b3431f">exit blocked</text>`,
+  desc:"The SA node fires, but the impulse is <b style='display:inline'>blocked exiting into the atrium</b> → a dropped P-QRS-T with a pause that is a multiple of the baseline P–P interval (vs. sinus arrest, which is not).",
+  axis:"Normal."
+ },
+ {
+  name:"Wandering atrial pacemaker",
+  loc:"Multiple atrial foci (slow, ≤100)",
+  inner: tree({dim:['SA']}) +
+    focus(SA[0],SA[1])+focus(120,118)+focus(180,98)+
+    `<text class="lbl" x="200" y="120" fill="#e23b56">≥3 P shapes</text>`,
+  desc:"Pacemaker site <b style='display:inline'>drifts among ≥3 atrial foci</b> (including the SA node), giving ≥3 P-wave morphologies and varying PR, at a normal/slow rate. Often benign (vagal, athletes).",
+  axis:"Normal QRS; P-wave axis varies with focus."
+ },
+ {
+  name:"Multifocal atrial tachycardia",
+  loc:"Multiple atrial foci (fast, &gt;100)",
+  inner: tree({dim:['SA']}) +
+    focus(120,118)+focus(180,98)+focus(150,140)+focus(95,150)+
+    `<text class="lbl" x="205" y="150" fill="#e23b56">≥3 foci, fast</text>`,
+  desc:"Same mechanism as WAP but <b style='display:inline'>rate &gt;100</b>: ≥3 distinct P morphologies, irregular. Classic in <b style='display:inline'>severe COPD</b>, hypoxia, theophylline. Often mistaken for AF — but discrete P waves are present.",
+  axis:"Normal QRS; treat the underlying pulmonary disease, not the rhythm."
+ },
+ {
+  name:"Focal atrial tachycardia",
+  loc:"Single ectopic atrial focus",
+  inner: tree({dim:['SA']}) +
+    focus(280,100)+
+    `<text class="lbl" x="300" y="120" fill="#e23b56">1 focus</text>`,
+  desc:"A <b style='display:inline'>single automatic / micro-reentrant focus</b> outside the SA node drives a regular atrial tachy (100–250). Abnormal P morphology and axis (depends on focus site); a warm-up/cool-down rate is typical of automatic foci.",
+  axis:"P-wave axis abnormal per focus location; QRS axis normal."
+ },
+ {
+  name:"Premature atrial contraction (PAC)",
+  loc:"Ectopic atrial focus — single early beat",
+  inner: tree({dim:['SA']}) +
+    focus(180,100)+
+    `<text class="lbl" x="205" y="120" fill="#e23b56">early P′</text>`,
+  desc:"A single early beat from an <b style='display:inline'>ectopic atrial focus</b>: abnormal P′ before the next sinus beat, usually with an <b style='display:inline'>incomplete compensatory pause</b> (resets the SA node). Can conduct aberrantly (wide).",
+  axis:"Normal unless aberrant conduction."
+ },
+ {
+  name:"Junctional rhythm / PJC",
+  loc:"AV junction (AV node–His)",
+  inner: tree({dim:['SA']}) +
+    focus(AV[0],AV[1]+6)+
+    `<text class="lbl" x="240" y="160" fill="#e23b56">junctional focus</text>`,
+  desc:"Pacemaker arises from the <b style='display:inline'>AV junction</b>: narrow QRS, 40–60 bpm (accelerated 60–100, tachy &gt;100). P waves are <b style='display:inline'>inverted</b> in II/III/aVF and may precede, hide in, or follow the QRS (retrograde atrial activation).",
+  axis:"QRS normal; the P-wave axis is reversed (retrograde)."
+ },
+ {
+  name:"Premature ventricular contraction (PVC)",
+  loc:"Single ventricular ectopic focus",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    focus(150,300)+
+    `<text class="lbl" x="180" y="330" fill="#e23b56">wide, early</text>`,
+  desc:"One early, wide beat from a <b style='display:inline'>ventricular focus</b>, no preceding P, usually with a <b style='display:inline'>full compensatory pause</b>. Morphology localizes origin: RV focus → LBBB-like; LV focus → RBBB-like. Patterns: bigeminy, couplets, R-on-T.",
+  axis:"Bizarre for that beat; origin opposite to the QRS direction."
+ },
+ {
+  name:"Accelerated idioventricular rhythm",
+  loc:"Ventricular focus (40–120 bpm)",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    focus(255,280)+
+    `<text class="lbl" x="255" y="320" text-anchor="middle" fill="#e23b56">slow VT-like</text>`,
+  desc:"A <b style='display:inline'>ventricular escape/automatic focus</b> firing faster than its intrinsic escape but slower than VT. Classic as a <b style='display:inline'>reperfusion rhythm</b> after MI/thrombolysis — usually benign and self-limited; treat only if poorly tolerated.",
+  axis:"Wide, VT-like morphology; usually hemodynamically stable."
+ },
+ {
+  name:"Ventricular fibrillation",
+  loc:"Ventricular myocardium — chaotic, global",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    focus(120,260)+focus(180,300)+focus(250,265)+focus(290,300)+focus(210,330)+
+    `<text class="lbl" x="200" y="345" text-anchor="middle" fill="#e23b56">no organized output</text>`,
+  desc:"Completely <b style='display:inline'>disorganized ventricular electrical activity</b> — multiple chaotic wavelets, no coordinated contraction, no cardiac output. Pulseless. Immediate <b style='display:inline'>defibrillation + CPR</b>.",
+  axis:"None — no organized QRS."
+ },
+ {
+  name:"Ventricular flutter",
+  loc:"Ventricular re-entry, very fast (~300)",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    loop(240,278,30)+
+    `<text class="lbl" x="240" y="324" text-anchor="middle" fill="#e23b56">~300 sine</text>`,
+  desc:"A single very fast <b style='display:inline'>ventricular re-entry circuit</b> producing a sine-wave pattern (~300/min) with no distinct QRS-T. A pre-arrest rhythm that degenerates into VF.",
+  axis:"None distinguishable — continuous sinusoid."
+ },
+ {
+  name:"Brugada syndrome",
+  loc:"RV outflow tract — Na-channel (SCN5A)",
+  inner: tree() +
+    `<ellipse cx="170" cy="220" rx="26" ry="20" fill="none" stroke="#e23b56" stroke-width="2.4" stroke-dasharray="4 3"/>`+
+    `<text class="lbl" x="170" y="258" text-anchor="middle" fill="#e23b56">RVOT</text>`,
+  desc:"Inherited <b style='display:inline'>sodium-channelopathy</b> with the substrate in the <b style='display:inline'>RV outflow tract</b>: coved ST elevation in V1–V2 (type 1). Risk of polymorphic VT/VF and sudden death, often at rest/sleep or with fever.",
+  axis:"Baseline axis normal; risk lies in malignant VT/VF."
+ },
+ {
+  name:"ARVC",
+  loc:"RV free wall — fibrofatty replacement",
+  inner: tree({dim:['RBB']}) +
+    `<path d="M84,200 Q60,300 132,338 Q190,356 196,258" fill="var(--dead)" opacity=".4"/>`+
+    `<text class="lbl" x="120" y="300" text-anchor="middle">fibrofatty RV</text>`+
+    focus(140,300),
+  desc:"Arrhythmogenic RV cardiomyopathy: <b style='display:inline'>fibrofatty replacement of the RV free wall</b> creates re-entry → VT with <b style='display:inline'>LBBB morphology</b>. Epsilon waves and T-inversions V1–V3. A cause of SCD in young athletes.",
+  axis:"VT often LBBB-pattern with inferior/superior axis depending on exit site."
+ },
+ {
+  name:"Idiopathic / fascicular VT",
+  loc:"RVOT (outflow) or LV posterior fascicle",
+  inner: tree({dim:['LPF']}) +
+    focus(170,220)+focus(238,318)+
+    `<text class="lbl" x="170" y="200" text-anchor="middle" fill="#e23b56">RVOT</text>`+
+    `<text class="lbl" x="238" y="340" text-anchor="middle" fill="#e23b56">LPF</text>`,
+  desc:"VT in <b style='display:inline'>structurally normal hearts</b>. <b style='display:inline'>RVOT VT</b> (LBBB + inferior axis, adenosine-sensitive) and <b style='display:inline'>fascicular VT</b> (RBBB + LAD, from the posterior fascicle, verapamil-sensitive). Generally good prognosis.",
+  axis:"RVOT: inferior axis (tall R inferiorly). Fascicular: left axis, RBBB shape."
+ },
+ {
+  name:"Atrial standstill / hyperkalemic block",
+  loc:"Atrial muscle — fails to depolarize",
+  inner: tree({dim:['SA']}) +
+    `<path class="ra" d="M70,118 Q58,46 140,58 Q188,38 198,84 L198,196 Q140,206 92,196 Z" fill="var(--dead)" opacity=".4"/>`+
+    focus(AV[0],AV[1])+
+    `<text class="lbl" x="120" y="110">silent atria</text>`,
+  desc:"In severe <b style='display:inline'>hyperkalemia</b>, atrial muscle stops depolarizing (P waves disappear) while the sinus impulse still reaches the AV node via internodal tracts — a <b style='display:inline'>'sinoventricular' rhythm</b>: no P waves, wide QRS, regular.",
+  axis:"QRS widens globally; loss of P waves is the tell."
+ },
+ {
+  name:"Hypothermia",
+  loc:"Diffuse — slowed conduction + Osborn wave",
+  inner: tree() +
+    `<rect x="58" y="40" width="290" height="310" fill="#1f7a8c" opacity=".10" rx="20"/>`+
+    `<text class="lbl" x="200" y="34" text-anchor="middle" fill="#1f7a8c">global slowing</text>`,
+  desc:"Cold slows conduction everywhere: <b style='display:inline'>bradycardia, prolonged intervals</b>, and the <b style='display:inline'>Osborn (J) wave</b> at the QRS–ST junction. Predisposes to AF and, when severe, VF. Handle gently — the cold heart is irritable.",
+  axis:"Generally preserved; Osborn waves are the signature."
+ }
+];
+
+/* ---------- pediatric & congenital set ---------- */
+const peds = [
+ {
+  name:"Supraventricular tachycardia (infant)",
+  loc:"Most often AVRT via accessory pathway",
+  inner: tree() +
+    `<path d="M300,150 Q322,180 300,212" stroke="var(--trace)" stroke-width="4" fill="none"/>`+
+    `<path class="spin" d="M198,164 Q250,210 300,210 Q318,180 300,150 Q250,120 200,148" fill="none" stroke="var(--trace)" stroke-width="2.4"/>`+
+    `<text class="lbl" x="332" y="186" fill="var(--trace)">AP</text>`,
+  desc:"The most common symptomatic arrhythmia in infants. Usually <b style='display:inline'>AVRT through an accessory pathway</b> (often concealed). Very fast (220–300 bpm), narrow; presents as poor feeding, irritability, pallor, or heart failure rather than palpitations.",
+  axis:"Narrow QRS, normal axis (orthodromic). Adenosine terminates; vagal = ice to the face in infants."
+ },
+ {
+  name:"PJRT",
+  loc:"Slow posteroseptal accessory pathway",
+  inner: tree() +
+    `<path d="M210,210 Q230,238 212,262" stroke="var(--trace)" stroke-width="3.5" fill="none"/>`+
+    `<path class="spin" d="M200,164 Q235,210 212,255 Q235,235 210,205" fill="none" stroke="var(--trace)" stroke-width="2.2"/>`+
+    `<text class="lbl" x="240" y="240" fill="var(--trace)">slow AP</text>`,
+  desc:"Permanent junctional reciprocating tachycardia: incessant AVRT using a <b style='display:inline'>slowly-conducting posteroseptal accessory pathway</b>. Near-continuous, often modestly fast — a classic cause of <b style='display:inline'>tachycardia-induced cardiomyopathy</b> in children if missed.",
+  axis:"Deep inverted retrograde P in II/III/aVF with a long RP interval is the clue."
+ },
+ {
+  name:"Congenital long QT syndrome",
+  loc:"Ventricular myocardium — ion-channel genes",
+  inner: tree() +
+    `<rect x="58" y="40" width="290" height="310" fill="var(--trace)" opacity=".08" rx="20"/>`+
+    focus(150,290)+focus(255,270)+
+    `<path class="spin" d="M150,290 Q210,250 255,270" stroke="var(--trace)" stroke-width="2.2" fill="none"/>`+
+    `<text class="lbl" x="200" y="34" text-anchor="middle" fill="var(--trace)">repolarization defect</text>`,
+  desc:"Inherited <b style='display:inline'>repolarization channelopathy</b> (LQT1 K-channel/exercise-swimming, LQT2 K-channel/auditory-startle &amp; postpartum, LQT3 Na-channel/sleep). Prolonged QT predisposes to <b style='display:inline'>torsades</b> → syncope/SCD. Screen after unexplained syncope or family SCD.",
+  axis:"Baseline axis normal; danger is the QT and torsades, not axis."
+ },
+ {
+  name:"CPVT",
+  loc:"Ventricles — RyR2 calcium-handling defect",
+  inner: tree({dim:['SA','AV','HIS','RBB','LBB','LAF','LPF']}) +
+    focus(150,290)+focus(255,270)+
+    `<path class="spin" d="M150,290 Q200,320 255,270" stroke="var(--trace)" stroke-width="2.2" fill="none"/>`+
+    `<text class="lbl" x="200" y="332" text-anchor="middle" fill="var(--trace)">catecholamine-driven</text>`,
+  desc:"Catecholaminergic polymorphic VT: a <b style='display:inline'>calcium-handling (RyR2) defect</b> with a <b>normal resting ECG</b>. Exercise/emotion triggers <b style='display:inline'>bidirectional or polymorphic VT</b> → syncope/arrest in children. Diagnosis needs exercise/Holter testing.",
+  axis:"Hallmark bidirectional VT: QRS axis alternates beat-to-beat (±180°)."
+ },
+ {
+  name:"Congenital complete heart block",
+  loc:"AV node — maternal anti-Ro/La injury",
+  inner: tree({dim:['RBB','LBB','LAF','LPF']}) +
+    X(AV[0],AV[1]+4,'var(--trace)',16)+
+    focus(250,300)+
+    `<text class="lbl" x="100" y="150" fill="var(--trace)">immune injury</text>`+
+    `<text class="lbl" x="290" y="304" fill="var(--trace)">escape</text>`,
+  desc:"AV node/conduction tissue damaged in utero by transplacental <b style='display:inline'>maternal anti-Ro/SSA &amp; anti-La/SSB antibodies</b> (maternal lupus/Sjögren, often subclinical). Fixed AV dissociation with a junctional/ventricular escape; may need fetal monitoring and neonatal pacing.",
+  axis:"Determined by the escape focus, as in acquired complete block."
+ },
+ {
+  name:"Ebstein anomaly + WPW",
+  loc:"Atrialized RV; right-sided accessory pathways",
+  inner: `
+    <path class="ra" d="M70,118 Q58,46 140,58 Q188,38 198,84 L198,240 Q140,250 92,230 Z"/>
+    <path class="la" d="M204,84 Q220,40 292,58 Q352,64 326,150 L296,204 Q246,206 204,196 Z"/>
+    <path class="rv" d="M92,244 Q70,300 132,332 Q186,350 196,270 L196,246 Q140,254 92,244Z"/>
+    <path class="lv" d="M204,202 L204,262 Q214,356 286,330 Q340,300 318,210 Q262,218 204,202Z"/>
+    <text class="lbl" x="120" y="100">RA (enlarged)</text>
+    <text class="lbl" x="270" y="96">LA</text>
+    <text class="lbl" x="118" y="300">RV</text>
+    <text class="lbl" x="262" y="282">LV</text>`+
+    tree()+
+    `<path d="M150,232 Q175,250 160,272" stroke="var(--trace)" stroke-width="3.5" fill="none"/>`+
+    `<text class="lbl" x="175" y="258" fill="var(--trace)">R-sided AP(s)</text>`,
+  desc:"The tricuspid valve is displaced apically, <b style='display:inline'>'atrializing' part of the RV</b> and massively enlarging the RA. Strongly associated with <b style='display:inline'>right-sided accessory pathways (WPW)</b>, often multiple → AVRT and pre-excited AF risk.",
+  axis:"Often RBBB-like; tall broad P ('Himalayan' P waves) from RA enlargement; pre-excitation patterns vary."
+ },
+ {
+  name:"Post-op congenital (atrial) — scar reentry",
+  loc:"Atrial suture lines (e.g., Fontan, ASD repair)",
+  inner: tree({dim:['SA']}) +
+    `<ellipse class="spin" cx="135" cy="135" rx="50" ry="58" fill="none" stroke="var(--trace)" stroke-width="2.6"/>`+
+    `<path d="M110,80 l-2,-7 m2,7 l7,-3" stroke="var(--trace)" stroke-width="2" fill="none"/>`+
+    `<text class="lbl" x="135" y="208" text-anchor="middle" fill="var(--trace)">scar circuit</text>`,
+  desc:"Years after surgery for congenital disease, <b style='display:inline'>atrial suture lines and patches create reentry circuits</b> → intra-atrial reentrant tachycardia / atypical flutter. Sinus node injury (e.g., after Mustard/Senning, Fontan) also causes brady-tachy syndrome.",
+  axis:"QRS reflects baseline anatomy/prior surgery; the arrhythmia is atrial macro-reentry."
+ },
+ {
+  name:"Post-op congenital (ventricular) — TOF",
+  loc:"RVOT scar / ventriculotomy",
+  inner: tree({dim:['RBB']}) +
+    `<ellipse class="spin" cx="160" cy="235" rx="30" ry="24" fill="none" stroke="var(--trace)" stroke-width="2.4"/>`+
+    X(150,232,'var(--teal)',14)+
+    `<text class="lbl" x="160" y="278" text-anchor="middle" fill="var(--trace)">RVOT scar</text>`,
+  desc:"After <b style='display:inline'>Tetralogy of Fallot repair</b>, the RVOT patch/ventriculotomy scar plus the near-universal post-op <b style='display:inline'>RBBB</b> form a substrate for <b style='display:inline'>monomorphic VT</b>. A wide QRS (&gt;180 ms) flags risk; a leading cause of late SCD in repaired CHD.",
+  axis:"Baseline RBBB; VT morphology depends on the RVOT exit site."
+ }
+];
+
+/* ---------- render ---------- */
+const grid=document.getElementById('grid');
+function renderItem(it,n){
+  const axis = it.axis?`<div class="axis"><b>Axis</b>${it.axis}</div>`:'';
+  grid.insertAdjacentHTML('beforeend',
+    `<div class="cell">
+       <div class="num">${n}</div>
+       <h2>${it.name}</h2>
+       <div class="loc">${it.loc}</div>
+       ${svg(it.inner)}
+       <div class="desc">${it.desc}${axis}</div>
+     </div>`);
+}
+let idx=0;
+items.forEach(it=>renderItem(it,String(++idx).padStart(2,'0')));
+grid.insertAdjacentHTML('beforeend',
+  `<div class="band">
+     <div class="eyebrow">Pediatric &amp; congenital</div>
+     <h2>The young heart &amp; surgical sequelae</h2>
+     <p>Different substrate, different defaults: accessory pathways dominate, the resting ECG is often normal in the channelopathies, and decades-old surgical scars become reentry circuits. Site logic is the same — focus, circuit, or block.</p>
+   </div>`);
+peds.forEach(it=>renderItem(it,'P'+String(++idx-items.length).padStart(2,'0')));
+
+/* ---------- theme toggle ---------- */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, btn=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(mode){
+    root.setAttribute('data-theme',mode);
+    if(mode==='dark'){ico.innerHTML=sun;txt.textContent='Light';}
+    else{ico.innerHTML=moon;txt.textContent='Dark';}
+  }
+  // default to system preference
+  set(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
+  btn.addEventListener('click',()=>set(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+})();
+</script>
+</body>
+</html>
