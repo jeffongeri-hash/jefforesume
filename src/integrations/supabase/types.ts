@@ -95,6 +95,36 @@ export type Database = {
         }
         Relationships: []
       }
+      schwab_tokens: {
+        Row: {
+          access_token: string
+          account_hash: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          refresh_token: string
+          updated_at: string
+        }
+        Insert: {
+          access_token: string
+          account_hash?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          refresh_token: string
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string
+          account_hash?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          refresh_token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       trades: {
         Row: {
           created_at: string
