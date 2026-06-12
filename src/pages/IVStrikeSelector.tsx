@@ -821,24 +821,19 @@ export default function IVStrikeSelector(){
 
     // ── Path B: Claude AI web search ─────────────────────────────────────────
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
+      const res=await fetch(IV_AI_URL,{
+        method:"POST",headers:IV_AI_HEADERS,
         body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:512,
-          tools:[{type:"web_search_20250305",name:"web_search"}],
-          messages:[{role:"user",content:
+          mode:"json", maxTokens:512, webSearch:true,
+          prompt:
             `Search for current market data for stock ticker ${sym}. Find: current price, 52-week high, 52-week low, company name, current implied volatility percentage. Also find the current VIX level. ` +
             `Respond ONLY with a raw JSON object, no markdown, no explanation: ` +
             `{"price":123.45,"high52w":150.00,"low52w":90.00,"name":"Company Name","iv":25.5,"vix":18.2}`
-          }]
         })
       });
       if(!res.ok)throw new Error(`HTTP ${res.status}`);
       const data=await res.json();
-      let text="";
-      for(const b of(data.content||[])){if(b.type==="text")text+=b.text;}
+      const text=data.text||"";
       const m=text.match(/\{"price"\s*:\s*[\d.]+[^}]*\}/s)||text.match(/\{[^{}]+\}/g);
       const jsonStr=Array.isArray(m)?m[m.length-1]:m?m[0]:null;
       if(!jsonStr)throw new Error("No JSON in response");
