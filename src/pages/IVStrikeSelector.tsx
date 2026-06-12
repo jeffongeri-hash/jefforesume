@@ -1088,11 +1088,10 @@ Provide in 200 words max:
 4. **S/R context** — how support $${support||"?"} and resistance $${resist||"?"} affect strike selection`;
 
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",headers:{"Content-Type":"application/json"},
+      const res=await fetch(IV_AI_URL,{
+        method:"POST",headers:IV_AI_HEADERS,
         signal:abortRef.current.signal,
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,stream:true,
-          messages:[{role:"user",content:prompt}]})
+        body:JSON.stringify({mode:"stream",maxTokens:800,prompt})
       });
       const reader=res.body.getReader();const dec=new TextDecoder();let acc="";
       while(true){
