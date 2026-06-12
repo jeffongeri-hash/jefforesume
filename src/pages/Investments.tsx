@@ -409,7 +409,7 @@ const Investments = () => {
           <p className="text-sm text-muted-foreground text-center">
             <strong>Disclaimer:</strong> This portfolio is shared for educational and transparency purposes only. 
             Nothing here constitutes financial advice. Past performance does not guarantee future results. 
-            Always consult with a qualified financial advisor before making investment decisions.
+            Always consult with a <Link to="/iv-strike-selector" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">qualified</Link> financial advisor before making investment decisions.
           </p>
         </div>
       </main>
