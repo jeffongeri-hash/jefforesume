@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { useState, useCallback, useRef, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 // Edge function endpoint for AI calls (Anthropic primary, OpenAI fallback)
 const IV_AI_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/iv-ai`;
