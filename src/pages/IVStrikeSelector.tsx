@@ -1,6 +1,14 @@
 // @ts-nocheck
 import { useState, useCallback, useRef, useEffect } from "react";
 
+// Edge function endpoint for AI calls (Anthropic primary, OpenAI fallback)
+const IV_AI_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/iv-ai`;
+const IV_AI_HEADERS = {
+  "Content-Type": "application/json",
+  apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+  Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+};
+
 // ─── CONFIG — swap this to your Supabase project URL ─────────────────────────
 // Once your Edge Functions are deployed, set this to:
 //   https://<your-project-ref>.supabase.co/functions/v1
@@ -812,24 +820,19 @@ export default function IVStrikeSelector(){
 
     // ── Path B: Claude AI web search ─────────────────────────────────────────
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
+      const res=await fetch(IV_AI_URL,{
+        method:"POST",headers:IV_AI_HEADERS,
         body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:512,
-          tools:[{type:"web_search_20250305",name:"web_search"}],
-          messages:[{role:"user",content:
+          mode:"json", maxTokens:512, webSearch:true,
+          prompt:
             `Search for current market data for stock ticker ${sym}. Find: current price, 52-week high, 52-week low, company name, current implied volatility percentage. Also find the current VIX level. ` +
             `Respond ONLY with a raw JSON object, no markdown, no explanation: ` +
             `{"price":123.45,"high52w":150.00,"low52w":90.00,"name":"Company Name","iv":25.5,"vix":18.2}`
-          }]
         })
       });
       if(!res.ok)throw new Error(`HTTP ${res.status}`);
       const data=await res.json();
-      let text="";
-      for(const b of(data.content||[])){if(b.type==="text")text+=b.text;}
+      const text=data.text||"";
       const m=text.match(/\{"price"\s*:\s*[\d.]+[^}]*\}/s)||text.match(/\{[^{}]+\}/g);
       const jsonStr=Array.isArray(m)?m[m.length-1]:m?m[0]:null;
       if(!jsonStr)throw new Error("No JSON in response");
@@ -883,14 +886,11 @@ export default function IVStrikeSelector(){
       const dteN=+chainDTE||30;
       const strikesN=Math.min(+chainStrikes||16,16); // cap at 16 per type for token budget
 
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
+      const res=await fetch(IV_AI_URL,{
+        method:"POST",headers:IV_AI_HEADERS,
         body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:2000,
-          tools:[{type:"web_search_20250305",name:"web_search"}],
-          messages:[{role:"user",content:
+          mode:"json", maxTokens:2000, webSearch:true,
+          prompt:
             `Search for the current options chain data for ${sym} stock. ` +
             `Find the ${dteN}-day expiration options (or nearest available). ` +
             `I need: current implied volatility (IV%), VIX level, 52-week high/low, ` +
@@ -900,14 +900,12 @@ export default function IVStrikeSelector(){
             `{"iv":25.5,"vix":18.2,"hv":22.0,"high52w":150.00,"low52w":90.00,` +
             `"atm_call_bid":3.20,"atm_call_ask":3.40,"atm_put_bid":3.10,"atm_put_ask":3.30,` +
             `"support":${(S*0.97).toFixed(2)},"resistance":${(S*1.03).toFixed(2)}}`
-          }]
         })
       });
 
       if(!res.ok)throw new Error(`API ${res.status}`);
       const data=await res.json();
-      let text="";
-      for(const b of(data.content||[])){if(b.type==="text")text+=b.text;}
+      const text=data.text||"";
 
       // Parse whatever JSON Claude returned
       const m=text.match(/\{\s*"iv"\s*:[^}]+\}/s)||text.match(/\{[^{}]+\}/g);
@@ -1089,11 +1087,10 @@ Provide in 200 words max:
 4. **S/R context** — how support $${support||"?"} and resistance $${resist||"?"} affect strike selection`;
 
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",headers:{"Content-Type":"application/json"},
+      const res=await fetch(IV_AI_URL,{
+        method:"POST",headers:IV_AI_HEADERS,
         signal:abortRef.current.signal,
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,stream:true,
-          messages:[{role:"user",content:prompt}]})
+        body:JSON.stringify({mode:"stream",maxTokens:800,prompt})
       });
       const reader=res.body.getReader();const dec=new TextDecoder();let acc="";
       while(true){
