@@ -1,5 +1,14 @@
 // @ts-nocheck
 import { useState, useCallback, useRef, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+// Edge function endpoint for AI calls (Anthropic primary, OpenAI fallback)
+const IV_AI_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/iv-ai`;
+const IV_AI_HEADERS = {
+  "Content-Type": "application/json",
+  apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+  Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+};
 
 // ─── CONFIG — swap this to your Supabase project URL ─────────────────────────
 // Once your Edge Functions are deployed, set this to:
