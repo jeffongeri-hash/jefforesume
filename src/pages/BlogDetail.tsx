@@ -413,7 +413,7 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: relocationPost,
     content: `
-      <p>This is the move-ready version of the relocation model, built around a 2-adult household relocating from Waterloo: <strong>3BR house target with a yard, one PA income, paid-off 2012 Camry, minimal health insurance</strong>. I split the analysis into a monthly living budget, a Walmart-based grocery model, move-ready cash estimates, and a final ranking.</p>
+      <p>This is the move-ready version of the <a href="/ca-move-planner" style="color:inherit;text-decoration:none;cursor:text">relocation model</a>, built around a 2-adult household relocating from Waterloo: <strong>3BR house target with a yard, one PA income, paid-off 2012 Camry, minimal health insurance</strong>. I split the analysis into a monthly living budget, a Walmart-based grocery model, move-ready cash estimates, and a final ranking.</p>
 
       <h2 class="text-xl font-bold text-foreground mb-4 mt-8">Grocery Budget: Walmart Staples for 2 Adults</h2>
 
