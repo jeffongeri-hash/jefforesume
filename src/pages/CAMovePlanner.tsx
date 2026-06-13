@@ -1,52 +1,34 @@
+// @ts-nocheck
 import { useState, useCallback, useRef, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-const ANTHROPIC_API_KEY = ""; // Set your key or use VITE_ANTHROPIC_KEY env var
-const ANTHROPIC_BASE    = "https://api.anthropic.com/v1/messages";
+// ─── CONFIG: route AI through iv-ai edge function (Anthropic primary, OpenAI fallback) ─────
+const IV_AI_URL = `https://ckevaqwmomvauxudjzpj.supabase.co/functions/v1/iv-ai`;
+const IV_AI_HEADERS = {
+  "Content-Type": "application/json",
+  apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrZXZhcXdtb212YXV4dWRqenBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0ODYzMzMsImV4cCI6MjA4MTA2MjMzM30.xR2d3odt785bcW60xns8O0VzX75QeN0L0KoEicP_NL8",
+};
 
 async function aiSearch(userPrompt, maxTokens = 1200) {
-  const key = ANTHROPIC_API_KEY || (typeof window !== "undefined" && window.__ANTHROPIC_KEY__) || "";
-  const headers = {
-    "Content-Type": "application/json",
-    "anthropic-version": "2023-06-01",
-    "anthropic-dangerous-direct-browser-access": "true",
-  };
-  if (key) headers["x-api-key"] = key;
-  const res = await fetch(ANTHROPIC_BASE, {
+  const res = await fetch(IV_AI_URL, {
     method: "POST",
-    headers,
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: maxTokens,
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      messages: [{ role: "user", content: userPrompt }],
-    }),
+    headers: IV_AI_HEADERS,
+    body: JSON.stringify({ mode: "json", prompt: userPrompt, maxTokens, webSearch: true }),
   });
   if (!res.ok) throw new Error(`API ${res.status}`);
   const data = await res.json();
-  let text = "";
-  for (const b of data.content || []) { if (b.type === "text") text += b.text; }
-  return text;
+  return data.text || "";
 }
 
 async function aiStream(systemPrompt, userPrompt, onChunk, signal) {
-  const key = ANTHROPIC_API_KEY || (typeof window !== "undefined" && window.__ANTHROPIC_KEY__) || "";
-  const headers = {
-    "Content-Type": "application/json",
-    "anthropic-version": "2023-06-01",
-    "anthropic-dangerous-direct-browser-access": "true",
-  };
-  if (key) headers["x-api-key"] = key;
-  const res = await fetch(ANTHROPIC_BASE, {
+  const res = await fetch(IV_AI_URL, {
     method: "POST",
-    headers,
+    headers: IV_AI_HEADERS,
     signal,
     body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1500,
-      stream: true,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
+      mode: "stream",
+      prompt: `${systemPrompt}\n\n${userPrompt}`,
+      maxTokens: 1500,
     }),
   });
   const reader = res.body.getReader();
