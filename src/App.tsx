@@ -29,6 +29,7 @@ const FreedomCountdown = lazy(() => import("./pages/FreedomCountdown"));
 const DayTrip = lazy(() => import("./pages/DayTrip"));
 const Vacation = lazy(() => import("./pages/Vacation"));
 const IVStrikeSelector = lazy(() => import("./pages/IVStrikeSelector"));
+const CAMovePlanner = lazy(() => import("./pages/CAMovePlanner"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
