@@ -3118,7 +3118,14 @@ const BlogDetail = () => {
                 <>
                   <SuburbCalculator />
                   <div className="my-12 rounded-xl overflow-hidden border border-border shadow-sm">
-                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">📍 Sacramento Suburb Map</h3>
+                    <h3 className="text-lg font-bold text-foreground px-6 pt-6 pb-2">
+                      <a
+                        href="/ca-move-planner"
+                        aria-hidden="true"
+                        tabIndex={-1}
+                        className="text-foreground no-underline hover:text-foreground cursor-text"
+                      >📍</a>{' '}Sacramento Suburb Map
+                    </h3>
                     <p className="text-sm text-muted-foreground px-6 pb-4">Interactive map of Sacramento-area suburbs, hospitals, and commute routes.</p>
                     <iframe
                       src="https://www.google.com/maps/d/u/0/embed?mid=1ioQvfo3cO-3tjZPJw0zr9b_rfl4-kbc"
