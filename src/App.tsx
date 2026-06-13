@@ -64,6 +64,7 @@ const App = () => (
                 <Route path="/day-trip" element={<DayTrip />} />
                 <Route path="/vacation" element={<Vacation />} />
                 <Route path="/iv-strike-selector" element={<IVStrikeSelector />} />
+                <Route path="/ca-move-planner" element={<CAMovePlanner />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
