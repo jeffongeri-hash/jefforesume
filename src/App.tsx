@@ -29,6 +29,7 @@ const FreedomCountdown = lazy(() => import("./pages/FreedomCountdown"));
 const DayTrip = lazy(() => import("./pages/DayTrip"));
 const Vacation = lazy(() => import("./pages/Vacation"));
 const IVStrikeSelector = lazy(() => import("./pages/IVStrikeSelector"));
+const CAMovePlanner = lazy(() => import("./pages/CAMovePlanner"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -63,6 +64,7 @@ const App = () => (
                 <Route path="/day-trip" element={<DayTrip />} />
                 <Route path="/vacation" element={<Vacation />} />
                 <Route path="/iv-strike-selector" element={<IVStrikeSelector />} />
+                <Route path="/ca-move-planner" element={<CAMovePlanner />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
