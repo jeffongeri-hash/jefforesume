@@ -27,6 +27,28 @@ import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 import houstonSuburbs from '@/assets/houston-suburbs.jpg';
 
 const blogPosts = {
+  "ekg-strip-atlas": {
+    title: "EKG Strip Atlas — Pattern, Location & Mechanism",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A visual atlas mapping each EKG strip to its cardiac pattern, anatomic location, and electrophysiologic mechanism — depolarization, repolarization, automaticity, re-entry, and electrolyte disturbance — alongside the waveform annotations clinicians use to recognize them at the bedside.</p>
+      <p>The interactive diagram below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/ekg-strip-atlas.html"
+          title="EKG Strip Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/ekg-strip-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",
@@ -2981,6 +3003,13 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "EKG Strip Atlas — Pattern, Location & Mechanism",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    image: businessPost,
+    slug: "ekg-strip-atlas"
+  },
   {
     title: "Houston Suburb & TMC Neighborhood Guide",
     category: "HEALTHCARE",

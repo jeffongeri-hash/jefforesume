@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "EKG Strip Atlas — Pattern, Location & Mechanism",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "An interactive visual atlas mapping each EKG strip to its pattern, cardiac location, and electrophysiologic mechanism — with waveform annotations and mechanism callouts clinicians use at the bedside.",
+      image: businessPost,
+      slug: "ekg-strip-atlas",
+      tags: ["Cardiology", "ECG", "Clinical Education"]
+    },
+    {
       title: "Arrhythmia Origin Atlas — Where Each One Lives",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
