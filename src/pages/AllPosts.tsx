@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Resuscitation Atlas — Shock, Pressors, Fluids & Electrolytes",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A resuscitation atlas covering the four shock types, matching pressors, fluid strategy, and electrolyte derangements with a structured bedside approach to recognition, dosing, and reassessment.",
+      image: businessPost,
+      slug: "resuscitation-atlas",
+      tags: ["Resuscitation", "Critical Care", "Clinical Education"]
+    },
+    {
       title: "ABG Interpreter — Acid-Base, Step by Step",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
