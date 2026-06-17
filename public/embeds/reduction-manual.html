@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reduction Field Manual — Joint Dislocations</title>
+<style>
+  /* ============ THEME: orthopedic blueprint ============ */
+  :root{
+    --bg:#0e1620;--bg2:#13202d;--panel:#16242f;--panelhi:#1b2c39;
+    --line:#284050;--line2:#1e3240;
+    --ink:#eaf1f5;--soft:#a9bcc7;--muted:#7c93a1;--faint:#5a7180;
+    --bone:#ece3cf;--bone2:#d8caab;--boneline:#a99b78;--bone-sh:#d3c4a0;--cartilage:#8fc7c2;--body-edge:#3d5b6a;
+    --vector:#36c5d6;        /* traction cyan */
+    --vector2:#ffb24d;       /* counter-traction amber */
+    --rotate:#b18cff;        /* rotation violet */
+    --accent:#36c5d6;--warn:#ff6b5e;--good:#4fd08a;
+    --grid:#16252f;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f4;--bg2:#e4eaee;--panel:#ffffff;--panelhi:#f4f7f9;
+    --line:#cdd9e0;--line2:#dde6eb;
+    --ink:#13242e;--soft:#3d5260;--muted:#5e7280;--faint:#8499a6;
+    --bone:#e8dcc0;--bone2:#d3c19c;--boneline:#9c8c66;--bone-sh:#cdbb95;--cartilage:#5fa39c;--body-edge:#9fb6c2;
+    --vector:#0e8fa3;--vector2:#c87800;--rotate:#7b54d6;
+    --accent:#0e8fa3;--warn:#c8362b;--good:#1f8f57;
+    --grid:#dfe7eb;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;
+    line-height:1.55;font-size:16px;transition:background .25s,color .25s;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:26px 26px;}
+  h1,h2,h3,h4{font-family:"Helvetica Neue",Arial,sans-serif;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+
+  /* toggle */
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}
+  .toggle svg{width:14px;height:14px;}
+
+  /* hero */
+  header.hero{padding:60px 40px 30px;max-width:1180px;margin:0 auto;}
+  .hero .kick{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1;margin:.18em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:64ch;color:var(--soft);font-size:1.05rem;margin:.4em 0 0;}
+  .vectorkey{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;font-size:.8rem;color:var(--soft);}
+  .vectorkey span{display:inline-flex;align-items:center;gap:8px;}
+  .vk{width:26px;height:0;border-top:3px solid;position:relative;}
+  .vk::after{content:"";position:absolute;right:-2px;top:-5px;border-left:7px solid;border-top:4px solid transparent;border-bottom:4px solid transparent;}
+  .vk.tract{border-color:var(--vector);} .vk.tract::after{border-left-color:var(--vector);}
+  .vk.counter{border-color:var(--vector2);} .vk.counter::after{border-left-color:var(--vector2);}
+  .vk.rot{border-color:var(--rotate);border-top-style:dashed;} .vk.rot::after{border-left-color:var(--rotate);}
+
+  .disclaimer{max-width:1180px;margin:18px auto 0;padding:0 40px;}
+  .disclaimer div{background:rgba(255,107,94,.08);border:1px solid rgba(255,107,94,.25);border-left:3px solid var(--warn);
+    border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+
+  /* region tabs */
+  nav.regions{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.regions .inner{max-width:1180px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.regions button{background:transparent;border:1px solid transparent;color:var(--muted);
+    font-family:inherit;font-size:.82rem;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;letter-spacing:.02em;}
+  nav.regions button:hover{color:var(--ink);background:var(--panelhi);}
+  nav.regions button.active{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+
+  main{max-width:1180px;margin:0 auto;padding:30px 40px 100px;}
+  .regionhead{margin:30px 0 6px;display:flex;align-items:baseline;gap:14px;}
+  .regionhead h2{font-size:1.6rem;font-weight:800;letter-spacing:-.01em;margin:0;}
+  .regionhead .cnt{font-size:.74rem;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+
+  /* joint card */
+  .joint{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:18px 0;overflow:hidden;}
+  .joint > .jhead{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line2);}
+  .jhead h3{font-size:1.25rem;margin:0;font-weight:700;}
+  .jhead .sub{color:var(--muted);font-size:.86rem;}
+  .badge{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px;}
+  .b-emerg{background:rgba(255,107,94,.16);color:var(--warn);}
+  .b-common{background:rgba(54,197,214,.14);color:var(--accent);}
+  .b-peds{background:rgba(177,140,255,.16);color:var(--rotate);}
+
+  .jbody{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:0;}
+  @media(max-width:860px){.jbody{grid-template-columns:1fr;}}
+  .stage{background:var(--bg2);border-right:1px solid var(--line2);padding:18px;display:flex;flex-direction:column;gap:12px;}
+  @media(max-width:860px){.stage{border-right:none;border-bottom:1px solid var(--line2);}}
+  .figframe{background:radial-gradient(circle at 50% 35%,var(--panelhi),var(--bg2));border:1px solid var(--line2);border-radius:11px;position:relative;}
+  .figframe svg{display:block;width:100%;height:auto;}
+  .figcaption{font-size:.78rem;color:var(--muted);text-align:center;padding:4px 10px 2px;min-height:1.4em;}
+
+  .techtabs{display:flex;flex-wrap:wrap;gap:6px;}
+  .techtabs button{flex:1 1 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);
+    font-family:inherit;font-size:.78rem;font-weight:600;padding:7px 10px;border-radius:8px;cursor:pointer;}
+  .techtabs button:hover{border-color:var(--accent);color:var(--ink);}
+  .techtabs button.active{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+
+  .detail{padding:18px 22px;min-width:0;}
+  .detail .tname{font-size:1.05rem;font-weight:700;margin:0 0 2px;}
+  .detail .tmeta{font-size:.8rem;color:var(--muted);margin-bottom:12px;}
+
+  .steps{counter-reset:step;list-style:none;margin:0;padding:0;}
+  .steps li{position:relative;padding:0 0 12px 38px;font-size:.92rem;color:var(--ink);}
+  .steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:-1px;
+    width:24px;height:24px;border-radius:50%;background:var(--panelhi);border:1px solid var(--accent);
+    color:var(--accent);font-size:.74rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .steps li.active::before{background:var(--accent);color:var(--bg);}
+  .steps li b{color:var(--accent);font-weight:700;}
+  .steps li.playhint{cursor:pointer;}
+
+  .playbar{display:flex;align-items:center;gap:10px;margin:8px 0 16px;}
+  .playbtn{background:var(--accent);color:var(--bg);border:none;font-family:inherit;font-weight:700;font-size:.82rem;
+    padding:7px 15px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+  .playbtn:hover{filter:brightness(1.08);}
+  .stepdots{display:flex;gap:5px;}
+  .stepdots i{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer;}
+  .stepdots i.on{background:var(--accent);}
+
+  .pearls{margin-top:10px;display:grid;gap:8px;}
+  .pearl{font-size:.84rem;border-left:3px solid var(--good);background:rgba(79,208,138,.07);padding:7px 12px;border-radius:0 7px 7px 0;color:var(--soft);}
+  .pearl.risk{border-left-color:var(--warn);background:rgba(255,107,94,.07);}
+  .pearl.post{border-left-color:var(--accent);background:rgba(54,197,214,.07);}
+  .pearl b{color:var(--ink);font-weight:700;text-transform:uppercase;font-size:.62rem;letter-spacing:.1em;display:block;margin-bottom:1px;}
+
+  footer{max-width:1180px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+
+  @media(max-width:680px){header.hero,.disclaimer,nav.regions .inner,main,footer{padding-left:20px;padding-right:20px;}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+  /* anatomical figure classes */
+  .body-fill{fill:var(--body-edge);opacity:.16;}
+  .body-edge{fill:none;stroke:var(--body-edge);stroke-width:1.6;stroke-linejoin:round;}
+  .bone,.bone-d{fill:var(--bone);stroke:var(--boneline);stroke-width:1.6;stroke-linejoin:round;}
+  .cart{fill:var(--cartilage);opacity:.5;}
+  .ll{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:10px;fill:var(--soft);}
+  .ll-em{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:10px;fill:var(--accent);font-weight:700;}
+  .leader{stroke:var(--faint);stroke-width:.8;fill:none;}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Emergency Procedures · Field Manual</div>
+  <h1>Putting joints <em>back</em>.</h1>
+  <p>A working reference for reducing the dislocations that come through the door — upper and lower extremity, plus jaw. Each joint shows the deformity, the techniques worth knowing, and the maneuver stepped out with the force vectors that actually do the work. Tap a technique, then press play to watch the traction, counter-traction, and rotation animate.</p>
+  <div class="vectorkey">
+    <span><i class="vk tract"></i> Traction (pull along the limb)</span>
+    <span><i class="vk counter"></i> Counter-traction / stabilize</span>
+    <span><i class="vk rot"></i> Rotation / leverage</span>
+  </div>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Always exclude fracture-dislocation with pre-reduction imaging when indicated, document a neurovascular exam before and after, use appropriate analgesia/sedation, and confirm reduction radiographically. Techniques are summarized for review and abbreviated by design.</div></div>
+
+<nav class="regions"><div class="inner" id="regionNav"></div></nav>
+
+<main id="main"></main>
+
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   FIGURE ENGINE  (hybrid: anatomical line-art + force schematics)
+   Stage 520x420. Builders are fig(step)->inner-svg; figWrap adds <svg>.
+   Vectors: kind 't' traction(cyan) 'c' counter(amber) 'r' rotate(violet)
+   ============================================================ */
+const VBW=520, VBH=420;
+
+function arrow(x1,y1,x2,y2,kind,active,curve){
+  const col = kind==='c'||kind==='counter'?'--vector2':kind==='r'||kind==='rotate'?'--rotate':'--vector';
+  const w=active?4:2.4, op=active?1:.35;
+  const ang=Math.atan2(y2-y1,x2-x1), ah=active?13:9;
+  const a1x=x2-ah*Math.cos(ang-0.42), a1y=y2-ah*Math.sin(ang-0.42);
+  const a2x=x2-ah*Math.cos(ang+0.42), a2y=y2-ah*Math.sin(ang+0.42);
+  const dash = (kind==='r'||kind==='rotate')?'stroke-dasharray="7 5"':'';
+  let body;
+  if(curve){const mx=(x1+x2)/2+(curve.cx||0),my=(y1+y2)/2+(curve.cy||-40);
+    body=`<path d="M${x1},${y1} Q${mx},${my} ${x2},${y2}" fill="none" stroke="var(${col})" stroke-width="${w}" stroke-linecap="round" ${dash} opacity="${op}" class="${active?'vecactive':''}"/>`;
+  } else body=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(${col})" stroke-width="${w}" stroke-linecap="round" ${dash} opacity="${op}" class="${active?'vecactive':''}"/>`;
+  const head=`<path d="M${a1x},${a1y} L${x2},${y2} L${a2x},${a2y}" fill="none" stroke="var(${col})" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}"/>`;
+  return body+head;
+}
+function hand(x,y,active){return `<g opacity="${active?1:.5}"><circle cx="${x}" cy="${y}" r="${active?10:7}" fill="var(--accent)"/><text x="${x}" y="${y+3.5}" font-size="11" text-anchor="middle" fill="var(--bg)" font-weight="800">✋</text></g>`;}
+function txt(x,y,t,em,anchor){if(!t)return '';return `<text class="${em?'ll-em':'ll'}" x="${x}" y="${y}"${anchor?` text-anchor="${anchor}"`:''}>${t}</text>`;}
+function leader(x1,y1,x2,y2){return `<line class="leader" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;}
+function bodyOutline(d){return `<path class="body-fill" d="${d}"/><path class="body-edge" d="${d}"/>`;}
+function figWrap(inner){return `<svg viewBox="0 0 ${VBW} ${VBH}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+
+// ---- schematic primitives ----
+function sBone(d,disp){return `<path d="${d}" fill="none" stroke="var(${disp?'--bone-sh':'--boneline'})" stroke-width="7" stroke-linecap="round"/>`;}
+function sJoint(cx,cy,r,filled){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${filled?'var(--bone2)':'var(--panelhi)'}" stroke="var(--boneline)" stroke-width="2.5"/>`;}
+
+/* ===================== DETAILED ANATOMICAL ===================== */
+function shoulderAnt(step){
+  const reduced=step>=3, headX=reduced?356:312, headY=reduced?176:212, tipShift=(step>=2)?16:0;
+  return figWrap(
+    bodyOutline("M150,60 Q260,40 380,62 Q400,150 392,250 Q388,340 360,400 L160,400 Q132,340 128,250 Q120,150 150,60 Z")
+    + `<line x1="260" y1="70" x2="260" y2="395" stroke="var(--body-edge)" stroke-width="1.1" stroke-dasharray="3 5" opacity=".6"/>`
+    + `<g stroke="var(--boneline)" stroke-width="1" fill="none" opacity=".35"><path d="M258,150 Q210,160 174,200"/><path d="M258,175 Q206,188 170,232"/><path d="M258,200 Q206,214 172,262"/></g>`
+    + txt(150,300,"thorax (ribs)")
+    + `<path class="bone" d="M250,96 Q300,82 350,98 Q352,106 346,110 Q300,96 252,106 Z"/>`+txt(296,80,"clavicle",0,"middle")
+    + `<path class="bone" d="M286,126 L340,138 Q352,150 350,170 Q349,180 344,188 L${312+tipShift},296 Q300,250 290,196 Q286,160 286,126 Z"/>`
+    + `<path d="M292,140 Q320,150 344,150" fill="none" stroke="var(--boneline)" stroke-width="1.6" opacity=".75"/>`
+    + `<path class="bone" d="M338,138 Q356,138 358,152 Q358,162 346,162 Q338,154 338,138 Z"/>`
+    + `<path class="bone" d="M330,160 Q342,162 346,170 Q341,175 333,171 Q330,166 330,160 Z"/>`
+    + `<path class="cart" d="M346,162 Q356,176 348,194 Q340,188 339,176 Q340,166 346,162 Z"/>`
+    + txt(364,146,"acromion")+txt(364,170,"coracoid")+txt(372,192,"glenoid",reduced)
+    + txt(208,300,"inferior angle")+leader(286,296,308,290)
+    + `<g><path class="bone-d" d="M${headX+4},${headY+14} Q${headX+34},${headY+40} ${headX+58},${headY+104} Q${headX+60},${headY+120} ${headX+46},${headY+122} Q${headX+24},${headY+58} ${headX-8},${headY+26} Z"/>`
+    + `<circle class="bone-d" cx="${headX}" cy="${headY}" r="22"/>`
+    + `<path class="bone-d" d="M${headX+17},${headY-9} Q${headX+30},${headY-6} ${headX+29},${headY+6} Q${headX+21},${headY+9} ${headX+15},${headY+1} Z"/>`
+    + `<path d="M${headX-15},${headY+15} Q${headX},${headY+23} ${headX+15},${headY+13}" fill="none" stroke="var(--boneline)" stroke-width="1" opacity=".6"/></g>`
+    + txt(headX-66,headY+2,"humeral head",reduced)+leader(headX-22,headY,headX-30,headY)
+    + txt(headX+34,headY+128,"humeral shaft")
+    + (reduced?txt(headX-52,headY+22,"reduced",1):txt(headX-78,headY+22,"dislocated (ant-inf)",1))
+    + arrow(headX+50,headY+118, headX+92,headY+150,'t', step===0||step===3)
+    + arrow(300,128, 274,104,'c', step===1)
+    + arrow(330,290, 300,300,'r', step===2,{cy:24})
+    + (step===1?hand(300,128,true):'')
+    + (step>=2?hand(316,296,step===2):''));
+}
+function shoulderPost(step){
+  const reduced=step>=3, headX=reduced?352:322, headY=reduced?176:198;
+  return figWrap(
+    bodyOutline("M150,60 Q260,40 380,62 Q400,150 392,250 Q388,340 360,400 L160,400 Q132,340 128,250 Q120,150 150,60 Z")
+    + `<g stroke="var(--boneline)" stroke-width="1" fill="none" opacity=".35"><path d="M258,160 Q210,170 174,210"/><path d="M258,185 Q206,198 170,242"/></g>`
+    + `<path class="bone" d="M250,96 Q300,82 350,98 Q352,106 346,110 Q300,96 252,106 Z"/>`+txt(296,80,"clavicle",0,"middle")
+    + `<path class="bone" d="M286,126 L340,138 Q352,150 350,170 Q349,180 344,188 L312,296 Q300,250 290,196 Q286,160 286,126 Z"/>`
+    + `<path d="M292,140 Q320,150 344,150" fill="none" stroke="var(--boneline)" stroke-width="1.6" opacity=".75"/>`
+    + `<path class="bone" d="M338,138 Q356,138 358,152 Q358,162 346,162 Q338,154 338,138 Z"/>`
+    + `<path class="cart" d="M346,162 Q356,176 348,194 Q340,188 339,176 Q340,166 346,162 Z"/>`
+    + txt(366,150,"glenoid",reduced)
+    + `<g><circle class="bone-d" cx="${headX}" cy="${headY}" r="22"/>`
+    + (reduced
+        ? `<path class="bone-d" d="M${headX+4},${headY+16} Q${headX+34},${headY+44} ${headX+56},${headY+104} Q${headX+58},${headY+120} ${headX+44},${headY+122} Q${headX+22},${headY+60} ${headX-8},${headY+28} Z"/>`
+        : `<path class="bone-d" d="M${headX-6},${headY+18} Q${headX-30},${headY+70} ${headX-30},${headY+120} Q${headX-30},${headY+136} ${headX-46},${headY+134} Q${headX-50},${headY+74} ${headX-26},${headY+24} Z"/>`)
+    + `</g>`
+    + txt(headX-60,headY-6,"humeral head",reduced)+leader(headX-22,headY,headX-30,headY)
+    + (reduced?txt(headX-44,headY+96,"reduced",1):txt(150,150,"locked in internal rotation",1))
+    + arrow(reduced?headX+48:headX-44, reduced?headY+118:headY+130, reduced?headX+90:headX-78, reduced?headY+150:headY+150,'t', step===0||step===3)
+    + arrow(286,130, 262,108,'c', step===1)
+    + arrow(headX,headY-30, headX,headY-8,'r', step===2,{cx:0,cy:-6})
+    + (step===2?hand(headX,headY-30,true):''));
+}
+function lunate(step){
+  const reduced=step>=3;
+  return figWrap(
+    bodyOutline("M40,150 Q60,120 90,120 L300,150 Q360,150 420,150 Q470,150 480,175 Q470,200 420,200 L300,210 Q90,235 60,210 Q40,190 40,150 Z")
+    + `<path class="bone" d="M60,150 L210,158 Q224,164 224,176 L224,192 Q210,200 60,196 Q48,176 60,150 Z"/>`+txt(70,142,"radius / ulna")
+    + `<ellipse class="bone" cx="244" cy="166" rx="15" ry="13"/>`
+    + (reduced?`<ellipse class="bone-d" cx="250" cy="184" rx="13" ry="12"/>`:`<ellipse class="bone-d" cx="248" cy="214" rx="13" ry="12"/>`)
+    + `<ellipse class="bone" cx="246" cy="200" rx="11" ry="10" opacity=".85"/>`
+    + txt(reduced?266:262, reduced?188:220, "lunate", reduced)+leader(258,reduced?184:214,266,reduced?186:216)
+    + txt(214,150,"scaphoid")
+    + `<ellipse class="bone" cx="286" cy="176" rx="16" ry="14"/>`+txt(300,158,"capitate")
+    + `<path class="bone" d="M306,168 L380,164 L382,172 L308,180 Z"/>`
+    + `<path class="bone" d="M306,178 L378,180 L378,188 L308,190 Z"/>`+txt(355,206,"metacarpals")
+    + arrow(382,176, 440,176,'t', step===0)
+    + arrow(60,176, 24,176,'c', step===1)
+    + (step===2?arrow(248,236,248,196,'r',true,{cx:0,cy:6}):'')
+    + (step>=2?hand(248,236,step===2):'')
+    + (step===3?arrow(382,180,430,200,'r',true,{cy:18}):''));
+}
+function hip(step){
+  const reduced=step>=3, headX=reduced?306:332, headY=reduced?172:120, flexed=step>=1;
+  return figWrap(
+    `<path class="body-fill" d="M70,70 Q260,50 450,70 Q460,170 430,260 L360,400 L300,400 Q300,300 250,280 Q200,300 200,400 L150,400 L100,250 Q66,160 70,70 Z"/>`
+    + `<path class="body-edge" d="M70,70 Q260,50 450,70 Q460,170 430,260 M150,400 L100,250 Q66,160 70,70 M360,400 L430,260"/>`
+    + `<path class="bone" d="M150,90 Q120,140 140,200 Q170,230 230,232 L250,160 Q240,110 210,92 Q180,82 150,90 Z"/>`
+    + `<path class="bone" d="M360,92 Q330,108 320,160 L250,160 Q260,232 320,230 Q380,228 408,200 Q428,140 398,92 Q380,84 360,92 Z"/>`
+    + `<path class="bone" d="M236,150 Q250,140 264,150 L262,210 Q250,222 238,210 Z"/>`
+    + `<path class="bone" d="M210,240 Q250,256 290,240 Q300,268 250,278 Q200,268 210,240 Z"/>`
+    + `<path class="cart" d="M300,150 Q322,162 320,190 Q300,196 286,180 Q286,160 300,150 Z"/>`
+    + `<circle cx="306" cy="172" r="16" fill="none" stroke="var(--boneline)" stroke-width="1.4" opacity=".7"/>`
+    + txt(118,80,"iliac crest")+txt(232,135,"sacrum")+txt(330,176,"acetabulum",reduced)
+    + `<g><circle class="bone-d" cx="${headX}" cy="${headY}" r="20"/>`
+    + `<path class="bone-d" d="M${headX-4},${headY+16} L${headX+18},${headY+34} Q${headX+34},${headY+30} ${headX+34},${headY+50} L${headX+18},${headY+54} Q${headX-6},${headY+40} ${headX-14},${headY+20} Z"/>`
+    + (flexed
+        ? `<path class="bone-d" d="M${headX+10},${headY+48} Q${headX+24},${headY+120} ${headX+10},${headY+170} L${headX-30},${headY+186} Q${headX-12},${headY+120} ${headX-14},${headY+52} Z"/>`
+        : `<path class="bone-d" d="M${headX+4},${headY+48} Q${headX-20},${headY+140} ${headX-60},${headY+220} L${headX-86},${headY+212} Q${headX-44},${headY+120} ${headX-22},${headY+50} Z"/>`)
+    + `</g>`
+    + txt(reduced?headX-58:headX+12, reduced?headY-6:headY-16, "femoral head", reduced)
+    + txt(headX+40,headY+50,"greater troch.")
+    + (reduced?txt(headX-40,headY+96,"reduced",1):txt(headX+12,headY-4,"posterior dislocation",1))
+    + arrow(150,120, 120,108,'c', step===0)
+    + (flexed && step>=2 ? arrow(headX+0,headY+150, headX+8,headY+60,'t', step===2||step===3,{cx:-6}) : '')
+    + (step===3 ? arrow(headX-30,headY+186, headX+4,headY+186,'r', true,{cy:20}) : '')
+    + (step>=1 ? hand(headX+2,headY+150, step>=2) : ''));
+}
+function knee(step){
+  const reduced=step>=2, tibiaX=reduced?250:300;
+  return figWrap(
+    bodyOutline("M150,40 Q250,30 350,40 Q360,150 350,250 Q360,350 350,400 L150,400 Q140,350 150,250 Q140,150 150,40 Z")
+    + `<path class="bone" d="M226,60 L274,60 Q280,150 278,196 Q290,210 290,224 Q290,240 270,244 L230,244 Q210,240 210,224 Q210,210 222,196 Q220,150 226,60 Z"/>`
+    + `<circle class="bone" cx="232" cy="226" r="14"/><circle class="bone" cx="268" cy="226" r="14"/>`
+    + txt(160,150,"femur")
+    + `<ellipse class="bone" cx="250" cy="212" rx="13" ry="16" opacity=".9"/>`+txt(196,212,"patella")
+    + `<g><path class="bone-d" d="M${tibiaX-34},250 Q${tibiaX},244 ${tibiaX+34},250 L${tibiaX+34},262 Q${tibiaX},270 ${tibiaX-34},262 Z"/>`
+    + `<path class="bone-d" d="M${tibiaX-22},262 L${tibiaX+22},262 Q${tibiaX+18},340 ${tibiaX+14},390 L${tibiaX-14},390 Q${tibiaX-18},340 ${tibiaX-22},262 Z"/></g>`
+    + txt(tibiaX+40, 300, "tibia", reduced)
+    + (reduced?txt(tibiaX-20,360,"reduced",1):txt(tibiaX-10,236,"anterior dislocation",1))
+    + arrow(250,90, 250,60,'c', step===0)
+    + arrow(tibiaX,370, tibiaX,410,'t', step===1)
+    + (step===2?arrow(300,300,256,300,'r',true,{cy:-10}):'')
+    + (step>=1?hand(tibiaX,360,step===1):'')
+    + ((step>=2)?txt(150,372,"⚠ check pulses / ABI / CTA",1):''));
+}
+function ankle(step){
+  const reduced=step>=3, footShift=reduced?0:34, footY=reduced?300:286;
+  const fx=(v)=>Math.min(v,470);
+  return figWrap(
+    bodyOutline("M180,40 Q250,32 320,40 Q330,160 322,250 L322,300 Q360,300 430,300 Q470,302 470,326 Q460,350 430,348 L322,352 Q250,360 200,352 Q180,300 188,250 Q176,150 180,40 Z")
+    + `<path class="bone" d="M222,60 L258,60 Q262,160 260,236 L262,266 Q250,276 238,266 L240,236 Q218,160 222,60 Z"/>`
+    + `<path class="bone" d="M262,80 L276,80 Q280,170 276,250 Q270,262 262,254 Q266,170 262,80 Z" opacity=".9"/>`
+    + txt(180,150,"tibia")+txt(284,150,"fibula")+txt(186,256,"med. mall.")
+    + `<g><ellipse class="bone-d" cx="${250+footShift}" cy="${footY-16}" rx="20" ry="15"/>`
+    + `<path class="bone-d" d="M${230+footShift},${footY-4} Q${250+footShift},${footY+6} ${300+footShift},${footY+2} L${fx(360+footShift)},${footY+4} Q${fx(380+footShift)},${footY+6} ${fx(360+footShift)},${footY+14} L${250+footShift},${footY+18} Q${228+footShift},${footY+14} ${230+footShift},${footY-4} Z"/></g>`
+    + txt(reduced?300:300+footShift, footY+34, "talus / foot", reduced)
+    + (reduced?txt(280,footY+2,"reduced",1):txt(250+footShift-12,footY-36,"posterior",1))
+    + arrow(240,90, 222,66,'c', step===1)
+    + (step>=2?arrow(260+footShift,footY+30, 280+footShift,footY+64,'t', step===2,{cx:6}):'')
+    + (step===3?arrow(300,footY-10,360,footY-20,'r',true,{cy:-8}):'')
+    + (step>=2?hand(258+footShift,footY+20,step===2):'')
+    + (step===0?txt(330,80,"flex knee → relax gastroc",1):''));
+}
+
+/* ===================== SCHEMATIC ===================== */
+function elbow(step){
+  const reduced=step>=3;
+  return figWrap(
+    sBone("M90,150 L210,180")+sJoint(210,180,15,true)
+    + (reduced?sBone("M210,180 L350,180"):sBone("M222,176 L355,140",true))
+    + sJoint(reduced?350:355,reduced?180:140,10,false)
+    + txt(84,142,"humerus")+txt(reduced?320:320,reduced?206:128,"forearm",reduced)
+    + (reduced?'':txt(300,116,"posterior",1))
+    + arrow(90,150,56,142,'c',step===1)+arrow(355,140,400,128,'t',step===2)
+    + (step===3?arrow(250,156,250,178,'r',true,{cy:-8}):'')+(step===3?hand(250,156,true):''));
+}
+function nursemaidHP(step){
+  return figWrap(
+    sBone("M90,130 L200,165")+sJoint(200,165,13,true)+sBone("M200,165 L330,176")+sJoint(330,176,10,false)
+    + txt(84,122,"humerus")+txt(296,202,"radius")+txt(356,138,"radial head")+leader(340,170,356,148)
+    + arrow(200,138,200,165,'c',step===0||step===1)
+    + (step>=2?arrow(296,202,344,188,'r',true,{cx:10,cy:20}):'')
+    + (step<2?hand(200,138,step===0):'')
+    + (step>=2?txt(310,230,"hyperpronate (palm down)",1):''));
+}
+function nursemaidSF(step){
+  return figWrap(
+    sBone("M90,140 L200,170")+sJoint(200,170,13,true)
+    + (step>=2?sBone("M200,170 Q250,120 215,75"):sBone("M200,170 L330,178"))
+    + sJoint(step>=2?215:330,step>=2?75:178,10,false)
+    + txt(84,132,"humerus")
+    + (step>=1&&step<2?txt(296,210,"supinate (palm up)",1):'')
+    + (step>=2?txt(150,90,"then flex",1):'')
+    + arrow(200,145,200,170,'c',step===0)
+    + (step>=1&&step<2?arrow(296,210,340,192,'r',step===1,{cy:14}):'')
+    + (step>=2?arrow(330,178,220,85,'r',true,{cx:-30,cy:-20}):'')
+    + (step===0?hand(200,145,true):''));
+}
+function fingerPIP(step){
+  const reduced=step>=3;
+  return figWrap(
+    sBone("M80,170 L190,170")+sJoint(190,170,11,true)
+    + (reduced?sBone("M190,170 L320,170"):sBone("M200,166 L320,140",true))
+    + sJoint(320,reduced?170:140,8,false)
+    + txt(74,162,"proximal P")+txt(286,reduced?196:122,"middle P",reduced)
+    + (reduced?'':txt(250,116,"dorsal",1))
+    + arrow(320,140,366,130,'t',step===1)+arrow(80,170,46,170,'c',step===0||step===1)
+    + (step===2?arrow(232,150,232,170,'r',true,{cy:-8}):'')+(step===2?hand(232,150,true):'')
+    + (step===0?txt(110,212,"digital block first",1):''));
+}
+function tmjIntra(step){
+  const reduced=step>=3;
+  return figWrap(
+    `<path class="bone" d="M70,80 Q250,56 420,110 L420,140 Q250,128 90,140 Z"/>`+txt(80,72,"temporal / fossa")
+    + sJoint(330,138,9,true)
+    + (reduced?`<path class="bone" d="M120,190 Q250,250 350,190 L342,160 Q250,210 138,160 Z"/>`:`<path class="bone" d="M105,205 Q235,270 340,195 L332,160 Q240,225 118,170 Z"/>`)
+    + txt(190,255,"mandible")+(reduced?txt(360,180,"reduced",1):txt(356,150,"condyle anterior",1))
+    + arrow(190,180, 190,225,'t', step===2)+arrow(140,165, 112,180,'c', step===1)
+    + (step===3?arrow(240,215,190,200,'r',true,{cy:24}):'')+(step===2?hand(190,180,true):'')
+    + txt(110,300,"thumbs on molars (wrap them)",1));
+}
+function tmjExtra(step){
+  return figWrap(
+    `<path class="bone" d="M70,80 Q250,56 420,110 L420,140 Q250,128 90,140 Z"/>`+txt(80,72,"temporal / fossa")
+    + (step>=3?`<path class="bone" d="M120,188 Q250,246 350,190 L342,160 Q250,206 138,160 Z"/>`:`<path class="bone" d="M108,200 Q238,262 340,196 L332,160 Q240,220 120,168 Z"/>`)
+    + txt(190,250,"mandible")+txt(130,150,"coronoid")
+    + arrow(165,158, 195,200,'r', step>=2,{cx:10,cy:16})+(step>=1?hand(165,160,step>=2):'')
+    + txt(110,300,"no fingers in mouth",1));
+}
+function patella(step){
+  const ext=step>=1, red=step>=2;
+  return figWrap(
+    sBone("M90,90 L190,150")+sJoint(190,150,10,false)
+    + (ext?sBone("M190,150 L330,165"):sBone("M190,150 L270,250"))
+    + `<ellipse cx="${red?208:235}" cy="${ext?138:165}" rx="13" ry="16" fill="var(--bone2)" stroke="var(--boneline)" stroke-width="2.5"/>`
+    + txt(84,82,"femur")+txt(286,ext?192:250,"tibia")+txt(245,168,"patella")
+    + (ext&&step<2?txt(280,126,"extend knee",1):'')
+    + (ext?arrow(270,250,330,180,'r',step===1,{cx:20,cy:-30}):'')
+    + (step===2?arrow(236,150,212,140,'r',true,{cy:-6}):'')+(step===2?hand(236,150,true):''));
+}
+function toe(step){
+  const reduced=step>=3;
+  return figWrap(
+    sBone("M80,180 L190,180")+sJoint(190,180,10,true)
+    + (reduced?sBone("M190,180 L310,180"):sBone("M200,176 L310,150",true))
+    + sJoint(310,reduced?180:150,7,false)
+    + txt(74,172,"metatarsal")+txt(282,reduced?206:132,"phalanx",reduced)
+    + (reduced?'':txt(250,128,"dorsal",1))
+    + arrow(310,150,356,140,'t',step===1)+arrow(80,180,46,180,'c',step===0||step===1)
+    + (step===2?arrow(232,160,232,180,'r',true,{cy:-8}):'')+(step===2?hand(232,160,true):'')
+    + (step===0?txt(110,220,"digital block",1):''));
+}
+
+/* dispatch table: builder name -> fn */
+const BUILD={shoulderAnt,shoulderPost,lunate,hip,knee,ankle,elbow,nursemaidHP,nursemaidSF,fingerPIP,tmjIntra,tmjExtra,patella,toe};
+
+/* ============================================================
+   CATALOGUE  (regions -> joints -> techniques -> steps + figs)
+   fig(step) returns svg inner-html; vectors keyed to step.
+   ============================================================ */
+const DATA = [
+{
+ region:"Shoulder & arm", joints:[
+  {
+   name:"Anterior shoulder dislocation", sub:"Glenohumeral — 95%+ of shoulder dislocations", badge:["Common","b-common"],
+   intro:"Arm held slightly abducted/externally rotated, squared-off shoulder, humeral head palpable anteriorly. Always check axillary nerve (lateral deltoid sensation) before and after.",
+   techniques:[
+    {
+     name:"Scapular manipulation", meta:"High success, low force — often first-line",
+     steps:[
+       {t:"Position the patient prone or seated; apply gentle <b>traction</b> on the affected arm held forward at 90°.",fig:0},
+       {t:"Stabilize the superior scapula with one hand (<b>counter-traction</b>).",fig:1},
+       {t:"Push the inferior scapular tip <b>medially</b> with the thumb while rotating the lower tip toward the spine.",fig:2},
+       {t:"The glenoid rotates to meet the humeral head — reduction is often subtle and painless.",fig:3}
+     ],
+     fig:(s)=>BUILD.shoulderAnt(s),
+     pearls:[["pearl","Why it works","Reduces by repositioning the glenoid rather than the humeral head — needs little force or sedation."],["risk","Watch","Confirm axillary nerve function; avoid in suspected fracture-dislocation without imaging."]]
+    },
+    {
+     name:"External rotation (Hennepin)", meta:"Minimal force, can be done with little/no sedation",
+     steps:[
+       {t:"Patient supine or seated; adduct the arm to the side, elbow flexed to 90°.",fig:0},
+       {t:"Support the elbow; apply <b>no traction</b> — just gentle stabilization.",fig:1},
+       {t:"Slowly, patiently <b>externally rotate</b> the forearm like a swinging gate, pausing for pain.",fig:2},
+       {t:"Reduction usually occurs by ~70–110° of external rotation as the head slips back over the glenoid rim.",fig:3}
+     ],
+     fig:(s)=>BUILD.shoulderAnt(s),
+     pearls:[["pearl","Why it works","Relaxes the subscapularis and lets the head pivot back over the rim; gravity does much of the work."],["post","After","Sling in internal rotation; orthopedic follow-up; repeat neurovascular check."]]
+    },
+    {
+     name:"Stimson (prone hanging)", meta:"Hands-free, fatigues the muscles — great when short-staffed",
+     steps:[
+       {t:"Patient prone with the affected arm hanging off the bed.",fig:0},
+       {t:"Apply <b>5–10 lb of weight</b> to the wrist (taped, not held).",fig:1},
+       {t:"Wait 15–20 min — steady downward <b>traction</b> fatigues the spasming muscles.",fig:2},
+       {t:"The head reduces spontaneously; gentle scapular manipulation can finish it.",fig:3}
+     ],
+     fig:(s)=>BUILD.shoulderAnt(s),
+     pearls:[["pearl","Why it works","Slow continuous traction overcomes muscle spasm without a sudden yank."],["risk","Limit","Don't leave unmonitored; padding to avoid traction injury."]]
+    }
+   ]
+  },
+  {
+   name:"Posterior shoulder dislocation", sub:"~3% — seizures, electrocution, fall on adducted arm", badge:["Emergent","b-emerg"],
+   intro:"Easily missed: arm locked in internal rotation, can't externally rotate. 'Lightbulb sign' on AP film. Have a high index of suspicion after seizure.",
+   techniques:[
+    {
+     name:"Axial traction + anterior pressure", meta:"Traction with direct head pressure",
+     steps:[
+       {t:"Supine; apply <b>axial traction</b> on the adducted, internally rotated arm.",fig:0},
+       {t:"An assistant provides <b>counter-traction</b> with a sheet around the torso.",fig:1},
+       {t:"Apply direct <b>anterior-directed pressure</b> on the posterior humeral head.",fig:2},
+       {t:"Gently externally rotate once disimpacted to complete reduction.",fig:3}
+     ],
+     fig:(s)=>BUILD.shoulderPost(s),
+     pearls:[["risk","Don't miss it","Up to half are missed initially; get an axillary or scapular-Y view."],["post","After","Immobilize; ortho follow-up. Consider associated fracture."]]
+    }
+   ]
+  }
+ ]
+},
+{
+ region:"Elbow & forearm", joints:[
+  {
+   name:"Posterior elbow dislocation", sub:"Most common elbow dislocation (fall on extended arm)", badge:["Common","b-common"],
+   intro:"Olecranon prominent posteriorly, elbow held in slight flexion. Check brachial artery and median/ulnar/radial nerves; reduce promptly.",
+   techniques:[
+    {
+     name:"Traction–counter-traction", meta:"Two-person reduction",
+     steps:[
+       {t:"Patient supine, shoulder abducted; flex elbow slightly.",fig:0},
+       {t:"Assistant applies <b>counter-traction</b> on the upper arm.",fig:1},
+       {t:"Apply steady in-line <b>traction</b> on the forearm/wrist; correct any medial/lateral shift.",fig:2},
+       {t:"Push the olecranon <b>distally and anteriorly</b> with the thumb as you flex — a clunk signals reduction.",fig:3}
+     ],
+     fig:(s)=>BUILD.elbow(s),
+     pearls:[["pearl","Why it works","Traction disengages the coronoid from the olecranon fossa; thumb pressure guides it home."],["risk","Check","Re-examine the brachial artery and nerves after; watch for associated fractures (terrible triad)."]]
+    }
+   ]
+  },
+  {
+   name:"Nursemaid's elbow", sub:"Radial head subluxation — toddlers, axial pull on pronated arm", badge:["Pediatric","b-peds"],
+   intro:"Classic: young child, sudden pull on the arm, now refuses to use it, holds it slightly flexed and pronated. No swelling. Imaging usually unnecessary.",
+   techniques:[
+    {
+     name:"Hyperpronation", meta:"Higher first-pass success than supination",
+     steps:[
+       {t:"Support the elbow, thumb over the radial head.",fig:0},
+       {t:"Hold the child's hand as for a handshake.",fig:1},
+       {t:"<b>Hyperpronate</b> the forearm firmly (palm turns down/inward).",fig:2},
+       {t:"Feel a click over the radial head; child usually uses the arm within minutes.",fig:3}
+     ],
+     fig:(s)=>BUILD.nursemaidHP(s),
+     pearls:[["pearl","Why it works","Reduces the annular ligament back over the radial head."],["post","If it fails","Try supination-flexion; if still no use of arm in ~30 min or any swelling, image to exclude fracture."]]
+    },
+    {
+     name:"Supination–flexion", meta:"Classic alternate",
+     steps:[
+       {t:"Support the elbow with thumb on the radial head.",fig:0},
+       {t:"Fully <b>supinate</b> the forearm (palm up).",fig:1},
+       {t:"Then <b>flex</b> the elbow fully toward the shoulder.",fig:2},
+       {t:"Palpable click = success.",fig:3}
+     ],
+     fig:(s)=>BUILD.nursemaidSF(s),
+     pearls:[["post","Reassure","Often recurs; counsel caregivers to avoid axial pulls on the arm."]]
+    }
+   ]
+  }
+ ]
+},
+{
+ region:"Wrist & hand", joints:[
+  {
+   name:"Lunate / perilunate dislocation", sub:"High-energy wrist injury — frequently missed", badge:["Emergent","b-emerg"],
+   intro:"Severe wrist pain after fall on outstretched hand. On lateral film, the 'spilled teacup' (lunate) or disrupted radius–lunate–capitate line. Median nerve at risk → check for acute carpal tunnel.",
+   techniques:[
+    {
+     name:"Traction + extension/flexion (Tavernier)", meta:"Temporizing closed reduction before definitive ORIF",
+     steps:[
+       {t:"Finger traps on the affected fingers; <b>longitudinal traction</b> 10–15 min.",fig:0},
+       {t:"<b>Counter-traction</b> via a weight on the upper arm.",fig:1},
+       {t:"<b>Extend</b> the wrist, then apply thumb pressure over the lunate.",fig:2},
+       {t:"<b>Flex</b> the wrist while maintaining pressure to recapture the capitate.",fig:3}
+     ],
+     fig:(s)=>BUILD.lunate(s),
+     pearls:[["risk","Time-critical","Acute median nerve compression and ligament injury — urgent hand surgery; closed reduction is temporizing only."]]
+    }
+   ]
+  },
+  {
+   name:"Finger PIP/DCP dislocation", sub:"Dorsal PIP is most common (jammed finger)", badge:["Common","b-common"],
+   intro:"Obvious deformity at the interphalangeal joint. Check for rotational deformity and test the volar plate and collateral ligaments after reduction.",
+   techniques:[
+    {
+     name:"Traction + dorsal pressure", meta:"Digital block first",
+     steps:[
+       {t:"Perform a <b>digital block</b>; grasp the distal segment.",fig:0},
+       {t:"Apply gentle <b>longitudinal traction</b>.",fig:1},
+       {t:"Recreate the deformity slightly (hyperextend), then push the base <b>volarly/distally</b>.",fig:2},
+       {t:"Flex through full ROM to confirm; buddy-tape.",fig:3}
+     ],
+     fig:(s)=>BUILD.fingerPIP(s),
+     pearls:[["risk","Before & after","Test for fracture (avulsion), volar plate injury, and rotational malalignment; irreducible PIP may have volar plate interposition."],["post","After","Buddy-tape or dorsal splint in slight flexion; early ROM."]]
+    }
+   ]
+  }
+ ]
+},
+{
+ region:"Jaw", joints:[
+  {
+   name:"TMJ (mandibular) dislocation", sub:"Anterior dislocation — yawning, laughing, dental work", badge:["Common","b-common"],
+   intro:"Patient can't close the mouth, often bilateral. Condyle locked anterior to the articular eminence. Consider procedural sedation/anxiolysis; bilateral is common.",
+   techniques:[
+    {
+     name:"Intraoral (classic manual)", meta:"Thumbs on molars",
+     steps:[
+       {t:"Sit the patient upright, head supported; gloves + gauze-wrapped thumbs on the lower molars.",fig:0},
+       {t:"Fingers wrap under the mandible (<b>counter-traction</b>).",fig:1},
+       {t:"Press the molars <b>downward</b> to clear the eminence (traction).",fig:2},
+       {t:"Then guide the jaw <b>posteriorly</b> — condyle slides back into the fossa.",fig:3}
+     ],
+     fig:(s)=>BUILD.tmjIntra(s),
+     pearls:[["risk","Protect your thumbs","Reflex bite — wrap thumbs; consider the extraoral or wrist-pivot method to avoid the mouth."],["post","After","Soft diet, avoid wide opening 2–3 wks; barrel bandage if recurrent; ENT/OMFS if irreducible."]]
+    },
+    {
+     name:"Extraoral (Gorchynski)", meta:"Avoids the bite zone",
+     steps:[
+       {t:"Stand facing the patient; locate the displaced coronoid processes in the cheeks.",fig:0},
+       {t:"Place thumbs on the coronoid processes bilaterally.",fig:1},
+       {t:"Apply steady <b>posterior-inferior pressure</b> on the coronoids.",fig:2},
+       {t:"The condyles disengage and slide back — no fingers in the mouth.",fig:3}
+     ],
+     fig:(s)=>BUILD.tmjExtra(s),
+     pearls:[["pearl","Why it's nice","No risk to your fingers and often needs less sedation."]]
+    }
+   ]
+  }
+ ]
+},
+{
+ region:"Hip & knee", joints:[
+  {
+   name:"Posterior hip dislocation", sub:"Dashboard injury & prosthetic hips — 90% are posterior", badge:["Emergent","b-emerg"],
+   intro:"Leg shortened, flexed, adducted, internally rotated. Native dislocations are orthopedic emergencies (avascular necrosis risk rises with time) — reduce promptly under sedation. Check sciatic nerve.",
+   techniques:[
+    {
+     name:"Allis maneuver", meta:"In-line traction with knee/hip flexed",
+     steps:[
+       {t:"Patient supine; assistant <b>stabilizes the pelvis</b> (counter-traction).",fig:0},
+       {t:"Flex the hip and knee to 90°.",fig:1},
+       {t:"Apply strong <b>upward (anterior) traction</b> along the femur axis.",fig:2},
+       {t:"Gently internally/externally <b>rotate</b> to clear the rim — clunk = reduction.",fig:3}
+     ],
+     fig:(s)=>BUILD.hip(s),
+     pearls:[["risk","Clock is ticking","Reduce native hips within ~6 h to limit AVN; always check sciatic nerve (foot drop)."],["post","After","Post-reduction CT to assess fragments; hip precautions; ortho admit for native dislocations."]]
+    },
+    {
+     name:"Captain Morgan", meta:"Uses the provider's leg as the lever — less provider strain",
+     steps:[
+       {t:"Strap the pelvis to the bed; flex the patient's hip and knee to 90°.",fig:0},
+       {t:"Place your knee under the patient's flexed knee.",fig:1},
+       {t:"Plantarflex/raise your own foot to lever <b>upward traction</b> on the femur.",fig:2},
+       {t:"Add downward pressure on the ankle + slight rotation to complete.",fig:3}
+     ],
+     fig:(s)=>BUILD.hip(s),
+     pearls:[["pearl","Why it's nice","The lever does the lifting — far less back/arm fatigue than Allis; high success for prosthetic hips."]]
+    }
+   ]
+  },
+  {
+   name:"Patellar dislocation", sub:"Almost always lateral — twisting on a planted foot", badge:["Common","b-common"],
+   intro:"Knee held flexed, patella palpable laterally. Often reduces spontaneously with extension. Check for osteochondral fracture afterward.",
+   techniques:[
+    {
+     name:"Extension + medial pressure", meta:"Simple, fast, minimal sedation",
+     steps:[
+       {t:"Provide analgesia; support the limb.",fig:0},
+       {t:"Slowly <b>extend the knee</b> (relaxes the quadriceps pull).",fig:1},
+       {t:"Apply gentle <b>medial pressure</b> on the lateral patella.",fig:2},
+       {t:"Patella slides back into the trochlear groove.",fig:3}
+     ],
+     fig:(s)=>BUILD.patella(s),
+     pearls:[["post","After","Knee immobilizer in extension; X-ray for osteochondral fragment; ortho follow-up; high recurrence."]]
+    }
+   ]
+  },
+  {
+   name:"Knee (tibiofemoral) dislocation", sub:"True emergency — high rate of popliteal artery injury", badge:["Emergent","b-emerg"],
+   intro:"High-energy; gross instability. Even if reduced/spontaneously reduced, assume vascular injury — ABIs and CT angiography. Reduce immediately if dislocated.",
+   techniques:[
+    {
+     name:"Longitudinal traction", meta:"Reduce then obsess about the vessels",
+     steps:[
+       {t:"Assistant gives <b>counter-traction</b> on the thigh.",fig:0},
+       {t:"Apply in-line <b>longitudinal traction</b> on the tibia.",fig:1},
+       {t:"Lift/translate the tibia to correct the displacement direction.",fig:2},
+       {t:"Splint at ~20° flexion; <b>immediate</b> vascular assessment (ABI, pulses, CTA).",fig:3}
+     ],
+     fig:(s)=>BUILD.knee(s),
+     pearls:[["risk","Vessels first","Popliteal artery injury in up to ~30%; a normal exam doesn't exclude it — get ABIs/CTA. Also check peroneal nerve."]]
+    }
+   ]
+  }
+ ]
+},
+{
+ region:"Ankle & foot", joints:[
+  {
+   name:"Ankle (tibiotalar) dislocation", sub:"Usually with fracture — posterior most common", badge:["Emergent","b-emerg"],
+   intro:"Gross deformity, often with overlying skin tenting/compromise. Reduce promptly to restore perfusion and protect skin, even before full imaging if neurovascular compromise.",
+   techniques:[
+    {
+     name:"Traction + recreate-and-reverse", meta:"Knee flexed to relax gastrocnemius",
+     steps:[
+       {t:"<b>Flex the knee</b> to relax the Achilles/gastroc pull.",fig:0},
+       {t:"Grasp the heel and forefoot; assistant gives <b>counter-traction</b> on the calf.",fig:1},
+       {t:"Apply <b>longitudinal traction</b>; briefly recreate the deformity (plantarflexion for posterior).",fig:2},
+       {t:"<b>Reverse</b> the mechanism — pull the foot anteriorly and dorsiflex to seat the talus.",fig:3}
+     ],
+     fig:(s)=>BUILD.ankle(s),
+     pearls:[["risk","Skin & vessels","Tented skin can necrose — reduce early. Re-check dorsalis pedis/posterior tibial pulses; splint after."],["post","After","Post-reduction films + likely CT; most need ORIF."]]
+    }
+   ]
+  },
+  {
+   name:"Toe (MTP/IP) dislocation", sub:"Stubbing / hyperextension — usually dorsal", badge:["Common","b-common"],
+   intro:"Deformity at the metatarsophalangeal or interphalangeal joint. Digital block, reduce, buddy-tape. Great hallux MTP can have sesamoid/volar plate interposition (irreducible).",
+   techniques:[
+    {
+     name:"Traction + dorsal pressure", meta:"Mirror of finger reduction",
+     steps:[
+       {t:"<b>Digital block</b>; grasp the distal phalanx.",fig:0},
+       {t:"Apply gentle <b>longitudinal traction</b>.",fig:1},
+       {t:"Slightly hyperextend, then push the base <b>plantarly/distally</b>.",fig:2},
+       {t:"Confirm ROM; buddy-tape to the adjacent toe.",fig:3}
+     ],
+     fig:(s)=>BUILD.toe(s),
+     pearls:[["risk","If irreducible","Suspect volar plate or sesamoid interposition at the great-toe MTP → may need surgery."],["post","After","Buddy-tape, stiff-soled shoe, weight-bear as tolerated."]]
+    }
+   ]
+  }
+ ]
+}
+];
+
+/* ============================================================
+   RENDER + INTERACTION
+   ============================================================ */
+const main=document.getElementById('main');
+const regionNav=document.getElementById('regionNav');
+const state={}; // key joint id -> {tech, step, playing}
+
+DATA.forEach((reg,ri)=>{
+  const rid='reg'+ri;
+  const btn=document.createElement('button');
+  btn.textContent=reg.region; btn.dataset.target=rid;
+  if(ri===0) btn.classList.add('active');
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav.regions button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(rid).scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  regionNav.appendChild(btn);
+
+  const section=document.createElement('section');
+  section.id=rid;
+  section.innerHTML=`<div class="regionhead"><h2>${reg.region}</h2><span class="cnt">${reg.joints.length} joint${reg.joints.length>1?'s':''}</span></div>`;
+  reg.joints.forEach((j,ji)=>{
+    const jid=rid+'_'+ji;
+    state[jid]={tech:0,step:0,playing:false,timer:null};
+    const card=document.createElement('div');
+    card.className='joint';
+    card.innerHTML=`
+      <div class="jhead">
+        <h3>${j.name}</h3>
+        <span class="badge ${j.badge[1]}">${j.badge[0]}</span>
+        <span class="sub">${j.sub}</span>
+      </div>
+      <div class="jbody">
+        <div class="stage">
+          <div class="figframe"><div id="${jid}_fig"></div><div class="figcaption" id="${jid}_cap"></div></div>
+          <div class="techtabs" id="${jid}_tabs"></div>
+        </div>
+        <div class="detail">
+          <p style="font-size:.9rem;color:var(--soft);margin:0 0 14px">${j.intro}</p>
+          <div id="${jid}_tdetail"></div>
+        </div>
+      </div>`;
+    section.appendChild(card);
+  });
+  main.appendChild(section);
+
+  // wire each joint
+  reg.joints.forEach((j,ji)=>{
+    const jid=rid+'_'+ji;
+    const tabs=document.getElementById(jid+'_tabs');
+    j.techniques.forEach((t,ti)=>{
+      const b=document.createElement('button');
+      b.textContent=t.name; if(ti===0)b.classList.add('active');
+      b.addEventListener('click',()=>{ stopPlay(jid); state[jid].tech=ti; state[jid].step=0;
+        tabs.querySelectorAll('button').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        renderTech(jid,j); });
+      tabs.appendChild(b);
+    });
+    renderTech(jid,j);
+  });
+});
+
+function renderTech(jid,j){
+  const st=state[jid]; const t=j.techniques[st.tech];
+  const fig=document.getElementById(jid+'_fig');
+  const cap=document.getElementById(jid+'_cap');
+  const det=document.getElementById(jid+'_tdetail');
+  fig.innerHTML=t.fig(t.steps[st.step].fig);
+  cap.textContent=`Step ${st.step+1} of ${t.steps.length}`;
+  const pearls=(t.pearls||[]).map(p=>`<div class="pearl ${p[0]==='risk'?'risk':p[0]==='post'?'post':''}"><b>${p[1]}</b>${p[2]}</div>`).join('');
+  det.innerHTML=`
+    <p class="tname">${t.name}</p>
+    <p class="tmeta">${t.meta}</p>
+    <div class="playbar">
+      <button class="playbtn" id="${jid}_play">▶ Play maneuver</button>
+      <div class="stepdots" id="${jid}_dots"></div>
+    </div>
+    <ol class="steps" id="${jid}_steps">${t.steps.map((s,i)=>`<li class="${i===st.step?'active':''} playhint" data-i="${i}">${s.t}</li>`).join('')}</ol>
+    <div class="pearls">${pearls}</div>`;
+  // dots
+  const dots=document.getElementById(jid+'_dots');
+  dots.innerHTML=t.steps.map((s,i)=>`<i class="${i===st.step?'on':''}" data-i="${i}"></i>`).join('');
+  dots.querySelectorAll('i').forEach(d=>d.addEventListener('click',()=>{stopPlay(jid);setStep(jid,j,+d.dataset.i);}));
+  document.getElementById(jid+'_steps').querySelectorAll('li').forEach(li=>li.addEventListener('click',()=>{stopPlay(jid);setStep(jid,j,+li.dataset.i);}));
+  document.getElementById(jid+'_play').addEventListener('click',()=>togglePlay(jid,j));
+}
+function setStep(jid,j,i){
+  const st=state[jid]; const t=j.techniques[st.tech];
+  st.step=((i%t.steps.length)+t.steps.length)%t.steps.length;
+  document.getElementById(jid+'_fig').innerHTML=t.fig(t.steps[st.step].fig);
+  document.getElementById(jid+'_cap').textContent=`Step ${st.step+1} of ${t.steps.length}`;
+  const steps=document.getElementById(jid+'_steps');
+  if(steps){steps.querySelectorAll('li').forEach((li,k)=>li.classList.toggle('active',k===st.step));}
+  const dots=document.getElementById(jid+'_dots');
+  if(dots){dots.querySelectorAll('i').forEach((d,k)=>d.classList.toggle('on',k===st.step));}
+}
+function togglePlay(jid,j){ state[jid].playing?stopPlay(jid):startPlay(jid,j); }
+function startPlay(jid,j){
+  const st=state[jid]; const t=j.techniques[st.tech];
+  st.playing=true;
+  const btn=document.getElementById(jid+'_play'); if(btn)btn.textContent='❚❚ Pause';
+  st.timer=setInterval(()=>{
+    let next=st.step+1;
+    if(next>=t.steps.length){ next=0; }
+    setStep(jid,j,next);
+  },1300);
+}
+function stopPlay(jid){
+  const st=state[jid]; st.playing=false;
+  if(st.timer){clearInterval(st.timer);st.timer=null;}
+  const btn=document.getElementById(jid+'_play'); if(btn)btn.textContent='▶ Play maneuver';
+}
+
+document.getElementById('foot').innerHTML="Schematic figures emphasize force direction, not anatomic precision — bones and joints are stylized for clarity. Always image to exclude fracture-dislocation where indicated, document pre- and post-reduction neurovascular exams, use adequate analgesia/sedation, and confirm reduction radiographically. For study and review; follow your institution's protocols and current orthopedic/EM references.";
+
+/* theme toggle */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m); if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

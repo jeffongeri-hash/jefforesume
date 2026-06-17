@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toxidrome Atlas — Recognition, Overdoses & Antidotes</title>
+<style>
+  /* ============ THEME: tox / hazard console ============ */
+  :root{
+    --bg:#0d1117;--bg2:#121922;--panel:#141d27;--panelhi:#1a2530;--line:#26333f;--line2:#1c2731;
+    --ink:#eaf0f4;--soft:#a4b6c2;--muted:#76899a;--faint:#566776;
+    --sympatho:#e0563b;   /* red-orange */
+    --anticho:#d68a2e;    /* amber */
+    --cholin:#3fa7d6;     /* blue */
+    --opioid:#7c6cc4;     /* violet */
+    --sedative:#4aa982;   /* green */
+    --accent:#3fb6c4;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --up:#ff7a5c;--down:#5fb0e6;
+    --grid:#101820;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e4eaee;--panel:#ffffff;--panelhi:#f3f6f8;--line:#cdd9e1;--line2:#dde6ec;
+    --ink:#121f29;--soft:#3c515f;--muted:#5d7180;--faint:#8397a4;
+    --sympatho:#c4422a;--anticho:#b06f17;--cholin:#1c7fb0;--opioid:#5d4ba6;--sedative:#1f8b63;
+    --accent:#0e8d9c;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--up:#c8442b;--down:#2576c0;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:16px;
+    transition:background .25s,color .25s;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}
+  .toggle svg{width:14px;height:14px;}
+
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:66ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);
+    border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:34px 0 4px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:74ch;font-size:.95rem;}
+
+  /* ---- comparison grid ---- */
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);}
+  table.tox{border-collapse:collapse;width:100%;min-width:900px;font-size:.85rem;}
+  table.tox th,table.tox td{padding:11px 13px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.tox thead th{position:sticky;top:0;background:var(--panelhi);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.tox tbody th{font-weight:700;color:var(--ink);white-space:nowrap;font-size:.82rem;background:var(--panel);position:sticky;left:0;z-index:1;}
+  table.tox .rowlabel{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .tcol{border-left:3px solid transparent;}
+  .c-sympatho{border-left-color:var(--sympatho);} .c-anticho{border-left-color:var(--anticho);}
+  .c-cholin{border-left-color:var(--cholin);} .c-opioid{border-left-color:var(--opioid);} .c-sedative{border-left-color:var(--sedative);}
+  .toxname{font-weight:800;font-size:.95rem;}
+  .s-sympatho{color:var(--sympatho);} .s-anticho{color:var(--anticho);} .s-cholin{color:var(--cholin);} .s-opioid{color:var(--opioid);} .s-sedative{color:var(--sedative);}
+  .up{color:var(--up);font-weight:800;} .down{color:var(--down);font-weight:800;} .eq{color:var(--muted);font-weight:700;}
+  .arrowbig{font-size:1.02rem;}
+
+  /* vital strip mini icons */
+  .vitchip{display:inline-block;font-family:"SF Mono",monospace;font-size:.72rem;padding:1px 5px;border-radius:5px;background:var(--panelhi);margin:1px 2px 1px 0;}
+
+  /* ---- overdose cards ---- */
+  .odgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;}
+  .od{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .od h3{margin:0 0 2px;font-size:1.08rem;font-weight:700;}
+  .od .cls{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .od .blk{margin:8px 0;font-size:.86rem;}
+  .od .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .od .ecg{color:var(--gold);} .od .anti b{color:var(--good);} .od .anti{color:var(--ink);}
+  .od .labs b{color:var(--cholin);} .od .labs{color:var(--soft);}
+  .od .danger b{color:var(--warn);}
+  .od.tox-sympatho{border-top-color:var(--sympatho);} .od.tox-anticho{border-top-color:var(--anticho);}
+  .od.tox-cholin{border-top-color:var(--cholin);} .od.tox-opioid{border-top-color:var(--opioid);}
+  .od.tox-sedative{border-top-color:var(--sedative);} .od.tox-other{border-top-color:var(--accent);}
+
+  /* ---- antidote map ---- */
+  .antigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+  .anti-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .anti-card .pois{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .anti-card .ant{font-size:1.05rem;font-weight:800;color:var(--good);margin:1px 0 6px;}
+  .anti-card p{margin:0;font-size:.84rem;color:var(--soft);}
+
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Medical Toxicology · Field Atlas</div>
+  <h1>Read the <em>poisoned</em> patient.</h1>
+  <p>Start with the vital-sign fingerprint and the pupils — the toxidrome grid sorts the five classic syndromes at a glance. Then the common-overdose cards add the specifics (ECG, labs, the killer detail), and the antidote map closes the loop. Diaphoresis is the great divider: wet skin points cholinergic or sympathomimetic; dry skin points anticholinergic.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Toxidromes overlap, co-ingestions are common, and a normal exam never excludes a dangerous ingestion (especially delayed-toxicity agents). Always call your <b>Poison Control center</b> and dose antidotes against current references/local protocol. Educational summary, abbreviated by design.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#grid">Toxidrome grid</a>
+  <a href="#wet-dry">Wet vs dry</a>
+  <a href="#overdoses">Common overdoses</a>
+  <a href="#antidotes">Antidote map</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   TOXIDROME GRID
+   ============================================================ */
+const U='<span class="up arrowbig">↑</span>', UU='<span class="up arrowbig">↑↑</span>',
+      D='<span class="down arrowbig">↓</span>', DD='<span class="down arrowbig">↓↓</span>',
+      EQ='<span class="eq">↔</span>';
+
+const TOX=[
+ {key:'sympatho',name:'Sympathomimetic',sub:'cocaine, amphetamines, MDMA, cathinones',
+   hr:U,bp:U,rr:U,temp:U,pupil:'<b class="up">Mydriasis</b> (dilated)',
+   skin:'<b class="up">Diaphoretic</b> (wet)',bowel:'↑/normal',ms:'Agitated, paranoid, seizures',
+   tell:'Wet skin + dilated pupils + agitation; distinguishes from anticholinergic by sweating & active bowel sounds'},
+ {key:'anticho',name:'Anticholinergic',sub:'diphenhydramine, TCAs, atropine, jimsonweed, antipsychotics',
+   hr:U,bp:'↑/↔',rr:EQ,temp:U,pupil:'<b class="up">Mydriasis</b> (dilated)',
+   skin:'<b class="down">Dry</b>, flushed, hot',bowel:'<b class="down">↓</b> (ileus)',ms:'Delirium, hallucinations, mumbling',
+   tell:'"Mad as a hatter, red as a beet, dry as a bone, hot as a hare, blind as a bat" — DRY skin & urinary retention split it from sympathomimetic'},
+ {key:'cholin',name:'Cholinergic',sub:'organophosphates, carbamates, nerve agents, physostigmine',
+   hr:'<span class="down">↓</span>/↑',bp:EQ,rr:U,temp:EQ,pupil:'<b class="down">Miosis</b> (pinpoint)',
+   skin:'<b class="up">Diaphoretic</b> (soaking)',bowel:'<b class="up">↑↑</b> (cramps, diarrhea)',ms:'Confusion, fasciculations, seizures',
+   tell:'SLUDGE / DUMBELS — secretions everywhere. Killer B\'s: Bradycardia, Bronchorrhea, Bronchospasm'},
+ {key:'opioid',name:'Opioid',sub:'heroin, fentanyl, oxycodone, methadone',
+   hr:D,bp:D,rr:'<b class="down">↓↓</b>',temp:'<span class="down">↓</span>/↔',pupil:'<b class="down">Miosis</b> (pinpoint)',
+   skin:'Normal/cool',bowel:'<b class="down">↓</b>',ms:'CNS depression → coma',
+   tell:'The triad: pinpoint pupils + respiratory depression + ↓consciousness. RR is the vital that kills'},
+ {key:'sedative',name:'Sedative-hypnotic',sub:'benzodiazepines, barbiturates, alcohol, GHB',
+   hr:'<span class="down">↓</span>/↔',bp:D,rr:D,temp:'<span class="down">↓</span>/↔',pupil:'Variable (often normal)',
+   skin:'Normal',bowel:EQ,ms:'Sedation → coma, slurred speech, ataxia',
+   tell:'Looks like opioid but pupils are usually normal and isolated benzos rarely stop breathing — barbiturates & co-ingestion do'}
+];
+
+const ROWS=[
+ ['Heart rate','hr'],['Blood pressure','bp'],['Resp rate','rr'],['Temp','temp'],
+ ['Pupils','pupil'],['Skin','skin'],['Bowel sounds','bowel'],['Mental status','ms']
+];
+
+function gridSection(){
+  let head=`<th></th>`+TOX.map(t=>`<th class="tcol c-${t.key}"><span class="toxname s-${t.key}">${t.name}</span><br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">${t.sub}</span></th>`).join('');
+  let body='';
+  ROWS.forEach(([label,k])=>{
+    body+=`<tr><th><span class="rowlabel">${label}</span></th>`+
+      TOX.map(t=>`<td class="tcol c-${t.key}">${t[k]}</td>`).join('')+`</tr>`;
+  });
+  body+=`<tr><th><span class="rowlabel">Key tell</span></th>`+
+    TOX.map(t=>`<td class="tcol c-${t.key}" style="font-size:.8rem;color:var(--soft)">${t.tell}</td>`).join('')+`</tr>`;
+  return `<h2 class="sec" id="grid">The five classic toxidromes</h2>
+   <p class="seclead">Vital signs + pupils + skin + bowel sounds + mental status. The two stimulant syndromes (sympathomimetic, anticholinergic) look alike until you check the skin and bowel; the two depressant syndromes (opioid, sedative) split on pupils and respiratory drive.</p>
+   <div class="gridwrap"><table class="tox"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+/* wet vs dry decision aid */
+function wetDry(){
+  return `<h2 class="sec" id="wet-dry">The fast split: wet vs dry, big vs small pupils</h2>
+  <p class="seclead">Two bedside forks resolve most cases before any labs return.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="wd">
+    <div class="od" style="border-top-color:var(--cholin)"><h3>Skin: wet or dry?</h3>
+      <div class="blk"><b style="color:var(--up)">WET skin</b>Cholinergic (also bradycardia, miosis, secretions) or Sympathomimetic (tachycardia, mydriasis, agitation).</div>
+      <div class="blk"><b style="color:var(--down)">DRY skin</b>Anticholinergic (mydriasis, ileus, urinary retention, hyperthermia, delirium).</div>
+      <div class="blk" style="color:var(--soft)">Dry + hot + delirious + big pupils = anticholinergic until proven otherwise.</div>
+    </div>
+    <div class="od" style="border-top-color:var(--opioid)"><h3>Pupils + resp drive</h3>
+      <div class="blk"><b style="color:var(--down)">Pinpoint + ↓RR</b>Opioid (give naloxone). Cholinergic also gives miosis but with secretions/bradycardia, not apnea alone.</div>
+      <div class="blk"><b style="color:var(--up)">Dilated + agitated</b>Sympathomimetic (wet) vs anticholinergic (dry).</div>
+      <div class="blk" style="color:var(--soft)">Normal pupils + sedated + breathing-ish = sedative-hypnotic.</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   COMMON OVERDOSES (overdose + intoxication specifics)
+   ============================================================ */
+const OD=[
+ {tox:'other',name:'Acetaminophen (APAP)',cls:'Hepatotoxin — the silent killer',
+  feat:'Often asymptomatic for 24 h, then RUQ pain, transaminitis, fulminant hepatic failure by day 3–4.',
+  labs:'4-h post-ingestion APAP level on the Rumack-Matthew nomogram; AST/ALT, bilirubin, INR/PT, BMP, lipase, venous pH/lactate, βhCG.',
+  change:'<span class="up">↑</span> AST/ALT (can be >1000), <span class="up">↑</span> INR, <span class="up">↑</span> bilirubin, later <span class="up">↑</span> Cr; <span class="down">↓</span> pH / <span class="up">↑</span> lactate in fulminant failure.',
+  anti:'N-acetylcysteine. IV (21-h): 150 mg/kg load over 1 h → 50 mg/kg over 4 h → 100 mg/kg over 16 h. PO: 140 mg/kg load → 70 mg/kg q4h ×17. Most effective <8 h; give regardless if indicated.',
+  danger:'A normal early exam is the trap. Treat on level/nomogram, not symptoms.'},
+ {tox:'other',name:'Salicylate (aspirin)',cls:'Mixed acid-base toxin',
+  feat:'Tinnitus, hyperpnea, vomiting, fever, AMS. Classic: primary respiratory alkalosis + anion-gap metabolic acidosis together.',
+  labs:'Serial salicylate levels q1–2h (can keep rising — bezoars/EC tablets), ABG/VBG, BMP, glucose, lactate, ketones, coags.',
+  change:'Early <span class="down">↓</span>pCO₂ (resp alkalosis), then <span class="up">↑</span> anion gap with <span class="down">↓</span>HCO₃ (metabolic acidosis); <span class="down">↓</span>/↔ glucose, <span class="down">↓</span>K⁺.',
+  anti:'Sodium bicarbonate: ~1–2 mEq/kg bolus, then infusion (e.g. 3 amps 8.4% in 1 L D5W at ~1.5–2× maintenance) targeting serum pH 7.45–7.55 & urine pH 7.5–8; replete K⁺. Hemodialysis if level very high, severe acidosis, AMS, or renal/pulmonary failure.',
+  danger:'NEVER intubate casually — apnea/sedation collapses their compensatory hyperventilation and the pH crashes.'},
+ {tox:'anticho',name:'TCA (tricyclic)',cls:'Na-channel + anticholinergic + α-block',
+  feat:'Anticholinergic toxidrome + seizures + hypotension + dysrhythmia. Rapid deterioration.',
+  ecg:'QRS widening, terminal R in aVR (>3 mm), rightward axis; QRS >100 ms → seizure/arrhythmia risk.',
+  labs:'ECG (serial), BMP, venous pH, APAP/salicylate co-ingestion screen; levels not useful acutely.',
+  change:'Often few lab changes; watch <span class="down">↓</span>pH (worsens cardiotoxicity), <span class="down">↓</span>K with bicarb therapy.',
+  anti:'Sodium bicarbonate 1–2 mEq/kg IV bolus, repeat to narrow QRS & target pH ~7.50–7.55, then infusion; benzodiazepines for seizures; hypertonic saline or lidocaine for refractory dysrhythmia; lipid emulsion if periarrest.',
+  danger:'Widening QRS is the alarm — bicarb before they arrest, not after.'},
+ {tox:'sympatho',name:'Cocaine / sympathomimetic',cls:'Catecholamine surge',
+  feat:'Hypertension, tachycardia, chest pain, hyperthermia, agitation, seizures, MI/dissection.',
+  ecg:'Sinus tach; ischemia/STEMI; Na-channel (QRS) and K-channel (QT) effects at high dose.',
+  labs:'ECG, troponin, CK (rhabdo), BMP/Cr, core temp, CT for headache/focal deficit; consider tox screen.',
+  change:'<span class="up">↑</span> CK & <span class="up">↑</span> K⁺ if rhabdo, <span class="up">↑</span> Cr (AKI), <span class="up">↑</span> lactate, <span class="up">↑</span> troponin if ischemia.',
+  anti:'Benzodiazepines first-line, titrated (e.g. diazepam 5–10 mg or lorazepam 2–4 mg IV, repeat); active cooling for hyperthermia; nitroglycerin/phentolamine for refractory HTN/coronary vasospasm.',
+  danger:'Avoid unopposed β-blockade acutely (theoretical unopposed α → worse vasospasm/HTN).'},
+ {tox:'sedative',name:'Benzodiazepine',cls:'GABA-A potentiation',
+  feat:'Sedation, slurred speech, ataxia; isolated benzos rarely cause apnea — co-ingestion does.',
+  labs:'Mainly clinical; check glucose, APAP/salicylate co-ingestion, ECG; levels unhelpful.',
+  change:'Typically none specific; rule out hypoglycemia & co-ingestants driving acidosis.',
+  anti:'Supportive airway/breathing. Flumazenil 0.2 mg IV over 30 s, repeat to 1 mg max — ONLY in select benzo-naïve (often iatrogenic) cases; avoid in chronic use/co-ingestion (seizure risk).',
+  danger:'Flumazenil can precipitate refractory seizures; rarely used in undifferentiated OD.'},
+ {tox:'opioid',name:'Opioid',cls:'µ-receptor agonism',
+  feat:'Pinpoint pupils, ↓RR, ↓LOC. Fentanyl/analogues may need repeat/higher naloxone; methadone/LAAM are long.',
+  ecg:'Methadone prolongs QT → torsades risk.',
+  labs:'Clinical dx; capnography/ABG for hypoventilation, glucose, APAP/ASA co-ingestion, ECG (methadone QT).',
+  change:'<span class="up">↑</span> pCO₂ (respiratory acidosis), <span class="down">↓</span> pH from hypoventilation.',
+  anti:'Naloxone: 0.04–0.4 mg IV titrated to ventilation (start low in chronic users), or 2–4 mg IN; repeat q2–3 min. Re-sedation common → infusion at ~⅔ of the effective waking dose per hour.',
+  danger:'A single dose can wear off before the opioid does — observe and re-dose; consider infusion.'},
+ {tox:'cholin',name:'Organophosphate / nerve agent',cls:'AChE inhibition',
+  feat:'SLUDGE/DUMBELS, miosis, bronchorrhea, bradycardia, fasciculations, seizures, paralysis.',
+  labs:'RBC (true) & plasma cholinesterase activity (confirmatory, not real-time), ABG, BMP, ECG, glucose.',
+  change:'<span class="down">↓↓</span> RBC acetylcholinesterase & plasma pseudocholinesterase; <span class="down">↓</span> pH if hypoventilating.',
+  anti:'Atropine 1–3 mg IV (peds 0.02 mg/kg), DOUBLE every 3–5 min until secretions/bronchorrhea dry (can need very large totals); pralidoxime (2-PAM) 1–2 g IV over 15–30 min then infusion, before "aging"; benzodiazepines for seizures.',
+  danger:'Death is from bronchorrhea/bronchospasm — atropine-dose to clear the lungs; protect yourself (PPE/decon).'},
+ {tox:'other',name:'Carbon monoxide',cls:'Impaired O₂ delivery',
+  feat:'Headache, nausea, confusion, syncope; cherry-red is rare/late. SpO₂ reads falsely normal.',
+  labs:'Co-oximetry carboxyhemoglobin (VBG/ABG), lactate, ECG + troponin, βhCG; consider cyanide co-exposure in fires.',
+  change:'<span class="up">↑</span> COHb (>3–5% non-smoker, >10% smoker), <span class="up">↑</span> lactate, possible <span class="up">↑</span> troponin; PaO₂ & calculated SaO₂ falsely normal.',
+  anti:'100% O₂ by non-rebreather/ETT (cuts COHb half-life from ~5 h to ~90 min); hyperbaric O₂ for syncope, neuro deficit, ischemia, COHb >25% (>15–20% in pregnancy), or pregnancy with fetal distress.',
+  danger:'Pulse oximetry is blind to COHb — a "normal" SpO₂ is falsely reassuring.'},
+ {tox:'other',name:'Toxic alcohols (methanol / ethylene glycol)',cls:'Osmolar + anion-gap acidosis',
+  feat:'Inebriation w/o ethanol smell; methanol → vision loss; ethylene glycol → renal failure, oxalate crystals.',
+  labs:'Serum osmolality (measured) + calculated osm gap, BMP/anion gap, ABG/lactate, methanol/EG levels, ethanol, Ca²⁺, UA for oxalate crystals, Wood\'s lamp (fluorescein in antifreeze).',
+  change:'Early <span class="up">↑</span> osmolar gap; later <span class="up">↑</span> anion-gap metabolic acidosis with <span class="down">↓</span>HCO₃; EG → <span class="down">↓</span>Ca²⁺, <span class="up">↑</span>Cr, oxalate crystalluria; may cause falsely <span class="up">↑</span> lactate.',
+  anti:'Fomepizole 15 mg/kg IV load → 10 mg/kg q12h ×4 → 15 mg/kg q12h (and during HD); hemodialysis for severe acidosis, high levels, or end-organ injury; cofactors — methanol: folate/folinic acid; EG: thiamine + pyridoxine.',
+  danger:'Treat on osmolar gap + suspicion before the gap closes into lethal acidosis.'},
+ {tox:'other',name:'Digoxin',cls:'Na/K-ATPase inhibition',
+  feat:'Nausea, confusion, visual halos/xanthopsia; brady- and tachy-dysrhythmias; hyperkalemia in acute tox.',
+  ecg:'Almost any dysrhythmia; classic PAT with block, bidirectional VT; "scooped" ST in therapy.',
+  labs:'Digoxin level (≥6 h post-ingestion), K⁺ (serial), BMP/Mg/Ca, ECG, renal function.',
+  change:'Acute: <span class="up">↑↑</span> K⁺ (prognostic — K >5 marks severe tox). Chronic: often <span class="down">↓</span>K / <span class="down">↓</span>Mg potentiating toxicity; <span class="up">↑</span>Cr worsens it.',
+  anti:'Digoxin-specific Fab. Acute known dose: vials = (mg ingested × 0.8)/0.5. Level-based: vials = (level ng/mL × wt kg)/100. Empiric: ~10–20 vials acute, 3–6 chronic. Indications: life-threatening dysrhythmia, K >5, end-organ.',
+  danger:'In acute toxicity, the K⁺ predicts mortality; treat with Fab.'},
+ {tox:'other',name:'Beta-blocker / Ca-channel blocker',cls:'Cardiac depressant',
+  feat:'Bradycardia + hypotension. CCB often preserves mentation & causes hyperglycemia; BB may cause hypoglycemia/bronchospasm.',
+  ecg:'Bradycardia, AV block, QRS/QT changes.',
+  labs:'Glucose (CCB ↑, BB ↓ classically), BMP, lactate, ABG, ECG, calcium, digoxin if unclear.',
+  change:'CCB: <span class="up">↑</span> glucose (insulin resistance) — a useful clue. BB: <span class="down">↓</span>/↔ glucose; both <span class="up">↑</span> lactate in shock.',
+  anti:'Calcium (CaCl₂ 1 g or Ca-gluconate 3 g IV, repeat); high-dose insulin euglycemia (HIE): regular insulin 1 unit/kg bolus → 0.5–1 (up to 10) unit/kg/h with dextrose & glucose monitoring; glucagon 3–5 mg IV (esp. BB); norepinephrine/epinephrine; lipid emulsion & pacing/ECMO for refractory.',
+  danger:'These can look stable then crash; early HIE and a pacing/ECMO plan for refractory shock.'},
+ {tox:'other',name:'Iron',cls:'Mitochondrial + corrosive',
+  feat:'Five phases: GI (vomiting/bleeding) → latent → shock/metabolic acidosis → hepatic → late strictures.',
+  labs:'Serum iron (peak 4–6 h), BMP/anion gap, ABG/lactate, glucose, LFTs/INR, AXR for radiopaque tablets, βhCG.',
+  change:'<span class="up">↑</span> anion-gap metabolic acidosis, <span class="up">↑</span> lactate, <span class="up">↑</span> glucose & <span class="up">↑</span> WBC (classic early markers), later <span class="up">↑</span> AST/ALT & <span class="up">↑</span> INR.',
+  anti:'Deferoxamine 15 mg/kg/h IV infusion for serious toxicity (level >500 µg/dL, severe acidosis, shock); aggressive crystalloids; whole-bowel irrigation with polyethylene glycol for visible tablets.',
+  danger:'The deceptive "latent" phase can falsely reassure before stage-3 collapse.'}
+];
+
+function odSection(){
+  return `<h2 class="sec" id="overdoses">Common overdoses &amp; intoxications</h2>
+  <p class="seclead">Beyond the syndromes: the specific agents you'll actually work up — the labs Poison Control will ask for, how those values move, the antidote with a commonly-taught dose, and the detail that kills if missed. <b>Confirm every dose against current references / Poison Control before giving it.</b></p>
+  <div class="odgrid">${OD.map(o=>`
+    <div class="od tox-${o.tox}">
+      <h3>${o.name}</h3><div class="cls">${o.cls}</div>
+      <div class="blk"><b>Features</b>${o.feat}</div>
+      ${o.ecg?`<div class="blk ecg"><b>ECG</b>${o.ecg}</div>`:''}
+      ${o.labs?`<div class="blk labs"><b>Labs to order</b>${o.labs}</div>`:''}
+      ${o.change?`<div class="blk"><b>Expected lab changes</b>${o.change}</div>`:''}
+      <div class="blk anti"><b>Antidote &amp; dose</b>${o.anti}</div>
+      <div class="blk danger"><b>Don't miss</b>${o.danger}</div>
+    </div>`).join('')}</div>`;
+}
+
+/* ============================================================
+   ANTIDOTE MAP
+   ============================================================ */
+const ANTI=[
+ ['Acetaminophen','N-acetylcysteine','IV: 150 mg/kg over 1 h → 50 mg/kg/4 h → 100 mg/kg/16 h. Replenishes glutathione; give if nomogram/criteria met.'],
+ ['Opioids','Naloxone','0.04–0.4 mg IV titrated (or 2–4 mg IN); repeat q2–3 min; infusion at ⅔ waking dose/h. Titrate to ventilation.'],
+ ['Benzodiazepines','Flumazenil','0.2 mg IV over 30 s, repeat to 1 mg max. Selective use only — seizure risk in dependence/co-ingestion.'],
+ ['Organophosphates','Atropine + Pralidoxime','Atropine 1–3 mg IV, double q3–5 min to dry secretions; 2-PAM 1–2 g IV over 15–30 min then infusion.'],
+ ['TCA / Na-channel','Sodium bicarbonate','1–2 mEq/kg IV bolus, repeat to narrow QRS & pH ~7.50–7.55, then infusion.'],
+ ['Beta-blocker','Glucagon + HIE','Glucagon 3–5 mg IV (up to 10); HIE: insulin 1 U/kg bolus → 0.5–1 U/kg/h with dextrose.'],
+ ['Ca-channel blocker','Calcium + HIE','CaCl₂ 1 g or Ca-gluconate 3 g IV (repeat); high-dose insulin euglycemia; pressors/lipid if refractory.'],
+ ['Digoxin','Digoxin Fab','Vials = (level × wt kg)/100, or (mg ingested × 0.8)/0.5; empiric ~10–20 acute / 3–6 chronic.'],
+ ['Methanol / ethylene glycol','Fomepizole','15 mg/kg IV load → 10 mg/kg q12h ×4 → 15 mg/kg q12h; dialysis for severe acidosis/end-organ.'],
+ ['Iron','Deferoxamine','15 mg/kg/h IV infusion for severe toxicity (level >500 µg/dL, shock, acidosis).'],
+ ['Carbon monoxide','100% / hyperbaric O₂','Non-rebreather/ETT (½-life ~5 h → ~90 min); HBO for severe/neuro/COHb >25% / pregnancy.'],
+ ['Methemoglobinemia','Methylene blue','1–2 mg/kg IV over 5 min, may repeat once. Reduces met-Hb (avoid in G6PD).'],
+ ['Sulfonylurea','Octreotide (+ dextrose)','50 µg SC q6–8h (peds 1–1.25 µg/kg); suppresses insulin release for refractory hypoglycemia.'],
+ ['Heparin','Protamine','1 mg per ~100 U heparin in the last few h (max ~50 mg). Reverses unfractionated heparin.'],
+ ['Warfarin','Vitamin K + 4-factor PCC','Vit K 5–10 mg IV; PCC ~25–50 U/kg by INR for serious bleeding.'],
+ ['Local anesthetic / lipophilic','IV lipid emulsion (20%)','1.5 mL/kg bolus → 0.25 mL/kg/min infusion; repeat bolus for persistent arrest ("lipid sink").'],
+ ['Cyanide','Hydroxocobalamin','5 g IV over ~15 min (peds 70 mg/kg); ± sodium thiosulfate. Binds CN → cyanocobalamin.'],
+ ['Isoniazid','Pyridoxine (B6)','1 g per gram INH ingested (or ~5 g empiric) IV. Stops INH-induced refractory seizures.'],
+ ['Sympathomimetic / agitation','Benzodiazepines','Lorazepam 2–4 mg or diazepam 5–10 mg IV, titrate/repeat. First-line for agitation, hyperthermia, seizures.'],
+ ['Anticholinergic (select)','Physostigmine','0.5–2 mg IV slow push. Pure antimuscarinic delirium only; avoid with TCA/conduction disease.']
+];
+function antiSection(){
+  return `<h2 class="sec" id="antidotes">Antidote map</h2>
+  <p class="seclead">Poison → antidote → commonly-taught dose and the one-line why. <b>Doses are starting references for adults unless noted — verify against current references and Poison Control before administration</b>, and adjust for peds, renal/hepatic function, and severity.</p>
+  <div class="antigrid">${ANTI.map(a=>`
+    <div class="anti-card"><div class="pois">${a[0]}</div><div class="ant">${a[1]}</div><p>${a[2]}</p></div>`).join('')}</div>`;
+}
+
+/* render */
+document.getElementById('main').innerHTML = gridSection()+wetDry()+odSection()+antiSection();
+document.getElementById('foot').innerHTML="Educational reference reflecting standard medical-toxicology teaching. Toxidromes overlap and co-ingestion is common; antidote doses are deliberately omitted. Always involve your regional Poison Control center and follow current references and local protocols. Not a substitute for clinical judgment.";
+
+/* theme toggle */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

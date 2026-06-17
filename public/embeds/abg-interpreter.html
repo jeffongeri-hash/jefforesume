@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABG Interpreter — Acid-Base, Step by Step</title>
+<style>
+  :root{
+    --bg:#0b1117;--bg2:#101a22;--panel:#121e27;--panelhi:#192833;--line:#253640;--line2:#1a2832;
+    --ink:#e8f1f5;--soft:#a2b6c2;--muted:#73899a;--faint:#516675;
+    --acid:#e0563b;     /* acidosis red */
+    --alk:#3fa7d6;      /* alkalosis blue */
+    --resp:#d68a2e;     /* respiratory amber */
+    --metab:#7c6cc4;    /* metabolic violet */
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;--grid:#0e161d;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e4eaee;--panel:#fff;--panelhi:#f2f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#10202a;--soft:#3a505e;--muted:#5b6f7f;--faint:#8194a2;
+    --acid:#c4422a;--alk:#1c7fb0;--resp:#b06f17;--metab:#5d4ba6;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1100px;margin:0 auto;padding:54px 36px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:64ch;color:var(--soft);font-size:1.02rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1100px;margin:14px auto 0;padding:0 36px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  main{max-width:1100px;margin:0 auto;padding:24px 36px 100px;}
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start;}
+  @media(max-width:880px){.layout{grid-template-columns:1fr;}}
+  .inputs{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;position:sticky;top:14px;}
+  @media(max-width:880px){.inputs{position:static;}}
+  .inputs h2{font-size:1rem;margin:0 0 12px;font-weight:700;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:.74rem;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:3px;}
+  .field .row{display:flex;align-items:center;gap:8px;}
+  .field input{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-family:"SF Mono",monospace;font-size:1.05rem;padding:9px 11px;}
+  .field input:focus{outline:none;border-color:var(--accent);}
+  .field .unit{font-size:.74rem;color:var(--faint);white-space:nowrap;}
+  .field .norm{font-size:.68rem;color:var(--faint);margin-top:2px;}
+  .opt{font-size:.68rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+  .btnrow{display:flex;gap:8px;margin-top:8px;}
+  button.go{flex:1;background:var(--accent);color:var(--bg);border:none;font-family:inherit;font-weight:800;font-size:.92rem;padding:11px;border-radius:9px;cursor:pointer;}
+  button.go:hover{filter:brightness(1.08);}
+  button.clr{background:transparent;border:1px solid var(--line);color:var(--soft);font-family:inherit;font-weight:600;font-size:.82rem;padding:11px 14px;border-radius:9px;cursor:pointer;}
+  .examples{margin-top:14px;border-top:1px solid var(--line2);padding-top:12px;}
+  .examples .lbl{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px;}
+  .ex{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line2);color:var(--soft);font-family:inherit;font-size:.78rem;padding:7px 10px;border-radius:7px;margin-bottom:5px;cursor:pointer;}
+  .ex:hover{border-color:var(--accent);color:var(--ink);}
+  .results{min-width:0;}
+  .placeholder{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--muted);}
+  .verdict{border-radius:14px;padding:18px 22px;margin-bottom:14px;border:1px solid var(--line);}
+  .verdict.acid{background:color-mix(in srgb,var(--acid) 12%,var(--panel));border-color:color-mix(in srgb,var(--acid) 40%,transparent);}
+  .verdict.alk{background:color-mix(in srgb,var(--alk) 12%,var(--panel));border-color:color-mix(in srgb,var(--alk) 40%,transparent);}
+  .verdict.neutral{background:var(--panel);}
+  .verdict .big{font-size:1.4rem;font-weight:800;letter-spacing:-.01em;margin:0 0 4px;}
+  .verdict .sub{font-size:.9rem;color:var(--soft);}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:12px;}
+  .step h3{margin:0 0 6px;font-size:.96rem;font-weight:700;display:flex;align-items:center;gap:9px;}
+  .step h3 .n{width:22px;height:22px;border-radius:50%;background:var(--panelhi);border:1px solid var(--accent);color:var(--accent);font-size:.74rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .step .calc{font-family:"SF Mono",monospace;font-size:.84rem;background:var(--bg2);border-radius:8px;padding:9px 12px;margin:8px 0;color:var(--soft);}
+  .step .calc b{color:var(--ink);}
+  .step .res{font-size:.92rem;}
+  .tag{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-left:6px;}
+  .t-acid{background:color-mix(in srgb,var(--acid) 20%,transparent);color:var(--acid);}
+  .t-alk{background:color-mix(in srgb,var(--alk) 20%,transparent);color:var(--alk);}
+  .t-resp{background:color-mix(in srgb,var(--resp) 20%,transparent);color:var(--resp);}
+  .t-metab{background:color-mix(in srgb,var(--metab) 20%,transparent);color:var(--metab);}
+  .t-ok{background:color-mix(in srgb,var(--good) 20%,transparent);color:var(--good);}
+  .causes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+  @media(max-width:560px){.causes{grid-template-columns:1fr;}}
+  .causebox{background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;}
+  .causebox .ttl{font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px;}
+  .causebox p{margin:0;font-size:.82rem;color:var(--soft);}
+  .warnbox{border-left:3px solid var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);padding:8px 12px;border-radius:0 7px 7px 0;font-size:.84rem;color:var(--soft);margin:8px 0;}
+  .warnbox b{color:var(--ink);}
+  h2.sec{font-size:1.4rem;font-weight:800;margin:34px 0 4px;}
+  p.seclead{color:var(--soft);margin:0 0 14px;max-width:74ch;font-size:.94rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .card h3{margin:0 0 6px;font-size:1rem;font-weight:700;}
+  .card .blk{margin:7px 0;font-size:.85rem;}
+  .card .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .card.consid{border-top:3px solid var(--acid);}
+  footer{max-width:1100px;margin:0 auto;padding:30px 36px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,main,footer{padding-left:18px;padding-right:18px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Acid-Base · Interactive Interpreter</div>
+  <h1>Work the <em>gas</em>.</h1>
+  <p>Enter the values and it walks the same five steps you'd do by hand: acidemia or alkalemia, primary disorder, compensation adequacy (is there a second disorder hiding?), the anion gap, and the delta-delta. Add electrolytes to unlock the gap analysis. Then the considerations — including how acidosis changes drug handling.</p>
+</header>
+<div class="disclaimer"><div><b>Educational tool for trained clinicians.</b> This implements standard acid-base formulas on the numbers you enter — it does not see your patient. Garbage in, garbage out: confirm values, correlate clinically, and treat the patient, not the gas. Reference ranges vary by lab/altitude. Not a diagnostic device.</div></div>
+
+<main>
+  <div class="layout">
+    <div class="inputs">
+      <h2>Enter values</h2>
+      <div class="field"><label>pH</label><div class="row"><input id="pH" type="number" step="0.01" placeholder="7.40"><span class="unit"></span></div><div class="norm">normal 7.35–7.45</div></div>
+      <div class="field"><label>PaCO₂</label><div class="row"><input id="co2" type="number" step="0.1" placeholder="40"><span class="unit">mmHg</span></div><div class="norm">normal 35–45</div></div>
+      <div class="field"><label>HCO₃⁻</label><div class="row"><input id="hco3" type="number" step="0.1" placeholder="24"><span class="unit">mEq/L</span></div><div class="norm">normal 22–26</div></div>
+      <div class="field"><label>Na⁺ <span class="opt">for gap</span></label><div class="row"><input id="na" type="number" step="1" placeholder="140"><span class="unit">mEq/L</span></div></div>
+      <div class="field"><label>Cl⁻ <span class="opt">for gap</span></label><div class="row"><input id="cl" type="number" step="1" placeholder="104"><span class="unit">mEq/L</span></div></div>
+      <div class="field"><label>Albumin <span class="opt">corrects gap</span></label><div class="row"><input id="alb" type="number" step="0.1" placeholder="4.0"><span class="unit">g/dL</span></div></div>
+      <div class="field"><label>PaO₂ <span class="opt">optional</span></label><div class="row"><input id="o2" type="number" step="1" placeholder="—"><span class="unit">mmHg</span></div></div>
+      <div class="btnrow"><button class="go" id="go">Interpret →</button><button class="clr" id="clr">Clear</button></div>
+      <div class="examples">
+        <div class="lbl">Load an example</div>
+        <button class="ex" data-ex="dka">DKA — high-gap metabolic acidosis</button>
+        <button class="ex" data-ex="copd">COPD — chronic respiratory acidosis</button>
+        <button class="ex" data-ex="vomit">Vomiting — metabolic alkalosis</button>
+        <button class="ex" data-ex="sepsis">Sepsis — mixed gap acidosis + resp alkalosis</button>
+        <button class="ex" data-ex="salicylate">Salicylate — resp alkalosis + gap acidosis</button>
+        <button class="ex" data-ex="diarrhea">Diarrhea — normal-gap acidosis</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="placeholder">Enter at least <b>pH, PaCO₂, and HCO₃⁻</b> and press Interpret. Add Na⁺ and Cl⁻ to compute the anion gap and delta-delta.</div>
+    </div>
+  </div>
+
+  <div id="reference"></div>
+</main>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   ACID-BASE ENGINE
+   ============================================================ */
+const EX={
+ dka:{pH:7.18,co2:25,hco3:9,na:138,cl:99,alb:4.0},
+ copd:{pH:7.34,co2:60,hco3:31,na:140,cl:99,alb:4.0},
+ vomit:{pH:7.52,co2:46,hco3:36,na:140,cl:88,alb:4.0},
+ sepsis:{pH:7.36,co2:24,hco3:13,na:138,cl:104,alb:4.0},
+ salicylate:{pH:7.42,co2:22,hco3:14,na:140,cl:102,alb:4.0},
+ diarrhea:{pH:7.30,co2:32,hco3:15,na:140,cl:115,alb:4.0}
+};
+
+function num(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
+
+function interpret(){
+  const pH=num('pH'), co2=num('co2'), hco3=num('hco3');
+  const na=num('na'), cl=num('cl'), alb=num('alb'), o2=num('o2');
+  const R=document.getElementById('results');
+  if(pH===null||co2===null||hco3===null){
+    R.innerHTML=`<div class="placeholder" style="border-color:var(--warn);color:var(--warn)">Please enter pH, PaCO₂, and HCO₃⁻ to interpret.</div>`;
+    return;
+  }
+  let out='';
+
+  /* ---- Step 0: verdict ---- */
+  let acidemia = pH<7.35, alkalemia = pH>7.45, neutral = !acidemia&&!alkalemia;
+  let vClass = acidemia?'acid':alkalemia?'alk':'neutral';
+  let vText = acidemia?'Acidemia':alkalemia?'Alkalemia':'Normal pH';
+  let vSub = acidemia?'pH below 7.35 — an acid process dominates':alkalemia?'pH above 7.45 — an alkaline process dominates':'pH in range — but a mixed disorder can still hide here (check the steps below)';
+
+  /* ---- Step 1: primary disorder ---- */
+  // Determine dominant primary by which moves with pH
+  // Metabolic: HCO3 deviation in same direction as pH; Respiratory: CO2 deviation opposite to pH
+  let primary='', primTag='', primExplain='';
+  const lowHco3=hco3<22, highHco3=hco3>26, lowCo2=co2<35, highCo2=co2>45;
+
+  if(acidemia){
+    if(lowHco3 && (hco3-24) < -(co2-40)*0 ) {} // placeholder
+    // acidemia: metabolic if HCO3 low; respiratory if CO2 high
+    if(lowHco3 && !highCo2){ primary='Metabolic acidosis'; primTag='t-metab'; primExplain='Low HCO₃⁻ with acidemia → a metabolic acidosis is the primary driver.'; }
+    else if(highCo2 && !lowHco3){ primary='Respiratory acidosis'; primTag='t-resp'; primExplain='High PaCO₂ with acidemia → a respiratory acidosis is the primary driver.'; }
+    else if(lowHco3 && highCo2){ primary='Combined metabolic + respiratory acidosis'; primTag='t-acid'; primExplain='Both low HCO₃⁻ and high PaCO₂ with acidemia → both processes are acidifying (no compensation can do this).'; }
+    else { primary='Acidemia (mixed/early)'; primTag='t-acid'; primExplain='Values are borderline; interpret with compensation below.'; }
+  } else if(alkalemia){
+    if(highHco3 && !lowCo2){ primary='Metabolic alkalosis'; primTag='t-metab'; primExplain='High HCO₃⁻ with alkalemia → a metabolic alkalosis is the primary driver.'; }
+    else if(lowCo2 && !highHco3){ primary='Respiratory alkalosis'; primTag='t-resp'; primExplain='Low PaCO₂ with alkalemia → a respiratory alkalosis is the primary driver.'; }
+    else if(highHco3 && lowCo2){ primary='Combined metabolic + respiratory alkalosis'; primTag='t-alk'; primExplain='Both high HCO₃⁻ and low PaCO₂ with alkalemia → both processes are alkalinizing.'; }
+    else { primary='Alkalemia (mixed/early)'; primTag='t-alk'; primExplain='Values are borderline; interpret with compensation below.'; }
+  } else {
+    // normal pH — look for opposing disorders
+    if(lowHco3 && lowCo2){ primary='Mixed: metabolic acidosis + respiratory alkalosis'; primTag='t-acid'; primExplain='Normal pH but HCO₃ and CO₂ are both low and pulling oppositely — a metabolic acidosis with a respiratory alkalosis (classic in sepsis and salicylate toxicity). Check the gap.'; }
+    else if(highHco3 && highCo2){ primary='Mixed: metabolic alkalosis + respiratory acidosis'; primTag='t-alk'; primExplain='Normal pH with both HCO₃ and CO₂ high — a metabolic alkalosis with a respiratory acidosis, or a compensated chronic picture. Correlate with timeline.'; }
+    else if(lowCo2 && highHco3){ primary='Mixed: respiratory alkalosis + metabolic alkalosis'; primTag='t-alk'; primExplain='Opposite to compensation — both push pH up.'; }
+    else if(highCo2 && lowHco3){ primary='Mixed: respiratory acidosis + metabolic acidosis'; primTag='t-acid'; primExplain='Both push pH down despite a normal pH — a dangerous mixed disorder.'; }
+    else { primary='Normal acid-base'; primTag='t-ok'; primExplain='pH, PaCO₂, and HCO₃⁻ all within range. A normal-gap mixed disorder can still rarely hide — correlate clinically.'; }
+  }
+
+  /* ---- Step 2: compensation ---- */
+  let comp='', compTag='', expectStr='';
+  function chronicityNote(){return '<div class="warnbox" style="border-left-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)">Acute vs chronic respiratory disorders compensate differently — the same gas can be "appropriate" if chronic. Correlate with the clinical timeline.</div>';}
+
+  if(primary.startsWith('Metabolic acidosis') || primary==='Mixed: metabolic acidosis + respiratory alkalosis' || primary==='Mixed: respiratory acidosis + metabolic acidosis'){
+    const expCO2 = 1.5*hco3 + 8; // Winter's
+    const lo=expCO2-2, hi=expCO2+2;
+    expectStr=`Winter's formula: expected PaCO₂ = 1.5×HCO₃ + 8 = <b>${expCO2.toFixed(0)} ± 2</b> (range ${lo.toFixed(0)}–${hi.toFixed(0)})`;
+    if(co2<lo){ comp='Concomitant respiratory alkalosis'; compTag='t-resp'; comp+=' — measured PaCO₂ is lower than expected, so the patient is over-breathing beyond compensation.'; }
+    else if(co2>hi){ comp='Concomitant respiratory acidosis'; compTag='t-resp'; comp+=' — measured PaCO₂ is higher than expected, so ventilation is inadequate (a second, respiratory problem).'; }
+    else { comp='Appropriate respiratory compensation'; compTag='t-ok'; comp+=' — the lungs are blowing off CO₂ as expected for this degree of metabolic acidosis (not a separate disorder).'; }
+  }
+  else if(primary.startsWith('Metabolic alkalosis') || primary==='Mixed: metabolic alkalosis + respiratory acidosis'){
+    const expCO2 = 40 + 0.7*(hco3-24);
+    const lo=expCO2-2, hi=expCO2+2;
+    expectStr=`Expected PaCO₂ = 40 + 0.7×(HCO₃−24) = <b>${expCO2.toFixed(0)} ± 2</b> (range ${lo.toFixed(0)}–${hi.toFixed(0)})`;
+    if(co2<lo){ comp='Concomitant respiratory alkalosis'; compTag='t-resp'; }
+    else if(co2>hi){ comp='Concomitant respiratory acidosis (or appropriate hypoventilation at limit)'; compTag='t-resp'; }
+    else { comp='Appropriate respiratory compensation'; compTag='t-ok'; comp+=' — hypoventilation raising CO₂ as expected.'; }
+  }
+  else if(primary.startsWith('Respiratory acidosis')){
+    // acute: HCO3 +1 per 10 CO2; chronic: +3.5-4 per 10
+    const dCO2=(co2-40)/10;
+    const acuteHco3=24+1*dCO2, chronicHco3=24+3.5*dCO2;
+    expectStr=`Per 10 mmHg ↑PaCO₂: HCO₃ rises ~1 (acute) to ~3.5–4 (chronic). Acute≈<b>${acuteHco3.toFixed(0)}</b>, chronic≈<b>${chronicHco3.toFixed(0)}</b> (measured ${hco3}).`;
+    if(hco3 < acuteHco3-2){ comp='Concomitant metabolic acidosis'; compTag='t-metab'; }
+    else if(hco3 > chronicHco3+2){ comp='Concomitant metabolic alkalosis'; compTag='t-metab'; }
+    else if(hco3 <= acuteHco3+2){ comp='Consistent with ACUTE respiratory acidosis'; compTag='t-ok'; }
+    else { comp='Consistent with CHRONIC (compensated) respiratory acidosis'; compTag='t-ok'; }
+    expectStr+=chronicityNote();
+  }
+  else if(primary.startsWith('Respiratory alkalosis')){
+    const dCO2=(40-co2)/10;
+    const acuteHco3=24-2*dCO2, chronicHco3=24-5*dCO2;
+    expectStr=`Per 10 mmHg ↓PaCO₂: HCO₃ falls ~2 (acute) to ~4–5 (chronic). Acute≈<b>${acuteHco3.toFixed(0)}</b>, chronic≈<b>${chronicHco3.toFixed(0)}</b> (measured ${hco3}).`;
+    if(hco3 > acuteHco3+2){ comp='Concomitant metabolic alkalosis'; compTag='t-metab'; }
+    else if(hco3 < chronicHco3-2){ comp='Concomitant metabolic acidosis'; compTag='t-metab'; }
+    else if(hco3 >= acuteHco3-2){ comp='Consistent with ACUTE respiratory alkalosis'; compTag='t-ok'; }
+    else { comp='Consistent with CHRONIC respiratory alkalosis'; compTag='t-ok'; }
+    expectStr+=chronicityNote();
+  }
+  else {
+    expectStr='Compensation analysis applies once a single primary disorder is identified; this looks mixed or normal.';
+    comp='See primary analysis above.'; compTag='t-ok';
+  }
+
+  /* ---- Step 3: anion gap ---- */
+  let agStr='', agBlock='', haveGap=(na!==null && cl!==null);
+  let AG=null, correctedAG=null;
+  if(haveGap){
+    AG = na - cl - hco3;
+    let agExpl;
+    let albCorr='';
+    correctedAG=AG;
+    if(alb!==null){
+      correctedAG = AG + 2.5*(4.0-alb);
+      albCorr=` Albumin-corrected = ${AG.toFixed(0)} + 2.5×(4.0−${alb}) = <b>${correctedAG.toFixed(0)}</b> (each 1 g/dL low albumin masks ~2.5 of gap).`;
+    }
+    const high = correctedAG>12;
+    agStr=`Anion gap = Na − Cl − HCO₃ = ${na} − ${cl} − ${hco3} = <b>${AG.toFixed(0)}</b> mEq/L (normal ~8–12).${albCorr}`;
+    agBlock = high
+      ? `<div class="res"><b style="color:var(--metab)">High anion gap</b> — unmeasured acids present. Differential <span class="mono">GOLD MARK</span>: Glycols (ethylene/propylene), Oxoproline, L-lactate, D-lactate, Methanol, Aspirin, Renal failure (uremia), Ketoacidosis (DKA/alcoholic/starvation).</div>`
+      : `<div class="res"><b style="color:var(--good)">Normal anion gap</b> — if acidotic, this is a hyperchloremic (normal-gap) acidosis. Differential <span class="mono">HARDASS</span>: Hyperalimentation, Acetazolamide, Renal tubular acidosis, Diarrhea, Addison's, Spironolactone, Saline. Check urine anion gap to separate renal (RTA) from GI losses.</div>`;
+  } else {
+    agStr='Enter Na⁺ and Cl⁻ to compute the anion gap.';
+    agBlock='';
+  }
+
+  /* ---- Step 4: delta-delta (only if high gap) ---- */
+  let ddBlock='';
+  if(haveGap && correctedAG>12){
+    const deltaAG = correctedAG - 12;
+    const deltaHCO3 = 24 - hco3;
+    const ratio = deltaAG/deltaHCO3;
+    let ddInterp;
+    if(ratio<1){ ddInterp='<b style="color:var(--acid)">Ratio &lt;1</b> → a concurrent <b>normal-gap (hyperchloremic) metabolic acidosis</b> coexists with the high-gap acidosis.'; }
+    else if(ratio>2){ ddInterp='<b style="color:var(--alk)">Ratio &gt;2</b> → a concurrent <b>metabolic alkalosis</b> (or pre-existing high HCO₃, e.g., chronic resp acidosis) is present.'; }
+    else { ddInterp='<b style="color:var(--good)">Ratio 1–2</b> → a pure high-anion-gap metabolic acidosis (no third disorder by delta-delta).'; }
+    ddBlock=`<div class="step"><h3><span class="n">5</span> Delta-delta (gap acidosis only)</h3>
+      <div class="calc">ΔAG = ${correctedAG.toFixed(0)} − 12 = <b>${deltaAG.toFixed(0)}</b><br>ΔHCO₃ = 24 − ${hco3} = <b>${deltaHCO3.toFixed(0)}</b><br>Ratio (ΔAG/ΔHCO₃) = <b>${ratio.toFixed(2)}</b></div>
+      <div class="res">${ddInterp}</div></div>`;
+  }
+
+  /* ---- oxygenation note ---- */
+  let oxBlock='';
+  if(o2!==null){
+    let oxtxt = o2>=80?'Adequate oxygenation on this sample.':o2>=60?'Mild hypoxemia — correlate with FiO₂ and A-a gradient.':'Significant hypoxemia (PaO₂ <60) — hypoxemic respiratory failure; assess A-a gradient (shunt vs hypoventilation).';
+    oxBlock=`<div class="step"><h3><span class="n">+</span> Oxygenation</h3><div class="res">PaO₂ ${o2} mmHg — ${oxtxt} A-a gradient widens with V/Q mismatch, shunt, and diffusion defects; a normal gradient with hypercapnia points to hypoventilation.</div></div>`;
+  }
+
+  /* ---- likely causes by final pattern ---- */
+  let causes=likelyCauses(primary, comp, haveGap, correctedAG);
+
+  /* ---- assemble ---- */
+  out += `<div class="verdict ${vClass}"><div class="big">${vText}</div><div class="sub">pH ${pH} · PaCO₂ ${co2} · HCO₃ ${hco3}${haveGap?` · AG ${AG.toFixed(0)}`:''} — ${vSub}</div></div>`;
+
+  out += `<div class="step"><h3><span class="n">1</span> Acidemia or alkalemia?</h3><div class="res">pH ${pH} → ${vText}. ${neutral?'A normal pH does not mean normal acid-base — opposing disorders can cancel.':''}</div></div>`;
+
+  out += `<div class="step"><h3><span class="n">2</span> Primary disorder <span class="tag ${primTag}">${primary.includes('Metabolic')?'metabolic':primary.includes('Respiratory')?'respiratory':primary.includes('Mixed')||primary.includes('Combined')?'mixed':''}</span></h3><div class="res"><b>${primary}.</b> ${primExplain}</div></div>`;
+
+  out += `<div class="step"><h3><span class="n">3</span> Compensation — is a 2nd disorder hiding? <span class="tag ${compTag}">${compTag==='t-ok'?'appropriate':'extra disorder'}</span></h3><div class="calc">${expectStr}</div><div class="res">${comp}</div></div>`;
+
+  out += `<div class="step"><h3><span class="n">4</span> Anion gap</h3><div class="calc">${agStr}</div>${agBlock}</div>`;
+
+  out += ddBlock;
+  out += oxBlock;
+  out += causes;
+
+  out += `<div class="warnbox"><b>Remember:</b> treat the patient and the underlying cause, not the number. The pH the body defends and the speed of correction matter as much as the value — and a "normal" gas can still be two diseases cancelling out.</div>`;
+
+  R.innerHTML=out;
+  R.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function likelyCauses(primary, comp, haveGap, cAG){
+  let boxes=[];
+  if(primary.includes('Metabolic acidosis') || primary.includes('metabolic acidosis') || (haveGap&&cAG>12)){
+    if(haveGap && cAG>12){
+      boxes.push(['High-gap acidosis (GOLD MARK)','Ketoacidosis (DKA, alcoholic, starvation), lactic acidosis (sepsis, ischemia, metformin), toxic alcohols (methanol, ethylene glycol), salicylates, uremia/renal failure, propylene glycol.']);
+    } else {
+      boxes.push(['Metabolic acidosis','Compute the gap (need Na & Cl) to split high-gap vs normal-gap.']);
+    }
+    boxes.push(['Normal-gap (hyperchloremic)','GI HCO₃ loss (diarrhea), renal tubular acidosis, carbonic anhydrase inhibitors, early renal failure, saline resuscitation.']);
+  }
+  if(primary.includes('Respiratory acidosis') || primary.includes('respiratory acidosis')){
+    boxes.push(['Respiratory acidosis','Hypoventilation: COPD, asthma, CNS/sedative depression (opioids), neuromuscular weakness, chest wall, severe obesity, fatigue/impending failure.']);
+  }
+  if(primary.includes('Respiratory alkalosis') || primary.includes('respiratory alkalosis')){
+    boxes.push(['Respiratory alkalosis','Hyperventilation: hypoxia, anxiety/pain, sepsis (early), PE, pregnancy, salicylates (central), CNS disease, high altitude, liver failure.']);
+  }
+  if(primary.includes('Metabolic alkalosis') || primary.includes('metabolic alkalosis')){
+    boxes.push(['Metabolic alkalosis','Chloride-responsive: vomiting/NG suction, diuretics, volume contraction. Chloride-resistant: hyperaldosteronism, Cushing\'s, severe hypokalemia, milk-alkali. Check urine chloride.']);
+  }
+  if(comp.includes('Concomitant') || primary.includes('Mixed') || primary.includes('Combined')){
+    boxes.push(['Mixed disorder present','More than one process is acting — common in the critically ill (e.g., sepsis with lactic acidosis + tachypneic respiratory alkalosis; salicylate toxicity; vomiting + DKA). Treat each component\'s cause.']);
+  }
+  if(boxes.length===0){ boxes.push(['Normal','No primary acid-base disorder by these values — correlate clinically.']); }
+  return `<div class="step"><h3><span class="n">→</span> Likely causes</h3><div class="causes">${boxes.map(b=>`<div class="causebox"><div class="ttl">${b[0]}</div><p>${b[1]}</p></div>`).join('')}</div></div>`;
+}
+
+/* reference + considerations */
+function reference(){
+ return `<h2 class="sec">The five-step method (reference)</h2>
+ <p class="seclead">What the tool runs each time — worth knowing cold so you can do it without the calculator.</p>
+ <div class="cardgrid">
+   <div class="card"><h3>1 · pH</h3><div class="blk">Acidemia (&lt;7.35) or alkalemia (&gt;7.45)? This names the dominant process.</div></div>
+   <div class="card"><h3>2 · Primary</h3><div class="blk">Which moves with the pH — HCO₃ (metabolic) or PaCO₂ (respiratory)? Acidemia + low HCO₃ = metabolic acidosis; acidemia + high CO₂ = respiratory.</div></div>
+   <div class="card"><h3>3 · Compensation</h3><div class="blk">Winter's for metabolic acidosis (1.5×HCO₃+8±2); per-10 rules for respiratory. Outside the expected range ⇒ a second disorder. The body never overcompensates.</div></div>
+   <div class="card"><h3>4 · Anion gap</h3><div class="blk">Na−Cl−HCO₃ (normal 8–12); correct for albumin (+2.5 per 1 g/dL below 4). High gap = unmeasured acids.</div></div>
+   <div class="card"><h3>5 · Delta-delta</h3><div class="blk">For a high gap: ΔAG/ΔHCO₃. &lt;1 adds a normal-gap acidosis; &gt;2 adds a metabolic alkalosis; 1–2 is pure.</div></div>
+   <div class="card"><h3>Winter's & rules</h3><div class="blk">Metabolic acidosis: expected CO₂ = 1.5×HCO₃+8±2. Resp acidosis: HCO₃ +1/+3.5 per 10 (acute/chronic). Resp alkalosis: HCO₃ −2/−5 per 10.</div></div>
+ </div>
+
+ <h2 class="sec" id="considerations">Clinical considerations — why the pH matters beyond the diagnosis</h2>
+ <p class="seclead">Acid-base status changes physiology and pharmacology. These are the downstream effects worth holding in mind while you treat.</p>
+ <div class="cardgrid">
+   <div class="card consid"><h3>Drug metabolism &amp; ionization</h3>
+     <div class="blk"><b>Ion trapping</b>pH shifts the ionized:non-ionized ratio of weak acids/bases (Henderson-Hasselbalch). Only non-ionized drug crosses membranes — so pH changes where a drug distributes and how it's cleared.</div>
+     <div class="blk"><b>Salicylate — the clinical lever</b>Alkalinizing serum & urine keeps salicylate ionized → "traps" it out of the CNS and enhances renal elimination. This is why you alkalinize, and why acidemia (or careless intubation dropping the pH) drives more drug into the brain.</div>
+     <div class="blk"><b>TCAs</b>Acidemia increases the free, active (unbound, non-ionized) fraction and worsens sodium-channel blockade; bicarbonate both alkalinizes and provides a sodium load → narrows QRS.</div>
+     <div class="blk"><b>Phenobarbital / other weak acids</b>Urinary alkalinization speeds elimination by ion trapping in the tubule.</div>
+   </div>
+   <div class="card consid"><h3>Protein binding &amp; free drug</h3>
+     <div class="blk"><b>Acidemia</b>Alters plasma-protein binding; for some highly-bound drugs the free (active) fraction rises, increasing effect and toxicity at the "same" total level.</div>
+     <div class="blk"><b>Calcium</b>Acidemia raises ionized calcium (more comes off albumin); alkalemia lowers it — alkalosis can precipitate tetany/paresthesias and arrhythmia even with a "normal" total calcium.</div>
+   </div>
+   <div class="card consid"><h3>Potassium shifts</h3>
+     <div class="blk"><b>Acidemia</b>Drives K⁺ out of cells (transcellular shift) → serum K⁺ rises ~0.2–0.6 per 0.1 pH drop (variable, less reliable in organic acidoses). Correcting the acidosis (e.g., DKA) then unmasks the true total-body K⁺ deficit — replace K⁺ as you treat.</div>
+     <div class="blk"><b>Alkalemia</b>Drives K⁺ into cells → hypokalemia; also lowers ionized Ca²⁺.</div>
+   </div>
+   <div class="card consid"><h3>Hemodynamics &amp; the heart</h3>
+     <div class="blk"><b>Severe acidemia (pH &lt;7.1–7.2)</b>Depresses myocardial contractility, blunts catecholamine/vasopressor responsiveness, and predisposes to arrhythmia — pressors "stop working" until pH improves.</div>
+     <div class="blk"><b>Oxygen unloading</b>Acidosis right-shifts the oxyhemoglobin curve (Bohr) — easier tissue O₂ release; alkalosis left-shifts (holds O₂ tighter).</div>
+   </div>
+   <div class="card consid"><h3>Ventilation interplay</h3>
+     <div class="blk"><b>Don't paralyze the compensation</b>A metabolic-acidosis patient survives by blowing off CO₂; sedating/intubating and setting a "normal" minute ventilation can drop their pH catastrophically. Match the vent to their pre-intubation minute ventilation.</div>
+     <div class="blk"><b>Permissive hypercapnia</b>Acceptable to protect the lung (ARDS, severe asthma) as long as pH stays roughly ≥7.20 and the patient tolerates it.</div>
+   </div>
+   <div class="card consid"><h3>Treatment cautions</h3>
+     <div class="blk"><b>Bicarbonate</b>Not routine for organic acidoses (DKA, lactic) — treat the cause; reserve for severe acidemia, hyperkalemia, or Na-channel-blocker toxicity. Over-correction risks overshoot alkalosis, ionized hypocalcemia, and a paradoxical CSF acidosis.</div>
+     <div class="blk"><b>Speed</b>Chronic derangements (chronic respiratory acidosis, chronic hyponatremia coexisting) must be corrected slowly; rapid normalization causes its own harm.</div>
+   </div>
+ </div>`;
+}
+
+document.getElementById('reference').innerHTML=reference();
+document.getElementById('foot').innerHTML="Educational interpreter implementing standard acid-base formulas (Winter's, compensation rules, anion gap, delta-delta) on user-entered values. It does not assess the patient, chronicity, or clinical context — those are yours to supply. Reference ranges vary by laboratory and altitude. Verify against current references; not a diagnostic device or a substitute for clinical judgment.";
+
+/* wiring */
+document.getElementById('go').addEventListener('click',interpret);
+document.getElementById('clr').addEventListener('click',()=>{['pH','co2','hco3','na','cl','alb','o2'].forEach(id=>document.getElementById(id).value='');document.getElementById('results').innerHTML=`<div class="placeholder">Enter at least <b>pH, PaCO₂, and HCO₃⁻</b> and press Interpret.</div>`;});
+document.querySelectorAll('.ex').forEach(b=>b.addEventListener('click',()=>{
+  const e=EX[b.dataset.ex];
+  document.getElementById('pH').value=e.pH;document.getElementById('co2').value=e.co2;document.getElementById('hco3').value=e.hco3;
+  document.getElementById('na').value=e.na;document.getElementById('cl').value=e.cl;document.getElementById('alb').value=e.alb;
+  document.getElementById('o2').value='';
+  interpret();
+}));
+// allow Enter key
+['pH','co2','hco3','na','cl','alb','o2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')interpret();}));
+
+/* theme toggle */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
