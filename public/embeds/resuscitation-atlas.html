@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resuscitation Atlas — Shock, Pressors, Fluids & Electrolytes</title>
+<style>
+  :root{
+    --bg:#0c1116;--bg2:#111922;--panel:#131d26;--panelhi:#1a2731;--line:#26343f;--line2:#1b2832;
+    --ink:#e9f1f5;--soft:#a3b7c2;--muted:#74899a;--faint:#536775;
+    --hypo:#e0563b;     /* hypovolemic red */
+    --cardio:#d68a2e;   /* cardiogenic amber */
+    --distrib:#3fa7d6;  /* distributive blue */
+    --obstruct:#7c6cc4; /* obstructive violet */
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --up:#ff7a5c;--down:#5fb0e6;--grid:#0f161d;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e4eaee;--panel:#fff;--panelhi:#f2f6f8;--line:#ccd9e0;--line2:#dde6ec;
+    --ink:#11202a;--soft:#3b515f;--muted:#5c7080;--faint:#8295a3;
+    --hypo:#c4422a;--cardio:#b06f17;--distrib:#1c7fb0;--obstruct:#5d4ba6;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--up:#c8442b;--down:#2576c0;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:16px;
+    transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:68ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:34px 0 4px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:76ch;font-size:.95rem;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:880px;font-size:.85rem;}
+  table.cmp th,table.cmp td{padding:11px 13px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);position:sticky;left:0;z-index:1;white-space:nowrap;}
+  .rowlabel{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .tcol{border-left:3px solid transparent;}
+  .c-hypo{border-left-color:var(--hypo);}.c-cardio{border-left-color:var(--cardio);}.c-distrib{border-left-color:var(--distrib);}.c-obstruct{border-left-color:var(--obstruct);}
+  .s-hypo{color:var(--hypo);}.s-cardio{color:var(--cardio);}.s-distrib{color:var(--distrib);}.s-obstruct{color:var(--obstruct);}
+  .up{color:var(--up);font-weight:800;}.down{color:var(--down);font-weight:800;}.eq{color:var(--muted);font-weight:700;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .card h3{margin:0 0 2px;font-size:1.06rem;font-weight:700;}
+  .card .sub{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.86rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.labs b{color:var(--distrib);}.blk.labs{color:var(--soft);}
+  .blk.warnb b{color:var(--warn);}
+  .pressor-vaso{border-top:3px solid var(--distrib);}.pressor-ino{border-top:3px solid var(--cardio);}.pressor-mixed{border-top:3px solid var(--accent);}.pressor-push{border-top:3px solid var(--hypo);}
+  .pill{display:inline-block;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--panelhi);border:1px solid var(--line);color:var(--soft);margin-left:6px;}
+  .fluidbox{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 20px;margin:12px 0;}
+  .fluidbox h3{margin:0 0 8px;font-size:1.1rem;}
+  .note{font-size:.82rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .elyte{border-top:3px solid var(--accent);}
+  .elyte.high{border-top-color:var(--up);}.elyte.low{border-top-color:var(--down);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Resuscitation & Hemodynamics · Field Atlas</div>
+  <h1>Shock, <em>sorted</em>.</h1>
+  <p>Four shock states, each with its own hemodynamic fingerprint — then the fluids (how much, what kind, when to stop, and who can't take it), the pressors matched to the lesion, and the electrolyte derangements that drive or follow critical illness. Built to move from "this patient is shocked" to "this is the cause and this is the next order."</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Hemodynamics are dynamic and shock is often mixed; numbers below are typical starting points, not prescriptions. Verify every dose/rate against current references and your institution's protocols, and titrate to the patient. Educational summary, abbreviated by design.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#types">Shock fingerprints</a>
+  <a href="#workup">Undifferentiated workup</a>
+  <a href="#fluids">Fluids & boluses</a>
+  <a href="#special">Heart failure & chronic disease</a>
+  <a href="#pressors">Pressors & inotropes</a>
+  <a href="#electrolytes">Electrolytes</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+const U='<span class="up">↑</span>',UU='<span class="up">↑↑</span>',D='<span class="down">↓</span>',DD='<span class="down">↓↓</span>',EQ='<span class="eq">↔</span>';
+
+/* ============ SHOCK FINGERPRINTS ============ */
+const SHOCK=[
+ {key:'hypo',name:'Hypovolemic',sub:'hemorrhage, GI/renal losses, dehydration, burns',
+   pre:DD+' (low)',co:D,svr:U+' (clamped down)',svo2:D,ivc:'flat, >50% collapse',skin:'cool, mottled',
+   tell:'Cold & clamped, empty tank. Flat collapsing IVC; responds to volume.'},
+ {key:'cardio',name:'Cardiogenic',sub:'MI, decompensated HF, arrhythmia, valve failure',
+   pre:U+' (high/wedged)',co:DD,svr:U,svo2:D,ivc:'plethoric, fixed',skin:'cool, mottled, crackles',
+   tell:'Cold & wet — pump fails, backs up. Plump IVC, B-lines, poor LV squeeze on echo. Fluids may drown them.'},
+ {key:'distrib',name:'Distributive',sub:'sepsis, anaphylaxis, neurogenic, adrenal',
+   pre:D+'/↔',co:U+' (early)',svr:DD+' (vasodilated)',svo2:U+'/↔',ivc:'variable',skin:'warm, flushed (early)',
+   tell:'Warm & vasodilated — the pipes are open. High CO, low SVR early; needs vasopressor + source control.'},
+ {key:'obstruct',name:'Obstructive',sub:'tamponade, tension PTX, massive PE',
+   pre:U+' (impaired filling)',co:DD,svr:U,svo2:D,ivc:'plethoric',skin:'cool, JVD',
+   tell:'Mechanical block to filling/outflow. Look for the lesion: effusion, absent lung sliding, RV strain. Fix the obstruction.'}
+];
+const SROWS=[['Preload (CVP/PCWP)','pre'],['Cardiac output','co'],['SVR (afterload)','svr'],['SvO₂','svo2'],['IVC on POCUS','ivc'],['Skin / exam','skin']];
+function shockGrid(){
+  let head=`<th></th>`+SHOCK.map(s=>`<th class="tcol c-${s.key}"><span class="s-${s.key}" style="font-weight:800;font-size:.95rem">${s.name}</span><br><span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">${s.sub}</span></th>`).join('');
+  let body='';
+  SROWS.forEach(([l,k])=>{body+=`<tr><th><span class="rowlabel">${l}</span></th>`+SHOCK.map(s=>`<td class="tcol c-${s.key}">${s[k]}</td>`).join('')+`</tr>`;});
+  body+=`<tr><th><span class="rowlabel">Key tell</span></th>`+SHOCK.map(s=>`<td class="tcol c-${s.key}" style="font-size:.8rem;color:var(--soft)">${s.tell}</td>`).join('')+`</tr>`;
+  return `<h2 class="sec" id="types">The four shock fingerprints</h2>
+   <p class="seclead">Every shock is a problem of preload, pump, pipes, or obstruction. The hemodynamic pattern — plus a 3-minute POCUS (heart, IVC, lungs) — usually sorts them. "Cold vs warm" and "wet vs dry" carry you a long way at the bedside.</p>
+   <div class="gridwrap"><table class="cmp"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
+   <div class="note good" style="margin-top:12px"><b>RUSH-style POCUS:</b> "pump" (contractility, effusion, RV strain), "tank" (IVC, lungs for B-lines, FAST for fluid), "pipes" (aorta, DVT). It separates the four states faster than any single number.</div>`;
+}
+
+/* ============ UNDIFFERENTIATED WORKUP ============ */
+function workup(){
+ return `<h2 class="sec" id="workup">Undifferentiated hypotension — the workup</h2>
+ <p class="seclead">Order in parallel with resuscitation; don't wait on labs to start.</p>
+ <div class="cardgrid">
+   <div class="card"><h3>Immediate bedside</h3>
+     <div class="blk"><b>Now</b>Full vitals incl. <b>both-arm BP</b> & a manual cuff, continuous SpO₂, cardiac monitor, 12-lead ECG, glucose, temperature, 2 large-bore IVs.</div>
+     <div class="blk"><b>POCUS</b>RUSH: cardiac (effusion, LV/RV, contractility), IVC, lung (B-lines, sliding, effusion), FAST, aorta, DVT.</div>
+   </div>
+   <div class="card"><h3>Labs to send</h3>
+     <div class="blk labs"><b>Core</b>VBG/ABG with <b>lactate</b>, CBC, CMP (Na/K/Cl/HCO₃/BUN/Cr/glucose/Ca), Mg, Phos, coags/INR, type & screen.</div>
+     <div class="blk labs"><b>Directed</b>Troponin + ECG (cardiac), blood cultures ×2 + lactate (sepsis), βhCG (any woman of childbearing age — think ruptured ectopic), cortisol if adrenal suspected, fibrinogen/DIC panel, LFTs, lipase, urinalysis.</div>
+     <div class="blk labs"><b>Trend</b>Repeat lactate at 2–4 h — clearance ≥10% is a resuscitation target.</div>
+   </div>
+   <div class="card"><h3>Reversibles to exclude fast</h3>
+     <div class="blk"><b>Mechanical</b>Tamponade, tension PTX, massive PE (obstructive) — POCUS first.</div>
+     <div class="blk"><b>Hidden bleed</b>GI, AAA, ectopic, retroperitoneal, trauma — FAST + βhCG + H/H.</div>
+     <div class="blk warnb"><b>Endocrine/tox</b>Adrenal crisis (give hydrocortisone 100 mg IV if suspected), thyroid storm/myxedema, anaphylaxis (epinephrine), and drug causes (β-blocker/CCB, see tox).</div>
+   </div>
+ </div>`;
+}
+
+/* ============ FLUIDS ============ */
+function fluids(){
+ return `<h2 class="sec" id="fluids">Fluids &amp; boluses — how much, what, and when to stop</h2>
+ <p class="seclead">Fluid is a drug with a dose and a toxicity. Give enough to restore perfusion, then prove the next bolus will actually help before you give it.</p>
+
+ <div class="fluidbox"><h3>Crystalloid choice</h3>
+   <div class="blk"><b>Balanced (LR, Plasma-Lyte)</b>Preferred for most resuscitation; less hyperchloremic metabolic acidosis and possibly less AKI than saline. LR is mildly hypotonic; avoid as the primary fluid in cerebral edema/severe hyponatremia where you want isotonic/hypertonic.</div>
+   <div class="blk"><b>0.9% saline</b>Reasonable for hyponatremia, hypochloremic metabolic alkalosis (vomiting), hypercalcemia, and TBI/cerebral edema (isotonic). Large volumes → hyperchloremic NAGMA.</div>
+   <div class="blk"><b>Albumin / blood</b>Albumin: select sepsis after large crystalloid, large-volume paracentesis, hepatorenal. Hemorrhage → <b>blood products, not crystalloid</b> (balanced MTP ~1:1:1).</div>
+ </div>
+
+ <div class="fluidbox"><h3>Bolus parameters by situation</h3>
+   <div class="blk"><b>Septic / distributive</b>~<b>30 mL/kg</b> balanced crystalloid within the first ~3 h (Surviving Sepsis), then reassess with dynamic measures. Don't give the full 30 mL/kg reflexively to known HFrEF/ESRD — give smaller aliquots and reassess.</div>
+   <div class="blk"><b>Undifferentiated hypotension</b>250–500 mL aliquots, reassess after each (BP, lactate, perfusion, dynamic responsiveness).</div>
+   <div class="blk"><b>Hemorrhagic</b>Permissive hypotension (SBP ~80–90 / MAP ~65, or mentation) until surgical control; resuscitate with <b>products</b>, limit crystalloid, activate MTP, give TXA within 3 h of trauma.</div>
+   <div class="blk"><b>DKA/HHS</b>Often 15–20 mL/kg (~1 L) isotonic in the first hour, then 250–500 mL/h adjusted to corrected Na and status; transition to D5-containing fluid when glucose ~200 (DKA) / ~250–300 (HHS).</div>
+   <div class="blk"><b>Pediatric</b>10–20 mL/kg aliquots, reassess; smaller (10 mL/kg) and cautious in neonates, malnutrition, DKA, and cardiac disease.</div>
+   <div class="note"><b>Maintenance (4-2-1):</b> 4 mL/kg/h for first 10 kg + 2 mL/kg/h next 10 kg + 1 mL/kg/h each kg >20. (70 kg ≈ 110 mL/h.)</div>
+ </div>
+
+ <div class="fluidbox"><h3>Fluid responsiveness — prove it before you pour</h3>
+   <div class="blk good"><b>Dynamic &gt; static</b>Static numbers (CVP) poorly predict response. Use dynamic tests:</div>
+   <div class="blk"><b>Passive leg raise</b>Reversible "auto-bolus": ≥10–15% rise in stroke volume/pulse pressure ⇒ fluid-responsive. Best single bedside test, works in arrhythmia & spontaneous breathing.</div>
+   <div class="blk"><b>Pulse-pressure / stroke-volume variation</b>>~12–13% suggests responsiveness — but only valid if <b>mechanically ventilated, sinus rhythm, tidal volume ~8 mL/kg, no spontaneous effort</b>.</div>
+   <div class="blk"><b>IVC variation</b>>~12% (vent) or >~50% collapse (spontaneous) suggests responsiveness; confounded by tamponade, RV failure, raised intra-abdominal pressure.</div>
+   <div class="note warn"><b>Stop signals:</b> rising O₂ requirement / new B-lines (pulmonary edema), no SV improvement after a bolus, JVD/plethoric IVC. A non-responsive patient gains only the harms of more fluid — switch to vasopressors.</div>
+ </div>`;
+}
+
+/* ============ SPECIAL POPULATIONS ============ */
+function special(){
+ return `<h2 class="sec" id="special">Fluid dynamics in heart failure &amp; chronic disease</h2>
+ <p class="seclead">The 30-mL/kg reflex hurts the patients whose tanks don't stretch or whose pumps can't keep up. Tailor volume, rate, and reassessment frequency.</p>
+ <div class="cardgrid">
+   <div class="card"><h3>HFrEF / cardiogenic</h3>
+     <div class="blk"><b>Approach</b>Small aliquots (250 mL) with reassessment, or skip fluids if congested. Cold+wet → <b>inotrope</b> (dobutamine/milrinone) ± norepinephrine, not volume.</div>
+     <div class="blk labs"><b>Watch</b>B-lines on lung POCUS, plethoric IVC, rising O₂ need, JVD; BNP/NT-proBNP trend; echo for EF.</div>
+     <div class="blk warnb"><b>Pitfall</b>A "normal" lactate plus pulmonary edema after a 30-mL/kg bolus = iatrogenic harm. Diurese if volume-overloaded and perfusing.</div>
+   </div>
+   <div class="card"><h3>ESRD / dialysis-dependent</h3>
+     <div class="blk"><b>Approach</b>Minimal/no maintenance fluid; they can't excrete it. Treat hyperkalemia aggressively; small boluses only for clear hypovolemia. Urgent dialysis for refractory overload/hyperK/acidosis.</div>
+     <div class="blk labs"><b>Watch</b>K⁺ + ECG, volume exam, last dry weight, access for emergent HD.</div>
+   </div>
+   <div class="card"><h3>Cirrhosis / hepatorenal</h3>
+     <div class="blk"><b>Approach</b>Albumin is favored (esp. SBP, large-volume paracentesis, HRS); crystalloid worsens ascites/edema. Careful Na — avoid rapid correction of chronic hyponatremia.</div>
+     <div class="blk labs"><b>Watch</b>Na (slow correction), Cr, lactate, ascites, MELD components (INR, bili, Cr).</div>
+   </div>
+   <div class="card"><h3>Pulmonary HTN / RV failure</h3>
+     <div class="blk"><b>Approach</b>The failing RV is preload-sensitive both ways — too little and too much both drop output. Cautious small boluses; support with norepinephrine ± inodilator; protect RV (oxygenate, avoid hypercarbia/acidosis).</div>
+     <div class="blk warnb"><b>Pitfall</b>Volume-loading a strained RV can distend it and crash output (ventricular interdependence).</div>
+   </div>
+   <div class="card"><h3>Elderly / CKD (non-dialysis)</h3>
+     <div class="blk"><b>Approach</b>Reduced reserve both directions — bolus in smaller aliquots, reassess more often; watch for both under-resuscitation and overload.</div>
+   </div>
+   <div class="card"><h3>End-stage considerations</h3>
+     <div class="blk"><b>Approach</b>Clarify goals of care early in chronic/terminal disease; aggressive volume/pressors may not align with the patient's wishes.</div>
+   </div>
+ </div>`;
+}
+
+/* ============ PRESSORS ============ */
+const PRESS=[
+ {cls:'pressor-vaso',pill:'1st-line vasopressor',name:'Norepinephrine',rec:'α≫β₁',
+   use:'First-line for septic/distributive shock and most undifferentiated shock. Vasoconstriction with modest inotropy.',
+   dose:'Start 0.05–0.1 µg/kg/min (≈5–15 µg/min), titrate to MAP ≥65. No true ceiling but reassess cause if escalating.',
+   note:'Workhorse pressor. Central line preferred; brief peripheral use acceptable while securing access.'},
+ {cls:'pressor-mixed',pill:'add-on',name:'Vasopressin',rec:'V1 receptors',
+   use:'Catecholamine-sparing add-on in septic shock (fixed dose), useful when norepi climbing.',
+   dose:'Fixed 0.03 units/min (not titrated). Caution: digital/mesenteric ischemia.',
+   note:'Add at norepi ~0.25–0.5 µg/kg/min; restores vascular tone via a non-adrenergic pathway.'},
+ {cls:'pressor-push',pill:'anaphylaxis / arrest',name:'Epinephrine',rec:'α+β₁+β₂',
+   use:'Anaphylaxis (IM first-line), cardiac arrest, refractory shock, bradycardia. Inotrope + chronotrope + vasopressor.',
+   dose:'Anaphylaxis IM 0.3–0.5 mg (1 mg/mL) q5–15 min. Arrest 1 mg IV q3–5 min. Infusion 0.01–0.1+ µg/kg/min. Push-dose 5–20 µg q1–5 min.',
+   note:'Raises HR & lactate (β₂); fine in arrest/anaphylaxis. Watch tachydysrhythmias.'},
+ {cls:'pressor-vaso',pill:'2nd-line / pure α',name:'Phenylephrine',rec:'pure α₁',
+   use:'Pure vasoconstrictor; useful when tachyarrhythmia limits other agents, or transient hypotension (e.g., post-intubation, anesthesia).',
+   dose:'Infusion 0.5–2 µg/kg/min; push-dose 50–200 µg q1–5 min.',
+   note:'Reflex bradycardia; avoid as sole agent in low-output states (raises afterload, can drop CO).'},
+ {cls:'pressor-ino',pill:'inotrope',name:'Dobutamine',rec:'β₁≫β₂',
+   use:'Cardiogenic shock / low-output HF with adequate-ish BP. Increases contractility & HR; mild vasodilation.',
+   dose:'2–20 µg/kg/min. Often paired with norepinephrine to offset vasodilation/hypotension.',
+   note:'Can drop BP and provoke tachydysrhythmia/ischemia; not a vasopressor.'},
+ {cls:'pressor-ino',pill:'inodilator',name:'Milrinone',rec:'PDE-3 inhibitor',
+   use:'Inodilator for cardiogenic shock/RV failure, esp. on chronic β-blockade (bypasses β-receptor).',
+   dose:'0.125–0.5 µg/kg/min (consider no/low bolus). Renally cleared — accumulates in renal failure.',
+   note:'Vasodilation → hypotension; longer half-life than dobutamine; lowers PVR (good for RV).'},
+ {cls:'pressor-ino',pill:'bradycardia',name:'Dopamine',rec:'dose-dependent',
+   use:'Less favored (more arrhythmia/mortality in septic shock vs norepi). Niche: symptomatic bradycardia bridge.',
+   dose:'Bradycardia/chronotropy ~5–10 µg/kg/min; higher = vasoconstriction. "Renal-dose" dopamine is obsolete.',
+   note:'Higher arrhythmia rate; generally superseded by norepinephrine/epinephrine.'},
+ {cls:'pressor-push',pill:'refractory',name:'Angiotensin II / methylene blue',rec:'non-catecholamine',
+   use:'Rescue add-ons in refractory vasodilatory/distributive shock (catecholamine-resistant, vasoplegia).',
+   dose:'Angiotensin II per protocol (start ~20 ng/kg/min); methylene blue 1–2 mg/kg for refractory vasoplegia.',
+   note:'Specialist/refractory use; address the underlying cause (steroids in septic shock on multiple pressors).'}
+];
+function pressors(){
+ return `<h2 class="sec" id="pressors">Pressors &amp; inotropes — matched to the lesion</h2>
+ <p class="seclead">Pick by what's broken: <b>pipes open</b> (distributive) → vasopressor; <b>pump weak</b> (cardiogenic) → inotrope ± pressor; bridge bradycardia/anaphylaxis → epinephrine. MAP target ≥65 (higher, ~80–85, only if chronic HTN or evidence it helps perfusion). Doses are typical adult ranges — verify and titrate.</p>
+ <div class="cardgrid">${PRESS.map(p=>`
+   <div class="card ${p.cls}"><h3>${p.name}<span class="pill">${p.pill}</span></h3><div class="sub">${p.rec}</div>
+     <div class="blk"><b>Use</b>${p.use}</div>
+     <div class="blk dose"><b>Dose</b>${p.dose}</div>
+     <div class="blk"><b>Note</b>${p.note}</div>
+   </div>`).join('')}</div>
+ <div class="note good" style="margin-top:12px"><b>Shock → agent shortcut:</b> Septic → norepinephrine (+vasopressin, +epi/steroids if refractory). Cardiogenic → norepinephrine for pressure + dobutamine/milrinone for output; fix the cause (cath lab). Anaphylactic → epinephrine. Obstructive → relieve the obstruction (pericardiocentesis, needle/finger thoracostomy, thrombolysis) — pressors only buy time.</div>
+ <div class="note warn"><b>Steroids:</b> hydrocortisone 50 mg IV q6h (or 200 mg/day) for septic shock requiring escalating vasopressors, and for suspected adrenal crisis (give 100 mg IV up front).</div>`;
+}
+
+/* ============ ELECTROLYTES ============ */
+const ELYTE=[
+ // sodium
+ {grp:'Sodium',cls:'high',name:'Hypernatremia',def:'Na >145 — a water problem (water deficit relative to Na)',
+   feat:'Thirst, lethargy, irritability, weakness, seizures/coma; usually a deficit of free water (impaired access, DI, osmotic/GI losses).',
+   labs:'Serum & urine Na/osmolality, glucose, volume assessment; consider DI workup (urine osm low despite high serum osm).',
+   dose:'Correct slowly: lower Na by <b>≤10–12 mEq/L per 24 h</b> (≤8 if chronic) to avoid cerebral edema. Free-water deficit ≈ 0.6×wt×([Na/140]−1) L. Use D5W or hypotonic fluids; treat ongoing losses; restore volume with isotonic first if hypovolemic/shocked.',
+   warn:'Over-rapid correction → cerebral edema/seizures. Treat shock with isotonic fluid before chasing the free-water deficit.'},
+ {grp:'Sodium',cls:'low',name:'Hyponatremia',def:'Na <135 — usually a water-excess / ADH problem',
+   feat:'Nausea, headache, confusion, seizures, coma (esp. acute or <120). Assess volume status & serum osm (rule out pseudo/hyperglycemic).',
+   labs:'Serum osm, urine osm & urine Na, glucose (correct Na ↑1.6 per 100 mg/dL glucose over 100), TSH/cortisol if unclear, volume exam.',
+   dose:'Severe/symptomatic (seizures): <b>3% hypertonic saline 100–150 mL IV bolus</b>, may repeat ×1–2 to raise Na ~4–6 mEq/L acutely. Limit total rise to <b>≤8 mEq/L/24 h</b> (≤6 if high ODS risk) to avoid osmotic demyelination.',
+   warn:'Over-rapid correction → osmotic demyelination (locked-in). Chronic hyponatremia corrects slowest; re-lower with D5W/DDAVP if overshooting.'},
+ // potassium
+ {grp:'Potassium',cls:'high',name:'Hyperkalemia',def:'K >5.0–5.5; emergency when ECG changes',
+   feat:'Often asymptomatic until peaked T waves → wide QRS → sine wave → arrest; weakness. Causes: renal failure, acidosis, K-sparing drugs, rhabdo, hemolysis (artifact).',
+   labs:'STAT ECG, repeat K (exclude hemolyzed sample), BMP/Cr, Ca, Mg, glucose, VBG, CK if rhabdo.',
+   dose:'<b>Calcium</b> (gluconate 3 g or CaCl₂ 1 g IV) to stabilize membrane if ECG changes — repeat as needed. <b>Shift:</b> insulin 10 U IV + 25 g dextrose (monitor glucose), albuterol 10–20 mg neb, ± bicarb if acidotic. <b>Remove:</b> loop diuretic, K-binders, dialysis (definitive in ESRD).',
+   warn:'Calcium does NOT lower K — it buys minutes. Shift is temporary; you must remove K. Hemolyzed specimen is the great false alarm — confirm with ECG/repeat.'},
+ {grp:'Potassium',cls:'low',name:'Hypokalemia',def:'K <3.5',
+   feat:'Weakness, cramps, ileus, arrhythmia; ECG: flattened T, U waves, ST depression, long QU → torsades. Often with hypomagnesemia.',
+   labs:'BMP, Mg (must check), ECG, ABG; consider urine K for renal vs GI losses.',
+   dose:'Oral KCl 40–60 mEq for mild. IV KCl max ~10 mEq/h peripheral (up to ~20 mEq/h central with monitoring). <b>Replace Mg simultaneously</b> — you cannot correct K without it.',
+   warn:'Refractory hypokalemia is usually hypomagnesemia. Avoid dextrose-containing fluids initially (drives K intracellular).'},
+ // calcium
+ {grp:'Calcium',cls:'low',name:'Hypocalcemia',def:'↓ ionized Ca',
+   feat:'Perioral numbness, paresthesias, Chvostek/Trousseau, tetany, laryngospasm, seizures; long QT. Causes: hypoparathyroidism, vit D deficiency, citrate (massive transfusion), pancreatitis, rhabdo.',
+   labs:'Ionized Ca (most accurate; correct total for albumin: +0.8 per 1 g/dL albumin <4), Mg, Phos, PTH, vit D, ECG (QT).',
+   dose:'Symptomatic: calcium gluconate 1–2 g IV over 10–20 min (or CaCl₂ via central line); correct Mg; treat cause. Watch for digoxin (calcium can worsen tox).',
+   warn:'Correct magnesium too — hypomagnesemia causes refractory hypocalcemia. Long QT → torsades risk.'},
+ {grp:'Calcium',cls:'high',name:'Hypercalcemia',def:'↑ Ca (often malignancy or hyperparathyroidism)',
+   feat:'"Stones, bones, groans, psychiatric overtones": polyuria, dehydration, constipation, AMS, weakness; short QT. >14 = emergency.',
+   labs:'Ionized & total Ca + albumin, PTH, PTHrP/vit D, Phos, Cr, ECG.',
+   dose:'<b>IV isotonic saline</b> (volume first, often 200–300 mL/h) ± calcitonin 4 U/kg for fast (transient) drop; <b>bisphosphonate</b> (zoledronic acid) for malignancy (takes 2–4 days); treat cause; dialysis if severe/renal failure. Loops only after rehydration if overloaded.',
+   warn:'Don\'t reflexively give furosemide — rehydrate first; loops alone worsen dehydration.'},
+ // magnesium
+ {grp:'Magnesium',cls:'low',name:'Hypomagnesemia',def:'↓ Mg — the hidden driver',
+   feat:'Refractory hypokalemia & hypocalcemia, tremor, tetany, torsades, weakness; alcoholism, diuretics, GI losses, PPIs.',
+   labs:'Mg, K, Ca, Phos, ECG (QT).',
+   dose:'2 g MgSO₄ IV over 15–60 min (1–2 g over 1–2 min for torsades/peri-arrest); replace K and Ca alongside.',
+   warn:'You often cannot fix K or Ca until Mg is repleted. Slow infusion in renal impairment (risk of hypermagnesemia).'},
+ {grp:'Magnesium',cls:'high',name:'Hypermagnesemia',def:'↑ Mg (renal failure, Mg therapy, eclampsia tx)',
+   feat:'Loss of DTRs (early) → hypotension, bradycardia, respiratory depression → arrest; PR/QRS/QT prolongation.',
+   labs:'Mg, K, Ca, Cr, ECG.',
+   dose:'Stop Mg; <b>IV calcium</b> (gluconate 1–2 g) antagonizes cardiac/neuromuscular effects; fluids + loop diuretic; dialysis in renal failure.',
+   warn:'Most often iatrogenic (eclampsia treatment, renal failure) — recheck levels and reflexes.'},
+ // phosphate / glucose
+ {grp:'Phosphate',cls:'low',name:'Hypophosphatemia',def:'↓ PO₄ (refeeding, DKA tx, alcoholism)',
+   feat:'Weakness, respiratory failure (diaphragm), rhabdo, hemolysis, AMS; classic in refeeding syndrome and DKA recovery.',
+   labs:'Phos, Mg, K, Ca, glucose; watch during DKA & refeeding.',
+   dose:'Oral if mild; IV potassium- or sodium-phosphate for severe/symptomatic (e.g., 15–30 mmol over 4–6 h), monitor Ca/Mg.',
+   warn:'Profound hypophosphatemia can cause ventilatory failure — replace before extubation in at-risk patients.'},
+ {grp:'Glucose',cls:'low',name:'Hypoglycemia',def:'Glucose <70 (treat <54 / symptomatic urgently)',
+   feat:'Adrenergic (tremor, sweat, tachycardia) then neuroglycopenic (confusion, seizure, coma); mimics stroke/intoxication — check glucose in every AMS.',
+   labs:'POC glucose immediately; in sulfonylurea/insulin → recurrent; consider C-peptide/insulin if factitious.',
+   dose:'Awake: 15–20 g oral carbs. IV: 25 g dextrose (1 amp D50, or D10 100–250 mL). No IV: glucagon 1 mg IM. Sulfonylurea-induced & refractory → octreotide 50 µg SC.',
+   warn:'Recurrence is common with long agents/sulfonylureas — admit & re-dose; give thiamine before/with glucose in malnourished/alcoholic patients.'}
+];
+function electrolytes(){
+ const groups=[...new Set(ELYTE.map(e=>e.grp))];
+ let html=`<h2 class="sec" id="electrolytes">Electrolyte &amp; metabolic emergencies</h2>
+  <p class="seclead">The derangements that drive arrest, seizures, and weakness — each with the labs to order, the correction with rates, and the over-correction trap. Sodium and the over-correction limits matter most: too fast in either direction injures brain.</p>`;
+ groups.forEach(g=>{
+   html+=`<h3 style="font-size:1.05rem;margin:18px 0 6px;color:var(--accent)">${g}</h3><div class="cardgrid">`;
+   ELYTE.filter(e=>e.grp===g).forEach(e=>{
+     html+=`<div class="card elyte ${e.cls}"><h3>${e.name}</h3><div class="sub">${e.def}</div>
+       <div class="blk"><b>Features</b>${e.feat}</div>
+       <div class="blk labs"><b>Labs</b>${e.labs}</div>
+       <div class="blk dose"><b>Correction &amp; dose</b>${e.dose}</div>
+       <div class="blk warnb"><b>Over-correction / trap</b>${e.warn}</div>
+     </div>`;
+   });
+   html+=`</div>`;
+ });
+ return html;
+}
+
+document.getElementById('main').innerHTML = shockGrid()+workup()+fluids()+special()+pressors()+electrolytes();
+document.getElementById('foot').innerHTML="Educational reference reflecting standard EM/critical-care teaching. Hemodynamics and electrolyte correction are dynamic and patient-specific; doses, rates, and correction limits are typical starting points that must be verified against current references and local protocols and titrated to the individual. Not a substitute for clinical judgment.";
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

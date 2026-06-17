@@ -159,6 +159,28 @@ const blogPosts = {
       <p><a href="/embeds/ventilator-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "resuscitation-atlas": {
+    title: "Resuscitation Atlas — Shock, Pressors, Fluids & Electrolytes",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A resuscitation atlas covering the four shock types (hypovolemic, cardiogenic, distributive, obstructive), the pressors that match each physiology, fluid strategy, and the electrolyte derangements that hide behind refractory instability — with a structured bedside approach to recognition, dosing, and reassessment.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/resuscitation-atlas.html"
+          title="Resuscitation Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/resuscitation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",
