@@ -3004,6 +3004,13 @@ const blogPosts = {
 
 const popularPosts = [
   {
+    title: "EKG Strip Atlas — Pattern, Location & Mechanism",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    image: businessPost,
+    slug: "ekg-strip-atlas"
+  },
+  {
     title: "Houston Suburb & TMC Neighborhood Guide",
     category: "HEALTHCARE",
     date: "March 16, 2026",
