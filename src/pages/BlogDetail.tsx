@@ -49,6 +49,116 @@ const blogPosts = {
       <p><a href="/embeds/ekg-strip-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "abg-interpreter": {
+    title: "ABG Interpreter — Acid-Base, Step by Step",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "12 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A step-by-step interactive ABG interpreter that walks through pH, PaCO₂, HCO₃⁻, the anion gap, and expected compensation — so you can name the primary disorder, detect mixed disturbances, and reason about the underlying physiology at the bedside.</p>
+      <p>The interactive tool below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/abg-interpreter.html"
+          title="ABG Interpreter"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/abg-interpreter.html" target="_blank" rel="noopener">Open the full interpreter in a new tab →</a></p>
+    `
+  },
+  "reduction-field-manual": {
+    title: "Reduction Field Manual — Joint Dislocations",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A bedside field manual for joint reductions — shoulder, elbow, hip, patella, finger, and more — with traction vectors, counter-traction, rotation cues, sedation considerations, and post-reduction checks laid out as an orthopedic blueprint.</p>
+      <p>The interactive manual below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/reduction-manual.html"
+          title="Reduction Field Manual"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/reduction-manual.html" target="_blank" rel="noopener">Open the full manual in a new tab →</a></p>
+    `
+  },
+  "pocus-atlas": {
+    title: "POCUS Atlas — Probe, Window, Screen & Pitfall",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A point-of-care ultrasound atlas mapping each common exam to its probe choice, acoustic window, expected on-screen anatomy, and the pitfalls that fool clinicians — from cardiac and lung scans to FAST, biliary, renal, and vascular access.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/pocus-atlas.html"
+          title="POCUS Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/pocus-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "toxidrome-atlas": {
+    title: "Toxidrome Atlas — Recognition, Overdoses & Antidotes",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "11 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A visual atlas of the major toxidromes — sympathomimetic, anticholinergic, cholinergic, opioid, and sedative-hypnotic — with vitals patterns, exam findings, common offending agents, and antidotes ready for bedside recognition.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/toxidrome-atlas.html"
+          title="Toxidrome Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/toxidrome-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ventilator-atlas": {
+    title: "Ventilator Atlas — Modes, Numbers & Troubleshooting",
+    category: "HEALTHCARE",
+    date: "June 17, 2026",
+    readTime: "13 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A ventilator atlas covering the modes you'll see at the bedside (AC, SIMV, PRVC, PS, APRV), the numbers that matter (tidal volume, PEEP, plateau, driving pressure, I:E), and a structured approach to troubleshooting alarms and waveform abnormalities.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/ventilator-atlas.html"
+          title="Ventilator Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/ventilator-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",

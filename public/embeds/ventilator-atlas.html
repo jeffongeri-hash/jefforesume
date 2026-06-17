@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventilator Atlas — Modes, Numbers & Troubleshooting</title>
+<style>
+  :root{
+    --bg:#0b1117;--bg2:#101a22;--panel:#121e27;--panelhi:#192833;--line:#253640;--line2:#1a2832;
+    --ink:#e8f1f5;--soft:#a2b6c2;--muted:#73899a;--faint:#516675;
+    --insp:#34b3bd;     /* inspiration teal */
+    --exp:#7c6cc4;      /* expiration violet */
+    --vol:#3fa7d6;      /* volume blue */
+    --press:#e0843a;    /* pressure orange */
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --up:#ff7a5c;--down:#5fb0e6;--grid:#0e161d;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e4eaee;--panel:#fff;--panelhi:#f2f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#10202a;--soft:#3a505e;--muted:#5b6f7f;--faint:#8194a2;
+    --insp:#0d8c97;--exp:#5d4ba6;--vol:#1c7fb0;--press:#b9651c;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--up:#c8442b;--down:#2576c0;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:68ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:34px 0 4px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:78ch;font-size:.95rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;}
+  .card h3{margin:0 0 2px;font-size:1.06rem;font-weight:700;}
+  .card .sub{font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.86rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.good b{color:var(--good);}.blk.warnb b{color:var(--warn);}.blk.num b{color:var(--vol);}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:760px;font-size:.85rem;}
+  table.cmp th,table.cmp td{padding:10px 13px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{background:var(--panelhi);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);position:sticky;top:0;}
+  table.cmp tbody th{font-weight:700;white-space:nowrap;background:var(--panel);}
+  .num-norm{color:var(--good);font-weight:700;} .num-abn{color:var(--warn);font-weight:700;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .wave{background:var(--bg2);border:1px solid var(--line2);border-radius:11px;padding:8px;}
+  .wave svg{display:block;width:100%;height:auto;}
+  .wavecap{font-size:.78rem;color:var(--muted);text-align:center;padding:4px 8px 2px;}
+  .note{font-size:.82rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:820px){.twocol{grid-template-columns:1fr;}}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Mechanical Ventilation · Field Atlas</div>
+  <h1>What the <em>vent</em> is telling you.</h1>
+  <p>The modes you'll actually see, the initial settings, the numbers to read off the screen, and what normal versus abnormal looks like — then the alarms and the two-question framework (is the problem pressure or flow?) for the crashing ventilated patient. Plus the lung-protective and obstructive-vs-ARDS strategies.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Ventilator management is patient- and device-specific; initial settings below are typical adult starting points to be titrated to physiology, blood gases, and waveforms. Verify against current references and your institution's respiratory-therapy protocols. Educational summary, abbreviated by design.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#modes">Modes</a>
+  <a href="#initial">Initial settings</a>
+  <a href="#numbers">Numbers to read</a>
+  <a href="#pressures">Plateau vs peak</a>
+  <a href="#strategies">ARDS vs obstructive</a>
+  <a href="#alarms">Alarms & the crash</a>
+  <a href="#abg">Gas-driven adjustments</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============ MODES ============ */
+const MODES=[
+ {name:'Assist-Control — Volume (AC/VC)',sub:'volume target, the ED workhorse',
+   what:'You set tidal volume + rate; every breath (triggered or timed) delivers the full set volume. Pressure varies with compliance/resistance.',
+   see:'Constant set Vt; PEAK/PLATEAU pressures vary and are displayed; flow waveform usually square/decelerating.',
+   pro:'Guarantees minute ventilation; simple; ideal for the apneic/sedated ED patient and ARDS lung-protective volumes.',
+   con:'Stiff lungs → high pressures (barotrauma); breath-stacking if patient is tachypneic; not "comfortable" for awake patients.'},
+ {name:'Assist-Control — Pressure (AC/PC)',sub:'pressure target',
+   what:'You set inspiratory pressure + rate + inspiratory time; volume varies with compliance/resistance.',
+   see:'Constant set pressure; TIDAL VOLUME varies and must be watched; decelerating flow.',
+   pro:'Caps pressure (lung-protective ceiling); often more comfortable; good for poor compliance.',
+   con:'Vt drops if compliance worsens or resistance rises — must alarm/monitor Vt and minute ventilation.'},
+ {name:'SIMV',sub:'synchronized intermittent mandatory',
+   what:'Set mandatory breaths synchronized to patient effort; spontaneous breaths between are supported only by pressure support.',
+   see:'Mix of mandatory (full) and spontaneous (smaller) breaths.',
+   pro:'Historically used for weaning; allows spontaneous effort.',
+   con:'Can increase work of breathing; largely supplanted by AC + spontaneous trials for weaning.'},
+ {name:'Pressure Support (PSV)',sub:'spontaneous mode',
+   what:'Patient triggers every breath; vent augments each with a set pressure. No set rate — patient sets rate & Vt.',
+   see:'All breaths patient-initiated; Vt and rate vary with effort.',
+   pro:'Comfortable; the standard spontaneous breathing trial / weaning mode.',
+   con:'Requires reliable respiratory drive — apnea → no breath (backup/apnea ventilation needed).'},
+ {name:'CPAP / BiPAP (NIV)',sub:'noninvasive',
+   what:'CPAP = continuous pressure (one level). BiPAP = inspiratory (IPAP) + expiratory (EPAP) pressures via mask.',
+   see:'Mask interface; leak and tidal volumes displayed; patient must protect airway & cooperate.',
+   pro:'Avoids intubation in CHF/COPD; IPAP unloads work, EPAP/PEEP recruits & offsets auto-PEEP.',
+   con:'Not for AMS/vomiting/airway-at-risk; monitor for failure (rising CO₂, fatigue) and don\'t delay intubation.'},
+ {name:'APRV',sub:'open-lung / rescue',
+   what:'Prolonged high CPAP (P-high) with brief timed releases (P-low) for ventilation; spontaneous breathing allowed throughout.',
+   see:'High mean airway pressure with short releases.',
+   pro:'Recruitment in refractory hypoxemia; preserves spontaneous breathing.',
+   con:'Specialized; risk of auto-PEEP/volutrauma; not a starting mode for the unfamiliar.'}
+];
+function modes(){
+ return `<h2 class="sec" id="modes">Modes you'll actually see</h2>
+ <p class="seclead">The core split: <b>volume-control</b> guarantees the breath size but lets pressure float; <b>pressure-control</b> caps the pressure but lets the volume float. Whatever the mode, your job is to watch the variable that <em>isn't</em> set.</p>
+ <div class="cardgrid">${MODES.map(m=>`
+   <div class="card"><h3>${m.name}</h3><div class="sub">${m.sub}</div>
+     <div class="blk"><b>What it does</b>${m.what}</div>
+     <div class="blk num"><b>What you see</b>${m.see}</div>
+     <div class="blk good"><b>Strengths</b>${m.pro}</div>
+     <div class="blk warnb"><b>Watch / limits</b>${m.con}</div>
+   </div>`).join('')}</div>`;
+}
+
+/* ============ INITIAL SETTINGS ============ */
+function initial(){
+ return `<h2 class="sec" id="initial">Initial settings — a safe default</h2>
+ <p class="seclead">A reasonable lung-protective starting point for most intubated adults; then titrate to gas, waveforms, and the specific disease.</p>
+ <div class="twocol">
+  <div class="card"><h3>Default vent order (AC/VC)</h3>
+    <div class="blk num"><b>Tidal volume</b><span class="mono-val">6–8 mL/kg <u>predicted</u> body weight</span> (use height/sex, not actual weight). ARDS → 6 (down to 4) mL/kg.</div>
+    <div class="blk num"><b>Rate</b><span class="mono-val">14–18 /min</span> (higher if metabolic acidosis demands minute ventilation — e.g., DKA, salicylate).</div>
+    <div class="blk num"><b>PEEP</b><span class="mono-val">5 cm H₂O</span> to start; raise for hypoxemia (ARDS tables) — pairs with FiO₂.</div>
+    <div class="blk num"><b>FiO₂</b><span class="mono-val">start 100%, then wean</span> to SpO₂ 92–96% (88–92% in COPD/chronic CO₂ retainers).</div>
+    <div class="blk num"><b>I:E ratio</b><span class="mono-val">~1:2</span> normal; prolong expiration (1:3–1:5) in obstruction (asthma/COPD) to avoid breath-stacking.</div>
+  </div>
+  <div class="card"><h3>Predicted body weight (PBW)</h3>
+    <div class="blk"><b>Why</b>Lung size tracks height, not weight — dosing Vt on actual weight over-distends obese patients' normal-sized lungs.</div>
+    <div class="blk num"><b>Formula</b>Men: 50 + 2.3×(height in inches − 60) kg. Women: 45.5 + 2.3×(height in inches − 60) kg.</div>
+    <div class="note good"><b>Quick:</b> a 5'10" man ≈ 73 kg PBW → 6 mL/kg ≈ 440 mL, 8 mL/kg ≈ 585 mL.</div>
+  </div>
+ </div>
+ <div class="note warn" style="margin-top:12px"><b>Post-intubation must-dos:</b> confirm placement (waveform capnography + exam), get a CXR, set alarms, start analgesia/sedation, check an ABG ~30 min in, and grab a <b>plateau pressure</b> (inspiratory hold). Hypotension right after intubation is common — from sedatives, decreased preload from positive pressure, or auto-PEEP/tension PTX.</div>`;
+}
+
+/* ============ NUMBERS TO READ ============ */
+const NUM=[
+ ['Tidal volume (Vt)','6–8 mL/kg PBW (ARDS 4–6)','>8 mL/kg PBW (volutrauma); falling Vt in PC mode = worsening compliance/resistance'],
+ ['Respiratory rate','12–20 set; total = set + spontaneous','High total with low Vt → check for breath-stacking, anxiety, acidosis, auto-PEEP'],
+ ['Minute ventilation','~5–8 L/min','>10 L/min = high demand (acidosis, sepsis, overfeeding); low = hypoventilation'],
+ ['Peak pressure (PIP)','<35 cm H₂O','High PIP with normal plateau = airway/resistance problem (kink, secretions, bronchospasm, biting)'],
+ ['Plateau pressure (Pplat)','<30 cm H₂O','>30 = alveolar over-distension/poor compliance (ARDS, edema, pneumo, abdominal pressure)'],
+ ['PEEP (set + auto)','set 5; total = set + intrinsic','Auto-PEEP (air-trapping) in obstruction → hypotension, missed triggers; check expiratory hold'],
+ ['Driving pressure (Pplat−PEEP)','≤15 cm H₂O','>15 associated with worse ARDS outcomes — lower Vt or adjust PEEP'],
+ ['FiO₂','wean toward ≤0.4–0.6','Persistent high FiO₂ need = refractory hypoxemia (ARDS, shunt) — recruit/PEEP/prone'],
+ ['SpO₂ / PaO₂','SpO₂ 92–96%; PaO₂ 60–100','88–92% acceptable in COPD; <88% / PaO₂<60 = hypoxemic failure'],
+ ['EtCO₂','35–45 mmHg (≈PaCO₂, gradient 2–5)','Sudden drop = tube dislodged/arrest/PE; rise = hypoventilation; gradient widens with dead space (PE)']
+];
+function numbers(){
+ return `<h2 class="sec" id="numbers">The numbers — normal vs abnormal</h2>
+ <p class="seclead">What to read off the screen on every check, the normal range, and what an abnormal value points to.</p>
+ <div class="gridwrap"><table class="cmp">
+  <thead><tr><th>Parameter</th><th>Normal / target</th><th>Abnormal → what it means</th></tr></thead>
+  <tbody>${NUM.map(n=>`<tr><th>${n[0]}</th><td class="num-norm mono-val">${n[1]}</td><td>${n[2]}</td></tr>`).join('')}</tbody>
+ </table></div>`;
+}
+
+/* ============ PLATEAU vs PEAK (waveforms) ============ */
+function pressures(){
+ const w=(inner,cap)=>`<div class="wave"><svg viewBox="0 0 320 140">${inner}</svg><div class="wavecap">${cap}</div></div>`;
+ const axes=`<line x1="30" y1="10" x2="30" y2="120" stroke="var(--line)" stroke-width="1"/><line x1="30" y1="120" x2="312" y2="120" stroke="var(--line)" stroke-width="1"/><text x="6" y="60" font-size="9" fill="var(--muted)" transform="rotate(-90 10 64)">P (cmH₂O)</text>`;
+ // normal: peak ~ plateau close
+ const normal=axes+`<path d="M30,120 L40,118 L70,40 L150,46 L160,118 L312,118" fill="none" stroke="var(--press)" stroke-width="2.4"/>`+
+   `<line x1="70" y1="40" x2="150" y2="46" stroke="var(--good)" stroke-width="1" stroke-dasharray="3 3"/>`+
+   `<text x="74" y="34" font-size="9" fill="var(--press)">PIP</text><text x="120" y="40" font-size="9" fill="var(--good)">Pplat (close)</text>`;
+ // high peak, normal plateau = resistance
+ const resist=axes+`<path d="M30,120 L40,118 L70,18 L78,52 L150,56 L160,118 L312,118" fill="none" stroke="var(--press)" stroke-width="2.4"/>`+
+   `<text x="64" y="14" font-size="9" fill="var(--warn)">PIP↑↑</text><text x="100" y="50" font-size="9" fill="var(--good)">Pplat normal</text>`;
+ // high peak AND plateau = compliance
+ const compl=axes+`<path d="M30,120 L40,118 L70,22 L150,26 L160,118 L312,118" fill="none" stroke="var(--press)" stroke-width="2.4"/>`+
+   `<text x="64" y="16" font-size="9" fill="var(--warn)">PIP↑</text><text x="100" y="20" font-size="9" fill="var(--warn)">Pplat↑ too</text>`;
+ return `<h2 class="sec" id="pressures">Peak vs plateau — the single most useful read</h2>
+ <p class="seclead">An inspiratory <b>hold</b> gives the plateau pressure (alveolar). Comparing it to the peak separates an <b>airway/resistance</b> problem from an <b>alveolar/compliance</b> problem — and tells you whether to suction/bronchodilate or to worry about the lung itself.</p>
+ <div class="cardgrid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+   ${w(normal,'Normal: PIP and Pplat both low & close together')}
+   ${w(resist,'High PIP, normal Pplat → resistance problem')}
+   ${w(compl,'High PIP AND high Pplat → compliance problem')}
+ </div>
+ <div class="twocol" style="margin-top:6px">
+   <div class="card"><h3>High peak, <span style="color:var(--good)">normal plateau</span> = resistance</h3>
+     <div class="blk">The problem is in the tube/airways, not the alveoli.</div>
+     <div class="blk warnb"><b>Causes</b>Kinked/biting tube, mucus plug/secretions, bronchospasm, mainstem migration, water in circuit.</div>
+     <div class="blk good"><b>Fix</b>Suction, unkink, bite block, bronchodilators, check tube depth.</div>
+   </div>
+   <div class="card"><h3>High peak, <span style="color:var(--warn)">high plateau</span> = compliance</h3>
+     <div class="blk">The lung/chest itself is stiff — alveolar pressure is genuinely high (barotrauma risk).</div>
+     <div class="blk warnb"><b>Causes</b>ARDS, pulmonary edema, pneumothorax, atelectasis, auto-PEEP, abdominal compartment, main-stem, right-mainstem.</div>
+     <div class="blk good"><b>Fix</b>Lower Vt, treat the cause, rule out pneumothorax; keep Pplat <30 & driving pressure ≤15.</div>
+   </div>
+ </div>`;
+}
+
+/* ============ STRATEGIES ============ */
+function strategies(){
+ return `<h2 class="sec" id="strategies">Two strategies you must know cold: ARDS vs obstruction</h2>
+ <p class="seclead">They pull in opposite directions — ARDS wants small breaths and PEEP; obstruction wants long exhalation and tolerance of high CO₂.</p>
+ <div class="twocol">
+   <div class="card" style="border-top:3px solid var(--vol)"><h3>ARDS / stiff lungs</h3>
+     <div class="blk num"><b>Tidal volume</b>6 mL/kg PBW, down to 4 if needed.</div>
+     <div class="blk num"><b>Plateau</b>Keep <b>≤30</b> cm H₂O; driving pressure ≤15.</div>
+     <div class="blk num"><b>PEEP/FiO₂</b>Higher PEEP per ARDSNet tables to recruit; titrate against FiO₂.</div>
+     <div class="blk num"><b>Permissive hypercapnia</b>Tolerate ↑CO₂ / pH down to ~7.20–7.25 to protect the lung.</div>
+     <div class="blk good"><b>Rescue</b>Prone positioning (≥16 h), neuromuscular blockade for dyssynchrony, recruitment, then ECMO for refractory.</div>
+   </div>
+   <div class="card" style="border-top:3px solid var(--press)"><h3>Obstructive — asthma / COPD</h3>
+     <div class="blk num"><b>Goal</b>Maximize <b>expiratory time</b> — low rate (10–12), prolonged I:E (1:4–1:5), adequate inspiratory flow.</div>
+     <div class="blk num"><b>Permissive hypercapnia</b>Accept high CO₂ / low-normal pH; don't chase a normal CO₂ with more rate (worsens stacking).</div>
+     <div class="blk warnb"><b>Auto-PEEP / breath-stacking</b>The killer: air-trapping → ↑intrathoracic pressure → hypotension/PEA. If a vented obstructive patient crashes, <b>disconnect the circuit and let them exhale</b> (and rule out PTX).</div>
+     <div class="blk good"><b>Adjuncts</b>Deep sedation ± paralysis, continuous bronchodilators, treat the cause.</div>
+   </div>
+ </div>
+ <div class="note warn"><b>DOPES</b> for the crashing vented patient: <b>D</b>islodgement, <b>O</b>bstruction (tube/secretions), <b>P</b>neumothorax, <b>E</b>quipment failure, <b>S</b>tacking (auto-PEEP). Disconnect from the vent and bag with 100% O₂ while you work through it.</div>`;
+}
+
+/* ============ ALARMS & CRASH ============ */
+function alarms(){
+ return `<h2 class="sec" id="alarms">Alarms &amp; the crashing ventilated patient</h2>
+ <p class="seclead">Most alarms reduce to two questions: is it a <b>high-pressure</b> problem (something resisting the breath) or a <b>low-pressure/volume</b> problem (a leak or disconnect)?</p>
+ <div class="twocol">
+   <div class="card"><h3>High-pressure alarm</h3>
+     <div class="blk warnb"><b>Means</b>The vent hit its pressure limit — something is resisting flow.</div>
+     <div class="blk"><b>Resistance (high PIP, normal Pplat)</b>Kinked/bitten tube, secretions/mucus plug, bronchospasm, patient coughing/biting, tube against carina.</div>
+     <div class="blk"><b>Compliance (high PIP & Pplat)</b>Pneumothorax, worsening edema/ARDS, main-stem intubation, abdominal distension, breath-stacking.</div>
+     <div class="blk good"><b>Do</b>Look at the patient; suction; check tube; auscultate (PTX?); inspiratory hold for Pplat; bag if unsure.</div>
+   </div>
+   <div class="card"><h3>Low-pressure / low-Vt alarm</h3>
+     <div class="blk warnb"><b>Means</b>Gas is escaping or not delivered — a leak or disconnect.</div>
+     <div class="blk"><b>Causes</b>Circuit disconnect, ETT cuff leak/dislodgement (listen for a voice/gurgle), extubation, dislodged tube into pharynx, large bronchopleural fistula.</div>
+     <div class="blk good"><b>Do</b>Trace the circuit, check cuff pressure & tube depth, confirm capnography, re-secure or replace the tube.</div>
+   </div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Patient–ventilator dyssynchrony</h3>
+   <div class="blk"><b>Looks like</b>"Fighting the vent," double-triggering (two stacked breaths), flow starvation (patient pulling harder than set flow), missed triggers (effort with no breath = often auto-PEEP).</div>
+   <div class="blk good"><b>Approach</b>Address pain/sedation, match flow/Vt/trigger sensitivity to demand, reduce auto-PEEP (longer expiration), and treat the underlying drive (acidosis, agitation) — don't just deepen sedation blindly.</div>
+ </div>
+ <div class="note good"><b>Auto-PEEP check:</b> end-expiratory hold reveals intrinsic PEEP; an expiratory flow waveform that doesn't return to zero before the next breath = air-trapping.</div>`;
+}
+
+/* ============ ABG-DRIVEN ADJUSTMENTS ============ */
+function abg(){
+ return `<h2 class="sec" id="abg">Adjusting to the blood gas</h2>
+ <p class="seclead">Two knobs: <b>oxygenation</b> = FiO₂ &amp; PEEP (mean airway pressure); <b>ventilation</b> (CO₂) = rate &amp; tidal volume (minute ventilation). They're largely independent.</p>
+ <div class="twocol">
+   <div class="card" style="border-top:3px solid var(--vol)"><h3>Oxygenation problem (low PaO₂/SpO₂)</h3>
+     <div class="blk good"><b>Turn up</b>FiO₂ and/or PEEP (recruits collapsed alveoli, raises mean airway pressure).</div>
+     <div class="blk"><b>Then</b>If still refractory: recruitment, proning, treat the cause (edema, pneumonia, PTX), consider ECMO.</div>
+     <div class="blk num"><b>Targets</b>SpO₂ 92–96% (88–92% COPD); wean FiO₂ first toward ≤0.6, keep PEEP for recruitment.</div>
+   </div>
+   <div class="card" style="border-top:3px solid var(--press)"><h3>Ventilation problem (high PaCO₂ / low pH)</h3>
+     <div class="blk good"><b>Increase minute ventilation</b>Raise rate first (safer), then tidal volume if Vt is low and Pplat allows.</div>
+     <div class="blk warnb"><b>But</b>In obstruction, more rate worsens stacking — accept permissive hypercapnia instead and lengthen expiration.</div>
+     <div class="blk"><b>Low CO₂ / high pH</b>Reduce rate or Vt (over-ventilation); check for pain/agitation/over-assist.</div>
+   </div>
+ </div>
+ <div class="note"><b>Quick logic:</b> "I need to fix the oxygen" → FiO₂/PEEP. "I need to blow off CO₂" → rate (and Vt). See the dedicated ABG interpreter page to work the acid-base diagnosis itself.</div>`;
+}
+
+document.getElementById('main').innerHTML = modes()+initial()+numbers()+pressures()+strategies()+alarms()+abg();
+document.getElementById('foot').innerHTML="Educational reference reflecting standard EM/critical-care ventilation teaching. Settings, targets, and thresholds are typical adult starting points that must be titrated to the individual patient, blood gases, and waveforms, and verified against current references and local respiratory-therapy protocols. Not a substitute for clinical judgment or bedside respiratory therapy support.";
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

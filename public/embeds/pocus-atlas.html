@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POCUS Atlas — Probe, Window, Screen & Pitfall</title>
+<style>
+  /* ============ THEME: ultrasound console ============ */
+  :root{
+    --bg:#0c1418;--bg2:#101c22;--panel:#13212a;--panelhi:#182a34;--line:#223a44;--line2:#1a2c34;
+    --ink:#e9f2f4;--soft:#a6bcc4;--muted:#779099;--muted:#778d97;--faint:#566c76;
+    --scan:#10b3a6;        /* probe/scan teal */
+    --beam:#1f6f7a;
+    --echo:#dfe7e6;        /* bright echo */
+    --tissue:#2b4651;      /* soft tissue gray */
+    --fluid:#0a161c;       /* anechoic black */
+    --doppler-r:#e5484d;--doppler-b:#3b82f6;
+    --warn:#ff7a5c;--good:#3fd0a0;--gold:#e6b34a;
+    --grid:#0f1b20;
+  }
+  html[data-theme="light"]{
+    --bg:#eef3f4;--bg2:#e3eaec;--panel:#ffffff;--panelhi:#f3f7f8;--line:#cbd9de;--line2:#dde7ea;
+    --ink:#0f1f25;--soft:#3b525c;--muted:#5d747e;--faint:#84979f;
+    --scan:#0a8b80;--beam:#7fb8bf;--echo:#1a2a30;--tissue:#b9ccd2;--fluid:#dfeaed;
+    --doppler-r:#d8333a;--doppler-b:#2563eb;--warn:#c8442b;--good:#1f9d74;--gold:#b3851f;--grid:#dde7ea;
+  }
+  *{box-sizing:border-box;}
+  html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:16px;
+    transition:background .25s,color .25s;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--scan);}
+  .toggle svg{width:14px;height:14px;}
+
+  header.hero{max-width:1180px;margin:0 auto;padding:56px 40px 26px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--scan);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.02;margin:.18em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--scan);}
+  .hero p{max-width:66ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1180px;margin:16px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);
+    border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+
+  /* probe + mode primers */
+  .primers{max-width:1180px;margin:26px auto 0;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:900px){.primers{grid-template-columns:1fr;}}
+  .primer{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+  .primer h2{font-size:1.15rem;margin:0 0 4px;font-weight:700;}
+  .primer p{margin:0 0 12px;color:var(--soft);font-size:.88rem;}
+  .probetable,.modetable{width:100%;border-collapse:collapse;font-size:.82rem;}
+  .probetable td,.modetable td{padding:7px 8px;border-bottom:1px solid var(--line2);vertical-align:top;}
+  .probetable .pname,.modetable .mname{font-weight:700;color:var(--scan);white-space:nowrap;}
+  .miniprobe{display:inline-block;vertical-align:middle;margin-right:6px;}
+
+  nav.exnav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:30px;}
+  nav.exnav .inner{max-width:1180px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.exnav button{background:transparent;border:1px solid transparent;color:var(--muted);font-family:inherit;
+    font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;}
+  nav.exnav button:hover{color:var(--ink);background:var(--panelhi);}
+  nav.exnav button.active{color:var(--bg);background:var(--scan);border-color:var(--scan);}
+
+  main{max-width:1180px;margin:0 auto;padding:26px 40px 100px;}
+  .grouphead{margin:28px 0 4px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+
+  .exam{background:var(--panel);border:1px solid var(--line);border-radius:16px;margin:16px 0;overflow:hidden;scroll-margin-top:60px;}
+  .exhead{padding:18px 22px;border-bottom:1px solid var(--line2);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;}
+  .exhead h3{font-size:1.3rem;margin:0;font-weight:700;}
+  .exhead .q{color:var(--muted);font-size:.88rem;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto;}
+  .chip{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px;
+    background:var(--panelhi);border:1px solid var(--line);color:var(--soft);}
+  .chip.probe{color:var(--scan);border-color:color-mix(in srgb,var(--scan) 40%,transparent);}
+  .chip.mode{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,transparent);}
+
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:900px){.panels{grid-template-columns:1fr;}}
+  .pane{padding:18px 22px;border-bottom:1px solid var(--line2);}
+  .pane:nth-child(odd){border-right:1px solid var(--line2);}
+  @media(max-width:900px){.pane:nth-child(odd){border-right:none;}}
+  .pane h4{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:7px;}
+  .pane h4 .n{width:18px;height:18px;border-radius:50%;background:var(--panelhi);border:1px solid var(--scan);color:var(--scan);
+    font-size:.66rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;}
+  .figbox{background:var(--bg2);border:1px solid var(--line2);border-radius:11px;overflow:hidden;}
+  .figbox svg{display:block;width:100%;height:auto;}
+  .pane p{font-size:.9rem;color:var(--soft);margin:10px 0 0;}
+  .pane p b{color:var(--ink);}
+
+  .interp{padding:16px 22px;}
+  .interp .row{display:flex;gap:10px;font-size:.9rem;margin:6px 0;}
+  .interp .row .k{flex:0 0 92px;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted);padding-top:2px;}
+  .interp .row.find .k{color:var(--good);}
+  .interp .row.pitfall .k{color:var(--warn);}
+  .interp .row.pearl .k{color:var(--scan);}
+  .interp .row .v{color:var(--ink);}
+  .interp .row .v b{color:var(--scan);}
+
+  .scrlabel{font-family:"SF Mono",monospace;font-size:9px;}
+  footer{max-width:1180px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,.primers,nav.exnav .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Point-of-Care Ultrasound · Field Atlas</div>
+  <h1>Probe it. <em>Read it.</em></h1>
+  <p>A bedside POCUS reference: for each exam, where the probe goes, what the screen should show, normal versus the abnormal you're hunting, and the artifact that will fool you. Illustrations are original schematics built to teach the pattern — they show what the sonographic image <em>means</em>, not a captured clip.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> POCUS is operator-dependent and adjunctive — correlate with the full clinical picture and confirmatory studies. A negative scan rarely excludes disease. Schematics are stylized for pattern recognition, not diagnostic-grade images. Follow your institution's credentialing and protocols.</div></div>
+
+<section class="primers" id="primers"></section>
+
+<nav class="exnav"><div class="inner" id="exnav"></div></nav>
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   SHARED SVG HELPERS
+   Screen panel = a "phased sector" or "linear" US image area.
+   We draw tissue as gray gradient, fluid as black (anechoic),
+   bright structures as near-white (hyperechoic), shadows as
+   dark bands. Probe-on-body = simple body region + probe block.
+   ============================================================ */
+const SC=`var(--scan)`, ECHO=`var(--echo)`, TIS=`var(--tissue)`, FLU=`var(--fluid)`, BM=`var(--beam)`;
+
+function svg(w,h,inner){return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function sl(x,y,t,fill,anchor){return `<text class="scrlabel" x="${x}" y="${y}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'start'}">${t}</text>`;}
+
+/* ---- probe glyphs ---- */
+function probeCurvi(x,y,rot){return `<g transform="translate(${x},${y}) rotate(${rot||0})">
+  <rect x="-13" y="-26" width="26" height="26" rx="4" fill="${SC}"/>
+  <path d="M-15,0 Q0,14 15,0 L13,4 Q0,18 -13,4 Z" fill="${SC}"/>
+  <rect x="-5" y="-40" width="10" height="16" rx="3" fill="${SC}" opacity=".7"/></g>`;}
+function probeLinear(x,y,rot){return `<g transform="translate(${x},${y}) rotate(${rot||0})">
+  <rect x="-18" y="-26" width="36" height="24" rx="4" fill="${SC}"/>
+  <rect x="-18" y="-3" width="36" height="5" rx="2" fill="${SC}"/>
+  <rect x="-6" y="-40" width="12" height="16" rx="3" fill="${SC}" opacity=".7"/></g>`;}
+function probePhased(x,y,rot){return `<g transform="translate(${x},${y}) rotate(${rot||0})">
+  <rect x="-11" y="-26" width="22" height="26" rx="4" fill="${SC}"/>
+  <path d="M-8,0 L8,0 L4,5 L-4,5 Z" fill="${SC}"/>
+  <rect x="-5" y="-40" width="10" height="16" rx="3" fill="${SC}" opacity=".7"/></g>`;}
+function beamFan(x,y,rot,len,spread){len=len||120;spread=spread||26;
+  return `<g transform="translate(${x},${y}) rotate(${rot||0})" opacity=".25">
+   <path d="M0,0 L${-Math.tan(spread*Math.PI/180)*len},${len} A${len},${len} 0 0 0 ${Math.tan(spread*Math.PI/180)*len},${len} Z" fill="${SC}"/></g>`;}
+function indicator(x,y){return `<circle cx="${x}" cy="${y}" r="4.5" fill="none" stroke="${SC}" stroke-width="2"/><text x="${x}" y="${y+3}" font-size="7" text-anchor="middle" fill="${SC}" font-weight="800">•</text>`;}
+
+/* ---- screen frames ---- */
+function sectorFrame(inner,opts){opts=opts||{};
+  // phased/curvilinear fan, apex top-center
+  const W=260,H=200,ax=130,ay=10,r=180,sp=opts.sp||32;
+  const lx=ax-Math.tan(sp*Math.PI/180)*r, rx=ax+Math.tan(sp*Math.PI/180)*r;
+  const clip=`<clipPath id="${opts.id}"><path d="M${ax},${ay} L${lx},${ay+r} A${r},${r} 0 0 0 ${rx},${ay+r} Z"/></clipPath>`;
+  return svg(W,H,
+    `<defs>${clip}</defs>`+
+    `<rect x="0" y="0" width="${W}" height="${H}" fill="${FLU}"/>`+
+    `<g clip-path="url(#${opts.id})">${inner}</g>`+
+    `<path d="M${ax},${ay} L${lx},${ay+r} M${ax},${ay} L${rx},${ay+r}" stroke="${SC}" stroke-width="1" opacity=".4" fill="none"/>`+
+    (opts.ind?indicator(lx+10,ay+14):'')+
+    (opts.label||''));
+}
+function linearFrame(inner,opts){opts=opts||{};
+  const W=260,H=200;
+  const clip=`<clipPath id="${opts.id}"><rect x="20" y="14" width="220" height="172"/></clipPath>`;
+  return svg(W,H,
+    `<defs>${clip}</defs>`+
+    `<rect x="0" y="0" width="${W}" height="${H}" fill="${FLU}"/>`+
+    `<g clip-path="url(#${opts.id})">${inner}</g>`+
+    `<rect x="20" y="14" width="220" height="172" fill="none" stroke="${SC}" stroke-width="1" opacity=".4"/>`+
+    (opts.ind?indicator(30,24):'')+
+    (opts.label||''));
+}
+/* body region block for probe placement */
+function bodyPane(inner){return svg(260,200,`<rect width="260" height="200" fill="var(--bg2)"/>${inner}`);}
+
+/* tissue texture helper: scattered speckle */
+function speckle(x,y,w,h,density){let s='';density=density||40;
+  let seed=x*7+y*13+w;
+  for(let i=0;i<density;i++){seed=(seed*9301+49297)%233280;const r=seed/233280;
+    seed=(seed*9301+49297)%233280;const r2=seed/233280;
+    s+=`<circle cx="${x+r*w}" cy="${y+r2*h}" r="${0.6+r*0.8}" fill="${ECHO}" opacity="${0.10+r2*0.18}"/>`;}
+  return s;}
+
+/* ============================================================
+   EXAM CATALOGUE
+   each exam: {group,name,q,probe,modes:[],
+     placement: svg-inner (body+probe),
+     screen: svg (normal),
+     compare: svg (abnormal),  + compareLabel
+     pitfall: svg, pitfallText,
+     interp:[[type,text],...] }
+   ============================================================ */
+const EX=[];
+function add(e){EX.push(e);}
+
+/* ---------- FAST: RUQ (Morison) ---------- */
+add({
+ group:"Trauma — FAST / eFAST", name:"FAST — RUQ (Morison's pouch)",
+ q:"Free fluid in hepatorenal recess?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode"],
+ placement: bodyPane(
+   // torso flank
+   `<path d="M40,40 Q130,20 220,44 L220,170 Q130,186 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="60" y="34" fill="var(--soft)">R mid-axillary line, 8–11th rib</text>`+
+   `<g stroke="var(--line)" stroke-width="6" opacity=".5"><line x1="40" y1="70" x2="220" y2="60"/><line x1="40" y1="92" x2="220" y2="84"/><line x1="40" y1="114" x2="220" y2="108"/></g>`+
+   probeCurvi(150,86,-8)+
+   `<text class="scrlabel" x="150" y="150" fill="var(--scan)" text-anchor="middle">marker → patient's head (coronal)</text>`),
+ screen: sectorFrame(
+   speckle(20,20,220,90,70)+
+   `<path d="M20,30 Q120,20 240,40 L240,96 Q120,104 20,96 Z" fill="${TIS}"/>`+   // liver
+   `<path d="M120,96 Q180,92 230,110 Q235,150 200,168 Q150,176 120,150 Z" fill="${TIS}" opacity=".85"/>`+ // kidney
+   `<ellipse cx="178" cy="132" rx="34" ry="20" fill="${ECHO}" opacity=".5"/>`+   // renal sinus echogenic
+   `<path d="M118,96 Q150,100 180,110" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".6"/>`,  // interface (no fluid)
+   {id:'ruq1',ind:1,label:sl(120,118,"liver",ECHO)+sl(180,150,"kidney",ECHO)+sl(70,70,"diaphragm →",'var(--soft)')}),
+ compare: sectorFrame(
+   speckle(20,20,220,80,60)+
+   `<path d="M20,30 Q120,20 240,40 L240,90 Q120,98 20,90 Z" fill="${TIS}"/>`+
+   `<path d="M120,104 Q180,100 230,118 Q235,156 200,172 Q150,178 120,156 Z" fill="${TIS}" opacity=".85"/>`+
+   `<path d="M104,90 Q150,98 200,104 Q180,116 120,112 Q100,104 104,90 Z" fill="${FLU}"/>`+ // anechoic fluid stripe
+   `<path d="M104,90 Q150,98 200,104" stroke="${SC}" stroke-width="1" fill="none" opacity=".7"/>`,
+   {id:'ruq2',ind:1,label:sl(118,84,"anechoic fluid",SC)}),
+ compareLabel:"Positive: anechoic stripe in Morison's pouch",
+ pitfall: sectorFrame(
+   speckle(20,20,220,90,50)+
+   `<path d="M20,30 Q120,22 240,42 L240,96 Q120,104 20,96 Z" fill="${TIS}"/>`+
+   `<rect x="150" y="40" width="40" height="120" fill="${FLU}" opacity=".5"/>`+
+   `<text class="scrlabel" x="170" y="180" fill="var(--warn)" text-anchor="middle">edge shadow</text>`,
+   {id:'ruq3'}),
+ pitfallText:"Perinephric fat or rib edge-shadowing can mimic or hide fluid. Scan through the whole recess and the inferior liver tip — fluid collects at the caudal liver edge first.",
+ interp:[
+  ["find","<b>Positive</b> = anechoic (black) stripe between liver and kidney, or at the caudal liver tip."],
+  ["pearl","The hepatorenal recess is the most dependent space in the supine upper abdomen — earliest to fill."],
+  ["pitfall","Don't mistake the anechoic gallbladder, IVC, or perinephric fat for free fluid; fluid is sharply marginated and conforms to recesses."]
+ ]
+});
+
+/* ---------- FAST: LUQ ---------- */
+add({
+ group:"Trauma — FAST / eFAST", name:"FAST — LUQ (splenorenal)",
+ q:"Free fluid around spleen / subphrenic?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,20 220,44 L220,170 Q130,186 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="34" fill="var(--soft)">L posterior-axillary line, 8–11th rib</text>`+
+   `<text class="scrlabel" x="60" y="58" fill="var(--scan)">"knuckles to the bed" — more posterior/superior than RUQ</text>`+
+   probeCurvi(150,96,-8)+
+   `<text class="scrlabel" x="150" y="160" fill="var(--scan)" text-anchor="middle">marker → head</text>`),
+ screen: sectorFrame(
+   speckle(20,20,220,80,60)+
+   `<path d="M30,28 Q120,20 230,36 L230,84 Q120,92 30,84 Z" fill="${TIS}"/>`+  // spleen
+   `<path d="M120,90 Q180,86 226,104 Q232,142 196,160 Q150,166 120,144 Z" fill="${TIS}" opacity=".85"/>`+
+   `<ellipse cx="176" cy="124" rx="30" ry="17" fill="${ECHO}" opacity=".5"/>`+
+   `<path d="M30,32 Q90,26 140,30" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".6"/>`,
+   {id:'luq1',ind:1,label:sl(60,60,"spleen",ECHO)+sl(176,140,"kidney",ECHO)+sl(40,44,"diaphragm",'var(--soft)')}),
+ compare: sectorFrame(
+   speckle(20,20,220,70,55)+
+   `<path d="M30,28 Q120,22 230,36 L230,76 Q120,84 30,78 Z" fill="${TIS}"/>`+
+   `<path d="M40,84 Q120,78 210,86 Q150,98 60,96 Q36,92 40,84 Z" fill="${FLU}"/>`+  // subphrenic fluid (above spleen)
+   `<path d="M120,96 Q180,92 226,110 Q232,146 196,164 Q150,170 120,148 Z" fill="${TIS}" opacity=".85"/>`,
+   {id:'luq2',ind:1,label:sl(60,76,"subphrenic fluid",SC)}),
+ compareLabel:"Positive: fluid above spleen (subphrenic) before splenorenal",
+ pitfall: sectorFrame(
+   `<rect x="0" y="0" width="260" height="200" fill="${FLU}"/>`+
+   `<path d="M30,28 Q120,22 230,36 L230,80 Q120,88 30,82 Z" fill="${TIS}"/>`+
+   `<rect x="30" y="86" width="200" height="12" fill="${TIS}" opacity=".4"/>`+
+   `<path d="M120,98 Q170,138 130,180" stroke="${FLU}" stroke-width="14" opacity=".6" fill="none"/>`+
+   sl(150,150,"gastric / splenic flexure gas → shadow",'var(--warn)','middle'),
+   {id:'luq3'}),
+ pitfallText:"Stomach/colonic gas casts shadows that obscure the LUQ. The splenorenal interface is higher and more posterior than the RUQ — fluid often appears subphrenic (above the spleen) first.",
+ interp:[
+  ["find","<b>Positive</b> = anechoic fluid above the spleen (subphrenic) or in the splenorenal space."],
+  ["pearl","LUQ fluid collects subphrenic before splenorenal — start your sweep cephalad."],
+  ["pitfall","Bowel gas shadowing is the main limiter; reposition and use the spleen as your acoustic window."]
+ ]
+});
+
+/* ---------- FAST: Pelvis ---------- */
+add({
+ group:"Trauma — FAST / eFAST", name:"FAST — Suprapubic (pelvis)",
+ q:"Free fluid posterior to bladder?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode"],
+ placement: bodyPane(
+   `<path d="M40,60 Q130,46 220,62 L220,170 Q130,182 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="60" y="48" fill="var(--soft)">midline, just above pubic symphysis</text>`+
+   probeCurvi(130,96,0)+
+   `<text class="scrlabel" x="130" y="150" fill="var(--scan)" text-anchor="middle">sagittal & transverse; aim into pelvis</text>`),
+ screen: sectorFrame(
+   speckle(20,30,220,60,40)+
+   `<path d="M70,60 Q130,50 190,60 Q200,110 130,124 Q60,110 70,60 Z" fill="${FLU}"/>`+ // bladder anechoic
+   `<path d="M70,60 Q130,50 190,60" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".5"/>`+
+   `<rect x="60" y="124" width="140" height="30" fill="${ECHO}" opacity=".22"/>`+  // posterior enhancement
+   `<path d="M110,124 Q130,140 150,124" stroke="${TIS}" stroke-width="6" fill="none" opacity=".6"/>`, // bowel behind
+   {id:'pel1',ind:1,label:sl(110,92,"bladder",SC)+sl(80,150,"post. enhancement",'var(--soft)')}),
+ compare: sectorFrame(
+   speckle(20,30,220,50,35)+
+   `<path d="M70,56 Q130,46 190,56 Q198,98 130,110 Q62,98 70,56 Z" fill="${FLU}"/>`+
+   `<path d="M88,110 Q130,104 176,112 Q150,134 110,132 Q86,124 88,110 Z" fill="${FLU}"/>`+ // fluid behind bladder
+   `<path d="M88,110 Q130,104 176,112" stroke="${SC}" stroke-width="1" fill="none" opacity=".7"/>`+
+   `<path d="M96,132 Q130,140 160,132" stroke="${TIS}" stroke-width="5" fill="none" opacity=".6"/>`,
+   {id:'pel2',ind:1,label:sl(96,126,"free fluid",SC)+sl(110,92,"bladder",SC)}),
+ compareLabel:"Positive: anechoic fluid posterior/superior to bladder (rectovesical / pouch of Douglas)",
+ pitfall: sectorFrame(
+   speckle(20,30,220,50,30)+
+   `<path d="M70,56 Q130,46 190,56 Q198,100 130,112 Q62,100 70,56 Z" fill="${FLU}"/>`+
+   `<rect x="60" y="112" width="140" height="44" fill="${ECHO}" opacity=".28"/>`+
+   sl(130,150,"posterior acoustic enhancement",'var(--warn)','middle'),
+   {id:'pel3'}),
+ pitfallText:"The bright 'posterior acoustic enhancement' deep to the full bladder is normal — don't call it pathology. A collapsed (empty) bladder makes pelvic free fluid very hard to see; scan early.",
+ interp:[
+  ["find","<b>Positive</b> = anechoic fluid posterior to the bladder (men: rectovesical; women: rectouterine pouch of Douglas)."],
+  ["pearl","A full bladder is your window — scan before the Foley drains it."],
+  ["pitfall","Posterior acoustic enhancement (bright field behind the bladder) and seminal vesicles/physiologic free fluid in women are mimics."]
+ ]
+});
+
+/* ---------- eFAST: Pneumothorax (lung sliding, M-mode) ---------- */
+add({
+ group:"Trauma — FAST / eFAST", name:"eFAST — Pneumothorax (anterior lung)",
+ q:"Lung sliding present? Seashore vs barcode?", probe:"linear", probeIcon:probeLinear,
+ modes:["B-mode","M-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,24 220,44 L220,170 Q130,184 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="34" fill="var(--soft)">supine patient, most anterior point (2nd–3rd ICS, MCL)</text>`+
+   `<g stroke="var(--line)" stroke-width="5" opacity=".5"><line x1="60" y1="76" x2="200" y2="70"/><line x1="60" y1="104" x2="200" y2="98"/></g>`+
+   probeLinear(130,90,0)+
+   `<text class="scrlabel" x="130" y="150" fill="var(--scan)" text-anchor="middle">probe ⟂ ribs (sagittal), marker → head</text>`),
+ screen: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   // two rib shadows with pleural line between
+   `<ellipse cx="70" cy="46" rx="16" ry="12" fill="${ECHO}" opacity=".8"/>`+
+   `<ellipse cx="190" cy="46" rx="16" ry="12" fill="${ECHO}" opacity=".8"/>`+
+   `<rect x="60" y="58" width="20" height="120" fill="${FLU}"/><rect x="180" y="58" width="20" height="120" fill="${FLU}"/>`+ // rib shadows
+   `<path d="M86,64 Q130,60 174,64" stroke="${ECHO}" stroke-width="3" fill="none"/>`+ // pleural line
+   speckle(30,72,200,100,90)+   // comet/A-line speckle below
+   `<path d="M30,100 Q130,96 230,100" stroke="${ECHO}" stroke-width="1.2" fill="none" opacity=".4"/>`+
+   `<path d="M30,138 Q130,134 230,138" stroke="${ECHO}" stroke-width="1.2" fill="none" opacity=".3"/>`,
+   {id:'ptx1',ind:1,label:sl(60,40,"rib",'var(--soft)')+sl(176,40,"rib",'var(--soft)')+sl(96,58,"pleural line (slides)",SC)+sl(40,108,"A-lines",'var(--soft)')}),
+ compare: svg(260,200,
+   `<rect width="260" height="200" fill="${FLU}"/>`+
+   sl(10,16,"M-MODE",'var(--gold)')+
+   // top: seashore (normal) split from barcode (PTX) by a divider
+   `<rect x="10" y="24" width="240" height="78" fill="none" stroke="${SC}" stroke-width="1" opacity=".4"/>`+
+   // seashore: waves on top, sand (speckle) below pleura
+   `<path d="M12,40 Q40,32 70,40 T130,40 T190,40 T248,40" stroke="${ECHO}" stroke-width="1.2" fill="none" opacity=".7"/>`+
+   `<path d="M12,50 Q40,44 70,50 T130,50 T190,50 T248,50" stroke="${ECHO}" stroke-width="1" fill="none" opacity=".5"/>`+
+   speckle(12,58,236,40,120)+
+   sl(16,72,"'seashore' = sliding present",'var(--good)')+
+   // bottom: barcode
+   `<rect x="10" y="112" width="240" height="78" fill="none" stroke="${SC}" stroke-width="1" opacity=".4"/>`+
+   `<g stroke="${ECHO}" stroke-width="1" opacity=".5">`+
+   Array.from({length:30},(_,i)=>`<line x1="${14+i*8}" y1="118" x2="${14+i*8}" y2="184"/>`).join('')+
+   `</g>`+
+   sl(16,160,"'barcode/stratosphere' = no sliding → PTX",'var(--warn)')),
+ compareLabel:"M-mode: seashore (normal) vs barcode (pneumothorax)",
+ pitfall: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   `<path d="M30,64 Q130,60 230,64" stroke="${ECHO}" stroke-width="3" fill="none"/>`+
+   sl(40,54,"no sliding here too:",'var(--warn)')+
+   sl(40,100,"mainstem intubation, bleb,",'var(--warn)')+
+   sl(40,114,"apnea, adhesions, ARDS",'var(--warn)'),
+   {id:'ptx3'}),
+ pitfallText:"Absent sliding is not 100% specific for PTX — mainstem intubation, pleural adhesions, bullae, apnea, and severe consolidation also abolish it. A lung point (transition from sliding to no-sliding) is the specific sign. B-lines or lung pulse exclude PTX at that spot.",
+ interp:[
+  ["find","<b>Normal:</b> pleural sliding + 'seashore' on M-mode. <b>PTX:</b> absent sliding + 'barcode'; a <b>lung point</b> is pathognomonic."],
+  ["pearl","B-lines (vertical comet-tails) or a lung pulse arising from the pleural line rule out PTX at that interspace."],
+  ["pitfall","Scan the most anterior/superior point in a supine patient — air rises. Absent sliding alone is sensitive, not specific."]
+ ]
+});
+
+/* ---------- Cardiac: subxiphoid + parasternal ---------- */
+add({
+ group:"Cardiac (echo)", name:"Cardiac — Subxiphoid 4-chamber",
+ q:"Effusion / tamponade? Global function? PEA activity?", probe:"phased", probeIcon:probePhased,
+ modes:["B-mode","M-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,22 220,42 L220,172 Q130,186 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="58" y="34" fill="var(--soft)">probe just below xiphoid</text>`+
+   probePhased(130,120,0)+
+   `<text class="scrlabel" x="130" y="160" fill="var(--scan)" text-anchor="middle">flatten to skin, aim ↖ toward L shoulder, marker → patient's L</text>`),
+ screen: sectorFrame(
+   `<path d="M40,30 Q120,18 210,34 L200,70 Q120,58 50,66 Z" fill="${TIS}" opacity=".7"/>`+ // liver (window)
+   `<path d="M70,70 Q150,60 200,90 Q210,140 150,160 Q90,150 70,110 Z" fill="${TIS}"/>`+   // heart mass
+   `<path d="M96,92 Q120,86 130,110 Q120,128 100,120 Z" fill="${FLU}"/>`+  // RV
+   `<path d="M134,96 Q170,92 176,124 Q160,144 138,134 Z" fill="${FLU}"/>`+ // LV
+   `<path d="M110,118 Q130,124 132,138" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".6"/>`,
+   {id:'card1',ind:1,label:sl(50,52,"liver",ECHO)+sl(100,104,"RV",ECHO)+sl(150,116,"LV",ECHO)}),
+ compare: sectorFrame(
+   `<path d="M40,30 Q120,18 210,34 L200,66 Q120,56 50,62 Z" fill="${TIS}" opacity=".7"/>`+
+   `<path d="M70,74 Q150,64 200,94 Q210,144 150,164 Q90,154 70,114 Z" fill="${FLU}"/>`+  // effusion surrounds
+   `<path d="M86,90 Q150,82 188,108 Q196,144 150,158 Q100,150 86,118 Z" fill="${TIS}"/>`+ // heart
+   `<path d="M104,104 Q124,100 130,120 Q120,134 104,128 Z" fill="${FLU}"/>`+
+   `<path d="M134,108 Q166,104 170,130 Q156,146 138,138 Z" fill="${FLU}"/>`,
+   {id:'card2',ind:1,label:sl(64,78,"pericardial effusion",SC)+sl(150,170,"RV collapse?",'var(--warn)')}),
+ compareLabel:"Effusion: anechoic rim around heart; diastolic RV collapse = tamponade",
+ pitfall: sectorFrame(
+   `<path d="M40,30 Q120,20 210,34 L200,70 Q120,58 50,66 Z" fill="${TIS}" opacity=".7"/>`+
+   `<path d="M70,72 Q150,62 200,92 Q210,142 150,162 Q90,152 70,112 Z" fill="${TIS}"/>`+
+   `<path d="M70,150 Q150,140 200,150 L200,165 Q150,158 70,165 Z" fill="${FLU}"/>`+
+   sl(80,176,"anterior fat pad mimics effusion",'var(--warn)'),
+   {id:'card3'}),
+ pitfallText:"An anterior pericardial fat pad can mimic effusion — but fat is usually only anterior and slightly echogenic/granular, whereas effusion tracks circumferentially and is truly anechoic. A pleural effusion lies posterior to the descending aorta; pericardial fluid lies anterior to it.",
+ interp:[
+  ["find","<b>Effusion</b> = anechoic stripe around the heart. <b>Tamponade</b> = diastolic RV free-wall collapse + plethoric IVC + clinical shock."],
+  ["pearl","Use the liver as your acoustic window; if the subxiphoid fails, roll to parasternal/apical."],
+  ["pitfall","Distinguish anterior fat pad (anterior only, echogenic) and pleural effusion (posterior to descending aorta) from true circumferential pericardial fluid."]
+ ]
+});
+
+/* ---------- Cardiac parasternal long ---------- */
+add({
+ group:"Cardiac (echo)", name:"Cardiac — Parasternal long axis (PLAX)",
+ q:"LV function, effusion, RV size, aortic root", probe:"phased", probeIcon:probePhased,
+ modes:["B-mode","M-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,24 220,44 L220,170 Q130,184 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="34" fill="var(--soft)">L parasternal, 3rd–4th ICS</text>`+
+   probePhased(120,92,18)+
+   `<text class="scrlabel" x="130" y="156" fill="var(--scan)" text-anchor="middle">marker → patient's R shoulder</text>`),
+ screen: sectorFrame(
+   `<path d="M60,40 Q120,30 150,54 L140,84 Q110,72 70,78 Z" fill="${TIS}"/>`+  // RVOT (near field)
+   `<path d="M70,86 Q140,76 200,110 Q206,150 150,162 Q96,150 78,120 Z" fill="${FLU}"/>`+ // LV cavity
+   `<path d="M70,86 Q140,76 200,110 Q206,150 150,162 Q96,150 78,120 Z" fill="none" stroke="${ECHO}" stroke-width="2" opacity=".5"/>`+
+   `<path d="M150,70 Q186,66 200,92" stroke="${ECHO}" stroke-width="3" fill="none"/>`+ // aortic root
+   `<path d="M120,96 L150,120" stroke="${ECHO}" stroke-width="2"/>`+ // ant mitral leaflet
+   `<path d="M70,150 Q140,150 200,150" stroke="${ECHO}" stroke-width="1.5" opacity=".5" fill="none"/>`,
+   {id:'plax1',ind:1,label:sl(80,60,"RVOT",ECHO)+sl(120,140,"LV",ECHO)+sl(176,80,"Ao",ECHO)+sl(112,110,"MV",ECHO)+sl(70,170,"LA",ECHO)}),
+ compare: svg(260,200,
+   `<rect width="260" height="200" fill="${FLU}"/>`+sl(10,16,"M-MODE @ mitral leaflet tips (EPSS)",'var(--gold)')+
+   `<path d="M20,60 Q40,140 60,60 T100,60 T140,60 T180,60 T220,60" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".7"/>`+ // mitral excursion (E,A)
+   `<line x1="20" y1="150" x2="240" y2="150" stroke="${ECHO}" stroke-width="2" opacity=".5"/>`+ // septum
+   `<line x1="60" y1="60" x2="60" y2="150" stroke="${SC}" stroke-width="1" stroke-dasharray="3 3"/>`+
+   sl(64,120,"EPSS = gap from E-point to septum",SC)+
+   sl(16,176,"large EPSS (>7mm) → reduced LV function",'var(--warn)')),
+ compareLabel:"M-mode EPSS: mitral E-point to septal separation estimates EF",
+ pitfall: sectorFrame(
+   `<path d="M70,84 Q140,74 200,108 Q206,148 150,160 Q96,148 78,118 Z" fill="${FLU}"/>`+
+   `<path d="M70,158 Q140,150 206,162 L206,176 Q140,168 70,172 Z" fill="${FLU}"/>`+
+   `<path d="M150,150 L210,150" stroke="${ECHO}" stroke-width="2" opacity=".7"/>`+
+   sl(74,176,"fluid ANTERIOR to desc. aorta = pericardial",'var(--warn)')+
+   sl(150,144,"desc Ao",ECHO),
+   {id:'plax3'}),
+ pitfallText:"On PLAX, the descending thoracic aorta is the key landmark: pericardial effusion tracks ANTERIOR to it, pleural effusion tracks POSTERIOR to it. Foreshortening (off-axis) underestimates chamber size — keep the aortic root and mitral valve in the same plane.",
+ interp:[
+  ["find","Assess LV squeeze qualitatively, EPSS on M-mode, RVOT/LV/LA proportions, and any effusion."],
+  ["pearl","EPSS >7 mm suggests reduced EF; anterior MV leaflet should nearly slap the septum in a normal heart."],
+  ["pitfall","Use the descending aorta to separate pericardial (anterior) from pleural (posterior) effusion."]
+ ]
+});
+
+/* ---------- IVC ---------- */
+add({
+ group:"Cardiac (echo)", name:"IVC — volume / fluid responsiveness",
+ q:"Volume status & collapsibility", probe:"phased", probeIcon:probePhased,
+ modes:["B-mode","M-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,24 220,44 L220,170 Q130,184 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="34" fill="var(--soft)">subxiphoid, marker → head (sagittal)</text>`+
+   probePhased(130,110,0)+
+   `<text class="scrlabel" x="130" y="158" fill="var(--scan)" text-anchor="middle">IVC long-axis, ~2 cm from RA junction</text>`),
+ screen: sectorFrame(
+   `<path d="M40,30 Q120,22 210,36 L206,72 Q120,62 46,68 Z" fill="${TIS}" opacity=".75"/>`+ // liver
+   `<path d="M40,96 Q140,90 220,96 L220,116 Q140,110 40,116 Z" fill="${FLU}"/>`+ // IVC tube
+   `<path d="M40,96 Q140,90 220,96 M40,116 Q140,110 220,116" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".6"/>`+
+   `<path d="M196,90 Q214,96 210,106" stroke="${ECHO}" stroke-width="2" fill="none" opacity=".7"/>`, // RA junction
+   {id:'ivc1',ind:1,label:sl(60,56,"liver",ECHO)+sl(110,108,"IVC",SC)+sl(180,84,"→ RA",ECHO)}),
+ compare: svg(260,200,
+   `<rect width="260" height="200" fill="${FLU}"/>`+sl(10,16,"M-MODE — respiratory variation",'var(--gold)')+
+   // top tracing: low variation (volume up)
+   `<path d="M14,44 L60,44 Q70,40 80,44 L130,44 Q140,40 150,44 L240,44" stroke="${ECHO}" stroke-width="1.4" fill="none"/>`+
+   `<path d="M14,70 L240,70" stroke="${ECHO}" stroke-width="1.4"/>`+
+   sl(16,36,"plump, <50% collapse → volume up / high CVP",'var(--soft)')+
+   // bottom: high variation
+   `<path d="M14,120 L50,120 Q70,150 90,120 L130,120 Q150,152 170,120 L240,120" stroke="${ECHO}" stroke-width="1.4" fill="none"/>`+
+   `<path d="M14,150 L240,150" stroke="${ECHO}" stroke-width="1.4"/>`+
+   sl(16,112,">50% collapse → likely fluid responsive",'var(--good)')),
+ compareLabel:"M-mode: small/collapsing (responsive) vs plump/fixed (high CVP)",
+ pitfall: sectorFrame(
+   `<path d="M40,96 Q140,84 220,96 L220,120 Q140,108 40,118 Z" fill="${FLU}"/>`+
+   sl(60,150,"measuring the AORTA by mistake:",'var(--warn)')+
+   sl(60,168,"pulsatile, thick wall, no RA, no hepatic vein",'var(--warn)'),
+   {id:'ivc3'}),
+ pitfallText:"Don't confuse the IVC with the aorta — the IVC is thin-walled, enters the RA, receives hepatic veins, and varies with respiration; the aorta is pulsatile, thick-walled, and to the patient's left. IVC is a crude single data point: confounded by ventilation, tamponade, RV failure, and elevated intra-abdominal pressure. Trend it, don't worship it.",
+ interp:[
+  ["find","Measure max/min diameter ~2 cm from the RA. Small + >50% collapse ≈ low CVP/fluid-responsive; plump + fixed ≈ high CVP."],
+  ["pearl","Positive-pressure ventilation reverses the dynamics — collapse becomes distension. Always interpret with the vent."],
+  ["pitfall","Mistaking the aorta for the IVC, and over-trusting a single value in tamponade/RV failure/raised intra-abdominal pressure."]
+ ]
+});
+
+/* ---------- Lung (B-lines / effusion) ---------- */
+add({
+ group:"Thoracic", name:"Lung — B-lines & effusion",
+ q:"Interstitial (wet) lung? Pleural effusion? Consolidation?", probe:"phased", probeIcon:probePhased,
+ modes:["B-mode"],
+ placement: bodyPane(
+   `<path d="M40,40 Q130,24 220,44 L220,170 Q130,184 40,166 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="40" y="34" fill="var(--soft)">anterior + lateral zones; posterolateral (PLAPS) for effusion</text>`+
+   probePhased(120,90,0)+probePhased(180,120,10)+
+   `<text class="scrlabel" x="130" y="158" fill="var(--scan)" text-anchor="middle">scan multiple zones each side</text>`),
+ screen: sectorFrame(
+   `<path d="M40,52 Q130,46 220,52" stroke="${ECHO}" stroke-width="3" fill="none"/>`+ // pleural line
+   `<g stroke="${ECHO}" stroke-width="2" opacity=".7">`+
+   `<path d="M70,52 L60,196"/><path d="M120,50 L116,196"/><path d="M168,52 L176,196"/>`+ // B-lines to bottom
+   `</g>`+
+   sl(60,44,"pleural line",SC)+sl(120,180,"B-lines (≥3 = wet)",'var(--warn)'),
+   {id:'lung1',ind:1}),
+ compare: sectorFrame(
+   speckle(20,30,220,40,30)+
+   `<path d="M30,40 Q130,32 230,42 L230,70 Q130,62 30,70 Z" fill="${TIS}" opacity=".7"/>`+ // chest wall/liver
+   `<path d="M40,74 Q130,66 226,76 L226,150 Q130,158 40,150 Z" fill="${FLU}"/>`+ // effusion (anechoic)
+   `<path d="M120,150 Q150,120 134,90 Q120,118 120,150 Z" fill="${TIS}" opacity=".8"/>`+ // collapsed lung tip floating
+   sl(60,120,"effusion",SC)+sl(120,100,"'jellyfish' lung",'var(--soft)'),
+   {id:'lung2',ind:1}),
+ compareLabel:"Effusion: anechoic fluid with floating ('jellyfish') atelectatic lung; spine sign",
+ pitfall: sectorFrame(
+   `<path d="M40,52 Q130,46 220,52" stroke="${ECHO}" stroke-width="3" fill="none"/>`+
+   `<path d="M120,52 L116,196" stroke="${ECHO}" stroke-width="2" opacity=".7"/>`+
+   sl(40,90,"a single B-line / comet at a rib edge",'var(--warn)')+
+   sl(40,108,"can be normal — need ≥3 in one field",'var(--warn)'),
+   {id:'lung3'}),
+ pitfallText:"One or two B-lines in a dependent zone can be normal. Pathologic interstitial syndrome = ≥3 B-lines between two ribs in a single view, bilaterally. The 'spine sign' (visualizing thoracic vertebrae above the diaphragm) indicates effusion — normally air stops the beam.",
+ interp:[
+  ["find","<b>A-lines</b> (horizontal) = dry/normal or PTX. <b>≥3 B-lines</b> (vertical, to screen bottom, move with sliding) = interstitial fluid (CHF, pneumonia, ARDS)."],
+  ["pearl","Diffuse bilateral B-lines fit cardiogenic edema; focal B-lines + consolidation fit pneumonia."],
+  ["pitfall","A few B-lines are non-specific; require ≥3 per field and a bilateral pattern. Use the spine sign to confirm effusion."]
+ ]
+});
+
+/* ---------- Aorta ---------- */
+add({
+ group:"Abdominal & vascular", name:"Abdominal aorta — AAA",
+ q:"Aneurysm (outer-wall ≥3 cm)?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode","color Doppler"],
+ placement: bodyPane(
+   `<path d="M40,50 Q130,34 220,52 L220,172 Q130,184 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="42" fill="var(--soft)">midline epigastrium → umbilicus, transverse</text>`+
+   probeCurvi(130,96,0)+
+   `<text class="scrlabel" x="130" y="156" fill="var(--scan)" text-anchor="middle">trace from epigastrium to bifurcation</text>`),
+ screen: sectorFrame(
+   speckle(20,30,220,60,40)+
+   `<ellipse cx="120" cy="120" rx="20" ry="20" fill="${FLU}"/>`+ // aorta round
+   `<ellipse cx="120" cy="120" rx="20" ry="20" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+   `<path d="M150,100 L160,80" stroke="${ECHO}" stroke-width="1.5"/>`+ // vertebral body shadow behind
+   `<path d="M96,140 L96,196 M144,140 L144,196" stroke="${FLU}" stroke-width="2" opacity=".5"/>`+
+   `<ellipse cx="170" cy="120" rx="14" ry="18" fill="${FLU}" opacity=".7"/>`+ // IVC (oval, compressible)
+   sl(110,124,"Ao",SC)+sl(160,124,"IVC",'var(--soft)')+sl(60,150,"vertebral shadow",'var(--soft)'),
+   {id:'aorta1',ind:1}),
+ compare: sectorFrame(
+   speckle(20,20,220,40,30)+
+   `<ellipse cx="124" cy="118" rx="48" ry="42" fill="${FLU}"/>`+
+   `<ellipse cx="124" cy="118" rx="48" ry="42" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+   `<path d="M86,118 A48,42 0 0 1 162,118 Q140,108 100,110 Q88,114 86,118 Z" fill="${TIS}" opacity=".7"/>`+ // mural thrombus
+   `<line x1="76" y1="118" x2="172" y2="118" stroke="${SC}" stroke-width="1" stroke-dasharray="3 3"/>`+
+   sl(100,176,"outer-to-outer ≥3 cm",SC)+sl(110,104,"thrombus",'var(--soft)'),
+   {id:'aorta2',ind:1}),
+ compareLabel:"AAA: outer-wall diameter ≥3 cm; measure including mural thrombus",
+ pitfall: sectorFrame(
+   speckle(20,20,220,40,30)+
+   `<ellipse cx="120" cy="118" rx="46" ry="40" fill="${FLU}"/>`+
+   `<ellipse cx="120" cy="118" rx="30" ry="26" fill="none" stroke="${ECHO}" stroke-width="2" stroke-dasharray="3 3"/>`+
+   sl(60,170,"measuring lumen only underestimates",'var(--warn)'),
+   {id:'aorta3'}),
+ pitfallText:"Measure outer wall to outer wall, INCLUDING mural thrombus — measuring only the flow lumen badly underestimates the true aneurysm size. Bowel gas can obscure the aorta; apply steady pressure to displace it. POCUS detects AAA reliably but cannot exclude rupture — a ruptured AAA is a clinical+CT diagnosis.",
+ interp:[
+  ["find","<b>AAA</b> = outer-wall aortic diameter ≥3 cm (or iliac ≥1.5 cm), measured anteroposterior, transverse plane."],
+  ["pearl","Color Doppler shows the true residual lumen within thrombus; trace the whole aorta to the bifurcation."],
+  ["pitfall","Lumen-only measurement underestimates; gas obscures; POCUS can't reliably see retroperitoneal rupture — don't be reassured."]
+ ]
+});
+
+/* ---------- Biliary ---------- */
+add({
+ group:"Abdominal & vascular", name:"Biliary — gallbladder / cholecystitis",
+ q:"Stones, wall, sonographic Murphy, duct?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode"],
+ placement: bodyPane(
+   `<path d="M40,46 Q130,30 220,48 L220,172 Q130,184 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="44" y="40" fill="var(--soft)">RUQ subcostal / intercostal; 'X-7' or rolling probe</text>`+
+   probeCurvi(120,92,-10)+
+   `<text class="scrlabel" x="130" y="156" fill="var(--scan)" text-anchor="middle">find GB long axis; trace to portal triad</text>`),
+ screen: sectorFrame(
+   speckle(20,24,220,50,40)+
+   `<path d="M30,34 Q120,26 230,40 L226,80 Q120,72 34,78 Z" fill="${TIS}" opacity=".75"/>`+ // liver
+   `<path d="M90,84 Q140,78 170,96 Q176,140 140,156 Q102,150 90,116 Z" fill="${FLU}"/>`+ // GB anechoic
+   `<path d="M90,84 Q140,78 170,96 Q176,140 140,156 Q102,150 90,116 Z" fill="none" stroke="${ECHO}" stroke-width="2" opacity=".6"/>`+
+   sl(110,120,"GB",SC)+sl(40,60,"liver",ECHO),
+   {id:'gb1',ind:1}),
+ compare: sectorFrame(
+   speckle(20,24,220,40,30)+
+   `<path d="M30,34 Q120,26 230,40 L226,76 Q120,68 34,74 Z" fill="${TIS}" opacity=".75"/>`+
+   `<path d="M88,80 Q140,74 172,94 Q178,140 140,156 Q100,150 88,114 Z" fill="${FLU}"/>`+
+   `<path d="M88,80 Q140,74 172,94 Q178,140 140,156 Q100,150 88,114 Z" fill="none" stroke="${ECHO}" stroke-width="5" opacity=".8"/>`+ // thick wall
+   `<ellipse cx="140" cy="140" rx="16" ry="10" fill="${ECHO}"/>`+ // stone
+   `<rect x="128" y="150" width="24" height="46" fill="${FLU}" opacity=".7"/>`+ // shadow
+   sl(120,138,"stone",'var(--soft)')+sl(110,196,"shadow",'var(--soft)')+sl(60,84,"wall >3mm",'var(--warn)'),
+   {id:'gb2',ind:1}),
+ compareLabel:"Cholecystitis: stone + wall >3 mm + pericholecystic fluid + sono Murphy",
+ pitfall: sectorFrame(
+   speckle(20,24,220,40,30)+
+   `<path d="M70,80 Q140,74 180,96 L176,120 Q120,112 70,116 Z" fill="${ECHO}" opacity=".5"/>`+
+   `<rect x="90" y="120" width="80" height="76" fill="${FLU}" opacity=".7"/>`+
+   sl(80,150,"WES sign / contracted GB full of stones",'var(--warn)'),
+   {id:'gb3'}),
+ pitfallText:"A contracted, stone-packed gallbladder can look like bowel — the 'WES' (wall-echo-shadow) sign confirms it's the GB. The sonographic Murphy sign (maximal tenderness with the probe over the GB) adds specificity. Measure the anterior wall (posterior is enhanced). A non-fasting GB is contracted with a falsely 'thick' wall.",
+ interp:[
+  ["find","Stones (mobile, echogenic, shadowing) + wall >3 mm + pericholecystic fluid + positive sonographic Murphy = cholecystitis."],
+  ["pearl","CBD normally <6 mm (+1 mm/decade over 60); measure anterior to the portal vein."],
+  ["pitfall","Measure the anterior wall (posterior enhancement falsely thickens it); a non-fasted GB contracts; WES sign identifies a stone-filled GB."]
+ ]
+});
+
+/* ---------- Renal ---------- */
+add({
+ group:"Abdominal & vascular", name:"Renal — hydronephrosis",
+ q:"Obstruction / hydronephrosis? Bladder volume?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode","color Doppler"],
+ placement: bodyPane(
+   `<path d="M40,42 Q130,26 220,46 L220,172 Q130,184 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="36" fill="var(--soft)">posterior flank, coronal; both kidneys + bladder</text>`+
+   probeCurvi(120,96,-6)+probeCurvi(190,130,0)+
+   `<text class="scrlabel" x="130" y="158" fill="var(--scan)" text-anchor="middle">compare sides; check bladder + jets</text>`),
+ screen: sectorFrame(
+   speckle(20,24,220,40,30)+
+   `<path d="M60,60 Q140,50 200,82 Q208,140 150,164 Q90,156 64,112 Z" fill="${TIS}" opacity=".85"/>`+ // cortex
+   `<ellipse cx="140" cy="108" rx="40" ry="24" fill="${ECHO}" opacity=".55"/>`+ // central sinus echogenic
+   sl(70,80,"cortex",ECHO)+sl(120,112,"sinus (bright)",'var(--soft)'),
+   {id:'renal1',ind:1}),
+ compare: sectorFrame(
+   speckle(20,24,220,40,25)+
+   `<path d="M60,58 Q140,48 202,80 Q210,140 150,166 Q90,158 62,112 Z" fill="${TIS}" opacity=".85"/>`+
+   `<path d="M120,90 Q150,84 168,100 Q172,120 150,128 Q126,124 118,108 Z" fill="${FLU}"/>`+ // dilated pelvis
+   `<path d="M110,100 Q90,104 84,116 M150,128 Q150,140 158,150" stroke="${FLU}" stroke-width="6" fill="none" opacity=".7"/>`+ // dilated calyces
+   sl(118,108,"dilated pelvis",SC)+sl(70,140,"calyces",SC),
+   {id:'renal2',ind:1}),
+ compareLabel:"Hydronephrosis: anechoic dilated renal pelvis/calyces ('bear claw')",
+ pitfall: sectorFrame(
+   speckle(20,24,220,40,30)+
+   `<path d="M60,58 Q140,48 202,80 Q210,140 150,166 Q90,158 62,112 Z" fill="${TIS}" opacity=".85"/>`+
+   `<g>`+
+   `<ellipse cx="120" cy="106" rx="10" ry="9" fill="${FLU}"/><ellipse cx="150" cy="112" rx="9" ry="8" fill="${FLU}"/>`+
+   `</g>`+
+   sl(70,150,"prominent vessels / cysts mimic hydro",'var(--warn)'),
+   {id:'renal3'}),
+ pitfallText:"Prominent renal vessels, parapelvic cysts, and an extrarenal pelvis can mimic hydronephrosis — color Doppler lights up vessels and distinguishes them from anechoic urine. A very full bladder causes mild bilateral 'back-pressure' hydro that resolves after voiding. Grade severity (mild→moderate→severe) and always check the contralateral side and bladder.",
+ interp:[
+  ["find","Hydronephrosis = anechoic dilatation of the renal pelvis/calyces; grade mild→severe. Check ureteral jets in the bladder."],
+  ["pearl","Color Doppler separates dilated calyces (no flow) from prominent vessels (flow)."],
+  ["pitfall","Over-full bladder, parapelvic cysts, and prominent vessels mimic hydro; correlate with the bladder and the other kidney."]
+ ]
+});
+
+/* ---------- DVT ---------- */
+add({
+ group:"Vascular & soft tissue", name:"DVT — compression ultrasound",
+ q:"Compressible vein? Clot?", probe:"linear", probeIcon:probeLinear,
+ modes:["B-mode","color Doppler","spectral/power"],
+ placement: bodyPane(
+   `<path d="M90,30 Q130,24 170,30 L180,176 Q130,184 80,176 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="40" y="24" fill="var(--soft)">common femoral (groin) + popliteal (knee crease)</text>`+
+   probeLinear(130,70,90)+probeLinear(130,140,90)+
+   `<text class="scrlabel" x="130" y="196" fill="var(--scan)" text-anchor="middle">2-point compression; transverse</text>`),
+ screen: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,160,80)+
+   `<ellipse cx="100" cy="90" rx="26" ry="22" fill="${FLU}"/>`+  // vein
+   `<ellipse cx="100" cy="90" rx="26" ry="22" fill="none" stroke="${ECHO}" stroke-width="1.5" opacity=".6"/>`+
+   `<ellipse cx="160" cy="90" rx="20" ry="20" fill="${FLU}" opacity=".85"/>`+ // artery (round, thick)
+   `<ellipse cx="160" cy="90" rx="20" ry="20" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+   sl(80,90,"vein",SC)+sl(150,90,"artery",'var(--soft)')+sl(30,170,"normal: vein collapses fully with pressure",'var(--good)'),
+   {id:'dvt1',ind:1}),
+ compare: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,160,70)+
+   `<ellipse cx="100" cy="90" rx="28" ry="24" fill="${FLU}"/>`+
+   `<ellipse cx="100" cy="90" rx="26" ry="22" fill="${TIS}" opacity=".8"/>`+ // echogenic clot fills vein
+   `<ellipse cx="100" cy="90" rx="28" ry="24" fill="none" stroke="${ECHO}" stroke-width="1.5"/>`+
+   `<ellipse cx="160" cy="90" rx="20" ry="20" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+   sl(72,90,"clot",'var(--warn)')+sl(30,170,"DVT: non-compressible, echogenic lumen",'var(--warn)'),
+   {id:'dvt2',ind:1}),
+ compareLabel:"DVT: vein fails to compress; echogenic intraluminal thrombus",
+ pitfall: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   `<ellipse cx="120" cy="80" rx="24" ry="20" fill="${FLU}"/>`+
+   `<ellipse cx="120" cy="130" rx="14" ry="12" fill="${FLU}"/>`+
+   sl(40,170,"lymph node / Baker cyst / duplicated vein",'var(--warn)'),
+   {id:'dvt3'}),
+ pitfallText:"The test is COMPRESSIBILITY, not appearance — fresh clot can be anechoic and look like flowing blood, so always compress. Pitfalls: a lymph node or Baker's cyst mimicking vein, duplicated femoral/popliteal veins (compress both), and isolated calf or pelvic/iliac DVT that 2-point compression misses. Color/spectral Doppler shows absent flow or loss of respiratory phasicity.",
+ interp:[
+  ["find","<b>Normal</b> = vein walls fully coapt with gentle pressure. <b>DVT</b> = non-compressible vein ± visible echogenic thrombus."],
+  ["pearl","Color Doppler confirms flow; spectral/augmentation shows respiratory phasicity (lost above an obstruction)."],
+  ["pitfall","Compress at multiple levels (duplications), don't trust appearance over compression, and remember 2-point misses isolated calf/iliac clot."]
+ ]
+});
+
+/* ---------- Soft tissue ---------- */
+add({
+ group:"Vascular & soft tissue", name:"Soft tissue — abscess vs cellulitis",
+ q:"Drainable collection vs cellulitis?", probe:"linear", probeIcon:probeLinear,
+ modes:["B-mode","color Doppler"],
+ placement: bodyPane(
+   `<rect x="40" y="60" width="180" height="90" rx="14" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="46" fill="var(--soft)">over the area of fluctuance / erythema</text>`+
+   probeLinear(130,70,0)+
+   `<text class="scrlabel" x="130" y="170" fill="var(--scan)" text-anchor="middle">scan in 2 planes; use standoff for superficial</text>`),
+ screen: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,170,140)+  // cobblestoning
+   `<g stroke="${FLU}" stroke-width="3" opacity=".5">`+
+   `<path d="M40,60 Q90,54 140,60 T230,60"/><path d="M40,90 Q90,84 140,90 T230,90"/><path d="M40,120 Q90,114 140,120 T230,120"/>`+
+   `</g>`+
+   sl(36,40,"'cobblestoning' = cellulitis edema",'var(--soft)'),
+   {id:'st1',ind:1}),
+ compare: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,40,40)+
+   `<path d="M70,70 Q140,58 190,80 Q200,130 140,148 Q84,140 70,104 Z" fill="${FLU}"/>`+
+   `<path d="M70,70 Q140,58 190,80 Q200,130 140,148 Q84,140 70,104 Z" fill="none" stroke="${ECHO}" stroke-width="2"/>`+
+   speckle(80,80,100,56,40)+ // internal debris
+   sl(96,110,"abscess",SC)+sl(40,170,"swirling debris; squish with probe",'var(--good)'),
+   {id:'st2',ind:1}),
+ compareLabel:"Abscess: hypo/anechoic collection, internal debris, posterior enhancement, no internal color flow",
+ pitfall: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   `<ellipse cx="120" cy="100" rx="40" ry="30" fill="${FLU}"/>`+
+   `<line x1="120" y1="70" x2="120" y2="130" stroke="${ECHO}" stroke-width="2" opacity=".7"/>`+
+   sl(40,170,"is it a vessel? use color Doppler before I&D",'var(--warn)'),
+   {id:'st3'}),
+ pitfallText:"Before incising, hit it with COLOR DOPPLER — a pseudoaneurysm or vascular structure can masquerade as an abscess and turn an I&D into a bleed. Lymph nodes have an echogenic hilum with central flow. An abscess shows swirling mobile debris with probe pressure and NO internal flow (peripheral hyperemia is fine).",
+ interp:[
+  ["find","<b>Cellulitis</b> = cobblestoning (edema between septa). <b>Abscess</b> = discrete hypo/anechoic pocket, mobile debris, posterior enhancement, no internal flow."],
+  ["pearl","Probe compression makes pus swirl; that mobility helps confirm a drainable collection."],
+  ["pitfall","Always color-Doppler before I&D to exclude a vessel/pseudoaneurysm; lymph nodes have central hilar flow."]
+ ]
+});
+
+/* ---------- Ocular ---------- */
+add({
+ group:"Other applications", name:"Ocular — retinal detachment / ↑ICP",
+ q:"RD, vitreous hemorrhage, ON sheath diameter?", probe:"linear", probeIcon:probeLinear,
+ modes:["B-mode"],
+ placement: bodyPane(
+   `<ellipse cx="130" cy="100" rx="40" ry="28" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="40" y="44" fill="var(--soft)">closed eyelid + thick gel; LOTS of gel, light touch</text>`+
+   probeLinear(130,64,0)+
+   `<text class="scrlabel" x="130" y="172" fill="var(--scan)" text-anchor="middle">rest hand on nose/brow; never press the globe</text>`),
+ screen: sectorFrame(
+   `<rect x="0" y="0" width="260" height="200" fill="${FLU}"/>`+
+   `<circle cx="130" cy="100" r="62" fill="${FLU}" stroke="${ECHO}" stroke-width="2"/>`+ // globe
+   `<path d="M86,150 Q130,170 174,150" stroke="${ECHO}" stroke-width="2" fill="none" opacity=".5"/>`+ // post wall
+   `<path d="M122,160 L122,196 M138,160 L138,196" stroke="${ECHO}" stroke-width="2" opacity=".5"/>`+ // ON sheath
+   sl(96,96,"anechoic vitreous",'var(--soft)')+sl(108,190,"optic nerve",ECHO),
+   {id:'eye1',ind:1,sp:30}),
+ compare: sectorFrame(
+   `<rect x="0" y="0" width="260" height="200" fill="${FLU}"/>`+
+   `<circle cx="130" cy="100" r="62" fill="${FLU}" stroke="${ECHO}" stroke-width="2"/>`+
+   `<path d="M88,120 Q130,108 150,140" stroke="${ECHO}" stroke-width="2.5" fill="none"/>`+ // detached membrane tethered
+   sl(60,96,"undulating membrane",SC)+sl(60,176,"tethered to optic disc → RD",'var(--warn)'),
+   {id:'eye2',ind:1,sp:30}),
+ compareLabel:"Retinal detachment: bright undulating membrane tethered to the optic disc",
+ pitfall: sectorFrame(
+   `<rect x="0" y="0" width="260" height="200" fill="${FLU}"/>`+
+   `<circle cx="130" cy="100" r="62" fill="${FLU}" stroke="${ECHO}" stroke-width="2"/>`+
+   `<path d="M92,110 Q130,100 168,116" stroke="${ECHO}" stroke-width="1.5" fill="none" opacity=".7"/>`+
+   sl(50,176,"vitreous detachment crosses disc (mobile, fainter)",'var(--warn)'),
+   {id:'eye3',ind:1,sp:30}),
+ pitfallText:"Distinguish RETINAL detachment (bright, tethered to the optic disc, anchored) from POSTERIOR VITREOUS detachment (fainter, more mobile, crosses over the disc, doesn't anchor to it). Turn the gain up to find subtle vitreous hemorrhage (low-level swirling echoes). NEVER apply pressure to a globe with suspected rupture. ONSD >5 mm (3 mm behind the globe) suggests raised ICP.",
+ interp:[
+  ["find","<b>RD</b> = hyperechoic undulating membrane tethered to the optic disc. <b>Vitreous hemorrhage</b> = low-level mobile echoes on high gain. <b>ONSD >5 mm</b> suggests ↑ICP."],
+  ["pearl","Have the patient move the eye — RD stays tethered at the disc; vitreous detachment sweeps across it."],
+  ["pitfall","Don't compress a possibly-ruptured globe; don't confuse PVD with RD; low gain hides vitreous hemorrhage."]
+ ]
+});
+
+/* ---------- First-trimester OB ---------- */
+add({
+ group:"Other applications", name:"First-trimester OB — IUP vs ectopic",
+ q:"Intrauterine pregnancy confirmed? FHR?", probe:"curvilinear", probeIcon:probeCurvi,
+ modes:["B-mode","M-mode","color Doppler"],
+ placement: bodyPane(
+   `<path d="M40,60 Q130,46 220,62 L220,172 Q130,182 40,168 Z" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="40" y="48" fill="var(--soft)">transabdominal suprapubic (full bladder) → endocavitary if needed</text>`+
+   probeCurvi(130,96,0)+
+   `<text class="scrlabel" x="130" y="156" fill="var(--scan)" text-anchor="middle">sagittal + transverse uterus</text>`),
+ screen: sectorFrame(
+   speckle(20,30,220,50,30)+
+   `<path d="M60,60 Q130,46 200,62 Q210,120 150,150 Q86,144 64,104 Z" fill="${TIS}" opacity=".7"/>`+ // uterus
+   `<ellipse cx="130" cy="100" rx="30" ry="24" fill="${FLU}"/>`+ // gestational sac
+   `<ellipse cx="130" cy="100" rx="30" ry="24" fill="none" stroke="${ECHO}" stroke-width="3"/>`+ // echogenic rim (double decidual)
+   `<circle cx="140" cy="108" r="7" fill="${ECHO}" opacity=".8"/>`+ // yolk sac/pole
+   sl(86,96,"gest. sac in uterus",SC)+sl(150,114,"yolk sac/pole",ECHO),
+   {id:'ob1',ind:1}),
+ compare: sectorFrame(
+   speckle(20,30,220,40,30)+
+   `<path d="M60,70 Q130,56 200,72 Q208,120 150,148 Q90,142 64,108 Z" fill="${TIS}" opacity=".7"/>`+ // empty uterus
+   `<path d="M170,60 Q200,54 214,70 Q210,96 186,98 Q168,86 170,60 Z" fill="${FLU}"/>`+ // adnexal mass
+   `<path d="M170,60 Q200,54 214,70 Q210,96 186,98 Q168,86 170,60 Z" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+   `<path d="M70,150 Q130,160 180,150 L180,176 Q130,168 70,172 Z" fill="${FLU}"/>`+ // free fluid
+   sl(80,110,"empty uterus",'var(--warn)')+sl(168,52,"adnexal ring",'var(--warn)')+sl(80,168,"free fluid",SC),
+   {id:'ob2',ind:1}),
+ compareLabel:"Ectopic concern: empty uterus + adnexal mass + free fluid (with positive βhCG)",
+ pitfall: sectorFrame(
+   speckle(20,30,220,40,30)+
+   `<path d="M60,64 Q130,50 200,66 Q208,120 150,148 Q90,142 64,104 Z" fill="${TIS}" opacity=".7"/>`+
+   `<ellipse cx="120" cy="100" rx="22" ry="16" fill="${FLU}"/>`+
+   `<ellipse cx="120" cy="100" rx="22" ry="16" fill="none" stroke="${ECHO}" stroke-width="1.5" opacity=".6"/>`+
+   sl(50,170,"pseudosac (central, single rim) ≠ true IUP",'var(--warn)'),
+   {id:'ob3'}),
+ pitfallText:"A true IUP requires a gestational sac with a yolk sac or fetal pole, ECCENTRICALLY placed within the endometrium. A pseudosac (centrally located, single thin rim, often with a little fluid) of ectopic pregnancy can fool you. Below the discriminatory βhCG you may see nothing. Heterotopic pregnancy (rare, but higher with IVF) means an IUP doesn't fully exclude ectopic. Use M-mode (not pulsed Doppler) for embryonic heart rate.",
+ interp:[
+  ["find","<b>Definite IUP</b> = yolk sac or fetal pole within an intrauterine, eccentric gestational sac. M-mode for FHR."],
+  ["pearl","No definite IUP + positive βhCG + pain/bleeding = ectopic until proven otherwise; look for adnexal mass and free fluid."],
+  ["pitfall","Pseudosac mimics an early IUP; heterotopic pregnancy (esp. with IVF); use M-mode rather than spectral Doppler over the embryo."]
+ ]
+});
+
+/* ---------- MSK ---------- */
+add({
+ group:"Other applications", name:"MSK — effusion, tendon, fracture",
+ q:"Joint effusion, tendon tear, cortical fracture?", probe:"linear", probeIcon:probeLinear,
+ modes:["B-mode","color Doppler"],
+ placement: bodyPane(
+   `<rect x="60" y="50" width="140" height="100" rx="16" fill="var(--tissue)" opacity=".4"/>`+
+   `<text class="scrlabel" x="50" y="40" fill="var(--soft)">over joint / tendon / point of max tenderness</text>`+
+   probeLinear(130,60,0)+
+   `<text class="scrlabel" x="130" y="172" fill="var(--scan)" text-anchor="middle">scan long + short axis; compare contralateral</text>`),
+ screen: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,40,30)+
+   `<path d="M30,80 Q130,72 230,80" stroke="${ECHO}" stroke-width="4" fill="none"/>`+ // cortex (bright, continuous)
+   `<rect x="30" y="84" width="200" height="60" fill="${FLU}" opacity=".6"/>`+  // bone shadow
+   `<g stroke="${ECHO}" stroke-width="1.5" opacity=".6"><path d="M40,50 Q130,44 220,50"/><path d="M40,60 Q130,54 220,60"/></g>`+ // fibrillar tendon
+   sl(36,44,"fibrillar tendon",'var(--soft)')+sl(60,78,"smooth cortex",ECHO),
+   {id:'msk1',ind:1}),
+ compare: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   speckle(24,18,212,30,25)+
+   `<path d="M30,84 Q90,78 120,82 L122,96 Q150,96 152,82 Q200,80 230,86" stroke="${ECHO}" stroke-width="4" fill="none"/>`+ // step-off
+   `<rect x="30" y="92" width="200" height="50" fill="${FLU}" opacity=".6"/>`+
+   sl(108,72,"cortical step-off = fracture",'var(--warn)')+
+   `<path d="M60,50 Q90,46 110,50" stroke="${ECHO}" stroke-width="1.5" opacity=".6" fill="none"/>`+
+   `<ellipse cx="150" cy="56" rx="26" ry="10" fill="${FLU}"/>`+ // anechoic effusion/hematoma
+   sl(126,56,"effusion",SC),
+   {id:'msk2',ind:1}),
+ compareLabel:"Fracture: cortical step/disruption ± hematoma; effusion = anechoic distension",
+ pitfall: linearFrame(
+   `<rect x="20" y="14" width="220" height="172" fill="${FLU}"/>`+
+   `<path d="M30,80 Q130,72 230,80" stroke="${ECHO}" stroke-width="4" fill="none" opacity=".5"/>`+
+   sl(30,120,"anisotropy: tendon looks dark/torn when",'var(--warn)')+
+   sl(30,138,"the probe isn't perpendicular — angle it",'var(--warn)'),
+   {id:'msk3'}),
+ pitfallText:"ANISOTROPY is the classic MSK trap: a normal tendon turns artifactually hypoechoic (mimicking a tear) if the beam isn't perpendicular to its fibers — toggle the probe and the 'tear' fills back in. Confirm fractures in two planes (cortical interruption + step-off), and use color Doppler for tendon hyperemia (tendinitis) or to find a foreign body's comet-tail.",
+ interp:[
+  ["find","Effusion = anechoic joint distension. Fracture = cortical step-off/disruption ± overlying hematoma. Tendon tear = fibrillar discontinuity."],
+  ["pearl","Always compare to the contralateral side and scan in two orthogonal planes."],
+  ["pitfall","Anisotropy mimics tendon tears — keep the beam perpendicular; toggle to confirm before calling a tear."]
+ ]
+});
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+// probe primer
+const PROBES=[
+  ["Curvilinear","Low freq (2–5 MHz), wide deep field","FAST, aorta, biliary, renal, OB, lung",probeCurvi],
+  ["Phased array","Small footprint, fits between ribs (1–5 MHz)","Cardiac, IVC, lung",probePhased],
+  ["Linear","High freq (5–15 MHz), shallow, high-res","DVT, soft tissue, ocular, vascular access, MSK, lung pleura",probeLinear],
+  ["Endocavitary","High freq intracavitary (8–13 MHz)","Transvaginal early OB, peritonsillar abscess",probeCurvi]
+];
+const MODES=[
+  ["B-mode","2-D grayscale anatomy — the default for almost everything."],
+  ["M-mode","One line sampled over time — lung sliding (seashore/barcode), cardiac wall/valve motion, fetal heart rate."],
+  ["Color Doppler","Flow direction/velocity color-coded (BART: blue away, red toward) — vessels, hydro vs vessel, abscess vs vascular, testicular/ovarian flow."],
+  ["Power Doppler","More sensitive to slow/low flow, no direction — subtle perfusion (testis, inflammation)."],
+  ["Spectral (PW/CW)","Velocity-vs-time waveform — venous phasicity in DVT, valvular/outflow velocities."]
+];
+
+const primers=document.getElementById('primers');
+primers.innerHTML=
+  `<div class="primer"><h2>Probe selection</h2><p>Match frequency to depth: low frequency penetrates deep (blurrier), high frequency is shallow but sharp.</p>
+    <table class="probetable">${PROBES.map(p=>`<tr><td class="pname"><span class="miniprobe">${svg(34,30,p[3](17,26,0))}</span>${p[0]}</td><td>${p[1]}</td><td style="color:var(--soft)">${p[2]}</td></tr>`).join('')}</table></div>`
+ +`<div class="primer"><h2>Imaging modes</h2><p>What each mode adds beyond grayscale anatomy.</p>
+    <table class="modetable">${MODES.map(m=>`<tr><td class="mname">${m[0]}</td><td style="color:var(--soft)">${m[1]}</td></tr>`).join('')}</table></div>`;
+
+// nav + exams grouped
+const exnav=document.getElementById('exnav');
+const main=document.getElementById('main');
+const groups=[...new Set(EX.map(e=>e.group))];
+groups.forEach((g,gi)=>{
+  const b=document.createElement('button');
+  b.textContent=g; b.dataset.g=gi; if(gi===0)b.classList.add('active');
+  b.addEventListener('click',()=>{document.querySelectorAll('nav.exnav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('grp'+gi).scrollIntoView({behavior:'smooth',block:'start'});});
+  exnav.appendChild(b);
+});
+groups.forEach((g,gi)=>{
+  const gh=document.createElement('div'); gh.className='grouphead'; gh.id='grp'+gi; gh.textContent=g; main.appendChild(gh);
+  EX.filter(e=>e.group===g).forEach(e=>{
+    const card=document.createElement('div'); card.className='exam';
+    const modeChips=e.modes.map(m=>`<span class="chip mode">${m}</span>`).join('');
+    card.innerHTML=`
+      <div class="exhead">
+        <h3>${e.name}</h3><span class="q">${e.q}</span>
+        <div class="chips"><span class="chip probe">${e.probe}</span>${modeChips}</div>
+      </div>
+      <div class="panels">
+        <div class="pane"><h4><span class="n">1</span> Probe placement</h4><div class="figbox">${e.placement}</div></div>
+        <div class="pane"><h4><span class="n">2</span> Normal screen</h4><div class="figbox">${e.screen}</div></div>
+        <div class="pane"><h4><span class="n">3</span> Abnormal / positive</h4><div class="figbox">${e.compare}</div><p>${e.compareLabel||''}</p></div>
+        <div class="pane"><h4><span class="n">!</span> Artifact / pitfall</h4><div class="figbox">${e.pitfall}</div><p>${e.pitfallText||''}</p></div>
+      </div>
+      <div class="interp">${e.interp.map(r=>`<div class="row ${r[0]}"><span class="k">${r[0]==='find'?'Finding':r[0]==='pitfall'?'Pitfall':'Pearl'}</span><span class="v">${r[1]}</span></div>`).join('')}</div>`;
+    main.appendChild(card);
+  });
+});
+
+document.getElementById('foot').innerHTML="Original schematic illustrations built to teach sonographic patterns — they are stylized representations, not captured ultrasound images, and are intentionally simplified. Content reflects standard POCUS teaching (ACEP/IFEM core applications). POCUS is operator-dependent and adjunctive; correlate with the full clinical picture and definitive imaging. For study and review only.";
+
+/* theme toggle */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
