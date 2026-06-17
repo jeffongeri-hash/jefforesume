@@ -19,6 +19,56 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "ABG Interpreter — Acid-Base, Step by Step",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A step-by-step interactive ABG interpreter covering pH, PaCO₂, HCO₃⁻, anion gap, and expected compensation to identify primary and mixed acid-base disturbances.",
+      image: businessPost,
+      slug: "abg-interpreter",
+      tags: ["Acid-Base", "Critical Care", "Clinical Education"]
+    },
+    {
+      title: "Reduction Field Manual — Joint Dislocations",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A bedside field manual for joint reductions with traction vectors, sedation considerations, and post-reduction checks across shoulder, elbow, hip, patella, and finger.",
+      image: businessPost,
+      slug: "reduction-field-manual",
+      tags: ["Orthopedics", "Procedures", "Clinical Education"]
+    },
+    {
+      title: "POCUS Atlas — Probe, Window, Screen & Pitfall",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A point-of-care ultrasound atlas mapping each common exam to its probe choice, acoustic window, expected anatomy, and the pitfalls that fool clinicians.",
+      image: businessPost,
+      slug: "pocus-atlas",
+      tags: ["POCUS", "Ultrasound", "Clinical Education"]
+    },
+    {
+      title: "Toxidrome Atlas — Recognition, Overdoses & Antidotes",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A visual atlas of the major toxidromes — sympathomimetic, anticholinergic, cholinergic, opioid, and sedative-hypnotic — with vitals patterns, agents, and antidotes.",
+      image: businessPost,
+      slug: "toxidrome-atlas",
+      tags: ["Toxicology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Ventilator Atlas — Modes, Numbers & Troubleshooting",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 17, 2026",
+      excerpt: "A ventilator atlas covering AC, SIMV, PRVC, PS, and APRV modes, the numbers that matter, and a structured approach to alarms and waveform troubleshooting.",
+      image: businessPost,
+      slug: "ventilator-atlas",
+      tags: ["Critical Care", "Mechanical Ventilation", "Clinical Education"]
+    },
+    {
       title: "EKG Strip Atlas — Pattern, Location & Mechanism",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
