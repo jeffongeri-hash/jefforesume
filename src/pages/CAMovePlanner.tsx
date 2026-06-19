@@ -1,37 +1,35 @@
 // @ts-nocheck
-import { useState, useCallback, useRef, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 
-// ─── CONFIG: route AI through iv-ai edge function (Anthropic primary, OpenAI fallback) ─────
-const IV_AI_URL = `https://ckevaqwmomvauxudjzpj.supabase.co/functions/v1/iv-ai`;
+// Edge function endpoint (Anthropic primary, OpenAI fallback)
+const IV_AI_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/iv-ai`;
 const IV_AI_HEADERS = {
   "Content-Type": "application/json",
-  apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrZXZhcXdtb212YXV4dWRqenBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0ODYzMzMsImV4cCI6MjA4MTA2MjMzM30.xR2d3odt785bcW60xns8O0VzX75QeN0L0KoEicP_NL8",
+  apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+  Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
 };
 
-async function aiSearch(userPrompt, maxTokens = 1200) {
-  const res = await fetch(IV_AI_URL, {
-    method: "POST",
-    headers: IV_AI_HEADERS,
-    body: JSON.stringify({ mode: "json", prompt: userPrompt, maxTokens, webSearch: true }),
+async function ai(prompt, maxTokens = 900) {
+  const r = await fetch(IV_AI_URL, {
+    method: "POST", headers: IV_AI_HEADERS,
+    body: JSON.stringify({ mode: "json", prompt, maxTokens, webSearch: true }),
   });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  return data.text || "";
+  if (!r.ok) throw new Error(`API ${r.status}`);
+  const d = await r.json();
+  return d.text || "";
 }
+async function aiSearch(prompt, maxTokens = 1200) { return ai(prompt, maxTokens); }
 
-async function aiStream(systemPrompt, userPrompt, onChunk, signal) {
-  const res = await fetch(IV_AI_URL, {
-    method: "POST",
-    headers: IV_AI_HEADERS,
-    signal,
-    body: JSON.stringify({
-      mode: "stream",
-      prompt: `${systemPrompt}\n\n${userPrompt}`,
-      maxTokens: 1500,
-    }),
+async function aiStream(a, b, c, d) {
+  // Supports both signatures: (prompt, onChunk, signal) and (systemPrompt, userPrompt, onChunk, signal)
+  let prompt, onChunk, signal;
+  if (typeof b === "function") { prompt = a; onChunk = b; signal = c; }
+  else { prompt = `${a}\n\n${b}`; onChunk = c; signal = d; }
+  const r = await fetch(IV_AI_URL, {
+    method: "POST", headers: IV_AI_HEADERS, signal,
+    body: JSON.stringify({ mode: "stream", prompt, maxTokens: 1500 }),
   });
-  const reader = res.body.getReader();
+  const reader = r.body.getReader();
   const dec = new TextDecoder();
   while (true) {
     const { done, value } = await reader.read();
@@ -39,13 +37,14 @@ async function aiStream(systemPrompt, userPrompt, onChunk, signal) {
     for (const line of dec.decode(value).split("\n")) {
       if (line.startsWith("data: ")) {
         try {
-          const d = JSON.parse(line.slice(6));
-          if (d.type === "content_block_delta" && d.delta?.text) onChunk(d.delta.text);
+          const ev = JSON.parse(line.slice(6));
+          if (ev.type === "content_block_delta" && ev.delta?.text) onChunk(ev.delta.text);
         } catch {}
       }
     }
   }
 }
+
 
 function parseJSON(text) {
   const m = text.match(/\{[\s\S]*?\}/g);
