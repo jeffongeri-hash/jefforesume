@@ -19,6 +19,26 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Pediatric EM Atlas — Board Review",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 19, 2026",
+      excerpt: "A pediatric EM board-review atlas covering resuscitation, neonatal emergencies, respiratory distress, GI/surgical mimics, NAT, and pediatric infectious disease with age-specific dosing and red flags.",
+      image: businessPost,
+      slug: "pediatric-em-atlas",
+      tags: ["Pediatrics", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Fluid Dynamics Atlas — IV Fluids, Physiology & Special Considerations",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 19, 2026",
+      excerpt: "A fluid dynamics atlas covering crystalloids, colloids, blood products, and compartment physiology with special considerations for sepsis, DKA, burns, heart failure, and pediatrics.",
+      image: businessPost,
+      slug: "fluid-dynamics-atlas",
+      tags: ["IV Fluids", "Critical Care", "Clinical Education"]
+    },
+    {
       title: "Resuscitation Atlas — Shock, Pressors, Fluids & Electrolytes",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",

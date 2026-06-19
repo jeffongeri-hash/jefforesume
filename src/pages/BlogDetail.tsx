@@ -181,6 +181,50 @@ const blogPosts = {
       <p><a href="/embeds/resuscitation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "pediatric-em-atlas": {
+    title: "Pediatric EM Atlas — Board Review",
+    category: "HEALTHCARE",
+    date: "June 19, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A pediatric emergency medicine board-review atlas covering resuscitation, neonatal emergencies, respiratory distress, GI and surgical mimics, non-accidental trauma, and pediatric infectious disease — with age-specific vitals, weight-based dosing, and red flags clinicians use at the bedside.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/pediatric-em-atlas.html"
+          title="Pediatric EM Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/pediatric-em-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "fluid-dynamics-atlas": {
+    title: "Fluid Dynamics Atlas — IV Fluids, Physiology & Special Considerations",
+    category: "HEALTHCARE",
+    date: "June 19, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A fluid dynamics atlas covering crystalloids, colloids, blood products, and the physiology of intracellular, interstitial, and intravascular compartments — with special considerations for sepsis, DKA, burns, heart failure, and pediatrics.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/fluid-dynamics-atlas.html"
+          title="Fluid Dynamics Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/fluid-dynamics-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",
@@ -3135,6 +3179,20 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "Pediatric EM Atlas — Board Review",
+    category: "HEALTHCARE",
+    date: "June 19, 2026",
+    image: businessPost,
+    slug: "pediatric-em-atlas"
+  },
+  {
+    title: "Fluid Dynamics Atlas — IV Fluids & Physiology",
+    category: "HEALTHCARE",
+    date: "June 19, 2026",
+    image: businessPost,
+    slug: "fluid-dynamics-atlas"
+  },
   {
     title: "EKG Strip Atlas — Pattern, Location & Mechanism",
     category: "HEALTHCARE",
