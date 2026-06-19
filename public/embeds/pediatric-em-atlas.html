@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pediatric EM Atlas — Board Review</title>
+<style>
+  :root{
+    --bg:#0b1016;--bg2:#101a22;--panel:#121d27;--panelhi:#192834;--line:#243640;--line2:#192833;
+    --ink:#e9f1f5;--soft:#a3b7c2;--muted:#74899a;--faint:#516675;
+    --resus:#e0563b;--neo:#d68a2e;--resp:#3fa7d6;--gi:#46c98a;--nat:#c4486a;--id:#7c6cc4;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --up:#ff7a5c;--down:#5fb0e6;--grid:#0d141b;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --resus:#c4422a;--neo:#b06f17;--resp:#1c7fb0;--gi:#1f9d6f;--nat:#a83255;--id:#5d4ba6;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--up:#c8442b;--down:#2576c0;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:70ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:600;padding:6px 11px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.55rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:80ch;font-size:.96rem;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:760px;font-size:.83rem;}
+  table.cmp th,table.cmp td{padding:10px 12px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.8rem;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .hl{color:var(--accent);font-weight:700;}.up{color:var(--up);font-weight:700;}.down{color:var(--down);font-weight:700;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(390px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.miss b{color:var(--warn);}
+  .blk.workup b{color:var(--resp);}.blk.workup{color:var(--soft);}
+  .c-resus{border-top-color:var(--resus);}.c-neo{border-top-color:var(--neo);}.c-resp{border-top-color:var(--resp);}
+  .c-gi{border-top-color:var(--gi);}.c-nat{border-top-color:var(--nat);}.c-id{border-top-color:var(--id);}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .formula{font-family:"SF Mono",monospace;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 14px;margin:10px 0;color:var(--soft);}
+  .formula b{color:var(--ink);}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Pediatric Emergency Medicine · Board Review</div>
+  <h1>Little patients, <em>different rules</em>.</h1>
+  <p>A board-level review across pediatric EM: the resuscitation backbone, the bread-and-butter presentations, weight-based dosing and the pediatric-specific pitfalls, age-stratified vitals, and the classic exam associations — with dedicated deep dives on neonatal emergencies and non-accidental trauma. Children compensate hard and crash late: the whole game is recognizing sick-versus-not-sick before the blood pressure falls.</p>
+</header>
+<div class="disclaimer"><div><b>Board-review reference for trained clinicians.</b> Weight-based doses are standard teaching values that must be verified against a current pediatric reference (e.g., length-based tape, institutional formulary) and titrated to the child — pediatric dosing error is a leading cause of harm. Educational synthesis, not a protocol.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#principles">Pediatric principles</a>
+  <a href="#vitals">Vitals & equipment</a>
+  <a href="#vitals-deep">Vitals in depth</a>
+  <a href="#exam">Pediatric exam</a>
+  <a href="#resus">Resuscitation</a>
+  <a href="#resp">Respiratory</a>
+  <a href="#fever">Fever & ID</a>
+  <a href="#gi">GI & abdominal</a>
+  <a href="#neuro">Neuro & misc</a>
+  <a href="#tox">Tox</a>
+  <a href="#neonatal">Neonatal deep dive</a>
+  <a href="#nat">NAT deep dive</a>
+  <a href="#growth">Growth, milestones & benign events</a>
+  <a href="#pearls">High-yield pearls</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   1. PEDIATRIC PRINCIPLES
+   ============================================================ */
+function principles(){
+ return `<h2 class="sec" id="principles">1 · Pediatric principles boards love</h2>
+ <p class="seclead">The physiology that makes kids different — and the reasons the "obvious" adult move is wrong.</p>
+ <div class="cardgrid">
+   <div class="card"><h3>Compensate then crash</h3>
+     <div class="blk">Children maintain BP via tachycardia and high SVR until ~30–40% volume loss, then decompensate precipitously. <b>Hypotension is a late, pre-arrest sign.</b> Judge perfusion by HR, mentation, cap refill, urine output — not the cuff.</div>
+     <div class="blk buzz"><b>Board trick</b>A "normal" BP in a tachycardic, ill child is reassurance theater — the question is testing whether you treat compensated shock.</div>
+   </div>
+   <div class="card"><h3>Airway anatomy</h3>
+     <div class="blk">Large occiput (flex the neck → use a shoulder roll), large tongue, anterior/cephalad larynx, narrowest at the cricoid (functionally) in young kids, short trachea (easy mainstem/dislodgement), high O₂ consumption + low FRC → <b>desaturate fast.</b></div>
+     <div class="blk buzz"><b>Board trick</b>Cuffed vs uncuffed tubes are both acceptable now; the obligate-nasal-breather neonate decompensates with choanal atresia.</div>
+   </div>
+   <div class="card"><h3>Bradycardia = hypoxia until proven otherwise</h3>
+     <div class="blk">The pediatric arrest pathway is usually <b>respiratory → bradycardia → asystole</b>, not a primary dysrhythmia. <b>Oxygenate and ventilate first.</b> Treat bradycardia with HR <60 + poor perfusion with CPR, then epinephrine.</div>
+   </div>
+   <div class="card"><h3>Thermoregulation & fluids</h3>
+     <div class="blk">High surface-area-to-mass ratio → hypothermia fast (keep them warm, esp. neonates). Higher TBW fraction; weight-based everything. Bolus <b>20 mL/kg</b> isotonic (10 mL/kg in neonates/cardiac/DKA).</div>
+   </div>
+   <div class="card"><h3>Weight estimation</h3>
+     <div class="formula">Wt (kg) ≈ <b>(2 × age) + 8</b> (1–10 yr, rough)<br>Use a <b>length-based (Broselow) tape</b> — more accurate than age formulas and drives equipment + doses.</div>
+     <div class="blk miss"><b>Pitfall</b>Tenfold dosing errors are the classic pediatric catastrophe — always mg/kg with a max, double-check decimals, and cap at the adult dose.</div>
+   </div>
+   <div class="card"><h3>Glucose & "Don't Ever Forget Glucose"</h3>
+     <div class="blk">Kids have limited glycogen — hypoglycemia complicates sepsis, seizure, tox, neonatal disease. Check a glucose in every altered/seizing/ill infant. Dextrose: <b>"rule of 50"</b> → mL/kg × %dextrose = 50 (D10 5 mL/kg, D25 2 mL/kg, D50 1 mL/kg); neonates use <b>D10</b>.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   2. VITALS & EQUIPMENT
+   ============================================================ */
+function vitals(){
+ const V=[
+  ['Newborn (0–1 mo)','100–205 (awake)','30–60','—','67','3.0–3.5 uncuffed'],
+  ['Infant (1–12 mo)','100–180','30–53','70 + (2×age)','>70','3.5–4.0'],
+  ['Toddler (1–2 yr)','98–140','22–37','70 + (2×age)','>70+(2×age)','4.0–4.5'],
+  ['Preschool (3–5 yr)','80–120','20–28','—','>75','4.5–5.0'],
+  ['School age (6–11 yr)','75–118','18–25','—','>80','5.0–6.0 cuffed'],
+  ['Adolescent (≥12 yr)','60–100','12–20','—','>90','6.0–7.0 cuffed']
+ ];
+ const head=`<tr><th>Age</th><th>HR (bpm)</th><th>RR (/min)</th><th>Lower-limit SBP rule</th><th>Approx SBP floor</th><th>ETT size (mm ID)</th></tr>`;
+ const rows=V.map(v=>`<tr><th>${v[0]}</th><td class="mono-val">${v[1]}</td><td class="mono-val">${v[2]}</td><td class="mono-val">${v[3]}</td><td class="mono-val">${v[4]}</td><td class="mono-val">${v[5]}</td></tr>`).join('');
+ return `<h2 class="sec" id="vitals">2 · Age-stratified vitals &amp; equipment sizing</h2>
+ <p class="seclead">Boards test the <b>lower limit of acceptable SBP</b> and the rapid sizing formulas. Memorize the hypotension thresholds — they define "decompensated."</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+ <div class="cardgrid" style="margin-top:14px">
+   <div class="card"><h3>Hypotension thresholds (5th %ile SBP)</h3>
+     <div class="formula">Term neonate: SBP < <b>60</b><br>Infant 1–12 mo: SBP < <b>70</b><br>1–10 yr: SBP < <b>70 + (2 × age in yr)</b><br>&gt;10 yr: SBP < <b>90</b></div>
+     <div class="blk buzz"><b>Board trick</b>The "70 + 2×age" rule is the single most-tested pediatric number.</div>
+   </div>
+   <div class="card"><h3>Tube & equipment sizing</h3>
+     <div class="formula">Uncuffed ETT = <b>(age/4) + 4</b>; cuffed = <b>(age/4) + 3.5</b><br>ETT depth (cm at lip) = <b>tube size × 3</b><br>Blade, suction, NGT roughly track the tape.</div>
+     <div class="blk">Use the length-based tape when available — it sizes ETT, blade, NGT, chest tube, and pre-calculates doses, reducing error.</div>
+   </div>
+   <div class="card"><h3>Defib / cardioversion energy</h3>
+     <div class="formula">Defibrillation (VF/pVT): <b>2 → 4 → ≥4 J/kg</b> (max 10 / adult)<br>Synchronized cardioversion: <b>0.5–1 → 2 J/kg</b><br>Epi (arrest): <b>0.01 mg/kg</b> IV (0.1 mL/kg of 1:10,000) q3–5 min</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   2b. VITALS IN DEPTH
+   ============================================================ */
+function vitalsDeep(){
+ return `<h2 class="sec" id="vitals-deep">2b · Vital signs in depth — the pediatric nuances</h2>
+ <p class="seclead">Numbers are only half the skill; the other half is knowing why a pediatric vital sign misleads. Each vital has age-specific physiology, measurement traps, and a "this is the sick one" threshold.</p>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Heart rate — the first and most sensitive</h3>
+     <div class="blk">Tachycardia is the earliest, most sensitive (least specific) sign of distress — fever, pain, fear, dehydration, shock, anemia, and dysrhythmia all raise it. Always interpret against the child's state (sleeping vs screaming) and temperature.</div>
+     <div class="blk workup"><b>Fever correction</b>Expect roughly <b>+10 bpm per 1°C</b> above normal — a sinus tachycardia that doesn't fit the fever, or that persists after antipyretics and fluids, is the worrisome one.</div>
+     <div class="blk buzz"><b>Rate vs rhythm</b>Sinus tach has beat-to-beat variability and a rate that usually tracks distress (often <220 infant / <180 child). SVT is "too fast, too regular, too fixed" — ~220–300, no variability, no clear P waves, doesn't change with stimulation. That distinction is a classic board discriminator.</div>
+     <div class="blk miss"><b>Don't miss</b>Persistent unexplained tachycardia is compensated shock until proven otherwise; relative bradycardia in a sick infant is pre-arrest (hypoxia).</div>
+   </div>
+   <div class="card"><h3>Respiratory rate &amp; work of breathing</h3>
+     <div class="blk">Count for a full 60 s (periodic breathing is normal in infants and makes short counts wrong). The <b>quality</b> of breathing outweighs the number: retractions (subcostal/intercostal/suprasternal), nasal flaring, head-bobbing, grunting, tracheal tug, and accessory-muscle use signal increased work.</div>
+     <div class="blk buzz"><b>Grunting</b>= auto-PEEP against a partially closed glottis to keep alveoli open — an ominous sign of significant respiratory disease (pneumonia, severe bronchiolitis) or sepsis, not a "fussy" noise.</div>
+     <div class="blk miss"><b>The deceptive improvement</b>A tiring child whose RR falls toward "normal" and whose retractions lessen may be heading to failure, not recovering — pair the rate with mental status and SpO₂/CO₂. <b>Bradypnea/apnea in a sick infant is pre-arrest.</b></div>
+   </div>
+   <div class="card"><h3>Blood pressure — the last to fall</h3>
+     <div class="blk">Cuff width should cover ~⅔ of the upper arm; a too-small cuff falsely elevates, a too-large cuff falsely lowers. BP is effort- and cooperation-dependent and often the <b>last</b> vital to derange in a child.</div>
+     <div class="formula">Hypotension (5th %ile SBP): &lt;<b>60</b> neonate · &lt;<b>70</b> infant 1–12 mo · &lt;<b>70 + (2×age)</b> 1–10 yr · &lt;<b>90</b> &gt;10 yr<br>50th %ile SBP estimate (≥1 yr) ≈ <b>90 + (2 × age in yr)</b></div>
+     <div class="blk miss"><b>Four-limb BP</b>Right-arm-higher-than-leg pressures (a gradient) suggest coarctation — a key neonatal/infant board reflex, paired with diminished femoral pulses.</div>
+   </div>
+   <div class="card"><h3>Temperature — route &amp; meaning by age</h3>
+     <div class="blk"><b>Rectal is the standard</b> in young infants (most accurate core); axillary/temporal/tympanic screen but are less reliable, especially under 3 months where the decision threshold is exact.</div>
+     <div class="blk buzz"><b>Thresholds</b>Fever = <b>≥38.0°C (100.4°F)</b> — the hard cutoff that triggers the neonatal sepsis pathway. <b>Hypothermia</b> in a neonate is as ominous as fever (sepsis can present cold). Bundling rarely raises a true core temp meaningfully — don't dismiss a documented fever as "overdressed" in a young infant.</div>
+     <div class="blk miss"><b>Don't miss</b>A documented rectal fever ≥38 in a neonate mandates the workup regardless of current temp in the ED; a hypothermic septic neonate is easy to under-triage.</div>
+   </div>
+   <div class="card"><h3>SpO₂, perfusion &amp; the "fifth/sixth vitals"</h3>
+     <div class="blk"><b>Capillary refill</b>(normal ≤2 s, central > peripheral) and skin signs (mottling, coolness, pallor) are core perfusion markers in kids — often more useful than BP. Warm shock (flash refill, bounding pulses) vs cold shock (delayed refill, weak pulses) guides the pressor choice.</div>
+     <div class="blk"><b>Glucose</b>is a true vital in the sick child — limited glycogen stores mean hypoglycemia complicates sepsis, seizures, tox, and neonatal disease. <b>Pain</b> is the other under-measured vital (FLACC for preverbal, faces scales for young, numeric for older).</div>
+     <div class="blk buzz"><b>Pre/post-ductal SpO₂</b>A right-hand (preductal) vs foot (postductal) saturation gap >3% suggests a ductal/shunt lesion in a neonate — part of the critical CHD screen.</div>
+   </div>
+   <div class="card"><h3>Weight — the vital that doses everything</h3>
+     <div class="blk">In peds, weight <em>is</em> a vital sign: it drives every drug, fluid volume, and equipment size. Use an actual scale weight when possible; a <b>length-based tape</b> when not. Avoid caregiver estimates for resuscitation dosing.</div>
+     <div class="blk miss"><b>Dehydration math</b>Acute weight loss is the best dehydration measure: % dehydration ≈ (well weight − current)/well weight. Clinically, ~5% (mild: slightly dry), ~10% (moderate: tachycardia, decreased turgor, sunken fontanelle/eyes, delayed refill), ~15% (severe: shock). Each 1% ≈ 10 mL/kg deficit.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The synthesis boards reward:</b> no single number diagnoses; the <b>trajectory</b> and the <b>combination</b> do. A normal BP with tachycardia, delayed refill, and altered mental status is decompensating shock. A "normalizing" RR with worsening mental status is impending respiratory failure. Always anchor vitals to the age-specific range and the child's behavioral state.</div>`;
+}
+
+/* ============================================================
+   2c. PEDIATRIC PHYSICAL EXAM
+   ============================================================ */
+function exam(){
+ return `<h2 class="sec" id="exam">2c · The pediatric physical exam — what's different</h2>
+ <p class="seclead">The pediatric exam is a different craft: opportunistic sequencing, age-specific findings that don't exist in adults, and developmental context for every maneuver. Examine least-distressing-first, leave the throat and ears for last, and use the caregiver.</p>
+
+ <h3 class="sub">General approach &amp; the across-the-room assessment</h3>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Pediatric Assessment Triangle (PAT)</h3>
+     <div class="blk">Before you touch the child, a 30-second visual: <b>Appearance</b> (tone, interactiveness, consolability, look/gaze, speech/cry — the "TICLS" mnemonic), <b>Work of Breathing</b> (sounds, position, retractions, flaring), and <b>Circulation to Skin</b> (pallor, mottling, cyanosis).</div>
+     <div class="blk buzz"><b>How it sorts</b>Abnormal appearance alone → consider CNS/metabolic/sepsis. Appearance + WOB → respiratory distress/failure. All three abnormal → shock or cardiopulmonary failure. The PAT drives initial acuity before any vital sign.</div>
+   </div>
+   <div class="card"><h3>Opportunistic sequencing</h3>
+     <div class="blk">Examine in order of least-to-most distressing: observe play, then auscultate heart/lungs/abdomen while calm (ideally in the caregiver's lap), palpate, and save the <b>ears, throat, and any painful area for last</b>. A screaming child after a throat exam gives you nothing for the cardiac auscultation you skipped.</div>
+     <div class="blk">Use distraction (toys, phone, blowing out the "light"), warm hands/stethoscope, and the parent as the exam table. Let the toddler hold the otoscope first.</div>
+   </div>
+   <div class="card"><h3>Developmental context</h3>
+     <div class="blk"><b>Stranger anxiety</b>(peaks ~6 mo–2–3 yr) means the lap exam and a slow approach matter most then. Assess milestones implicitly — a 9-month-old who can't sit, or regression of skills, is a red flag. Gait and play are part of the exam (a child who walks/plays normally rarely has a surgical abdomen or septic joint).</div>
+     <div class="blk miss"><b>Board reflex</b>"Those who don't cruise rarely bruise" — match findings to the developmental stage; injuries or abilities discordant with age are red flags (NAT, neuro).</div>
+   </div>
+ </div>
+
+ <h3 class="sub">Head, neck &amp; the neonatal-specific exam</h3>
+ <div class="cardgrid wide">
+   <div class="card c-neo"><h3>Fontanelles &amp; head</h3>
+     <div class="blk"><b>Anterior fontanelle</b>closes ~9–18 mo. A <b>bulging, non-pulsatile</b> fontanelle (when calm/upright) suggests raised ICP (meningitis, hydrocephalus, AHT, mass); a <b>sunken</b> fontanelle suggests dehydration. Palpate with the infant calm and upright — crying transiently bulges it.</div>
+     <div class="blk">Measure head circumference and plot it — rapidly crossing percentiles suggests hydrocephalus or (in the right context) abusive head trauma with chronic subdurals. Sutures, caput, cephalohematoma vs subgaleal (the latter can cause significant blood loss).</div>
+   </div>
+   <div class="card"><h3>Eyes</h3>
+     <div class="blk"><b>Red reflex</b>(both eyes, symmetric) screens for cataract, retinoblastoma (leukocoria = white reflex → urgent), and retinal disease. <b>Retinal hemorrhages</b> are a key abusive-head-trauma finding (needs a dilated exam by ophthalmology).</div>
+     <div class="blk">Conjunctival findings drive the febrile-rash differential — limbal-sparing non-exudative conjunctivitis in Kawasaki; purulent neonatal conjunctivitis (timing: chemical day 1, gonococcal days 2–5 — emergency, chlamydial 5–14 days).</div>
+   </div>
+   <div class="card"><h3>Ears, nose &amp; throat (last)</h3>
+     <div class="blk"><b>Otoscopy</b>Pull the pinna <b>down/back</b> in infants (up/back in older children); a normal TM is pearly-grey with a light reflex and visible landmarks, AOM shows a bulging, erythematous, immobile TM (pneumatic insufflation — reduced mobility is the most reliable sign). Cerumen and a crying-red TM are common false positives.</div>
+     <div class="blk miss"><b>Don't probe</b>Avoid the throat exam if epiglottitis is suspected (toxic, drooling, tripoding) — it can precipitate obstruction. Check the <b>frenulum</b> (torn frenulum is a sentinel abuse injury) and hydration of mucous membranes.</div>
+   </div>
+ </div>
+
+ <h3 class="sub">Cardiac, pulmonary &amp; abdominal</h3>
+ <div class="cardgrid wide">
+   <div class="card c-resp"><h3>Cardiac — murmurs &amp; pulses</h3>
+     <div class="blk"><b>Innocent murmurs</b>(very common): soft (≤2/6), systolic, vibratory/musical (Still's murmur), no radiation, change with position, normal pulses/S2/growth. <b>Red-flag murmurs</b>: diastolic (always pathologic), holosystolic, ≥3/6 or with a thrill, harsh, fixed split S2, or with abnormal pulses/cyanosis/poor feeding/failure to thrive.</div>
+     <div class="blk buzz"><b>Pulses</b>Check <b>femoral pulses and a four-limb BP</b> — weak/delayed femorals with upper-limb hypertension = coarctation. Hepatomegaly is the pediatric sign of right heart failure/volume overload (kids don't show JVD reliably).</div>
+   </div>
+   <div class="card c-resp"><h3>Pulmonary</h3>
+     <div class="blk">Breath sounds transmit easily across a small chest — localize cautiously. <b>Work of breathing</b> (retractions, flaring, grunting, head-bobbing) and <b>position</b> (tripoding, sniffing) often tell you more than auscultation. Stridor localizes the airway lesion (inspiratory = extrathoracic; biphasic = fixed).</div>
+     <div class="blk miss"><b>Silent chest</b>in an asthmatic = no air movement = peri-arrest, not improvement. A unilateral wheeze/decreased sounds in a toddler = foreign body until proven otherwise.</div>
+   </div>
+   <div class="card c-gi"><h3>Abdominal &amp; GU</h3>
+     <div class="blk"><b>Examine while calm/distracted</b>; flex the hips to relax the wall; warm hands. Voluntary guarding is common — serial gentle exams and watching the child move/jump/cough help detect peritonism. Palpable masses: olive (pyloric stenosis), sausage RUQ (intussusception), Wilms vs neuroblastoma in a well child.</div>
+     <div class="blk miss"><b>Always examine the genitalia</b>in abdominal pain/vomiting — incarcerated hernia and <b>testicular torsion</b> (high-riding testis, absent cremasteric reflex, abnormal lie) are missed when the diaper/underwear stays on. Check for the cremasteric reflex.</div>
+   </div>
+ </div>
+
+ <h3 class="sub">Neuro, MSK, skin &amp; hydration</h3>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Neuro &amp; tone</h3>
+     <div class="blk"><b>Tone</b>is the headline infant neuro sign — a <b>floppy/hypotonic</b> infant ("frog-leg" posture, slips through your hands on vertical suspension, head lag) is a red flag (sepsis, IEM, botulism, neuromuscular, AHT). Primitive reflexes (Moro, grasp, suck) and their timely disappearance index development.</div>
+     <div class="blk buzz"><b>Infant botulism</b>Constipation → poor feeding, weak cry, ptosis, descending hypotonia, "floppy baby" (honey/soil exposure). Bulging fontanelle + irritability/lethargy → meningitis/ICP. Paradoxical irritability (pain when held) suggests meningitis.</div>
+   </div>
+   <div class="card"><h3>Musculoskeletal</h3>
+     <div class="blk"><b>Hip exam</b>Barlow (dislocates) and Ortolani (relocates — a "clunk") screen for developmental dysplasia in infants; asymmetric thigh creads/limited abduction. <b>Refusal to bear weight / pseudoparalysis</b> in a child is septic arthritis/osteomyelitis/fracture (incl. NAT) until proven otherwise.</div>
+     <div class="blk miss"><b>Limp differential by age</b>toddler (toddler's fracture, transient synovitis vs septic hip — use Kocher criteria), child (Legg-Calvé-Perthes), adolescent (SCFE — refers pain to the knee; examine the hip in a knee complaint).</div>
+   </div>
+   <div class="card c-nat"><h3>Skin — the abuse &amp; rash exam</h3>
+     <div class="blk">Fully undress the child. <b>Bruising patterns</b>: TEN-4-FACESp (torso/ear/neck ≤4 yr, any bruise in an infant ≤4 mo, patterned) = high concern. Distinguish Mongolian spots from bruises. <b>Non-blanching petechiae/purpura</b> + ill = meningococcemia; below-nipple-line petechiae warrant attention.</div>
+     <div class="blk buzz"><b>Rash reflexes</b>vesicles in dermatomal/scattered pattern (HSV/VZV), targetoid (erythema multiforme), sandpaper + strawberry tongue (scarlet fever), slapped cheek (parvovirus B19), peeling/desquamation (TSS, Kawasaki, SSSS, late scarlet fever).</div>
+   </div>
+   <div class="card"><h3>Hydration assessment</h3>
+     <div class="blk">No single sign is sufficient — combine: <b>capillary refill, skin turgor (tenting), mucous membranes, tears, fontanelle, eyes (sunken), mental status, urine output, and heart rate</b>. Prolonged cap refill, dry mucosa, and absent tears are among the most useful.</div>
+     <div class="blk workup"><b>Estimating deficit</b>Mild ~3–5% (barely detectable), moderate ~6–10% (tachycardia, dry, decreased turgor, sunken eyes/fontanelle, oliguria), severe ≥10–15% (cool/mottled, very delayed refill, lethargy, shock). Acute weight change is the gold standard.</div>
+   </div>
+ </div>
+ <div class="note good"><b>Exam workflow that survives a real shift:</b> PAT from the doorway → vitals in context → calm cardiopulmonary/abdominal auscultation in the lap → palpate → developmental/neuro/MSK through play and gait → undress fully for the skin/GU/abuse exam → ears, throat, and painful areas LAST. Re-examine: pediatric findings evolve quickly, and the serial exam catches the appendicitis or the worsening dehydration the single snapshot misses.</div>`;
+}
+
+/* ============================================================
+   3. RESUSCITATION
+   ============================================================ */
+function resus(){
+ return `<h2 class="sec" id="resus">3 · Resuscitation &amp; PALS essentials</h2>
+ <p class="seclead">Respiratory-driven arrests, weight-based drugs, and the rhythms that actually appear in kids.</p>
+ <div class="cardgrid wide">
+   <div class="card c-resus"><h3>Cardiac arrest / PALS</h3>
+     <div class="blk dose"><b>Core doses</b>Epinephrine 0.01 mg/kg IV/IO q3–5 min. Amiodarone 5 mg/kg (VF/pVT, may repeat ×2) or lidocaine 1 mg/kg. CPR 15:2 (2-rescuer) at ≥100–120/min, depth ⅓ AP diameter.</div>
+     <div class="blk">Shockable (VF/pVT) is uncommon — think <b>congenital heart, channelopathy (long QT), commotio cordis, tox, hyper-K</b>. Most pediatric arrest is asystole/PEA from hypoxia.</div>
+     <div class="blk miss"><b>H's & T's, peds flavor</b>Hypoxia (top), hypoglycemia, hypothermia, hyper/hypokalemia, tamponade, tension PTX, toxins, thrombosis.</div>
+   </div>
+   <div class="card c-resus"><h3>Shock</h3>
+     <div class="blk dose"><b>Fluids</b>20 mL/kg isotonic bolus, reassess; repeat to 40–60 mL/kg in septic shock — but <b>10 mL/kg</b> and cautious in neonates, cardiogenic, DKA, and severe malnutrition. Start epinephrine (cold shock) or norepinephrine (warm shock) early if fluid-refractory.</div>
+     <div class="blk buzz"><b>Board trick</b>Pediatric septic shock is often <b>"cold shock"</b> (low CO, high SVR) → epinephrine first-line, unlike adults. Give stress-dose hydrocortisone for catecholamine-refractory/adrenal suspicion.</div>
+     <div class="blk miss"><b>Don't miss</b>Ductal-dependent lesion in a neonate in shock → prostaglandin E1 (see neonatal section).</div>
+   </div>
+   <div class="card c-resus"><h3>Dysrhythmia</h3>
+     <div class="blk dose"><b>SVT</b>(narrow, ~220–300, no beat-to-beat variability, absent P): vagal → adenosine <b>0.1 mg/kg</b> (max 6) then 0.2 mg/kg (max 12); unstable → synchronized cardioversion 0.5–1 J/kg.</div>
+     <div class="blk">Bradycardia with poor perfusion: oxygenate/ventilate → CPR if HR <60 → epinephrine → atropine 0.02 mg/kg (min 0.1 mg) for vagal/AV block.</div>
+     <div class="blk buzz"><b>Buzzword</b>Infant SVT presents as poor feeding, fussiness, pallor, tachypnea — easily mistaken for sepsis.</div>
+   </div>
+   <div class="card c-resus"><h3>RSI dosing &amp; airway</h3>
+     <div class="blk dose"><b>Induction</b>Ketamine 1–2 mg/kg IV (pressor-sparing, bronchodilator — good for shock/asthma); etomidate 0.3 mg/kg. <b>Paralytic</b> rocuronium 1 mg/kg or succinylcholine 1–2 mg/kg.</div>
+     <div class="blk miss"><b>Succinylcholine cautions</b>Avoid with hyperkalemia, known/occult myopathy (undiagnosed Duchenne → hyperkalemic arrest — black-box), burns/crush (subacute). Atropine pre-treatment for bradycardia risk in infants is classic teaching.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   4. RESPIRATORY
+   ============================================================ */
+function resp(){
+ const R=[
+  {n:'Croup (laryngotracheobronchitis)',t:'6 mo–3 yr · parainfluenza',
+   buzz:'Barky "seal" cough, inspiratory stridor, "steeple sign" on neck film. Worse at night.',
+   dose:'Dexamethasone 0.6 mg/kg (max ~16) PO/IM/IV ×1 for all severities; nebulized epinephrine for stridor at rest (observe 2–4 h for rebound).',
+   miss:'Stridor at rest = moderate-severe; consider alternatives if atypical age/toxic.'},
+  {n:'Epiglottitis',t:'classic Hib (now rare) · any age',
+   buzz:'Toxic, drooling, tripoding, muffled "hot potato" voice, no cough; "thumbprint sign" lateral neck.',
+   dose:'Do NOT agitate or examine the throat — keep child calm, controlled airway in OR with anesthesia/ENT; ceftriaxone.',
+   miss:'Now seen in unimmunized kids and adults; rapid total airway obstruction.'},
+  {n:'Bronchiolitis',t:'<2 yr · RSV',
+   buzz:'First wheeze in a baby, coryza → tachypnea, wheeze/crackles, apnea in young infants. Winter.',
+   dose:'Supportive: suction, oxygen, hydration. Trials of bronchodilator/steroid generally NOT recommended; high-flow/CPAP for distress.',
+   miss:'Apnea in young/premature infants; admit risk factors (age <2 mo, prematurity, congenital heart/lung).'},
+  {n:'Asthma exacerbation',t:'wheeze, prior episodes',
+   buzz:'Silent chest = ominous (no air movement). Pulsus paradoxus with severity.',
+   dose:'Albuterol (continuous if severe) ± ipratropium; systemic steroids early (pred 1–2 mg/kg, dex 0.6 mg/kg); Mg 25–50 mg/kg IV for severe; escalate to terbutaline/epi, NIV, ketamine for intubation.',
+   miss:'Rising/normalizing CO₂ in a tiring asthmatic = impending failure, not improvement.'},
+  {n:'Foreign body aspiration',t:'toddler, sudden',
+   buzz:'Sudden cough/choking, unilateral wheeze/decreased breath sounds; hyperinflation/air-trapping on expiratory or decubitus films (often normal inspiratory film).',
+   dose:'Stable → bronchoscopy. Complete obstruction → BLS (back blows/chest thrusts <1 yr; abdominal thrusts ≥1 yr).',
+   miss:'A normal CXR does not exclude it; right mainstem most common.'},
+  {n:'Pertussis',t:'unimmunized infant',
+   buzz:'Paroxysmal cough with inspiratory "whoop," post-tussive emesis, apnea in infants; marked lymphocytosis.',
+   dose:'Macrolide (azithromycin); admit young infants for apnea monitoring.',
+   miss:'Young infants present with apnea/cyanosis without the classic whoop.'}
+ ];
+ return `<h2 class="sec" id="resp">4 · Respiratory — the stridor/wheeze board set</h2>
+ <p class="seclead">The age + sound + film combination is the whole question. Upper-airway noise = stridor; lower = wheeze.</p>
+ <div class="cardgrid wide">${R.map(c=>card('c-resp',c)).join('')}</div>
+ <div class="note buzz"><b>Stridor localizer:</b> inspiratory = extrathoracic (croup, epiglottitis, foreign body, retropharyngeal abscess); expiratory/wheeze = intrathoracic; biphasic = fixed lesion (subglottic stenosis, vascular ring). Neonatal stridor that improves prone, worsens supine = <b>laryngomalacia</b> (most common, usually benign).</div>`;
+}
+
+/* ============================================================
+   5. FEVER & ID
+   ============================================================ */
+function fever(){
+ return `<h2 class="sec" id="fever">5 · Fever, sepsis &amp; the can't-miss IDs</h2>
+ <p class="seclead">The febrile-infant pathway is heavily tested — know the age cutoffs and the new risk-stratification logic.</p>
+ <h3 class="sub">Febrile infant (the age tiers)</h3>
+ <div class="cardgrid">
+   <div class="card c-id"><h3>0–28 days</h3>
+     <div class="blk">Fever ≥38.0°C → <b>full sepsis workup</b> (CBC, blood culture, UA/urine culture, LP) + empiric antibiotics + admit. Add acyclovir if HSV risk (ill, vesicles, maternal HSV, seizures, transaminitis, CSF pleocytosis).</div>
+     <div class="blk dose"><b>Empiric</b>Ampicillin (Listeria, Enterococcus) + gentamicin or cefotaxime; add acyclovir if HSV suspected.</div>
+     <div class="blk buzz"><b>Buzzword</b>GBS, E. coli, Listeria are the neonatal triad.</div>
+   </div>
+   <div class="card c-id"><h3>29–60 days</h3>
+     <div class="blk">Risk-stratify (e.g., AAP 2021 / step-by-step / PECARN): inflammatory markers (procalcitonin, CRP, ANC), UA. Many low-risk well-appearing infants can defer LP/avoid admission per validated criteria — but well-appearance alone is insufficient at this age.</div>
+     <div class="blk dose"><b>Empiric (if treating)</b>Ceftriaxone ± ampicillin per pathway.</div>
+   </div>
+   <div class="card c-id"><h3>61–90 days &amp; beyond</h3>
+     <div class="blk">UA + urine culture is the highest-yield test (UTI most common serious bacterial infection). Selective labs/imaging by appearance and risk. Immunization status changes the pretest probability of occult bacteremia (post-Hib/PCV era → much lower).</div>
+   </div>
+ </div>
+ <h3 class="sub">Can't-miss febrile/rash syndromes</h3>
+ <div class="cardgrid wide">
+  ${[
+   {n:'Kawasaki disease',t:'vasculitis · <5 yr',buzz:'"CRASH and burn": Conjunctivitis (limbal sparing, non-exudative), Rash, Adenopathy (often unilateral), Strawberry tongue/lip cracking, Hands/feet (edema, later peeling), + fever ≥5 days. Coronary aneurysm risk.',dose:'IVIG 2 g/kg + high-dose aspirin; echo for coronaries. (Aspirin here is an exception to Reye caution.)',miss:'Incomplete KD in infants — low threshold to echo; the most-missed cause of acquired pediatric heart disease.'},
+   {n:'Meningococcemia',t:'N. meningitidis',buzz:'Rapidly spreading petechiae/purpura, ill/toxic, shock, DIC. Purpura fulminans.',dose:'Immediate ceftriaxone — do not delay for LP; droplet isolation + prophylaxis for close contacts.',miss:'Petechiae below the nipple line / non-blanching + ill = emergency antibiotics now.'},
+   {n:'Retropharyngeal abscess',t:'<4 yr',buzz:'Fever, neck stiffness/extension, dysphagia, drooling, muffled voice; widened prevertebral space on lateral neck (>½ vertebral body width).',dose:'IV antibiotics (ampicillin-sulbactam ± clindamycin) ± ENT drainage; CT to define.',miss:'Mimics meningitis (neck held in extension, not flexion).'},
+   {n:'Periorbital vs orbital cellulitis',t:'sinusitis source',buzz:'Orbital (postseptal) = pain with EOM, proptosis, ophthalmoplegia, ↓acuity — emergency.',dose:'CT orbits/sinuses; IV antibiotics (vancomycin + ceftriaxone ± metronidazole); ophtho/ENT for orbital.',miss:'Preseptal is common/benign; the EOM exam separates them.'},
+   {n:'Toxic shock syndrome',t:'staph/strep',buzz:'Fever, diffuse macular erythroderma, hypotension, multiorgan, later desquamation. Strep TSS often with necrotizing soft-tissue infection.',dose:'Source control, fluids/pressors, antibiotics + clindamycin (toxin suppression); IVIG for strep TSS.',miss:'Hypotension + rash + multiorgan = think TSS even without an obvious source.'},
+   {n:'Measles',t:'unimmunized',buzz:'Cough, coryza, conjunctivitis (3 C\'s) + Koplik spots → cephalocaudal maculopapular rash. Resurging with low vaccination.',dose:'Supportive + vitamin A; airborne isolation; report to public health.',miss:'Vaccine status drives the differential; complications (pneumonia, encephalitis, SSPE).'}
+  ].map(c=>card('c-id',c)).join('')}
+ </div>`;
+}
+
+/* ============================================================
+   6. GI & ABDOMINAL
+   ============================================================ */
+function gi(){
+ const G=[
+  {n:'Intussusception',t:'6 mo–3 yr',buzz:'Intermittent colicky pain (drawing up legs), "currant jelly" stool (late), sausage-shaped RUQ mass, lethargy ("neuro" presentation can mimic sepsis). Ileocolic. Target/donut sign on US.',dose:'Air or contrast enema = diagnostic + therapeutic; surgery if peritonitis/perforation/failed reduction. Lead point more likely if <3 mo or >3–5 yr (Meckel, lymphoma, HSP).',miss:'Lethargy/AMS can be the only sign — "the great mimicker."'},
+  {n:'Malrotation with midgut volvulus',t:'neonate/infant',buzz:'BILIOUS vomiting in a neonate = volvulus until proven otherwise. Upper GI = "corkscrew"/duodenal obstruction, ligament of Treitz on the right.',dose:'Emergent surgery (Ladd procedure) — minutes-to-hours matter to save bowel.',miss:'Bilious emesis is never normal in a newborn — image emergently.'},
+  {n:'Pyloric stenosis',t:'3–6 wk · first-born male',buzz:'Non-bilious projectile vomiting, hungry after vomiting, "olive" mass, hypochloremic hypokalemic metabolic alkalosis. "String sign."',dose:'Resuscitate + correct electrolytes/alkalosis FIRST, then pyloromyotomy (medical urgency, surgical electively after).',miss:'Correct the alkalosis before the OR — anesthesia risk (apnea) if not.'},
+  {n:'Appendicitis',t:'school age (atypical when young)',buzz:'Periumbilical → RLQ pain, anorexia; younger kids perforate early (higher rate, atypical). US first; Alvarado/PAS scores.',dose:'NPO, fluids, antibiotics, surgery; image to avoid missing in preverbal kids.',miss:'Young children present late/atypically and perforate — keep the threshold low.'},
+  {n:'Meckel diverticulum',t:'"rule of 2s"',buzz:'Painless lower GI bleed in a toddler; 2% population, 2 ft from ileocecal valve, 2 yr, 2% symptomatic, 2 types ectopic mucosa. Meckel (technetium) scan.',dose:'Surgical resection; resuscitate the bleed.',miss:'Most common cause of significant painless lower GI bleeding in young children.'},
+  {n:'HSP (IgA vasculitis)',t:'3–10 yr',buzz:'Palpable purpura (buttocks/legs), arthralgia, abdominal pain, renal involvement; can cause intussusception (ileoileal — enema may miss).',dose:'Supportive; steroids for severe abdominal/renal disease; monitor BP/urinalysis for nephritis.',miss:'Abdominal pain may precede rash; associated intussusception is ileoileal.'},
+  {n:'HUS',t:'post-diarrheal (Shiga toxin E. coli O157)',buzz:'Triad: microangiopathic hemolytic anemia + thrombocytopenia + AKI, after bloody diarrhea. Schistocytes.',dose:'Supportive, careful fluids, dialysis as needed; AVOID antibiotics/antimotility in suspected STEC (may increase HUS risk).',miss:'Don\'t give antibiotics for bloody diarrhea when STEC/HUS is possible.'}
+ ];
+ return `<h2 class="sec" id="gi">6 · GI &amp; abdominal — the surgical can't-misses</h2>
+ <p class="seclead">Age + vomiting character (bilious vs not) + stool + mass is the diagnostic lattice.</p>
+ <div class="cardgrid wide">${G.map(c=>card('c-gi',c)).join('')}</div>
+ <div class="note buzz"><b>Vomiting decoder:</b> <b>bilious neonatal vomiting → malrotation/volvulus (surgical emergency)</b>; non-bilious projectile at 3–6 wk → pyloric stenosis; colicky + currant-jelly → intussusception; the dehydration math and the hypochloremic-hypokalemic-metabolic-alkalosis of pyloric stenosis are classic written-board items.</div>`;
+}
+
+/* ============================================================
+   7. NEURO & MISC
+   ============================================================ */
+function neuro(){
+ const N=[
+  {n:'Febrile seizure',t:'6 mo–5 yr',buzz:'Simple: generalized, <15 min, once in 24 h, normal neuro. Complex: focal, prolonged, or recurrent in 24 h.',dose:'Supportive; benzodiazepine if prolonged (status). Simple febrile seizure: no LP/EEG/imaging routinely; evaluate the fever source.',miss:'LP if meningeal signs, <12 mo with incomplete immunization/pretreated with antibiotics, or complex features.'},
+  {n:'Status epilepticus',t:'>5 min',buzz:'Check glucose immediately.',dose:'Benzo first (lorazepam 0.1 mg/kg IV, or midazolam 0.2 mg/kg IM/IN, or rectal diazepam 0.5 mg/kg) → repeat → 2nd-line (levetiracetam 60 mg/kg, fosphenytoin 20 mg PE/kg, or valproate 40 mg/kg) → RSI/infusion.',miss:'Pyridoxine for refractory neonatal seizures (INH ingestion or pyridoxine-dependent); hyponatremia in infants (water intoxication/dilute formula).'},
+  {n:'Non-accidental head trauma',t:'abusive head trauma',buzz:'Retinal hemorrhages + subdural hematoma + minimal/implausible history in an infant. (See NAT section.)',dose:'Stabilize, neurosurgery, skeletal survey, dilated eye exam, report.',miss:'"Lethargic/fussy infant" without fever — keep AHT on the differential.'},
+  {n:'BRUE',t:'brief resolved unexplained event',buzz:'<1 yr, brief (<1 min), resolved, with cyanosis/pallor, absent/irregular breathing, altered tone, or AMS — and a normal exam. Replaced "ALTE."',dose:'Low-risk (>60 days, term, first event, <1 min, no CPR by trained provider): minimal workup, shared decision-making. Higher risk → broaden.',miss:'Consider abuse, cardiac (long QT), tox, infection, IEM in higher-risk events.'},
+  {n:'DKA (pediatric)',t:'new or known diabetic',buzz:'Polyuria/polydipsia, Kussmaul, abdominal pain mimicking surgical abdomen, fruity breath.',dose:'Fluids (cautious — start ~10 mL/kg), insulin infusion 0.05–0.1 U/kg/h AFTER fluids (no bolus), K⁺ replacement, hourly glucose; add dextrose ~250–300.',miss:'CEREBRAL EDEMA — the leading cause of DKA death in kids; risk with over-rapid fluids/osmolar shifts, young age, new diagnosis, severe acidosis. Treat suspected edema with hypertonic saline or mannitol.'},
+  {n:'Testicular torsion',t:'neonate & peri-pubertal',buzz:'Sudden severe pain, high-riding testis, absent cremasteric reflex, abnormal lie. Time-critical (<6 h salvage).',dose:'Emergent urology; manual detorsion ("open book"); Doppler US should not delay surgery if exam is classic.',miss:'A "normal" Doppler in a classic exam does not exclude — surgical exploration wins.'}
+ ];
+ return `<h2 class="sec" id="neuro">7 · Neuro, endocrine &amp; can't-miss misc</h2>
+ <p class="seclead">Seizures, the DKA-cerebral-edema board favorite, and the time-critical scrotum.</p>
+ <div class="cardgrid wide">${N.map(c=>card('c-resus',c)).join('')}</div>`;
+}
+
+/* ============================================================
+   8. TOX
+   ============================================================ */
+function tox(){
+ return `<h2 class="sec" id="tox">8 · Toxicology — "one pill can kill" &amp; peds-specific</h2>
+ <p class="seclead">Small kids, big consequences: agents where a single adult dose is lethal to a toddler are a board staple.</p>
+ <div class="note buzz"><b>"One pill (or one swallow) can kill" a toddler:</b> calcium-channel blockers, β-blockers, opioids (esp. methadone/buprenorphine), sulfonylureas, TCAs, camphor, clonidine/imidazolines, theophylline, antimalarials (chloroquine/hydroxychloroquine), and toxic alcohols. Treat any toddler ingestion of these as potentially lethal.</div>
+ <div class="cardgrid wide">
+  ${[
+   {n:'Clonidine / imidazolines',t:'common, dramatic',buzz:'Mimics opioid: CNS depression, miosis, bradycardia, hypotension, hypoventilation — may transiently respond to high-dose naloxone.',dose:'Supportive airway/BP, atropine for bradycardia, fluids/pressors; naloxone trial.',miss:'Visine/eye-drop (tetrahydrozoline) ingestions in toddlers — same picture.'},
+   {n:'Sulfonylureas',t:'one-pill-can-kill',buzz:'Delayed, prolonged, recurrent hypoglycemia.',dose:'Dextrose for hypoglycemia + <b>octreotide</b> (suppresses insulin) for recurrence; admit/observe — delayed hypoglycemia.',miss:'Don\'t discharge early; hypoglycemia can be delayed hours and recur.'},
+   {n:'Iron',t:'prenatal vitamins',buzz:'Vomiting/GI bleeding → latent → shock/anion-gap acidosis → hepatic failure; radiopaque tablets on AXR.',dose:'Deferoxamine for severe; whole-bowel irrigation; fluids.',miss:'The deceptive latent phase; not adsorbed by charcoal.'},
+   {n:'Acetaminophen',t:'most common',buzz:'Asymptomatic early; 4-h nomogram. Pediatric liver relatively resilient but still treat by level.',dose:'N-acetylcysteine per nomogram/criteria.',miss:'Co-formulated products; chronic supratherapeutic dosing.'},
+   {n:'Caustics / button battery',t:'toddler',buzz:'Button battery in the ESOPHAGUS = emergency (current injury within 2 h, can erode into aorta). Coin-on-X-ray with a "double ring/halo" = battery, not coin.',dose:'Emergent endoscopic removal for esophageal battery; honey en route (per guidance) if recent and ≥12 mo; do not induce vomiting for caustics.',miss:'Distinguish battery from coin on film — the halo sign; magnets (≥2) → bowel necrosis, also emergent.'},
+   {n:'Hydrocarbons',t:'aspiration risk',buzz:'Coughing/choking after ingestion → chemical pneumonitis. Low viscosity = high aspiration risk.',dose:'Supportive; do NOT induce emesis or lavage; observe for respiratory symptoms.',miss:'The danger is aspiration pneumonitis, not GI absorption.'}
+  ].map(c=>card('c-id',c)).join('')}
+ </div>
+ <div class="note"><b>Decontamination dogma for boards:</b> ipecac is obsolete; gastric lavage rarely indicated; activated charcoal only if appropriate timing/agent and protected airway (and useless for iron, lithium, alcohols, hydrocarbons, caustics). Whole-bowel irrigation for iron, lithium, sustained-release, body packers.</div>`;
+}
+
+/* ============================================================
+   9. NEONATAL DEEP DIVE
+   ============================================================ */
+function neonatal(){
+ return `<h2 class="sec" id="neonatal">9 · Neonatal emergencies — deep dive</h2>
+ <p class="seclead">The sick neonate (≤28 days, functionally up to ~2 months) is a board minefield because everything looks the same: poor feeding, lethargy, color change. The mnemonic <b>THE MISFITS</b> structures the differential.</p>
+ <div class="formula"><b>THE MISFITS</b> — T: Trauma (incl. NAT) · H: Heart disease/Hypovolemia · E: Endocrine (CAH, thyroid) · M: Metabolic (electrolytes, glucose) · I: Inborn errors of metabolism · S: Sepsis · F: Formula errors (dilution → hyponatremia; over-concentration) · I: Intestinal catastrophe (volvulus, NEC, intussusception) · T: Toxins · S: Seizures</div>
+ <div class="cardgrid wide">
+   <div class="card c-neo"><h3>Ductal-dependent congenital heart disease</h3>
+     <div class="tagline">presents as the duct closes, ~days 1–14</div>
+     <div class="blk buzz"><b>Two patterns</b>Ductal-dependent <b>systemic</b> flow (HLHS, critical coarctation, interrupted arch) → shock/grey baby, differential pulses/sat (upper vs lower limb), as duct closes. Ductal-dependent <b>pulmonary</b> flow (pulmonary atresia, critical PS, TGA) → profound cyanosis unresponsive to oxygen.</div>
+     <div class="blk workup"><b>Workup</b>Pre/post-ductal sats (4-limb), CXR, ECG, hyperoxia test (cyanotic CHD fails to raise PaO₂ >150 on 100% O₂), echo, glucose/calcium.</div>
+     <div class="blk dose"><b>Treatment</b><b>Prostaglandin E1 (alprostadil) 0.05–0.1 µg/kg/min</b> to reopen/maintain the duct — the key board reflex for the crashing cyanotic or shocked neonate. <b>Watch for apnea</b> (be ready to intubate). Cautious with fluids/inotropes; cardiology emergently.</div>
+     <div class="blk miss"><b>Board trick</b>Cyanosis that doesn\'t improve with oxygen (failed hyperoxia test) = cyanotic CHD until proven otherwise; "the 5 T\'s" — Truncus, Transposition, Tricuspid atresia, Tetralogy, TAPVR. TGA = most common cyanotic lesion presenting in the first days.</div>
+   </div>
+   <div class="card c-neo"><h3>Inborn errors of metabolism (IEM)</h3>
+     <div class="tagline">well at birth → decompensates after feeding</div>
+     <div class="blk buzz"><b>Pattern</b>Previously well neonate with poor feeding, vomiting, lethargy, seizures, after a symptom-free interval. Clues: <b>anion-gap metabolic acidosis, hyperammonemia, hypoglycemia, ketosis</b>; family history, consanguinity, prior sibling death.</div>
+     <div class="blk dose"><b>Treatment ("stop the catabolism")</b>Stop protein/feeds, give <b>D10</b> to reverse catabolism, correct acidosis, treat hyperammonemia (may need dialysis, nitrogen scavengers); send the "metabolic workup" (ammonia, lactate, gas, glucose, ketones, urine organic/serum amino acids, acylcarnitine) BEFORE you fix everything.</div>
+     <div class="blk miss"><b>Board trick</b>Hyperammonemia with a normal anion gap + respiratory alkalosis → urea cycle defect; with anion-gap acidosis → organic acidemia. Hypoglycemia + no ketones → fatty-acid oxidation defect (MCAD).</div>
+   </div>
+   <div class="card c-neo"><h3>Congenital adrenal hyperplasia (CAH)</h3>
+     <div class="tagline">salt-wasting crisis, ~1–2 wk</div>
+     <div class="blk buzz"><b>Pattern</b>21-hydroxylase deficiency: vomiting, dehydration, shock + <b>hyponatremia, hyperkalemia, hypoglycemia, metabolic acidosis</b>; virilized/ambiguous genitalia in girls (boys may look normal → missed).</div>
+     <div class="blk dose"><b>Treatment</b>Fluids (NS) + dextrose, <b>hydrocortisone</b> (stress dose ~25 mg infant) emergently, treat hyperkalemia. Send cortisol/17-OHP/electrolytes before steroids if feasible.</div>
+     <div class="blk miss"><b>Board trick</b>The hyperkalemia + hyponatremia + shock neonate (esp. with ambiguous genitalia, or a boy with a salt-wasting crisis) = CAH; give hydrocortisone.</div>
+   </div>
+   <div class="card c-neo"><h3>Necrotizing enterocolitis &amp; neonatal sepsis</h3>
+     <div class="tagline">premature > term</div>
+     <div class="blk buzz"><b>NEC</b>Feeding intolerance, bilious aspirates, bloody stools, abdominal distension; <b>pneumatosis intestinalis</b> on AXR (pathognomonic), portal venous gas, free air if perforated.</div>
+     <div class="blk dose"><b>NEC</b>NPO, NG decompression, fluids, broad antibiotics (add anaerobic coverage); surgery for perforation. <b>Sepsis</b> ampicillin + gentamicin/cefotaxime + acyclovir if HSV risk.</div>
+     <div class="blk miss"><b>Don\'t miss</b>Neonatal HSV (ill, seizures, vesicles may be absent, transaminitis, CSF pleocytosis) — add acyclovir; mortality is high untreated.</div>
+   </div>
+   <div class="card c-neo"><h3>Neonatal jaundice — the dangerous kind</h3>
+     <div class="tagline">kernicterus prevention</div>
+     <div class="blk buzz"><b>Always pathologic</b>Jaundice in the <b>first 24 h</b>, conjugated/direct hyperbilirubinemia (biliary atresia, sepsis, metabolic — needs urgent workup), or a rapidly rising/very high total. Physiologic jaundice peaks day 3–5.</div>
+     <div class="blk dose"><b>Treatment</b>Phototherapy / exchange transfusion by hour-specific nomogram; treat the cause. Conjugated hyperbilirubinemia is never physiologic → evaluate for biliary atresia (Kasai timing matters).</div>
+     <div class="blk miss"><b>Board trick</b>Direct (conjugated) hyperbilirubinemia is always pathologic; first-24-h jaundice = hemolysis/sepsis until proven otherwise.</div>
+   </div>
+   <div class="card c-neo"><h3>Neonatal resuscitation essentials</h3>
+     <div class="blk buzz"><b>NRP flow</b>Warm/dry/stimulate → position airway → PPV is the cornerstone (most neonatal arrest is respiratory). Ratio <b>3:1</b> compressions:ventilations; start with room air→titrate; epinephrine if HR <60 despite adequate ventilation.</div>
+     <div class="blk dose"><b>Glucose</b>Neonatal hypoglycemia → D10 2 mL/kg. Keep warm (hypothermia worsens everything).</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   10. NAT DEEP DIVE
+   ============================================================ */
+function nat(){
+ return `<h2 class="sec" id="nat">10 · Non-accidental trauma — deep dive</h2>
+ <p class="seclead">The most consequential miss in pediatrics: a sentinel injury sent home becomes a fatality. Boards test the specific red-flag injuries, the mandatory workup, and the legal/reporting duty.</p>
+ <div class="cardgrid wide">
+   <div class="card c-nat"><h3>Red flags in the history</h3>
+     <div class="blk buzz"><b>Patterns</b>History inconsistent with injury or developmental stage (e.g., a non-mobile infant who "rolled off"), changing/absent history, delayed presentation, injury blamed on a sibling, or recurrent "accidents."</div>
+     <div class="blk miss"><b>"TEN-4-FACESp" bruising rule</b>Bruising of <b>T</b>orso, <b>E</b>ars, <b>N</b>eck in a child <b>≤4</b>, OR <b>any</b> bruising in an infant <b>≤4 months</b> (and frenulum, angle of jaw, cheek, eyelid, sclera, patterned) is high-concern. <b>"Those who don\'t cruise rarely bruise."</b></div>
+   </div>
+   <div class="card c-nat"><h3>Specific injuries that flag abuse</h3>
+     <div class="blk buzz"><b>Fractures</b>Classic metaphyseal lesions ("corner"/"bucket-handle"), posterior rib fractures (squeezing), scapular/spinous-process/sternal fractures, fractures of different ages, any fracture in a non-ambulatory infant, femur fracture in a non-walker.</div>
+     <div class="blk buzz"><b>Abusive head trauma</b>Subdural hematoma + retinal hemorrhages + minimal/implausible trauma; the classic shaken-impact triad. Get a dilated retinal exam.</div>
+     <div class="blk buzz"><b>Patterned skin</b>Immersion burns (stocking/glove, sharp margins, spared flexion creases), cigarette burns, loop/cord marks, slap marks, bites.</div>
+   </div>
+   <div class="card c-nat"><h3>Sentinel injuries</h3>
+     <div class="blk">Minor but high-risk findings in a young infant that precede severe abuse: an unexplained <b>bruise, intraoral injury (torn frenulum), or subconjunctival hemorrhage</b> in a pre-mobile baby. Recognizing the sentinel injury is the chance to intervene before escalation.</div>
+     <div class="blk miss"><b>Board trick</b>A bruise on a <4-month-old is the canonical sentinel injury — workup, don\'t dismiss.</div>
+   </div>
+   <div class="card c-nat"><h3>Mandatory workup</h3>
+     <div class="blk workup"><b>Imaging</b><b>Skeletal survey</b> for all <2 yr with concern (repeat in ~2 wk increases yield for healing fractures); neuroimaging (CT/MRI) for AHT concern; dilated <b>ophthalmologic exam</b> for retinal hemorrhages.</div>
+     <div class="blk workup"><b>Labs</b>Screen for mimics/occult injury: CBC, coags (rule out bleeding disorder before attributing bruising to abuse), LFTs/lipase (occult abdominal trauma), UA (renal), consider bone profile/metabolic for fracture mimics.</div>
+   </div>
+   <div class="card c-nat"><h3>Mimics to exclude (and not over-call)</h3>
+     <div class="blk">Bleeding disorders (ITP, hemophilia, vitamin K deficiency), osteogenesis imperfecta and metabolic bone disease, Mongolian spots (vs bruising), cultural practices (cupping/coining), birth trauma, accidental patterns. Objective workup protects both the child and the family.</div>
+   </div>
+   <div class="card c-nat"><h3>Duty &amp; disposition</h3>
+     <div class="blk miss"><b>Reporting</b>Mandatory reporters must report reasonable suspicion — you do not need proof, and reporting is protected. Ensure safety (admit if needed), involve child-protection team/social work, document objectively (quote the history, describe findings, photograph), and consider siblings/contacts at risk.</div>
+   </div>
+ </div>
+ <div class="note warn"><b>The core teaching point:</b> abuse is recognized by the <em>discordance</em> between injury and the offered mechanism and developmental stage — and by pattern recognition of the specific injuries above. A missed sentinel injury is a missed chance to prevent a fatality; when in doubt, work it up and report.</div>`;
+}
+
+/* ============================================================
+   10b. GROWTH, MILESTONES, FOODS & BENIGN EVENTS
+   ============================================================ */
+function growth(){
+ return `<h2 class="sec" id="growth">10b · Growth, milestones, foods &amp; benign events</h2>
+ <p class="seclead">Anticipatory-guidance and development knowledge an ER physician needs: what normal growth looks like (so failure-to-thrive and macro/microcephaly stand out), the milestones worth screening at the bedside, the foods that hurt small children, and the benign events that look scary but aren't — paired with their dangerous mimics.</p>
+
+ <h3 class="sub">Growth — the normal trajectory &amp; the formulas</h3>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Weight</h3>
+     <div class="formula">Birth weight ~3.5 kg · <b>regains</b> birth weight by ~10–14 days<br><b>Doubles</b> by ~4–6 mo · <b>triples</b> by ~12 mo · <b>quadruples</b> by ~24 mo<br>Daily gain: ~20–30 g/day (0–3 mo), ~15–20 (3–6 mo)<br>Age 2→puberty: ≈ <b>2 kg/year</b>; quick weight estimate (1–10 yr) ≈ <b>(2 × age) + 8</b> kg</div>
+     <div class="blk miss"><b>Red flag</b>Up to ~7–10% loss in the first week is physiologic; failure to regain birth weight by 2 weeks, or weight crossing down ≥2 major percentile lines, prompts a feeding/FTT/illness evaluation (and consider NAT/neglect).</div>
+   </div>
+   <div class="card"><h3>Length / height</h3>
+     <div class="formula">Birth length ~50 cm · ~<b>+25 cm</b> in year 1 · ~+12 cm year 2 · ~+8 cm year 3<br>After age 2 to puberty: ~<b>5–7 cm/year</b> (≈2 in/yr)<br>Birth length roughly <b>doubles by age 4</b></div>
+     <div class="blk">A child tracking steadily along their own percentile is usually reassuring even if that percentile is low; <b>crossing percentiles</b> (up or down) is the signal — growth-velocity matters more than a single point.</div>
+   </div>
+   <div class="card"><h3>Head circumference</h3>
+     <div class="formula">Birth ~35 cm · grows ~<b>2 cm/month</b> for the first 3 mo, ~1 cm/mo months 4–6, ~0.5 cm/mo months 7–12 (~+12 cm in year 1)</div>
+     <div class="blk miss"><b>Why the ER cares</b>Rapidly crossing-up HC = hydrocephalus, chronic subdural (consider <b>abusive head trauma</b>), or mass. Microcephaly = congenital infection (TORCH), genetic, or severe insult. Plot it — a fontanelle exam plus HC trajectory is a quiet but high-yield screen.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The board synthesis:</b> doubles-by-4–6-mo / triples-by-1-yr (weight), +25 cm year 1 (length), +12 cm year 1 (head). Always plot on a growth chart (WHO <2 yr, CDC ≥2 yr; specialized charts for prematurity and certain syndromes). Isolated low percentile ≠ pathology; declining velocity or percentile-crossing does.</div>
+
+ <h3 class="sub">Developmental milestones worth assessing in the ER</h3>
+ <p class="body">You won't do a formal Denver screen in the ED, but milestones are diagnostic: they date an injury history's plausibility (NAT), flag a neuro/developmental problem behind a vague presentation, and gauge baseline in the altered child. Know the <b>red-flag ages</b> and the <b>never-ignore regressions</b>.</p>
+ <div class="gridwrap"><table class="cmp">
+  <thead><tr><th>Age</th><th>Gross motor</th><th>Fine motor / language</th><th>Social</th><th>Red flag if absent</th></tr></thead>
+  <tbody>
+   <tr><th>2 mo</th><td>Lifts head prone</td><td>Tracks past midline; coos</td><td>Social smile</td><td class="mono-val" style="color:var(--warn)">No social smile; no fix/follow</td></tr>
+   <tr><th>4 mo</th><td>Steady head; rolls front→back</td><td>Hands to midline; laughs</td><td>Regards caregiver</td><td class="mono-val" style="color:var(--warn)">Persistent head lag; no laugh</td></tr>
+   <tr><th>6 mo</th><td>Sits with support; rolls both ways</td><td>Raking grasp; babbles</td><td>Stranger awareness begins</td><td class="mono-val" style="color:var(--warn)">No rolling; no babble; persistent fisting</td></tr>
+   <tr><th>9 mo</th><td>Sits without support; crawls; pulls to stand</td><td>Immature pincer; "mama/dada" nonspecific</td><td>Stranger anxiety; object permanence</td><td class="mono-val" style="color:var(--warn)">Not sitting; no babbling consonants</td></tr>
+   <tr><th>12 mo</th><td>Pulls to stand / cruises; ± first steps</td><td>Fine pincer; 1–3 words; follows 1-step + gesture</td><td>Waves bye; plays pat-a-cake</td><td class="mono-val" style="color:var(--warn)">Not pulling to stand; no words/gestures</td></tr>
+   <tr><th>18 mo</th><td>Walks well; runs stiffly</td><td>Several words; points to wants</td><td>Imitates; simple pretend</td><td class="mono-val" style="color:var(--warn)">Not walking; no pointing/words</td></tr>
+   <tr><th>2 yr</th><td>Runs; up/down stairs with rail</td><td>2-word phrases; ~50 words; ½ speech intelligible</td><td>Parallel play</td><td class="mono-val" style="color:var(--warn)">No 2-word phrases; no running</td></tr>
+   <tr><th>3 yr</th><td>Pedals tricycle; alternates feet on stairs</td><td>3-word sentences; ¾ intelligible</td><td>Shares; group play</td><td class="mono-val" style="color:var(--warn)">Unintelligible; no sentences</td></tr>
+  </tbody>
+ </table></div>
+ <div class="cardgrid" style="margin-top:12px">
+   <div class="card c-nat"><h3>The injury-plausibility check</h3>
+     <div class="blk miss"><b>"Those who don't cruise rarely bruise"</b>A non-ambulatory infant (typically &lt;~9–12 mo) does not generate the forces to bruise themselves or "roll off and fracture a femur." A history that requires motor skills the child doesn't have yet is a red flag for NAT.</div>
+   </div>
+   <div class="card"><h3>Never-ignore regression</h3>
+     <div class="blk miss"><b>Loss of previously-acquired skills</b>is always abnormal — think neurodegenerative/metabolic disease, abusive head trauma, severe neglect, infantile spasms, or autistic regression. Document the timeline carefully and work it up.</div>
+   </div>
+   <div class="card"><h3>Primitive reflexes as a clock</h3>
+     <div class="blk">Moro, palmar grasp, and ATNR should <b>disappear by ~4–6 mo</b>; persistence (or asymmetry — e.g., one-sided Moro suggests brachial plexus injury/fracture) signals a neurologic problem. The parachute reflex <b>appears</b> ~8–9 mo and should be present after.</div>
+   </div>
+ </div>
+
+ <h3 class="sub">Foods &amp; ingestions that harm small children</h3>
+ <div class="cardgrid wide">
+   <div class="card c-resp"><h3>Choking / aspiration foods</h3>
+     <div class="blk">Leading aspiration/choking hazards for &lt;~4 yr (immature chewing, narrow airway): <b>hot dogs (round, compressible — worst), whole grapes, nuts/seeds, popcorn, hard/sticky candy, chunks of meat or cheese, raw carrot/hard fruit, marshmallows, peanut butter in spoonfuls, chewing gum.</b> Cut round foods lengthwise; supervise eating; no eating while running/playing.</div>
+     <div class="blk miss"><b>ER reflex</b>Sudden choking/cough/unilateral wheeze in a toddler = foreign-body aspiration (a normal inspiratory film doesn't exclude it). Right mainstem most common.</div>
+   </div>
+   <div class="card c-gi"><h3>Infant botulism — honey</h3>
+     <div class="blk"><b>No honey before 12 months.</b> C. botulinum spores germinate in the immature infant gut → descending hypotonia, constipation (often first), poor feeding, weak cry, ptosis, "floppy baby." Corn syrup historically implicated; soil/dust exposure too.</div>
+     <div class="blk dose"><b>Management</b>Supportive (airway/feeding) + human-derived botulism immune globulin (BIG-IV / "BabyBIG"); avoid aminoglycosides (potentiate neuromuscular blockade).</div>
+   </div>
+   <div class="card"><h3>Water intoxication / formula errors</h3>
+     <div class="blk"><b>No plain water</b> as a drink for infants &lt;~6 mo, and never dilute formula to "stretch" it — free-water excess causes <b>hyponatremic seizures</b> in infants (immature kidneys, low solute). Over-concentrated formula causes hypernatremia/dehydration.</div>
+     <div class="blk miss"><b>ER reflex</b>Afebrile seizure in a young infant → check sodium and ask about formula mixing / free-water/swim-lesson exposure.</div>
+   </div>
+   <div class="card c-gi"><h3>Cow's milk &amp; early diet pitfalls</h3>
+     <div class="blk"><b>No cow's milk before 12 months</b> (GI microhemorrhage → iron-deficiency anemia; renal solute load). Excessive cow's milk in toddlers is a classic cause of iron-deficiency anemia. Introduce allergens (including peanut) early per current guidance in most infants — late introduction is no longer advised.</div>
+   </div>
+   <div class="card c-id"><h3>Unpasteurized &amp; high-risk foods</h3>
+     <div class="blk">Unpasteurized milk/juice and soft cheeses (Listeria, E. coli, Salmonella), raw/undercooked eggs and meat, raw sprouts, and deli meats carry higher infection risk in the very young. Honey (botulism, above). These rarely change ED management but anchor the gastroenteritis/HUS history.</div>
+     <div class="blk miss"><b>Don't forget</b>Bloody diarrhea + STEC concern (undercooked beef, unpasteurized products) → avoid antibiotics/antimotility (HUS risk).</div>
+   </div>
+   <div class="card c-resus"><h3>Toxic non-foods kids eat</h3>
+     <div class="blk">Toddlers explore by mouth: <b>button batteries</b> (esophageal = emergency), <b>magnets</b> (≥2 → bowel necrosis), detergent pods (caustic + CNS depression), <b>iron/prenatal vitamins</b>, hand sanitizer (alcohol), plants, and the "one-pill-can-kill" medications. See the tox section.</div>
+   </div>
+ </div>
+
+ <h3 class="sub">Benign events that look frightening (and their dangerous mimics)</h3>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Breath-holding spells</h3>
+     <div class="tagline">6 mo–6 yr · benign, peaks ~2 yr</div>
+     <div class="blk buzz"><b>Pattern</b>A provocation (anger, frustration, pain, or a minor fall) → vigorous crying → forced expiratory apnea → color change → brief LOC ± stiffening/few clonic jerks. Two types: <b>cyanotic</b> (blue — most common, anger/frustration) and <b>pallid</b> (pale — pain/fright, vagally mediated bradycardia/asystole).</div>
+     <div class="blk dose"><b>Management</b>Reassurance — they're benign and self-resolve by school age. Check for and treat <b>iron-deficiency anemia</b> (associated; iron supplementation reduces spells). Counsel caregivers not to reinforce the behavior; keep the child safe during a spell.</div>
+     <div class="blk miss"><b>Mimic to exclude</b>The provocation-then-cry-then-event sequence distinguishes it from a primary seizure (which isn't reliably triggered by crying and is usually followed by a true postictal state). Pallid spells can mimic — and rarely coexist with — long-QT/arrhythmic syncope; an ECG is reasonable if features are atypical (no trigger, exertional, family history of sudden death).</div>
+   </div>
+   <div class="card"><h3>Reflex / vasovagal &amp; the "limp baby" reflexes</h3>
+     <div class="tagline">neurally-mediated</div>
+     <div class="blk buzz"><b>Vasovagal syncope</b>(older children/adolescents): prodrome (warmth, nausea, tunnel vision), upright trigger, rapid recovery — benign. <b>Pallid breath-holding</b> (above) is the infant/toddler vagal equivalent: a bump on the head → sudden pallor, limpness, brief asystole, then recovery.</div>
+     <div class="blk">A sudden <b>vagal surge</b> (pain, defecation/Valsalva, gagging, a startle) can transiently make an infant go pale and floppy then recover — the mechanism behind pallid spells and some "near-faint" events. Brief tonic stiffening or a few jerks from cerebral hypoperfusion (convulsive syncope) does NOT mean epilepsy.</div>
+     <div class="blk miss"><b>Red flags that make syncope NOT benign</b>exertional or swimming-associated, no prodrome, associated chest pain/palpitations, occurs supine, family history of sudden cardiac death/deafness (long QT) → get an ECG and consider cardiac causes (HCM, long QT, WPW, anomalous coronary).</div>
+   </div>
+   <div class="card"><h3>Falls — what's expected vs concerning</h3>
+     <div class="tagline">the most common ED reassurance — and trap</div>
+     <div class="blk buzz"><b>Usually benign</b>Short household falls (e.g., from furniture/standing height) in a mobile child typically cause minor injury; isolated linear skull fractures without intracranial injury often do well. Use validated decision rules (<b>PECARN</b>) to risk-stratify head CT in minor head trauma and avoid unnecessary radiation.</div>
+     <div class="blk miss"><b>Concerning</b>A fall history <b>discordant with development</b> (a non-mobile infant who "fell"), an implausible mechanism for the injury severity (femur/rib/complex skull fracture from a short fall), delayed presentation, or changing story → NAT workup. Short falls rarely cause life-threatening head injury; a severe injury attributed to one deserves scrutiny.</div>
+   </div>
+   <div class="card"><h3>Other benign-but-scary normals</h3>
+     <div class="blk"><b>Periodic breathing</b>(brief pauses &lt;~10–20 s without color/tone change) in young infants is normal — distinct from true apnea/BRUE. <b>Sandifer</b> (GERD-associated dystonic posturing) mimics seizure. <b>Benign neonatal sleep myoclonus</b> (jerks only in sleep, stop on waking) mimics seizure. <b>Shuddering attacks</b>, <b>infantile self-gratification</b>, and <b>night terrors</b> are benign paroxysmal events.</div>
+     <div class="blk miss"><b>Always exclude</b>True apnea, infantile spasms (subtle clusters + developmental regression → urgent EEG/hypsarrhythmia), and arrhythmia — the benign labels are earned only after the dangerous mimics are considered.</div>
+   </div>
+ </div>
+ <div class="note good"><b>The unifying ED skill:</b> most of these events are benign and need only recognition + reassurance + return precautions — but each has a dangerous look-alike (seizure, arrhythmia, NAT, sepsis, metabolic). The history (trigger, prodrome, recovery, development) and a focused exam usually separate them; the few red flags above are what escalate to ECG, imaging, labs, or a child-protection workup.</div>`;
+}
+
+/* ============================================================
+   11. HIGH-YIELD PEARLS
+   ============================================================ */
+function pearls(){
+ const P=[
+  ['Hypotension is pre-arrest','Compensated shock (tachycardia, poor perfusion, normal BP) is the moment to act — not when the pressure falls.'],
+  ['Bilious neonatal vomiting','= malrotation/volvulus until proven otherwise → emergent upper GI / surgery.'],
+  ['Crashing cyanotic/shocked neonate','→ Prostaglandin E1 to open the duct (watch for apnea); failed hyperoxia test = cyanotic CHD.'],
+  ['Bradycardia in a child','= hypoxia until proven otherwise → oxygenate and ventilate first.'],
+  ['Cold septic shock','Pediatric sepsis is often low-output/high-SVR → epinephrine first-line (not norepinephrine).'],
+  ['DKA + deterioration','Suspect cerebral edema (leading cause of death) → hypertonic saline/mannitol; cautious fluids.'],
+  ['Bruise in a pre-mobile infant','Sentinel injury → NAT workup; "those who don\'t cruise rarely bruise."'],
+  ['Salt-wasting + hyperkalemia neonate','CAH → hydrocortisone + fluids/dextrose.'],
+  ['Hyperammonemia + symptom-free interval','Inborn error of metabolism → stop feeds, D10, send metabolic panel.'],
+  ['Pyloric stenosis','Hypochloremic hypokalemic metabolic alkalosis → fix electrolytes BEFORE surgery.'],
+  ['Esophageal button battery','Emergent endoscopy (halo sign on X-ray distinguishes from coin).'],
+  ['Sulfonylurea/clonidine/CCB ingestion','One pill can kill a toddler → admit/observe; octreotide, naloxone trial, HIE respectively.'],
+  ['Adenosine for SVT','0.1 mg/kg (max 6) → 0.2 mg/kg (max 12), rapid push + flush; cardiovert if unstable.'],
+  ['Succinylcholine + occult myopathy','Hyperkalemic arrest in undiagnosed Duchenne — black-box; consider rocuronium.'],
+  ['Simple febrile seizure','No routine LP/EEG/imaging; evaluate the fever; reassure (low epilepsy risk).'],
+  ['Kawasaki','Fever ≥5 days + CRASH → IVIG + aspirin; echo for coronary aneurysm.']
+ ];
+ return `<h2 class="sec" id="pearls">11 · High-yield board pearls (rapid fire)</h2>
+ <p class="seclead">The reflexes worth having instant recall on the night before.</p>
+ <div class="cardgrid">${P.map(p=>`<div class="card" style="border-top-color:var(--gold)"><div class="blk buzz"><b>${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`).join('')}</div>
+ <div class="note good"><b>What else to know:</b> (1) <b>Analgesia/sedation</b> — intranasal fentanyl (1.5 µg/kg) and IN midazolam for atraumatic dosing; ketamine for procedural sedation (laryngospasm rare, emergence phenomena); maximal local anesthetic doses are weight-based (lidocaine ~4.5 mg/kg, 7 with epi). (2) <b>Fluids/maintenance</b> — isotonic maintenance to avoid iatrogenic hyponatremia; 4-2-1 rule; dextrose-containing for infants. (3) <b>Procedures</b> — IO access early when IV fails in arrest; length-based tape for everything. (4) <b>Pain is under-treated in kids</b> — don't withhold analgesia for "masking" the abdominal exam. (5) <b>Immunization status</b> reframes the febrile-infant and rash differentials. (6) <b>Family-centered care</b> and a low threshold for child-protection concerns. (7) <b>Disposition humility</b> — return precautions and the "recheck" culture matter because kids evolve fast.</div>`;
+}
+
+/* card helper */
+function card(cls,c){
+ return `<div class="card ${cls}"><h3>${c.n}</h3><div class="tagline">${c.t}</div>
+  ${c.buzz?`<div class="blk buzz"><b>Buzzwords / association</b>${c.buzz}</div>`:''}
+  ${c.dose?`<div class="blk dose"><b>Dose / management</b>${c.dose}</div>`:''}
+  ${c.workup?`<div class="blk workup"><b>Workup</b>${c.workup}</div>`:''}
+  ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+ </div>`;
+}
+
+document.getElementById('main').innerHTML =
+  principles()+vitals()+vitalsDeep()+exam()+resus()+resp()+fever()+gi()+neuro()+tox()+neonatal()+nat()+growth()+pearls();
+document.getElementById('foot').innerHTML="Board-review educational synthesis reflecting standard pediatric EM teaching (PALS/NRP, AAP febrile-infant guidance, standard toxicology and child-abuse frameworks). Weight-based doses and thresholds are typical teaching values that must be verified against a current pediatric reference and length-based tape and titrated to the individual child. Not a protocol or a substitute for clinical judgment.";
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

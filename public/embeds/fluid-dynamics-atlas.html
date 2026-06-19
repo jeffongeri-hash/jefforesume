@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluid Dynamics Atlas — IV Fluids, Physiology & Special Considerations</title>
+<style>
+  :root{
+    --bg:#0a1016;--bg2:#0f1922;--panel:#111d26;--panelhi:#182834;--line:#243640;--line2:#192833;
+    --ink:#e8f1f5;--soft:#a1b6c2;--muted:#728a9a;--faint:#506576;
+    --cryst:#34b3bd;      /* crystalloid teal */
+    --colloid:#d68a2e;    /* colloid amber */
+    --plasma:#7c6cc4;     /* plasma/blood violet */
+    --intra:#3fa7d6;      /* intracellular blue */
+    --inter:#46c98a;      /* interstitial green */
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --up:#ff7a5c;--down:#5fb0e6;--grid:#0d141b;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --cryst:#0d8c97;--colloid:#b06f17;--plasma:#5d4ba6;--intra:#1c7fb0;--inter:#1f9d6f;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--up:#c8442b;--down:#2576c0;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.58;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:70ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:600;padding:6px 11px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.55rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:20px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:80ch;font-size:.96rem;}
+  p.body{color:var(--soft);max-width:84ch;font-size:.92rem;margin:10px 0;}
+  p.body b,.card .blk b.inl{color:var(--ink);}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:920px;font-size:.83rem;}
+  table.cmp th,table.cmp td{padding:10px 12px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);position:sticky;left:0;white-space:nowrap;font-size:.8rem;}
+  table.cmp .mono-val{font-family:"SF Mono",monospace;}
+  .hl{color:var(--accent);font-weight:700;}
+  .up{color:var(--up);font-weight:700;}.down{color:var(--down);font-weight:700;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.labs b{color:var(--intra);}.blk.labs{color:var(--soft);}
+  .blk.warnb b{color:var(--warn);}.blk.phys b{color:var(--plasma);}
+  .blk.good b{color:var(--good);}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.phys{border-left-color:var(--plasma);background:color-mix(in srgb,var(--plasma) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .formula{font-family:"SF Mono",monospace;font-size:.86rem;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 14px;margin:10px 0;color:var(--soft);}
+  .formula b{color:var(--ink);}
+  .compartment{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px;}
+  .compartment svg{display:block;width:100%;height:auto;}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+  @media(max-width:860px){.twocol{grid-template-columns:1fr;}}
+  .pop{border-top:3px solid var(--accent);}
+  .vignette{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin:12px 0;border-left:4px solid var(--warn);}
+  .vignette.edema{border-left-color:var(--intra);}
+  .vignette h3{margin:0 0 8px;font-size:1.1rem;}
+  .vignette .stage{margin:10px 0;font-size:.88rem;}
+  .vignette .stage b{display:block;font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px;}
+  .vignette .stage.err b{color:var(--warn);}
+  .vignette .stage.rescue b{color:var(--good);}
+  .vignette .vlabel{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn);margin-bottom:6px;}
+  .vignette.edema .vlabel{background:color-mix(in srgb,var(--intra) 18%,transparent);color:var(--intra);}
+  .calc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0;}
+  .calc h3{margin:0 0 4px;font-size:1.1rem;}
+  .calc .sublede{color:var(--muted);font-size:.84rem;margin:0 0 14px;}
+  .calc .inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:14px;}
+  .calc .fld label{display:block;font-size:.66rem;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:3px;text-transform:uppercase;}
+  .calc .fld input,.calc .fld select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-family:"SF Mono",monospace;font-size:1rem;padding:8px 10px;}
+  .calc .fld input:focus,.calc .fld select:focus{outline:none;border-color:var(--accent);}
+  .calc button.run{background:var(--accent);color:var(--bg);border:none;font-family:inherit;font-weight:800;font-size:.9rem;padding:10px 18px;border-radius:9px;cursor:pointer;}
+  .calc .result{margin-top:14px;}
+  .calc .resbar{border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--line);}
+  .calc .resbar.ok{background:color-mix(in srgb,var(--good) 12%,var(--panel));border-color:color-mix(in srgb,var(--good) 40%,transparent);}
+  .calc .resbar.danger{background:color-mix(in srgb,var(--warn) 12%,var(--panel));border-color:color-mix(in srgb,var(--warn) 40%,transparent);}
+  .calc .resbar .big{font-size:1.15rem;font-weight:800;margin-bottom:3px;}
+  .calc .resbar .det{font-size:.86rem;color:var(--soft);}
+  .calc .formula-inline{font-family:"SF Mono",monospace;font-size:.82rem;color:var(--soft);background:var(--bg2);border-radius:8px;padding:9px 12px;margin:8px 0;}
+  .calc .formula-inline b{color:var(--ink);}
+  .keyval{display:flex;gap:8px;font-size:.82rem;margin:4px 0;}
+  .keyval .k{flex:0 0 116px;color:var(--muted);font-weight:700;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;padding-top:2px;}
+  .keyval .v{color:var(--soft);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}.twocol{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Fluid Dynamics & IV Therapy · Expert Reference</div>
+  <h1>Fluid is a <em>drug</em>.</h1>
+  <p>A physician-level reference on intravenous fluids: the physiology that governs where a liter actually goes, the composition of every common fluid and how it redistributes across compartments, the acid-base consequences, and disease-specific prescribing with endpoints and de-resuscitation. Built to connect Starling forces and the glycocalyx to the order you actually write.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Doses, rates, and thresholds are typical adult starting points grounded in standard physiology and major trials — they must be titrated to the individual and verified against current references and local protocols. Fluid therapy is dynamic; reassess continuously. Educational synthesis, not a protocol.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#compartments">Compartments</a>
+  <a href="#starling">Starling & glycocalyx</a>
+  <a href="#tonicity">Tonicity & distribution</a>
+  <a href="#composition">Composition tables</a>
+  <a href="#acidbase">Acid-base / Stewart</a>
+  <a href="#kinetics">Context-sensitivity</a>
+  <a href="#phases">Phases & endpoints</a>
+  <a href="#responsiveness">Responsiveness</a>
+  <a href="#populations">Special populations</a>
+  <a href="#catastrophes">Correction catastrophes</a>
+  <a href="#harms">Harms</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   1. BODY FLUID COMPARTMENTS
+   ============================================================ */
+function compartments(){
+  // 70 kg male: TBW 42 L (60%); ICF 28 L (2/3); ECF 14 L (1/3) -> ISF ~10.5, plasma ~3.5
+  const svg=`<svg viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet">
+    <!-- TBW bar -->
+    <text x="0" y="16" class="mono" font-size="11" fill="var(--muted)">Total body water ≈ 42 L (60% of 70 kg)</text>
+    <!-- ICF -->
+    <rect x="0" y="28" width="380" height="60" rx="6" fill="var(--intra)" opacity="0.30"/>
+    <rect x="0" y="28" width="380" height="60" rx="6" fill="none" stroke="var(--intra)" stroke-width="1.5"/>
+    <text x="14" y="54" font-size="13" fill="var(--ink)" font-weight="700">Intracellular (ICF)</text>
+    <text x="14" y="74" class="mono" font-size="12" fill="var(--soft)">~28 L · ⅔ of TBW · K⁺, Mg²⁺, PO₄, protein</text>
+    <!-- ECF -->
+    <rect x="392" y="28" width="208" height="60" rx="6" fill="var(--inter)" opacity="0.30"/>
+    <rect x="392" y="28" width="208" height="60" rx="6" fill="none" stroke="var(--inter)" stroke-width="1.5"/>
+    <text x="404" y="50" font-size="12" fill="var(--ink)" font-weight="700">Extracellular ~14 L · ⅓</text>
+    <text x="404" y="68" class="mono" font-size="11" fill="var(--soft)">Na⁺, Cl⁻, HCO₃⁻</text>
+    <!-- ECF split -->
+    <rect x="392" y="100" width="150" height="48" rx="6" fill="var(--inter)" opacity="0.5"/>
+    <rect x="392" y="100" width="150" height="48" rx="6" fill="none" stroke="var(--inter)" stroke-width="1.5"/>
+    <text x="402" y="120" font-size="11" fill="var(--ink)" font-weight="700">Interstitial</text>
+    <text x="402" y="138" class="mono" font-size="11" fill="var(--soft)">~10.5 L (¾ ECF)</text>
+    <rect x="550" y="100" width="50" height="48" rx="6" fill="var(--plasma)" opacity="0.5"/>
+    <rect x="550" y="100" width="50" height="48" rx="6" fill="none" stroke="var(--plasma)" stroke-width="1.5"/>
+    <text x="556" y="120" font-size="10" fill="var(--ink)" font-weight="700">Plasma</text>
+    <text x="556" y="136" class="mono" font-size="10" fill="var(--soft)">~3.5 L</text>
+    <!-- distribution arrows -->
+    <text x="0" y="172" class="mono" font-size="11" fill="var(--muted)">Where 1 L distributes at equilibrium:</text>
+    <text x="0" y="192" class="mono" font-size="11" fill="var(--cryst)">• Isotonic crystalloid → stays in ECF (~¾ interstitium, ~¼ plasma): only ~¼ L stays intravascular</text>
+    <text x="0" y="208" class="mono" font-size="11" fill="var(--intra)">• 5% dextrose (free water) → spreads across ALL TBW: only ~1/12 L (~80 mL) stays in plasma</text>
+  </svg>`;
+  return `<h2 class="sec" id="compartments">1 · Body fluid compartments — where a liter goes</h2>
+  <p class="seclead">Every fluid decision starts here: total body water is ~60% of lean mass (~42 L in a 70-kg man, lower in women, the obese, and the elderly), split two-thirds intracellular and one-third extracellular, and the ECF is itself three-quarters interstitial and one-quarter plasma. A fluid distributes according to which compartment its solute is confined to — that single principle predicts the plasma-expanding efficiency of every product below.</p>
+  <div class="compartment">${svg}</div>
+  <div class="twocol" style="margin-top:14px">
+    <div class="card"><h3>The governing rule</h3>
+      <p class="body">Water follows osmoles. A solute restricted to a compartment holds water there: <b>Na⁺ tethers water to the ECF</b>, plasma <b>oncotic proteins/colloids tether water to the intravascular space</b>, and <b>free water (dextrose once metabolized) distributes across all of TBW</b>. The fraction of an infusion that remains intravascular ≈ (plasma volume ÷ volume of distribution of the fluid's solute).</p>
+      <div class="formula">Plasma-staying fraction ≈ plasma vol / Vd of the solute<br>• isotonic saline/LR → Vd = ECF (~14 L) → <b>~¼ stays</b><br>• D5W → Vd = TBW (~42 L) → <b>~1/12 stays</b><br>• colloid/blood → Vd ≈ plasma → <b>~all stays (acutely)</b></div>
+    </div>
+    <div class="card"><h3>Clinical corollaries</h3>
+      <div class="blk phys"><b>Resuscitation efficiency</b>To raise plasma volume by 500 mL acutely you need ~2 L of isotonic crystalloid, ~6 L of D5W, or ~500 mL of colloid/blood — before redistribution and glycocalyx effects erode even that.</div>
+      <div class="blk phys"><b>Why D5W never resuscitates</b>It is effectively free water; giving it for hypotension dumps ~92% into the interstitium and cells and can worsen edema and hyponatremia.</div>
+      <div class="blk phys"><b>Third space, reconsidered</b>The classic non-functional "third space" is now largely discredited; apparent losses reflect interstitial expansion from glycocalyx injury and over-resuscitation, not a mysterious sink.</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   2. STARLING / GLYCOCALYX
+   ============================================================ */
+function starling(){
+  return `<h2 class="sec" id="starling">2 · Revised Starling principle &amp; the glycocalyx</h2>
+  <p class="seclead">The classic Starling model — filtration driven by hydrostatic vs oncotic gradients across the capillary wall, with reabsorption at the venular end — has been substantially revised. The endothelial glycocalyx is the real semipermeable barrier, and the relevant oncotic gradient is between plasma and the small subglycocalyx space, not the bulk interstitium. This explains why colloids disappoint and why over-filling backfires.</p>
+  <div class="twocol">
+    <div class="card"><h3>Classic Starling equation</h3>
+      <div class="formula">J_v = K_f · [ (P_c − P_i) − σ(π_c − π_i) ]</div>
+      <p class="body">Net filtration (J_v) depends on the capillary filtration coefficient (K_f), the hydrostatic gradient (capillary P_c minus interstitial P_i), and the oncotic gradient (plasma π_c minus interstitial π_i) scaled by the reflection coefficient σ (how impermeable the membrane is to protein, 0–1).</p>
+    </div>
+    <div class="card"><h3>The revision that matters</h3>
+      <div class="blk phys"><b>No venular reabsorption</b>Under most conditions capillaries filter along their whole length; the interstitial fluid returns via lymphatics, not venular reabsorption ("no-reabsorption" rule). Infused colloid does not pull interstitial fluid back into vessels the way the old model implied.</div>
+      <div class="blk phys"><b>Subglycocalyx oncotic pressure</b>The opposing oncotic force is π beneath the glycocalyx — low and protected — so raising plasma π has less filtration benefit than predicted.</div>
+    </div>
+  </div>
+  <div class="note phys"><b>The glycocalyx</b> is a gel-like endothelial surface layer of proteoglycans and glycoproteins ~0.5–2 µm thick. It is the principal determinant of vascular permeability and σ. It is degraded by <b>inflammation/sepsis, ischemia-reperfusion, hyperglycemia, hypervolemia (ANP release from atrial stretch), and surgery</b> — which is precisely why critically ill patients leak, and why an aggressive bolus that stretches the atria can <em>shed</em> glycocalyx and worsen the leak it was meant to treat.</div>
+  <div class="note warn"><b>Clinical translation:</b> in a leaky (low-σ) capillary bed, both crystalloid and colloid extravasate; the colloid advantage shrinks toward zero, and any volume that distends the heart releases natriuretic peptides that further damage the barrier. This is the physiologic argument for restrictive, goal-directed resuscitation and early de-escalation.</div>`;
+}
+
+/* ============================================================
+   3. TONICITY & DISTRIBUTION
+   ============================================================ */
+function tonicity(){
+  return `<h2 class="sec" id="tonicity">3 · Tonicity, osmolarity &amp; distribution math</h2>
+  <p class="seclead">Osmolarity is total solute per liter; tonicity (effective osmolarity) counts only solutes that cannot freely cross cell membranes and therefore drive water movement. Urea and (once metabolized) dextrose are ineffective osmoles. Tonicity — not the label — determines whether a fluid swells, shrinks, or leaves cells alone.</p>
+  <div class="formula">Calculated serum osm = <b>2·[Na] + glucose/18 + BUN/2.8</b> (mOsm/kg)<br>Effective osm (tonicity) = <b>2·[Na] + glucose/18</b> (drops the ineffective urea)<br>Free-water deficit = <b>0.6 · wt(kg) · ([Na]/140 − 1)</b> L</div>
+  <div class="twocol">
+    <div class="card"><h3>Why "isotonic" fluids aren't all neutral</h3>
+      <p class="body"><b>0.9% saline</b> (308 mOsm/L) is slightly hyperosmolar to plasma but isotonic in effect — stays in ECF. <b>LR</b> (~273 mOsm/L) is mildly <b>hypotonic</b> because ~28 mEq of its cation is lactate that is metabolized, leaving free water — relevant in cerebral edema, where it can lower serum Na and worsen swelling. <b>D5W</b> is isosmolar in the bag (252) but becomes free water as dextrose is consumed.</p>
+    </div>
+    <div class="card"><h3>Distribution by tonicity</h3>
+      <div class="keyval"><span class="k">Hypotonic</span><span class="v">(½NS, D5W after metabolism) → water enters cells; expands ICF; risk of cell swelling/hyponatremia.</span></div>
+      <div class="keyval"><span class="k">Isotonic</span><span class="v">(NS, LR, Plasma-Lyte) → confined to ECF; no net cell water shift; resuscitation fluids.</span></div>
+      <div class="keyval"><span class="k">Hypertonic</span><span class="v">(3% saline, mannitol) → pulls water out of cells into ECF; shrinks brain; transiently expands plasma.</span></div>
+    </div>
+  </div>
+  <div class="note"><b>Correction-rate ceilings (carry these):</b> chronic hyponatremia and hypernatremia must be corrected slowly — Na change <b>≤8 mEq/L per 24 h</b> (≤6 if high osmotic-demyelination risk) for hyponatremia, and lower Na by <b>≤10–12 mEq/L per 24 h</b> in hypernatremia — to avoid osmotic demyelination and cerebral edema respectively. Acute symptomatic hyponatremia is the exception: 3% saline 100–150 mL boluses to raise Na ~4–6 mEq/L promptly, then cap the total.</div>`;
+}
+
+/* ============================================================
+   4. COMPOSITION TABLES
+   ============================================================ */
+const FLUIDS=[
+ ['Plasma (reference)','—','140','4.0','24*','103','—','2.4 / 1.0','290','7.40','Reference values; HCO₃ shown, plus Ca/Mg.'],
+ ['0.9% "Normal" saline','308','154','0','0','154','0','0','308','5.0','Hyperchloremic; SID 0 → metabolic acidosis in volume.'],
+ ['Lactated Ringer\'s (Hartmann\'s)','273','130','4','28 (lactate)','109','3 Ca','—','273','6.5','Mildly hypotonic; lactate→HCO₃ in liver; avoid w/ Ca + blood line.'],
+ ['Plasma-Lyte 148 / Normosol','294','140','5','27 acetate +23 gluconate','98','1.5 Mg','0','294','7.4','Balanced, calcium-free (blood-compatible), buffers metabolized fast.'],
+ ['½ Normal saline (0.45%)','154','77','0','0','77','0','0','154','5.0','Hypotonic maintenance/free-water; not for resuscitation.'],
+ ['D5W','252','0','0','0','0','0','50 g dextrose','252','4.0','Free water once dextrose used; for hypernatremia/free-water deficit.'],
+ ['D5 ½NS (+20 KCl typical)','â‰ˆ406','77','20*','0','77','0','50 g','406','4.5','Common pediatric/maintenance; K added per need.'],
+ ['3% Hypertonic saline','1027','513','0','0','513','0','0','1027','5.0','Cerebral edema, symptomatic hyponatremia; central line preferred.'],
+ ['Albumin 5%','—','~145','0','0','~145','0','5 g/dL albumin','~300','7.4','Iso-oncotic colloid; ~80–100% intravascular acutely.'],
+ ['Albumin 25%','—','~145','0','0','~145','0','25 g/dL','—','7.4','Hyperoncotic; pulls interstitial water in; small volumes.'],
+];
+function composition(){
+  const head=`<tr><th>Fluid</th><th>Osm (mOsm/L)</th><th>Na⁺</th><th>K⁺</th><th>Buffer/base</th><th>Cl⁻</th><th>Other cation</th><th>Glucose/oncotic</th><th>Tonicity (mOsm/L)</th><th>pH</th><th>Notes</th></tr>`;
+  const rows=FLUIDS.map(f=>`<tr><th>${f[0]}</th><td class="mono-val">${f[1]}</td><td class="mono-val">${f[2]}</td><td class="mono-val">${f[3]}</td><td class="mono-val">${f[4]}</td><td class="mono-val">${f[5]}</td><td class="mono-val">${f[6]}</td><td class="mono-val">${f[7]}</td><td class="mono-val">${f[8]}</td><td class="mono-val">${f[9]}</td><td style="color:var(--soft)">${f[10]}</td></tr>`).join('');
+  return `<h2 class="sec" id="composition">4 · Composition &amp; how each fluid redistributes</h2>
+  <p class="seclead">Concentrations in mEq/L unless noted (Cl, Na, K, buffer). Values are nominal label compositions and vary slightly by manufacturer. The right-most behaviour column is what you actually titrate on.</p>
+  <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+  <div class="cardgrid" style="margin-top:14px">
+    <div class="card" style="border-top:3px solid var(--cryst)"><h3>Crystalloids — balanced vs saline</h3>
+      <div class="blk phys"><b>Distribution</b>Both confined to ECF (~¼ stays intravascular). Choose on the anion, not the volume effect.</div>
+      <div class="blk"><b>Balanced (LR, Plasma-Lyte)</b>Cl⁻ near-physiologic (~98–109); buffer (lactate/acetate/gluconate) is metabolized to bicarbonate. Acetate is metabolized in muscle (fast, useful in liver failure); lactate in liver.</div>
+      <div class="blk warnb"><b>Saline caveat</b>Cl⁻ 154 with SID 0 → large volumes cause hyperchloremic metabolic acidosis and may worsen renal perfusion (afferent vasoconstriction). Trials (SMART, SALT-ED) favor balanced for most; PLUS/BaSICS show smaller effects — reasonable to individualize.</div>
+      <div class="blk good"><b>Saline still preferred</b>Hypochloremic metabolic alkalosis (vomiting/NG losses), hyponatremia, hypercalcemia, TBI/cerebral edema (isotonic), and as the carrier with blood (LR's calcium can clot citrated blood — modern evidence is softer, but convention persists).</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--colloid)"><h3>Colloids — albumin &amp; synthetics</h3>
+      <div class="blk phys"><b>Distribution</b>Large molecules raise plasma oncotic pressure; ~80–100% stays intravascular acutely in an intact glycocalyx — but far less when the barrier is leaky (sepsis).</div>
+      <div class="blk"><b>Albumin</b>5% iso-oncotic (resuscitation), 25% hyperoncotic (pulls interstitial water in — hypoalbuminemic edema, large-volume paracentesis, hepatorenal/SBP). No mortality benefit over crystalloid in general ICU (SAFE); avoid in TBI (harm in SAFE subgroup).</div>
+      <div class="blk warnb"><b>Synthetic colloids</b>Hydroxyethyl starch → increased AKI &amp; mortality (6S, CHEST) — largely abandoned in critical illness. Gelatins/dextrans: anaphylaxis, coagulopathy, limited role.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--plasma)"><h3>Blood products &amp; hypertonic</h3>
+      <div class="blk"><b>Hemorrhage</b>Resuscitate with products in balanced ratio (~1:1:1 RBC:FFP:platelets), not crystalloid; minimize crystalloid (dilutional coagulopathy, acidosis, hypothermia — the "lethal triad"). Give TXA within 3 h of trauma.</div>
+      <div class="blk"><b>Hypertonic saline (3%, 23.4%)</b>Osmotherapy for cerebral edema/herniation and symptomatic hyponatremia; expands plasma with small volumes. Monitor Na, avoid rapid over-correction.</div>
+      <div class="blk"><b>Mannitol</b>Osmotic diuretic for ↑ICP; caution in renal failure/hypovolemia (it diureses then can worsen hypovolemia).</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   5. ACID-BASE / STEWART
+   ============================================================ */
+function acidbase(){
+  return `<h2 class="sec" id="acidbase">5 · Fluids and acid-base — the Stewart/SID view</h2>
+  <p class="seclead">Why does saline acidify and balanced fluid not? The traditional bicarbonate-centric model struggles here; the Stewart physicochemical approach explains it cleanly. Three independent variables set plasma pH: the <b>strong ion difference (SID)</b>, the total weak acids (A_tot, mostly albumin and phosphate), and PaCO₂. Bicarbonate is a dependent variable, not a driver.</p>
+  <div class="twocol">
+    <div class="card"><h3>Strong ion difference</h3>
+      <div class="formula">SID ≈ (Na⁺ + K⁺ + Ca²⁺ + Mg²⁺) − (Cl⁻ + lactate⁻)<br>plasma SID ≈ <b>40 mEq/L</b></div>
+      <p class="body">Water dissociation is constrained by electroneutrality. A <b>lower SID</b> (e.g., a fluid with Na 154 and Cl 154 → SID 0) forces more H⁺ to remain → <b>acidosis</b>. A fluid whose effective SID after metabolism approximates plasma (balanced solutions, because lactate/acetate are metabolized away leaving an effective SID ~24–29) is <b>pH-neutral</b>.</p>
+    </div>
+    <div class="card"><h3>Practical consequences</h3>
+      <div class="blk warnb"><b>Hyperchloremic acidosis</b>Large-volume 0.9% saline lowers plasma SID (Cl rises faster than Na) → non-anion-gap metabolic acidosis. May reduce renal cortical perfusion and GFR.</div>
+      <div class="blk good"><b>Balanced fluids</b>Effective SID near physiologic after the buffer anion is metabolized → minimal acid-base disturbance.</div>
+      <div class="blk phys"><b>Dilutional acidosis</b>Any large crystalloid volume dilutes plasma bicarbonate/albumin; A_tot falls (hypoalbuminemia is alkalinizing, partially offsetting). Net effect depends on the fluid's SID vs plasma.</div>
+      <div class="blk"><b>Why it matters</b>An iatrogenic hyperchloremic acidosis can be mistaken for worsening lactic acidosis or sepsis — check the chloride and the gap before escalating.</div>
+    </div>
+  </div>
+  <div class="note phys"><b>Bridge to bedside:</b> if a resuscitated patient develops a normal-anion-gap acidosis with a rising chloride, suspect saline-induced hyperchloremic acidosis rather than a new catastrophe — switch to a balanced fluid. Conversely, balanced fluids carry a small alkalinizing load (metabolized buffer) and a little potassium — usually trivial, but relevant in hyperkalemia or where you want saline's chloride (e.g., correcting a hypochloremic metabolic alkalosis).</div>`;
+}
+
+/* ============================================================
+   6. CONTEXT-SENSITIVITY / KINETICS
+   ============================================================ */
+function kinetics(){
+  return `<h2 class="sec" id="kinetics">6 · Volume kinetics &amp; context-sensitivity</h2>
+  <p class="seclead">The same liter behaves differently depending on physiology — fluid has a "context-sensitive" volume effect analogous to drug pharmacokinetics. Knowing this prevents both under- and over-resuscitation.</p>
+  <div class="cardgrid">
+    <div class="card"><h3>Determinants of the volume effect</h3>
+      <div class="blk phys"><b>Starting volume state</b>In hypovolemia, infused crystalloid is retained far longer and expands plasma more efficiently (slow elimination). In euvolemia/hypervolemia it distributes to the interstitium within minutes and is rapidly excreted (if renal function and ANP allow).</div>
+      <div class="blk phys"><b>Infusion rate</b>Rapid boluses transiently distend the vasculature, spike ANP, shed glycocalyx, and leak out faster — a slower infusion can retain more intravascularly with less edema.</div>
+      <div class="blk phys"><b>Anesthesia/vasoplegia</b>Anesthesia and vasodilation blunt the stress response and slow elimination, changing distribution.</div>
+    </div>
+    <div class="card"><h3>The half-life surprise</h3>
+      <div class="blk"><b>Awake, normovolemic</b>Crystalloid plasma half-life can be ~20–40 min — most of a "maintenance" bolus is gone and interstitial quickly.</div>
+      <div class="blk"><b>Hypovolemic/anesthetized</b>Half-life can extend to hours — the same bolus does much more.</div>
+      <div class="note good" style="margin:8px 0 0"><b>Implication:</b> a bolus given to a euvolemic patient mostly becomes interstitial edema; the hemodynamic "response" to a bolus in a non-responsive patient is small and transient — prove responsiveness first (§8).</div>
+    </div>
+    <div class="card"><h3>Capillary leak states</h3>
+      <div class="blk warnb"><b>Sepsis/SIRS/burns</b>Glycocalyx degradation and high K_f mean both crystalloid and colloid extravasate; retained intravascular fraction falls, interstitial edema rises (impairing organ O₂ diffusion, gut edema, raised intra-abdominal pressure, pulmonary edema).</div>
+      <div class="blk"><b>Consequence</b>Escalating boluses yield diminishing hemodynamic returns and rising edema cost — pivot earlier to vasopressors and source control.</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   7. PHASES & ENDPOINTS (ROSE) + de-resuscitation
+   ============================================================ */
+function phases(){
+  return `<h2 class="sec" id="phases">7 · Phases of fluid therapy &amp; endpoints (ROSE)</h2>
+  <p class="seclead">Resuscitation is not one continuous act. The <b>ROSE</b> model frames four phases — Resuscitation, Optimization, Stabilization, Evacuation — each with different goals and a different sign on the fluid balance. Most iatrogenic harm comes from staying in "give fluid" mode after the resuscitation phase has ended.</p>
+  <div class="cardgrid wide">
+    <div class="card" style="border-top:3px solid var(--warn)"><h3>R — Resuscitation</h3><div class="tagline">minutes–hours · life threat</div>
+      <div class="blk"><b>Goal</b>Rescue from shock; restore MAP/perfusion. Rapid boluses (e.g., 250–500 mL) titrated to dynamic response; ~30 mL/kg in sepsis as a starting frame, individualized.</div>
+      <div class="blk good"><b>Endpoints</b>MAP ≥65, lactate clearance ≥10%/2–4 h, mentation, urine output, cap refill, resolving dynamic responsiveness.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--colloid)"><h3>O — Optimization</h3><div class="tagline">hours · organ perfusion</div>
+      <div class="blk"><b>Goal</b>Titrate to adequate (not maximal) perfusion; minimize further volume. Use responsiveness testing for every additional bolus.</div>
+      <div class="blk warnb"><b>Risk</b>This is where reflexive boluses begin to harm — diminishing returns, rising edema.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent)"><h3>S — Stabilization</h3><div class="tagline">days · maintenance only</div>
+      <div class="blk"><b>Goal</b>No resuscitation fluid; provide maintenance and replacement of ongoing losses only. Aim for neutral-to-negative balance.</div>
+      <div class="blk"><b>Watch</b>Hidden fluid creep: drug diluents, KVO lines, nutrition — often >1 L/day unaccounted.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--inter)"><h3>E — Evacuation (de-resuscitation)</h3><div class="tagline">days · remove fluid</div>
+      <div class="blk"><b>Goal</b>Active removal of accumulated fluid (spontaneous diuresis, diuretics, or ultrafiltration) once shock has resolved.</div>
+      <div class="blk good"><b>Evidence</b>Positive cumulative fluid balance independently predicts mortality, AKI, and prolonged ventilation; conservative/de-resuscitative strategies (e.g., FACTT) reduce ventilator days.</div>
+    </div>
+  </div>
+  <div class="note"><b>Maintenance prescription (when truly needed):</b> ~25–30 mL/kg/day water, ~1 mmol/kg/day each Na⁺ and K⁺, ~50–100 g/day glucose to limit ketosis. The 4-2-1 rule gives an hourly rate (4 mL/kg first 10 kg + 2 next 10 + 1 each kg >20). Reassess daily — maintenance fluid is a frequent, silent source of overload and hyponatremia (avoid hypotonic maintenance in at-risk patients).</div>`;
+}
+
+/* ============================================================
+   8. RESPONSIVENESS
+   ============================================================ */
+function responsiveness(){
+  return `<h2 class="sec" id="responsiveness">8 · Fluid responsiveness — only ~50% of the unstable respond</h2>
+  <p class="seclead">"Responsive" means a bolus meaningfully raises stroke volume (climbing the steep part of the Frank-Starling curve). Roughly half of hemodynamically unstable patients are <em>not</em> responsive — in them fluid only adds edema. Static measures (CVP, PCWP) predict poorly; dynamic measures are the standard.</p>
+  <div class="cardgrid">
+    <div class="card" style="border-top:3px solid var(--good)"><h3>Passive leg raise (best bedside)</h3>
+      <div class="blk"><b>How</b>From semi-recumbent, lay flat and raise legs 45° (autotransfuses ~300 mL); measure SV/CO change within 60–90 s with a real-time monitor (or surrogate).</div>
+      <div class="blk good"><b>Threshold</b>≥10% rise in SV/CO/pulse pressure ⇒ responsive. <b>Valid in arrhythmia and spontaneous breathing</b> — its key advantage. Reversible (no fluid given).</div>
+    </div>
+    <div class="card"><h3>Heart-lung interaction indices</h3>
+      <div class="blk"><b>PPV / SVV</b>>~12–13% suggests responsiveness, but valid ONLY if: mechanically ventilated, tidal volume ≥8 mL/kg, sinus rhythm, no spontaneous effort, closed chest, low PEEP.</div>
+      <div class="blk warnb"><b>Invalidating conditions</b>Arrhythmia, spontaneous breathing, low Vt/ARDS, RV failure, open chest, raised intra-abdominal pressure — all break PPV/SVV. PLR rescues these cases.</div>
+    </div>
+    <div class="card"><h3>IVC &amp; echo</h3>
+      <div class="blk"><b>IVC variation</b>Distensibility >~12–18% (vent) or collapsibility >~40–50% (spontaneous) suggests responsiveness; confounded by tamponade, RV failure, intra-abdominal pressure.</div>
+      <div class="blk"><b>End-expiratory occlusion / VTI</b>Occlusion test and LVOT VTI change after PLR/bolus are echo-based confirmations.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--warn)"><h3>Stop / don't-give signals</h3>
+      <div class="blk warnb"><b>Stop boluses when</b>No SV rise to a fluid challenge, rising O₂ requirement or new B-lines, plethoric non-varying IVC, climbing CVP without CO gain, or evidence of organ edema.</div>
+      <div class="blk">A responsive patient is not necessarily one who <em>needs</em> fluid — responsiveness is necessary but not sufficient. Tie it to a perfusion deficit.</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   9. SPECIAL POPULATIONS (expanded)
+   ============================================================ */
+const POPS=[
+ {grp:'Shock & emergency',name:'Sepsis / septic shock',
+   approach:'Balanced crystalloid ~30 mL/kg as a starting frame within ~3 h, then dynamic-guided. Pivot to norepinephrine early (don\'t chase MAP with endless fluid); start vasopressor while still filling if profoundly hypotensive.',
+   dose:'30 mL/kg balanced, then 250–500 mL challenges to PLR/SVV response. MAP ≥65. Albumin 5% a reasonable adjunct after large crystalloid volumes.',
+   labs:'Lactate + clearance, ScvO₂ if available, Cl⁻/gap (watch hyperchloremia), Cr/urine output, dynamic responsiveness.',
+   watch:'Leaky glycocalyx → diminishing returns + edema; restrictive vs liberal (CLOVERS, CLASSIC) suggest no benefit to liberal — favor restraint after initial resuscitation.'},
+ {grp:'Shock & emergency',name:'Hemorrhagic shock / trauma',
+   approach:'Permissive hypotension until surgical control; resuscitate with blood products in balanced ratio, minimize crystalloid. Activate MTP; TXA within 3 h.',
+   dose:'Target SBP ~80–90 / MAP ~65 (or radial pulse/mentation) pre-control — higher with TBI (need cerebral perfusion). 1:1:1 RBC:FFP:platelets; TXA 1 g over 10 min then 1 g/8 h.',
+   labs:'Serial H/H, lactate/base deficit, fibrinogen (>1.5–2 g/L; cryo/fibrinogen if low), ionized Ca (citrate chelation → replace), TEG/ROTEM if available, temperature.',
+   watch:'Lethal triad: acidosis + hypothermia + coagulopathy. Crystalloid worsens all three; calcium drops with massive transfusion — replace.'},
+ {grp:'Shock & emergency',name:'Peri-arrest / post-ROSC',
+   approach:'Treat reversible hypovolemia, but post-arrest myocardial dysfunction is common — cautious boluses with frequent reassessment; often need vasopressors/inotropes rather than volume.',
+   dose:'Small aliquots (250 mL) titrated; norepinephrine/epinephrine for vasoplegic or cardiogenic post-arrest shock; target MAP ≥65–80 for cerebral perfusion.',
+   labs:'Lactate, echo for function/effusion/RV, ECG/troponin, electrolytes (K, Mg, Ca for arrhythmia), gas.',
+   watch:'Don\'t volume-overload a stunned myocardium; balance cerebral perfusion against pulmonary edema.'},
+ {grp:'Metabolic',name:'DKA / HHS',
+   approach:'Fluid first (corrects most of the acidosis and lowers glucose before insulin\'s full effect), then insulin + potassium. HHS needs even larger total deficits corrected more slowly.',
+   dose:'Isotonic ~15–20 mL/kg (≈1 L) in hour 1; then ~250–500 mL/h. Choose 0.45% vs 0.9% by corrected Na & status. Add dextrose when glucose ~200 (DKA) / 250–300 (HHS) to continue insulin. K⁺: hold insulin if K <3.3 and replete first; add K to fluids once 3.3–5.2 with urine output.',
+   labs:'Hourly glucose, K⁺ (shifts dramatically), venous pH/gap, corrected Na (+1.6 per 100 mg/dL glucose >100), phosphate, Mg, ketones/BHB.',
+   watch:'Cerebral edema (esp. peds) with over-rapid osmotic correction; total-body K deficit unmasked as acidosis corrects; balanced fluids may close the gap faster and avoid hyperchloremia (SCOPE-DKA).'},
+ {grp:'Metabolic',name:'Refeeding syndrome',
+   approach:'The risk is electrolyte/fluid shifts when feeding restarts in the malnourished — insulin surge drives K, PO₄, Mg intracellularly and causes sodium/water retention. Go slow on calories AND fluid.',
+   dose:'Restrict initial calories; replete and monitor electrolytes BEFORE and during feeding; thiamine before carbohydrate. Avoid aggressive sodium/volume (retention → edema, cardiac strain).',
+   labs:'PO₄ (hallmark — can plummet), K⁺, Mg²⁺ daily; glucose; fluid balance and weight; watch for heart failure with fluid/Na load.',
+   watch:'Severe hypophosphatemia → respiratory/cardiac failure; cardiac compromise from fluid retention in a depleted myocardium.'},
+ {grp:'Neuro',name:'TBI / cerebral edema / ↑ICP',
+   approach:'Maintain cerebral perfusion (avoid hypotension and hypo-osmolar fluids). Use isotonic/hypertonic; NEVER hypotonic (LR is mildly hypotonic — prefer 0.9% saline or hypertonic saline). Albumin is harmful in TBI (SAFE).',
+   dose:'0.9% saline as base fluid; osmotherapy: hypertonic saline (e.g., 3% infusion or 23.4% bolus) or mannitol 0.25–1 g/kg for herniation/↑ICP. Target euvolemia + CPP/MAP goals; Na often targeted high-normal.',
+   labs:'Serum Na &amp; osm (avoid drops), glucose (avoid hyper/hypo), ICP/CPP if monitored.',
+   watch:'Hypotonic fluids and rapid Na drops worsen cerebral edema; avoid albumin; avoid hypotension (secondary brain injury).'},
+ {grp:'Cardiopulmonary',name:'Heart failure (HFrEF) / cardiogenic',
+   approach:'The pump can\'t handle volume — small aliquots or none; if cold &amp; wet, the answer is inotrope ± vasopressor and diuresis, not fluid. Reserve fluid for the rare genuinely preload-dependent HF patient.',
+   dose:'250 mL aliquots with reassessment if a fluid trial is justified; otherwise dobutamine/milrinone ± norepinephrine; diurese (loop) if congested and perfusing.',
+   labs:'Lung POCUS (B-lines), IVC, BNP/NT-proBNP trend, echo EF, lactate, renal function (cardiorenal).',
+   watch:'A 30 mL/kg reflex bolus can precipitate pulmonary edema; reassess after every small aliquot.'},
+ {grp:'Cardiopulmonary',name:'Pulmonary HTN / RV failure',
+   approach:'The failing RV is exquisitely preload-sensitive in BOTH directions — too little drops output, too much distends the RV and crashes it via ventricular interdependence. Tiny, reassessed challenges.',
+   dose:'Cautious 250 mL challenges only if clearly preload-deficient; support with norepinephrine ± inodilator (milrinone/dobutamine lowers PVR); optimize oxygenation, avoid hypercarbia/acidosis (raise PVR).',
+   labs:'Echo (RV size/function, septal bowing), CVP trend, lactate, gas (avoid hypercapnia).',
+   watch:'Volume loading a strained RV is a classic cause of sudden decompensation.'},
+ {grp:'Renal/hepatic',name:'ESRD / dialysis-dependent',
+   approach:'Anuric/oliguric patients cannot excrete a load — minimal maintenance, small boluses only for clear hypovolemia, and treat hyperkalemia aggressively. Urgent dialysis for refractory overload/hyperK/acidosis.',
+   dose:'Avoid routine maintenance fluid; small (250 mL) challenges if truly hypovolemic; avoid potassium-containing fluids if hyperkalemic (caution with LR/Plasma-Lyte K content, though usually minor).',
+   labs:'K⁺ + ECG, volume exam, last dry weight, access for emergent HD, Cl/gap.',
+   watch:'Rapid overload → pulmonary edema; pick fluid with the K⁺ in mind.'},
+ {grp:'Renal/hepatic',name:'Cirrhosis / hepatorenal syndrome',
+   approach:'Splanchnic vasodilation and low effective arterial volume despite total overload (ascites/edema). Albumin is the colloid of choice; avoid excess saline (worsens ascites, hyperchloremia). HRS needs albumin + vasoconstrictors.',
+   dose:'Albumin for SBP (1.5 g/kg day 1, 1 g/kg day 3), large-volume paracentesis (~6–8 g/L ascites removed), and HRS (with terlipressin/norepinephrine/midodrine+octreotide). Careful Na — slow correction of chronic hyponatremia.',
+   labs:'Na (slow correction), Cr, lactate (impaired clearance → caution interpreting), MELD components (INR, bili, Cr), ascitic fluid (SBP).',
+   watch:'Lactate may mislead (reduced hepatic clearance); avoid rapid Na correction; saline worsens ascites.'},
+ {grp:'Peri-operative',name:'Post-operative / peri-operative',
+   approach:'Goal-directed, restrictive-to-zero-balance therapy beats both liberal and overly-dry strategies. Treat the cause of post-op hypotension (often vasodilation/epidural, bleeding, or hypovolemia) specifically.',
+   dose:'Maintenance + measured losses; small goal-directed boluses (SV-guided) for genuine deficits; vasopressor for anesthesia-related vasoplegia rather than chasing with fluid (RELIEF: liberal → more AKI).',
+   labs:'Lactate, H/H if bleeding risk, electrolytes, urine output (interpret cautiously — oliguria is often appropriate ADH response post-op, not hypovolemia).',
+   watch:'Both over- (ileus, edema, anastomotic risk) and under-resuscitation harm; post-op oliguria is frequently physiologic — don\'t reflex-bolus.'},
+ {grp:'Special',name:'Pregnancy',
+   approach:'Plasma volume rises ~40–50% with a dilutional anemia and lower colloid oncotic pressure — pregnant patients are prone to pulmonary edema (esp. preeclampsia). Position left-lateral to relieve aortocaval compression (a reversible "hypovolemia").',
+   dose:'Resuscitate as needed for hemorrhage (products) and sepsis, but cautious crystalloid in preeclampsia (capillary leak + low oncotic pressure → pulmonary edema); judicious volume with magnesium therapy.',
+   labs:'H/H, platelets, LFTs/uric acid (preeclampsia/HELLP), Mg level if on infusion, lactate, fetal monitoring.',
+   watch:'Left-lateral tilt; preeclamptic lungs leak — avoid over-resuscitation; aortocaval compression mimics hypovolemia supine.'},
+ {grp:'Special',name:'Pediatrics',
+   approach:'Weight-based everything; smaller aliquots with frequent reassessment. Isotonic fluids for both resuscitation and maintenance (hypotonic maintenance caused fatal hyponatremia historically).',
+   dose:'Resuscitation 10–20 mL/kg isotonic aliquots, reassess (10 mL/kg and cautious in neonates, cardiac disease, DKA, malnutrition). Maintenance by 4-2-1; use isotonic maintenance fluid.',
+   labs:'Glucose (kids drop fast), Na (avoid hyponatremia), K, gas, weight-based urine output (1–2 mL/kg/h).',
+   watch:'Hypotonic maintenance → hyponatremia (use isotonic); DKA cerebral-edema risk with rapid correction; neonatal/cardiac limits.'},
+ {grp:'Special',name:'Burns',
+   approach:'Massive capillary leak → huge obligatory crystalloid needs in the first 24 h, titrated to urine output. Parkland (or modified) formula as a STARTING estimate, then titrate — over-resuscitation ("fluid creep") causes abdominal/extremity compartment syndrome.',
+   dose:'Parkland: 4 mL × kg × %TBSA burned LR over 24 h, half in the first 8 h (from time of burn). Titrate to urine output 0.5 mL/kg/h adults (1 mL/kg/h children). Lighter formulas (modified Brooke, 2 mL/kg/%) increasingly favored to avoid over-resuscitation.',
+   labs:'Urine output (primary endpoint), lactate/base deficit, Hct, electrolytes, CK (if electrical/myoglobinuria), bladder pressure if over-resuscitated.',
+   watch:'Fluid creep → abdominal compartment syndrome, extremity compartment syndrome, pulmonary edema. Titrate DOWN as soon as urine output allows.'}
+];
+function populations(){
+  const groups=[...new Set(POPS.map(p=>p.grp))];
+  let html=`<h2 class="sec" id="populations">9 · Special populations &amp; disease-specific prescribing</h2>
+   <p class="seclead">The physiology above changes shape in each disease. For each: the strategic approach, dosing specifics, the labs to follow, and the trap. Doses are typical starting points to titrate and verify.</p>`;
+  groups.forEach(g=>{
+    html+=`<h3 class="sub">${g}</h3><div class="cardgrid wide">`;
+    POPS.filter(p=>p.grp===g).forEach(p=>{
+      html+=`<div class="card pop"><h3>${p.name}</h3>
+        <div class="blk"><b>Approach</b>${p.approach}</div>
+        <div class="blk dose"><b>Dose / fluid</b>${p.dose}</div>
+        <div class="blk labs"><b>Labs to follow</b>${p.labs}</div>
+        <div class="blk warnb"><b>Trap</b>${p.watch}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  return html;
+}
+
+/* ============================================================
+   10. HARMS
+   ============================================================ */
+/* ============================================================
+   9b. CORRECTION CATASTROPHES + Na CALCULATOR
+   ============================================================ */
+function catastrophes(){
+  return `<h2 class="sec" id="catastrophes">9b · Correction catastrophes — when the rate is the lethal variable</h2>
+  <p class="seclead">With sodium, the <em>speed</em> of correction can injure the brain independent of the destination value. Two mirror-image disasters: correcting chronic hypo-natremia too fast dehydrates adapted neurons and demyelinates them (ODS); correcting hyper-natremia too fast swells brain cells that have accumulated protective osmoles (cerebral edema). The vignettes below are illustrative teaching constructs built from the established thresholds — not specific patients — and the calculator estimates the rate so you can see where the danger line sits.</p>
+
+  <div class="vignette">
+    <span class="vlabel">Teaching vignette · ODS</span>
+    <h3>Osmotic demyelination from over-rapid hyponatremia correction</h3>
+    <div class="stage"><b>Setup — chronic, adapted hyponatremia</b>A thin, malnourished patient with heavy alcohol use and poor intake (or a thiazide user, or beer-potomania) presents with Na <span class="mono">108 mEq/L</span> that developed over a week or more. Because it's chronic, neurons have already extruded organic osmoles (idiogenic osmoles) to avoid swelling — so the brain looks deceptively "comfortable" at a very low Na, and that adaptation is exactly what makes rapid correction dangerous.</div>
+    <div class="stage err"><b>The error — correction outruns the cap</b>Hypertonic saline is started for mild confusion and run without a ceiling, and/or the underlying stimulus is abruptly removed (volume repletion switches off ADH in hypovolemic hyponatremia; stopping the thiazide), triggering a brisk water diuresis. Na rises from 108 to <span class="mono">124 over ~20 h</span> — about <span class="up">+16 mEq/L/24 h</span>, roughly double the safe limit. The intended target was right; the <b>rate</b> was the lethal variable.</div>
+    <div class="stage"><b>The course — the biphasic tell</b>The patient initially improves and looks better for 2–6 days. Then a delayed, biphasic deterioration: dysarthria, dysphagia, a flaccid-then-spastic quadriparesis, pseudobulbar affect, and in severe cases a "locked-in" state. MRI changes (central pontine ± extrapontine signal) <b>lag the clinical picture by days</b>, so an early normal scan does not reassure.</div>
+    <div class="stage"><b>The numbers that define the danger</b>Limit the rise to <span class="hl">≤8 mEq/L per 24 h</span> (and <span class="hl">≤6 mEq/L</span> if high-risk: Na <105, alcoholism, malnutrition, advanced liver disease, hypokalemia). A common stricter bedside target is 6–8/24 h with hard stops. Highest-risk groups: <b>alcoholism, malnutrition, cirrhosis, hypokalemia, and women on thiazides.</b></div>
+    <div class="stage rescue"><b>The rescue — relower if you overshoot</b>If the 24-h rise is exceeded, actively <b>re-lower</b> the sodium: free water (D5W) ± <b>desmopressin (DDAVP)</b> to clamp the water diuresis and bring Na back under the limit. Replacing potassium also counts toward sodium correction (K is osmotically active) — a frequently missed accelerant.</div>
+  </div>
+
+  <div class="vignette edema">
+    <span class="vlabel">Teaching vignette · cerebral edema</span>
+    <h3>Cerebral edema from over-rapid hypernatremia correction</h3>
+    <div class="stage"><b>Setup — chronic, adapted hypernatremia</b>An elderly nursing-home patient with impaired thirst/access presents after days of poor intake with Na <span class="mono">168 mEq/L</span>. Because it developed slowly, brain cells have generated protective intracellular osmoles to pull water back in and avoid shrinking — so the brain is now "primed" to over-swell if extracellular tonicity drops too fast.</div>
+    <div class="stage err"><b>The error — flooding free water</b>Aggressive D5W is run to "fix the number," and Na falls from 168 to <span class="mono">148 over ~16 h</span> — about <span class="up">−20 mEq/L/24 h</span>, well beyond the ceiling. Water rushes into osmole-loaded neurons.</div>
+    <div class="stage"><b>The course</b>Worsening mental status, headache, vomiting, new seizures during correction — paradoxical neurologic decline <em>as the labs improve</em>, from cerebral edema.</div>
+    <div class="stage"><b>The numbers that define the danger</b>Lower Na by <span class="hl">≤10–12 mEq/L per 24 h</span> (many target <span class="hl">≤8–10/24 h</span>, especially if chronic). Restore intravascular volume with isotonic fluid first if hypovolemic/shocked, <em>then</em> address the free-water deficit with hypotonic fluid at a controlled rate.</div>
+    <div class="stage rescue"><b>The rescue</b>If correcting too fast, slow or pause the hypotonic fluid (and add a little isotonic) to ease the Na back up toward the rate limit; treat seizures and reassess the free-water-deficit math and ongoing losses.</div>
+  </div>
+
+  <div class="calc" id="naCalc">
+    <h3>Sodium correction-rate checker</h3>
+    <p class="sublede">Enter two sodium values and the time between them to see the 24-hour-equivalent rate against the safe ceiling. Educational estimate only — it does not account for ongoing losses, DDAVP, or the Adrogué-Madias projection; treat the patient and recheck frequently.</p>
+    <div class="inrow">
+      <div class="fld"><label>Direction</label><select id="naDir"><option value="hypo">Correcting hyponatremia (rising)</option><option value="hyper">Correcting hypernatremia (falling)</option></select></div>
+      <div class="fld"><label>Start Na (mEq/L)</label><input id="naStart" type="number" step="1" placeholder="108"></div>
+      <div class="fld"><label>Current Na (mEq/L)</label><input id="naNow" type="number" step="1" placeholder="124"></div>
+      <div class="fld"><label>Hours elapsed</label><input id="naHrs" type="number" step="0.5" placeholder="20"></div>
+      <div class="fld"><label>High ODS risk?</label><select id="naRisk"><option value="no">No</option><option value="yes">Yes (Na&lt;105, EtOH, malnourish, liver, ↓K)</option></select></div>
+    </div>
+    <button class="run" id="naRun">Check rate →</button>
+    <div class="result" id="naResult"></div>
+  </div>
+  <div class="note warn"><b>Adrogué-Madias (for planning the change):</b> expected ΔNa from 1 L of a chosen fluid ≈ (fluid Na − serum Na) / (TBW + 1). Use it to <em>plan</em> the infusion that will move Na by the allowed amount over 24 h — then measure frequently, because real-world ADH shifts and losses make the actual trajectory diverge from any formula.</div>`;
+}
+
+function harms(){
+  return `<h2 class="sec" id="harms">10 · The harms of too much — fluid overload as iatrogenic disease</h2>
+  <p class="seclead">A positive cumulative fluid balance is an independent predictor of mortality across critical-illness cohorts. Edema is not benign; every compartment pays.</p>
+  <div class="cardgrid">
+    <div class="card"><h3>Organ-by-organ cost</h3>
+      <div class="blk"><b>Lungs</b>Pulmonary edema, worse oxygenation, more ventilator days (conservative strategy in FACTT shortened ventilation).</div>
+      <div class="blk"><b>Heart</b>Atrial stretch → ANP → glycocalyx shedding; myocardial edema; arrhythmia.</div>
+      <div class="blk"><b>Kidney</b>Renal venous congestion and capsular pressure reduce GFR — overload causes AKI rather than relieving it.</div>
+      <div class="blk"><b>Gut/abdomen</b>Bowel wall edema, ileus, intra-abdominal hypertension → abdominal compartment syndrome.</div>
+      <div class="blk"><b>Brain/tissues</b>Cerebral edema risk with hypotonic fluid; impaired wound healing and tissue O₂ diffusion as interstitium expands.</div>
+    </div>
+    <div class="card"><h3>Specific iatrogenic syndromes</h3>
+      <div class="blk warnb"><b>Hyperchloremic acidosis</b>Large-volume saline (§5).</div>
+      <div class="blk warnb"><b>Dilutional anemia/coagulopathy</b>Crystalloid in hemorrhage.</div>
+      <div class="blk warnb"><b>Hyponatremia</b>Hypotonic maintenance fluid, esp. peri-op/peds with high ADH.</div>
+      <div class="blk warnb"><b>Compartment syndromes</b>Burns/sepsis over-resuscitation.</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--good)"><h3>Principles to prescribe by</h3>
+      <div class="blk good"><b>Indication &amp; dose</b>State why (resuscitation vs replacement vs maintenance) and a volume — never "continuous" without review.</div>
+      <div class="blk good"><b>Prove responsiveness</b>before each resuscitation bolus once past the immediate rescue.</div>
+      <div class="blk good"><b>Reassess &amp; de-escalate</b>Move through ROSE; aim for neutral-to-negative balance once shock resolves; count the hidden fluids.</div>
+      <div class="blk good"><b>Right fluid</b>Balanced by default; saline for specific indications; products for blood loss; albumin for cirrhosis/select sepsis; never hypotonic for resuscitation.</div>
+    </div>
+  </div>`;
+}
+
+document.getElementById('main').innerHTML =
+  compartments()+starling()+tonicity()+composition()+acidbase()+kinetics()+phases()+responsiveness()+populations()+catastrophes()+harms();
+document.getElementById('foot').innerHTML="Expert educational synthesis reflecting standard physiology and critical-care literature (revised Starling/glycocalyx model, Stewart physicochemical acid-base, ROSE phases, and major fluid trials). Compositions are nominal label values; doses, formulas, and thresholds are typical starting references that must be titrated to the individual patient and verified against current primary literature and local protocols. Not a protocol or a substitute for clinical judgment.";
+
+/* sodium correction-rate calculator */
+(function(){
+  const run=document.getElementById('naRun');
+  if(!run) return;
+  function calc(){
+    const dir=document.getElementById('naDir').value;
+    const start=parseFloat(document.getElementById('naStart').value);
+    const now=parseFloat(document.getElementById('naNow').value);
+    const hrs=parseFloat(document.getElementById('naHrs').value);
+    const risk=document.getElementById('naRisk').value;
+    const R=document.getElementById('naResult');
+    if(isNaN(start)||isNaN(now)||isNaN(hrs)||hrs<=0){
+      R.innerHTML='<div class="resbar danger"><div class="big">Enter start Na, current Na, and hours (&gt;0).</div></div>';
+      return;
+    }
+    const change=now-start;                 // signed
+    const rate24=(change/hrs)*24;           // 24h-equivalent, signed
+    let html='';
+    if(dir==='hypo'){
+      const limit = risk==='yes'?6:8;
+      const abs=Math.abs(rate24);
+      const wrongWay = change<0;
+      const over = rate24>limit;
+      html+=`<div class="formula-inline">Δ = ${now} − ${start} = <b>${change>0?'+':''}${change.toFixed(0)} mEq/L</b> over ${hrs} h → 24-h rate ≈ <b>${rate24>0?'+':''}${rate24.toFixed(1)} mEq/L/24h</b> (limit ${limit})</div>`;
+      if(wrongWay){
+        html+=`<div class="resbar danger"><div class="big">Sodium is falling, not rising</div><div class="det">You selected hyponatremia correction but Na dropped — recheck values/labels; a falling Na here suggests worsening hyponatremia or ongoing free-water gain.</div></div>`;
+      } else if(over){
+        html+=`<div class="resbar danger"><div class="big">⚠ Too fast — ${rate24.toFixed(1)} exceeds ${limit} mEq/L/24h</div><div class="det">Risk of osmotic demyelination. Consider <b>re-lowering</b> with D5W ± desmopressin (DDAVP) to bring the 24-h rise back under ${limit}. Recheck Na q2–4h. Remember K⁺ replacement also raises effective Na.</div></div>`;
+      } else {
+        html+=`<div class="resbar ok"><div class="big">Within limit (≤${limit} mEq/L/24h)</div><div class="det">Continue to recheck frequently; the rate can accelerate suddenly if ADH switches off (volume repletion, stopped thiazide) → brisk water diuresis. Keep a hard 24-h ceiling.</div></div>`;
+      }
+    } else {
+      // hypernatremia, expect falling
+      const limit=10; // mEq/L/24h (commonly 10-12)
+      const abs=Math.abs(rate24);
+      const wrongWay=change>0;
+      const over=abs>limit && change<0;
+      html+=`<div class="formula-inline">Δ = ${now} − ${start} = <b>${change>0?'+':''}${change.toFixed(0)} mEq/L</b> over ${hrs} h → 24-h rate ≈ <b>${rate24.toFixed(1)} mEq/L/24h</b> (limit ~${limit}–12)</div>`;
+      if(wrongWay){
+        html+=`<div class="resbar danger"><div class="big">Sodium is rising, not falling</div><div class="det">You selected hypernatremia correction but Na rose — recheck values/labels or ongoing free-water losses; restore volume and address the water deficit.</div></div>`;
+      } else if(over){
+        html+=`<div class="resbar danger"><div class="big">⚠ Too fast — falling ${abs.toFixed(1)} mEq/L/24h (limit ~${limit}–12)</div><div class="det">Risk of cerebral edema. Slow/pause the hypotonic fluid (add some isotonic) to ease Na back toward the limit; treat seizures; recheck Na q2–4h and re-do the free-water-deficit math.</div></div>`;
+      } else {
+        html+=`<div class="resbar ok"><div class="big">Within limit (≤~${limit}–12 mEq/L/24h)</div><div class="det">Continue controlled correction; restore intravascular volume with isotonic fluid first if hypovolemic, then address the free-water deficit. Recheck frequently.</div></div>`;
+      }
+    }
+    R.innerHTML=html;
+  }
+  run.addEventListener('click',calc);
+  ['naStart','naNow','naHrs'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+})();
+
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
