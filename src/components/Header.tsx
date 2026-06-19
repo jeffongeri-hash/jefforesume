@@ -24,6 +24,9 @@ const Header = () => {
     { name: 'RESUME', href: '/resume' },
     { name: 'ACCOLADES', href: '/accolades' },
     { name: 'INVESTMENTS', href: '/investments' },
+    { name: 'IV STRIKE', href: '/iv-strike-selector' },
+    { name: 'CA MOVE', href: '/ca-move-planner' },
+    { name: 'PAYCHECK', href: '/paycheck-analyzer' },
     { name: 'VACATION', href: '/vacation' },
     { name: 'BLOG', href: '/posts' },
   ];
