@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals</title>
+<style>
+  :root{
+    --bg:#0b1016;--bg2:#101a22;--panel:#121d27;--panelhi:#192834;--line:#243640;--line2:#192833;
+    --ink:#e9f1f5;--soft:#a3b7c2;--muted:#74899a;--faint:#516675;
+    --wall:#e0563b;--protein:#3fa7d6;--dna:#7c6cc4;--folate:#46c98a;--membrane:#d68a2e;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --gpos:#9b6cd6;--gneg:#e0843a;--atyp:#3fb6c4;--anaer:#c4486a;
+    --grid:#0d141b;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --wall:#c4422a;--protein:#1c7fb0;--dna:#5d4ba6;--folate:#1f9d6f;--membrane:#b06f17;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;
+    --gpos:#7e4fc0;--gneg:#b0651c;--atyp:#0d8c97;--anaer:#a83255;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  .pagenav{position:fixed;top:14px;left:16px;z-index:60;display:flex;gap:6px;}
+  .pagenav span{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:7px 11px;border-radius:8px;}
+  .pagenav span.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  header.hero{max-width:1240px;margin:0 auto;padding:64px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:70ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:6px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:600;padding:6px 11px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.55rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:80ch;font-size:.96rem;}
+  .masterfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .masterfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:6px 10px 0;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:820px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .yes{color:var(--good);font-weight:800;}.no{color:var(--faint);}.part{color:var(--gold);font-weight:700;}
+  .classcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:0;margin:16px 0;overflow:hidden;border-top:3px solid var(--accent);}
+  .classcard.t-wall{border-top-color:var(--wall);}.classcard.t-protein{border-top-color:var(--protein);}
+  .classcard.t-dna{border-top-color:var(--dna);}.classcard.t-folate{border-top-color:var(--folate);}.classcard.t-membrane{border-top-color:var(--membrane);}
+  .cchead{padding:16px 20px 8px;}
+  .cchead h3{margin:0;font-size:1.18rem;font-weight:800;}
+  .cchead .target{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-top:2px;}
+  .t-wall .target{color:var(--wall);}.t-protein .target{color:var(--protein);}.t-dna .target{color:var(--dna);}.t-folate .target{color:var(--folate);}.t-membrane .target{color:var(--membrane);}
+  .ccbody{display:grid;grid-template-columns:300px 1fr;gap:0;}
+  @media(max-width:820px){.ccbody{grid-template-columns:1fr;}}
+  .ccfig{background:var(--bg2);border-right:1px solid var(--line2);padding:14px;display:flex;flex-direction:column;justify-content:center;}
+  @media(max-width:820px){.ccfig{border-right:none;border-bottom:1px solid var(--line2);}}
+  .ccfig svg{display:block;width:100%;height:auto;}
+  .ccfig .label{font-size:.72rem;color:var(--muted);text-align:center;margin-top:6px;}
+  .ccinfo{padding:14px 20px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.members b{color:var(--ink);}.blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.spectrum b{color:var(--accent);}.blk.se b{color:var(--warn);}
+  .blk.resist b{color:var(--dna);}.blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:24px 0 6px;color:var(--accent);}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--soft);margin:8px 0;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}.pagenav{display:none;}}
+
+  /* tab bar */
+  .domtabs{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .domtabs .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;gap:8px;}
+  .domtab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-family:inherit;font-size:.9rem;font-weight:700;padding:10px 20px;border-radius:10px;cursor:pointer;letter-spacing:.02em;}
+  .domtab:hover{border-color:var(--accent);color:var(--ink);}
+  .domtab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  .domtab .sub{display:block;font-size:.62rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-top:1px;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));}
+  @media(max-width:680px){.domtabs .inner{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Antimicrobials · Interactive Atlas</div>
+  <h1>One bug at a time, <em>by target</em>.</h1>
+  <p>Three domains in one place — antibacterials, antivirals, and antifungals — each organized by the structure the drugs attack, with a whole-cell (or replication-cycle) master illustration, per-class mechanism diagrams, spectrum, dosing, side effects, resistance, and board buzzwords. Use the tabs to jump between domains.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Spectra, doses, and choices vary with local resistance/antibiograms, source, severity, age, and organ function — verify against current references and stewardship guidance before prescribing. Mechanism diagrams are stylized teaching originals. Not a prescribing authority.</div></div>
+
+<div class="domtabs"><div class="inner">
+  <button class="domtab on" data-dom="antibacterial">Antibacterials<span class="sub">cell wall · ribosome · DNA · folate · membrane</span></button>
+  <button class="domtab" data-dom="antiviral">Antivirals<span class="sub">entry · polymerase · integrase · protease · release</span></button>
+  <button class="domtab" data-dom="antifungal">Antifungals<span class="sub">ergosterol · glucan wall · DNA</span></button>
+</div></div>
+
+<main>
+  <div id="tab-antibacterial"></div>
+  <div id="tab-antiviral" style="display:none"></div>
+  <div id="tab-antifungal" style="display:none"></div>
+</main>
+<footer id="foot">Educational synthesis reflecting standard antimicrobial pharmacology and stewardship teaching. Spectra, doses, and choices vary with local resistance, source, severity, age, and renal/hepatic function — verify against current references and stewardship guidance before prescribing. Mechanism diagrams are stylized originals for teaching, not molecular-accurate depictions. Not a prescribing authority or a substitute for clinical judgment.</footer>
+
+<script>
+/* ============================================================
+   SVG HELPERS
+   ============================================================ */
+function svg(w,h,inner){return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||10}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'start'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+function block(x,y,w,h,fill,stroke,r){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r||4}" fill="${fill}" ${stroke?`stroke="${stroke}" stroke-width="1.5"`:''}/>`;}
+function xmark(x,y,col){const c=col||'var(--warn)';return `<g stroke="${c}" stroke-width="3" stroke-linecap="round"><line x1="${x-6}" y1="${y-6}" x2="${x+6}" y2="${y+6}"/><line x1="${x-6}" y1="${y+6}" x2="${x+6}" y2="${y-6}"/></g>`;}
+function arrowDn(x,y,len,col){const c=col||'var(--accent)';return `<line x1="${x}" y1="${y}" x2="${x}" y2="${y+len}" stroke="${c}" stroke-width="2.5"/><path d="M${x-5},${y+len-6} L${x},${y+len} L${x+5},${y+len-6}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>`;}
+
+/* ============================================================
+   MASTER TARGET MAP — a bacterial cell with the 5 target zones
+   ============================================================ */
+function masterMap(){
+  const W=820,H=520;
+  const inner=
+    `<rect width="${W}" height="${H}" fill="var(--bg2)"/>`+
+    // ===== full bacterial cell body (rounded rod) =====
+    `<rect x="90" y="90" width="640" height="340" rx="150" fill="var(--panelhi)" opacity="0.55"/>`+
+    // ----- envelope layers (drawn as concentric rounded outlines on the left margin, zoomed callout on right) -----
+    // outer membrane
+    `<rect x="90" y="90" width="640" height="340" rx="150" fill="none" stroke="var(--membrane)" stroke-width="3"/>`+
+    // peptidoglycan (cell wall) just inside
+    `<rect x="103" y="103" width="614" height="314" rx="140" fill="none" stroke="var(--wall)" stroke-width="5" opacity="0.8"/>`+
+    // inner (cytoplasmic) membrane
+    `<rect x="116" y="116" width="588" height="288" rx="132" fill="none" stroke="var(--membrane)" stroke-width="2.5" opacity="0.8"/>`+
+    // ===== ENVELOPE ZOOM CALLOUT (top-left) =====
+    `<g>`+
+    `<line x1="150" y1="120" x2="120" y2="40" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>`+
+    `<rect x="40" y="22" width="250" height="60" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1"/>`+
+    // three stripes = OM / PG / IM
+    `<rect x="52" y="32" width="120" height="8" rx="3" fill="var(--membrane)" opacity="0.55"/>`+ tx(180,39,"outer membrane (LPS)",'var(--membrane)',9)+
+    `<rect x="52" y="46" width="120" height="10" rx="3" fill="var(--wall)" opacity="0.6"/>`+ tx(180,55,"peptidoglycan wall",'var(--wall)',9)+
+    `<rect x="52" y="62" width="120" height="8" rx="3" fill="var(--membrane)" opacity="0.4"/>`+ tx(180,69,"inner membrane",'var(--membrane)',9)+
+    `</g>`+
+    // ===== ribosomes scattered in cytoplasm =====
+    ribosomeGlyph(250,250)+ribosomeGlyph(330,330)+ribosomeGlyph(300,190)+ribosomeGlyph(400,300)+
+    `<g>`+
+    `<line x1="330" y1="330" x2="300" y2="455" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>`+
+    tx(300,470,"RIBOSOMES (70S = 50S+30S) — protein synthesis",'var(--protein)',11,'middle',700)+
+    `</g>`+
+    // ===== nucleoid (supercoiled DNA) center-right =====
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity="0.85">`+
+    `<path d="M500,200 q40,30 0,60 q-40,30 0,60 q40,30 10,55"/>`+
+    `<path d="M540,200 q-40,30 0,60 q40,30 0,60 q-40,30 -10,55"/>`+
+    `<ellipse cx="520" cy="270" rx="70" ry="90" fill="var(--dna)" opacity="0.08"/>`+
+    `</g>`+
+    tx(520,150,"NUCLEOID — DNA gyrase, topoisomerase, RNA polymerase",'var(--dna)',11,'middle',700)+
+    // ===== plasmid (resistance) =====
+    `<circle cx="610" cy="350" r="20" fill="none" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="4 3"/>`+
+    tx(648,355,"plasmid (resistance genes)",'var(--warn)',9)+
+    // ===== folate machinery (small enzyme cluster) =====
+    `<circle cx="240" cy="360" r="16" fill="var(--folate)" opacity="0.3" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(240,365,"FH",'var(--folate)',9,'middle',700)+
+    tx(190,392,"folate synthesis",'var(--folate)',9,'middle')+
+    // ===== flagellum + pili (surface structures) =====
+    `<path d="M730,260 q40,-10 70,0 q-30,16 0,30 q-40,-6 -70,4" fill="none" stroke="var(--muted)" stroke-width="2"/>`+
+    tx(760,236,"flagellum",'var(--muted)',9,'middle')+
+    `<g stroke="var(--muted)" stroke-width="1.5">`+
+    `<line x1="120" y1="200" x2="96" y2="186"/><line x1="116" y1="240" x2="90" y2="236"/><line x1="120" y1="300" x2="94" y2="306"/>`+
+    `</g>`+ tx(70,200,"pili",'var(--muted)',9,'middle')+
+    // ===== TARGET PIN LABELS around the cell =====
+    // wall
+    `<g><line x1="717" y1="120" x2="770" y2="96" stroke="var(--wall)" stroke-width="1" stroke-dasharray="3 3"/>`+
+    tx(560,40,"CELL WALL — β-lactams, vancomycin, fosfomycin, bacitracin",'var(--wall)',11,'start',700)+`</g>`+
+    // membrane
+    tx(40,500,"MEMBRANE — daptomycin (G+), polymyxins/colistin (G− outer membrane)",'var(--membrane)',11,'start',700)+
+    // protein detail
+    tx(40,440,"30S: aminoglycosides, tetracyclines   ·   50S: macrolides, clindamycin, linezolid, chloramphenicol",'var(--protein)',10,'start')+
+    // dna detail
+    tx(430,490,"fluoroquinolones (gyrase/topo IV) · rifampin (RNA pol) · metronidazole (radical DNA breaks)",'var(--dna)',10,'start');
+  return `<div class="masterfig">${svg(W,H,inner)}<div class="figcap">Whole-cell map of a (gram-negative) bacterium — outer membrane, peptidoglycan wall, inner membrane, cytoplasmic ribosomes, nucleoid DNA, folate enzymes, and a resistance plasmid — with each antibacterial class pinned to the structure it attacks. Gram-positives lack the outer membrane and have a thick peptidoglycan layer instead.</div></div>`;
+}
+function ribosomeGlyph(cx,cy){
+  return `<g><ellipse cx="${cx}" cy="${cy-6}" rx="20" ry="11" fill="var(--protein)" opacity="0.45"/>`+
+    `<ellipse cx="${cx}" cy="${cy+7}" rx="24" ry="12" fill="var(--protein)" opacity="0.3"/></g>`;
+}
+
+/* ============================================================
+   PER-CLASS MECHANISM MINI-DIAGRAMS
+   each ~260x180
+   ============================================================ */
+function figBetaLactam(){ // inhibit PBP / transpeptidase crosslinking
+  return svg(260,180,
+    `<rect width="260" height="180" fill="none"/>`+
+    // peptidoglycan strands
+    `<line x1="20" y1="60" x2="240" y2="60" stroke="var(--wall)" stroke-width="4" opacity=".7"/>`+
+    `<line x1="20" y1="120" x2="240" y2="120" stroke="var(--wall)" stroke-width="4" opacity=".7"/>`+
+    // crosslinks (some broken)
+    `<line x1="70" y1="60" x2="70" y2="120" stroke="var(--wall)" stroke-width="3"/>`+
+    `<line x1="190" y1="60" x2="190" y2="120" stroke="var(--wall)" stroke-width="3"/>`+
+    // PBP enzyme
+    `<circle cx="130" cy="90" r="22" fill="var(--wall)" opacity="0.3" stroke="var(--wall)" stroke-width="1.5"/>`+
+    tx(130,93,"PBP",'var(--wall)',10,'middle',700)+
+    // β-lactam drug blocking
+    `<rect x="118" y="48" width="24" height="16" rx="3" fill="var(--accent)"/>`+
+    tx(130,40,"β-lactam",'var(--accent)',9,'middle',700)+
+    xmark(130,90,'var(--warn)')+
+    tx(130,150,"blocks transpeptidase →",'var(--soft)',9,'middle')+
+    tx(130,164,"no crosslinks → lysis",'var(--soft)',9,'middle'));
+}
+function figGlyco(){ // vancomycin binds D-ala-D-ala
+  return svg(260,180,
+    `<line x1="20" y1="70" x2="240" y2="70" stroke="var(--wall)" stroke-width="4" opacity=".7"/>`+
+    // D-ala-D-ala terminus
+    `<rect x="110" y="74" width="18" height="12" rx="2" fill="var(--wall)" opacity=".6"/>`+
+    `<rect x="132" y="74" width="18" height="12" rx="2" fill="var(--wall)" opacity=".6"/>`+
+    tx(130,100,"D-Ala-D-Ala",'var(--wall)',9,'middle')+
+    // vancomycin cap
+    `<path d="M104,60 Q130,40 156,60 L156,72 Q130,58 104,72 Z" fill="var(--accent)" opacity=".85"/>`+
+    tx(130,52,"vancomycin",'var(--accent)',9,'middle',700)+
+    tx(130,130,"binds D-Ala-D-Ala terminus →",'var(--soft)',9,'middle')+
+    tx(130,144,"blocks transglycosylation",'var(--soft)',9,'middle')+
+    tx(130,162,"resistance: D-Ala-D-Lac (VRE)",'var(--warn)',9,'middle'));
+}
+function figAminoglycoside(){ // 30S, misreading
+  return svg(260,180,
+    `<ellipse cx="130" cy="80" rx="60" ry="30" fill="var(--protein)" opacity="0.3"/>`+
+    tx(130,84,"30S",'var(--protein)',13,'middle',700)+
+    `<ellipse cx="130" cy="116" rx="46" ry="18" fill="var(--protein)" opacity="0.18"/>`+
+    tx(130,119,"50S",'var(--protein)',10,'middle')+
+    `<circle cx="100" cy="72" r="7" fill="var(--accent)"/>`+
+    tx(130,40,"aminoglycoside → 30S",'var(--accent)',9,'middle',700)+
+    tx(130,150,"misreads mRNA → wrong proteins",'var(--soft)',9,'middle')+
+    tx(130,164,"bactericidal · O₂-dependent uptake",'var(--soft)',9,'middle'));
+}
+function figTetracycline(){ // 30S blocks tRNA
+  return svg(260,180,
+    `<ellipse cx="130" cy="80" rx="60" ry="30" fill="var(--protein)" opacity="0.3"/>`+
+    tx(130,84,"30S",'var(--protein)',13,'middle',700)+
+    // tRNA blocked at A site
+    `<path d="M180,70 l14,-8 l0,16 Z" fill="var(--gold)"/>`+
+    xmark(176,72,'var(--warn)')+
+    tx(130,40,"tetracycline → 30S A-site",'var(--accent)',9,'middle',700)+
+    tx(130,140,"blocks aminoacyl-tRNA entry",'var(--soft)',9,'middle')+
+    tx(130,156,"bacteriostatic",'var(--soft)',9,'middle'));
+}
+function figMacrolide(){ // 50S blocks translocation
+  return svg(260,180,
+    `<ellipse cx="130" cy="92" rx="56" ry="26" fill="var(--protein)" opacity="0.3"/>`+
+    tx(130,96,"50S",'var(--protein)',13,'middle',700)+
+    `<circle cx="150" cy="80" r="8" fill="var(--accent)"/>`+
+    tx(130,40,"macrolide/clinda/linezolid",'var(--accent)',9,'middle',700)+
+    tx(130,56,"→ 50S subunit",'var(--accent)',9,'middle')+
+    tx(130,140,"block translocation / peptide exit",'var(--soft)',9,'middle')+
+    tx(130,156,"mostly bacteriostatic",'var(--soft)',9,'middle'));
+}
+function figFluoroquinolone(){ // gyrase/topo
+  return svg(260,180,
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity="0.8">`+
+    `<path d="M70,50 Q100,80 70,110 Q40,140 70,160"/>`+
+    `<path d="M110,50 Q80,80 110,110 Q140,140 110,160"/>`+
+    `</g>`+
+    `<circle cx="150" cy="95" r="20" fill="var(--dna)" opacity="0.3" stroke="var(--dna)" stroke-width="1.5"/>`+
+    tx(150,98,"gyrase",'var(--dna)',9,'middle',700)+
+    `<circle cx="186" cy="80" r="7" fill="var(--accent)"/>`+
+    tx(200,40,"fluoroquinolone",'var(--accent)',9,'middle',700)+
+    xmark(150,95,'var(--warn)')+
+    tx(130,168,"inhibits DNA gyrase / topoisomerase IV",'var(--soft)',9,'middle'));
+}
+function figRifampin(){ // RNA pol
+  return svg(260,180,
+    `<line x1="30" y1="100" x2="230" y2="100" stroke="var(--dna)" stroke-width="3" opacity=".7"/>`+
+    `<circle cx="130" cy="100" r="24" fill="var(--dna)" opacity="0.3" stroke="var(--dna)" stroke-width="1.5"/>`+
+    tx(130,96,"RNA",'var(--dna)',9,'middle',700)+
+    tx(130,108,"pol",'var(--dna)',9,'middle',700)+
+    `<circle cx="130" cy="68" r="8" fill="var(--accent)"/>`+
+    tx(130,44,"rifampin",'var(--accent)',9,'middle',700)+
+    xmark(130,100,'var(--warn)')+
+    tx(130,150,"blocks DNA-dependent RNA polymerase",'var(--soft)',9,'middle')+
+    tx(130,164,"resistance fast → combo therapy",'var(--warn)',9,'middle'));
+}
+function figMetronidazole(){ // radical DNA damage
+  return svg(260,180,
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity="0.7"><path d="M90,50 Q120,90 90,130"/><path d="M130,50 Q100,90 130,130"/></g>`+
+    `<circle cx="170" cy="70" r="7" fill="var(--accent)"/>`+
+    tx(170,52,"metronidazole",'var(--accent)',9,'middle',700)+
+    // breaks
+    `<line x1="100" y1="88" x2="120" y2="92" stroke="var(--warn)" stroke-width="3"/>`+
+    tx(130,150,"reduced to radicals → DNA strand breaks",'var(--soft)',9,'middle')+
+    tx(130,164,"anaerobes/protozoa only",'var(--soft)',9,'middle'));
+}
+function figSulfa(){ // folate pathway block
+  return svg(260,180,
+    `<rect x="20" y="80" width="50" height="24" rx="5" fill="var(--folate)" opacity=".3" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(45,96,"PABA",'var(--folate)',9,'middle')+
+    arrowDn(90,70,0,'var(--folate)')+
+    `<line x1="78" y1="92" x2="110" y2="92" stroke="var(--folate)" stroke-width="2"/>`+
+    xmark(98,92,'var(--warn)')+
+    tx(98,72,"sulfonamide",'var(--accent)',9,'middle',700)+
+    `<rect x="120" y="80" width="56" height="24" rx="5" fill="var(--folate)" opacity=".2" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(148,96,"DHF",'var(--folate)',9,'middle')+
+    `<line x1="184" y1="92" x2="212" y2="92" stroke="var(--folate)" stroke-width="2"/>`+
+    xmark(200,92,'var(--warn)')+
+    tx(205,72,"TMP",'var(--accent)',9,'middle',700)+
+    `<rect x="218" y="80" width="40" height="24" rx="5" fill="var(--folate)" opacity=".2" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(238,96,"THF",'var(--folate)',9,'middle')+
+    tx(130,140,"sequential folate-synthesis blockade",'var(--soft)',9,'middle')+
+    tx(130,156,"synergistic (TMP-SMX); static→cidal combo",'var(--soft)',9,'middle'));
+}
+function figDaptomycin(){ // membrane depolarization
+  return svg(260,180,
+    `<rect x="40" y="80" width="180" height="16" rx="4" fill="var(--membrane)" opacity="0.35" stroke="var(--membrane)" stroke-width="1.5"/>`+
+    tx(130,72,"cell membrane",'var(--membrane)',9,'middle')+
+    // dapto inserting
+    `<line x1="100" y1="80" x2="100" y2="96" stroke="var(--accent)" stroke-width="3"/>`+
+    `<line x1="130" y1="80" x2="130" y2="96" stroke="var(--accent)" stroke-width="3"/>`+
+    `<line x1="160" y1="80" x2="160" y2="96" stroke="var(--accent)" stroke-width="3"/>`+
+    tx(130,46,"daptomycin (Ca-dependent)",'var(--accent)',9,'middle',700)+
+    tx(130,130,"inserts → K⁺ efflux → depolarization",'var(--soft)',9,'middle')+
+    tx(130,146,"rapid death; NOT for pneumonia",'var(--warn)',9,'middle')+
+    tx(130,162,"(inactivated by surfactant)",'var(--muted)',9,'middle'));
+}
+function figPolymyxin(){ // LPS / outer membrane
+  return svg(260,180,
+    `<rect x="40" y="64" width="180" height="14" rx="4" fill="var(--membrane)" opacity="0.3" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(130,58,"LPS outer membrane",'var(--membrane)',9,'middle')+
+    `<rect x="40" y="96" width="180" height="14" rx="4" fill="var(--membrane)" opacity="0.3" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(130,124,"inner membrane",'var(--membrane)',9,'middle')+
+    `<circle cx="90" cy="71" r="6" fill="var(--accent)"/><circle cx="150" cy="71" r="6" fill="var(--accent)"/>`+
+    tx(130,40,"polymyxin → LPS",'var(--accent)',9,'middle',700)+
+    tx(130,150,"detergent-like; disrupts membranes",'var(--soft)',9,'middle')+
+    tx(130,164,"gram-neg only; nephro/neurotoxic",'var(--warn)',9,'middle'));
+}
+
+/* ============================================================
+   CLASS DATA
+   ============================================================ */
+const CLASSES=[
+ // ---- CELL WALL ----
+ {target:'wall',sec:'wall',name:'Penicillins (β-lactams)',fig:figBetaLactam,
+  members:'Natural (pen G/V); aminopenicillins (amoxicillin, ampicillin); antistaph (nafcillin, oxacillin, dicloxacillin); antipseudomonal (piperacillin); + β-lactamase inhibitors (amox-clav, pip-tazo, amp-sulbactam).',
+  spectrum:'Pen G: strep, Treponema, Neisseria (some). Amino: + Listeria, Enterococcus, H. flu, E. coli. Antistaph: MSSA. Pip-tazo: broad incl. Pseudomonas + anaerobes.',
+  dose:'Amoxicillin 500–875 mg PO BID–TID (or 1 g); ampicillin 1–2 g IV q4–6h; nafcillin 1–2 g IV q4h; pip-tazo 3.375–4.5 g IV q6–8h (extended infusion common).',
+  se:'Hypersensitivity/anaphylaxis (IgE), rash (esp. amino + EBV → non-allergic rash), interstitial nephritis, seizures at high dose/renal failure, C. diff. Cross-reactivity with cephalosporins low (~1–2%).',
+  resist:'β-lactamases (most common), altered PBPs (MRSA = mecA/PBP2a; pneumococcal penicillin resistance), porin loss.',
+  buzz:'Amoxicillin rash after a "penicillin" in mono = EBV interaction, not true allergy. Nafcillin/oxacillin for MSSA (better than vanc for susceptible).'},
+ {target:'wall',sec:'wall',name:'Cephalosporins',fig:figBetaLactam,
+  members:'1st (cefazolin, cephalexin); 2nd (cefuroxime, cefoxitin/cefotetan-anaerobes); 3rd (ceftriaxone, cefotaxime, ceftazidime-antipseudomonal); 4th (cefepime); 5th (ceftaroline — MRSA); + β-lactamase-inhibitor combos (ceftazidime-avibactam, ceftolozane-tazobactam).',
+  spectrum:'Generations broaden gram-negative & lose some gram-positive as you ascend (ceftaroline is the MRSA exception). Ceftriaxone: workhorse for CAP, meningitis, gonorrhea, pyelo. Cefepime/ceftazidime: Pseudomonas.',
+  dose:'Cefazolin 1–2 g IV q8h (surgical prophylaxis); cephalexin 500 mg PO QID; ceftriaxone 1–2 g IV q24h (2 g q12h meningitis); cefepime 2 g IV q8h.',
+  se:'Similar β-lactam hypersensitivity (low cross-reactivity, mostly shared side chains); cefepime neurotoxicity/encephalopathy (esp. renal failure); biliary sludging (ceftriaxone); disulfiram-like + bleeding with cefotetan (NMTT side chain); C. diff.',
+  resist:'β-lactamases incl. ESBLs (3rd-gen) and AmpC; carbapenemases; altered PBPs.',
+  buzz:'1st-gen cefazolin = surgical prophylaxis. Ceftriaxone avoided in neonates (biliary sludging, displaces bilirubin → kernicterus; and Ca co-administration). Cefepime → "cefepime neurotoxicity."'},
+ {target:'wall',sec:'wall',name:'Carbapenems & monobactam',fig:figBetaLactam,
+  members:'Carbapenems: imipenem-cilastatin, meropenem, ertapenem (no Pseudomonas/Acinetobacter), doripenem. Monobactam: aztreonam.',
+  spectrum:'Carbapenems: very broad — gram+/−, anaerobes, ESBL/AmpC producers; reserve for resistant/severe. Aztreonam: gram-negative only (incl. Pseudomonas) — safe in β-lactam allergy (no cross-reactivity).',
+  dose:'Meropenem 1 g IV q8h (2 g q8h CNS/Pseudomonas); ertapenem 1 g IV q24h; aztreonam 1–2 g IV q8h.',
+  se:'Seizures (imipenem highest, esp. renal failure/CNS disease); C. diff; cross-reactivity with penicillin low but exists for carbapenems.',
+  resist:'Carbapenemases (KPC, NDM, OXA) → CRE — a major stewardship threat.',
+  buzz:'Aztreonam is the β-lactam for the truly penicillin-allergic (gram-negative coverage). Meropenem preferred over imipenem when seizure risk matters. Ertapenem misses Pseudomonas.'},
+ {target:'wall',sec:'wall',name:'Glycopeptides & lipoglycopeptides',fig:figGlyco,
+  members:'Vancomycin; lipoglycopeptides telavancin, dalbavancin, oritavancin (long-acting).',
+  spectrum:'Gram-positive only — MRSA, MRSE, Enterococcus (not VRE for vanc), C. diff (oral, non-absorbed, for colitis). No gram-negative (too big for porins).',
+  dose:'Vancomycin IV weight-based with AUC/trough monitoring (e.g., 15–20 mg/kg q8–12h, target AUC/MIC 400–600); oral vanc 125 mg QID for C. diff. Dalbavancin single/weekly dose for ABSSSI.',
+  se:'Vancomycin infusion reaction ("vancomycin flushing/red man" — histamine, rate-related, not allergy), nephrotoxicity (esp. with pip-tazo/aminoglycosides), ototoxicity; DRESS.',
+  resist:'VRE via D-Ala-D-Ala → D-Ala-D-Lac terminus (van genes); rising vancomycin MIC.',
+  buzz:'"Red man syndrome" = infusion-rate reaction, slow it down/antihistamine (not a true allergy). Oral vancomycin only works for C. diff (not absorbed). Vanc + pip-tazo → watch nephrotoxicity.'},
+ // ---- PROTEIN SYNTHESIS ----
+ {target:'protein',sec:'protein',name:'Aminoglycosides',fig:figAminoglycoside,
+  members:'Gentamicin, tobramycin, amikacin, plazomicin; (streptomycin — TB).',
+  spectrum:'Aerobic gram-negative (incl. Pseudomonas); synergy with cell-wall agents for gram-positive (enterococcal/staph endocarditis). No anaerobe coverage (O₂-dependent uptake).',
+  dose:'Once-daily extended-interval (e.g., gentamicin/tobramycin 5–7 mg/kg q24h) with level monitoring; or traditional dosing with peak/trough. Amikacin 15 mg/kg/day.',
+  se:'Nephrotoxicity (ATN, usually reversible), ototoxicity (cochlear + vestibular, can be permanent), neuromuscular blockade (caution in myasthenia). Concentration-dependent killing + post-antibiotic effect → once-daily.',
+  resist:'Aminoglycoside-modifying enzymes, ribosomal methylation, reduced uptake.',
+  buzz:'Concentration-dependent + post-antibiotic effect = once-daily dosing. Synergy with β-lactam/vanc for enterococcal endocarditis. Avoid in pregnancy (fetal ototoxicity).'},
+ {target:'protein',sec:'protein',name:'Tetracyclines & glycylcyclines',fig:figTetracycline,
+  members:'Doxycycline, minocycline, tetracycline; tigecycline (glycylcycline); omadacycline, eravacycline.',
+  spectrum:'Broad incl. atypicals (Mycoplasma, Chlamydia, Rickettsia, Q fever), spirochetes (Lyme, syphilis alt), MRSA (doxy for skin), Vibrio, anthrax, malaria prophylaxis. Tigecycline broad (incl. some MDR) but NOT Pseudomonas/Proteus.',
+  dose:'Doxycycline 100 mg PO/IV BID; tigecycline 100 mg load → 50 mg IV q12h.',
+  se:'Photosensitivity, GI upset, esophagitis (take upright with water), tooth discoloration/bone-growth inhibition (avoid <8 yr & pregnancy — though short-course doxy now accepted for Rocky Mountain spotted fever in kids), tigecycline ↑mortality signal/nausea. Avoid with di/trivalent cations (Ca, Mg, Fe, antacids → chelation).',
+  resist:'Efflux pumps, ribosomal protection proteins.',
+  buzz:'Doxycycline for tick-borne disease incl. RMSF (give even to young children — benefit outweighs the old dental-staining dogma). Chelation by dairy/antacids/iron reduces absorption.'},
+ {target:'protein',sec:'protein',name:'Macrolides & ketolides',fig:figMacrolide,
+  members:'Azithromycin, clarithromycin, erythromycin; (fidaxomicin — narrow, C. diff).',
+  spectrum:'Atypicals (Mycoplasma, Chlamydia, Legionella), CAP, pertussis, some strep/staph (resistance rising), H. pylori (clarithro), MAC.',
+  dose:'Azithromycin 500 mg ×1 then 250 mg daily (or 500 mg ×3 days); clarithromycin 500 mg BID.',
+  se:'QT prolongation (esp. erythro/clarithro), GI motility (erythromycin = motilin agonist, used as prokinetic), hepatotoxicity, drug interactions (clarithro/erythro are CYP3A4 inhibitors); azithromycin fewer interactions.',
+  resist:'Ribosomal methylation (erm — MLSb), efflux (mef).',
+  buzz:'Erythromycin as a GI prokinetic (motilin agonism). Azithromycin = atypical CAP + the lowest interaction burden. QT prolongation is the board reflex.'},
+ {target:'protein',sec:'protein',name:'Lincosamides — clindamycin',fig:figMacrolide,
+  members:'Clindamycin.',
+  spectrum:'Gram-positive (incl. CA-MRSA if D-test negative), anaerobes ABOVE the diaphragm; toxin suppression in nec fasc/TSS. Not enterococcus, not aerobic gram-negative.',
+  dose:'300–450 mg PO QID; 600–900 mg IV q8h.',
+  se:'#1 board association: C. difficile colitis. Also rash, esophagitis. Inducible resistance → D-test (erythromycin-induced clindamycin resistance in staph/strep).',
+  resist:'erm-mediated (MLSb) — inducible; check D-test before using for MRSA.',
+  buzz:'Clindamycin ↔ C. diff is the classic pairing. Add clindamycin for toxin suppression in toxic shock / necrotizing fasciitis. "Above the diaphragm" anaerobes.'},
+ {target:'protein',sec:'protein',name:'Oxazolidinones & others',fig:figMacrolide,
+  members:'Linezolid, tedizolid (oxazolidinones); chloramphenicol; quinupristin-dalfopristin (streptogramins).',
+  spectrum:'Linezolid: gram-positive incl. MRSA & VRE, good lung penetration, 100% oral bioavailability. Chloramphenicol: very broad (rarely used — toxicity).',
+  dose:'Linezolid 600 mg PO/IV q12h (oral = IV).',
+  se:'Linezolid: myelosuppression (>2 wk), serotonin syndrome (weak MAOI — caution with SSRIs), peripheral/optic neuropathy (prolonged), lactic acidosis. Chloramphenicol: aplastic anemia, gray baby syndrome.',
+  resist:'Ribosomal mutations (cfr); relatively preserved.',
+  buzz:'Linezolid = oral MRSA/VRE option with 100% bioavailability; watch serotonin syndrome and thrombocytopenia. Chloramphenicol → gray baby syndrome / aplastic anemia.'},
+ // ---- DNA / REPLICATION ----
+ {target:'dna',sec:'dna',name:'Fluoroquinolones',fig:figFluoroquinolone,
+  members:'Ciprofloxacin, levofloxacin, moxifloxacin, delafloxacin (anti-MRSA), ofloxacin.',
+  spectrum:'Cipro: gram-negative incl. Pseudomonas, GU/GI. Resp FQs (levo/moxi): + S. pneumoniae & atypicals (CAP). Moxifloxacin: + anaerobes (but no urine levels — not for UTI).',
+  dose:'Ciprofloxacin 500–750 mg PO BID / 400 mg IV q8–12h; levofloxacin 750 mg daily; moxifloxacin 400 mg daily.',
+  se:'Black-box: tendinopathy/rupture (esp. elderly, steroids), peripheral neuropathy, CNS effects, aortic aneurysm/dissection risk, QT prolongation, dysglycemia, C. diff; avoid in pregnancy/children (cartilage). Cation chelation (like tetracyclines).',
+  resist:'Target mutations (gyrA/parC), efflux, plasmid-mediated qnr.',
+  buzz:'Multiple FDA black-box warnings → reserve. Moxifloxacin doesn\'t concentrate in urine (no UTI use) but covers anaerobes. Cation chelation reduces absorption.'},
+ {target:'dna',sec:'dna',name:'Rifamycins',fig:figRifampin,
+  members:'Rifampin, rifabutin, rifapentine, rifaximin (gut-only).',
+  spectrum:'Mycobacteria (TB, MAC), staph (biofilm/prosthetic, adjunct), meningococcal & H. flu prophylaxis. Rifaximin: hepatic encephalopathy, travelers\' diarrhea (non-absorbed).',
+  dose:'Rifampin 600 mg daily (TB regimen / prophylaxis); rifaximin 550 mg BID (HE).',
+  se:'Orange-red discoloration of secretions (urine, tears, sweat — stains contacts), hepatotoxicity, potent CYP450 INDUCER (lowers OCPs, warfarin, PIs, many drugs), flu-like syndrome with intermittent dosing.',
+  resist:'Rapid single-step RNA-pol mutation → never use as monotherapy.',
+  buzz:'Orange body fluids = rifampin. Potent CYP inducer (the OCP-failure question). Never monotherapy (resistance). Rifaximin for hepatic encephalopathy.'},
+ {target:'dna',sec:'dna',name:'Nitroimidazoles & nitrofurans',fig:figMetronidazole,
+  members:'Metronidazole, tinidazole; nitrofurantoin.',
+  spectrum:'Metronidazole: anaerobes BELOW the diaphragm + protozoa (Giardia, Entamoeba, Trichomonas, BV), C. diff (alt). Nitrofurantoin: uncomplicated cystitis (urine only — no tissue/kidney levels).',
+  dose:'Metronidazole 500 mg PO/IV q8h; nitrofurantoin 100 mg BID ×5 d (cystitis).',
+  se:'Metronidazole: disulfiram-like reaction with alcohol, metallic taste, peripheral neuropathy (prolonged), seizures. Nitrofurantoin: pulmonary fibrosis (chronic), hemolysis in G6PD, avoid in CrCl <30 (ineffective) and at term/neonates.',
+  resist:'Uncommon for metronidazole; varies.',
+  buzz:'Metronidazole + alcohol = disulfiram reaction. "Below the diaphragm" anaerobes (vs clindamycin above). Nitrofurantoin only for the bladder; avoid in renal impairment & G6PD.'},
+ // ---- FOLATE ----
+ {target:'folate',sec:'folate',name:'Sulfonamides & trimethoprim',fig:figSulfa,
+  members:'Trimethoprim-sulfamethoxazole (TMP-SMX); sulfadiazine; dapsone.',
+  spectrum:'Broad: UTI, MRSA (skin), Pneumocystis (PJP) treatment & prophylaxis, Nocardia, Toxoplasma, Stenotrophomonas, Listeria (alt).',
+  dose:'TMP-SMX 1–2 DS tabs PO BID (skin/UTI); PJP treatment 15–20 mg/kg/day TMP IV/PO divided; PJP prophylaxis 1 SS or DS daily.',
+  se:'Sulfa allergy (rash → SJS/TEN), hyperkalemia (TMP blocks ENaC), bone-marrow suppression, crystalluria/AKI, ↑creatinine (TMP blocks tubular secretion — pseudo-rise), kernicterus (avoid near term), hemolysis in G6PD, drug interactions (warfarin).',
+  resist:'Altered DHPS/DHFR, plasmid-mediated.',
+  buzz:'TMP-SMX = PJP and outpatient MRSA. Hyperkalemia + a benign creatinine bump (TMP). Avoid in late pregnancy (kernicterus) and G6PD.'},
+ // ---- MEMBRANE ----
+ {target:'membrane',sec:'membrane',name:'Lipopeptide — daptomycin',fig:figDaptomycin,
+  members:'Daptomycin.',
+  spectrum:'Gram-positive incl. MRSA, VRE; bacteremia/endocarditis, skin. Calcium-dependent membrane depolarization.',
+  dose:'4 mg/kg IV q24h (skin) to 6–10 mg/kg (bacteremia/endocarditis).',
+  se:'Myopathy/rhabdomyolysis → monitor CK weekly, hold statins; eosinophilic pneumonia (rare). Inactivated by pulmonary surfactant.',
+  resist:'Cell-envelope changes; cross with vancomycin sometimes.',
+  buzz:'NEVER use daptomycin for pneumonia (surfactant inactivates it) — the single most-tested daptomycin fact. Monitor CK; the "dapto-CK-statin" triad.'},
+ {target:'membrane',sec:'membrane',name:'Polymyxins',fig:figPolymyxin,
+  members:'Colistin (polymyxin E), polymyxin B.',
+  spectrum:'Last-line gram-negative MDR (CRE, MDR Pseudomonas, Acinetobacter). Detergent disruption of the outer membrane.',
+  dose:'Weight/level-based, specialist use (colistin base activity dosing).',
+  se:'Nephrotoxicity (dose-limiting), neurotoxicity (paresthesias, neuromuscular blockade).',
+  resist:'mcr plasmid-mediated (mobile colistin resistance) — a global alarm.',
+  buzz:'Salvage therapy for MDR gram-negatives; nephrotoxicity is dose-limiting. mcr-1 = transferable colistin resistance.'}
+];
+
+function classSection(targetKey,title,lead){
+ const items=CLASSES.filter(c=>c.sec===targetKey);
+ return `<h2 class="sec" id="${targetKey}">${title}</h2><p class="seclead">${lead}</p>`+
+  items.map(c=>`
+   <div class="classcard t-${c.target}">
+     <div class="cchead"><h3>${c.name}</h3><div class="target">Target: ${targetLabel(c.target)}</div></div>
+     <div class="ccbody">
+       <div class="ccfig">${c.fig()}<div class="label">mechanism of action</div></div>
+       <div class="ccinfo">
+         <div class="blk members"><b>Members</b>${c.members}</div>
+         <div class="blk spectrum"><b>Spectrum</b>${c.spectrum}</div>
+         <div class="blk dose"><b>Common dosing</b>${c.dose}</div>
+         <div class="blk se"><b>Side effects / black-box / cautions</b>${c.se}</div>
+         <div class="blk resist"><b>Resistance</b>${c.resist}</div>
+         <div class="blk buzz"><b>Board buzzwords</b>${c.buzz}</div>
+       </div>
+     </div>
+   </div>`).join('');
+}
+function targetLabel(t){return {wall:'cell wall synthesis',protein:'protein synthesis (ribosome)',dna:'DNA / replication',folate:'folate pathway',membrane:'cell membrane'}[t];}
+
+/* ============================================================
+   SPECTRUM TABLE
+   ============================================================ */
+function spectrumTable(){
+ const rows=[
+  ['Nafcillin / oxacillin','no','yes','no','no','no','MSSA-targeted'],
+  ['Amox-clav / amp-sulbactam','part','yes','yes','yes','no','broad oral/IV'],
+  ['Pip-tazo','part','yes','yes','yes','yes','+Pseudomonas'],
+  ['Cefazolin (1st)','no','yes','part','no','no','surg prophylaxis'],
+  ['Ceftriaxone (3rd)','no','yes','yes','part','no','workhorse'],
+  ['Cefepime (4th)','no','yes','yes','no','yes','+Pseudomonas'],
+  ['Ceftaroline (5th)','yes','yes','yes','no','no','MRSA β-lactam'],
+  ['Meropenem','part','yes','yes','yes','yes','very broad'],
+  ['Aztreonam','no','no','yes','no','yes','GN only, PCN-allergy'],
+  ['Vancomycin (IV)','yes','yes','no','no','no','GP only'],
+  ['Daptomycin','yes','yes','no','no','no','not lungs'],
+  ['Linezolid','yes','yes','no','no','no','+VRE, oral'],
+  ['Doxycycline','yes','yes','part','part','no','+atypicals/tick'],
+  ['Azithromycin','no','part','part','yes','no','atypicals/CAP'],
+  ['Clindamycin','yes','yes','no','part','no','anaerobes (above)'],
+  ['Ciprofloxacin','no','part','yes','no','yes','+Pseudomonas/GU'],
+  ['Levo/moxifloxacin','no','yes','yes','yes','part','resp FQ'],
+  ['Metronidazole','no','no','no','no','yes','anaerobes (below)/protozoa'],
+  ['TMP-SMX','yes','yes','yes','no','no','PJP/MRSA/UTI'],
+  ['Nitrofurantoin','part','yes','yes','no','no','bladder only']
+ ];
+ const head=`<tr><th>Agent</th><th>MRSA</th><th>Gram +</th><th>Gram −</th><th>Atypical</th><th>Pseudomonas / anaerobe*</th><th>Niche</th></tr>`;
+ const cell=v=>v==='yes'?'<span class="yes">✓</span>':v==='part'?'<span class="part">±</span>':'<span class="no">—</span>';
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td>${cell(r[1])}</td><td>${cell(r[2])}</td><td>${cell(r[3])}</td><td>${cell(r[4])}</td><td>${cell(r[5])}</td><td style="color:var(--soft)">${r[6]}</td></tr>`).join('');
+ return `<h2 class="sec" id="spectrum">Spectrum at a glance</h2>
+ <p class="seclead">A coarse coverage matrix — local antibiograms and resistance always override. *Last column flags antipseudomonal and/or anaerobic coverage (see niche).</p>
+ <div class="legend"><span><i style="background:var(--good)"></i>✓ reliable</span><span><i style="background:var(--gold)"></i>± partial/variable</span><span><i style="background:var(--faint)"></i>— no/unreliable</span></div>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
+/* ============================================================
+   BUG-DRUG MATCHING
+   ============================================================ */
+function bugDrug(){
+ const B=[
+  ['MRSA','Vancomycin, daptomycin (not lung), linezolid, ceftaroline; doxy/TMP-SMX/clinda for skin (outpatient).'],
+  ['MSSA','Nafcillin/oxacillin or cefazolin (beat vancomycin for susceptible).'],
+  ['Pseudomonas aeruginosa','Pip-tazo, cefepime, ceftazidime, meropenem, cipro/levo, aminoglycosides, aztreonam; often combo for severe.'],
+  ['Enterococcus (E. faecalis)','Ampicillin (± aminoglycoside synergy for endocarditis); vancomycin.'],
+  ['VRE (E. faecium)','Linezolid or daptomycin.'],
+  ['ESBL gram-negatives','Carbapenem (meropenem/ertapenem) is the reliable choice.'],
+  ['CRE (carbapenem-resistant)','Ceftazidime-avibactam, meropenem-vaborbactam; polymyxins as salvage.'],
+  ['Atypical pneumonia (Mycoplasma/Legionella/Chlamydophila)','Azithromycin or a respiratory fluoroquinolone; doxycycline.'],
+  ['Anaerobes — above diaphragm','Clindamycin (lung abscess, oral).'],
+  ['Anaerobes — below diaphragm','Metronidazole (intra-abdominal, C. diff); pip-tazo/carbapenem cover both.'],
+  ['C. difficile','Oral vancomycin or fidaxomicin (first-line now); metronidazole only if non-severe/unavailable.'],
+  ['Lyme / tick-borne (RMSF, ehrlichia)','Doxycycline (all ages for RMSF).'],
+  ['Pneumocystis (PJP)','TMP-SMX (treatment + prophylaxis); steroids if hypoxic.'],
+  ['Listeria','Ampicillin (+ gentamicin); add to meningitis regimen at age extremes/immunocompromise.'],
+  ['Gonorrhea','Ceftriaxone (+ treat chlamydia with doxycycline).'],
+  ['Syphilis','Penicillin G (the only recommended therapy in pregnancy — desensitize if allergic).']
+ ];
+ return `<h2 class="sec" id="bugdrug">Bug-drug matching — the empiric reflexes</h2>
+ <p class="seclead">The pathogen → first-choice associations boards and bedside both reward. Always de-escalate to culture/susceptibility.</p>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Pathogen / scenario</th><th>Go-to agent(s)</th></tr></thead>
+ <tbody>${B.map(b=>`<tr><th>${b[0]}</th><td style="color:var(--soft)">${b[1]}</td></tr>`).join('')}</tbody></table></div>
+ <div class="note buzz"><b>Empiric "big gun" combos:</b> severe sepsis with MRSA + Pseudomonas concern → <b>vancomycin + (cefepime or pip-tazo or meropenem)</b>; add an atypical agent (azithro) for severe CAP; double gram-negative coverage only in specific high-risk/septic-shock scenarios. De-escalate at 48–72 h on cultures.</div>`;
+}
+
+/* ============================================================
+   EMPIRIC THERAPY BY CLINICAL SITUATION
+   ============================================================ */
+const SITUATIONS=[
+ {grp:'Skin & soft tissue',items:[
+  {dx:'Cellulitis — non-purulent',first:'Cover β-hemolytic strep ± MSSA: cephalexin or dicloxacillin (PO); cefazolin or nafcillin (IV).',alt:'Penicillin allergy: clindamycin. Add MRSA coverage only if risk factors or systemic toxicity.',note:'Non-purulent → strep is the usual driver; routine MRSA coverage not needed.'},
+  {dx:'Cellulitis / abscess — purulent',first:'I&D is primary. Cover MRSA: TMP-SMX or doxycycline (PO outpatient); vancomycin/linezolid (IV/severe).',alt:'Clindamycin (check local resistance/D-test).',note:'Purulent SSTI → MRSA likely; the abscess needs drainage, not just antibiotics.'},
+  {dx:'Necrotizing fasciitis',first:'Surgical emergency + broad: vancomycin (or linezolid) + pip-tazo (or carbapenem) + clindamycin (toxin suppression).',alt:'—',note:'Clindamycin added for toxin suppression; source control is lifesaving.'},
+  {dx:'Animal/human bite',first:'Amoxicillin-clavulanate (covers Pasteurella, Eikenella, oral anaerobes, staph/strep).',alt:'Penicillin allergy: doxycycline + metronidazole, or a respiratory FQ + clinda.',note:'"Amox-clav for the bite." Cat bites → Pasteurella; human bites → Eikenella.'},
+  {dx:'Diabetic foot infection',first:'Mild: cover strep/staph (± MRSA). Moderate-severe: broad incl. anaerobes & Pseudomonas — pip-tazo or carbapenem ± vancomycin.',alt:'—',note:'Assess for osteomyelitis; tailor to depth/severity and cultures.'}
+ ]},
+ {grp:'Respiratory',items:[
+  {dx:'CAP — outpatient, healthy',first:'Amoxicillin (high-dose) OR doxycycline OR a macrolide (where pneumococcal resistance low).',alt:'—',note:'Cover S. pneumoniae ± atypicals; local macrolide resistance matters.'},
+  {dx:'CAP — outpatient, comorbidities',first:'β-lactam (amox-clav or cefpodoxime) + macrolide/doxycycline, OR respiratory FQ (levo/moxifloxacin) monotherapy.',alt:'—',note:'Comorbidity/recent antibiotics → broaden + atypical coverage.'},
+  {dx:'CAP — inpatient (non-ICU)',first:'β-lactam (ceftriaxone/ampicillin-sulbactam) + macrolide, OR respiratory FQ.',alt:'—',note:'Add atypical coverage; FQ is the monotherapy alternative.'},
+  {dx:'CAP — ICU / severe',first:'β-lactam (ceftriaxone) + macrolide OR FQ; add MRSA (vancomycin/linezolid) and/or antipseudomonal β-lactam if risk factors.',alt:'—',note:'Cover atypicals always; add MRSA/Pseudomonas only with risk factors or prior isolation.'},
+  {dx:'HAP / VAP',first:'Antipseudomonal β-lactam (pip-tazo, cefepime, or meropenem) + MRSA coverage (vancomycin/linezolid); add 2nd antipseudomonal agent if high-resistance risk.',alt:'—',note:'Driven by local antibiogram and MDR risk; de-escalate on cultures.'},
+  {dx:'Aspiration pneumonia',first:'Often community oral flora — amox-clav or ampicillin-sulbactam; add anaerobic/broader coverage for severe or abscess.',alt:'—',note:'Routine anaerobic coverage now reserved for abscess/empyema/severe periodontal disease.'},
+  {dx:'COPD exacerbation (bacterial)',first:'Amox-clav, a macrolide, or doxycycline; respiratory FQ for higher-risk/Pseudomonas concern.',alt:'—',note:'Antibiotics for increased sputum purulence/volume + dyspnea.'}
+ ]},
+ {grp:'Genitourinary',items:[
+  {dx:'Uncomplicated cystitis (UTI)',first:'Nitrofurantoin ×5 d, OR TMP-SMX ×3 d (if local resistance <20%), OR fosfomycin single dose.',alt:'β-lactam (e.g., cefpodoxime) as alternative; avoid FQ for uncomplicated (reserve).',note:'Nitrofurantoin needs CrCl ≥30 and only treats the bladder (no pyelo).'},
+  {dx:'Pyelonephritis — outpatient',first:'Fluoroquinolone (cipro/levo) where resistance low, OR a one-time IV long-acting agent (ceftriaxone) then oral β-lactam/TMP-SMX per culture.',alt:'—',note:'Nitrofurantoin/fosfomycin do NOT treat pyelonephritis (no tissue/kidney levels).'},
+  {dx:'Pyelonephritis — inpatient',first:'IV ceftriaxone, or antipseudomonal (cefepime/pip-tazo) if risk; tailor to urine culture.',alt:'—',note:'De-escalate on susceptibilities; image if obstruction/abscess suspected.'},
+  {dx:'Catheter-associated / complicated UTI',first:'Broaden for resistant gram-negatives (cefepime, pip-tazo, or carbapenem if ESBL risk); remove/replace catheter.',alt:'—',note:'Source control (catheter) is part of therapy.'},
+  {dx:'Prostatitis',first:'Fluoroquinolone or TMP-SMX (good prostate penetration), longer course.',alt:'—',note:'Penetration into prostate drives the choice; treat 2–6 weeks.'}
+ ]},
+ {grp:'Abdominal & GI',items:[
+  {dx:'Intra-abdominal infection (community)',first:'Cover gram-negatives + anaerobes: ceftriaxone + metronidazole, OR ertapenem, OR (FQ + metronidazole).',alt:'Pip-tazo monotherapy.',note:'Source control (drainage/surgery) essential; add antipseudomonal/MRSA for healthcare-associated.'},
+  {dx:'C. difficile colitis',first:'Oral vancomycin OR fidaxomicin (first-line). Fulminant: high-dose oral vancomycin + IV metronidazole ± surgery.',alt:'Metronidazole only if non-severe and others unavailable.',note:'Stop the inciting antibiotic; oral vancomycin (not IV) for colitis.'},
+  {dx:'Spontaneous bacterial peritonitis',first:'Ceftriaxone (or cefotaxime); add albumin to reduce renal injury.',alt:'—',note:'Ascitic PMN ≥250 = treat; albumin on days 1 and 3.'},
+  {dx:'Acute diverticulitis',first:'Uncomplicated often managed without antibiotics in selected outpatients; if treating: cover GN + anaerobes (amox-clav, or FQ + metronidazole).',alt:'—',note:'Antibiotic role narrowing for uncomplicated disease per recent evidence.'}
+ ]},
+ {grp:'CNS & systemic',items:[
+  {dx:'Bacterial meningitis (community, adult)',first:'Vancomycin + ceftriaxone (high dose) + dexamethasone; ADD ampicillin if Listeria risk (>50 yr, immunocompromised, pregnant, neonate).',alt:'—',note:'Don\'t delay antibiotics for imaging/LP; steroids before/with first dose for pneumococcus.'},
+  {dx:'Febrile neutropenia',first:'Antipseudomonal monotherapy: cefepime, pip-tazo, or meropenem. Add vancomycin only for specific indications (line, skin, severe mucositis, hypotension).',alt:'—',note:'Empiric within 1 h; cover Pseudomonas; MRSA coverage is conditional.'},
+  {dx:'Sepsis (undifferentiated, severe)',first:'Broad within 1 h: vancomycin + antipseudomonal β-lactam (pip-tazo/cefepime/meropenem); tailor to suspected source.',alt:'—',note:'Source-directed; de-escalate at 48–72 h on cultures.'},
+  {dx:'Gonorrhea / PID',first:'Gonorrhea: ceftriaxone IM (+ treat chlamydia with doxycycline). PID: ceftriaxone + doxycycline + metronidazole.',alt:'—',note:'Always co-treat chlamydia; PID adds anaerobic coverage.'}
+ ]}
+];
+function situations(){
+ let html=`<h2 class="sec" id="situations">Empiric antibiotics by clinical situation</h2>
+  <p class="seclead">The common ED/ward presentations and a reasonable empiric starting point — then narrow to cultures and local susceptibility. These are typical first-line frameworks, not substitutes for local guidelines, severity assessment, allergy history, and source control.</p>`;
+ SITUATIONS.forEach(g=>{
+   html+=`<h3 class="sub">${g.grp}</h3><div class="cardgrid wide" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px">`;
+   g.items.forEach(it=>{
+     html+=`<div class="classcard" style="border-top-color:var(--accent);padding:0">
+       <div class="cchead" style="padding:14px 18px 6px"><h3 style="font-size:1.02rem">${it.dx}</h3></div>
+       <div class="ccinfo" style="padding:6px 18px 16px">
+         <div class="blk dose"><b>First-line empiric</b>${it.first}</div>
+         ${it.alt&&it.alt!=='—'?`<div class="blk spectrum"><b>Alternative / allergy</b>${it.alt}</div>`:''}
+         <div class="blk buzz"><b>Key point</b>${it.note}</div>
+       </div></div>`;
+   });
+   html+=`</div>`;
+ });
+ html+=`<div class="note warn"><b>Universal caveats:</b> these empiric choices assume typical adults and shift with local antibiograms, severity (outpatient vs ICU), allergy history, pregnancy, renal/hepatic function, recent antibiotics, and prior resistant isolates. Source control (drainage, catheter removal, surgery) is often as important as the drug. De-escalate to the narrowest effective agent once cultures return.</div>`;
+ return html;
+}
+
+/* ============================================================
+   CIDAL vs STATIC
+   ============================================================ */
+function cidalStatic(){
+ return `<h2 class="sec" id="cidal">Bactericidal vs bacteriostatic &amp; PK/PD</h2>
+ <div class="cardgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px">
+   <div class="classcard t-wall" style="padding:16px 18px"><h3 style="margin:.1em 0 .4em">Bactericidal</h3>
+     <div class="blk">β-lactams, vancomycin, aminoglycosides, fluoroquinolones, daptomycin, metronidazole, rifampin, polymyxins. <b>Preferred</b> in endocarditis, meningitis, neutropenia, osteomyelitis (need killing, not just suppression).</div>
+   </div>
+   <div class="classcard t-protein" style="padding:16px 18px"><h3 style="margin:.1em 0 .4em">Bacteriostatic</h3>
+     <div class="blk">Tetracyclines, macrolides, clindamycin, linezolid, sulfonamides, chloramphenicol. Inhibit growth → host immunity clears. (Context-dependent — some are cidal vs certain organisms.)</div>
+   </div>
+   <div class="classcard t-dna" style="padding:16px 18px"><h3 style="margin:.1em 0 .4em">PK/PD killing</h3>
+     <div class="blk"><b>Concentration-dependent</b> (aminoglycosides, fluoroquinolones, daptomycin): maximize peak/MIC → once-daily, big doses. <b>Time-dependent</b> (β-lactams): maximize time-above-MIC → frequent dosing or extended/continuous infusion. Vancomycin: AUC/MIC.</div>
+   </div>
+ </div>
+ <div class="note"><b>Mnemonic anchor:</b> "We're ECSTaticC about bacteriostatics" — Erythromycin (macrolides), Clindamycin, Sulfonamides, Tetracyclines, Chloramphenicol, (linezolid). The rest are largely cidal.</div>`;
+}
+
+document.getElementById('tab-antibacterial').innerHTML =
+  masterMap()
+  + classSection('wall','Cell-wall agents','Block peptidoglycan synthesis or assembly — the bacterial cell wall has no human equivalent, so these are highly selective. β-lactams inhibit the PBP transpeptidases that crosslink peptidoglycan; glycopeptides bind the D-Ala-D-Ala building block itself.')
+  + classSection('protein','Protein-synthesis inhibitors','Exploit the difference between the bacterial 70S ribosome (30S + 50S) and the human 80S. 30S binders: aminoglycosides (cidal, misreading) and tetracyclines (static, block tRNA). 50S binders: macrolides, clindamycin, linezolid, chloramphenicol.')
+  + classSection('dna','DNA / replication inhibitors','Hit the enzymes that manage and copy bacterial DNA: fluoroquinolones (gyrase/topoisomerase IV), rifamycins (RNA polymerase), and the nitro-agents that generate DNA-damaging radicals in anaerobes.')
+  + classSection('folate','Folate-pathway inhibitors','Bacteria must synthesize folate de novo (humans ingest it) — so blocking sequential steps (sulfonamides at DHPS, trimethoprim at DHFR) is selective and synergistic.')
+  + classSection('membrane','Membrane-active agents','Disrupt the bacterial cell membrane directly: daptomycin depolarizes gram-positive membranes (calcium-dependent), polymyxins act as detergents on the gram-negative outer membrane.')
+  + spectrumTable()
+  + bugDrug()
+  + situations()
+  + cidalStatic();
+
+document.getElementById('foot').innerHTML="Educational synthesis reflecting standard antimicrobial pharmacology and stewardship teaching. Spectra, doses, and choices vary with local resistance/antibiograms, source, severity, age, and renal/hepatic function — verify against current references and stewardship guidance before prescribing. Mechanism diagrams are stylized originals for teaching, not molecular-accurate depictions. Not a prescribing authority.";
+
+
+/* generic class card for antiviral/antifungal */
+function classCardGeneric(c){
+ return `
+   <div class="classcard t-${c.target}">
+     <div class="cchead"><h3>${c.name}</h3><div class="target">Target: ${targetLabel(c.target)}</div></div>
+     <div class="ccbody">
+       <div class="ccfig">${c.fig()}<div class="label">mechanism of action</div></div>
+       <div class="ccinfo">
+         <div class="blk members"><b>Members</b>${c.members}</div>
+         <div class="blk spectrum"><b>Spectrum</b>${c.spectrum}</div>
+         <div class="blk dose"><b>Common dosing</b>${c.dose}</div>
+         <div class="blk se"><b>Side effects / cautions</b>${c.se}</div>
+         ${c.resist?`<div class="blk resist"><b>Resistance</b>${c.resist}</div>`:''}
+         <div class="blk buzz"><b>Board buzzwords</b>${c.buzz}</div>
+       </div>
+     </div>
+   </div>`;
+}
+/* ============================================================
+   ANTIVIRAL MODULE
+   ============================================================ */
+/* master replication-cycle map */
+function avMasterMap(){
+  const W=820,H=440;
+  const stage=(x,y,label,col)=>`<circle cx="${x}" cy="${y}" r="6" fill="${col}"/>`+tx(x+12,y+4,label,col,10,'start',700);
+  const inner=
+    `<rect width="${W}" height="${H}" fill="var(--bg2)"/>`+
+    // host cell
+    `<ellipse cx="410" cy="240" rx="370" ry="180" fill="var(--panelhi)" opacity="0.5"/>`+
+    `<ellipse cx="410" cy="240" rx="370" ry="180" fill="none" stroke="var(--membrane)" stroke-width="2.5"/>`+
+    tx(70,80,"HOST CELL",'var(--membrane)',11,'start',700)+
+    // nucleus
+    `<ellipse cx="470" cy="250" rx="130" ry="95" fill="var(--dna)" opacity="0.10"/>`+
+    `<ellipse cx="470" cy="250" rx="130" ry="95" fill="none" stroke="var(--dna)" stroke-width="2" stroke-dasharray="5 4"/>`+
+    tx(470,170,"NUCLEUS",'var(--dna)',10,'middle',700)+
+    // virion outside
+    `<circle cx="120" cy="200" r="26" fill="var(--wall)" opacity="0.3" stroke="var(--wall)" stroke-width="2"/>`+
+    `<circle cx="120" cy="200" r="13" fill="var(--wall)" opacity="0.5"/>`+
+    tx(120,162,"virion",'var(--wall)',10,'middle',700)+
+    // ===== cycle steps with curved flow =====
+    // 1 attachment/entry
+    `<path d="M148,205 Q185,215 210,235" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#avh)"/>`+
+    stage(170,250,"1 attachment / entry / fusion",'var(--protein)')+
+    // 2 uncoating
+    stage(170,290,"2 uncoating",'var(--protein)')+
+    // 3 genome replication (RT for retro)
+    stage(300,330,"3 reverse transcription (retro) / genome replication",'var(--dna)')+
+    // 4 integration
+    stage(470,330,"4 integration (retro)",'var(--folate)')+
+    // 5 transcription/translation
+    stage(470,300,"5 transcription → viral proteins",'var(--dna)')+
+    // 6 assembly + protease
+    stage(620,250,"6 assembly / protease maturation",'var(--wall)')+
+    // 7 release
+    stage(620,200,"7 budding / release (neuraminidase)",'var(--membrane)')+
+    // drug class pins
+    tx(40,360,"ENTRY/FUSION: enfuvirtide, maraviroc, docosanol",'var(--protein)',9,'start')+
+    tx(40,376,"UNCOATING: amantadine (old flu M2)",'var(--protein)',9,'start')+
+    tx(40,392,"POLYMERASE/RT: acyclovir, ganciclovir, NRTIs, NNRTIs, sofosbuvir, remdesivir, foscarnet",'var(--dna)',9,'start')+
+    tx(40,408,"INTEGRASE: -tegravir (raltegravir, dolutegravir)",'var(--folate)',9,'start')+
+    tx(40,424,"PROTEASE: -navir (HIV), -previr (HCV)   ·   RELEASE: oseltamivir, zanamivir (neuraminidase)",'var(--wall)',9,'start')+
+    `<defs><marker id="avh" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent)"/></marker></defs>`;
+  return `<div class="masterfig">${svg(W,H,inner)}<div class="figcap">Viral replication cycle — antivirals are pinned to the step they block: entry/fusion, uncoating, genome replication (polymerase/reverse transcriptase), integration, protein synthesis, protease maturation, and release. Most antivirals are virustatic — they suppress replication while host immunity clears infection.</div></div>`;
+}
+/* per-class mini diagrams */
+function avFigPolymerase(){
+  return svg(260,180,
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity=".75"><path d="M40,60 H210"/><path d="M40,120 H150"/></g>`+
+    `<circle cx="150" cy="120" r="16" fill="var(--dna)" opacity=".3" stroke="var(--dna)" stroke-width="1.5"/>`+
+    tx(150,124,"pol",'var(--dna)',9,'middle',700)+
+    `<rect x="160" y="108" width="16" height="14" rx="3" fill="var(--accent)"/>`+
+    xmark(168,115,'var(--warn)')+
+    tx(130,44,"nucleoside analog → chain termination",'var(--accent)',9,'middle',700)+
+    tx(130,156,"incorporated → DNA/RNA synthesis stops",'var(--soft)',9,'middle'));
+}
+function avFigRT(){
+  return svg(260,180,
+    `<line x1="40" y1="70" x2="220" y2="70" stroke="var(--gold)" stroke-width="3" opacity=".7"/>`+
+    tx(130,58,"viral RNA",'var(--gold)',9,'middle')+
+    arrowDn(130,78,22,'var(--dna)')+
+    `<circle cx="130" cy="120" r="20" fill="var(--dna)" opacity=".3" stroke="var(--dna)" stroke-width="1.5"/>`+
+    tx(130,124,"RT",'var(--dna)',10,'middle',700)+
+    `<rect x="170" y="112" width="16" height="14" rx="3" fill="var(--accent)"/>`+xmark(178,119,'var(--warn)')+
+    tx(130,160,"NRTI = chain terminator · NNRTI = allosteric",'var(--soft)',9,'middle'));
+}
+function avFigIntegrase(){
+  return svg(260,180,
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity=".7"><path d="M60,50 Q90,90 60,130"/><path d="M100,50 Q70,90 100,130"/></g>`+
+    `<line x1="110" y1="90" x2="180" y2="90" stroke="var(--folate)" stroke-width="3"/>`+
+    `<circle cx="150" cy="90" r="18" fill="var(--folate)" opacity=".3" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(150,93,"INT",'var(--folate)',9,'middle',700)+
+    xmark(150,90,'var(--warn)')+
+    tx(130,44,"integrase inhibitor (-tegravir)",'var(--accent)',9,'middle',700)+
+    tx(130,156,"blocks viral DNA insertion into host genome",'var(--soft)',9,'middle'));
+}
+function avFigProtease(){
+  return svg(260,180,
+    `<rect x="50" y="80" width="160" height="16" rx="6" fill="var(--wall)" opacity=".4"/>`+
+    tx(130,72,"viral polyprotein",'var(--wall)',9,'middle')+
+    `<line x1="110" y1="80" x2="110" y2="96" stroke="var(--bg2)" stroke-width="2"/>`+
+    `<line x1="150" y1="80" x2="150" y2="96" stroke="var(--bg2)" stroke-width="2"/>`+
+    `<circle cx="130" cy="120" r="18" fill="var(--wall)" opacity=".3" stroke="var(--wall)" stroke-width="1.5"/>`+
+    tx(130,124,"PR",'var(--wall)',9,'middle',700)+
+    xmark(130,120,'var(--warn)')+
+    tx(130,44,"protease inhibitor (-navir/-previr)",'var(--accent)',9,'middle',700)+
+    tx(130,150,"no cleavage → immature, non-infectious virions",'var(--soft)',9,'middle'));
+}
+function avFigEntry(){
+  return svg(260,180,
+    `<rect x="30" y="100" width="200" height="14" rx="4" fill="var(--membrane)" opacity=".35" stroke="var(--membrane)" stroke-width="1.5"/>`+
+    tx(130,128,"host cell membrane",'var(--membrane)',9,'middle')+
+    `<circle cx="90" cy="70" r="20" fill="var(--wall)" opacity=".3" stroke="var(--wall)" stroke-width="1.5"/>`+
+    tx(90,52,"virion",'var(--wall)',9,'middle')+
+    // receptor + blocker
+    `<rect x="150" y="86" width="10" height="14" fill="var(--protein)"/>`+
+    `<circle cx="155" cy="74" r="7" fill="var(--accent)"/>`+xmark(155,90,'var(--warn)')+
+    tx(180,56,"CCR5 / fusion blocker",'var(--accent)',9,'middle',700)+
+    tx(130,150,"maraviroc (CCR5), enfuvirtide (gp41 fusion)",'var(--soft)',9,'middle'));
+}
+function avFigNeuraminidase(){
+  return svg(260,180,
+    `<circle cx="110" cy="95" r="34" fill="var(--membrane)" opacity=".25" stroke="var(--membrane)" stroke-width="1.5"/>`+
+    tx(110,98,"host cell",'var(--membrane)',9,'middle')+
+    `<circle cx="170" cy="80" r="14" fill="var(--wall)" opacity=".4" stroke="var(--wall)" stroke-width="1.5"/>`+
+    tx(190,64,"new virion",'var(--wall)',9,'middle')+
+    `<line x1="144" y1="88" x2="158" y2="84" stroke="var(--protein)" stroke-width="3"/>`+
+    `<circle cx="150" cy="86" r="6" fill="var(--accent)"/>`+xmark(150,86,'var(--warn)')+
+    tx(130,40,"neuraminidase inhibitor",'var(--accent)',9,'middle',700)+
+    tx(130,150,"oseltamivir/zanamivir → virions can't detach",'var(--soft)',9,'middle')+
+    tx(130,164,"→ no spread",'var(--soft)',9,'middle'));
+}
+function avFigInterferon(){
+  return svg(260,180,
+    `<circle cx="130" cy="90" r="40" fill="var(--folate)" opacity=".15" stroke="var(--folate)" stroke-width="1.5"/>`+
+    tx(130,94,"host cell",'var(--folate)',10,'middle',700)+
+    `<circle cx="60" cy="60" r="8" fill="var(--accent)"/>`+
+    tx(60,44,"IFN / DAA combo",'var(--accent)',9,'middle',700)+
+    tx(130,150,"upregulates antiviral state (older HCV/HBV)",'var(--soft)',9,'middle')+
+    tx(130,164,"now largely replaced by direct-acting antivirals",'var(--muted)',9,'middle'));
+}
+
+const AV_CLASSES=[
+ {target:'dna',name:'Anti-herpesvirus (acyclovir family)',fig:avFigPolymerase,
+  members:'Acyclovir, valacyclovir (prodrug), famciclovir/penciclovir; ganciclovir/valganciclovir (CMV); cidofovir, foscarnet (resistant CMV/HSV).',
+  spectrum:'HSV-1/2, VZV (acyclovir family); CMV (ganciclovir, foscarnet, cidofovir, letermovir). Acyclovir needs viral thymidine kinase to activate → selective for infected cells.',
+  dose:'Acyclovir 400 mg PO 3–5×/day (HSV) or 800 mg 5×/day (zoster); IV 10 mg/kg q8h (encephalitis/severe). Valacyclovir 1 g PO TID (zoster). Ganciclovir 5 mg/kg IV q12h.',
+  se:'Acyclovir: crystalline nephropathy (hydrate, infuse slowly), neurotoxicity in renal failure. Ganciclovir: myelosuppression (neutropenia). Foscarnet: nephrotoxicity, electrolyte wasting (Ca/Mg/K/PO₄), no marrow tox. Cidofovir: nephrotoxic (give probenecid + hydration).',
+  resist:'Thymidine-kinase mutations (acyclovir resistance → use foscarnet, which doesn\'t need TK activation).',
+  buzz:'Acyclovir needs viral TK to activate → resistance via TK mutation → switch to foscarnet. IV acyclovir for HSV encephalitis (don\'t wait). Hydrate to prevent crystal nephropathy.'},
+ {target:'dna',name:'HIV — reverse transcriptase inhibitors',fig:avFigRT,
+  members:'NRTIs: tenofovir (TDF/TAF), emtricitabine, lamivudine, abacavir, zidovudine. NNRTIs: efavirenz, rilpivirine, doravirine.',
+  spectrum:'HIV (NRTI backbone is the foundation of ART); tenofovir + emtricitabine/lamivudine also anti-HBV. Part of combination ART (never monotherapy).',
+  dose:'Fixed-dose combinations (e.g., tenofovir/emtricitabine once daily as the backbone). PrEP: tenofovir/emtricitabine daily.',
+  se:'NRTIs (class): mitochondrial toxicity → lactic acidosis, lipodystrophy. Tenofovir (TDF): renal + bone loss (TAF safer). Abacavir: hypersensitivity → test HLA-B*57:01 first. Zidovudine: anemia/marrow. NNRTIs: efavirenz CNS/vivid dreams, rash, CYP interactions; rilpivirine needs acid (avoid PPIs).',
+  resist:'Single mutations confer NNRTI resistance (low barrier); NRTI mutations (M184V, TAMs).',
+  buzz:'Test HLA-B*57:01 before abacavir (hypersensitivity). Efavirenz = vivid dreams/neuropsychiatric. Tenofovir → kidneys/bones. NNRTIs have a low resistance barrier.'},
+ {target:'folate',name:'HIV — integrase inhibitors (INSTIs)',fig:avFigIntegrase,
+  members:'Dolutegravir, bictegravir, raltegravir, elvitegravir, cabotegravir (long-acting injectable).',
+  spectrum:'HIV. Now first-line ART anchor (high potency, high resistance barrier, few interactions). Cabotegravir/rilpivirine = long-acting injectable regimen; cabotegravir for PrEP.',
+  dose:'Dolutegravir or bictegravir once daily (often co-formulated with an NRTI backbone). Cabotegravir IM every 1–2 months (LA).',
+  se:'Generally well tolerated; weight gain (INSTI class), insomnia/headache; dolutegravir small neural-tube-defect signal (early data softened) — counsel in pregnancy; cation chelation (separate from antacids/polyvalent cations).',
+  resist:'Higher barrier (dolutegravir/bictegravir) than raltegravir/elvitegravir.',
+  buzz:'INSTIs ("-tegravir") are the modern first-line anchor. Chelated by polyvalent cations (separate dosing). Cabotegravir = long-acting injectable PrEP/treatment.'},
+ {target:'wall',name:'HIV — protease inhibitors',fig:avFigProtease,
+  members:'Darunavir, atazanavir, lopinavir; usually "boosted" with ritonavir or cobicistat (CYP3A4 inhibitors that raise levels).',
+  spectrum:'HIV (high resistance barrier — useful when adherence uncertain or resistance present).',
+  dose:'Boosted PI once/twice daily (e.g., darunavir/cobicistat).',
+  se:'Metabolic: hyperlipidemia, insulin resistance/hyperglycemia, lipodystrophy, GI. Atazanavir → indirect hyperbilirubinemia (benign jaundice). Major CYP3A4 interactions (ritonavir/cobicistat boosting is a double-edged interaction sword).',
+  resist:'High genetic barrier (multiple mutations needed).',
+  buzz:'"-navir" = protease inhibitor. Ritonavir is used as a pharmacokinetic BOOSTER (CYP3A4 inhibition), not for its own antiviral effect. Atazanavir → benign hyperbilirubinemia. PI = metabolic syndrome.'},
+ {target:'protein',name:'HIV — entry / fusion inhibitors',fig:avFigEntry,
+  members:'Maraviroc (CCR5 antagonist), enfuvirtide (gp41 fusion inhibitor, injectable), fostemsavir, ibalizumab.',
+  spectrum:'HIV — salvage/specific roles. Maraviroc requires a tropism assay (only works for CCR5-tropic virus).',
+  dose:'Maraviroc PO BID; enfuvirtide SC BID (injection-site reactions).',
+  se:'Maraviroc: hepatotoxicity; enfuvirtide: injection-site reactions. Niche/salvage agents.',
+  resist:'CXCR4-tropic virus escapes maraviroc (hence tropism testing).',
+  buzz:'Maraviroc needs a tropism test (CCR5 only). Enfuvirtide = the injectable fusion inhibitor. Mostly salvage therapy.'},
+ {target:'membrane',name:'Influenza antivirals',fig:avFigNeuraminidase,
+  members:'Neuraminidase inhibitors: oseltamivir (PO), zanamivir (inhaled), peramivir (IV). Endonuclease inhibitor: baloxavir. (Old M2 blockers amantadine/rimantadine — resistance, not used.)',
+  spectrum:'Influenza A & B. Most effective started within 48 h of symptoms; greatest benefit in severe/hospitalized/high-risk.',
+  dose:'Oseltamivir 75 mg PO BID ×5 d (treatment); 75 mg daily (prophylaxis). Baloxavir single oral dose.',
+  se:'Oseltamivir: GI (nausea/vomiting), rare neuropsychiatric events; zanamivir: bronchospasm (avoid in asthma/COPD).',
+  resist:'Neuraminidase H275Y (oseltamivir); baloxavir PA mutations.',
+  buzz:'Start oseltamivir within 48 h. Zanamivir avoided in reactive airway disease (bronchospasm). Amantadine no longer used for flu (resistance) — but is used in Parkinson\'s.'},
+ {target:'dna',name:'Hepatitis antivirals (HCV/HBV)',fig:avFigPolymerase,
+  members:'HCV direct-acting antivirals: sofosbuvir (NS5B polymerase), ledipasvir/velpatasvir (NS5A), glecaprevir/voxilaprevir ("-previr" NS3/4A protease). HBV: tenofovir, entecavir; pegylated interferon (older).',
+  spectrum:'HCV (DAAs now curative, >95%, oral, 8–12 wk). HBV (long-term suppression with tenofovir/entecavir).',
+  dose:'Combination DAA once daily ×8–12 wk (regimen by genotype/cirrhosis). HBV: tenofovir or entecavir daily, long-term.',
+  se:'DAAs very well tolerated. Key safety: HBV REACTIVATION when treating HCV (screen HBV first); sofosbuvir + amiodarone → bradycardia; protease inhibitors avoided in decompensated cirrhosis. Interferon (historical): flu-like, depression, cytopenias.',
+  resist:'Resistance-associated substitutions (NS5A); retreatment regimens exist.',
+  buzz:'HCV is now curable with oral DAAs. Screen for HBV before HCV treatment (reactivation risk). "-previr" = HCV protease inhibitor. Sofosbuvir + amiodarone = bradycardia.'},
+ {target:'dna',name:'Broad-spectrum / other (incl. remdesivir)',fig:avFigPolymerase,
+  members:'Remdesivir, nirmatrelvir-ritonavir (Paxlovid — protease inhibitor), molnupiravir (SARS-CoV-2); ribavirin (RSV severe, HCV-adjunct historically, viral hemorrhagic fevers).',
+  spectrum:'SARS-CoV-2 (remdesivir IV; nirmatrelvir-ritonavir oral early, high-risk); ribavirin broad RNA antiviral (toxic).',
+  dose:'Remdesivir IV course; nirmatrelvir-ritonavir 5-day oral course (start early in high-risk COVID).',
+  se:'Remdesivir: transaminitis, infusion reaction. Nirmatrelvir-ritonavir: major CYP3A4 drug interactions (the ritonavir component) — screen the med list. Ribavirin: hemolytic anemia + TERATOGEN (pregnancy contraindicated, both partners).',
+  resist:'Variable.',
+  buzz:'Ribavirin = teratogenic + hemolytic anemia. Paxlovid = nirmatrelvir + ritonavir → check drug interactions (ritonavir boost). Start COVID antivirals early in high-risk patients.'}
+];
+
+function avSpectrum(){
+ const rows=[
+  ['Acyclovir / valacyclovir','HSV-1/2, VZV','TK-dependent; crystal nephropathy'],
+  ['Ganciclovir / valganciclovir','CMV','myelosuppression'],
+  ['Foscarnet','resistant CMV/HSV','no TK needed; nephro + electrolytes'],
+  ['Oseltamivir','influenza A/B','start <48 h'],
+  ['Baloxavir','influenza A/B','single dose'],
+  ['NRTI backbone (tenofovir/emtricitabine)','HIV (+HBV)','mito tox; PrEP'],
+  ['NNRTI (efavirenz)','HIV','low barrier; CNS'],
+  ['INSTI (dolutegravir/bictegravir)','HIV','first-line anchor'],
+  ['PI (darunavir, boosted)','HIV','metabolic; CYP'],
+  ['Sofosbuvir-based DAA','HCV (cure)','screen HBV first'],
+  ['Tenofovir / entecavir','HBV','long-term suppression'],
+  ['Remdesivir','SARS-CoV-2 (inpatient)','transaminitis'],
+  ['Nirmatrelvir-ritonavir','SARS-CoV-2 (early, high-risk)','CYP3A4 interactions'],
+  ['Ribavirin','RSV(severe)/VHF/HCV-adjunct','hemolysis + teratogen']
+ ];
+ const head=`<tr><th>Agent</th><th>Primary use</th><th>Key consideration</th></tr>`;
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td style="color:var(--soft)">${r[1]}</td><td style="color:var(--soft)">${r[2]}</td></tr>`).join('');
+ return `<h2 class="sec">Antiviral quick reference</h2>
+  <p class="seclead">Most antivirals are narrow and virus-specific (unlike broad antibacterials) and are virustatic — they suppress while host immunity clears. The exceptions and the toxicities are what boards test.</p>
+  <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+  <div class="note buzz"><b>HIV regimen logic:</b> standard ART = 2 NRTIs (backbone) + a third agent, now usually an <b>INSTI</b> (dolutegravir/bictegravir) for potency, tolerability, and high resistance barrier. PrEP = tenofovir/emtricitabine (or cabotegravir LA). Post-exposure prophylaxis = 3-drug ART ×28 days started ASAP.</div>`;
+}
+
+/* coverage matrix */
+function avMatrix(){
+ const rows=[
+  ['Acyclovir / valacyclovir','yes','yes','no','no','no','no','TK-activated'],
+  ['Ganciclovir / valganciclovir','part','part','yes','no','no','no','marrow tox'],
+  ['Foscarnet','yes','yes','yes','no','no','no','no TK needed'],
+  ['Oseltamivir / baloxavir','no','no','no','yes','no','no','start <48 h'],
+  ['NRTI backbone','no','no','no','no','yes','part','+HBV (tenofovir)'],
+  ['NNRTI','no','no','no','no','yes','no','low barrier'],
+  ['INSTI (-tegravir)','no','no','no','no','yes','no','1st-line anchor'],
+  ['Protease inhibitor (-navir)','no','no','no','no','yes','no','boosted; metabolic'],
+  ['Sofosbuvir-based DAA','no','no','no','no','no','yes','HCV cure'],
+  ['Tenofovir / entecavir','no','no','no','no','part','yes','HBV suppress'],
+  ['Remdesivir / nirmatrelvir','no','no','no','no','no','no','SARS-CoV-2'],
+  ['Ribavirin','no','no','no','part','no','part','broad/toxic']
+ ];
+ const head=`<tr><th>Agent</th><th>HSV</th><th>VZV</th><th>CMV</th><th>Influenza</th><th>HIV</th><th>Hepatitis</th><th>Note</th></tr>`;
+ const cell=v=>v==='yes'?'<span class="yes">✓</span>':v==='part'?'<span class="part">±</span>':'<span class="no">—</span>';
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td>${cell(r[1])}</td><td>${cell(r[2])}</td><td>${cell(r[3])}</td><td>${cell(r[4])}</td><td>${cell(r[5])}</td><td>${cell(r[6])}</td><td style="color:var(--soft)">${r[7]}</td></tr>`).join('');
+ return `<h2 class="sec">Antiviral coverage at a glance</h2>
+  <p class="seclead">Antivirals are virus-specific — the grid maps agent to viral family. (COVID agents omitted from family columns — SARS-CoV-2 specific.)</p>
+  <div class="legend"><span><i style="background:var(--good)"></i>✓ active</span><span><i style="background:var(--gold)"></i>± partial/specific</span><span><i style="background:var(--faint)"></i>— no</span></div>
+  <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+/* virus-drug matching */
+function avBugDrug(){
+ const B=[
+  ['HSV encephalitis','IV acyclovir 10 mg/kg q8h — start empirically, do NOT wait for confirmation.'],
+  ['HSV (genital/orolabial)','Valacyclovir or acyclovir PO; episodic or suppressive.'],
+  ['Varicella / herpes zoster','Valacyclovir 1 g TID (zoster) within 72 h; IV acyclovir if disseminated/immunocompromised.'],
+  ['CMV (retinitis, colitis, viremia)','Valganciclovir (PO) / ganciclovir (IV); foscarnet for resistant or marrow-limited.'],
+  ['Influenza A/B','Oseltamivir (start <48 h) or baloxavir; treat severe/high-risk regardless of timing.'],
+  ['HIV (treatment-naïve)','2 NRTIs + INSTI (e.g., bictegravir/tenofovir-alafenamide/emtricitabine).'],
+  ['HIV PrEP','Tenofovir/emtricitabine daily, or cabotegravir LA injectable.'],
+  ['HIV PEP','3-drug ART ×28 days, start ASAP (<72 h).'],
+  ['Hepatitis C','Oral DAA combination 8–12 wk (genotype/cirrhosis-guided) — curative. Screen HBV first.'],
+  ['Hepatitis B','Tenofovir or entecavir, long-term suppression.'],
+  ['COVID-19 (high-risk, early)','Nirmatrelvir-ritonavir (check interactions) or remdesivir; remdesivir IV for hospitalized.'],
+  ['RSV (severe, selected)','Ribavirin (limited use); supportive care mainstay.']
+ ];
+ return `<h2 class="sec">Virus-drug matching — the empiric reflexes</h2>
+  <p class="seclead">The clinical syndrome → first-choice antiviral associations.</p>
+  <div class="gridwrap"><table class="cmp"><thead><tr><th>Virus / scenario</th><th>Go-to agent(s)</th></tr></thead>
+  <tbody>${B.map(b=>`<tr><th>${b[0]}</th><td style="color:var(--soft)">${b[1]}</td></tr>`).join('')}</tbody></table></div>
+  <div class="note buzz"><b>Time-critical reflexes:</b> suspected HSV encephalitis → IV acyclovir <em>now</em> (don't await PCR); influenza antivirals work best <48 h; HIV PEP within 72 h (sooner is better); zoster antivirals within 72 h of rash. Screen for HBV before treating HCV (reactivation).</div>`;
+}
+/* empiric by situation */
+function avSituations(){
+ const S=[
+  {dx:'Suspected HSV encephalitis',first:'IV acyclovir 10 mg/kg q8h empirically while awaiting CSF PCR/MRI.',note:'Mortality/morbidity rise with delay — treat first, confirm later; hydrate (crystal nephropathy).'},
+  {dx:'Dermatomal zoster (immunocompetent)',first:'Valacyclovir 1 g PO TID ×7 d, ideally within 72 h of rash.',note:'Reduces acute pain & post-herpetic neuralgia; IV + admit if disseminated/ophthalmic/immunocompromised.'},
+  {dx:'Influenza (high-risk or hospitalized)',first:'Oseltamivir 75 mg PO BID ×5 d; start regardless of duration if severe.',note:'Greatest benefit <48 h; zanamivir avoided in reactive airway disease.'},
+  {dx:'Newly diagnosed HIV',first:'Start 2 NRTI + INSTI promptly (rapid-start ART); baseline labs, resistance, HLA-B*57:01 if abacavir considered.',note:'Same-day initiation increasingly standard; INSTI anchor for potency/tolerability.'},
+  {dx:'Occupational/sexual HIV exposure (PEP)',first:'3-drug ART (e.g., tenofovir/emtricitabine + dolutegravir) ×28 d, start <72 h.',note:'Sooner is better; baseline + follow-up HIV testing.'},
+  {dx:'CMV in transplant/immunocompromised',first:'Valganciclovir PO (or IV ganciclovir); foscarnet if resistant or cytopenic.',note:'Monitor counts (ganciclovir marrow tox) vs renal/electrolytes (foscarnet).'},
+  {dx:'COVID-19, high-risk outpatient, early',first:'Nirmatrelvir-ritonavir 5-day course (screen drug interactions) within 5 days of symptoms.',note:'Ritonavir CYP3A4 interactions — review the full med list; remdesivir alternative.'},
+  {dx:'Chronic hepatitis C',first:'Pan-genotypic oral DAA (e.g., sofosbuvir/velpatasvir) 12 wk.',note:'>95% cure; screen/monitor HBV (reactivation); check for decompensation (avoid protease inhibitors).'}
+ ];
+ return `<h2 class="sec">Antivirals by clinical situation</h2>
+  <p class="seclead">Common presentations and the empiric antiviral starting point. Verify against current guidelines, resistance, and the patient's immune status.</p>
+  <div class="cardgrid wide">${S.map(it=>`
+   <div class="classcard" style="border-top-color:var(--accent);padding:0">
+     <div class="cchead" style="padding:14px 18px 6px"><h3 style="font-size:1.02rem">${it.dx}</h3></div>
+     <div class="ccinfo" style="padding:6px 18px 16px">
+       <div class="blk dose"><b>First-line empiric</b>${it.first}</div>
+       <div class="blk buzz"><b>Key point</b>${it.note}</div>
+     </div></div>`).join('')}</div>`;
+}
+
+function antiviralModule(){
+ return avMasterMap()
+  + `<h2 class="sec">Antiviral classes by target</h2><p class="seclead">Grouped by the replication step they block. "-vir" is the universal antiviral stem; the sub-stems localize the target: -ciclovir (DNA polymerase), -tegravir (integrase), -navir/-previr (protease), -tabine/-tenofovir (RT).</p>`
+  + AV_CLASSES.map(c=>classCardGeneric(c)).join('')
+  + avMatrix()
+  + avBugDrug()
+  + avSituations()
+  + avSpectrum();
+}
+/* ============================================================
+   ANTIFUNGAL MODULE
+   ============================================================ */
+function afMasterMap(){
+  const W=820,H=460;
+  const inner=
+    `<rect width="${W}" height="${H}" fill="var(--bg2)"/>`+
+    // fungal cell body
+    `<circle cx="410" cy="230" r="195" fill="var(--panelhi)" opacity="0.5"/>`+
+    // cell wall (β-glucan + chitin) — outermost
+    `<circle cx="410" cy="230" r="195" fill="none" stroke="var(--wall)" stroke-width="6" opacity="0.8"/>`+
+    tx(410,22,"CELL WALL — β-(1,3)-glucan + chitin (no human equivalent)",'var(--wall)',11,'middle',700)+
+    // membrane (ergosterol)
+    `<circle cx="410" cy="230" r="176" fill="none" stroke="var(--membrane)" stroke-width="3"/>`+
+    // membrane zoom callout
+    `<line x1="586" y1="230" x2="700" y2="150" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>`+
+    `<rect x="600" y="120" width="200" height="60" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1"/>`+
+    `<rect x="612" y="134" width="120" height="10" rx="3" fill="var(--membrane)" opacity="0.55"/>`+
+    tx(740,143,"ergosterol",'var(--membrane)',9)+
+    tx(612,166,"fungal sterol (vs human cholesterol)",'var(--membrane)',8)+
+    // nucleus + DNA
+    `<ellipse cx="410" cy="230" rx="80" ry="64" fill="var(--dna)" opacity="0.10" stroke="var(--dna)" stroke-width="1.5" stroke-dasharray="5 4"/>`+
+    tx(410,234,"nucleus / DNA-RNA",'var(--dna)',10,'middle',700)+
+    // microtubules
+    `<g stroke="var(--protein)" stroke-width="2" opacity=".7"><line x1="350" y1="300" x2="470" y2="320"/><line x1="360" y1="320" x2="460" y2="300"/></g>`+
+    tx(410,345,"microtubules (mitosis)",'var(--protein)',9,'middle')+
+    // class pins
+    tx(40,400,"AZOLES & ALLYLAMINES → ergosterol SYNTHESIS (membrane)",'var(--membrane)',10,'start',700)+
+    tx(40,416,"POLYENES (amphotericin) → BIND ergosterol → membrane pores",'var(--membrane)',10,'start')+
+    tx(40,432,"ECHINOCANDINS → β-(1,3)-glucan synthase (CELL WALL)",'var(--wall)',10,'start',700)+
+    tx(40,448,"FLUCYTOSINE → DNA/RNA   ·   GRISEOFULVIN → microtubules",'var(--dna)',10,'start');
+  return `<div class="masterfig">${svg(W,H,inner)}<div class="figcap">Fungal cell — the antifungal targets exploit fungal-specific structures: the ergosterol membrane (azoles inhibit its synthesis, polyenes bind it directly), the β-glucan cell wall (echinocandins), and nucleic-acid/microtubule machinery (flucytosine, griseofulvin). Ergosterol is to fungi what cholesterol is to humans — the selectivity, and the toxicity, both come from how cleanly a drug distinguishes them.</div></div>`;
+}
+function afFigAzole(){
+  return svg(260,180,
+    `<rect x="30" y="70" width="60" height="22" rx="5" fill="var(--membrane)" opacity=".25" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(60,84,"lanosterol",'var(--membrane)',8,'middle')+
+    `<line x1="92" y1="81" x2="150" y2="81" stroke="var(--membrane)" stroke-width="2"/>`+
+    `<circle cx="121" cy="81" r="14" fill="var(--membrane)" opacity=".3" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(121,84,"14α",'var(--membrane)',8,'middle')+
+    xmark(121,81,'var(--warn)')+
+    tx(121,56,"azole",'var(--accent)',9,'middle',700)+
+    `<rect x="170" y="70" width="64" height="22" rx="5" fill="var(--membrane)" opacity=".3" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(202,84,"ergosterol",'var(--membrane)',8,'middle')+
+    tx(130,130,"inhibits 14α-demethylase (CYP)",'var(--soft)',9,'middle')+
+    tx(130,146,"→ no ergosterol → leaky membrane",'var(--soft)',9,'middle')+
+    tx(130,162,"(also inhibits human CYP → interactions)",'var(--warn)',8,'middle'));
+}
+function afFigPolyene(){
+  return svg(260,180,
+    `<rect x="40" y="80" width="180" height="18" rx="4" fill="var(--membrane)" opacity=".35" stroke="var(--membrane)" stroke-width="1.5"/>`+
+    tx(130,72,"ergosterol membrane",'var(--membrane)',9,'middle')+
+    // pore
+    `<rect x="120" y="78" width="20" height="22" rx="2" fill="var(--bg2)" stroke="var(--accent)" stroke-width="2"/>`+
+    tx(130,44,"amphotericin / nystatin",'var(--accent)',9,'middle',700)+
+    `<path d="M130,60 L130,78" stroke="var(--accent)" stroke-width="2"/>`+
+    tx(130,128,"binds ergosterol → punches pores",'var(--soft)',9,'middle')+
+    tx(130,144,"→ K⁺/ion leak → cell death (fungicidal)",'var(--soft)',9,'middle')+
+    tx(130,162,"cross-binds cholesterol → nephrotoxicity",'var(--warn)',8,'middle'));
+}
+function afFigEchino(){
+  return svg(260,180,
+    `<line x1="30" y1="70" x2="230" y2="70" stroke="var(--wall)" stroke-width="5" opacity=".7"/>`+
+    `<line x1="30" y1="110" x2="230" y2="110" stroke="var(--wall)" stroke-width="5" opacity=".7"/>`+
+    `<circle cx="130" cy="90" r="18" fill="var(--wall)" opacity=".3" stroke="var(--wall)" stroke-width="1.5"/>`+
+    tx(130,93,"GS",'var(--wall)',9,'middle',700)+
+    `<rect x="118" y="52" width="24" height="14" rx="3" fill="var(--accent)"/>`+
+    tx(130,44,"echinocandin",'var(--accent)',9,'middle',700)+
+    xmark(130,90,'var(--warn)')+
+    tx(130,140,"inhibits β-(1,3)-glucan synthase",'var(--soft)',9,'middle')+
+    tx(130,156,"→ defective cell wall (no human target)",'var(--soft)',9,'middle'));
+}
+function afFigFlucytosine(){
+  return svg(260,180,
+    `<g stroke="var(--dna)" stroke-width="3" fill="none" opacity=".7"><path d="M90,50 Q120,90 90,130"/><path d="M130,50 Q100,90 130,130"/></g>`+
+    `<circle cx="175" cy="70" r="8" fill="var(--accent)"/>`+
+    tx(185,52,"5-FC → 5-FU",'var(--accent)',9,'middle',700)+
+    `<line x1="100" y1="88" x2="120" y2="92" stroke="var(--warn)" stroke-width="3"/>`+
+    tx(130,150,"converted to 5-FU → disrupts DNA/RNA",'var(--soft)',9,'middle')+
+    tx(130,164,"always combined (resistance) · marrow tox",'var(--warn)',8,'middle'));
+}
+function afFigAllylamine(){
+  return svg(260,180,
+    `<rect x="30" y="76" width="56" height="22" rx="5" fill="var(--membrane)" opacity=".25" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(58,90,"squalene",'var(--membrane)',8,'middle')+
+    `<circle cx="118" cy="87" r="15" fill="var(--membrane)" opacity=".3" stroke="var(--membrane)" stroke-width="1.2"/>`+
+    tx(118,90,"SE",'var(--membrane)',8,'middle')+xmark(118,87,'var(--warn)')+
+    tx(118,60,"terbinafine",'var(--accent)',9,'middle',700)+
+    tx(130,134,"inhibits squalene epoxidase",'var(--soft)',9,'middle')+
+    tx(130,150,"→ toxic squalene buildup + no ergosterol",'var(--soft)',9,'middle')+
+    tx(130,166,"dermatophytes (onychomycosis)",'var(--muted)',8,'middle'));
+}
+function afFigGriseo(){
+  return svg(260,180,
+    `<g stroke="var(--protein)" stroke-width="2.5" opacity=".7"><line x1="70" y1="70" x2="190" y2="80"/><line x1="70" y1="100" x2="190" y2="90"/></g>`+
+    `<circle cx="130" cy="85" r="8" fill="var(--accent)"/>`+xmark(130,85,'var(--warn)')+
+    tx(130,52,"griseofulvin",'var(--accent)',9,'middle',700)+
+    tx(130,138,"disrupts microtubules → mitosis block",'var(--soft)',9,'middle')+
+    tx(130,154,"deposits in keratin (skin/hair/nails)",'var(--soft)',9,'middle'));
+}
+
+const AF_CLASSES=[
+ {target:'membrane',name:'Azoles',fig:afFigAzole,
+  members:'Fluconazole, itraconazole, voriconazole, posaconazole, isavuconazole (triazoles); ketoconazole, clotrimazole, miconazole (topical/older imidazoles).',
+  spectrum:'Broad: Candida (fluconazole — but not great vs C. glabrata/krusei), Cryptococcus (fluconazole consolidation/maintenance), Aspergillus (voriconazole = first-line; isavuconazole, posaconazole), endemic/dimorphic (itraconazole — histo, blasto), mucormycosis (isavuconazole, posaconazole). Voriconazole NOT for mucor.',
+  dose:'Fluconazole 100–400 mg daily (800 mg load); voriconazole weight-based load then maintenance with level monitoring; itraconazole with food/acid for absorption.',
+  se:'Hepatotoxicity, QT prolongation (except isavuconazole, which SHORTENS QT), CYP450 inhibition → major drug interactions (the azole hallmark). Voriconazole: visual disturbances/photopsia, photosensitivity/skin cancer, periostitis, hallucinations, needs levels. Itraconazole: negative inotrope (avoid in CHF).',
+  resist:'Efflux pumps, target (ERG11) mutations; intrinsic in some Candida species.',
+  buzz:'Voriconazole = first-line invasive aspergillosis (+ visual disturbances). Azoles = CYP inhibitors → interaction minefield. Fluconazole penetrates CSF/urine (cryptococcal, Candida UTI). Isavuconazole shortens QT (others prolong).'},
+ {target:'membrane',name:'Polyenes',fig:afFigPolyene,
+  members:'Amphotericin B (deoxycholate; lipid formulations — liposomal less nephrotoxic); nystatin (topical/oral thrush only).',
+  spectrum:'Broadest — Candida, Cryptococcus (induction, with flucytosine), Aspergillus, mucormycosis, endemic fungi, severe/systemic disease. Fungicidal.',
+  dose:'Liposomal amphotericin B 3–5 mg/kg/day IV (preferred over deoxycholate for toxicity). Nystatin swish-and-swallow for oral candidiasis.',
+  se:'Infusion reactions (fever/rigors — "shake and bake"), DOSE-LIMITING nephrotoxicity (afferent vasoconstriction, ATN), electrolyte wasting (K⁺, Mg²⁺ — replete), normochromic anemia. Pre-hydrate with saline; lipid formulations reduce renal toxicity.',
+  resist:'Intrinsic in some species (e.g., Aspergillus terreus, some Candida).',
+  buzz:'"Amphoterrible" — nephrotoxicity + K/Mg wasting + infusion "shake and bake." Liposomal formulation for less renal toxicity. Ampho + flucytosine = cryptococcal meningitis induction.'},
+ {target:'wall',name:'Echinocandins',fig:afFigEchino,
+  members:'Caspofungin, micafungin, anidulafungin; rezafungin (long-acting).',
+  spectrum:'Candida (first-line for candidemia/invasive candidiasis, incl. azole-resistant glabrata/krusei), Aspergillus (salvage/adjunct). NOT Cryptococcus, NOT mucor, poor CNS/urine penetration.',
+  dose:'Micafungin 100 mg IV daily; caspofungin 70 mg load then 50 mg daily; anidulafungin 200 mg load then 100 mg daily.',
+  se:'Very well tolerated — the safest class (no significant renal/CYP issues); minor histamine/infusion effects, mild transaminitis. Caspofungin has some interactions.',
+  resist:'FKS gene mutations (rising in some Candida, esp. C. glabrata); C. auris variable.',
+  buzz:'Echinocandins = first-line for candidemia and the SAFEST antifungal class. No CNS/urinary penetration (not for fungal meningitis/UTI). No coverage of Cryptococcus or mucor. "-fungin."'},
+ {target:'membrane',name:'Allylamines',fig:afFigAllylamine,
+  members:'Terbinafine; naftifine (topical).',
+  spectrum:'Dermatophytes — onychomycosis (nail), tinea. Inhibits squalene epoxidase (earlier in ergosterol synthesis than azoles).',
+  dose:'Terbinafine 250 mg PO daily ×6 wk (fingernail) to 12 wk (toenail).',
+  se:'Hepatotoxicity (baseline LFTs for systemic course), taste disturbance, rare cytopenias; relatively few interactions vs azoles.',
+  resist:'Uncommon; emerging dermatophyte resistance reported.',
+  buzz:'Terbinafine = oral onychomycosis (check LFTs). Squalene epoxidase inhibitor (toxic squalene accumulation is the fungicidal mechanism).'},
+ {target:'dna',name:'Flucytosine (5-FC)',fig:afFigFlucytosine,
+  members:'Flucytosine (5-flucytosine).',
+  spectrum:'Cryptococcus and Candida — ALWAYS in combination (with amphotericin for cryptococcal meningitis induction); rapid resistance as monotherapy.',
+  dose:'25 mg/kg PO QID (with amphotericin B), renally dosed, with level monitoring.',
+  se:'Bone-marrow suppression (dose/level-related — converted to 5-FU), hepatotoxicity, GI; needs level monitoring and renal dose adjustment.',
+  resist:'Rapid if used alone → never monotherapy.',
+  buzz:'Flucytosine + amphotericin B = cryptococcal meningitis induction. Converted to 5-FU → marrow toxicity. Never monotherapy (resistance).'},
+ {target:'protein',name:'Griseofulvin',fig:afFigGriseo,
+  members:'Griseofulvin.',
+  spectrum:'Dermatophytes — historically tinea capitis (children); largely superseded by terbinafine/azoles.',
+  dose:'Microsize/ultramicrosize PO daily with fatty meal, prolonged course.',
+  se:'Headache, GI, CYP inducer (lowers OCP/warfarin), disulfiram-like reaction, photosensitivity; deposits in keratin precursor cells.',
+  resist:'—',
+  buzz:'Griseofulvin deposits in keratin (binds microtubules); classic for tinea capitis. CYP inducer; disulfiram-like reaction with alcohol.'}
+];
+
+function afSpectrum(){
+ const rows=[
+  ['Candida (invasive/candidemia)','Echinocandin (1st-line); fluconazole if stable/susceptible; ampho for severe'],
+  ['Candida (azole-resistant: glabrata, krusei, auris)','Echinocandin'],
+  ['Cryptococcus (meningitis)','Liposomal amphotericin B + flucytosine (induction) → fluconazole'],
+  ['Aspergillus (invasive)','Voriconazole (1st-line); isavuconazole/posaconazole; echinocandin salvage'],
+  ['Mucormycosis','Liposomal amphotericin B + surgery; isavuconazole/posaconazole (NOT voriconazole)'],
+  ['Dimorphic/endemic (histo, blasto, cocci)','Itraconazole (mild–mod); amphotericin (severe)'],
+  ['Dermatophytes (onychomycosis, tinea)','Terbinafine (oral); topical azoles/allylamines'],
+  ['Oral/esophageal thrush','Nystatin/clotrimazole (oral); fluconazole (esophageal)'],
+  ['Vulvovaginal candidiasis','Topical azole or single-dose fluconazole'],
+  ['Pneumocystis (PJP) — a fungus, treated differently','TMP-SMX (not the classic antifungals) ± steroids']
+ ];
+ const head=`<tr><th>Organism / situation</th><th>Go-to therapy</th></tr>`;
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td style="color:var(--soft)">${r[1]}</td></tr>`).join('');
+ return `<h2 class="sec">Antifungal coverage &amp; empiric matching</h2>
+  <p class="seclead">Match the bug class to the target: most invasive Candida → echinocandin; Aspergillus → voriconazole; Cryptococcus → amphotericin + flucytosine; mucor → amphotericin + surgery (and NOT voriconazole).</p>
+  <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+  <div class="note buzz"><b>High-yield separations:</b> Echinocandins miss Cryptococcus and mucor (and don't reach CNS/urine). Voriconazole covers Aspergillus but NOT mucor — and mucor needs amphotericin + surgical debridement. Flucytosine and griseofulvin are never solo. PJP is a fungus but is treated with TMP-SMX, not the standard antifungals.</div>`;
+}
+
+/* coverage matrix */
+function afMatrix(){
+ const rows=[
+  ['Fluconazole','part','no','yes','no','part','CNS+urine penetration'],
+  ['Voriconazole','yes','yes','part','no','yes','1st-line Aspergillus'],
+  ['Posaconazole / isavuconazole','yes','yes','part','yes','yes','mold-active (incl. mucor)'],
+  ['Itraconazole','part','part','part','no','yes','endemic/dimorphic'],
+  ['Amphotericin B (liposomal)','yes','yes','yes','yes','yes','broadest; toxic'],
+  ['Echinocandins','yes','yes','no','no','part','safest; not CNS/urine'],
+  ['Flucytosine (+ ampho)','part','no','yes','no','no','Crypto combo only'],
+  ['Terbinafine','no','no','no','no','no','dermatophytes'],
+  ['Nystatin (topical)','yes','no','no','no','no','thrush only']
+ ];
+ const head=`<tr><th>Agent</th><th>Candida</th><th>Aspergillus</th><th>Cryptococcus</th><th>Mucor</th><th>Endemic*</th><th>Note</th></tr>`;
+ const cell=v=>v==='yes'?'<span class="yes">✓</span>':v==='part'?'<span class="part">±</span>':'<span class="no">—</span>';
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td>${cell(r[1])}</td><td>${cell(r[2])}</td><td>${cell(r[3])}</td><td>${cell(r[4])}</td><td>${cell(r[5])}</td><td style="color:var(--soft)">${r[6]}</td></tr>`).join('');
+ return `<h2 class="sec">Antifungal coverage matrix</h2>
+  <p class="seclead">The clinically decisive gaps: echinocandins miss Cryptococcus/mucor and don't reach CNS/urine; voriconazole misses mucor; fluconazole is weak against some Candida (glabrata/krusei) and all molds. *Endemic = histo/blasto/cocci.</p>
+  <div class="legend"><span><i style="background:var(--good)"></i>✓ reliable</span><span><i style="background:var(--gold)"></i>± partial/species-dependent</span><span><i style="background:var(--faint)"></i>— no</span></div>
+  <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+/* fungus-drug matching */
+function afBugDrug(){
+ const B=[
+  ['Candidemia / invasive candidiasis','Echinocandin (micafungin/caspofungin/anidulafungin) first-line; step down to fluconazole if susceptible & stable.'],
+  ['Candida glabrata / krusei (azole-resistant)','Echinocandin (fluconazole unreliable).'],
+  ['Candida auris','Echinocandin (often multidrug-resistant — check susceptibilities).'],
+  ['Oropharyngeal thrush','Nystatin or clotrimazole (topical); fluconazole if extensive.'],
+  ['Esophageal candidiasis','Fluconazole (systemic).'],
+  ['Vulvovaginal candidiasis','Topical azole or single-dose fluconazole.'],
+  ['Cryptococcal meningitis','Liposomal amphotericin B + flucytosine (induction) → fluconazole (consolidation/maintenance).'],
+  ['Invasive aspergillosis','Voriconazole first-line (or isavuconazole); echinocandin/ampho as salvage/combo.'],
+  ['Mucormycosis','Liposomal amphotericin B + urgent surgical debridement; isavuconazole/posaconazole (NOT voriconazole).'],
+  ['Endemic/dimorphic (histo, blasto, cocci)','Itraconazole (mild–moderate); amphotericin B (severe/CNS).'],
+  ['Dermatophyte onychomycosis','Oral terbinafine (check LFTs); tinea capitis → terbinafine/griseofulvin.'],
+  ['Pneumocystis (PJP)','TMP-SMX (a fungus, but NOT treated with standard antifungals) ± steroids if hypoxic.']
+ ];
+ return `<h2 class="sec">Fungus-drug matching — the empiric reflexes</h2>
+  <p class="seclead">Organism/site → first-choice antifungal. Source control (line removal, debridement) is often decisive.</p>
+  <div class="gridwrap"><table class="cmp"><thead><tr><th>Organism / site</th><th>Go-to therapy</th></tr></thead>
+  <tbody>${B.map(b=>`<tr><th>${b[0]}</th><td style="color:var(--soft)">${b[1]}</td></tr>`).join('')}</tbody></table></div>
+  <div class="note buzz"><b>The separations boards test:</b> candidemia → echinocandin + remove the line; Aspergillus → voriconazole; Cryptococcus → ampho + flucytosine; mucor → ampho + surgery and never voriconazole; echinocandins don't treat meningitis or UTI (no CNS/urine levels); PJP is a fungus treated with TMP-SMX.</div>`;
+}
+/* empiric by situation */
+function afSituations(){
+ const S=[
+  {dx:'Candidemia (positive blood culture)',first:'Echinocandin (e.g., micafungin 100 mg IV daily) + REMOVE/exchange central line; ophtho exam for endophthalmitis.',note:'Step down to fluconazole when stable & susceptible; treat ≥14 days from first negative culture.'},
+  {dx:'Febrile neutropenia, persistent fever',first:'Empiric antifungal after 4–7 d of persistent fever on broad antibacterials: echinocandin or liposomal amphotericin B.',note:'Cover Candida and molds in the prolonged-neutropenic host; CT chest/sinuses for invasive mold.'},
+  {dx:'Cryptococcal meningitis',first:'Induction: liposomal amphotericin B + flucytosine ×≥2 wk → fluconazole consolidation/maintenance.',note:'Manage raised ICP with serial LPs; flucytosine needs level/marrow monitoring.'},
+  {dx:'Invasive pulmonary aspergillosis',first:'Voriconazole (with level monitoring) or isavuconazole first-line.',note:'Voriconazole interactions (CYP) + visual/photosensitivity; reverse immunosuppression where possible.'},
+  {dx:'Suspected mucormycosis (rhino-orbital, diabetic/immunocompromised)',first:'Emergent liposomal amphotericin B + urgent surgical debridement; isavuconazole/posaconazole adjunct/step-down.',note:'Surgical emergency; do NOT rely on voriconazole (no mucor activity); control hyperglycemia/acidosis.'},
+  {dx:'Esophageal candidiasis (e.g., HIV/AIDS)',first:'Fluconazole 200–400 mg daily ×14–21 d; echinocandin/ampho if refractory.',note:'Often an AIDS-defining presentation — check HIV status/CD4.'},
+  {dx:'Onychomycosis / tinea',first:'Oral terbinafine (nails); topical azole/allylamine for limited tinea.',note:'Baseline LFTs for systemic terbinafine; confirm diagnosis before long courses.'},
+  {dx:'Oral thrush',first:'Nystatin swish-and-swallow or clotrimazole troches; fluconazole if extensive/immunocompromised.',note:'Recurrent/extensive thrush → evaluate for immunosuppression/HIV.'}
+ ];
+ return `<h2 class="sec">Antifungals by clinical situation</h2>
+  <p class="seclead">Common presentations and the empiric antifungal starting point — with the source-control and monitoring caveats that decide outcomes.</p>
+  <div class="cardgrid wide">${S.map(it=>`
+   <div class="classcard" style="border-top-color:var(--accent);padding:0">
+     <div class="cchead" style="padding:14px 18px 6px"><h3 style="font-size:1.02rem">${it.dx}</h3></div>
+     <div class="ccinfo" style="padding:6px 18px 16px">
+       <div class="blk dose"><b>First-line empiric</b>${it.first}</div>
+       <div class="blk buzz"><b>Key point</b>${it.note}</div>
+     </div></div>`).join('')}</div>`;
+}
+
+function antifungalModule(){
+ return afMasterMap()
+  + `<h2 class="sec">Antifungal classes by target</h2><p class="seclead">Selectivity comes from fungal-specific structures: the ergosterol membrane and the β-glucan/chitin wall (no human equivalent). The closer a target is to a human one (ergosterol vs cholesterol), the more the toxicity — which is why amphotericin is potent but "amphoterrible," and echinocandins (wall-targeted) are the safest.</p>`
+  + AF_CLASSES.map(c=>classCardGeneric(c)).join('')
+  + afMatrix()
+  + afBugDrug()
+  + afSituations()
+  + afSpectrum();
+}
+
+/* render antiviral + antifungal domains */
+document.getElementById('tab-antiviral').innerHTML = antiviralModule();
+document.getElementById('tab-antifungal').innerHTML = antifungalModule();
+
+/* TAB switching */
+(function(){
+  const tabs=document.querySelectorAll('.domtab');
+  const panels={antibacterial:document.getElementById('tab-antibacterial'),antiviral:document.getElementById('tab-antiviral'),antifungal:document.getElementById('tab-antifungal')};
+  function show(key){
+    Object.keys(panels).forEach(k=>{panels[k].style.display = k===key?'block':'none';});
+    tabs.forEach(t=>t.classList.toggle('on',t.dataset.dom===key));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.dom)));
+  show('antibacterial');
+})();
+
+/* shared theme toggle */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+
+</script>
+</body>
+</html>
