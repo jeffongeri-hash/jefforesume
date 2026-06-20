@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "An antimicrobial atlas covering bacterial classification, antibiotic mechanism of action, antivirals, antifungals, and stewardship — with spectrum tables, resistance patterns, and clinical pearls.",
+      image: businessPost,
+      slug: "antimicrobial-atlas",
+      tags: ["Antibiotics", "Infectious Disease", "Clinical Education"]
+    },
+    {
       title: "Pediatric EM Atlas — Board Review",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
