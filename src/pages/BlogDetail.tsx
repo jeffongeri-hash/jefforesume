@@ -225,6 +225,28 @@ const blogPosts = {
       <p><a href="/embeds/fluid-dynamics-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "antimicrobial-atlas": {
+    title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An antimicrobial atlas covering bacterial classification by Gram stain and morphology, antibiotic mechanism of action by target (cell wall, protein synthesis, DNA/RNA, folate, membrane), antiviral classes, antifungal agents, and stewardship principles — with spectrum tables, resistance patterns, and clinical pearls for bedside decision-making.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/antimicrobial-atlas.html"
+          title="Antimicrobial Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/antimicrobial-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",
