@@ -3216,6 +3216,13 @@ const popularPosts = [
     slug: "fluid-dynamics-atlas"
   },
   {
+    title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "antimicrobial-atlas"
+  },
+  {
     title: "EKG Strip Atlas — Pattern, Location & Mechanism",
     category: "HEALTHCARE",
     date: "June 17, 2026",
