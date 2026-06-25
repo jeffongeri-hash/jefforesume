@@ -3245,6 +3245,13 @@ const popularPosts = [
     slug: "antimicrobial-atlas"
   },
   {
+    title: "OB/GYN Emergency Atlas — First, Second, Third Trimester & GYN Emergencies",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "obgyn-emergency-atlas"
+  },
+  {
     title: "EKG Strip Atlas — Pattern, Location & Mechanism",
     category: "HEALTHCARE",
     date: "June 17, 2026",
