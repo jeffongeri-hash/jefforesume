@@ -27,6 +27,7 @@ const Header = () => {
     { name: 'IV STRIKE', href: '/iv-strike-selector' },
     { name: 'CA MOVE', href: '/ca-move-planner' },
     { name: 'PAYCHECK', href: '/paycheck-analyzer' },
+    { name: 'SAC HEALTH', href: '/sacramento-healthcare' },
     { name: 'VACATION', href: '/vacation' },
     { name: 'BLOG', href: '/posts' },
   ];
