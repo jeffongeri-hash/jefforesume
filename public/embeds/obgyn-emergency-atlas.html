@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OB/GYN Emergency Atlas — Master Reference</title>
+<style>
+  :root{
+    --bg:#0c1014;--bg2:#12181e;--panel:#141c23;--panelhi:#1b2630;--line:#27343f;--line2:#1c2731;
+    --ink:#eaf1f4;--soft:#a6b8c2;--muted:#7589971;--muted:#778b98;--faint:#54677a;
+    --t1:#d6568a;     /* first trimester pink */
+    --t2:#d68a2e;     /* second amber */
+    --t3:#7c6cc4;     /* third violet */
+    --gyn:#3fa7d6;    /* gyn blue */
+    --crit:#e0563b;   /* critical red */
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --echo:#dfe7e6;--tissue:#2b4651;--fluid:#0a161c;
+    --grid:#0e141a;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --t1:#b83b6e;--t2:#b06f17;--t3:#5d4ba6;--gyn:#1c7fb0;--crit:#c4422a;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;
+    --echo:#1a2a30;--tissue:#b9ccd2;--fluid:#dfeaed;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:70ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:5px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:82ch;font-size:.96rem;}
+  p.body{color:var(--soft);max-width:84ch;font-size:.92rem;margin:10px 0;}
+  p.body b{color:var(--ink);}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(390px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.t1{border-top-color:var(--t1);}.card.t2{border-top-color:var(--t2);}.card.t3{border-top-color:var(--t3);}
+  .card.gyn{border-top-color:var(--gyn);}.card.crit{border-top-color:var(--crit);}
+  .card h3{margin:0 0 2px;font-size:1.06rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.us b{color:var(--gyn);}.blk.us{color:var(--soft);}
+  .blk.miss b{color:var(--warn);}.blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.mgmt b{color:var(--accent);}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:.83rem;}
+  table.cmp th,table.cmp td{padding:10px 12px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.79rem;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .usrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:12px 0;}
+  .usfig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;}
+  .usfig svg{display:block;width:100%;height:auto;border-radius:8px;}
+  .usfig .cap{font-size:.78rem;color:var(--soft);text-align:center;margin-top:7px;}
+  .usfig .cap b{color:var(--ink);display:block;font-size:.84rem;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.crit{border-left-color:var(--crit);background:color-mix(in srgb,var(--crit) 10%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .formula{font-family:"SF Mono",monospace;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 14px;margin:10px 0;color:var(--soft);}
+  .formula b{color:var(--ink);}
+  .algo{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0;}
+  .algo .step{flex:1 1 200px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:.84rem;}
+  .algo .step b{display:block;color:var(--accent);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Obstetrics & Gynecology · Emergency Atlas</div>
+  <h1>Two patients, <em>one clock</em>.</h1>
+  <p>A master-level emergency reference for OB/GYN: the βhCG-and-ultrasound logic for early pregnancy, bleeding by trimester, ectopic and the first-trimester catastrophes, Rh immunoglobulin rules, hemorrhage resuscitation, emergency delivery and its disasters (shoulder dystocia, cord prolapse, breech), preeclampsia through eclampsia, the gynecologic emergencies, and the procedures you hope never to do — perimortem cesarean among them. Original ultrasound schematics throughout.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> OB/GYN emergencies are time-critical and high-stakes; doses, thresholds, and βhCG/ultrasound values are standard teaching references that vary by institution, gestational age, and assay — verify against current guidelines (ACOG/local protocols) and involve OB early. Ultrasound figures are stylized original teaching schematics, not diagnostic images. Educational synthesis, not a protocol.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#ultrasound">US milestones</a>
+  <a href="#hcg">βhCG trends</a>
+  <a href="#labs">Lab changes</a>
+  <a href="#usfindings">US findings</a>
+  <a href="#sis">SIS</a>
+  <a href="#bleed1">1st-tri bleeding</a>
+  <a href="#ectopic">Ectopic</a>
+  <a href="#bleed2">2nd-tri bleeding</a>
+  <a href="#bleed3">3rd-tri bleeding</a>
+  <a href="#rhogam">RhoGAM</a>
+  <a href="#hemorrhage">Fluids vs blood</a>
+  <a href="#preeclampsia">Preeclampsia</a>
+  <a href="#delivery">Delivery & disasters</a>
+  <a href="#pph">Postpartum</a>
+  <a href="#gyn">Gyn emergencies</a>
+  <a href="#trauma">OB trauma</a>
+  <a href="#teratogens">Teratogens & timing</a>
+  <a href="#radiation">Radiation/imaging</a>
+  <a href="#meds">ED meds in pregnancy</a>
+  <a href="#iud">IUD</a>
+  <a href="#procedures">Critical procedures</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ============== SVG ULTRASOUND HELPERS ============== */
+const ECHO='var(--echo)',TIS='var(--tissue)',FLU='var(--fluid)',GY='var(--gyn)';
+function usvg(inner){return `<svg viewBox="0 0 240 200" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function usbg(){return `<rect width="240" height="200" fill="${FLU}"/>`;}
+function uslabel(x,y,t,fill){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="9" fill="${fill||'var(--soft)'}" text-anchor="middle">${t}</text>`;}
+function speck(x,y,w,h,n){let s='';let seed=x+y+w;for(let i=0;i<(n||40);i++){seed=(seed*9301+49297)%233280;const r=seed/233280;seed=(seed*9301+49297)%233280;const r2=seed/233280;s+=`<circle cx="${x+r*w}" cy="${y+r2*h}" r="${0.5+r*0.7}" fill="${ECHO}" opacity="${0.08+r2*0.16}"/>`;}return s;}
+
+/* uterus outline with endometrial stripe */
+function uterusBase(){return `<path d="M40,60 Q120,38 200,60 Q214,120 150,160 Q120,172 90,160 Q26,120 40,60 Z" fill="${TIS}" opacity="0.55"/>`+speck(40,50,170,110,50);}
+
+/* US FINDINGS FIGURES */
+function figGestSac(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="118" cy="100" rx="26" ry="20" fill="${FLU}"/>`+
+  `<ellipse cx="118" cy="100" rx="26" ry="20" fill="none" stroke="${ECHO}" stroke-width="3"/>`+   // echogenic rim
+  `<ellipse cx="118" cy="100" rx="20" ry="15" fill="none" stroke="${ECHO}" stroke-width="1" opacity="0.5"/>`+ // double decidual
+  uslabel(118,103,"sac",GY)+uslabel(118,150,"eccentric, echogenic rim",'var(--soft)'));}
+function figYolkSac(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="118" cy="100" rx="30" ry="24" fill="${FLU}"/>`+
+  `<ellipse cx="118" cy="100" rx="30" ry="24" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+  `<circle cx="126" cy="106" r="7" fill="none" stroke="${ECHO}" stroke-width="2"/>`+   // yolk sac ring
+  uslabel(126,108,"YS",GY)+uslabel(118,150,"yolk sac = confirmed IUP",'var(--good)'));}
+function figFetalPole(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="116" cy="100" rx="34" ry="27" fill="${FLU}"/>`+
+  `<ellipse cx="116" cy="100" rx="34" ry="27" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+  `<circle cx="104" cy="92" r="6" fill="none" stroke="${ECHO}" stroke-width="1.5"/>`+
+  `<ellipse cx="124" cy="108" rx="9" ry="5" fill="${ECHO}" opacity="0.8"/>`+   // fetal pole
+  uslabel(124,124,"pole + FHR (M-mode)",'var(--good)'));}
+function figPseudosac(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="118" cy="100" rx="22" ry="16" fill="${FLU}"/>`+
+  `<ellipse cx="118" cy="100" rx="22" ry="16" fill="none" stroke="${ECHO}" stroke-width="1.5" stroke-dasharray="3 2"/>`+
+  uslabel(118,150,"central, single thin rim",'var(--warn)')+uslabel(118,164,"PSEUDOSAC — not a true IUP",'var(--warn)'));}
+function figEctopic(){return usvg(usbg()+
+  `<path d="M30,70 Q90,52 140,68 Q150,110 110,140 Q86,150 64,138 Q22,110 30,70 Z" fill="${TIS}" opacity="0.5"/>`+speck(28,60,120,90,30)+
+  uslabel(80,100,"empty uterus",'var(--warn)')+
+  `<circle cx="185" cy="74" r="20" fill="${FLU}"/>`+
+  `<circle cx="185" cy="74" r="20" fill="none" stroke="${ECHO}" stroke-width="3"/>`+  // tubal ring
+  `<circle cx="190" cy="78" r="6" fill="none" stroke="${ECHO}" stroke-width="1.5"/>`+
+  uslabel(185,100,"adnexal 'tubal ring'",GY)+
+  `<path d="M40,165 Q120,178 200,165 L200,180 Q120,186 40,178 Z" fill="${FLU}"/>`+
+  uslabel(120,200-6,"free fluid (cul-de-sac)",GY));}
+function figAnembryonic(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="118" cy="100" rx="36" ry="30" fill="${FLU}"/>`+
+  `<ellipse cx="118" cy="100" rx="36" ry="30" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+  uslabel(118,104,"empty",'var(--warn)')+uslabel(118,150,"large sac, no pole (blighted ovum)",'var(--warn)'));}
+function figMolar(){return usvg(usbg()+uterusBase()+
+  `<g>`+Array.from({length:14},(_,i)=>{const x=80+(i%5)*16;const y=80+Math.floor(i/5)*16;return `<circle cx="${x}" cy="${y}" r="6" fill="${FLU}" stroke="${ECHO}" stroke-width="1"/>`;}).join('')+`</g>`+
+  uslabel(118,150,"'snowstorm' / cluster of grapes",'var(--warn)'));}
+function figSubchorionic(){return usvg(usbg()+uterusBase()+
+  `<ellipse cx="124" cy="102" rx="30" ry="24" fill="${FLU}"/>`+
+  `<ellipse cx="124" cy="102" rx="30" ry="24" fill="none" stroke="${ECHO}" stroke-width="2.5"/>`+
+  `<circle cx="130" cy="108" r="6" fill="none" stroke="${ECHO}" stroke-width="1.5"/>`+
+  `<path d="M86,96 Q104,86 100,110 Q92,118 84,110 Z" fill="${TIS}" opacity="0.7"/>`+   // crescent hematoma
+  uslabel(80,132,"subchorionic bleed",'var(--gold)'));}
+function figPrevia(){return usvg(usbg()+
+  `<path d="M30,40 Q120,28 210,40 L210,120 Q120,134 30,120 Z" fill="${TIS}" opacity="0.5"/>`+speck(30,40,180,80,30)+
+  uslabel(120,60,"fetus",'var(--soft)')+
+  `<ellipse cx="120" cy="150" rx="50" ry="22" fill="${TIS}" opacity="0.85"/>`+  // placenta over os
+  uslabel(120,152,"placenta",ECHO)+
+  `<rect x="112" y="168" width="16" height="22" fill="${FLU}"/>`+
+  uslabel(120,200-4,"covers internal os = PREVIA",'var(--warn)'));}
+function figAbruption(){return usvg(usbg()+
+  `<path d="M30,40 Q120,28 210,40 L210,110 Q120,124 30,110 Z" fill="${TIS}" opacity="0.5"/>`+speck(30,40,180,70,25)+
+  `<ellipse cx="120" cy="64" rx="60" ry="20" fill="${TIS}" opacity="0.8"/>`+  // placenta
+  `<path d="M70,80 Q120,70 170,80 Q150,98 90,96 Q70,90 70,80 Z" fill="${TIS}" opacity="0.55"/>`+ // retroplacental clot
+  uslabel(120,90,"retroplacental clot",'var(--warn)')+
+  uslabel(120,150,"US can MISS abruption — clinical dx",'var(--warn)'));}
+function figTorsion(){return usvg(usbg()+
+  `<ellipse cx="110" cy="100" rx="56" ry="46" fill="${TIS}" opacity="0.6"/>`+speck(60,60,100,80,30)+
+  `<g>`+Array.from({length:8},(_,i)=>{const a=i/8*6.28;return `<circle cx="${110+Math.cos(a)*40}" cy="${100+Math.sin(a)*32}" r="5" fill="${FLU}" stroke="${ECHO}" stroke-width="1"/>`;}).join('')+`</g>`+
+  uslabel(110,100,"enlarged ovary",ECHO)+
+  uslabel(110,170,"peripheral follicles + no flow",'var(--warn)'));}
+function figTOA(){return usvg(usbg()+
+  `<ellipse cx="118" cy="104" rx="50" ry="42" fill="${TIS}" opacity="0.5"/>`+
+  `<ellipse cx="118" cy="104" rx="50" ry="42" fill="none" stroke="${ECHO}" stroke-width="2" stroke-dasharray="4 3"/>`+
+  speck(80,72,76,64,40)+
+  `<ellipse cx="108" cy="98" rx="16" ry="13" fill="${FLU}" opacity="0.7"/>`+
+  `<ellipse cx="134" cy="116" rx="13" ry="10" fill="${FLU}" opacity="0.7"/>`+
+  uslabel(118,160,"multiloculated complex adnexal mass",'var(--warn)'));}
+function figIUD(){return usvg(usbg()+uterusBase()+
+  `<path d="M118,78 L118,128 M104,84 Q118,92 132,84" stroke="${ECHO}" stroke-width="3" fill="none"/>`+
+  uslabel(118,150,"T in fundus, arms in cornua = good",'var(--good)'));}
+function figIUDmal(){return usvg(usbg()+uterusBase()+
+  `<path d="M118,108 L118,150 M108,112 Q118,118 128,112" stroke="${ECHO}" stroke-width="3" fill="none"/>`+
+  uslabel(118,170,"low/displaced into cervix = malposition",'var(--warn)'));}
+function figSIS(){return usvg(usbg()+uterusBase()+
+  `<path d="M86,100 Q118,86 150,100 Q118,114 86,100 Z" fill="${FLU}"/>`+  // distended cavity with saline
+  `<ellipse cx="128" cy="98" rx="9" ry="7" fill="${TIS}" opacity="0.9"/>`+  // polyp projecting in
+  uslabel(150,90,"saline",GY)+uslabel(118,150,"polyp outlined by fluid",'var(--gold)'));}
+
+/* ============== SECTION BUILDERS ============== */
+function usFig(fig,title,sub){return `<div class="usfig">${fig}<div class="cap"><b>${title}</b>${sub}</div></div>`;}
+
+function ultrasound(){
+ return `<h2 class="sec" id="ultrasound">1 · Early-pregnancy ultrasound milestones</h2>
+ <p class="seclead">The order of appearance is fixed — sac → yolk sac → fetal pole → cardiac activity — and each has an expected timing by transvaginal (TVUS) vs transabdominal. Knowing what should be visible at a given βhCG/gestational age is what separates a normal early IUP from an ectopic or a failed pregnancy.</p>
+ <div class="gridwrap"><table class="cmp">
+  <thead><tr><th>Structure</th><th>TVUS (gestational age)</th><th>Approx βhCG when expected</th><th>Meaning</th></tr></thead>
+  <tbody>
+   <tr><th>Gestational sac</th><td class="mono-val">~4.5–5 wk</td><td class="mono-val">~1500–2000 (discriminatory)</td><td>Eccentric, echogenic rim; alone not proof of IUP (pseudosac mimics)</td></tr>
+   <tr><th>Yolk sac</th><td class="mono-val">~5–5.5 wk</td><td class="mono-val">~2500</td><td><b>First definitive sign of a true IUP</b></td></tr>
+   <tr><th>Fetal pole</th><td class="mono-val">~6 wk</td><td class="mono-val">~5000</td><td>Embryo visible; measure CRL</td></tr>
+   <tr><th>Cardiac activity</th><td class="mono-val">~6–6.5 wk (CRL ≥7 mm)</td><td class="mono-val">—</td><td>Document by <b>M-mode</b> (not spectral Doppler — thermal exposure)</td></tr>
+  </tbody>
+ </table></div>
+ <div class="note buzz"><b>Discriminatory zone:</b> the βhCG (~1500–2000 by TVUS, ~3500 some labs use to be conservative) above which a normal IUP <em>should</em> be visible. Above it with an empty uterus → think ectopic or nonviable. But a single βhCG never diagnoses an ectopic — correlate with ultrasound and trends, and a higher conservative threshold (3500) avoids interrupting a viable IUP.</div>
+ <div class="note crit"><b>One Doppler rule you asked about:</b> document the embryonic/fetal heartbeat with <b>M-mode</b>, not pulsed/spectral Doppler, in the first trimester — spectral Doppler delivers far higher acoustic energy to the embryo. (Color Doppler is used to assess flow, e.g., adnexal ring of fire or ovarian torsion, but not aimed at the early embryo for FHR.)</div>`;
+}
+
+function hcg(){
+ return `<h2 class="sec" id="hcg">2 · Trending βhCG</h2>
+ <p class="seclead">The hormone tells you the trajectory; the ultrasound tells you the location. They must be read together.</p>
+ <div class="cardgrid wide">
+   <div class="card t1"><h3>Normal early rise</h3>
+     <div class="blk">A viable IUP typically rises by <b>≥35% in 48 h</b> at low levels (the old "doubling every 48–72 h" is a rough guide). The rise slows as levels climb and plateaus ~100,000.</div>
+     <div class="blk miss"><b>Abnormal patterns</b>A sub-threshold rise (<35%/48 h), a plateau, or a slow decline suggests ectopic or early pregnancy failure — but ectopics can rise normally OR fall, so no single pattern excludes them.</div>
+   </div>
+   <div class="card t1"><h3>Falling βhCG</h3>
+     <div class="blk">After a completed miscarriage or resolving pregnancy of unknown location (PUL), βhCG should fall steadily. Slow/incomplete fall → retained tissue, ectopic, or GTD (which can plateau/rise abnormally high).</div>
+     <div class="blk mgmt"><b>PUL</b>Pregnancy of unknown location = positive βhCG, no IUP or ectopic seen. Trend βhCG + serial US; treat the patient (pain/stability), never the number alone.</div>
+   </div>
+   <div class="card t1"><h3>Discriminatory zone logic</h3>
+     <div class="formula">βhCG > discriminatory (~1500–2000 TVUS;<br>some use 3500 to be safe)<br>+ empty uterus → <b>ectopic until proven otherwise</b></div>
+     <div class="blk miss"><b>Caution</b>Multiple gestation raises the threshold; a viable IUP can hide just below it. When stable, the conservative 3500 cutoff avoids harming a desired pregnancy.</div>
+   </div>
+ </div>`;
+}
+
+function labs(){
+ const L=[
+  ['WBC','↑ (up to ~15k; ~25k in labor)','Physiologic leukocytosis — don\'t over-call infection on count alone; trend + left shift + clinical picture.'],
+  ['Hemoglobin / Hct','↓ (dilutional anemia)','Plasma volume rises ~50% > RBC mass → "physiologic anemia"; a "normal" Hgb may mask real blood loss.'],
+  ['Platelets','↓ mild (gestational thrombocytopenia)','Mild fall common &amp; benign; <100k → think preeclampsia/HELLP, ITP, DIC.'],
+  ['Fibrinogen','↑↑ (~400–500 at term)','Runs HIGH in pregnancy — a "normal" 200 is abnormally low → suspect DIC/abruption/consumption.'],
+  ['D-dimer','↑ (rises through pregnancy)','Loses specificity — a positive D-dimer does NOT rule in VTE; imaging needed.'],
+  ['Creatinine / BUN','↓ (↑GFR ~50%)','Lower baseline — a "normal-high" Cr (e.g., >1.1) signals real renal involvement (preeclampsia).'],
+  ['Bicarbonate / PaCO₂','↓ (compensated respiratory alkalosis)','Progesterone-driven hyperventilation; baseline PaCO₂ ~28–30 → a "normal" 40 may mean CO₂ retention/failure.'],
+  ['Alkaline phosphatase','↑ (placental)','Placental source — elevated ALP can be normal; interpret LFTs with this in mind.'],
+  ['AST/ALT, bilirubin','normal (no change)','↑ transaminases are NOT normal → HELLP, hepatitis, AFLP, cholestasis.'],
+  ['TSH / thyroid','TSH lower early; total T4 ↑','hCG cross-stimulates TSH receptor; use trimester-specific ranges (free T4).'],
+  ['Sodium','↓ slightly (~3–4 mEq lower)','Reset osmostat; mild hyponatremia can be physiologic.'],
+  ['Glucose','lower fasting, ↑ post-prandial','Watch for gestational diabetes; fasting hypoglycemia more likely.'],
+  ['ESR','↑ (markedly)','Non-specific in pregnancy — not useful for infection.'],
+  ['Troponin','unchanged','Stays normal — a positive troponin is real (peripartum cardiomyopathy, dissection, MI).']
+ ];
+ const head=`<tr><th>Lab</th><th>Direction in pregnancy</th><th>ED interpretation pitfall</th></tr>`;
+ const body=L.map(r=>`<tr><th>${r[0]}</th><td class="mono-val">${r[1]}</td><td style="color:var(--soft)">${r[2]}</td></tr>`).join('');
+ return `<h2 class="sec" id="labs">2b · Lab values that change in pregnancy</h2>
+ <p class="seclead">Normal pregnancy shifts the reference ranges — and misreading a "physiologically normal" value as reassuring (or a normal value as abnormal) is a classic error. The dangerous direction is usually the one that <em>masks</em> pathology: dilutional anemia hiding blood loss, a "normal" fibrinogen that's actually consumptive, a "normal" Cr that signals preeclampsia.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note buzz"><b>The four that flip your thinking:</b> fibrinogen runs HIGH (a normal value = consumption/DIC), creatinine runs LOW (a high-normal = renal injury/preeclampsia), PaCO₂ runs LOW (a normal 40 = impending respiratory failure), and Hgb runs LOW dilutionally (a normal Hgb in a bleeder is falsely reassuring). Transaminases and troponin do NOT change — abnormal values there are always real.</div>`;
+}
+
+
+function usFindings(){
+ return `<h2 class="sec" id="usfindings">3 · Ultrasound findings — IUP vs ectopic vs abnormal</h2>
+ <p class="seclead">The single most important early-pregnancy skill: distinguish a definite intrauterine pregnancy from its mimics. A true IUP requires a yolk sac or fetal pole within an eccentric intrauterine sac — a sac alone is not enough.</p>
+ <div class="usrow">
+   ${usFig(figGestSac(),"Gestational sac","echogenic rim, eccentric — not yet proof")}
+   ${usFig(figYolkSac(),"Yolk sac","first definitive IUP sign")}
+   ${usFig(figFetalPole(),"Fetal pole + FHR","viable IUP; M-mode for rate")}
+   ${usFig(figPseudosac(),"Pseudosac","central, single rim — ectopic mimic")}
+ </div>
+ <div class="usrow">
+   ${usFig(figEctopic(),"Ectopic","empty uterus + adnexal tubal ring + free fluid")}
+   ${usFig(figAnembryonic(),"Anembryonic","large empty sac (blighted ovum)")}
+   ${usFig(figMolar(),"Molar","'snowstorm'/cluster of grapes, ↑↑βhCG")}
+   ${usFig(figSubchorionic(),"Subchorionic hemorrhage","crescent next to sac; common cause of bleeding")}
+ </div>
+ <div class="note good"><b>Definite IUP =</b> intrauterine gestational sac containing a <b>yolk sac or fetal pole</b>, eccentrically placed. <b>Don't over-call</b> a sac alone (pseudosac of ectopic). <b>Heterotopic pregnancy</b> (simultaneous IUP + ectopic) is rare in spontaneous conception but much higher with IVF — an IUP doesn't fully exclude ectopic in ART patients.</div>
+ <div class="note warn"><b>Ectopic ultrasound signs:</b> empty uterus with βhCG above the discriminatory zone, an adnexal "tubal ring" / "ring of fire" (color Doppler), a complex adnexal mass separate from the ovary, and free fluid in the cul-de-sac (echogenic fluid = blood). The most specific finding is an extrauterine yolk sac/embryo.</div>`;
+}
+
+function sis(){
+ return `<h2 class="sec" id="sis">4 · Saline infusion sonohysterography (SIS) &amp; gyn ultrasound</h2>
+ <p class="seclead">SIS (sonohysterography) instills sterile saline into the uterine cavity during TVUS to outline the endometrium — distending the cavity makes intracavitary lesions visible that a plain scan misses. It's an outpatient evaluation (abnormal uterine bleeding, polyps, fibroids, infertility), not an emergent ED study, but you'll see the reports and the anatomy.</p>
+ <div class="usrow">
+   ${usFig(figSIS(),"SIS — polyp","saline outlines an intracavitary polyp")}
+   ${usFig(figTorsion(),"Ovarian torsion","enlarged ovary, peripheral follicles, ↓/absent flow")}
+   ${usFig(figTOA(),"Tubo-ovarian abscess","multiloculated complex adnexal mass")}
+ </div>
+ <div class="cardgrid">
+   <div class="card gyn"><h3>What SIS shows</h3>
+     <div class="blk us"><b>Best for</b>Endometrial polyps (focal echogenic projection outlined by fluid), submucosal fibroids (and how far they project into the cavity), synechiae/adhesions, and assessing the cavity before fertility treatment.</div>
+     <div class="blk miss"><b>Contraindications</b>Pregnancy, active pelvic infection (PID) — don't instill saline into an infected or pregnant uterus.</div>
+   </div>
+   <div class="card gyn"><h3>Plain TVUS in the ED</h3>
+     <div class="blk us"><b>High-yield</b>Free fluid, adnexal masses, ovarian torsion (size + Doppler flow), TOA, ectopic, retained products, fibroids, endometrial thickness. Pair with βhCG always.</div>
+     <div class="blk buzz"><b>Torsion pearl</b>Doppler flow can be PRESENT in early/intermittent torsion (dual blood supply) — a normal Doppler does NOT exclude it; the enlarged edematous ovary + clinical picture drives surgery.</div>
+   </div>
+ </div>`;
+}
+
+function bleed1(){
+ const C=[
+  {cls:'t1',n:'Threatened abortion',tag:'closed os, bleeding, viable',us:'IUP with cardiac activity; ± subchorionic hemorrhage.',mgmt:'Expectant; pelvic rest; RhoGAM if Rh-negative; return precautions. ~50% continue.',miss:'Closed cervical os + viable IUP — most do fine; don\'t over-intervene.'},
+  {cls:'t1',n:'Inevitable abortion',tag:'open os, bleeding',us:'IUP with dilated internal os, products may be at os.',mgmt:'Expectant, medical (misoprostol), or surgical (D&C/uterine aspiration); RhoGAM.',miss:'Open os predicts loss.'},
+  {cls:'t1',n:'Incomplete abortion',tag:'retained products',us:'Heterogeneous intrauterine material / thick endometrium; some products passed.',mgmt:'Misoprostol or uterine aspiration; treat hemorrhage/infection; RhoGAM.',miss:'Ongoing bleeding/cramping; risk of endometritis.'},
+  {cls:'t1',n:'Complete abortion',tag:'os closed, passed all',us:'Empty uterus, thin stripe; βhCG falling.',mgmt:'Confirm with falling βhCG; RhoGAM if Rh-neg; ensure not actually an ectopic that "resolved."',miss:'Don\'t assume complete without prior confirmed IUP — could be a passed ectopic decidual cast.'},
+  {cls:'t1',n:'Missed abortion',tag:'fetal demise, no symptoms',us:'CRL ≥7 mm without cardiac activity, or no growth on serial scans.',mgmt:'Expectant/medical/surgical; RhoGAM.',miss:'Often found incidentally; use strict US criteria before declaring nonviable.'},
+  {cls:'t1',n:'Septic abortion',tag:'infection + pregnancy loss',us:'Retained products + signs of infection.',mgmt:'EMERGENCY: broad IV antibiotics + urgent uterine evacuation + resuscitation.',miss:'Can progress to septic shock; source control (evacuation) is essential.'},
+  {cls:'t1',n:'Subchorionic hemorrhage',tag:'common bleeding cause',us:'Crescentic hypoechoic collection adjacent to the gestational sac.',mgmt:'Usually expectant if IUP viable; larger size → higher loss risk; RhoGAM.',miss:'Reassure but follow; size matters.'},
+  {cls:'t1',n:'Molar pregnancy (GTD)',tag:'↑↑βhCG, snowstorm',us:'"Snowstorm"/cluster-of-grapes, no fetus (complete mole); very high βhCG; theca-lutein cysts.',mgmt:'Uterine evacuation + βhCG surveillance (risk of GTN/choriocarcinoma); RhoGAM; OB/onc.',miss:'Hyperemesis, early preeclampsia, hyperthyroidism, size>dates are clues; needs βhCG follow-up to zero.'}
+ ];
+ return `<h2 class="sec" id="bleed1">5 · First-trimester vaginal bleeding</h2>
+ <p class="seclead">Up to ~25% of pregnancies bleed in the first trimester. The job: confirm location (IUP vs ectopic), assess viability and the cervical os, resuscitate if hemorrhaging, and give RhoGAM if Rh-negative. <b>Ectopic must be excluded in every first-trimester bleed.</b></p>
+ <div class="cardgrid wide">${C.map(c=>obCard(c)).join('')}</div>`;
+}
+
+function ectopic(){
+ return `<h2 class="sec" id="ectopic">6 · Ectopic pregnancy</h2>
+ <p class="seclead">The leading cause of first-trimester maternal death. Classic triad: amenorrhea, vaginal bleeding, and pelvic/abdominal pain — but presentation ranges from asymptomatic to ruptured hemorrhagic shock. Risk factors: prior ectopic, tubal surgery/damage, PID, IUD in place, IVF/ART, smoking.</p>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Diagnosis</h3>
+     <div class="blk us"><b>Ultrasound</b>Empty uterus with βhCG above discriminatory zone; adnexal tubal ring/ring of fire; complex adnexal mass separate from ovary; free fluid (echogenic = hemoperitoneum). Extrauterine yolk sac/embryo = definitive.</div>
+     <div class="blk"><b>βhCG</b>Trend if stable + nondiagnostic US (PUL); abnormal rise/plateau supports ectopic but doesn\'t confirm.</div>
+   </div>
+   <div class="card crit"><h3>Medical — methotrexate</h3>
+     <div class="blk dose"><b>Candidate</b>Hemodynamically stable, unruptured, βhCG below ~5000 (lower = better), mass <3–4 cm, no cardiac activity, reliable follow-up, no MTX contraindication (cytopenia, hepatic/renal disease, breastfeeding, immunodeficiency, pulmonary/peptic disease).</div>
+     <div class="blk dose"><b>Regimen</b>MTX 50 mg/m² IM (single-dose protocol); check βhCG days 4 &amp; 7 (expect ≥15% fall day 4→7); redose or escalate if inadequate. Avoid folate, NSAIDs, alcohol, sun.</div>
+   </div>
+   <div class="card crit"><h3>Surgical</h3>
+     <div class="blk mgmt"><b>Indications</b>Hemodynamic instability/rupture, contraindication or failure of MTX, heterotopic pregnancy, high βhCG/large mass, cardiac activity.</div>
+     <div class="blk">Salpingostomy (tube-sparing) vs salpingectomy; laparoscopy vs laparotomy by stability. Resuscitate in parallel (see hemorrhage).</div>
+   </div>
+ </div>
+ <div class="note crit"><b>Ruptured ectopic = surgical emergency:</b> hypotension, peritonism, and free fluid → activate massive transfusion, call OB/surgery, do not delay the OR for a confirmatory study. Give RhoGAM if Rh-negative.</div>`;
+}
+
+function bleed2(){
+ return `<h2 class="sec" id="bleed2">7 · Second-trimester vaginal bleeding</h2>
+ <p class="seclead">Less common; spans late pregnancy loss, cervical insufficiency, and early presentations of the placental problems that dominate the third trimester.</p>
+ <div class="cardgrid wide">
+  ${[
+   {cls:'t2',n:'Cervical insufficiency',tag:'painless dilation',us:'Short cervix, funneling, dilation often without contractions; can see hourglassing membranes.',mgmt:'Cerclage in selected cases; progesterone; OB. Painless 2nd-tri loss is the classic history.',miss:'Painless dilation → consider insufficiency; recurrent mid-trimester loss.'},
+   {cls:'t2',n:'Late miscarriage',tag:'12–20 wk loss',us:'Fetal demise; assess for retained products and bleeding.',mgmt:'Medical (misoprostol) or surgical evacuation; RhoGAM; support.',miss:'Heavier bleeding/products than early loss.'},
+   {cls:'t2',n:'Placenta previa (early)',tag:'painless',us:'Low/covering placenta — many "previas" at this stage migrate up by term.',mgmt:'No digital exam; pelvic rest; serial US; usually re-scan in 3rd tri.',miss:'A low placenta at 18–20 wk often resolves; document and follow.'},
+   {cls:'t2',n:'Abruption (early)',tag:'painful',us:'Retroplacental clot may be seen; US insensitive.',mgmt:'Monitor mom/fetus; clinical diagnosis; manage per severity.',miss:'Pain + bleeding ± US — abruption is clinical, US can be normal.'},
+   {cls:'t2',n:'Molar / GTD (persisting)',tag:'↑↑βhCG',us:'Snowstorm; theca-lutein cysts.',mgmt:'Evacuation + βhCG surveillance; OB/onc.',miss:'Early preeclampsia/hyperthyroid features.'}
+  ].map(c=>obCard(c)).join('')}
+ </div>`;
+}
+
+function bleed3(){
+ return `<h2 class="sec" id="bleed3">8 · Third-trimester vaginal bleeding</h2>
+ <p class="seclead">The dangerous trimester to bleed. The two life-threats are placenta previa and abruption — and the cardinal rule trumps everything: <b>NO digital or speculum exam until previa is excluded by ultrasound</b> (a digit through a previa can cause catastrophic hemorrhage).</p>
+ <div class="usrow">
+   ${usFig(figPrevia(),"Placenta previa","placenta covers the internal os")}
+   ${usFig(figAbruption(),"Abruption","retroplacental clot; US often normal")}
+ </div>
+ <div class="gridwrap"><table class="cmp">
+  <thead><tr><th></th><th>Placenta previa</th><th>Abruption</th><th>Vasa previa</th><th>Uterine rupture</th></tr></thead>
+  <tbody>
+   <tr><th>Bleeding</th><td>Painless, bright red</td><td>Painful, dark; may be concealed</td><td>With ROM, fetal blood</td><td>Pain + bleeding + loss of station</td></tr>
+   <tr><th>Uterus</th><td>Soft, non-tender</td><td>Tender, rigid, contractions</td><td>—</td><td>Tender; palpable fetal parts</td></tr>
+   <tr><th>Fetus</th><td>Usually reassuring</td><td>Distress/demise possible</td><td>Rapid fetal exsanguination</td><td>Distress/demise; recession of presenting part</td></tr>
+   <tr><th>Key</th><td><b>No digital exam</b>; US dx</td><td>Clinical dx; US insensitive; watch DIC</td><td>Fetal emergency at ROM → stat C/S</td><td>Prior C/S/uterine surgery; stat laparotomy</td></tr>
+  </tbody>
+ </table></div>
+ <div class="note crit"><b>Management backbone for any 3rd-trimester bleed:</b> two large-bore IVs, type &amp; crossmatch, CBC/coags/fibrinogen (DIC screen, esp. abruption), continuous fetal monitoring, RhoGAM if Rh-negative (and quantify large bleeds with Kleihauer-Betke), resuscitate, and mobilize OB for possible emergent delivery. Anticipate postpartum hemorrhage and DIC with abruption.</div>`;
+}
+
+function rhogam(){
+ return `<h2 class="sec" id="rhogam">9 · Rh immunoglobulin (RhoGAM) &amp; isoimmunization</h2>
+ <p class="seclead">An <b>Rh(D)-negative</b> mother carrying an Rh-positive fetus can be sensitized by fetomaternal hemorrhage — producing anti-D antibodies that attack future Rh-positive fetuses (hemolytic disease of the newborn). RhoGAM (anti-D immunoglobulin) prevents that sensitization by mopping up fetal Rh-positive cells before the maternal immune system reacts. This is a "blood interaction" you prevent.</p>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Who &amp; when</h3>
+     <div class="blk">Give to <b>Rh(D)-negative, unsensitized</b> mothers at any potential sensitizing event: <b>any first-trimester bleeding/miscarriage/ectopic, threatened abortion, any trimester bleeding, abdominal trauma, ECV, amniocentesis/CVS, and routinely at 28 weeks</b> + within <b>72 hours</b> of delivery of an Rh-positive infant.</div>
+     <div class="blk miss"><b>Check first</b>Maternal blood type &amp; antibody screen — if already sensitized (positive anti-D), RhoGAM doesn\'t help. Don\'t withhold for a sensitizing event while awaiting perfect data when Rh-negative.</div>
+   </div>
+   <div class="card crit"><h3>Dose &amp; timing</h3>
+     <div class="blk dose"><b>Standard</b>300 µg IM covers ~30 mL fetal whole blood (15 mL fetal RBCs) — the routine 28-week and postpartum dose, and for most 2nd/3rd-trimester events.</div>
+     <div class="blk dose"><b>First trimester / small events</b>A 50 µg microdose is acceptable for early first-trimester events (e.g., <12 wk miscarriage/ectopic) where exposure is tiny; many just give 300 µg.</div>
+     <div class="blk dose"><b>Timing</b>Within <b>72 hours</b> of the event (still give if missed — partial benefit up to ~28 days).</div>
+   </div>
+   <div class="card crit"><h3>Kleihauer-Betke &amp; large bleeds</h3>
+     <div class="blk">For large fetomaternal hemorrhage (significant trauma, abruption, 3rd-trimester events), a <b>Kleihauer-Betke (KB)</b> test or flow cytometry quantifies fetal cells in maternal blood to calculate <b>additional</b> RhoGAM doses beyond the standard 300 µg.</div>
+     <div class="formula">Extra vials ≈ (fetal blood volume in maternal circ ÷ 30 mL)<br>round up + add 1 vial</div>
+     <div class="blk buzz"><b>Board points</b>300 µg / 30 mL / 72 hours / 28 weeks are the numbers. KB quantifies dosing for big bleeds.</div>
+   </div>
+ </div>`;
+}
+
+function hemorrhage(){
+ return `<h2 class="sec" id="hemorrhage">10 · Fluids vs blood — OB hemorrhage resuscitation</h2>
+ <p class="seclead">Pregnant patients have ~40–50% expanded plasma volume and can lose substantial blood before vitals shift — then crash. Tachycardia and narrowing pulse pressure precede hypotension. The decision is not fluids <em>or</em> blood but knowing when crystalloid stops being the answer.</p>
+ <div class="cardgrid wide">
+   <div class="card"><h3>When crystalloid</h3>
+     <div class="blk">Initial resuscitation of hypovolemia: isotonic crystalloid to restore perfusion while you assess and type/cross. Reasonable for mild-moderate losses with a controllable source.</div>
+     <div class="blk miss"><b>Limit it</b>Large-volume crystalloid in ongoing hemorrhage causes dilutional coagulopathy, hypothermia, and acidosis — the lethal triad. Don\'t "catch up" a bleeding patient with liters of saline.</div>
+   </div>
+   <div class="card crit"><h3>When blood</h3>
+     <div class="blk mgmt"><b>Transfuse for</b>Hemodynamic instability not responding to ~1–2 L crystalloid, ongoing/massive hemorrhage (ruptured ectopic, major PPH, abruption), or clinical shock. Don\'t wait for a lab Hgb in active hemorrhage.</div>
+     <div class="blk dose"><b>Massive transfusion</b>Balanced ratio ~<b>1:1:1</b> (RBC:FFP:platelets); give <b>TXA</b> (1 g over 10 min, then 1 g/8 h) — for trauma and for postpartum hemorrhage. Replace fibrinogen (cryoprecipitate) — fibrinogen falls early in OB hemorrhage/abruption.</div>
+     <div class="blk">O-negative emergency blood for the unstable, unmatched bleeding Rh-negative (or unknown) woman.</div>
+   </div>
+   <div class="card crit"><h3>OB-specific</h3>
+     <div class="blk">Suspect/anticipate <b>DIC</b> (abruption, amniotic fluid embolism, retained demise, severe preeclampsia/HELLP) — send fibrinogen, platelets, PT/PTT, D-dimer; replace components. Fibrinogen <b><200 mg/dL is abnormally low in pregnancy</b> (term fibrinogen runs high, ~400–500).</div>
+     <div class="blk mgmt"><b>Source control</b>The definitive treatment is stopping the bleeding — uterotonics/tamponade/surgery for PPH, OR for ectopic, delivery for abruption.</div>
+   </div>
+ </div>`;
+}
+
+function preeclampsia(){
+ return `<h2 class="sec" id="preeclampsia">11 · Hypertensive disorders — preeclampsia → eclampsia → HELLP</h2>
+ <p class="seclead">New hypertension after 20 weeks (or postpartum) with end-organ involvement. A leading cause of maternal morbidity; the only cure is delivery. Magnesium prevents/treats seizures; antihypertensives treat the pressure; neither replaces delivery planning.</p>
+ <div class="cardgrid wide">
+   <div class="card t3"><h3>Spectrum &amp; criteria</h3>
+     <div class="blk"><b>Preeclampsia</b>BP ≥140/90 (×2) after 20 wk + proteinuria, OR without proteinuria + end-organ signs (thrombocytopenia, ↑Cr, ↑LFTs, pulmonary edema, cerebral/visual symptoms).</div>
+     <div class="blk miss"><b>Severe features</b>BP ≥160/110, plt <100k, ↑LFTs/RUQ pain, Cr >1.1 (or doubling), pulmonary edema, headache/visual changes. <b>Eclampsia</b> = seizures. <b>HELLP</b> = Hemolysis, Elevated Liver enzymes, Low Platelets (can occur with near-normal BP).</div>
+   </div>
+   <div class="card crit"><h3>Magnesium (seizure prophylaxis/treatment)</h3>
+     <div class="blk dose"><b>Dose</b>MgSO₄ 4–6 g IV load over 15–20 min, then 1–2 g/h infusion. For eclamptic seizure: 4–6 g IV; recurrent → additional 2 g.</div>
+     <div class="blk miss"><b>Mg toxicity</b>Loss of deep tendon reflexes (first) → respiratory depression → cardiac arrest. Monitor reflexes/RR/urine output; renal impairment accumulates. <b>Antidote: IV calcium gluconate.</b></div>
+   </div>
+   <div class="card crit"><h3>Blood pressure &amp; delivery</h3>
+     <div class="blk dose"><b>Acute severe HTN</b>(≥160/110) treat within ~30–60 min: IV labetalol, IV hydralazine, or oral nifedipine — target ~140–150/90–100 (don\'t overcorrect → reduces placental perfusion).</div>
+     <div class="blk mgmt"><b>Definitive</b>Delivery (timing by severity &amp; gestational age); steroids for fetal lung maturity if preterm. Preeclampsia can present/worsen <b>postpartum</b> — don\'t discount it after delivery.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>Eclamptic seizure management:</b> protect airway, left lateral, magnesium (load + infusion), control severe BP, and move toward delivery once stabilized. Most eclampsia is self-limited — magnesium prevents recurrence; benzodiazepines only for refractory/status. Treat the mother first; fetal status usually improves as she stabilizes.</div>`;
+}
+
+function delivery(){
+ return `<h2 class="sec" id="delivery">12 · Emergency delivery &amp; its disasters</h2>
+ <p class="seclead">When delivery is imminent (crowning, urge to push, no time for transfer): support a controlled delivery — but be ready for the four that kill (shoulder dystocia, cord prolapse, breech, and postpartum hemorrhage).</p>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Normal precipitous delivery</h3>
+     <div class="blk mgmt"><b>Steps</b>Controlled head delivery (gentle counter-pressure to avoid tearing), check for nuchal cord (reduce or clamp/cut if tight), deliver anterior then posterior shoulder, support the body, dry/warm/stimulate, delayed cord clamping if stable, deliver placenta, assess for hemorrhage/lacerations.</div>
+     <div class="blk">Note time, APGAR, keep neonate warm (skin-to-skin); oxytocin after delivery for the uterus.</div>
+   </div>
+   <div class="card crit"><h3>Shoulder dystocia</h3>
+     <div class="tagline">"turtle sign" — head retracts</div>
+     <div class="blk mgmt"><b>HELPERR</b>Call for Help; Evaluate for Episiotomy; <b>McRoberts</b> (hyperflex hips); suprapubic Pressure; Enter maneuvers (rotational — Rubin/Woods); Remove posterior arm; Roll (Gaskin all-fours). Do NOT apply fundal pressure or excessive traction.</div>
+     <div class="blk miss"><b>Don\'t</b>fundal pressure (worsens impaction), excessive head traction (brachial plexus injury). It\'s a clinical, time-critical diagnosis.</div>
+   </div>
+   <div class="card crit"><h3>Umbilical cord prolapse</h3>
+     <div class="blk mgmt"><b>Action</b>Palpable/visible cord ahead of the fetus = emergency. Elevate the presenting part off the cord with a gloved hand (keep it there), knee-chest/Trendelenburg, don\'t handle the cord, call for stat cesarean.</div>
+     <div class="blk miss"><b>Cause</b>More likely with ROM and an unengaged/malpresenting fetus; fetal bradycardia after ROM → check for cord.</div>
+   </div>
+   <div class="card crit"><h3>Breech</h3>
+     <div class="blk mgmt"><b>If delivering</b>"Hands off the breech" — let it deliver spontaneously to the scapula, support without traction; Mauriceau-Smellie-Veit for the head; Løvset for arms. Avoid pulling.</div>
+     <div class="blk miss"><b>Head entrapment</b>is the lethal risk; ideally controlled cesarean if time allows.</div>
+   </div>
+ </div>`;
+}
+
+function pph(){
+ return `<h2 class="sec" id="pph">13 · Postpartum hemorrhage &amp; endometritis</h2>
+ <p class="seclead">PPH = the leading cause of maternal death worldwide. The causes are the <b>"4 T's"</b> — and uterine atony (Tone) is the most common by far.</p>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>The 4 T's</h3>
+     <div class="blk"><b>Tone</b> (atony — #1) · <b>Trauma</b> (lacerations, rupture, inversion) · <b>Tissue</b> (retained placenta) · <b>Thrombin</b> (coagulopathy/DIC).</div>
+     <div class="blk mgmt"><b>First moves</b>Bimanual uterine massage, two large-bore IVs, type &amp; cross, uterotonics, find the cause; TXA early; escalate to tamponade (Bakri balloon), compression sutures, embolization, or hysterectomy.</div>
+   </div>
+   <div class="card crit"><h3>Uterotonics (doses)</h3>
+     <div class="blk dose"><b>Oxytocin</b>first-line, IV infusion/IM.</div>
+     <div class="blk dose"><b>Methylergonovine</b>0.2 mg IM — avoid in <b>hypertension/preeclampsia</b>.</div>
+     <div class="blk dose"><b>Carboprost (hemabate)</b>250 µg IM — avoid in <b>asthma</b> (bronchospasm).</div>
+     <div class="blk dose"><b>Misoprostol</b>800–1000 µg PR/SL.</div>
+     <div class="blk buzz"><b>Board pairing</b>methylergonovine↔HTN, carboprost↔asthma are the contraindications they test.</div>
+   </div>
+   <div class="card gyn"><h3>Endometritis</h3>
+     <div class="tagline">postpartum fever #1 cause</div>
+     <div class="blk"><b>Picture</b>Fever, uterine/fundal tenderness, foul lochia, days after delivery (higher after C-section, prolonged ROM, retained products).</div>
+     <div class="blk dose"><b>Treatment</b>Broad IV antibiotics — <b>clindamycin + gentamicin</b> is the classic regimen (± ampicillin); covers polymicrobial/anaerobes.</div>
+     <div class="blk miss"><b>Don\'t miss</b>retained products (may need evacuation), septic pelvic thrombophlebitis (persistent fever despite antibiotics), or abscess.</div>
+   </div>
+ </div>`;
+}
+
+function gyn(){
+ return `<h2 class="sec" id="gyn">14 · Gynecologic emergencies (non-pregnant)</h2>
+ <p class="seclead">The non-obstetric emergencies — torsion and the infections you can\'t miss, plus the bleeding and pain workups.</p>
+ <div class="cardgrid wide">
+  ${[
+   {cls:'gyn',n:'Ovarian torsion',tag:'surgical emergency',us:'Enlarged edematous ovary, peripheral follicles, ± absent Doppler flow (but flow may persist — dual supply).',mgmt:'Emergent gyn for detorsion/ovarian salvage; time-sensitive. Often a mass/cyst as lead point.',miss:'Normal Doppler does NOT exclude torsion — the enlarged ovary + sudden severe pain drives surgery.'},
+   {cls:'gyn',n:'PID',tag:'ascending infection',us:'May be normal; ± tubal thickening, free fluid.',mgmt:'Low threshold to treat: ceftriaxone + doxycycline + metronidazole. Cervical motion/adnexal/uterine tenderness = treat.',miss:'Undertreated PID → infertility, ectopic, TOA, Fitz-Hugh-Curtis (perihepatitis).'},
+   {cls:'gyn',n:'Tubo-ovarian abscess',tag:'complex mass',us:'Multiloculated complex adnexal mass.',mgmt:'IV antibiotics; drainage if large/refractory; surgery if ruptured (surgical emergency + sepsis).',miss:'Ruptured TOA → septic shock.'},
+   {cls:'gyn',n:'Ovarian cyst rupture',tag:'sudden pain',us:'Free fluid, collapsing cyst; hemorrhagic cyst.',mgmt:'Usually supportive; watch for significant hemoperitoneum (corpus luteum cyst in pregnancy can mimic ectopic).',miss:'Significant bleed → resuscitate; correlate with βhCG.'},
+   {cls:'gyn',n:'Abnormal uterine bleeding',tag:'PALM-COEIN',us:'Endometrial thickness, fibroids, polyps; SIS for cavity.',mgmt:'Stabilize hemorrhage (high-dose estrogen/TXA/uterine measures); structured workup (PALM-COEIN); biopsy if cancer risk.',miss:'Heavy AUB can cause hemodynamic instability; rule out pregnancy first.'},
+   {cls:'gyn',n:'Bartholin abscess',tag:'vulvar',us:'—',mgmt:'I&D + Word catheter; antibiotics if cellulitis/systemic; consider marsupialization for recurrence.',miss:'Older patient with a new mass — consider malignancy.'}
+  ].map(c=>obCard(c)).join('')}
+ </div>`;
+}
+
+function trauma(){
+ return `<h2 class="sec" id="trauma">14b · Trauma in pregnancy</h2>
+ <p class="seclead">Trauma complicates ~1 in 12 pregnancies and is a leading non-obstetric cause of maternal death. Two principles dominate: <b>resuscitate the mother first</b> (the best fetal therapy is maternal stabilization), and the <b>physiologic changes hide shock</b> — expanded plasma volume means a mother can lose 30–35% of her blood volume before her vitals betray it, while the fetus is already hypoperfused.</p>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Resuscitation priorities</h3>
+     <div class="blk mgmt"><b>Mother first</b>Standard ABCs, but <b>left lateral tilt / manual uterine displacement</b> after ~20 weeks to relieve aortocaval compression (the gravid uterus on the IVC drops venous return → supine hypotension). Give oxygen early (fetus is on the steep part of the O₂ curve).</div>
+     <div class="blk miss"><b>Occult shock</b>Tachycardia + a normal BP may already be significant loss; the fetus is the "early warning" — fetal distress can be the first sign of maternal hypovolemia.</div>
+   </div>
+   <div class="card crit"><h3>Abruption — the trauma killer</h3>
+     <div class="blk"><b>Placental abruption</b> is the most common cause of fetal death in survivable maternal trauma — even minor trauma. Shearing forces separate the placenta; US is insensitive, so it\'s a clinical/monitoring diagnosis.</div>
+     <div class="blk mgmt"><b>Monitor</b>Continuous cardiotocographic monitoring for <b>≥4 h</b> (longer/admit if contractions >1/10 min, bleeding, tenderness, or non-reassuring tracing) — frequent contractions are the most sensitive sign of abruption.</div>
+   </div>
+   <div class="card crit"><h3>OB-specific injuries &amp; workup</h3>
+     <div class="blk"><b>Consider</b>uterine rupture (direct abdominal impact, fetal parts palpable, loss of station), fetomaternal hemorrhage, preterm labor, and direct fetal injury. Seatbelt sign / improper lap-belt placement raises risk.</div>
+     <div class="blk mgmt"><b>Workup</b>Don\'t omit needed imaging for fear of radiation (see radiation section). <b>Kleihauer-Betke</b> in significant trauma (quantify fetomaternal hemorrhage → RhoGAM dosing); give <b>RhoGAM to all Rh-negative trauma patients</b>. Tetanus as indicated.</div>
+   </div>
+   <div class="card crit"><h3>Special situations</h3>
+     <div class="blk"><b>Penetrating</b>The uterus can shield maternal viscera (good for mom) but the fetus is at high risk. <b>Perimortem cesarean</b> for maternal arrest (see procedures). <b>Burns</b>, <b>domestic/intimate-partner violence</b> (screen — pregnancy is a risk period), and <b>fetal monitoring</b> guide disposition.</div>
+     <div class="blk miss"><b>Don\'t</b>defer maternal CT/FAST/needed surgery because she\'s pregnant; an unstable mother loses the fetus too.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>The trauma reflex set:</b> mother first, left uterine displacement, oxygen, ≥4 h fetal monitoring (abruption can be delayed), Kleihauer-Betke + RhoGAM for Rh-negative, screen for IPV, and don\'t withhold indicated imaging. Fetal distress may be the earliest sign of maternal compromise.</div>`;
+}
+
+function teratogens(){
+ return `<h2 class="sec" id="teratogens">14c · Teratogenicity &amp; timing — when exposure matters less</h2>
+ <p class="seclead">Teratogenic risk is not constant through pregnancy — it depends on <b>when</b> the exposure occurs relative to organogenesis. Knowing the windows lets you counsel accurately and choose ED drugs/imaging more rationally.</p>
+ <div class="cardgrid wide">
+   <div class="card"><h3>The "all-or-none" period</h3>
+     <div class="tagline">conception → ~2 weeks (≤4 wk GA)</div>
+     <div class="blk">Before organogenesis, an insult tends to be <b>all-or-none</b>: either the embryo dies (failed implantation/early loss) or it fully recovers with intact cells and develops normally. Structural malformations from a single exposure here are unlikely — this is the period where exposure is <em>least</em> likely to cause a malformed surviving fetus.</div>
+   </div>
+   <div class="card crit"><h3>Organogenesis — the vulnerable window</h3>
+     <div class="tagline">~weeks 3–8 post-conception (5–10 wk GA)</div>
+     <div class="blk miss"><b>Highest structural-malformation risk</b>This is when organs form — the period of maximal teratogen susceptibility for major structural defects. The specific organ affected depends on what\'s forming when (e.g., neural tube early, palate/limbs later).</div>
+   </div>
+   <div class="card"><h3>Fetal period — function over form</h3>
+     <div class="tagline">~week 9 → term</div>
+     <div class="blk">After organogenesis, most organs are formed; exposures cause <b>growth restriction and functional/CNS effects</b> rather than gross structural malformations (CNS and genitalia keep developing throughout). Some drugs are specifically <b>late</b>-pregnancy risks (NSAIDs → ductus closure/oligohydramnios; ACE inhibitors → renal; tetracyclines → teeth/bone; opioids → neonatal withdrawal).</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>Counseling anchors:</b> a single exposure in the <b>first ~2 weeks</b> (all-or-none) rarely produces a malformed surviving baby; <b>weeks 3–8</b> is the structural-defect danger zone; <b>after week 8</b> the concerns shift to growth/function and drug-specific late effects. "Background risk" of major malformation in any pregnancy is ~3% — frame added risk against that baseline, and confirm gestational timing before alarming a patient.</div>
+ <div class="note warn"><b>Known significant teratogens (examples to avoid):</b> isotretinoin, warfarin, ACE inhibitors/ARBs, valproate &amp; many antiepileptics, methotrexate, thalidomide, lithium (Ebstein), tetracyclines, certain live vaccines, high-dose vitamin A, mycophenolate. Always check a current reference before giving a non-emergent drug in pregnancy.</div>`;
+}
+
+function radiation(){
+ return `<h2 class="sec" id="radiation">14d · Radiation &amp; imaging in pregnancy</h2>
+ <p class="seclead">Fear of radiation kills mothers when it delays indicated imaging. The actual fetal doses from diagnostic studies are far below the threshold for harm — and a necessary CT is virtually never withheld in a sick or injured pregnant patient.</p>
+ <div class="cardgrid wide">
+   <div class="card good"><h3>The reassuring numbers</h3>
+     <div class="formula">Threshold for fetal harm (malformation/loss): <b>~50–100 mGy</b> (5–10 rad)<br>Most single diagnostic studies: <b>&lt;1–35 mGy</b><br>Background risk of malformation: ~3% regardless</div>
+     <div class="blk"><b>Translation</b>CXR, extremity, head/neck CT, and most single studies deliver negligible fetal dose. Even abdominal/pelvic CT (~25–35 mGy) is below the harm threshold — <b>a single indicated CT does not approach a dose that causes fetal harm.</b></div>
+   </div>
+   <div class="card"><h3>Modality choice</h3>
+     <div class="blk us"><b>No ionizing radiation</b>Ultrasound and MRI (without gadolinium) are first-line where they answer the question (e.g., RUQ pain, appendicitis often US/MRI first).</div>
+     <div class="blk"><b>Contrast</b>Iodinated CT contrast is generally acceptable when needed. <b>Gadolinium is avoided</b> in pregnancy (associated with fetal harm/stillbirth signal) unless essential. Iodinated contrast in lactation is fine to continue breastfeeding.</div>
+   </div>
+   <div class="card crit"><h3>The governing principle</h3>
+     <div class="blk mgmt"><b>Don\'t withhold indicated imaging</b>For a sick/injured mother (PE workup, trauma CT, appendicitis), get the study you need — maternal diagnosis takes priority, and doses are safe. Use shielding and dose-reduction when practical, but never at the cost of a needed diagnosis.</div>
+     <div class="blk buzz"><b>PE in pregnancy</b>US legs first if symptomatic; then V/Q or CTPA — both acceptable fetal doses; choose by institution/chest X-ray. Don\'t leave a PE undiagnosed over radiation fear.</div>
+   </div>
+ </div>`;
+}
+
+function meds(){
+ const M=[
+  ['Analgesia','Acetaminophen (preferred). Opioids OK short-term (neonatal withdrawal if chronic/late).','AVOID NSAIDs in 3rd trimester (premature ductus arteriosus closure, oligohydramnios); limited early use. Avoid chronic opioids.'],
+  ['Antiemetics','Pyridoxine (B6) ± doxylamine first-line; ondansetron, metoclopramide, promethazine used.','Ondansetron — small/ debated cleft signal early; QT prolongation. Counsel &amp; use when benefit warrants (hyperemesis).'],
+  ['Antibiotics — safe','Penicillins, cephalosporins, azithromycin, clindamycin, nitrofurantoin (not at term), metronidazole.','Workhorses in pregnancy; nitrofurantoin avoid at term/G6PD; metronidazole acceptable (old 1st-tri caution largely eased).'],
+  ['Antibiotics — avoid','—','Tetracyclines/doxycycline (teeth/bone), fluoroquinolones (cartilage — use if no alternative, e.g., not first-line), sulfonamides near term (kernicterus), aminoglycosides (fetal ototoxicity).'],
+  ['Anticoagulation','LMWH / heparin (do NOT cross placenta).','WARFARIN is teratogenic (fetal warfarin syndrome) &amp; crosses placenta — avoid; DOACs not recommended.'],
+  ['Hypertension (acute)','Labetalol, hydralazine (IV); nifedipine (PO).','AVOID ACE inhibitors/ARBs (renal dysgenesis, oligohydramnios) — a key "never in pregnancy" class.'],
+  ['Seizure (eclampsia)','Magnesium sulfate (first-line).','Benzodiazepines only for refractory; many chronic AEDs (valproate) teratogenic — don\'t start electively.'],
+  ['Asthma','Albuterol, inhaled corticosteroids, systemic steroids as needed.','Treat asthma normally — hypoxia is worse for the fetus than the meds. Avoid carboprost (bronchospasm) for PPH in asthmatics.'],
+  ['Procedural sedation / RSI','Ketamine, etomidate, propofol, succinylcholine, rocuronium used when needed.','Aspiration risk ↑ (treat as full stomach; RSI). Avoid elective sedation; benzodiazepines/sustained exposure cautioned.'],
+  ['Steroids','Betamethasone/dexamethasone for fetal lung maturity (24–34 wk) — a benefit.','Therapeutic, not harmful, in the preterm-delivery window.'],
+  ['Vaccines','Inactivated (Tdap, influenza, COVID) recommended.','AVOID live vaccines (MMR, varicella) in pregnancy.'],
+  ['Misc to avoid','—','Isotretinoin (category X — pregnancy test/2 contraceptives required), methotrexate (also for ectopic — abortifacient/teratogen), high-dose vitamin A, statins (stop).']
+ ];
+ const head=`<tr><th>Category</th><th>Acceptable / preferred</th><th>Avoid / caution</th></tr>`;
+ const body=M.map(r=>`<tr><th>${r[0]}</th><td style="color:var(--good)">${r[1]}</td><td style="color:var(--soft)">${r[2]}</td></tr>`).join('');
+ return `<h2 class="sec" id="meds">14e · ED medication precautions in pregnancy</h2>
+ <p class="seclead">The FDA letter categories (A/B/C/D/X) are retired in favor of narrative labeling, but the practical question is unchanged: is there a safer alternative, and does the maternal benefit justify the fetal risk? In a true emergency, <b>treat the mother</b> — an untreated maternal emergency is the bigger fetal threat.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note warn"><b>The "never (electively) in pregnancy" shortlist:</b> ACE inhibitors/ARBs, warfarin, NSAIDs in the 3rd trimester, tetracyclines, isotretinoin, methotrexate, valproate, live vaccines, statins. <b>But emergencies override:</b> give the indicated drug (and imaging) for a critically ill mother — and remember methotrexate is intentionally used to treat ectopic pregnancy.</div>
+ <div class="note good"><b>Lactation note:</b> most ED drugs are compatible with breastfeeding (different from pregnancy risk). Check a lactation reference (e.g., LactMed) rather than assuming; iodinated contrast, most antibiotics, and acetaminophen are fine to continue nursing.</div>`;
+}
+
+
+function iud(){
+ return `<h2 class="sec" id="iud">15 · IUD — identification &amp; complications</h2>
+ <p class="seclead">You'll see IUDs on ultrasound both incidentally and as the reason for the visit. Know the normal position and the complications.</p>
+ <div class="usrow">
+   ${usFig(figIUD(),"Well-positioned IUD","T in fundus, arms in cornua")}
+   ${usFig(figIUDmal(),"Malpositioned IUD","displaced toward/into cervix")}
+ </div>
+ <div class="cardgrid">
+   <div class="card gyn"><h3>Normal &amp; malposition</h3>
+     <div class="blk us"><b>Normal</b>The IUD stem sits in the endometrial cavity with the T at the fundus and arms in the cornua; 3D US/plain film confirm.</div>
+     <div class="blk miss"><b>Malposition</b>Displaced/low in the cervix, rotated, or embedded in myometrium → bleeding, pain, or contraceptive failure.</div>
+   </div>
+   <div class="card crit"><h3>Complications</h3>
+     <div class="blk"><b>Perforation</b>IUD outside the uterus (bowel/peritoneum) — confirm with US then X-ray/CT if not seen in uterus ("lost IUD" workup: US → if absent, X-ray/CT to locate before assuming expulsion).</div>
+     <div class="blk miss"><b>Pregnancy with IUD</b>Higher proportion are ectopic — check location carefully. If intrauterine pregnancy with IUD and strings visible, removal is generally advised early.</div>
+     <div class="blk">Expulsion (partial/complete), string issues, infection (PID risk mainly peri-insertion), malposition causing bleeding/pain.</div>
+   </div>
+   <div class="card gyn"><h3>Lost strings workup</h3>
+     <div class="blk mgmt"><b>Steps</b>Pregnancy test → ultrasound to locate IUD → if not in uterus, plain X-ray/CT to find (perforated/migrated) vs confirm expulsion. Don\'t assume expelled without imaging.</div>
+   </div>
+ </div>`;
+}
+
+function procedures(){
+ return `<h2 class="sec" id="procedures">16 · Critical procedures &amp; the rare catastrophes</h2>
+ <p class="seclead">The low-frequency, high-stakes events — including the one you do for the mother by delivering the fetus.</p>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Perimortem cesarean (resuscitative hysterotomy)</h3>
+     <div class="blk mgmt"><b>When</b>Maternal cardiac arrest with a gravid uterus at/above the umbilicus (~≥20 wk). Begin by <b>~4 minutes</b> into arrest, aiming to deliver by <b>5 minutes</b> — primarily to improve <em>maternal</em> resuscitation (relieves aortocaval compression, improves venous return/CPR), fetal survival is secondary.</div>
+     <div class="blk">Continue CPR throughout; manual left uterine displacement during the arrest; don\'t move the patient or wait for an OR if truly arrested.</div>
+     <div class="blk buzz"><b>Numbers</b>4-minute decision, 5-minute delivery, fundus at/above umbilicus.</div>
+   </div>
+   <div class="card crit"><h3>Amniotic fluid embolism</h3>
+     <div class="blk">Sudden cardiovascular collapse + hypoxia + <b>DIC</b> during labor/delivery/immediately postpartum. Diagnosis of exclusion; supportive/aggressive resuscitation, manage DIC, deliver.</div>
+     <div class="blk miss"><b>Triad</b>hypoxia, hypotension, coagulopathy — abrupt and catastrophic.</div>
+   </div>
+   <div class="card crit"><h3>Uterine inversion</h3>
+     <div class="blk mgmt"><b>Recognize</b>Postpartum hemorrhage + a "mass" at the introitus + the fundus not palpable abdominally, often with vagal shock. Replace the uterus immediately (Johnson maneuver), stop uterotonics until replaced (use relaxants/tocolytics to allow replacement), then resume uterotonics + resuscitate.</div>
+   </div>
+   <div class="card gyn"><h3>Sexual assault forensic exam (SANE) — adult</h3>
+     <div class="blk mgmt"><b>Care first</b>Patient-centered, trauma-informed, consent-driven at every step (the patient controls what happens and can decline any part). Offer a trained <b>SANE/SAFE examiner</b> and an advocate. Treat injuries and emotional safety before forensics.</div>
+     <div class="blk dose"><b>Prophylaxis</b>STI: ceftriaxone + doxycycline + metronidazole (gonorrhea/chlamydia/trichomonas/BV); <b>HIV PEP</b> within 72 h (3-drug ×28 d); hepatitis B (vaccine ± HBIG); HPV vaccine per age; <b>emergency contraception</b> (levonorgestrel or ulipristal, or copper IUD).</div>
+     <div class="blk mgmt"><b>Forensics</b>Evidence kit with consent &amp; chain of custody (ideally <120 h, varies); meticulous objective documentation (quote the history, describe—don\'t interpret—injuries, photograph with consent); offer reporting (adult patient generally decides).</div>
+     <div class="blk miss"><b>Don\'t</b>let evidence collection delay treatment of serious injury; don\'t pressure a capacitated adult to report or to complete a kit.</div>
+   </div>
+   <div class="card crit"><h3>Pediatric SANE — what's different</h3>
+     <div class="tagline">child &amp; adolescent sexual abuse</div>
+     <div class="blk miss"><b>Mandatory reporting</b>Suspected child sexual abuse is a <b>mandated report</b> — unlike the capacitated adult, the clinician must report reasonable suspicion to child protective services/law enforcement regardless of caregiver wishes. Involve a child-abuse pediatrician / child advocacy center.</div>
+     <div class="blk us"><b>Exam approach</b>Most exams are <b>normal</b> ("normal exam does not exclude abuse" — tissue heals fast and most abuse leaves no findings). Minimally invasive, child-paced, usually external/colposcopic without speculum in prepubertal girls (speculum exam under anesthesia only if needed for significant bleeding/trauma). A forensic interview is done by trained specialists — avoid repeated questioning that contaminates the account.</div>
+     <div class="blk dose"><b>Prophylaxis &amp; timing</b>STI testing/prophylaxis and HIV PEP decisions are <b>weight-based and individualized</b> (lower empiric prophylaxis threshold debated — often test &amp; treat rather than blanket prophylaxis in prepubertal children); emergency contraception for post-pubertal adolescents. Acute kit timing windows are often shorter/different in children.</div>
+     <div class="blk miss"><b>Red flags &amp; differential</b>Distinguish abuse from mimics (straddle injury — anterior, spares hymen; lichen sclerosus; accidental trauma) — but err toward evaluation/reporting. Consider the child\'s safety and siblings; disposition may hinge on a safe discharge environment.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>Common → uncommon, the whole arc:</b> first-trimester bleeding &amp; ectopic → RhoGAM &amp; resuscitation → trimester-specific bleeding → preeclampsia/eclampsia → emergency delivery &amp; PPH → endometritis &amp; the gyn emergencies → IUD issues → the rare catastrophes (perimortem C/S, AFE, inversion). Two principles unify them: <b>always check a βhCG and a blood type</b>, and <b>resuscitate the mother to save both patients.</b></div>`;
+}
+
+/* shared card builder */
+function obCard(c){
+ return `<div class="card ${c.cls||''}"><h3>${c.n}</h3>${c.tag?`<div class="tagline">${c.tag}</div>`:''}
+   ${c.us?`<div class="blk us"><b>Ultrasound</b>${c.us}</div>`:''}
+   ${c.mgmt?`<div class="blk mgmt"><b>Management</b>${c.mgmt}</div>`:''}
+   ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+ </div>`;
+}
+
+document.getElementById('main').innerHTML =
+  ultrasound()+hcg()+labs()+usFindings()+sis()+bleed1()+ectopic()+bleed2()+bleed3()+rhogam()+hemorrhage()+preeclampsia()+delivery()+pph()+gyn()+trauma()+teratogens()+radiation()+meds()+iud()+procedures();
+document.getElementById('foot').innerHTML="Master-level educational synthesis reflecting standard emergency OB/GYN teaching (ACOG and emergency-medicine references). βhCG thresholds, doses, and ultrasound timings are typical teaching values that vary by assay, institution, and gestational age — verify against current guidelines and involve obstetrics early. Ultrasound figures are stylized original teaching schematics, not diagnostic images. Not a protocol or a substitute for clinical judgment and specialist involvement.";
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
