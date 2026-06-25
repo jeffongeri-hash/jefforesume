@@ -29,6 +29,16 @@ const AllPosts = () => {
       tags: ["Antibiotics", "Infectious Disease", "Clinical Education"]
     },
     {
+      title: "OB/GYN Emergency Atlas — First, Second, Third Trimester & GYN Emergencies",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "An OB/GYN emergency atlas covering first, second, and third trimester emergencies plus gynecologic crises — with clinical pearls, ultrasound findings, and management pearls for the emergency department.",
+      image: businessPost,
+      slug: "obgyn-emergency-atlas",
+      tags: ["OB/GYN", "Emergency Medicine", "Clinical Education"]
+    },
+    {
       title: "Pediatric EM Atlas — Board Review",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
