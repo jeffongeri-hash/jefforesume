@@ -1,4 +1,54 @@
+// @ts-nocheck
 import { useState } from "react";
+
+const IV_AI_URL = `https://ckevaqwmomvauxudjzpj.supabase.co/functions/v1/iv-ai`;
+const IV_AI_HEADERS = {
+  "Content-Type": "application/json",
+  Authorization:
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrZXZhcXdtb212YXV4dWRqenBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0ODYzMzMsImV4cCI6MjA4MTA2MjMzM30.xR2d3odt785bcW60xns8O0VzX75QeN0L0KoEicP_NL8",
+};
+
+async function askAI(prompt: string, webSearch = false) {
+  const r = await fetch(IV_AI_URL, {
+    method: "POST",
+    headers: IV_AI_HEADERS,
+    body: JSON.stringify({ mode: "json", prompt, maxTokens: 1500, webSearch }),
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d?.error || "AI error");
+  return d.text as string;
+}
+
+function AIAssistant() {
+  const [q, setQ] = useState("");
+  const [a, setA] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [web, setWeb] = useState(false);
+  const ask = async () => {
+    if (!q.trim()) return;
+    setLoading(true); setA("");
+    try {
+      const ctx = "You are a healthcare careers assistant for a PA-C exploring jobs in the Sacramento region. Be concise, specific, and cite hospital systems when relevant (UC Davis, Sutter, Dignity/CommonSpirit, Kaiser, Adventist, Shriners, Marshall).";
+      const text = await askAI(`${ctx}\n\nQuestion: ${q}`, web);
+      setA(text);
+    } catch (e: any) { setA("Error: " + e.message); }
+    finally { setLoading(false); }
+  };
+  return (
+    <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: 20, marginBottom: 24, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+      <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 8, color: "#1A6FA3" }}>🤖 Sacramento Healthcare AI Assistant</div>
+      <div style={{ fontSize: 13, color: "#666", marginBottom: 12 }}>Powered by Claude (with GPT-4 fallback). Ask about hospitals, PA roles, PSLF, benefits, or relocation.</div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+        <input value={q} onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === "Enter" && ask()} placeholder="e.g. Which Sutter location has the best PA benefits?" style={{ flex: 1, padding: "10px 12px", border: "1px solid #d1d5db", borderRadius: 8, fontSize: 14 }} />
+        <button onClick={ask} disabled={loading} style={{ background: "#1A6FA3", color: "#fff", border: 0, borderRadius: 8, padding: "0 18px", fontWeight: 600, cursor: "pointer", opacity: loading ? 0.6 : 1 }}>{loading ? "..." : "Ask"}</button>
+      </div>
+      <label style={{ fontSize: 12, color: "#666", display: "flex", alignItems: "center", gap: 6 }}>
+        <input type="checkbox" checked={web} onChange={e => setWeb(e.target.checked)} /> Enable web search
+      </label>
+      {a && <div style={{ marginTop: 12, padding: 12, background: "#f8fafc", borderRadius: 8, fontSize: 14, whiteSpace: "pre-wrap", lineHeight: 1.6 }}>{a}</div>}
+    </div>
+  );
+}
 
 const HOSPITALS = [
   {
@@ -377,7 +427,7 @@ const CA_BENEFITS = [
 
 const SYSTEMS = ["All Systems", "UC Davis Health", "Sutter Health", "Dignity Health (CommonSpirit)", "Kaiser Permanente", "Marshall Medical Centers", "Shriners International", "Adventist Health"];
 
-export default function App() {
+export default function SacramentoHealthcareHub() {
   const [tab, setTab] = useState("hospitals");
   const [selectedSystem, setSelectedSystem] = useState("All Systems");
   const [expandedHospital, setExpandedHospital] = useState(null);
