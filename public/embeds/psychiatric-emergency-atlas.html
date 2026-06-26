@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychiatric Emergency Atlas — Master Reference</title>
+<style>
+  :root{
+    --bg:#0c0f15;--bg2:#11161e;--panel:#141a23;--panelhi:#1a232f;--line:#26313f;--line2:#1a232f;
+    --ink:#e9eef4;--soft:#a4b3c2;--muted:#75879a;--faint:#536579;
+    --agitation:#e0563b;--psychosis:#9b6cd6;--mood:#3fa7d6;--safety:#d6456a;--organic:#d68a2e;--subst:#46a98a;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --grid:#0e131a;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --agitation:#c4422a;--psychosis:#7e4fc0;--mood:#1c7fb0;--safety:#b3315a;--organic:#b06f17;--subst:#1f9d6f;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:72ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:5px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:40px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:24px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  p.body{color:var(--soft);max-width:84ch;font-size:.92rem;margin:10px 0;}
+  p.body b{color:var(--ink);}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(390px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.agitation{border-top-color:var(--agitation);}.card.psychosis{border-top-color:var(--psychosis);}
+  .card.mood{border-top-color:var(--mood);}.card.safety{border-top-color:var(--safety);}
+  .card.organic{border-top-color:var(--organic);}.card.subst{border-top-color:var(--subst);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.miss b{color:var(--warn);}.blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.mgmt b{color:var(--accent);}.blk.feat b{color:var(--psychosis);}.blk.feat{color:var(--soft);}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:760px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .fast{color:var(--good);font-weight:700;}.med{color:var(--gold);font-weight:700;}.slow{color:var(--muted);}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.crit{border-left-color:var(--safety);background:color-mix(in srgb,var(--safety) 10%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .ladder{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+  .rung{display:grid;grid-template-columns:120px 1fr;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;align-items:start;}
+  .rung .lvl{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:2px;}
+  .rung.l1 .lvl{color:var(--good);}.rung.l2 .lvl{color:var(--gold);}.rung.l3 .lvl{color:var(--agitation);}
+  .rung .body{font-size:.85rem;}
+  .rung .body b{color:var(--ink);}
+  @media(max-width:620px){.rung{grid-template-columns:1fr;gap:4px;}}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:6px 10px 0;}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  .src{color:var(--muted);font-size:.74rem;margin-top:6px;}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Psychiatric Emergencies · Master Atlas</div>
+  <h1>De-escalate first, <em>medicate smart</em>, restrain last.</h1>
+  <p>A master-level psychiatric emergency reference: the medical-clearance mindset, suicide and homicide/violence risk, and an in-depth core on agitation and psychosis — the current (2024 ACEP) evidence on combination chemical sedation, fastest-onset agents, oral vs IM choices, the drug-interaction and QT traps, verbal de-escalation tailored to the patient, and safe hands-on restraint with its medical pitfalls.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Doses and agent choices are standard teaching values from current literature (incl. the 2024 ACEP severe-agitation clinical policy) and must be verified against local protocols, the individual patient, and current references before use; chemical and physical restraint carry real risk and legal/ethical duties. Educational synthesis, not a protocol.</div></div>
+
+<nav class="jump"><div class="inner">
+  <a href="#approach">ED approach</a>
+  <a href="#clearance">Medical clearance</a>
+  <a href="#suicide">Suicide risk</a>
+  <a href="#violence">Homicide/violence</a>
+  <a href="#agitation">Agitation (deep dive)</a>
+  <a href="#deescalation">De-escalation</a>
+  <a href="#meds">Chemical sedation</a>
+  <a href="#onset">Onset & route</a>
+  <a href="#interactions">Interactions & QT</a>
+  <a href="#restraint">Physical restraint</a>
+  <a href="#psychosis">Psychosis (deep dive)</a>
+  <a href="#syndromes">Tox/med syndromes</a>
+  <a href="#cases">Other presentations</a>
+  <a href="#pearls">Pearls</a>
+</div></nav>
+
+<main id="main"></main>
+<footer id="foot"></footer>
+
+<script>
+/* ===== helpers ===== */
+function card(c){
+ return `<div class="card ${c.cls||''}"><h3>${c.n}</h3>${c.tag?`<div class="tagline">${c.tag}</div>`:''}
+   ${c.feat?`<div class="blk feat"><b>Features</b>${c.feat}</div>`:''}
+   ${c.dose?`<div class="blk dose"><b>${c.doseLabel||'Management'}</b>${c.dose}</div>`:''}
+   ${c.mgmt?`<div class="blk mgmt"><b>Approach</b>${c.mgmt}</div>`:''}
+   ${c.buzz?`<div class="blk buzz"><b>Key point</b>${c.buzz}</div>`:''}
+   ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+ </div>`;
+}
+
+/* ============================================================ */
+function approach(){
+ return `<h2 class="sec" id="approach">1 · The ED approach to the psychiatric patient</h2>
+ <p class="seclead">Two questions run in parallel from the moment of arrival: <b>is this medically driven?</b> (the "organic" workup) and <b>is anyone in danger?</b> (the safety assessment). Psychiatry is a diagnosis you reach <em>after</em> excluding the medical mimics — never the default for a confused or agitated patient.</p>
+ <div class="cardgrid wide">
+   <div class="card organic"><h3>Medical-first mindset</h3>
+     <div class="blk">New psychiatric symptoms — especially with abnormal vitals, age >40 with no psych history, altered consciousness, focal findings, or visual hallucinations — are <b>medical until proven otherwise</b>. Delirium masquerades as "agitation" or "psychosis."</div>
+     <div class="blk miss"><b>Red flags for organic cause</b>Abnormal vitals, disorientation, fluctuating consciousness, age extremes, focal neuro signs, visual/tactile hallucinations, sudden onset, no prior psych history.</div>
+   </div>
+   <div class="card safety"><h3>Safety &amp; environment</h3>
+     <div class="blk">Search for weapons/sharps, use a safe room (two exits, nothing throwable), keep yourself between the patient and the door without cornering them, security aware, and never interview a potentially violent patient alone or in a closed space you can\'t exit.</div>
+   </div>
+   <div class="card"><h3>Collateral &amp; capacity</h3>
+     <div class="blk">Gather collateral (family, EMS, records, prescribers); assess decision-making capacity and the legal basis for involuntary evaluation/hold where indicated. Document the risk assessment and the reasoning, not just the disposition.</div>
+   </div>
+ </div>`;
+}
+
+function clearance(){
+ return `<h2 class="sec" id="clearance">2 · Medical clearance</h2>
+ <p class="seclead">"Medical clearance" means a focused, individualized evaluation to identify medical causes/comorbidities that need treatment before psychiatric disposition — not a fixed lab panel for everyone. History and exam drive testing.</p>
+ <div class="cardgrid wide">
+   <div class="card organic"><h3>Targeted, not reflexive</h3>
+     <div class="blk">A young patient with a known psychiatric history, normal vitals, normal exam, and at baseline often needs little or no testing. <b>Selective testing</b> beats universal panels — the yield of routine labs in the awake, alert, at-baseline psych patient is low.</div>
+     <div class="blk mgmt"><b>Test when</b>Abnormal vitals, altered mental status, first presentation, age extremes, focal findings, ingestion/withdrawal concern, or a specific symptom to chase.</div>
+   </div>
+   <div class="card organic"><h3>Common useful studies</h3>
+     <div class="blk">Glucose (always for AMS), and as indicated: electrolytes/renal, CBC, toxicology (incl. acetaminophen/salicylate in self-harm), ethanol, pregnancy test, TSH, ECG (QT before QT-prolonging meds), CK (agitation/restraint → rhabdo), and CT/LP when CNS process suspected.</div>
+     <div class="blk buzz"><b>In self-harm</b>Screen acetaminophen and salicylate levels even with a different stated ingestion — co-ingestion is common and APAP is silent early.</div>
+   </div>
+   <div class="card organic"><h3>The dangerous mimics</h3>
+     <div class="blk">Hypoglycemia, hypoxia, intoxication/withdrawal (alcohol, benzodiazepines), CNS infection, intracranial bleed, thyroid storm/myxedema, hepatic/uremic encephalopathy, Wernicke, NMS/serotonin syndrome, anticholinergic/sympathomimetic toxidromes, hypertensive emergency, and non-convulsive status.</div>
+     <div class="blk miss"><b>Wernicke</b>Give thiamine in the malnourished/alcohol-use patient; don\'t miss the confusion-ataxia-ophthalmoplegia triad.</div>
+   </div>
+ </div>`;
+}
+
+function suicide(){
+ return `<h2 class="sec" id="suicide">3 · Suicidal ideation &amp; self-harm</h2>
+ <p class="seclead">The job is risk stratification and safety, not prediction (no tool reliably predicts the individual). Assess ideation, intent, plan, access to means, preparatory acts, and the balance of risk vs protective factors — then match the level of monitoring and disposition.</p>
+ <div class="cardgrid wide">
+   <div class="card safety"><h3>Structured risk assessment</h3>
+     <div class="blk feat"><b>Ask directly</b>Asking about suicide does not plant the idea. Probe ideation (passive vs active), intent, plan, access to lethal means, preparatory behavior (giving things away, notes), prior attempts (the strongest single risk factor), and current intoxication.</div>
+     <div class="blk mgmt"><b>Tools</b>Columbia (C-SSRS), SAD PERSONS as adjuncts — they structure, they don\'t replace clinical judgment.</div>
+   </div>
+   <div class="card safety"><h3>Risk &amp; protective factors</h3>
+     <div class="blk"><b>Higher risk</b>Prior attempt, a defined/lethal plan with access, male sex, older age, social isolation, recent loss, substance use, command hallucinations, hopelessness, access to firearms, chronic pain/illness.</div>
+     <div class="blk"><b>Protective</b>Strong supports, responsibility for children, future orientation, engagement in care, reasons for living, ambivalence/help-seeking.</div>
+   </div>
+   <div class="card safety"><h3>Disposition &amp; safety</h3>
+     <div class="blk mgmt"><b>In the ED</b>Remove belongings/ligatures/sharps, 1:1 observation for the high-risk, search as indicated, and don\'t leave the actively suicidal patient unmonitored.</div>
+     <div class="blk dose"><b>Means restriction</b>Counsel on reducing access to lethal means (esp. firearms, medications) — one of the few interventions with real evidence. Psychiatry consult; admit (often involuntary) vs safety-planned discharge by risk.</div>
+     <div class="blk miss"><b>Don\'t</b>rely on a "contract for safety" — it has no evidence; rely on assessment, means restriction, and appropriate level of care.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>Sensitive-topic note:</b> if you or someone you\'re caring for is in crisis, this atlas is a clinical reference, not a substitute for real-time help — in the U.S., 988 (Suicide &amp; Crisis Lifeline) is available 24/7. The clinical content here is for trained clinicians stratifying and managing risk.</div>`;
+}
+
+function violence(){
+ return `<h2 class="sec" id="violence">4 · Homicidal ideation, violence risk &amp; duty</h2>
+ <p class="seclead">Parallel to suicide assessment: evaluate ideation, target, plan, means, and history — and know your jurisdiction\'s duty-to-warn/protect obligations.</p>
+ <div class="cardgrid wide">
+   <div class="card safety"><h3>Violence risk assessment</h3>
+     <div class="blk feat"><b>Assess</b>Specific ideation, an identifiable target, plan and access to weapons, and the single best predictor — a <b>history of violence</b>. Plus substance use, psychosis with persecutory/command features, impulsivity, and antisocial traits.</div>
+     <div class="blk miss"><b>Imminent-violence cues</b>Escalating motor activity, clenched fists/jaw, invading space, loud/threatening speech, target fixation, prior pattern — intervene before it escalates.</div>
+   </div>
+   <div class="card safety"><h3>Duty to warn / protect</h3>
+     <div class="blk">Where a patient poses a serious threat to an identifiable victim, clinicians may have a legal <b>duty to protect</b> (Tarasoff-derived; varies by jurisdiction) — which can include warning the victim, notifying police, and/or hospitalization. Know your local statute.</div>
+     <div class="blk mgmt"><b>Document</b>the threat, the assessment, and the protective action taken.</div>
+   </div>
+   <div class="card safety"><h3>Staff &amp; scene safety</h3>
+     <div class="blk">ED violence is common (≈40% of ED staff report career assault). Use security, positioning, exit access, and early de-escalation; treat the agitated/violent patient with the agitation pathway below while keeping everyone safe.</div>
+   </div>
+ </div>`;
+}
+
+/* ===== AGITATION DEEP DIVE ===== */
+function agitation(){
+ return `<h2 class="sec" id="agitation">5 · Agitation — in-depth</h2>
+ <p class="seclead">Agitation is a symptom, not a diagnosis — a continuum from anxious restlessness to dangerous violence, with causes spanning the medical, the toxicologic, and the psychiatric. The modern approach (AAEP Project BETA; 2024 ACEP clinical policy) is a graded one: <b>least-coercive-first</b>, identify the cause while you treat the behavior, and reserve restraint for genuine danger.</p>
+ <div class="svgfig">${figAgitationLadder()}<div class="figcap">The graded response: environment &amp; verbal de-escalation for everyone who can engage → offered (oral) medication → IM/parenteral sedation for severe/dangerous agitation → physical restraint only as a bridge, for the shortest time, with monitoring. Identify and treat the underlying cause in parallel.</div></div>
+ <div class="cardgrid wide">
+   <div class="card organic"><h3>Differential — find the driver</h3>
+     <div class="blk feat"><b>Medical/organic</b>Hypoglycemia, hypoxia, head injury, CNS infection, postictal, delirium, thyroid storm, hepatic/uremic encephalopathy — agitation + abnormal vitals/AMS.</div>
+     <div class="blk feat"><b>Toxicologic</b>Sympathomimetics (cocaine, meth), anticholinergics, alcohol/benzo withdrawal, hallucinogens, PCP, intoxication.</div>
+     <div class="blk feat"><b>Psychiatric</b>Psychosis, mania, agitated depression, personality/behavioral — a diagnosis of exclusion once medical causes are considered.</div>
+   </div>
+   <div class="card agitation"><h3>The BETA philosophy</h3>
+     <div class="blk">Project BETA (Best practices in Evaluation and Treatment of Agitation) reframed agitation care: <b>verbal de-escalation first</b>, medication to <em>calm and engage</em> (not to "snow"), the patient as a partner, and coercion as a last resort. The goal is a calm, cooperative patient — not an unconscious one.</div>
+     <div class="blk buzz"><b>Mindset shift</b>"Treat the agitation, find the cause, preserve the alliance" — oversedation hides the exam and adds risk (aspiration, falls, respiratory depression).</div>
+   </div>
+   <div class="card agitation"><h3>Severity-matched response</h3>
+     <div class="blk mgmt"><b>Mild–moderate</b>Environment + verbal de-escalation; offer oral medication; treat cause.</div>
+     <div class="blk mgmt"><b>Severe / dangerous</b>Parenteral (IM/IV) sedation; brief physical restraint as a bridge to chemical control; continuous monitoring; rule out and treat medical drivers urgently (esp. hyperthermia/"excited delirium" physiology — a medical emergency).</div>
+   </div>
+ </div>`;
+}
+
+function figAgitationLadder(){
+ const W=820,H=300;
+ const tier=(x,y,w,h,col,t1,t2)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="${col}" opacity="0.18" stroke="${col}" stroke-width="1.5"/>`+
+   `<text x="${x+16}" y="${y+24}" font-family="SF Mono,monospace" font-size="13" font-weight="700" fill="${col}">${t1}</text>`+
+   `<text x="${x+16}" y="${y+44}" font-family="SF Mono,monospace" font-size="10.5" fill="var(--soft)">${t2}</text>`;
+ const inner=
+   `<rect width="${W}" height="${H}" fill="var(--bg2)"/>`+
+   tier(40,28,740,56,'var(--good)','1 · Environment + verbal de-escalation','calm space, one communicator, listen, offer choices — for everyone who can engage')+
+   tier(120,98,660,56,'var(--gold)','2 · Offered oral medication','collaborative; oral antipsychotic ± benzodiazepine, or inhaled loxapine; lower coercion')+
+   tier(200,168,580,56,'var(--agitation)','3 · IM / parenteral sedation','severe/dangerous: droperidol or 2nd-gen antipsychotic ± midazolam; ketamine if refractory')+
+   tier(280,238,500,40,'var(--safety)','4 · Physical restraint — last resort, briefest bridge','only for danger; continuous monitoring; remove ASAP; never a substitute for treatment')+
+   // arrow
+   `<path d="M22,40 L22,270" stroke="var(--muted)" stroke-width="2" marker-end="url(#ag)"/>`+
+   `<text x="14" y="160" font-family="SF Mono,monospace" font-size="10" fill="var(--muted)" transform="rotate(-90,14,160)">increasing coercion →</text>`+
+   `<defs><marker id="ag" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="var(--muted)"/></marker></defs>`;
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+function deescalation(){
+ return `<h2 class="sec" id="deescalation">6 · Verbal de-escalation — calming the agitated patient</h2>
+ <p class="seclead">The first-line intervention, effective and underused. Project BETA\'s 10 domains distill to: respect space, control yourself, communicate simply, and give the patient a way out with dignity. Tailor it to <em>why</em> the patient is agitated and to their background.</p>
+ <div class="cardgrid wide">
+   <div class="card"><h3>Core technique (Project BETA)</h3>
+     <div class="blk">Respect personal space (two arms\' length, leave yourself an exit); don\'t be provocative (calm posture, hands visible, no staring-down); establish verbal contact with one clear communicator; be concise and repeat; identify wants/feelings ("What do you need right now?"); listen actively; agree or agree-to-disagree; set clear limits kindly; offer choices and optimism; debrief afterward.</div>
+   </div>
+   <div class="card"><h3>One communicator, simple language</h3>
+     <div class="blk">Designate a single person to speak — multiple voices escalate. Short sentences, simple words, calm low voice. Offer concrete choices ("Would you like water, or to sit over here?") to restore a sense of control. Food/water/a blanket/a phone call can defuse more than words.</div>
+   </div>
+   <div class="card"><h3>Tailor to the person</h3>
+     <div class="blk feat"><b>Background matters</b>Match language and use interpreters (not family) for limited-English patients; be aware of cultural norms around eye contact/personal space; trauma history (esp. prior restraint, abuse) → a restraint-sparing, choice-forward approach; developmental/autism/intellectual disability → reduce stimulation, predictable steps, involve a familiar caregiver; intoxication/delirium → reorient, simplify, treat the cause.</div>
+     <div class="blk buzz"><b>De-escalation by driver</b>Frightened-psychotic → reassurance, don\'t argue the delusion; manic → reduce stimulation, set gentle limits; intoxicated → calm, monitor; personality/behavioral → consistent, non-punitive limits; delirious → reorient + fix the physiology.</div>
+   </div>
+ </div>
+ <div class="note good"><b>The aim:</b> de-escalation succeeds when the patient can participate in their own care. It is faster, safer, and less traumatic than force, preserves the therapeutic alliance, and is the recommended first step for any agitated patient who can engage — even briefly attempting it while preparing medication is worthwhile.</div>`;
+}
+
+function meds(){
+ return `<h2 class="sec" id="meds">7 · Chemical sedation — current evidence (2024 ACEP)</h2>
+ <p class="seclead">When medication is needed, the most recent major guidance is the <b>2024 ACEP clinical policy on severe agitation</b>. Its headline: for severe agitation, <b>combination therapy</b> is more rapid and effective than a benzodiazepine alone.</p>
+ <div class="cardgrid wide">
+   <div class="card agitation"><h3>The 2024 ACEP recommendations</h3>
+     <div class="blk dose"><b>Level B — combinations</b>For more rapid, effective control of severe agitation, use <b>droperidol + midazolam</b>, OR an <b>atypical antipsychotic (olanzapine) + midazolam</b>. If a single agent must be used, prefer droperidol or an atypical antipsychotic (over midazolam alone, given midazolam\'s respiratory-depression profile).</div>
+     <div class="blk dose"><b>Level C</b>The above, or <b>haloperidol alone or with lorazepam</b>, are also effective options.</div>
+     <div class="blk dose"><b>Consensus</b>When safety of patient/staff demands it, <b>ketamine (IM or IV)</b> rapidly controls severe agitation. No specific recommendation for/against particular agents in patients >65 or prehospital.</div>
+     <div class="src">Source: ACEP Clinical Policy, Ann Emerg Med, Jan 2024.</div>
+   </div>
+   <div class="card agitation"><h3>Representative regimens &amp; doses</h3>
+     <div class="blk dose"><b>Droperidol</b>5 mg IM/IV (10 mg for larger/severe; 5 mg is the common effective starting dose).</div>
+     <div class="blk dose"><b>Droperidol 5 mg + midazolam</b>(2.5 mg if <50 kg / 5 mg if >50 kg) IM/IV — a fast, effective combination.</div>
+     <div class="blk dose"><b>Olanzapine 5–10 mg IM</b> ± midazolam; or <b>haloperidol 5 mg + lorazepam 2 mg IM</b> (the classic "B52"-type combo reduces EPS &amp; works faster than haloperidol alone).</div>
+     <div class="blk dose"><b>Ketamine</b>4–5 mg/kg IM (or 1–2 mg/kg IV) for refractory/dangerous agitation — have airway equipment ready.</div>
+   </div>
+   <div class="card agitation"><h3>Why combinations win</h3>
+     <div class="blk">An antipsychotic (D2 blockade) plus a benzodiazepine (GABA) hit different mechanisms → faster, deeper calming at lower individual doses, with fewer EPS than high-dose antipsychotic alone and less respiratory depression than high-dose benzodiazepine alone.</div>
+     <div class="blk buzz"><b>Antipsychotic + benzo</b>is the workhorse pairing; the benzodiazepine also covers the agitation of stimulant intoxication and alcohol/benzo withdrawal, where antipsychotics alone are insufficient (or lower the seizure threshold).</div>
+   </div>
+ </div>
+ <div class="note warn"><b>Cause-specific tailoring:</b> <b>alcohol/sedative withdrawal</b> → benzodiazepines (not antipsychotics) are the treatment. <b>Stimulant/sympathomimetic</b> → benzodiazepines first-line (cooling, fluids; antipsychotics adjunctive). <b>Anticholinergic delirium</b> → benzodiazepines + consider physostigmine; avoid more anticholinergic antipsychotics. <b>Delirium in the elderly</b> → low-dose antipsychotic, avoid benzodiazepines (worsen delirium) except in withdrawal.</div>`;
+}
+
+function onset(){
+ const R=[
+  ['Ketamine','IM','fast','~3–5 min','~4–5 mg/kg IM','Fastest IM option; dissociates rapidly. Airway/laryngospasm watch; transient ↑HR/BP; emergence. For severe/refractory/dangerous.'],
+  ['Ketamine','IV','fast','~1 min','~1–2 mg/kg IV','Near-immediate; titratable; same cautions.'],
+  ['Midazolam','IM','fast','~5–15 min (≈13–18 to sedation)','5 mg IM','Fastest-onset IM benzo (lipophilic, well absorbed IM); shorter-acting; respiratory depression — the reason it\'s paired, not solo, in severe cases.'],
+  ['Droperidol','IM/IV','fast','~10–15 min','5–10 mg','Faster &amp; often more effective than haloperidol; antiemetic too; QT (see interactions). Excellent single agent or with midazolam.'],
+  ['Olanzapine','IM','med','~15–30 min','10 mg IM','Effective; avoid combining IM olanzapine with parenteral benzodiazepine closely (excess sedation/CV/respiratory depression deaths reported — separate them).'],
+  ['Loxapine','inhaled','fast','~10 min','10 mg inhaled','Rapid, non-coercive for cooperative patients who can use the inhaler; bronchospasm risk → contraindicated in asthma/COPD, needs a setting with a bronchodilator available.'],
+  ['Haloperidol','IM','med','~20–40 min','5 mg IM','Long track record; slower &amp; more EPS than droperidol; pairs with lorazepam. Avoid IV route concerns (QT).'],
+  ['Lorazepam','IM','med','~20–30 min','2 mg IM','Reliable; no active metabolites (good in hepatic disease); slower IM absorption than midazolam; the benzo for withdrawal.'],
+  ['Ziprasidone','IM','med','~15–30 min','10–20 mg IM','Effective; QT consideration.'],
+  ['Haloperidol+lorazepam','IM','med','~20–30 min','5 mg + 2 mg','Classic combo; faster &amp; less EPS than haloperidol alone.'],
+  ['Olanzapine (PO/ODT)','oral','slow','~15–45 min','5–10 mg','Orally-disintegrating tab — good for the cooperative patient; non-coercive.'],
+  ['Risperidone (PO)','oral','slow','~30–60 min','2 mg','Oral option ± lorazepam for cooperative patients.']
+ ];
+ const head=`<tr><th>Agent</th><th>Route</th><th>Speed</th><th>Onset</th><th>Typical dose</th><th>Notes</th></tr>`;
+ const sp=v=>v==='fast'?'<span class="fast">fast</span>':v==='med'?'<span class="med">moderate</span>':'<span class="slow">slower</span>';
+ const body=R.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td><td>${sp(r[2])}</td><td class="mono-val">${r[3]}</td><td class="mono-val">${r[4]}</td><td style="color:var(--soft)">${r[5]}</td></tr>`).join('');
+ return `<h2 class="sec" id="onset">8 · Onset &amp; route — fastest-acting agents, oral vs IM</h2>
+ <p class="seclead">When speed matters, route and agent both count. Onset times below are approximate ranges from the literature (they vary by patient, absorption, and endpoint measured) — use them for relative comparison, not as exact promises.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note buzz"><b>Fastest to calm (practical ranking):</b> <b>IV ketamine</b> (~1 min) &gt; <b>IM ketamine</b> (~3–5 min) &gt; <b>IM midazolam</b> (~5–15 min) ≈ <b>inhaled loxapine</b> (~10 min, cooperative only) &gt; <b>IM droperidol</b> (~10–15 min) &gt; IM olanzapine/ziprasidone (~15–30) &gt; IM haloperidol/lorazepam (~20–40). Among the workhorse antipsychotics, <b>droperidol is faster than haloperidol</b>.</div>
+ <div class="note good"><b>Oral vs IM — the decision:</b> if the patient can cooperate, <b>offer oral first</b> (orally-disintegrating olanzapine/risperidone ± lorazepam, or inhaled loxapine) — it is less coercive, preserves the alliance, and avoids injection risk, at the cost of slower, less-certain onset. Reserve <b>IM/IV</b> for severe or dangerous agitation, when speed and reliability of absorption matter, or when the patient cannot/won\'t take oral. IM has faster, more predictable onset; oral is collaborative.</div>`;
+}
+
+function interactions(){
+ return `<h2 class="sec" id="interactions">9 · Drug interactions, QT &amp; the at-risk patient</h2>
+ <p class="seclead">The two recurring traps are <b>additive QT prolongation</b> (stacking QT-prolonging drugs in a patient who may already be on them) and <b>additive sedation/respiratory depression</b> (benzodiazepine + antipsychotic, or either + alcohol/opioids). Your example — a patient on quetiapine (Seroquel) who also got ondansetron (Zofran) — is exactly the QT-stacking scenario.</p>
+ <div class="cardgrid wide">
+   <div class="card agitation"><h3>QT prolongation — additive risk</h3>
+     <div class="blk feat"><b>QT-prolonging agents you may stack</b>antipsychotics (haloperidol, droperidol, ziprasidone, quetiapine), <b>ondansetron</b>, methadone, many antibiotics (azithromycin, fluoroquinolones), antiemetics, and others. Each adds; the danger is the <em>sum</em> plus electrolyte derangement.</div>
+     <div class="blk miss"><b>The Seroquel + Zofran example</b>A patient already on quetiapine who receives ondansetron (plus, say, IM haloperidol/droperidol for agitation) is stacking three QT-prolonging drugs — check the QTc, correct K⁺/Mg²⁺, and choose alternatives (e.g., a benzodiazepine-weighted approach) when the baseline QT is long or unknown in a high-risk patient.</div>
+   </div>
+   <div class="card agitation"><h3>Droperidol/haloperidol QT — the current view</h3>
+     <div class="blk">Droperidol\'s 2001 FDA black-box (QT/torsades) has been <b>widely reevaluated</b>: at the doses used for agitation, QT prolongation is transient and torsades is rare. Current emergency-medicine literature supports droperidol as safe/effective and does <b>not</b> require a routine pre-ECG in low-risk patients — but obtain an ECG before repeat dosing or in high-QT-risk patients.</div>
+     <div class="blk buzz"><b>Practical</b>Don\'t withhold needed sedation from a dangerous patient over QT fear; do get an ECG for repeat doses, known long QT, or QT-drug stacking, and correct electrolytes.</div>
+     <div class="src">Per ACEP/EM updates reevaluating the droperidol black-box.</div>
+   </div>
+   <div class="card agitation"><h3>Sedation/respiratory stacking</h3>
+     <div class="blk miss"><b>IM olanzapine + parenteral benzodiazepine</b>Avoid giving them together/closely — excess sedation, hypotension, and respiratory-depression deaths reported; separate timing or choose one. </div>
+     <div class="blk"><b>Benzo + alcohol/opioids</b>Additive respiratory depression — be cautious sedating the intoxicated patient; monitor airway, SpO₂, capnography.</div>
+   </div>
+   <div class="card organic"><h3>Other interaction traps</h3>
+     <div class="blk feat"><b>Watch</b>Antipsychotics lower the seizure threshold (caution in withdrawal/stimulant seizures — benzos preferred); serotonergic stacking → serotonin syndrome; clozapine (agranulocytosis, myocarditis, seizure) is its own world; lithium toxicity with NSAIDs/ACE/diuretics/dehydration; MAOI interactions.</div>
+     <div class="blk miss"><b>NMS risk</b>climbs with high-potency/high-dose antipsychotics, dehydration, and rapid dose escalation — watch for hyperthermia + rigidity + autonomic instability + ↑CK.</div>
+   </div>
+ </div>`;
+}
+
+function restraint(){
+ return `<h2 class="sec" id="restraint">10 · Physical restraint — safe hands-on &amp; the medical dangers</h2>
+ <p class="seclead">Physical restraint is a last resort to prevent imminent harm when de-escalation and medication have failed or can\'t be attempted safely — and it is itself a medical risk requiring monitoring, time limits, and documentation. The goal is a brief bridge to chemical control and a calm patient, not prolonged restraint.</p>
+ <div class="cardgrid wide">
+   <div class="card safety"><h3>Safe technique (team approach)</h3>
+     <div class="blk mgmt"><b>Team</b>A leader who communicates + at least <b>one person per limb</b> (5-person standard) + one for the head; pre-brief, assign roles, control the head to prevent biting/spitting. Move decisively once committed.</div>
+     <div class="blk mgmt"><b>Positioning</b>Restrain <b>supine</b> with the head of the bed up (or lateral), NEVER prone/hog-tied; keep the airway and chest free; limbs to a sturdy frame with proper restraints. One arm up / one arm down reduces leverage.</div>
+   </div>
+   <div class="card safety"><h3>The lethal pitfalls</h3>
+     <div class="blk miss"><b>Positional/restraint asphyxia</b>Prone restraint, weight on the back/chest, and "hog-tying" can kill by impairing ventilation — <b>never prone</b>; ensure the chest can expand. The combination of struggle + restraint + hyperthermia + stimulants is especially dangerous.</div>
+     <div class="blk miss"><b>Other harms</b>Aspiration, hyperthermia, rhabdomyolysis (check CK after heavy struggle), DVT/immobility, dignity/psychological trauma, and injury to patient or staff.</div>
+   </div>
+   <div class="card safety"><h3>Monitoring &amp; the law</h3>
+     <div class="blk mgmt"><b>While restrained</b>Continuous observation, vitals, airway/circulation checks, hydration/toileting, and frequent reassessment to remove restraints as soon as safe. Pair with chemical sedation so restraint is brief.</div>
+     <div class="blk dose"><b>Regulatory</b>Restraint requires a physician order, a documented indication (imminent danger, least-restrictive failed), time-limited orders, and regulated reassessment intervals (per CMS/Joint Commission); document the justification, alternatives tried, and monitoring.</div>
+     <div class="blk miss"><b>Don\'t</b>use restraint for convenience, punishment, or staffing — only for safety, for the shortest time, with a plan to remove.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>The unifying rule:</b> restraint buys minutes to achieve chemical calm and medical evaluation — it is not therapy. Supine (never prone), monitored, time-limited, documented, paired with medication, and removed as early as safety allows. Watch for the agitated-hyperthermic-stimulant patient whose physiology (acidosis, hyperthermia, rhabdo) — not the restraint alone — is the real killer; aggressive cooling, fluids, sedation, and medical resuscitation are the treatment.</div>`;
+}
+
+/* ===== PSYCHOSIS DEEP DIVE ===== */
+function psychosis(){
+ return `<h2 class="sec" id="psychosis">11 · Psychosis — in-depth</h2>
+ <p class="seclead">Psychosis = a break from reality: hallucinations (perceptions without stimulus), delusions (fixed false beliefs), and disorganized thought/behavior. The ED priority is distinguishing a <b>primary psychiatric</b> psychosis from a <b>secondary (medical/toxic)</b> one — because the second kind can kill and is treatable.</p>
+ <div class="cardgrid wide">
+   <div class="card psychosis"><h3>Primary vs secondary — the key split</h3>
+     <div class="blk feat"><b>Suggests SECONDARY (organic/toxic)</b>Sudden onset, age >40 or <12 at first break, abnormal vitals, clouded/fluctuating consciousness, disorientation, <b>visual/tactile/olfactory hallucinations</b>, focal neuro signs, no psychiatric history.</div>
+     <div class="blk feat"><b>Suggests PRIMARY psychiatric</b>Gradual onset, age of onset teens–30s, <b>auditory hallucinations</b>, clear sensorium, oriented, prior history, prominent negative symptoms.</div>
+     <div class="blk miss"><b>Rule</b>Visual hallucinations + disorientation + abnormal vitals = medical/delirium until proven otherwise — not "schizophrenia."</div>
+   </div>
+   <div class="card psychosis"><h3>Symptom anatomy</h3>
+     <div class="blk feat"><b>Positive</b>Hallucinations, delusions, disorganized speech/behavior (added experiences).</div>
+     <div class="blk feat"><b>Negative</b>Flat affect, alogia, avolition, anhedonia, social withdrawal (lost function — often more disabling).</div>
+     <div class="blk feat"><b>Cognitive</b>Impaired attention, working memory, executive function.</div>
+   </div>
+   <div class="card psychosis"><h3>Differential of psychosis</h3>
+     <div class="blk feat"><b>Primary</b>Schizophrenia/schizophreniform/schizoaffective, brief psychotic disorder, bipolar mania with psychosis, psychotic depression, delusional disorder.</div>
+     <div class="blk feat"><b>Secondary</b>Delirium, dementia, substance (stimulants, hallucinogens, PCP, cannabis, withdrawal), CNS infection/mass/seizure, autoimmune (anti-NMDA encephalitis), endocrine/metabolic, steroid/medication-induced, postpartum psychosis (an emergency).</div>
+   </div>
+ </div>
+ <h3 class="sub">Management of the acutely psychotic patient</h3>
+ <div class="cardgrid wide">
+   <div class="card psychosis"><h3>Acute treatment</h3>
+     <div class="blk dose"><b>Antipsychotics</b>Treat agitation/distress per the agitation pathway (2nd-gen oral if cooperative — olanzapine/risperidone; IM antipsychotic ± benzo if severe). Address the underlying cause for secondary psychosis.</div>
+     <div class="blk mgmt"><b>Don\'t argue the delusion</b>Don\'t confirm or directly challenge it — acknowledge the feeling, stay calm, reduce stimulation, ensure safety (command hallucinations to harm self/others = high risk).</div>
+   </div>
+   <div class="card safety"><h3>Postpartum psychosis</h3>
+     <div class="tagline">psychiatric emergency</div>
+     <div class="blk">Abrupt psychosis days–weeks postpartum — high risk of infanticide/suicide. <b>Emergent psychiatric admission</b>; do not discharge. Distinct from the common, milder postpartum "blues" and from postpartum depression.</div>
+   </div>
+   <div class="card organic"><h3>Anti-NMDA &amp; the can't-miss organics</h3>
+     <div class="blk">New psychosis + autonomic instability, seizures, dyskinesias, or a recent viral prodrome (esp. young women, ± ovarian teratoma) → consider <b>anti-NMDA-receptor encephalitis</b>. Steroid psychosis, thyroid storm, Wernicke, and CNS infection are the other treatable mimics.</div>
+   </div>
+ </div>`;
+}
+
+function syndromes(){
+ const S=[
+  {cls:'organic',n:'Neuroleptic malignant syndrome (NMS)',tag:'dopamine blockade',feat:'Fever, "lead-pipe" rigidity, autonomic instability, altered mental status, ↑CK — onset over days after antipsychotic start/increase.',dose:'Stop the antipsychotic; aggressive cooling/fluids; dantrolene, bromocriptine; ICU.',miss:'Rigidity + hyperthermia + ↑CK after an antipsychotic = NMS; can be fatal.'},
+  {cls:'organic',n:'Serotonin syndrome',tag:'serotonergic excess',feat:'Hyperthermia, CLONUS/hyperreflexia (lower-limb predominant), agitation, diaphoresis, mydriasis — onset within hours of a serotonergic drug/combination.',dose:'Stop serotonergic agents; benzodiazepines; cooling; cyproheptadine; supportive.',miss:'Clonus/hyperreflexia distinguishes it from NMS (rigidity, slower onset). Triptans, MAOIs, SSRIs, linezolid, tramadol, ondansetron contribute.'},
+  {cls:'subst',n:'Anticholinergic toxidrome',tag:'"mad/hot/red/dry/blind"',feat:'Agitated delirium, hyperthermia, dry flushed skin, mydriasis, urinary retention, absent bowel sounds, tachycardia.',dose:'Benzodiazepines, cooling, supportive; physostigmine in select pure anticholinergic cases.',miss:'"Mad as a hatter, hot as a hare, red as a beet, dry as a bone, blind as a bat."'},
+  {cls:'subst',n:'Sympathomimetic toxidrome',tag:'stimulants',feat:'Agitation, hyperthermia, tachycardia, hypertension, mydriasis, DIAPHORESIS (wet skin — vs dry anticholinergic).',dose:'Benzodiazepines first-line, cooling, fluids; treat hyperthermia aggressively.',miss:'Diaphoresis (wet) separates sympathomimetic from anticholinergic (dry).'},
+  {cls:'subst',n:'Alcohol/benzo withdrawal',tag:'GABA rebound',feat:'Tremor, agitation, autonomic hyperactivity → seizures, delirium tremens (mortality if untreated).',dose:'Benzodiazepines (symptom-triggered); treat the withdrawal, not just the agitation; thiamine.',miss:'Antipsychotics don\'t treat withdrawal &amp; lower seizure threshold — benzodiazepines are the answer.'},
+  {cls:'organic',n:'"Excited delirium" physiology',tag:'hyperthermic agitation',feat:'Extreme agitation + hyperthermia + metabolic acidosis + stimulant use; risk of sudden cardiac arrest, esp. peri-restraint.',dose:'Rapid sedation (benzo ± ketamine), aggressive cooling, IV fluids, monitor for rhabdo/hyperkalemia/arrest.',miss:'A medical emergency — the physiology (acidosis/hyperthermia), not the behavior, kills; resuscitate aggressively.'}
+ ];
+ return `<h2 class="sec" id="syndromes">12 · Toxidromes &amp; medication syndromes to recognize</h2>
+ <p class="seclead">The psychiatric-adjacent emergencies where the medication or the toxin is the diagnosis — and where giving the wrong sedative makes it worse.</p>
+ <div class="cardgrid wide">${S.map(c=>card(c)).join('')}</div>`;
+}
+
+function cases(){
+ const C=[
+  {cls:'mood',n:'Mania',tag:'bipolar',feat:'Elevated/irritable mood, ↓need for sleep, grandiosity, pressured speech, flight of ideas, impulsivity/risk-taking, ± psychosis.',dose:'Safety, reduce stimulation, antipsychotic ± benzodiazepine acutely; mood stabilizer (lithium/valproate) per psychiatry; admit if unsafe.',miss:'Rule out stimulant intoxication and secondary mania; assess risk to self/others.'},
+  {cls:'mood',n:'Severe depression',tag:'safety-driven',feat:'Pervasive low mood, anhedonia, sleep/appetite/energy change, guilt/worthlessness, concentration, suicidality.',dose:'Suicide risk assessment + safety; psychiatry; SSRIs are outpatient-initiated (not an ED "fix"); treat medical contributors.',miss:'Don\'t miss psychotic depression, bipolar depression (antidepressant can flip to mania), and medical causes (hypothyroid, anemia).'},
+  {cls:'mood',n:'Panic attack / acute anxiety',tag:'diagnosis of exclusion',feat:'Abrupt intense fear, palpitations, dyspnea, chest tightness, paresthesias, derealization, peaks ~10 min.',dose:'Reassurance, calm environment, rule out ACS/PE/arrhythmia/thyroid; short-term benzodiazepine occasionally.',miss:'First "panic attack" in older patients or with cardiac risk → exclude medical causes before labeling.'},
+  {cls:'subst',n:'Substance intoxication / withdrawal',tag:'co-occurring',feat:'Agitation, AMS, autonomic changes; pattern by substance (opioid miosis/↓RR; stimulant mydriasis/↑vitals).',dose:'Supportive + antidotes (naloxone for opioids); benzodiazepines for stimulant/alcohol withdrawal; screen co-ingestions.',miss:'Always check glucose, consider co-ingestion (APAP/salicylate), and treat withdrawal that can kill (alcohol, benzo).'},
+  {cls:'safety',n:'Catatonia',tag:'often missed',feat:'Immobility/stupor or excitement, mutism, posturing, waxy flexibility, negativism, echolalia — can be psychiatric or medical.',dose:'Benzodiazepine (lorazepam) challenge — diagnostic &amp; therapeutic; ECT for refractory/malignant; treat cause.',miss:'Malignant catatonia (autonomic instability, hyperthermia) overlaps NMS — emergency. Don\'t mistake for malingering.'},
+  {cls:'organic',n:'Delirium',tag:'the great mimicker',feat:'Acute, fluctuating attention/consciousness with a medical cause; hyper- or hypoactive; visual hallucinations common.',dose:'Find &amp; treat the cause (infection, drugs, metabolic, hypoxia); reorient; low-dose antipsychotic for dangerous agitation; avoid benzos (except withdrawal).',miss:'Hypoactive delirium is missed as "depression"; delirium is medical, not psychiatric — workup mandatory.'}
+ ];
+ return `<h2 class="sec" id="cases">13 · Other common presentations</h2>
+ <p class="seclead">The bread-and-butter psychiatric presentations — each with the safety/medical caveat that keeps it from being a missed emergency.</p>
+ <div class="cardgrid wide">${C.map(c=>card(c)).join('')}</div>`;
+}
+
+function pearls(){
+ const P=[
+  ['Medical until proven otherwise','New psychosis/agitation with abnormal vitals, AMS, age >40, or visual hallucinations is organic until excluded.'],
+  ['De-escalate first','Verbal de-escalation is the first-line treatment for agitation — least coercive, effective, preserves the alliance.'],
+  ['Combinations win (2024 ACEP)','For severe agitation, droperidol+midazolam or olanzapine+midazolam beat a benzo alone; ketamine for refractory danger.'],
+  ['Droperidol is fast','Faster &amp; often more effective than haloperidol; the QT black-box has been reevaluated — no routine pre-ECG in low-risk, but ECG for repeat doses/high-risk.'],
+  ['Fastest onset','IV ketamine ~1 min > IM ketamine ~3–5 > IM midazolam ~5–15 ≈ inhaled loxapine ~10 > IM droperidol ~10–15.'],
+  ['Oral if cooperative','Offer ODT olanzapine/risperidone ± lorazepam or inhaled loxapine first; reserve IM for severe/dangerous.'],
+  ['Withdrawal → benzodiazepines','Alcohol/benzo withdrawal and stimulant agitation: benzos, not antipsychotics (which lower seizure threshold).'],
+  ['QT stacking','Seroquel + Zofran (+ an IM antipsychotic) stacks QT — check QTc, correct K/Mg, choose alternatives in high-risk.'],
+  ['Avoid IM olanzapine + IM benzo together','Reported excess sedation/CV/respiratory depression — separate them.'],
+  ['Never prone restraint','Supine, monitored, time-limited; positional asphyxia kills. Restraint is a bridge to chemical calm, not therapy.'],
+  ['The hyperthermic agitated patient','"Excited delirium" physiology (acidosis/hyperthermia/stimulants) is the killer — cool, hydrate, sedate, resuscitate.'],
+  ['Postpartum psychosis','Emergency — high infanticide/suicide risk; admit, never discharge.'],
+  ['Clonus vs rigidity','Serotonin syndrome = clonus/hyperreflexia, hours; NMS = lead-pipe rigidity, days.'],
+  ['Always screen co-ingestion','APAP &amp; salicylate in self-harm even with another stated ingestion.'],
+  ['Duty to protect','Identifiable target + serious threat may trigger Tarasoff-type duty — know your jurisdiction; document.'],
+  ['Catatonia','Lorazepam challenge is diagnostic + therapeutic; malignant catatonia overlaps NMS.']
+ ];
+ return `<h2 class="sec" id="pearls">14 · High-yield pearls (rapid fire)</h2>
+ <div class="cardgrid">${P.map(p=>`<div class="card" style="border-top-color:var(--gold)"><div class="blk buzz"><b>${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`).join('')}</div>
+ <div class="note good"><b>What else to carry:</b> document capacity and the legal hold basis; involve psychiatry/social work early for disposition and means restriction; treat the patient with dignity (it\'s both right and de-escalating); reassess the restrained/sedated patient continuously (airway, vitals, the evolving medical picture); and remember the family/collateral and the prescriber are part of the workup.</div>`;
+}
+
+document.getElementById('main').innerHTML =
+  approach()+clearance()+suicide()+violence()+agitation()+deescalation()+meds()+onset()+interactions()+restraint()+psychosis()+syndromes()+cases()+pearls();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians, reflecting current emergency-psychiatry teaching including the 2024 ACEP Clinical Policy on severe agitation, AAEP Project BETA de-escalation/psychopharmacology consensus statements, and the reevaluation of the droperidol QT black-box. Doses, onset times, and agent choices are approximate teaching values that vary by patient, formulation, and endpoint — verify against current references and local protocols, and individualize. Restraint and chemical sedation carry real risks and legal/ethical duties. Not a protocol or a substitute for clinical judgment. If you are personally in crisis, contact local emergency services or, in the U.S., the 988 Suicide & Crisis Lifeline.";
+
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
