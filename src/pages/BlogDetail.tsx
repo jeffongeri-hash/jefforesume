@@ -269,6 +269,28 @@ const blogPosts = {
       <p><a href="/embeds/obgyn-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "psychiatric-emergency-atlas": {
+    title: "Psychiatric Emergency Atlas — Master Reference",
+    category: "HEALTHCARE",
+    date: "June 21, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A psychiatric emergency atlas covering agitation, psychosis, mood and safety crises, organic mimics, and substance-related presentations — with de-escalation, medication dosing, and disposition pearls for the emergency department.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/psychiatric-emergency-atlas.html"
+          title="Psychiatric Emergency Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/psychiatric-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",
@@ -3250,6 +3272,13 @@ const popularPosts = [
     date: "June 20, 2026",
     image: businessPost,
     slug: "obgyn-emergency-atlas"
+  },
+  {
+    title: "Psychiatric Emergency Atlas — Master Reference",
+    category: "HEALTHCARE",
+    date: "June 21, 2026",
+    image: businessPost,
+    slug: "psychiatric-emergency-atlas"
   },
   {
     title: "EKG Strip Atlas — Pattern, Location & Mechanism",

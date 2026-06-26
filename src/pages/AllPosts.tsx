@@ -39,6 +39,16 @@ const AllPosts = () => {
       tags: ["OB/GYN", "Emergency Medicine", "Clinical Education"]
     },
     {
+      title: "Psychiatric Emergency Atlas — Master Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 21, 2026",
+      excerpt: "A psychiatric emergency atlas covering agitation, psychosis, mood and safety crises, organic mimics, and substance-related presentations — with de-escalation, dosing, and disposition pearls.",
+      image: businessPost,
+      slug: "psychiatric-emergency-atlas",
+      tags: ["Psychiatry", "Emergency Medicine", "Clinical Education"]
+    },
+    {
       title: "Pediatric EM Atlas — Board Review",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
