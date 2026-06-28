@@ -1,7 +1,5 @@
 // @ts-nocheck
 import { useState, useCallback, useRef, useMemo } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 // ─── CONFIG (same data architecture as IV Strike Selector) ────────────────────
 const PROXY_BASE = "";
