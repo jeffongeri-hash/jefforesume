@@ -25,6 +25,7 @@ const Header = () => {
     { name: 'ACCOLADES', href: '/accolades' },
     { name: 'INVESTMENTS', href: '/investments' },
     { name: 'IV STRIKE', href: '/iv-strike-selector' },
+    { name: 'COVERED CALL', href: '/covered-call-master' },
     { name: 'CA MOVE', href: '/ca-move-planner' },
     { name: 'PAYCHECK', href: '/paycheck-analyzer' },
     { name: 'SAC HEALTH', href: '/sacramento-healthcare' },
