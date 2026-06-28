@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Procedural Companions — Splinting · Nerve Blocks · Sedation</title>
+<style>
+  :root{
+    --bg:#0c0f13;--bg2:#13171d;--panel:#151b22;--panelhi:#1c232c;--line:#283139;--line2:#1b222a;
+    --ink:#ecf1f4;--soft:#a8b6c0;--muted:#788a97;--faint:#566673;
+    --splint:#3fa7d6;--block:#9b6cd6;--sed:#46a98a;
+    --skin:#caa07e;--skin2:#b88a66;--derm:#a8755a;--bone:#e6e0d2;--nerve:#e0c341;--musc:#b8524f;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --grid:#0e1217;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --splint:#1c7fb0;--block:#7e4fc0;--sed:#1f8d6f;
+    --skin:#e3c4a4;--skin2:#d2ab85;--derm:#c08a6a;--bone:#cfc8b6;--nerve:#b3851f;--musc:#c4625f;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  .domtabs{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:22px;}
+  .domtabs .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;gap:8px;flex-wrap:wrap;}
+  .domtab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-family:inherit;font-size:.9rem;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer;}
+  .domtab:hover{border-color:var(--accent);color:var(--ink);}
+  .domtab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  .domtab .sub{display:block;font-size:.6rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-top:1px;}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:24px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.splint{border-top-color:var(--splint);}.card.block{border-top-color:var(--block);}.card.sed{border-top-color:var(--sed);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.use b{color:var(--accent);}.blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--splint);}.blk.miss b{color:var(--warn);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .lcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;border-left:4px solid var(--muted);}
+  .lcard.splint{border-left-color:var(--splint);}.lcard.block{border-left-color:var(--block);}.lcard.sed{border-left-color:var(--sed);}
+  .lcard .lfig{background:var(--bg2);border-bottom:1px solid var(--line2);padding:12px;display:flex;align-items:center;justify-content:center;}
+  .lcard .lfig svg{display:block;width:100%;height:auto;max-width:250px;}
+  .lcard .lbody{padding:14px 16px;}
+  .lcard h3{margin:0 0 2px;font-size:1.04rem;font-weight:700;}
+  .lcard .tagline{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 11%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,.domtabs .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Procedural Companions · Recommended Set</div>
+  <h1>Immobilize, block, <em>sedate</em>.</h1>
+  <p>The three companion references the rest of the suite kept pointing to — splinting &amp; fracture immobilization, regional nerve blocks, and procedural sedation &amp; analgesia — built to the same depth, with original procedural schematics. Use the tabs to switch.</p>
+</header>
+<div class="disclaimer"><div><b>Reference &amp; teaching tool for trained clinicians.</b> Techniques, drug doses, and thresholds are standard teaching values that vary by patient, indication, and institution — verify against current references and local protocols, confirm allergy/airway/fasting/anticoagulation status, obtain consent, use monitoring, and have rescue equipment and trained personnel. Schematics are stylized originals, not exact anatomic depictions. Educational synthesis, not a protocol.</div></div>
+
+<div class="domtabs"><div class="inner">
+  <button class="domtab on" data-dom="splint">Splinting<span class="sub">immobilization · by injury</span></button>
+  <button class="domtab" data-dom="block">Nerve blocks<span class="sub">regional anesthesia</span></button>
+  <button class="domtab" data-dom="sed">Procedural sedation<span class="sub">agents · monitoring · recovery</span></button>
+</div></div>
+
+<main>
+  <div id="tab-splint"></div>
+  <div id="tab-block" style="display:none"></div>
+  <div id="tab-sed" style="display:none"></div>
+</main>
+<footer id="foot"></footer>
+
+<script>
+/* ===== SVG helpers ===== */
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 260 170'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+const SKIN='var(--skin)',SKIN2='var(--skin2)',DERM='var(--derm)',BONE='var(--bone)',NERVE='var(--nerve)',MUSC='var(--musc)',SPL='var(--splint)';
+function limbBase(){return `<rect x="20" y="64" width="220" height="42" rx="21" fill="${SKIN}"/>`+`<rect x="20" y="64" width="220" height="42" rx="21" fill="none" stroke="${SKIN2}" stroke-width="1.5"/>`;}
+
+/* ============================================================
+   SPLINTING MODULE
+   ============================================================ */
+function splintModule(){
+ return splintPrinciples()+splintLayersFig()+splintByInjury()+splintComplications()+splintPearls();
+}
+function splintPrinciples(){
+ return `<h2 class="sec">1 · Splinting principles</h2>
+ <p class="seclead">Splints immobilize and allow swelling (unlike a circumferential cast) — the ED standard for acute injury. The rules: immobilize the joint above and below a long-bone fracture, splint in a position of function unless reduction dictates otherwise, pad well, and always reassess neurovascular status before and after.</p>
+ <div class="cardgrid wide">
+   <div class="card splint"><h3>Why a splint, not a cast</h3>
+     <div class="blk">Acute injuries swell; a non-circumferential splint accommodates that and avoids compartment syndrome. Casts come later, once swelling settles, usually in follow-up.</div>
+     <div class="blk tip"><b>General rules</b>Joint above + below for long bones; position of function; generous padding (esp. bony prominences); mold while setting; check NV status pre/post.</div>
+   </div>
+   <div class="card splint"><h3>Materials &amp; layering</h3>
+     <div class="blk dose"><b>Layers</b>Stockinette → cast padding (extra over bony prominences, ~2–3 layers) → plaster or fiberglass slab (wet, smoothed) → elastic bandage. Leave fingertips/toes exposed for perfusion checks.</div>
+     <div class="blk miss"><b>Thermal burn risk</b>Plaster is exothermic — use cool water and fewer layers (≤8–10 plaster) to avoid burns, especially with thick splints.</div>
+   </div>
+   <div class="card splint"><h3>Position of function</h3>
+     <div class="blk">Wrist ~20° extension; MCPs ~70–90° flexion, IPs near-extension ("safe/intrinsic-plus" hand position prevents stiffness); ankle at 90° (neutral, avoid equinus). Splint the reduced position for displaced fractures.</div>
+   </div>
+ </div>`;
+}
+function splintLayersFig(){
+ return `<div class="svgfig">${figSplintLayers()}<div class="figcap">Splint layering in cross-section: skin → stockinette → cast padding (extra over bony prominences) → plaster/fiberglass slab → elastic wrap. Non-circumferential so the limb can swell; fingertips left out for perfusion checks.</div></div>`;
+}
+function figSplintLayers(){
+ const W=620,H=210;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // concentric arcs representing layers over a limb cross-section
+ const cx=300,cy=150;
+ const layers=[['bone',38,BONE],['skin',70,SKIN],['stockinette',82,'#cfd8dc'],['padding',104,'#e9e2cf'],['plaster slab (one side)',122,SPL]];
+ // limb circle
+ inner+=`<circle cx="${cx}" cy="${cy}" r="70" fill="${SKIN}"/>`;
+ inner+=`<circle cx="${cx}" cy="${cy}" r="38" fill="${BONE}"/>`+tx(cx,cy+4,"bone",'#2b2b30',10,'middle',700);
+ inner+=`<circle cx="${cx}" cy="${cy}" r="78" fill="none" stroke="#cfd8dc" stroke-width="5"/>`;
+ inner+=`<circle cx="${cx}" cy="${cy}" r="92" fill="none" stroke="#e9e2cf" stroke-width="14"/>`;
+ // splint slab on dorsal side only (an arc, not full circle)
+ inner+=`<path d="M ${cx-95} ${cy} A 105 105 0 0 1 ${cx+95} ${cy}" fill="none" stroke="${SPL}" stroke-width="13"/>`;
+ // elastic wrap dashed full
+ inner+=`<circle cx="${cx}" cy="${cy}" r="112" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"/>`;
+ // labels with leader lines
+ const lbl=(y,t,col)=>tx(150,y,t,col,11,'end',700);
+ inner+=lbl(60,"plaster slab (one side)",SPL)+`<line x1="155" y1="56" x2="${cx-30}" y2="${cy-95}" stroke="${SPL}" stroke-width="1"/>`;
+ inner+=lbl(92,"cast padding",'#e9e2cf')+`<line x1="155" y1="88" x2="${cx-70}" y2="${cy-58}" stroke="#e9e2cf" stroke-width="1"/>`;
+ inner+=lbl(120,"stockinette",'#cfd8dc')+`<line x1="155" y1="116" x2="${cx-60}" y2="${cy-46}" stroke="#cfd8dc" stroke-width="1"/>`;
+ inner+=tx(470,60,"elastic wrap (dashed)",'var(--muted)',11,'start')+`<line x1="465" y1="56" x2="${cx+90}" y2="${cy-60}" stroke="var(--muted)" stroke-width="1"/>`;
+ inner+=tx(470,150,"non-circumferential →",'var(--good)',11,'start')+tx(470,166,"allows swelling",'var(--good)',11,'start');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+function splintByInjury(){
+ const L=[
+  {cls:'splint',n:'Volar / dorsal forearm splint',fig:figVolar,tag:'wrist & distal forearm',use:'Distal radius/ulnar fractures, wrist sprains, carpal injuries, soft-tissue.',tip:'Volar slab from palmar crease (allow MCP flexion) to proximal forearm; wrist ~20° extension. Add a dorsal slab for more support (sandwich).',miss:'Don\'t cross the MCPs — keep finger flexion free.',doc:'"Volar forearm splint applied, wrist in ~20° extension, MCPs free, NV intact pre/post."'},
+  {cls:'splint',n:'Sugar-tong (forearm)',fig:figSugarTong,tag:'distal radius',use:'Distal radius/forearm fractures — prevents forearm rotation (pronation/supination).',tip:'U-shaped slab around the elbow from dorsal to volar hand; controls rotation better than a single slab.',miss:'Ensure it controls rotation; check elbow padding.',doc:'"Sugar-tong splint applied controlling pro/supination, elbow at 90°, NV intact."'},
+  {cls:'splint',n:'Ulnar gutter',fig:figUlnarGutter,tag:'4th/5th metacarpal/phalanx',use:'Boxer\'s fracture (5th MC neck), 4th/5th metacarpal &amp; phalanx fractures.',tip:'Runs along the ulnar (little-finger) side, MCPs ~70–90° flexion, IPs near-extension; buddy-tape the two fingers.',miss:'Splint in the intrinsic-plus position to prevent stiffness; assess rotational alignment of the digits.',doc:'"Ulnar gutter splint, 4th/5th MCPs ~80° flexion, IPs extended, no rotational deformity, NV intact."'},
+  {cls:'splint',n:'Radial gutter',fig:figVolar,tag:'2nd/3rd metacarpal/phalanx',use:'2nd/3rd metacarpal &amp; phalanx fractures.',tip:'Along the radial side with a thumb hole; intrinsic-plus position.',miss:'Cut the thumb hole; keep thumb mobile.',doc:'"Radial gutter splint, index/long fingers immobilized, thumb free, NV intact."'},
+  {cls:'splint',n:'Thumb spica',fig:figThumbSpica,tag:'scaphoid & thumb',use:'Suspected scaphoid fracture (snuffbox tenderness even with normal X-ray), thumb MC/phalanx, UCL ("gamekeeper") injury, de Quervain.',tip:'Immobilizes the thumb in a "wine-glass"/can-holding position; treat clinically-suspected scaphoid even if X-ray negative (AVN/nonunion risk).',miss:'Snuffbox tenderness = treat as scaphoid fracture and re-image/refer — missed scaphoid → avascular necrosis.',doc:'"Thumb spica splint for snuffbox tenderness (scaphoid precaution) despite negative X-ray; ortho follow-up."'},
+  {cls:'splint',n:'Posterior leg (ankle) / stirrup',fig:figPostLeg,tag:'ankle & distal leg',use:'Ankle fractures/sprains, distal tibia/fibula; add a stirrup (U) for medial-lateral stability.',tip:'Posterior slab from below the knee to the toes, ankle at 90° (neutral) — avoid equinus (foot drop position).',miss:'Don\'t splint in plantarflexion; ankle must be at 90°.',doc:'"Posterior + stirrup ankle splint, ankle at 90°, NV intact, non-weight-bearing, crutches given."'},
+  {cls:'splint',n:'Long-arm posterior',fig:figLongArm,tag:'elbow & proximal forearm',use:'Elbow, distal humerus, proximal/midshaft forearm fractures.',tip:'Elbow at 90°, forearm neutral; immobilizes elbow rotation. Watch for compartment syndrome in supracondylar (peds).',miss:'Supracondylar fractures in kids → high compartment/NV risk; check the radial pulse and median/AIN function.',doc:'"Long-arm posterior splint, elbow 90°, forearm neutral, NV (incl. AIN) intact."'},
+  {cls:'splint',n:'Knee immobilizer / long-leg',fig:figPostLeg,tag:'knee',use:'Knee injuries, patellar fractures, tibial plateau (temporizing).',tip:'Immobilize in slight flexion/extension per injury; ensure able to monitor for compartment syndrome in tibial fractures.',miss:'High-energy knee dislocation → check for popliteal artery injury (ABIs/CTA) even if reduced.',doc:'"Knee immobilizer applied, NV intact, [ABI/pulses documented if dislocation]."'}
+ ];
+ return `<h2 class="sec">2 · Splints by injury</h2>
+ <p class="seclead">The common ED splints, what each is for, the position to set, and the can't-miss injury behind each.</p>
+ <div class="cardgrid wide">${L.map(lesionCard).join('')}</div>`;
+}
+/* splint schematics */
+function figVolar(){return svg(limbBase()+`<path d="M30,108 h200 v10 a6,6 0 0 1 -6,6 h-188 a6,6 0 0 1 -6,-6 z" fill="${SPL}" opacity="0.85"/>`+tx(130,150,"volar slab under forearm",'var(--muted)',9));}
+function figSugarTong(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<path d="M40,50 q-20,40 0,80 q60,20 180,8" fill="none" stroke="${SPL}" stroke-width="16" stroke-linecap="round" opacity="0.85"/>`+
+  `<rect x="40" y="44" width="180" height="20" rx="8" fill="${SKIN}"/>`+
+  `<rect x="40" y="120" width="180" height="20" rx="8" fill="${SKIN}"/>`+
+  tx(130,160,"U-shape around elbow (anti-rotation)",'var(--muted)',9));}
+function figUlnarGutter(){return svg(limbBase()+`<path d="M30,100 h130 v22 h-130 z" fill="${SPL}" opacity="0.85"/>`+
+  `<rect x="160" y="70" width="16" height="30" rx="4" fill="${SKIN2}"/>`+`<rect x="178" y="68" width="16" height="34" rx="4" fill="${SKIN2}"/>`+
+  tx(130,150,"ulnar side, 4th/5th digits",'var(--muted)',9));}
+function figThumbSpica(){return svg(limbBase()+`<path d="M30,104 h150 v18 h-150 z" fill="${SPL}" opacity="0.85"/>`+
+  `<path d="M150,64 q40,-22 56,-2 q6,16 -10,22 q-26,8 -46,-6 z" fill="${SPL}" opacity="0.85"/>`+
+  `<ellipse cx="172" cy="60" rx="10" ry="16" fill="${SKIN}" transform="rotate(-30 172 60)"/>`+
+  tx(130,150,"thumb in 'wine-glass' position",'var(--muted)',9));}
+function figPostLeg(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="70" y="20" width="34" height="90" rx="14" fill="${SKIN}"/>`+ // leg
+  `<path d="M70,110 q0,30 40,30 l40,0 q8,0 8,-10 l0,-6 q-40,2 -56,-14 z" fill="${SKIN}"/>`+ // foot
+  `<path d="M62,24 q-8,0 -8,10 l0,84 q0,40 50,40 l50,0 v-14 l-46,0 q-40,0 -40,-30 l0,-80 q0,-10 -6,-10 z" fill="${SPL}" opacity="0.8"/>`+
+  tx(130,160,"posterior slab, ankle at 90°",'var(--muted)',9));}
+function figLongArm(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="40" y="60" width="100" height="26" rx="13" fill="${SKIN}"/>`+
+  `<rect x="120" y="78" width="26" height="80" rx="13" fill="${SKIN}"/>`+
+  `<path d="M40,88 l108,0 q14,0 14,14 l0,56 h-22 l0,-50 l-100,0 z" fill="${SPL}" opacity="0.8"/>`+
+  tx(130,160,"elbow at 90°, posterior slab",'var(--muted)',9));}
+function splintComplications(){
+ return `<h2 class="sec">3 · Complications &amp; aftercare</h2>
+ <div class="cardgrid wide">
+   <div class="card splint"><h3>Compartment syndrome</h3>
+     <div class="blk miss"><b>The emergency</b>Pain out of proportion, pain on passive stretch (earliest), paresthesia, then (late) pallor/pulselessness/paralysis. A tight splint can cause or mask it — bivalve/loosen and reassess; measure compartment pressures; emergent fasciotomy if confirmed.</div>
+     <div class="blk">High-risk: tibial fractures, supracondylar (peds), crush, reperfusion, tight casts/splints.</div>
+   </div>
+   <div class="card splint"><h3>Other complications</h3>
+     <div class="blk">Pressure sores (inadequate padding/bony prominences), thermal burns (too many plaster layers/hot water), NV compromise (too tight), stiffness (wrong position/over-long immobilization), DVT, skin breakdown.</div>
+   </div>
+   <div class="card splint"><h3>Discharge instructions</h3>
+     <div class="blk dose"><b>Tell the patient</b>Elevate above the heart 48–72 h, ice, keep dry, wiggle exposed fingers/toes, and RETURN for increasing pain, numbness, tingling, color change, or a too-tight splint. Crutches/sling and weight-bearing status; orthopedic follow-up timing.</div>
+     <div class="blk miss"><b>Document</b>NV status before AND after splinting; give explicit compartment-syndrome return precautions.</div>
+   </div>
+ </div>`;
+}
+function splintPearls(){
+ const P=[
+  ['Splint, don\'t cast, acutely','Non-circumferential allows swelling; casts come at follow-up.'],
+  ['Joint above and below','Immobilize the joints on either side of a long-bone fracture.'],
+  ['Snuffbox = scaphoid','Treat clinically-suspected scaphoid (thumb spica) even with a normal X-ray — AVN risk.'],
+  ['Ankle at 90°','Never splint in equinus/plantarflexion — foot-drop/contracture.'],
+  ['Intrinsic-plus hand','MCPs 70–90° flexed, IPs extended — prevents the stiff "claw" hand.'],
+  ['Plaster burns','Exothermic — cool water, fewer layers, especially in thick splints.'],
+  ['NV check pre + post','Document neurovascular status before and after, every time.'],
+  ['Supracondylar = danger','Peds elbow fractures: high NV/compartment risk; check AIN ("OK" sign) and radial pulse.'],
+  ['Knee dislocation = vessel','Even when reduced, screen the popliteal artery (ABI/CTA).'],
+  ['Leave digits out','Fingertips/toes exposed to monitor perfusion.']
+ ];
+ return `<h2 class="sec">4 · Splinting pearls</h2><div class="cardgrid">${P.map(p=>pearlCard(p,'var(--splint)')).join('')}</div>`;
+}
+
+/* ============================================================
+   NERVE BLOCK MODULE
+   ============================================================ */
+function blockModule(){
+ return blockPrinciples()+blockSafetyFig()+blockCatalog()+blockLAST()+blockPearls();
+}
+function blockPrinciples(){
+ return `<h2 class="sec">1 · Regional anesthesia principles</h2>
+ <p class="seclead">A well-placed nerve block can anesthetize a whole territory with one injection — less tissue distortion than local infiltration (better for wound-edge alignment), excellent for reductions, large lacerations, and abscesses. Ultrasound guidance has made many blocks safer and more reliable.</p>
+ <div class="cardgrid wide">
+   <div class="card block"><h3>Why block instead of infiltrate</h3>
+     <div class="blk use"><b>Advantages</b>Anesthetizes a large area with less drug and no wound-edge distortion; works where local infiltration is hard (digit, face, palm/sole); reduces total anesthetic volume; great for fracture/dislocation reduction and burns.</div>
+   </div>
+   <div class="card block"><h3>Technique essentials</h3>
+     <div class="blk dose"><b>Agents</b>Lidocaine (fast, ~1–2 h) for quick procedures; bupivacaine/ropivacaine (slower onset, 4–8+ h) for prolonged analgesia. Buffer &amp; warm to reduce pain.</div>
+     <div class="blk tip"><b>Always</b>Aspirate before injecting (avoid intravascular), inject slowly near—not into—the nerve, use ultrasound where available, and re-check distal NV/motor after. Respect max doses (LAST).</div>
+   </div>
+   <div class="card block"><h3>Cautions</h3>
+     <div class="blk miss"><b>Before you block</b>Document distal neurovascular/motor function FIRST (a block masks a missed nerve injury and a developing compartment syndrome). Avoid in infected skin at the site, coagulopathy for deep blocks, and known allergy.</div>
+   </div>
+ </div>`;
+}
+function blockSafetyFig(){
+ return `<div class="svgfig">${figNerveTarget()}<div class="figcap">Deposit anesthetic <b>around</b> the nerve, not into it: ultrasound shows the nerve (honeycomb), the needle approaching in-plane, and anesthetic spreading circumferentially ("donut" sign). Aspirate before injecting; stop if the patient reports severe pain/paresthesia on injection (intraneural).</div></div>`;
+}
+function figNerveTarget(){
+ const W=620,H=210;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // tissue
+ inner+=`<rect x="20" y="20" width="${W-40}" height="${H-40}" rx="10" fill="${MUSC}" opacity="0.25"/>`;
+ // anesthetic donut
+ inner+=`<circle cx="330" cy="110" r="56" fill="${SPL}" opacity="0.22"/>`;
+ inner+=`<circle cx="330" cy="110" r="56" fill="none" stroke="${SPL}" stroke-width="2" stroke-dasharray="5 4"/>`;
+ // nerve (honeycomb)
+ inner+=`<circle cx="330" cy="110" r="24" fill="${NERVE}" opacity="0.85"/>`;
+ inner+=[[324,104],[338,104],[330,116],[322,116],[338,118]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${MUSC}" opacity="0.5"/>`).join('');
+ inner+=tx(330,84,"nerve",'#2b2b30',10,'middle',700);
+ // needle in-plane
+ inner+=`<line x1="120" y1="60" x2="300" y2="106" stroke="#cfd8dc" stroke-width="3"/>`;
+ inner+=`<path d="M300,106 l-12,-2 l4,8 z" fill="#cfd8dc"/>`;
+ inner+=tx(150,52,"needle (in-plane)",'#cfd8dc',10,'start');
+ // labels
+ inner+=tx(420,110,"anesthetic 'donut'",SPL,11,'start')+`<line x1="415" y1="106" x2="384" y2="106" stroke="${SPL}" stroke-width="1"/>`;
+ inner+=tx(330,180,"AROUND the nerve, never INTO it",'var(--good)',11,'middle',700);
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+function blockCatalog(){
+ const L=[
+  {cls:'block',n:'Digital block',fig:figDigitalBlock,tag:'finger / toe',use:'Lacerations, nail-bed repair, reductions, paronychia/felon, foreign body of a digit.',tip:'Inject at the base of the digit on both sides of the proximal phalanx (web-space approach); lidocaine WITH epinephrine is now supported for digits in most patients. ~1–4 mL per side; wait ~5–10 min.',miss:'Don\'t inject a large ring of fluid under high pressure circumferentially with a tourniquet effect; document perfusion.',doc:'"Digital block with lidocaine to [digit], distal NV intact pre/post, anesthesia confirmed before procedure."'},
+  {cls:'block',n:'Median / ulnar / radial (wrist)',fig:figWristBlock,tag:'hand',use:'Palmar lacerations, large hand wounds, burns, reductions — anesthetizes the nerve\'s hand territory.',tip:'US-guided at the wrist/forearm; know the sensory territories (median = thumb-index-long + radial half ring; ulnar = little + ulnar ring; radial = dorsal radial hand). Combine for wider coverage.',miss:'Avoid intraneural injection (median nerve is superficial); test territory before relying on it.',doc:'"US-guided [median/ulnar/radial] nerve block at the wrist; sensory block confirmed in [territory]."'},
+  {cls:'block',n:'Hematoma block',fig:figHematomaBlock,tag:'distal radius (reduction)',use:'Distal radius/forearm fracture reduction — inject local directly into the fracture hematoma.',tip:'Aseptic; aspirate blood to confirm you\'re in the hematoma, then inject lidocaine (~5–10 mL). Quick and effective for reductions; alternative to procedural sedation for many wrist reductions.',miss:'Sterile technique (introducing infection into a fracture); respect lidocaine max dose.',doc:'"Hematoma block, blood aspirated confirming intra-fracture placement, lidocaine injected; adequate analgesia for reduction."'},
+  {cls:'block',n:'Posterior tibial / ankle blocks',fig:figAnkleBlock,tag:'foot / sole',use:'Plantar foot lacerations, foreign bodies, wound care on the sole (where infiltration is very painful).',tip:'Posterior tibial nerve (behind medial malleolus) covers the sole; full ankle block (5 nerves) for broader foot coverage. US helps.',miss:'The sole is hard to infiltrate directly — the block is the humane choice.',doc:'"Posterior tibial nerve block, plantar anesthesia confirmed, NV intact."'},
+  {cls:'block',n:'Facial blocks (supraorbital, infraorbital, mental)',fig:figFaceBlock,tag:'face',use:'Forehead (supraorbital/supratrochlear), midface/upper lip (infraorbital), chin/lower lip (mental) lacerations — avoids distorting cosmetic wound edges.',tip:'Intraoral approach for infraorbital/mental is less painful; preserves landmarks for repair (esp. vermilion border).',miss:'Block instead of infiltrating near the vermilion border to keep alignment exact.',doc:'"[Infraorbital] nerve block via intraoral approach; anesthesia of [territory] confirmed; landmarks preserved."'},
+  {cls:'block',n:'Fascia iliaca / femoral (hip & femur)',fig:figFascIliaca,tag:'hip / femur fracture',use:'Hip and femoral-shaft fracture analgesia — major opioid-sparing benefit, especially in the elderly.',tip:'US-guided fascia iliaca compartment block provides excellent analgesia for hip fractures and reduces opioid/delirium risk; increasingly standard in geriatric hip fracture.',miss:'A high-value block in elderly hip fracture — reduces delirium and opioid load; know it.',doc:'"US-guided fascia iliaca block for [hip/femur] fracture; significant analgesia, opioid-sparing."'},
+  {cls:'block',n:'Serratus anterior / intercostal (rib)',fig:figRibBlock,tag:'rib fractures',use:'Multiple rib fractures — analgesia to preserve ventilation and prevent pneumonia/splinting.',tip:'US-guided serratus anterior plane block (or intercostal) improves pain and respiratory mechanics in rib fractures; opioid-sparing.',miss:'Pain control in rib fractures prevents hypoventilation/atelectasis/pneumonia — a real outcome benefit.',doc:'"US-guided serratus plane block for multiple rib fractures; improved inspiratory effort, opioid-sparing."'},
+  {cls:'block',n:'Auricular / dental (situational)',fig:figFaceBlock,tag:'ear / tooth',use:'Ear laceration (auricular block — "ring" around the ear), dental pain (inferior alveolar/supraperiosteal).',tip:'Ear block avoids distorting cartilage repair; dental blocks treat odontogenic pain pending dentistry.',miss:'Avoid epinephrine concerns historically cited for the ear are largely overstated, but use judgment.',doc:'"Auricular ring block for ear laceration; cartilage approximated without distortion."'}
+ ];
+ return `<h2 class="sec">2 · Block catalog</h2>
+ <p class="seclead">The high-yield ED regional blocks — what each covers, the technique gist, and the value point. Use ultrasound where available, and confirm the sensory territory before relying on the block.</p>
+ <div class="cardgrid wide">${L.map(lesionCard).join('')}</div>`;
+}
+function blockLAST(){
+ return `<h2 class="sec">3 · Local anesthetic systemic toxicity (LAST)</h2>
+ <p class="seclead">The feared complication of regional anesthesia — from intravascular injection or exceeding max dose. Recognize it early and treat with lipid emulsion.</p>
+ <div class="cardgrid wide">
+   <div class="card block"><h3>Recognize</h3>
+     <div class="blk miss"><b>Progression</b>Early CNS: perioral numbness, metallic taste, tinnitus, agitation, confusion → seizures → CNS depression. Cardiac: hypertension/tachycardia → bradycardia, conduction block, ventricular arrhythmia, cardiac arrest. Bupivacaine is the most cardiotoxic.</div>
+   </div>
+   <div class="card block"><h3>Treat</h3>
+     <div class="blk dose"><b>Lipid emulsion (20%)</b>~1.5 mL/kg bolus over 1 min, then infusion ~0.25 mL/kg/min; repeat boluses for persistent collapse; supportive airway/seizure control (benzodiazepines); ACLS modifications (avoid/limit vasopressin, reduce epinephrine doses, avoid local-anesthetic-class antiarrhythmics).</div>
+     <div class="blk tip"><b>Have it ready</b>Know where the lipid emulsion is before you do high-volume blocks; call for help early; prolonged resuscitation may be needed (consider ECMO).</div>
+   </div>
+   <div class="card block"><h3>Prevent</h3>
+     <div class="blk dose"><b>Max doses</b>Lidocaine ~4.5 mg/kg (7 with epi); bupivacaine ~2 mg/kg (3 with epi). Aspirate before injecting, inject incrementally, use the lowest effective dose, and use ultrasound to confirm tip position.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>LAST is the emergency to pre-empt:</b> respect max doses, aspirate, inject slowly in aliquots, and have 20% lipid emulsion immediately available whenever you perform a block. Treat suspected LAST with lipid emulsion + supportive care, and modify ACLS (smaller epinephrine doses).</div>`;
+}
+function blockPearls(){
+ const P=[
+  ['Block beats infiltration','Less wound distortion, larger area, less drug — ideal for face, digit, palm, sole, reductions.'],
+  ['Document NV first','A block masks a missed nerve injury and a developing compartment syndrome.'],
+  ['Epi OK in digits','Lidocaine-with-epi is supported for digital blocks in most patients.'],
+  ['Hematoma block for wrist','Fast alternative to sedation for distal radius reduction — aspirate blood to confirm placement.'],
+  ['Fascia iliaca for hip fx','Opioid-sparing, reduces delirium in elderly hip fractures — high value.'],
+  ['Serratus block for ribs','Improves ventilation and prevents pneumonia in multiple rib fractures.'],
+  ['Around, not into','Deposit anesthetic around the nerve; stop for severe pain on injection (intraneural).'],
+  ['Know your territories','Test the sensory area before relying on the block for the procedure.'],
+  ['LAST → lipid emulsion','Perioral numbness/tinnitus/seizure/arrhythmia → 20% lipid emulsion; have it ready.'],
+  ['Aspirate + aliquots','Aspirate before injecting and dose incrementally to avoid intravascular LAST.']
+ ];
+ return `<h2 class="sec">4 · Nerve block pearls</h2><div class="cardgrid">${P.map(p=>pearlCard(p,'var(--block)')).join('')}</div>`;
+}
+/* block schematics */
+function figDigitalBlock(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="100" y="30" width="30" height="90" rx="14" fill="${SKIN}"/>`+`<rect x="86" y="100" width="90" height="40" rx="18" fill="${SKIN}"/>`+
+  `<circle cx="92" cy="108" r="5" fill="${SPL}"/><circle cx="138" cy="108" r="5" fill="${SPL}"/>`+
+  `<path d="M92,108 l-10,-6 M138,108 l10,-6" stroke="${SPL}" stroke-width="2"/>`+
+  tx(130,158,"inject both sides of digit base",'var(--muted)',9));}
+function figWristBlock(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="60" y="60" width="140" height="50" rx="22" fill="${SKIN}"/>`+
+  `<circle cx="110" cy="85" r="7" fill="${NERVE}"/><circle cx="150" cy="92" r="6" fill="${NERVE}"/><circle cx="90" cy="95" r="5" fill="${NERVE}"/>`+
+  tx(110,78,"median",'#2b2b30',7,'middle')+tx(150,86,"ulnar",'#2b2b30',7,'middle')+
+  tx(130,150,"target nerves at the wrist (US)",'var(--muted)',9));}
+function figHematomaBlock(){return svg(limbBase()+
+  `<path d="M120,64 l0,42 M130,64 l0,42" stroke="${BONE}" stroke-width="0"/>`+
+  `<rect x="60" y="70" width="140" height="30" rx="6" fill="${BONE}"/>`+
+  `<path d="M120,70 l8,30 M132,70 l-6,30" stroke="${MUSC}" stroke-width="2"/>`+ // fracture line
+  `<ellipse cx="126" cy="85" rx="14" ry="9" fill="${MUSC}" opacity="0.6"/>`+ // hematoma
+  `<line x1="126" y1="40" x2="126" y2="76" stroke="#cfd8dc" stroke-width="2.5"/>`+
+  tx(130,150,"inject INTO the fracture hematoma",'var(--muted)',9));}
+function figAnkleBlock(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="90" y="30" width="34" height="80" rx="14" fill="${SKIN}"/>`+`<path d="M90,108 q0,28 36,28 l40,0 v-12 l-40,0 q-20,0 -20,-22 z" fill="${SKIN}"/>`+
+  `<circle cx="98" cy="100" r="6" fill="${NERVE}"/>`+
+  tx(98,92,"post. tibial",'#2b2b30',7,'middle')+
+  tx(130,158,"behind medial malleolus → sole",'var(--muted)',9));}
+function figFaceBlock(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<ellipse cx="130" cy="85" rx="54" ry="66" fill="${SKIN}"/>`+
+  `<circle cx="112" cy="60" r="5" fill="${SPL}"/><circle cx="112" cy="92" r="5" fill="${SPL}"/><circle cx="118" cy="120" r="5" fill="${SPL}"/>`+
+  tx(150,60,"supraorbital",'var(--muted)',8,'start')+tx(150,92,"infraorbital",'var(--muted)',8,'start')+tx(150,120,"mental",'var(--muted)',8,'start')+
+  tx(130,162,"3 facial foramina, vertical line",'var(--muted)',9));}
+function figFascIliaca(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  `<rect x="50" y="70" width="160" height="40" rx="16" fill="${SKIN}"/>`+
+  `<circle cx="120" cy="90" r="8" fill="${NERVE}"/>`+tx(120,82,"femoral n.",'#2b2b30',7,'middle')+
+  `<path d="M120,90 m -30,-20 l 0,40" stroke="${SPL}" stroke-width="2" stroke-dasharray="4 3"/>`+
+  tx(130,150,"US block below fascia iliaca",'var(--muted)',9));}
+function figRibBlock(){return svg(`<rect width="260" height="170" fill="none"/>`+
+  Array.from({length:4},(_,i)=>`<path d="M40,${50+i*22} q90,18 180,2" fill="none" stroke="${BONE}" stroke-width="6"/>`).join('')+
+  `<line x1="150" y1="40" x2="150" y2="120" stroke="${SPL}" stroke-width="2.5" stroke-dasharray="4 3"/>`+
+  tx(150,140,"serratus plane along the ribs",'var(--muted)',9));}
+
+/* ============================================================
+   PROCEDURAL SEDATION MODULE
+   ============================================================ */
+function sedModule(){
+ return sedPrinciples()+sedDepthFig()+sedAgents()+sedMonitoring()+sedRecovery()+sedPearls();
+}
+function sedPrinciples(){
+ return `<h2 class="sec">1 · Procedural sedation — the framework</h2>
+ <p class="seclead">Procedural sedation and analgesia (PSA) lets you perform a painful/anxiety-provoking procedure (reduction, cardioversion, abscess, laceration in a child) by titrating sedation while preserving — as much as possible — airway and breathing. Preparation and monitoring, not the drug choice, are what keep it safe.</p>
+ <div class="cardgrid wide">
+   <div class="card sed"><h3>Pre-sedation assessment</h3>
+     <div class="blk use"><b>Evaluate</b>Airway (Mallampati, mouth opening, neck, prior difficult airway), aspiration risk, comorbidities (cardiac/pulmonary/hepatic/renal), allergies, and an <b>ASA physical-status</b> class. Higher-risk airway/ASA → more caution, more help, possibly anesthesia.</div>
+     <div class="blk tip"><b>Fasting</b>Recent evidence/ACEP: pre-procedural fasting status should NOT delay emergency PSA — there's no clear link between fasting duration and aspiration in ED sedation; weigh urgency vs risk.</div>
+   </div>
+   <div class="card sed"><h3>Setup — "SOAPME"</h3>
+     <div class="blk dose"><b>Have ready</b>Suction, Oxygen, Airway equipment (BVM, supraglottic, intubation), Pharmacy (reversal: naloxone, flumazenil; rescue drugs), Monitors (SpO₂, ETCO₂/capnography, BP, ECG), Equipment/Personnel — a dedicated provider monitoring the patient, separate from the proceduralist.</div>
+     <div class="blk miss"><b>Capnography</b>Continuous waveform ETCO₂ detects hypoventilation/apnea BEFORE desaturation — the earliest warning; use it.</div>
+   </div>
+   <div class="card sed"><h3>Consent &amp; planning</h3>
+     <div class="blk">Informed consent (risks incl. respiratory depression, aspiration, failure), IV access, supplemental O₂, plan the depth needed for the procedure, and an escape plan (reversal, airway rescue). Reassess between doses.</div>
+   </div>
+ </div>`;
+}
+function sedDepthFig(){
+ return `<div class="svgfig">${figSedationDepth()}<div class="figcap">The sedation continuum: minimal (anxiolysis) → moderate (purposeful response to voice/touch, airway maintained) → deep (purposeful response only to repeated/painful stimulus, airway may need support) → general anesthesia. Depth is a continuum — patients can drift deeper than intended, so monitor and be ready to rescue the next level down.</div></div>`;
+}
+function figSedationDepth(){
+ const W=820,H=210;
+ const tiers=[['Minimal','anxiolysis; normal response to voice; airway/breathing unaffected','var(--good)'],
+  ['Moderate','purposeful response to voice/touch; airway maintained; spontaneous ventilation adequate','var(--gold)'],
+  ['Deep','purposeful response to repeated/painful stimulus; airway may need support; ventilation may be inadequate','var(--splint)'],
+  ['General','unarousable; airway &amp; ventilation intervention often required','var(--warn)']];
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const bw=190,gap=10;let x=14;
+ tiers.forEach((t,i)=>{
+   inner+=`<rect x="${x}" y="36" width="${bw}" height="120" rx="10" fill="${t[2]}" opacity="0.16" stroke="${t[2]}" stroke-width="1.5"/>`;
+   inner+=tx(x+bw/2,62,t[0],t[2],14,'middle',700);
+   // wrap sub text
+   const words=t[1].split(' ');let line='';let yy=84;
+   words.forEach(w=>{if((line+w).length>26){inner+=tx(x+bw/2,yy,line,'var(--soft)',8,'middle');line=w+' ';yy+=13;}else line+=w+' ';});
+   inner+=tx(x+bw/2,yy,line,'var(--soft)',8,'middle');
+   if(i<tiers.length-1)inner+=`<path d="M${x+bw+1},96 l${gap-2},0" stroke="var(--muted)" stroke-width="2" marker-end="url(#sd)"/>`;
+   x+=bw+gap;
+ });
+ inner+=tx(W/2,180,"a continuum — patients drift deeper than intended; monitor and rescue",'var(--muted)',10,'middle');
+ inner+=`<defs><marker id="sd" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+function sedAgents(){
+ const rows=[
+  ['Ketamine','Dissociative','~1 min IV','10–15 min','Peds, painful procedures, hemodynamically tense','Maintains airway/respiration &amp; BP; bronchodilator; analgesic. Emergence reactions, ↑secretions, transient ↑HR/BP, laryngospasm (rare). Often the go-to for kids.'],
+  ['Propofol','Sedative-hypnotic','~30–60 s','5–10 min','Reductions, cardioversion, brief procedures','Fast on/off, antiemetic; NO analgesia (pair with opioid/ketamine); dose-dependent respiratory depression &amp; HYPOTENSION; no reversal.'],
+  ['Ketofol','Ketamine+propofol','~1 min','~10 min','Balanced sedation','Combines analgesia (ketamine) + smooth recovery/antiemesis (propofol); may offset each other\'s BP/respiratory effects.'],
+  ['Etomidate','Sedative-hypnotic','~30–60 s','5–10 min','Reductions, cardioversion','Hemodynamically stable; NO analgesia; myoclonus (can mimic seizure/interfere), adrenal suppression (single-dose effect debated), nausea.'],
+  ['Midazolam (±fentanyl)','Benzo (+opioid)','~2–5 min','30–60 min','Anxiolysis, minor procedures','Titratable; reversible (flumazenil); the benzo+opioid combo stacks respiratory depression — go slow; longer recovery.'],
+  ['Fentanyl','Opioid analgesic','~2–3 min','30–60 min','Analgesia component','Fast, short; reversible (naloxone); respiratory depression, chest-wall rigidity at high/rapid doses; pair with a sedative.'],
+  ['Nitrous oxide','Inhaled','~min','rapid off','Minor peds procedures, anxiolysis','Self-limited, fast recovery; mild; avoid in bowel obstruction/pneumothorax (expands gas spaces).'],
+  ['Dexmedetomidine','α2-agonist','slower','longer','Procedures needing cooperation / less resp depression','Minimal respiratory depression; bradycardia/hypotension; slower onset — niche in the ED.']
+ ];
+ const head=`<tr><th>Agent</th><th>Class</th><th>Onset</th><th>Duration</th><th>Best for</th><th>Key points / cautions</th></tr>`;
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td><td class="mono-val">${r[2]}</td><td class="mono-val">${r[3]}</td><td style="color:var(--soft)">${r[4]}</td><td style="color:var(--soft)">${r[5]}</td></tr>`).join('');
+ return `<h2 class="sec">2 · Sedation agents</h2>
+ <p class="seclead">Match the agent to the procedure: do you need analgesia, how long, and how is the blood pressure? The recurring theme — propofol/etomidate sedate but don't relieve pain (pair with an analgesic), ketamine does both.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note buzz"><b>Common ED choices:</b> a brief, painful procedure (reduction) → propofol + an analgesic, or ketofol, or ketamine alone (esp. kids). Hemodynamically borderline → etomidate or ketamine (avoid propofol's hypotension). Cardioversion → propofol or etomidate (brief). Always provide <b>analgesia separately</b> when using a pure sedative — sedation is not the same as pain control.</div>`;
+}
+function sedMonitoring(){
+ return `<h2 class="sec">3 · Monitoring &amp; rescue</h2>
+ <div class="cardgrid wide">
+   <div class="card sed"><h3>During sedation</h3>
+     <div class="blk dose"><b>Continuous</b>SpO₂, <b>waveform capnography (ETCO₂)</b>, ECG, blood pressure (cycling), and a dedicated observer (not the proceduralist) watching the airway and depth. Supplemental O₂; suction on.</div>
+     <div class="blk miss"><b>Capnography first</b>ETCO₂ flattening/loss signals apnea/hypoventilation seconds-to-minutes before SpO₂ drops — intervene at that point (stimulate, reposition, BVM), don't wait for desaturation.</div>
+   </div>
+   <div class="card sed"><h3>Managing complications</h3>
+     <div class="blk"><b>Apnea/hypoventilation</b>Stimulate, jaw-thrust/reposition airway, supplemental O₂ → BVM; pause the procedure. <b>Laryngospasm</b> (ketamine) → positive pressure, deepen or paralyze if severe. <b>Hypotension</b> (propofol) → fluids ± reduce dose. <b>Vomiting/aspiration</b> → suction, position.</div>
+     <div class="blk dose"><b>Reversal</b>Naloxone for opioids; flumazenil for benzodiazepines (caution — can precipitate seizures/withdrawal). Most sedation complications are managed by airway support and time, not reversal.</div>
+   </div>
+   <div class="card sed"><h3>Rescue readiness</h3>
+     <div class="blk miss"><b>Be able to rescue one level deeper</b>than you intend — if going for moderate, be ready to manage deep/general (airway). Have BVM, supraglottic airway, intubation, and reversal at the bedside, and call for help early.</div>
+   </div>
+ </div>`;
+}
+function sedRecovery(){
+ return `<h2 class="sec">4 · Recovery &amp; discharge</h2>
+ <div class="cardgrid wide">
+   <div class="card sed"><h3>Recovery monitoring</h3>
+     <div class="blk">Continue monitoring until the patient returns to baseline mental status, protects their airway, and has stable vitals. Watch for re-sedation (esp. longer-acting agents, or after reversal — naloxone/flumazenil may wear off before the sedative).</div>
+   </div>
+   <div class="card sed"><h3>Discharge criteria</h3>
+     <div class="blk dose"><b>Ready when</b>Back to baseline alertness/orientation, stable vitals, ambulating at baseline, tolerating PO (not mandatory), pain controlled, and a responsible adult to accompany. Provide written instructions and "no driving/operating machinery/important decisions for 24 h."</div>
+   </div>
+   <div class="card sed"><h3>Documentation</h3>
+     <div class="blk doc"><b>Note</b>Pre-sedation assessment (airway, ASA, fasting noted), consent, monitoring used (incl. capnography), drugs/doses/times, depth achieved, any complications &amp; interventions, procedure outcome, recovery course, discharge criteria met, instructions given.</div>
+   </div>
+ </div>`;
+}
+function sedPearls(){
+ const P=[
+  ['Prep > drug','Monitoring, suction, airway gear, a dedicated observer, and rescue meds matter more than which agent.'],
+  ['Capnography catches apnea early','ETCO₂ changes precede desaturation — intervene then.'],
+  ['Sedation ≠ analgesia','Propofol/etomidate don\'t relieve pain — pair with an analgesic; ketamine does both.'],
+  ['Rescue one level deeper','Be ready to manage the depth beyond what you intend; patients drift.'],
+  ['Fasting shouldn\'t delay urgent PSA','Evidence doesn\'t link ED fasting time to aspiration; weigh urgency.'],
+  ['Ketamine for kids/pain','Maintains airway, BP, and analgesia; watch laryngospasm and emergence.'],
+  ['Propofol drops the BP','Hypotension + respiratory depression, no analgesia, no reversal — but fast on/off.'],
+  ['Etomidate = stable BP','Good when hemodynamics are borderline; myoclonus can interfere.'],
+  ['Dedicated monitor','The person watching the patient is NOT the person doing the procedure.'],
+  ['Reversal can wear off','Naloxone/flumazenil may be shorter than the agent — watch for re-sedation.']
+ ];
+ return `<h2 class="sec">5 · Procedural sedation pearls</h2><div class="cardgrid">${P.map(p=>pearlCard(p,'var(--sed)')).join('')}</div>`;
+}
+
+/* ===== shared card builders ===== */
+function lesionCard(c){
+ return `<div class="lcard ${c.cls||''}">
+   <div class="lfig">${c.fig()}</div>
+   <div class="lbody">
+     <h3>${c.n}</h3><div class="tagline">${c.tag}</div>
+     ${c.use?`<div class="blk use"><b>Indications</b>${c.use}</div>`:''}
+     ${c.tip?`<div class="blk tip"><b>Technique</b>${c.tip}</div>`:''}
+     ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+     ${c.doc?`<div class="blk doc"><b>Document it</b>${c.doc}</div>`:''}
+   </div>
+ </div>`;
+}
+function pearlCard(p,col){return `<div class="card" style="border-top-color:${col}"><div class="blk" style="margin:0"><b style="color:${col};font-size:.7rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+
+/* render */
+document.getElementById('tab-splint').innerHTML = splintModule();
+document.getElementById('tab-block').innerHTML = blockModule();
+document.getElementById('tab-sed').innerHTML = sedModule();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians, reflecting standard teaching on splinting/immobilization, ED regional anesthesia (incl. ultrasound-guided fascia iliaca and serratus plane blocks), LAST management with lipid emulsion, and procedural sedation (incl. the ACEP position that fasting status should not delay urgent PSA, and capnography for early detection of hypoventilation). Doses, agents, and thresholds are approximate teaching values that vary by patient and institution — verify against current references and local protocols, confirm allergy/airway/anticoagulation status, obtain consent, use full monitoring with trained personnel and rescue equipment, and consult appropriately. Schematics are stylized originals, not exact anatomic depictions. Not a protocol or a substitute for clinical judgment.";
+
+/* tabs */
+(function(){
+  const tabs=document.querySelectorAll('.domtab');
+  const panels={splint:document.getElementById('tab-splint'),block:document.getElementById('tab-block'),sed:document.getElementById('tab-sed')};
+  function show(k){Object.keys(panels).forEach(p=>panels[p].style.display=p===k?'block':'none');tabs.forEach(t=>t.classList.toggle('on',t.dataset.dom===k));window.scrollTo({top:0,behavior:'smooth'});}
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.dom)));
+  show('splint');
+})();
+/* theme */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
