@@ -19,6 +19,36 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Procedural Companions — Splinting, Nerve Blocks & Sedation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 22, 2026",
+      excerpt: "A bedside procedural atlas covering splinting, regional/digital nerve blocks, and procedural sedation with dosing, anatomy, and pitfall pearls.",
+      image: businessPost,
+      slug: "procedural-companions-atlas",
+      tags: ["Procedures", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Emergency Dermatology Atlas — Master Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 22, 2026",
+      excerpt: "Life-threatening rashes, urgent dermatoses, pediatric exanthems, and primary lesion morphology in a structured ED reference.",
+      image: businessPost,
+      slug: "dermatology-emergency-atlas",
+      tags: ["Dermatology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Wound, Burn & Abscess Atlas — Procedural Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 22, 2026",
+      excerpt: "A procedural atlas for wound closure, burn classification and resuscitation, and abscess I&D with technique pearls and aftercare.",
+      image: businessPost,
+      slug: "wound-burn-abscess-atlas",
+      tags: ["Procedures", "Wound Care", "Clinical Education"]
+    },
+    {
       title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
