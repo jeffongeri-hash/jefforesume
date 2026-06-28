@@ -291,6 +291,54 @@ const blogPosts = {
       <p><a href="/embeds/psychiatric-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "procedural-companions-atlas": {
+    title: "Procedural Companions — Splinting, Nerve Blocks & Sedation",
+    category: "HEALTHCARE",
+    date: "June 22, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A bedside procedural atlas covering splinting techniques, regional and digital nerve blocks, and procedural sedation — with dosing, anatomy, and pitfall pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/procedural-companions-atlas.html" title="Procedural Companions Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/procedural-companions-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "dermatology-emergency-atlas": {
+    title: "Emergency Dermatology Atlas — Master Reference",
+    category: "HEALTHCARE",
+    date: "June 22, 2026",
+    readTime: "13 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An emergency dermatology atlas covering life-threatening rashes, urgent dermatoses, common ED presentations, pediatric exanthems, and primary lesion morphology.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/dermatology-emergency-atlas.html" title="Emergency Dermatology Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/dermatology-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "wound-burn-abscess-atlas": {
+    title: "Wound, Burn & Abscess Atlas — Procedural Reference",
+    category: "HEALTHCARE",
+    date: "June 22, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A procedural atlas for wound closure, burn classification and resuscitation, and abscess incision and drainage — with technique pearls, anesthesia dosing, and aftercare.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/wound-burn-abscess-atlas.html" title="Wound Burn Abscess Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/wound-burn-abscess-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "arrhythmia-origin-atlas": {
     title: "Arrhythmia Origin Atlas — Where Each One Lives",
     category: "HEALTHCARE",

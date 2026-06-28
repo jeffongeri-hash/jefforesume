@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wound, Burn & Abscess Atlas — Procedural Reference</title>
+<style>
+  :root{
+    --bg:#0c0f13;--bg2:#13171d;--panel:#151b22;--panelhi:#1c232c;--line:#283139;--line2:#1b222a;
+    --ink:#ecf1f4;--soft:#a8b6c0;--muted:#788a97;--faint:#566673;
+    --wound:#3fa7d6;--burn:#e0563b;--abscess:#d6a32e;
+    --skin:#caa07e;--skin2:#b88a66;--derm:#a8755a;--fat:#e8d98f;--musc:#b8524f;--pus:#e8d9a0;--blood:#c0392b;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --grid:#0e1217;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --wound:#1c7fb0;--burn:#c4422a;--abscess:#b3851f;
+    --skin:#e3c4a4;--skin2:#d2ab85;--derm:#c08a6a;--fat:#e8d98f;--musc:#c4625f;--pus:#d8c47a;--blood:#c0392b;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  .domtabs{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:22px;}
+  .domtabs .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;gap:8px;flex-wrap:wrap;}
+  .domtab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-family:inherit;font-size:.9rem;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer;}
+  .domtab:hover{border-color:var(--accent);color:var(--ink);}
+  .domtab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  .domtab .sub{display:block;font-size:.6rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-top:1px;}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.12rem;font-weight:700;margin:24px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.wound{border-top-color:var(--wound);}.card.burn{border-top-color:var(--burn);}.card.abscess{border-top-color:var(--abscess);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--accent);}.blk.miss b{color:var(--warn);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .mono-val{font-family:"SF Mono",monospace;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .stepfig{background:var(--bg2);border:1px solid var(--line2);border-radius:11px;padding:10px;}
+  .stepfig svg{display:block;width:100%;height:auto;}
+  .stepfig .cap{font-size:.78rem;color:var(--soft);text-align:center;margin-top:6px;}
+  .stepfig .cap b{color:var(--ink);display:block;}
+  .stepgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--burn);background:color-mix(in srgb,var(--burn) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,.domtabs .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+
+<header class="hero">
+  <div class="kick">Procedural Emergency Atlas</div>
+  <h1>Close it, cool it, <em>drain it</em>.</h1>
+  <p>Three procedural references in one: laceration repair (assessment, anesthesia, closure choice, suture technique, aftercare), burn assessment (depth, %TBSA, fluids, who transfers), and abscess incision &amp; drainage (technique, when antibiotics, and when to call a consultant instead of cutting). Original procedural schematics throughout. Use the tabs to switch.</p>
+</header>
+<div class="disclaimer"><div><b>Reference &amp; teaching tool for trained clinicians.</b> Techniques, doses, suture sizes, and thresholds are standard teaching values that vary by wound, patient, and institution — verify against current references and local protocols, confirm tetanus/allergy/anticoagulation status, and obtain consent and appropriate consultation. Schematics are stylized originals, not exact anatomic depictions. Educational synthesis, not a protocol.</div></div>
+
+<div class="domtabs"><div class="inner">
+  <button class="domtab on" data-dom="wound">Laceration repair<span class="sub">assess · anesthesia · closure · suture</span></button>
+  <button class="domtab" data-dom="burn">Burn assessment<span class="sub">depth · %TBSA · fluids · transfer</span></button>
+  <button class="domtab" data-dom="abscess">Abscess I&D<span class="sub">drain · antibiotics · consult</span></button>
+</div></div>
+
+<main>
+  <div id="tab-wound"></div>
+  <div id="tab-burn" style="display:none"></div>
+  <div id="tab-abscess" style="display:none"></div>
+</main>
+<footer id="foot"></footer>
+
+<script>
+/* ===== SVG helpers ===== */
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 240 170'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+const SKIN='var(--skin)',SKIN2='var(--skin2)',DERM='var(--derm)',FAT='var(--fat)',MUSC='var(--musc)',PUS='var(--pus)',BLOOD='var(--blood)';
+/* skin cross-section layers */
+function skinLayers(x,y,w){return `<rect x="${x}" y="${y}" width="${w}" height="14" fill="${SKIN}"/>`+
+  `<rect x="${x}" y="${y+14}" width="${w}" height="30" fill="${DERM}"/>`+
+  `<rect x="${x}" y="${y+44}" width="${w}" height="26" fill="${FAT}"/>`;}
+
+/* ============================================================
+   LACERATION MODULE
+   ============================================================ */
+function woundModule(){
+ return lacIntro()+lacAssess()+lacAnesthesia()+lacClosureChoice()+lacSutureFig()+lacTechniques()+lacByLocation()+lacAftercare()+lacPearls();
+}
+function lacIntro(){
+ return `<h2 class="sec">1 · The laceration workflow</h2>
+ <p class="seclead">A reproducible sequence keeps you from missing the things that cause bad outcomes (retained foreign body, tendon/nerve/vessel injury, the wound that should never have been closed). Work the steps in order.</p>
+ <div class="svgfig">${figLacFlow()}<div class="figcap">Assess (mechanism, exam, neurovascular, foreign body) → anesthetize → irrigate/explore/debride → decide closure (primary vs delayed vs leave open) → repair → aftercare/tetanus → document.</div></div>`;
+}
+function figLacFlow(){
+ const steps=[['Assess','mechanism, NV exam, FB, tendon'],['Anesthetize','LET / lidocaine ± epi'],['Clean','irrigate, explore, debride'],['Decide','primary / delayed / open'],['Repair','sutures / glue / staples'],['Aftercare','tetanus, dressing, follow-up']];
+ const W=820,H=140,bw=120,gap=8;let x=14;let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ steps.forEach((s,i)=>{
+   inner+=`<rect x="${x}" y="38" width="${bw}" height="64" rx="9" fill="var(--panel)" stroke="var(--wound)" stroke-width="1.5"/>`;
+   inner+=tx(x+bw/2,64,s[0],'var(--ink)',12,'middle',700)+tx(x+bw/2,84,s[1],'var(--muted)',8,'middle');
+   if(i<steps.length-1)inner+=`<path d="M${x+bw+1},70 l${gap-2},0" stroke="var(--wound)" stroke-width="2" marker-end="url(#wf)"/>`;
+   x+=bw+gap;
+ });
+ inner+=`<defs><marker id="wf" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--wound)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+function lacAssess(){
+ return `<h2 class="sec">2 · Assessment &amp; the can't-miss injuries</h2>
+ <div class="cardgrid wide">
+   <div class="card wound"><h3>History that changes management</h3>
+     <div class="blk">Mechanism (crush vs sharp), time since injury, contamination (soil, saliva, water type), foreign-body sensation, bite, tetanus status, comorbidities (diabetes, immunosuppression, anticoagulation, PAD), occupation/dominant hand, last meal if sedation.</div>
+     <div class="blk miss"><b>Time matters</b>Older/contaminated wounds and bites shift you toward delayed primary closure or leaving open; "golden period" is a guide, not a hard rule (well-vascularized face closes later than a dirty foot).</div>
+   </div>
+   <div class="card wound"><h3>Exam before anesthesia</h3>
+     <div class="blk tip"><b>Test first</b>Document distal <b>neurovascular and motor/tendon function BEFORE anesthetizing</b> (two-point discrimination, cap refill/pulses, active movement against resistance through full ROM) — anesthesia masks deficits.</div>
+     <div class="blk">Explore the wound through its full range of motion (a tendon injury hides when the finger is extended but was lacerated in flexion). Image for radiopaque foreign body (glass, metal) — most glass is visible on X-ray.</div>
+   </div>
+   <div class="card wound"><h3>When NOT to close primarily</h3>
+     <div class="blk miss"><b>Leave open / delayed closure</b>Most mammalian bites (esp. hand/puncture; dog bites to low-risk faces are often closed), heavily contaminated or devitalized wounds, presentation beyond a safe interval for that site, abscess/active infection, puncture wounds.</div>
+     <div class="blk">High-risk → irrigate, dress, antibiotics if indicated, and delayed primary closure at ~3–5 days, or heal by secondary intention.</div>
+   </div>
+ </div>
+ <div class="note warn"><b>Refer / consult rather than close in the ED:</b> tendon lacerations, nerve or named-vessel injury, open fractures/joint involvement, deep hand/flexor injuries, full-thickness eyelid/lid-margin or lacrimal involvement, complex facial/cartilage (ear, nose, vermilion border misalignment beyond comfort), and significant tissue loss — these often need plastics/hand/ophthalmology/OMFS.</div>`;
+}
+function lacAnesthesia(){
+ return `<h2 class="sec">3 · Local anesthesia</h2>
+ <div class="cardgrid wide">
+   <div class="card wound"><h3>Agents &amp; max doses</h3>
+     <div class="blk dose"><b>Lidocaine</b>1% (10 mg/mL). Max ~<b>4.5 mg/kg</b> plain, ~<b>7 mg/kg with epinephrine</b>. Onset fast (~2–5 min), duration ~30–120 min.</div>
+     <div class="blk dose"><b>Bupivacaine</b>longer (2–4 h); max ~2 mg/kg (3 with epi); slower onset.</div>
+     <div class="blk dose"><b>Topical LET</b>(lidocaine-epinephrine-tetracaine) gel — great first step for kids/simple lacs, apply ~20–30 min, may avoid injection.</div>
+   </div>
+   <div class="card wound"><h3>Epinephrine — the updated view</h3>
+     <div class="blk tip"><b>Epi is fine in digits</b>Modern evidence supports lidocaine WITH epinephrine in fingers/toes/ears/nose for most patients (prolongs effect, reduces bleeding) — the old "never in end-arteries" dogma is outdated, with caution in true vascular compromise. Avoid epi in genuinely ischemic tissue.</div>
+     <div class="blk">Epi benefits: hemostasis, longer duration, higher max dose.</div>
+   </div>
+   <div class="card wound"><h3>Less-painful injection</h3>
+     <div class="blk tip"><b>Hurt less</b>Buffer lidocaine with sodium bicarbonate (~1:10), warm it, use a small (27–30 g) needle, inject slowly, and inject through the wound edges (not intact skin). Consider a nerve block (digital, etc.) for less tissue distortion on the face/digits.</div>
+     <div class="blk miss"><b>Watch</b>LAST (local anesthetic systemic toxicity) — perioral numbness, tinnitus, seizures, arrhythmia; respect max doses, and have lipid emulsion available for large-volume use.</div>
+   </div>
+ </div>`;
+}
+function lacClosureChoice(){
+ const rows=[
+  ['Sutures','Most wounds, high-tension, over joints, gaping, deep/layered','Strongest, precise edge approximation','Needs removal; slower; needle stick'],
+  ['Tissue adhesive (skin glue)','Small, clean, low-tension, linear, dry (often face/scalp in kids)','Fast, painless, no removal, water-resistant','Not for high-tension/joints/mucosa/hair-bearing; weaker'],
+  ['Staples','Scalp, trunk, extremities (linear, low-cosmetic-need)','Very fast, low infection','Not for face/hands; needs removal; cosmesis'],
+  ['Adhesive strips (Steri-Strips)','Superficial, low-tension; skin-tear flaps; reinforcement','Atraumatic, easy','Fall off if wet/tension; weakest'],
+  ['Hair apposition (scalp)','Linear scalp lacs with enough hair','No shaving/removal needed','Scalp only']
+ ];
+ const head=`<tr><th>Method</th><th>Best for</th><th>Pros</th><th>Cons</th></tr>`;
+ const body=rows.map(r=>`<tr><th>${r[0]}</th><td style="color:var(--soft)">${r[1]}</td><td style="color:var(--soft)">${r[2]}</td><td style="color:var(--soft)">${r[3]}</td></tr>`).join('');
+ return `<h2 class="sec">4 · Choosing the closure method</h2>
+ <p class="seclead">Match the method to tension, location, contamination, and cosmesis.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note buzz"><b>Suture size &amp; removal timing by site:</b> Face <b>5-0/6-0</b>, remove ~<b>5 days</b>. Scalp <b>3-0/4-0</b> (or staples), ~7–10 d. Trunk/arms <b>4-0/5-0</b>, ~7–10 d. Hands/extremities <b>4-0/5-0</b>, ~10–14 d. Over joints / lower extremity <b>3-0/4-0</b>, ~10–14 d. Smaller number = thicker suture; use the smallest that holds the tension. Use absorbable (e.g., for deep/dermal layer or kids' superficial closures) vs non-absorbable (nylon/polypropylene) for skin.</div>`;
+}
+function lacSutureFig(){
+ return `<h2 class="sec">5 · Suture technique — the core repertoire</h2>
+ <p class="seclead">Each technique illustrated in cross-section/plan view. The goal is everted, tension-free edges with the dermis approximated — eversion heals to a flatter scar.</p>
+ <div class="stepgrid">
+   ${stepFig(figSimpleInterrupted(),"Simple interrupted","Workhorse. Enter ~90°, equal bites, slightly wider at base than top → eversion. Knots to one side.")}
+   ${stepFig(figVerticalMattress(),"Vertical mattress","'Far-far, near-near.' Maximal eversion + tension relief for gaping/lax skin.")}
+   ${stepFig(figHorizontalMattress(),"Horizontal mattress","Eversion + hemostasis; good for fragile skin and high-tension edges.")}
+   ${stepFig(figRunning(),"Running (continuous)","Fast for long, low-tension, clean wounds; even tension; one knot each end.")}
+   ${stepFig(figDeepDermal(),"Deep dermal (buried)","Absorbable, knot buried at the bottom; offloads tension so skin sutures aren't fighting the gap.")}
+   ${stepFig(figCorner(),"Corner (half-buried)","For flaps/triangular tips — passes through the dermis of the flap tip to preserve its blood supply.")}
+ </div>
+ <div class="note good"><b>Eversion is the secret:</b> take a bite that is as deep as it is wide (a flask shape), enter the skin at ~90°, and include enough dermis — edges should pout slightly upward. Approximate, don't strangulate (tight sutures cause ischemia, track marks, and worse scars). Align landmarks first (vermilion border, eyebrow, wound apex).</div>`;
+}
+function stepFig(s,title,cap){return `<div class="stepfig">${s}<div class="cap"><b>${title}</b>${cap}</div></div>`;}
+/* suture schematics (cross-section) */
+function figSimpleInterrupted(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L120,84" stroke="var(--bg2)" stroke-width="3"/>`+ // wound
+  `<path d="M104,40 C96,70 96,70 104,84 L136,84 C144,70 144,70 136,40" fill="none" stroke="#2b2b30" stroke-width="2"/>`+
+  `<circle cx="120" cy="34" r="4" fill="#2b2b30"/>`+ // knot
+  tx(120,150,"flask-shaped bite → eversion",'var(--muted)',9));}
+function figVerticalMattress(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L120,84" stroke="var(--bg2)" stroke-width="3"/>`+
+  `<path d="M96,40 C88,76 88,76 96,86 M144,86 C152,76 152,76 144,40" fill="none" stroke="#2b2b30" stroke-width="2"/>`+
+  `<path d="M110,40 C108,52 108,52 110,58 M130,58 C132,52 132,52 130,40" fill="none" stroke="#2b2b30" stroke-width="2"/>`+
+  tx(120,150,"far-far, near-near",'var(--muted)',9));}
+function figHorizontalMattress(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L120,84" stroke="var(--bg2)" stroke-width="3"/>`+
+  `<path d="M104,40 C96,66 96,66 104,78 L116,78 M124,78 L136,78 C144,66 144,66 136,40" fill="none" stroke="#2b2b30" stroke-width="2"/>`+
+  `<line x1="104" y1="34" x2="136" y2="34" stroke="#2b2b30" stroke-width="2"/>`+
+  tx(120,150,"parallel to wound, everts edges",'var(--muted)',9));}
+function figRunning(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L120,84" stroke="var(--bg2)" stroke-width="3"/>`+
+  Array.from({length:3},(_,i)=>{const x=72+i*40;return `<path d="M${x-12},40 C${x-18},66 ${x-18},66 ${x-12},80 L${x+12},80 C${x+18},66 ${x+18},66 ${x+12},40" fill="none" stroke="#2b2b30" stroke-width="1.6"/><line x1="${x+12}" y1="40" x2="${x+28}" y2="40" stroke="#2b2b30" stroke-width="1.6"/>`;}).join('')+
+  tx(120,150,"continuous, even tension",'var(--muted)',9));}
+function figDeepDermal(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L120,84" stroke="var(--bg2)" stroke-width="3"/>`+
+  `<path d="M108,72 C100,58 104,48 112,50 L128,50 C136,48 140,58 132,72" fill="none" stroke="var(--good)" stroke-width="2"/>`+
+  `<circle cx="120" cy="74" r="3.5" fill="var(--good)"/>`+ // buried knot at bottom
+  tx(120,150,"buried knot down → offloads skin",'var(--muted)',9));}
+function figCorner(){return svg(skinLayers(20,40,200)+
+  `<path d="M120,40 L108,70 L132,70 Z" fill="var(--skin2)" opacity="0.5"/>`+ // flap tip
+  `<path d="M96,52 C90,60 92,66 100,66 L120,64 L140,66 C148,66 150,60 144,52" fill="none" stroke="#2b2b30" stroke-width="2"/>`+
+  tx(120,150,"horizontal dermal pass in flap tip",'var(--muted)',9));}
+function lacTechniques(){return '';}
+function lacByLocation(){
+ const L=[
+  {cls:'wound',n:'Face / lips',tag:'cosmesis + landmarks',dose:'5-0/6-0 non-absorbable (or fast-absorbing gut in kids); meticulous landmark alignment.',tip:'Align the vermilion border FIRST with a marking suture; refer through-and-through lip or large defects. Remove sutures ~5 days to avoid track marks. Glue good for small low-tension non-mobile areas.',miss:'Vermilion misalignment is obvious at conversational distance — get it right or refer.',doc:'"X-cm linear laceration to [site], NV intact, irrigated, closed with N×5-0 nylon, vermilion aligned."'},
+  {cls:'wound',n:'Scalp',tag:'vascular, bleeds',dose:'Staples or 3-0/4-0; hair apposition technique for linear lacs.',tip:'Explore for galea injury (repair galea — reduces bleeding/infection) and palpate for skull fracture/depression. Direct pressure/lidocaine-epi controls brisk bleeding.',miss:'Don\'t miss an underlying skull fracture or a galea laceration; check for foreign body.',doc:'"Scalp laceration X cm, galea [intact/repaired], no palpable skull defect, closed with staples ×N."'},
+  {cls:'wound',n:'Hands / fingers',tag:'function first',dose:'4-0/5-0; remove ~10–14 d; digital block ± epi acceptable.',tip:'Test tendon &amp; nerve (two-point discrimination) through full ROM BEFORE anesthesia; explore in the position of injury. Low threshold to involve hand surgery for tendon/nerve/joint.',miss:'Extensor/flexor tendon injuries hide in extension; fight-bite (tooth over MCP) needs exploration + antibiotics, often OR — never simply close.',doc:'"Volar/dorsal finger laceration, 2-pt discrimination intact, full active ROM, no tendon visualized, closed 5-0 nylon."'},
+  {cls:'wound',n:'Bites',tag:'high infection risk',dose:'Irrigate copiously; amox-clav prophylaxis; usually delayed/secondary closure (selected low-risk facial dog bites closed).',tip:'Cat bites (deep puncture, Pasteurella) and hand bites are highest risk — often leave open + antibiotics. Update tetanus; assess rabies risk for animal bites.',miss:'Human "fight bite" over the MCP → tendon/joint involvement, needs exploration + antibiotics; don\'t close puncture bites.',doc:'"[Animal/human] bite to [site], copiously irrigated, left open/delayed closure, amox-clav started, tetanus updated, rabies risk assessed."'},
+  {cls:'wound',n:'Over joints / extensor surfaces',tag:'high tension',dose:'3-0/4-0; longer in situ (~10–14 d); consider splinting/immobilization.',tip:'High-tension areas need stronger/longer-retained sutures ± deep dermal support; assess joint penetration (saline load test) — joint involvement → ortho.',miss:'Traumatic arthrotomy (joint capsule breached) needs ortho/OR, not ED closure.',doc:'"Laceration over [joint], joint not entered (saline load negative), closed with 3-0 nylon, splinted."'},
+  {cls:'wound',n:'Pediatric / simple',tag:'minimize trauma',dose:'LET topical first; tissue adhesive or fast-absorbing gut to avoid removal.',tip:'Glue and absorbable sutures avoid a second visit and a scary removal; distraction/child-life; intranasal anxiolysis for cooperation if needed.',miss:'Don\'t glue high-tension, mobile, or contaminated wounds; consider NAT if the story doesn\'t fit.',doc:'"Simple linear laceration, LET applied, closed with skin adhesive / fast-absorbing gut, caregiver given wound-care instructions."'}
+ ];
+ return `<h2 class="sec">6 · Repair by location</h2>
+ <p class="seclead">Site dictates suture size, retention time, closure method, and the specific can't-miss injury.</p>
+ <div class="cardgrid wide">${L.map(c=>genCard(c)).join('')}</div>`;
+}
+function lacAftercare(){
+ return `<h2 class="sec">7 · Tetanus, aftercare &amp; documentation</h2>
+ <div class="cardgrid wide">
+   <div class="card wound"><h3>Tetanus prophylaxis</h3>
+     <div class="blk dose"><b>Clean &amp; minor wound</b>Td/Tdap if ≥10 years since last dose (or unknown/&lt;3 doses → vaccinate).</div>
+     <div class="blk dose"><b>Dirty/tetanus-prone wound</b>Td/Tdap if ≥5 years since last dose; add <b>tetanus immune globulin (TIG)</b> if &lt;3 prior doses or unknown.</div>
+     <div class="blk miss"><b>Don\'t forget</b>The unknown/incompletely-immunized patient with a dirty wound needs BOTH vaccine and TIG.</div>
+   </div>
+   <div class="card wound"><h3>Wound aftercare</h3>
+     <div class="blk">Keep clean/dry ~24–48 h then gentle washing is fine; topical petrolatum (not necessarily antibiotic ointment) keeps it moist; watch for infection (spreading redness, pus, fever); return for removal at the site-specific interval.</div>
+     <div class="blk tip"><b>Antibiotics are NOT routine</b>for simple clean lacerations; reserve for bites, heavy contamination, immunocompromise, open fracture/joint, or signs of infection.</div>
+   </div>
+   <div class="card wound"><h3>What to document</h3>
+     <div class="blk doc"><b>Note skeleton</b>Mechanism &amp; time; wound location/length/depth; <b>neurovascular &amp; tendon exam (pre-anesthesia)</b>; foreign-body assessment/imaging; irrigation; anesthetic (agent/amount); closure (material, number, technique); tetanus given; aftercare &amp; follow-up; complications discussed.</div>
+   </div>
+ </div>`;
+}
+function lacPearls(){
+ const P=[
+  ['Exam before anesthesia','Document NV + tendon function before you numb — anesthesia masks deficits.'],
+  ['Epi is OK in digits','Lidocaine with epinephrine is supported in fingers/ears/nose for most patients; the old dogma is outdated.'],
+  ['Irrigation > antibiotics','Copious irrigation prevents infection better than prophylactic antibiotics for simple wounds.'],
+  ['Evert the edges','Flask-shaped bites at 90° → everted, flatter-healing scars; approximate, don\'t strangulate.'],
+  ['Bites: think twice before closing','Most hand/puncture/cat bites: irrigate, antibiotics, leave open or delayed closure.'],
+  ['Fight bite','Tooth wound over the MCP = exploration + antibiotics, often OR — never simple closure.'],
+  ['Face sutures out at 5 days','Minimizes track marks; support with adhesive strips after removal.'],
+  ['Align landmarks first','Vermilion border, eyebrow (don\'t shave it), wound apex — place the alignment suture first.'],
+  ['Refer the deep stuff','Tendon, nerve, named vessel, joint, lacrimal/lid-margin, cartilage → consult.'],
+  ['Tetanus every time','Check status on every wound; dirty wound + under-immunized = vaccine + TIG.']
+ ];
+ return `<h2 class="sec">8 · Laceration pearls</h2>
+ <div class="cardgrid">${P.map(p=>pearlCard(p,'var(--wound)')).join('')}</div>`;
+}
+
+/* ============================================================
+   BURN MODULE
+   ============================================================ */
+function burnModule(){
+ return burnDepthFig()+burnDepthCards()+burnTBSA()+burnFluids()+burnMgmt()+burnTransfer()+burnPearls();
+}
+function burnDepthFig(){
+ return `<h2 class="sec">1 · Burn depth — what each layer looks like</h2>
+ <p class="seclead">Depth drives everything (healing, grafting, transfer). Assess by appearance, blanching, sensation, and blistering — and re-assess, since burns evolve over 24–72 h.</p>
+ <div class="svgfig">${figBurnDepth()}<div class="figcap">Cross-section of burn depth: superficial (epidermis only), superficial &amp; deep partial-thickness (into dermis), full-thickness (through dermis), and 4th-degree (into fat/muscle/bone). Deeper = less blanching, less sensation, less likely to heal without grafting.</div></div>`;
+}
+function figBurnDepth(){
+ const W=820,H=240;
+ function col(x,depth,label,sub){
+   let s=`<g>`;
+   // layers
+   s+=`<rect x="${x}" y="40" width="150" height="20" fill="${SKIN}"/>`; // epidermis
+   s+=`<rect x="${x}" y="60" width="150" height="60" fill="${DERM}"/>`; // dermis
+   s+=`<rect x="${x}" y="120" width="150" height="40" fill="${FAT}"/>`; // fat
+   s+=`<rect x="${x}" y="160" width="150" height="20" fill="${MUSC}"/>`; // muscle
+   // burn overlay depth
+   const dmap={0:50,1:78,2:118,3:158,4:178};
+   s+=`<rect x="${x}" y="40" width="150" height="${dmap[depth]-40}" fill="#2b2326" opacity="0.5"/>`;
+   s+=`<line x1="${x}" y1="${dmap[depth]}" x2="${x+150}" y2="${dmap[depth]}" stroke="var(--burn)" stroke-width="2.5"/>`;
+   s+=tx(x+75,30,label,'var(--ink)',11,'middle',700)+tx(x+75,205,sub,'var(--muted)',8,'middle');
+   s+=`</g>`;
+   return s;
+ }
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ inner+=col(20,1,"Superficial","epidermis · red, dry, painful, blanches");
+ inner+=col(180,2,"Superf. partial","blisters, moist, very painful, blanches");
+ inner+=col(340,3,"Deep partial","mottled, less blanch, ↓sensation");
+ inner+=col(500,4,"Full thickness","white/leathery/charred, painless, no blanch");
+ inner+=col(660,4,"4th degree","into fat/muscle/bone");
+ // layer labels on right
+ inner+=tx(795,52,"epi",'var(--muted)',8,'middle')+tx(795,92,"dermis",'var(--muted)',8,'middle')+tx(795,140,"fat",'var(--muted)',8,'middle')+tx(795,172,"musc",'var(--muted)',8,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+function burnDepthCards(){
+ const L=[
+  {cls:'burn',n:'Superficial (1st degree)',tag:'epidermis only',dose:'Sunburn-type. Red, dry, painful, blanches, NO blisters.',tip:'Heals ~3–7 d, no scar. Treat with moisturizer/aloe, analgesia. NOT counted in %TBSA.',miss:'Don\'t include 1st-degree in the TBSA/fluid calculation.',doc:'"Erythematous, dry, blanching, painful burn without blisters — superficial/1st degree; not included in TBSA."'},
+  {cls:'burn',n:'Superficial partial-thickness',tag:'into papillary dermis',dose:'BLISTERS, moist, weeping, red/pink, blanches, VERY painful.',tip:'Heals ~2–3 wk, minimal scar. Cleanse, non-adherent dressing ± topical; debride broken blisters.',miss:'Intact blisters: selective debridement (large/over joints) is reasonable; very painful = nerves alive = more superficial.',doc:'"Moist, blistered, pink, blanching, exquisitely tender burn — superficial partial-thickness."'},
+  {cls:'burn',n:'Deep partial-thickness',tag:'into reticular dermis',dose:'Mottled red/white, drier, sluggish or absent blanch, REDUCED sensation.',tip:'Heals slowly (>3 wk) with scarring; may need grafting; involve burn center for large/functional areas.',miss:'Easy to under-estimate depth early — re-assess at 24–72 h; many "deep partial" declare themselves.',doc:'"Mottled red-white burn, diminished blanching and sensation — deep partial-thickness."'},
+  {cls:'burn',n:'Full-thickness (3rd degree)',tag:'through dermis',dose:'White/waxy/leathery/charred, dry, NON-blanching, INSENSATE, ± thrombosed vessels.',tip:'Needs excision + grafting; eschar may need escharotomy if circumferential/constricting. Burn center.',miss:'Painless + leathery is full-thickness — the lack of pain is a clue to depth, not a good sign.',doc:'"Dry, leathery, white/charred, non-blanching, insensate burn — full-thickness."'},
+  {cls:'burn',n:'4th degree',tag:'into deep structures',dose:'Extends into fat, muscle, tendon, or bone; charred.',tip:'Surgical emergency; burn center; may need amputation/major reconstruction.',miss:'Look for compartment syndrome and deep structure involvement.',doc:'"Burn extending into [fat/muscle/bone] — 4th degree."'}
+ ];
+ return `<div class="cardgrid wide" style="margin-top:14px">${L.map(c=>genCard(c)).join('')}</div>`;
+}
+function burnTBSA(){
+ return `<h2 class="sec">2 · %TBSA estimation</h2>
+ <p class="seclead">Estimate the burned body-surface area (partial- and full-thickness only — exclude superficial/1st-degree) to drive fluids and transfer decisions.</p>
+ <div class="svgfig">${figRuleOfNines()}<div class="figcap">Rule of Nines (adult): each region ≈ 9% or a multiple. Children have proportionally larger heads / smaller legs — use a Lund-Browder chart for accuracy in kids. The patient's <b>palm + fingers ≈ 1%</b> is handy for scattered/irregular burns.</div></div>
+ <div class="cardgrid">
+   <div class="card burn"><h3>Rule of Nines (adult)</h3>
+     <div class="blk">Head &amp; neck 9% · each arm 9% · anterior trunk 18% · posterior trunk 18% · each leg 18% · genitals 1%.</div>
+   </div>
+   <div class="card burn"><h3>Pediatric difference</h3>
+     <div class="blk">Infants/children have a relatively larger head (up to ~18%) and smaller legs — the "rule of nines" misestimates; use <b>Lund-Browder</b> for age-adjusted accuracy.</div>
+   </div>
+   <div class="card burn"><h3>Palm rule</h3>
+     <div class="blk">The patient's entire palmar hand (palm + fingers) ≈ <b>1% TBSA</b> — best for small or patchy burns.</div>
+   </div>
+ </div>`;
+}
+function figRuleOfNines(){
+ const W=420,H=300;
+ const body=`<g stroke="var(--line)" stroke-width="1" fill="var(--skin)">`+
+   `<circle cx="210" cy="40" r="24"/>`+ // head
+   `<rect x="180" y="64" width="60" height="90" rx="12"/>`+ // torso
+   `<rect x="140" y="70" width="34" height="80" rx="14"/>`+ // L arm
+   `<rect x="246" y="70" width="34" height="80" rx="14"/>`+ // R arm
+   `<rect x="184" y="154" width="24" height="100" rx="11"/>`+ // L leg
+   `<rect x="212" y="154" width="24" height="100" rx="11"/>`+ // R leg
+   `</g>`;
+ const labels=tx(210,44,"9%",'#2b2b30',10,'middle',700)+
+   `<text x="210" y="112" font-family="SF Mono,monospace" font-size="10" fill="#2b2b30" text-anchor="middle" font-weight="700">18%</text>`+
+   tx(157,112,"9%",'#2b2b30',9,'middle',700)+tx(263,112,"9%",'#2b2b30',9,'middle',700)+
+   tx(196,205,"9%",'#2b2b30',9,'middle',700)+tx(224,205,"9%",'#2b2b30',9,'middle',700)+
+   tx(210,275,"(back 18%; each leg 18% total)",'var(--muted)',8,'middle');
+ return svg(`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`+body+labels,`0 0 ${W} ${H}`);
+}
+function burnFluids(){
+ return `<h2 class="sec">3 · Fluid resuscitation</h2>
+ <div class="cardgrid wide">
+   <div class="card burn"><h3>Who needs formal resuscitation</h3>
+     <div class="blk">Generally adults with <b>≥20% TBSA</b> (≥10–15% in children/elderly) partial+full-thickness burns. Smaller burns → maintenance + oral hydration + analgesia.</div>
+   </div>
+   <div class="card burn"><h3>Parkland / modified formula</h3>
+     <div class="blk dose"><b>Lactated Ringer's</b> = <b>2–4 mL × weight(kg) × %TBSA</b> over 24 h (modern practice starts at the lower ~2 mL end to avoid over-resuscitation / "fluid creep").</div>
+     <div class="blk dose"><b>Timing</b>Give HALF in the first <b>8 hours</b> (from the time of injury, not arrival), the rest over the next 16 h.</div>
+     <div class="blk tip"><b>Titrate to urine output</b>~0.5 mL/kg/h adults (~1 mL/kg/h children) — the formula is a starting estimate, urine output is the guide.</div>
+   </div>
+   <div class="card burn"><h3>Worked example</h3>
+     <div class="blk">80 kg, 30% TBSA at 3 mL: 3 × 80 × 30 = <b>7,200 mL</b> LR/24 h → ~3,600 mL in the first 8 h (~450 mL/h), then ~225 mL/h. Adjust to urine output.</div>
+     <div class="blk miss"><b>Over-resuscitation harms</b>"Fluid creep" → compartment syndrome, pulmonary edema, ARDS; titrate down if UOP is adequate.</div>
+   </div>
+ </div>`;
+}
+function burnMgmt(){
+ return `<h2 class="sec">4 · Acute management &amp; the airway</h2>
+ <div class="cardgrid wide">
+   <div class="card burn"><h3>Airway / inhalation injury</h3>
+     <div class="blk miss"><b>Early intubation</b>Signs of airway burn — facial burns, singed nasal/facial hair, soot in mouth/sputum, hoarseness/stridor, oropharyngeal edema, closed-space fire — mean the airway will swell; intubate <b>EARLY</b> before edema makes it impossible.</div>
+     <div class="blk dose"><b>Carbon monoxide</b>100% O₂ (shortens CO half-life); consider <b>cyanide</b> toxicity in closed-space/industrial fires with lactic acidosis → hydroxocobalamin.</div>
+   </div>
+   <div class="card burn"><h3>Wound &amp; supportive care</h3>
+     <div class="blk">Stop the burning, remove jewelry/clothing, cool briefly (cool water, NOT ice), cover with clean dry sheets, keep warm (hypothermia risk), analgesia (IV opioids titrated), tetanus.</div>
+     <div class="blk tip"><b>Dressings</b>Non-adherent + topical (e.g., bacitracin/petrolatum; silver dressings for partial-thickness); silver sulfadiazine commonly used but avoid on the face and in sulfa allergy/pregnancy/infants.</div>
+   </div>
+   <div class="card burn"><h3>Circumferential burns</h3>
+     <div class="blk miss"><b>Escharotomy</b>Circumferential full-thickness burns of a limb (compartment/perfusion compromise — check pulses, pain, cap refill) or chest (restricts ventilation) may need emergent escharotomy. Watch for compartment syndrome.</div>
+   </div>
+ </div>`;
+}
+function burnTransfer(){
+ const T=['Partial-thickness >10% TBSA','Any full-thickness burn','Burns to face, hands, feet, genitalia, perineum, or major joints','Circumferential burns','Inhalation injury','Electrical (incl. lightning) or chemical burns','Burns with trauma, or in patients with significant comorbidity','Children in hospitals without pediatric burn capability','Suspected non-accidental injury / abuse'];
+ return `<h2 class="sec">5 · Burn center referral criteria (ABA)</h2>
+ <p class="seclead">The American Burn Association criteria for transfer to a verified burn center — know these as the "who leaves" list.</p>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Transfer to a burn center if…</th></tr></thead>
+ <tbody>${T.map(t=>`<tr><td style="color:var(--soft)">${t}</td></tr>`).join('')}</tbody></table></div>
+ <div class="note crit"><b>Special burns:</b> <b>electrical</b> — deep tissue/muscle damage out of proportion to skin, rhabdo (check CK/urine myoglobin, cardiac monitoring/ECG for arrhythmia); <b>chemical</b> — brush off dry agents, copious water irrigation (prolonged), don\'t neutralize; <b>tar</b> — cool and remove with a petroleum/emulsifier, not by peeling. Always assess for abuse (pattern, stocking/glove immersion, story-injury mismatch), especially in children and elders.</div>`;
+}
+function burnPearls(){
+ const P=[
+  ['Exclude superficial from TBSA','Only partial- and full-thickness count toward %TBSA and fluids.'],
+  ['Half in 8 hours','Parkland: ½ the 24-h volume in the first 8 h FROM INJURY; titrate to urine output.'],
+  ['Start at 2 mL','Modern practice starts Parkland at the lower end (2 mL) to avoid fluid creep.'],
+  ['Palm = 1%','Patient palm + fingers ≈ 1% TBSA for patchy burns; Lund-Browder for kids.'],
+  ['Intubate early','Airway-burn signs → intubate before edema closes the airway.'],
+  ['Painless = deep','Full-thickness burns are insensate and non-blanching — lack of pain signals depth.'],
+  ['Cool, don\'t ice','Brief cool water; ice causes further injury and hypothermia.'],
+  ['Think CO + cyanide','Closed-space fire with acidosis → CO (100% O2) and cyanide (hydroxocobalamin).'],
+  ['Circumferential → escharotomy','Limb (perfusion) or chest (ventilation) compromise needs emergent release.'],
+  ['Know the transfer list','Face/hands/feet/genitals/joints, full-thickness, inhalation, electrical/chemical, kids → burn center.']
+ ];
+ return `<h2 class="sec">6 · Burn pearls</h2>
+ <div class="cardgrid">${P.map(p=>pearlCard(p,'var(--burn)')).join('')}</div>`;
+}
+
+/* ============================================================
+   ABSCESS MODULE
+   ============================================================ */
+function abscessModule(){
+ return absIntro()+absIDFig()+absTechnique()+absAntibiotics()+absConsult()+absSpecial()+absAftercare()+absPearls();
+}
+function absIntro(){
+ return `<h2 class="sec">1 · Abscess — diagnose &amp; decide</h2>
+ <p class="seclead">A fluctuant, tender, erythematous, warm collection. The definitive treatment is <b>incision &amp; drainage</b> — antibiotics alone don't cure a walled-off abscess. The two key decisions: is it drainable here, and does it need a consultant or the OR instead?</p>
+ <div class="cardgrid wide">
+   <div class="card abscess"><h3>Confirm it's drainable</h3>
+     <div class="blk">Fluctuance on exam = pus. If uncertain (deep, indurated, early), <b>POCUS</b> distinguishes cellulitis (cobblestoning) from a drainable anechoic/hypoechoic pocket and shows depth/vessels — increasingly standard before cutting.</div>
+     <div class="blk miss"><b>Don\'t I&D</b>a pulsatile mass (could be aneurysm/pseudoaneurysm), a lesion over a vessel/nerve, or what might be a herniated viscus — image if unsure.</div>
+   </div>
+   <div class="card abscess"><h3>POCUS pearls</h3>
+     <div class="blk">Cellulitis = cobblestoning (edema between fat lobules), no discrete fluid. Abscess = a discrete fluid collection, often with posterior enhancement and "swirl" on compression. Use color Doppler to find vessels to avoid.</div>
+   </div>
+   <div class="card abscess"><h3>The other half: when NOT to cut</h3>
+     <div class="blk miss"><b>Consult / OR (see §5)</b>Certain locations and patients are not bedside ED procedures — facial/central-triangle, perianal/perirectal (beyond simple), hand/deep space, breast, pilonidal (varies), large/deep, or near critical structures.</div>
+   </div>
+ </div>`;
+}
+function absIDFig(){
+ return `<h2 class="sec">2 · I&D technique — step by step</h2>
+ <p class="seclead">Anesthetize, incise along skin tension lines over the point of maximal fluctuance, break loculations, irrigate, and decide on packing or a loop drain.</p>
+ <div class="stepgrid">
+   ${stepFig(figAbsAnesth(),"1 · Anesthetize","Field block around (not into) the abscess ± regional block; intracavity injection hurts and doesn't work well. Consider procedural analgesia.")}
+   ${stepFig(figAbsIncise(),"2 · Incise","Stab incision with #11 blade over maximal fluctuance, along skin-tension lines, long enough to drain freely.")}
+   ${stepFig(figAbsBreak(),"3 · Break loculations","Spread with a hemostat in all directions to break septae and express pus; send culture if indicated.")}
+   ${stepFig(figAbsLoop(),"4 · Drain: loop or pack","Loop drainage (vessel loop through two small incisions) is as effective, less painful, fewer visits than gauze packing for many abscesses.")}
+ </div>
+ <div class="note good"><b>Loop vs packing:</b> the <b>loop technique</b> (a vessel loop/Penrose passed between two small incisions and tied loosely) has largely supplanted traditional gauze packing for many simple abscesses — comparable or better cure, less pain, fewer repacking visits. Traditional packing is still used for large cavities; wick is changed at follow-up.</div>`;
+}
+function figAbsAnesth(){return svg(skinLayers(20,30,200)+
+  `<ellipse cx="120" cy="78" rx="38" ry="22" fill="${PUS}"/>`+
+  `<ellipse cx="120" cy="78" rx="38" ry="22" fill="none" stroke="${BLOOD}" stroke-width="2"/>`+
+  [[78,52],[162,52],[70,86],[170,86]].map(p=>`<path d="M${p[0]},${p[1]} l${p[0]<120?8:-8},6" stroke="var(--accent)" stroke-width="2"/><circle cx="${p[0]}" cy="${p[1]}" r="3" fill="var(--accent)"/>`).join('')+
+  tx(120,150,"field block AROUND the cavity",'var(--muted)',9));}
+function figAbsIncise(){return svg(skinLayers(20,30,200)+
+  `<ellipse cx="120" cy="78" rx="38" ry="22" fill="${PUS}"/>`+
+  `<ellipse cx="120" cy="78" rx="38" ry="22" fill="none" stroke="${BLOOD}" stroke-width="2"/>`+
+  `<path d="M120,30 L120,58" stroke="#2b2b30" stroke-width="3"/>`+ // blade
+  `<path d="M112,44 L120,30 L128,44 Z" fill="#9aa"/>`+
+  `<line x1="104" y1="56" x2="136" y2="56" stroke="${BLOOD}" stroke-width="2.5"/>`+ // incision
+  tx(120,150,"#11 blade over max fluctuance",'var(--muted)',9));}
+function figAbsBreak(){return svg(skinLayers(20,30,200)+
+  `<ellipse cx="120" cy="80" rx="40" ry="24" fill="${PUS}"/>`+
+  Array.from({length:5},(_,i)=>{const a=(i/4)*3.14 - 0.3;return `<line x1="120" y1="58" x2="${120+Math.cos(a)*34}" y2="${80+Math.sin(a)*18}" stroke="${BLOOD}" stroke-width="1.5" stroke-dasharray="2 2"/>`;}).join('')+
+  `<rect x="116" y="32" width="8" height="28" rx="3" fill="#9aa"/>`+ // hemostat
+  tx(120,150,"spread to break loculations",'var(--muted)',9));}
+function figAbsLoop(){return svg(skinLayers(20,30,200)+
+  `<ellipse cx="120" cy="80" rx="40" ry="22" fill="${PUS}" opacity="0.5"/>`+
+  `<line x1="92" y1="56" x2="100" y2="60" stroke="${BLOOD}" stroke-width="2"/>`+
+  `<line x1="148" y1="56" x2="140" y2="60" stroke="${BLOOD}" stroke-width="2"/>`+
+  `<path d="M96,58 C96,96 144,96 144,58" fill="none" stroke="var(--wound)" stroke-width="3"/>`+ // loop under skin
+  `<path d="M96,58 C100,50 140,50 144,58" fill="none" stroke="var(--wound)" stroke-width="3"/>`+ // loop over skin (tied)
+  tx(120,150,"vessel loop through 2 incisions",'var(--muted)',9));}
+function absTechnique(){
+ return `<h2 class="sec">3 · Procedure details &amp; cautions</h2>
+ <div class="cardgrid wide">
+   <div class="card abscess"><h3>Setup &amp; analgesia</h3>
+     <div class="blk dose"><b>Anesthesia</b>Local field block around the cavity (the acidic abscess environment blunts local anesthetic, so block the periphery); regional/nerve block where possible; procedural sedation for large/painful or anxious patients/children.</div>
+     <div class="blk tip"><b>Consent &amp; setup</b>Consent, gloves/PPE (pus sprays), good lighting, drape, and have packing/loop materials ready.</div>
+   </div>
+   <div class="card abscess"><h3>Culture &amp; the MRSA era</h3>
+     <div class="blk">Routine wound culture isn't needed for a simple drained abscess in a healthy patient; culture if systemically ill, immunocompromised, recurrent, treatment failure, or for local epidemiology.</div>
+   </div>
+   <div class="card abscess"><h3>Watch-outs during I&D</h3>
+     <div class="blk miss"><b>Avoid</b>Vessels/nerves (Doppler first in risky areas), the central face triangle (cavernous sinus risk), and inadequate drainage (too-small incision, missed loculations → recurrence). Don't probe blindly near tendons/joints.</div>
+   </div>
+ </div>`;
+}
+function absAntibiotics(){
+ return `<h2 class="sec">4 · Antibiotics — when I&D isn't enough</h2>
+ <p class="seclead">For a simple drained abscess in a healthy host, <b>I&D alone is often curative</b> — but recent trials show adjunctive antibiotics (TMP-SMX or clindamycin) modestly improve cure for many abscesses, so the pendulum has shifted toward treating more.</p>
+ <div class="cardgrid wide">
+   <div class="card abscess"><h3>Give antibiotics if…</h3>
+     <div class="blk">Surrounding cellulitis, systemic signs (fever/SIRS), immunocompromise/diabetes, large (&gt;~2 cm) or multiple abscesses, extremes of age, high-risk site (face, hand, genital), indwelling device, or failure of prior I&D.</div>
+     <div class="blk dose"><b>Cover MRSA</b>TMP-SMX or doxycycline (or clindamycin) for outpatient; add/expand for systemic illness; IV vancomycin/linezolid if admitted/severe.</div>
+   </div>
+   <div class="card abscess"><h3>Often I&D alone…</h3>
+     <div class="blk">Small, simple, single abscess in a healthy patient with no surrounding cellulitis or systemic signs — drainage may suffice with good follow-up. Shared decision + close return precautions.</div>
+   </div>
+   <div class="card abscess"><h3>The evidence shift</h3>
+     <div class="blk">Recent RCTs (TMP-SMX and clindamycin) showed improved short-term cure with adjunctive antibiotics after I&D vs placebo — so many now treat, weighing the modest benefit against side effects/resistance.</div>
+   </div>
+ </div>`;
+}
+function absConsult(){
+ const L=[
+  {cls:'abscess',n:'Perirectal / perianal',tag:'beyond superficial',dose:'Simple, superficial perianal abscess may be drained in the ED.',tip:'Deep, complex, ischiorectal, supralevator, or any concern for fistula/horseshoe → SURGERY (often OR) — inadequate drainage causes serious morbidity.',miss:'A deep perirectal abscess can look small at the skin; necrotizing infection (Fournier) is a surgical emergency.',doc:'"Perianal fluctuance; [superficial drained / surgery consulted for deep collection]."'},
+  {cls:'abscess',n:'Facial — central triangle',tag:'cavernous sinus risk',dose:'Nose/upper-lip/central-face abscesses drain to the cavernous sinus.',tip:'Be cautious; many central-face and complex facial abscesses warrant ENT/plastics or careful management + antibiotics rather than aggressive bedside I&D.',miss:'Central-face infection → septic cavernous sinus thrombosis risk.',doc:'"Central-facial abscess; ENT/plastics involved, antibiotics started."'},
+  {cls:'abscess',n:'Hand / deep space',tag:'function at risk',dose:'Felon (fingertip pulp), flexor tenosynovitis, deep-space, or web-space infections.',tip:'Hand surgery — flexor tenosynovitis (Kanavel signs) is a surgical emergency; don\'t do a blind deep-hand I&D.',miss:'Kanavel: fusiform swelling, flexed posture, pain on passive extension, tenderness along the sheath → OR.',doc:'"Hand infection with Kanavel signs; hand surgery consulted."'},
+  {cls:'abscess',n:'Breast abscess',tag:'often needs aspiration/US',dose:'Lactational and non-lactational; often US-guided needle aspiration ± antibiotics over open I&D (cosmesis/fistula).',tip:'Surgery/breast service; consider inflammatory breast cancer in non-resolving "abscess." Continue breastfeeding/pumping in lactational.',miss:'Non-resolving breast "abscess" → exclude inflammatory carcinoma.',doc:'"Breast abscess; US-guided aspiration vs surgical referral; cancer considered if atypical."'},
+  {cls:'abscess',n:'Pilonidal',tag:'recurrence-prone',dose:'Acute pilonidal abscess can be incised/drained off the midline in the ED for relief.',tip:'Definitive treatment is surgical (high recurrence); refer to surgery for ongoing management.',miss:'Midline incisions heal poorly — drain off-midline; recurrence is the rule without definitive surgery.',doc:'"Pilonidal abscess drained off-midline; surgical follow-up for definitive care."'},
+  {cls:'abscess',n:'Large / deep / critical-structure',tag:'OR territory',dose:'Large, deep, multiloculated, or near vessels/nerves/joints.',tip:'Inadequate bedside drainage → consider US guidance, IR drain, or OR. Necrotizing infection (pain out of proportion, crepitus, systemic toxicity) → surgical emergency, not I&D.',miss:'Pain out of proportion + systemic toxicity → necrotizing fasciitis, not a simple abscess — surgery now.',doc:'"Deep/large collection; [US-guided / IR / OR] drainage arranged; nec-fasc excluded."'}
+ ];
+ return `<h2 class="sec">5 · When to consult or go to the OR (not bedside I&D)</h2>
+ <p class="seclead">The "don't cut it yourself" list — locations and situations where bedside drainage risks harm or won't be definitive.</p>
+ <div class="cardgrid wide">${L.map(c=>genCard(c)).join('')}</div>
+ <div class="note crit"><b>The overriding rule:</b> if the picture suggests <b>necrotizing soft-tissue infection</b> (pain out of proportion to exam, rapidly spreading, dusky/bullae, crepitus, systemic toxicity), it is NOT an abscess to drain — it is a surgical emergency needing broad antibiotics, resuscitation, and emergent operative debridement.</div>`;
+}
+function absSpecial(){
+ return `<h2 class="sec">6 · Special abscesses worth knowing</h2>
+ <div class="cardgrid wide">
+   <div class="card abscess"><h3>Bartholin abscess</h3>
+     <div class="blk dose"><b>I&D + Word catheter</b>Incise on the mucosal surface, place a Word catheter (balloon) to maintain drainage/epithelialize the tract for ~2–4 weeks; marsupialization for recurrence.</div>
+     <div class="blk miss"><b>Older patient</b>new Bartholin mass → consider malignancy.</div>
+   </div>
+   <div class="card abscess"><h3>Peritonsillar abscess</h3>
+     <div class="blk dose"><b>Needle aspiration or I&D</b>Uvular deviation, trismus, "hot potato" voice; needle aspiration/I&D + antibiotics; ENT for failure/airway concern.</div>
+   </div>
+   <div class="card abscess"><h3>Hidradenitis suppurativa</h3>
+     <div class="blk">Recurrent abscesses/sinus tracts in axillae/groin; acute abscess → drainage for relief, but definitive care is medical/surgical (dermatology/surgery) — not cured by repeated I&D.</div>
+   </div>
+   <div class="card abscess"><h3>Felon</h3>
+     <div class="blk dose"><b>Fingertip pulp abscess</b>Tense, very painful pad; needs prompt I&D (often hand surgery) to prevent osteomyelitis/necrosis of the closed pulp spaces.</div>
+   </div>
+ </div>`;
+}
+function absAftercare(){
+ return `<h2 class="sec">7 · Aftercare &amp; documentation</h2>
+ <div class="cardgrid wide">
+   <div class="card abscess"><h3>Aftercare</h3>
+     <div class="blk">Wound recheck in ~48 h (loop stays ~7–10 d until drainage stops; packing changed/removed at follow-up), warm soaks/compresses, analgesia, return precautions (worsening cellulitis, fever, increasing pain). Update tetanus if indicated.</div>
+   </div>
+   <div class="card abscess"><h3>Documentation skeleton</h3>
+     <div class="blk doc"><b>Note</b>Site/size, fluctuance ± POCUS findings, consent, anesthesia, incision, loculations broken, pus expressed (amount), culture (if sent), drainage method (loop/packing), antibiotic decision &amp; rationale, tetanus, aftercare/follow-up, any consult.</div>
+   </div>
+   <div class="card abscess"><h3>Return precautions</h3>
+     <div class="blk miss"><b>Come back for</b>spreading redness, fever, increasing pain/swelling, or no improvement — could mean inadequate drainage, resistant organism, or a deeper/necrotizing process.</div>
+   </div>
+ </div>`;
+}
+function absPearls(){
+ const P=[
+  ['I&D is the treatment','Antibiotics alone don\'t cure a walled-off abscess — drainage is definitive.'],
+  ['POCUS before cutting','Distinguishes cellulitis (cobblestoning) from a drainable pocket and finds vessels.'],
+  ['Block around, not in','The acidic cavity blunts anesthetic; field-block the periphery or use a regional block.'],
+  ['Loop > packing','Loop drainage is as effective, less painful, fewer visits for many simple abscesses.'],
+  ['Antibiotics shifted','Recent RCTs favor adjunctive TMP-SMX/clindamycin after I&D for many abscesses — weigh benefit vs harm.'],
+  ['Cover MRSA when treating','TMP-SMX or doxycycline (or clindamycin) is the outpatient MRSA choice.'],
+  ['Know the no-cut list','Perirectal-deep, central face, hand deep-space, breast, large/deep, near vessels → consult/OR.'],
+  ['Pain out of proportion','Necrotizing infection, not abscess — surgical emergency, not bedside I&D.'],
+  ['Bartholin → Word catheter','I&D plus a Word catheter maintains the drainage tract.'],
+  ['Felon / flexor sheath','Fingertip pulp or Kanavel-sign tenosynovitis → hand surgery, prompt.']
+ ];
+ return `<h2 class="sec">8 · Abscess pearls</h2>
+ <div class="cardgrid">${P.map(p=>pearlCard(p,'var(--abscess)')).join('')}</div>`;
+}
+
+/* generic card + pearl */
+function genCard(c){
+ return `<div class="card ${c.cls||''}"><h3>${c.n}</h3>${c.tag?`<div class="tagline">${c.tag}</div>`:''}
+   ${c.dose?`<div class="blk dose"><b>${c.doseLabel||'Appearance / key facts'}</b>${c.dose}</div>`:''}
+   ${c.tip?`<div class="blk tip"><b>Approach</b>${c.tip}</div>`:''}
+   ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+   ${c.doc?`<div class="blk doc"><b>Document it</b>${c.doc}</div>`:''}
+ </div>`;
+}
+function pearlCard(p,col){return `<div class="card" style="border-top-color:${col}"><div class="blk" style="margin:0"><b style="color:${col};font-size:.7rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+
+/* render */
+document.getElementById('tab-wound').innerHTML = woundModule();
+document.getElementById('tab-burn').innerHTML = burnModule();
+document.getElementById('tab-abscess').innerHTML = abscessModule();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians, reflecting standard wound-care, burn (American Burn Association), and abscess/I&D teaching including the modern shift toward lidocaine-with-epinephrine in digits, lower-end Parkland dosing, loop drainage, and adjunctive antibiotics after I&D. Doses, suture sizes, fluid formulas, and thresholds are approximate teaching values that vary by patient, wound, and institution — verify against current references and local protocols, confirm tetanus/allergy/anticoagulation status, obtain consent, and consult appropriately. Schematics are stylized originals, not exact anatomic or procedural depictions. Not a protocol or a substitute for clinical judgment.";
+
+/* tabs */
+(function(){
+  const tabs=document.querySelectorAll('.domtab');
+  const panels={wound:document.getElementById('tab-wound'),burn:document.getElementById('tab-burn'),abscess:document.getElementById('tab-abscess')};
+  function show(k){Object.keys(panels).forEach(p=>panels[p].style.display=p===k?'block':'none');tabs.forEach(t=>t.classList.toggle('on',t.dataset.dom===k));window.scrollTo({top:0,behavior:'smooth'});}
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.dom)));
+  show('wound');
+})();
+/* theme */
+(function(){
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
