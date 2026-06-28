@@ -1,23 +1,40 @@
+// @ts-nocheck
 import { useState, useCallback, useRef, useMemo } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 // ─── CONFIG (same data architecture as IV Strike Selector) ────────────────────
-const PROXY_BASE = "";          // e.g. "https://xyz.supabase.co/functions/v1/schwab-proxy"
-const ANTHROPIC_API_KEY = "";   // or use window.__ANTHROPIC_KEY__
-const ANTHROPIC_BASE = "https://api.anthropic.com/v1/messages";
+const PROXY_BASE = "";
+const IV_AI_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/iv-ai`;
+const IV_AI_HEADERS = {
+  "Content-Type": "application/json",
+  apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+  Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+};
 
+// Proxy to iv-ai edge function (Anthropic primary, OpenAI fallback).
+// Returns a Response-like object whose .json() resolves to an Anthropic-shaped payload.
 async function anthropicFetch(body, signal) {
-  const key = ANTHROPIC_API_KEY || (typeof window !== "undefined" && window.__ANTHROPIC_KEY__) || "";
-  const headers = {
-    "Content-Type": "application/json",
-    "anthropic-version": "2023-06-01",
-    "anthropic-dangerous-direct-browser-access": "true",
-  };
-  if (key) headers["x-api-key"] = key;
-  return fetch(ANTHROPIC_BASE, {
-    method: "POST", headers,
-    ...(signal ? { signal } : {}),
-    body: typeof body === "string" ? body : JSON.stringify(body),
+  const parsed = typeof body === "string" ? JSON.parse(body) : body;
+  const userMsg = parsed?.messages?.[0]?.content ?? "";
+  const webSearch = Array.isArray(parsed?.tools) && parsed.tools.some((t) => t?.type?.includes("web_search"));
+  const res = await fetch(IV_AI_URL, {
+    method: "POST",
+    headers: IV_AI_HEADERS,
+    signal,
+    body: JSON.stringify({
+      mode: "json",
+      prompt: userMsg,
+      maxTokens: parsed?.max_tokens ?? 1024,
+      webSearch,
+    }),
   });
+  const data = await res.json().catch(() => ({}));
+  return {
+    ok: res.ok,
+    status: res.status,
+    json: async () => ({ content: [{ type: "text", text: data?.text ?? "" }] }),
+  };
 }
 
 // ─── BLACK-SCHOLES ────────────────────────────────────────────────────────────
