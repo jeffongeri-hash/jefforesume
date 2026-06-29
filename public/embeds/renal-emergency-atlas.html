@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renal Emergency Atlas — AKI, Electrolytes, Stones, Diuretics, UA</title>
+<style>
+  :root{
+    --bg:#0c0f13;--bg2:#12171d;--panel:#151c23;--panelhi:#1c2430;--line:#27333f;--line2:#1b2530;
+    --ink:#edf1f5;--soft:#a8b6c0;--muted:#768898;--faint:#556570;
+    --aki:#e05a2e;--elect:#3fa7d6;--stone:#d6a32e;--diur:#9b6cd6;--ua:#46c98a;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --gfr:#3fa7d6;--tubule:#e05a2e;--loop:#9b6cd6;--dct:#d6a32e;--cd:#46c98a;
+    --grid:#0e1318;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --aki:#c4422a;--elect:#1c7fb0;--stone:#b06f17;--diur:#7e4fc0;--ua:#1f9d6f;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;
+    --gfr:#1c7fb0;--tubule:#c4422a;--loop:#7e4fc0;--dct:#b06f17;--cd:#1f9d6f;
+    --grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  .domtabs{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:22px;}
+  .domtabs .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;gap:8px;flex-wrap:wrap;}
+  .domtab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-family:inherit;font-size:.88rem;font-weight:700;padding:9px 16px;border-radius:10px;cursor:pointer;}
+  .domtab:hover{border-color:var(--accent);color:var(--ink);}
+  .domtab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  .domtab .sub{display:block;font-size:.58rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-top:1px;}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.1rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.aki{border-top-color:var(--aki);}.card.elect{border-top-color:var(--elect);}.card.stone{border-top-color:var(--stone);}
+  .card.diur{border-top-color:var(--diur);}.card.ua{border-top-color:var(--ua);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--accent);}.blk.miss b{color:var(--warn);}
+  .blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--aki);background:color-mix(in srgb,var(--aki) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .formula{font-family:"SF Mono",monospace;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 14px;margin:10px 0;color:var(--soft);}
+  .formula b{color:var(--ink);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,.domtabs .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+<header class="hero">
+  <div class="kick">Emergency Medicine · Renal Atlas</div>
+  <h1>Read the urine. <em>Protect the nephron.</em></h1>
+  <p>Comprehensive renal emergency reference: KDIGO AKI staging and the ED approach, dialysis patients in the ED, sodium emergencies (hypo and hyper), urolithiasis with CT interpretation and passage rates by size, diuretic pharmacology (MOA in the nephron, electrolyte losses, IV vs oral, cHF considerations), and a deep-dive urinalysis with cast interpretation. All original nephron diagrams.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Dosing, correction rates, and thresholds are teaching values reflecting current guidelines (KDIGO, AUA/EAU) that must be verified against current references, local protocols, and individual patient factors. Verify against current guidelines before applying clinically. Educational synthesis, not a protocol.</div></div>
+
+<div class="domtabs"><div class="inner">
+  <button class="domtab on" data-dom="aki">AKI &amp; Dialysis<span class="sub">KDIGO · staging · dialysis ED</span></button>
+  <button class="domtab" data-dom="elect">Na Emergencies<span class="sub">hypo · hyper · correction</span></button>
+  <button class="domtab" data-dom="stone">Urolithiasis<span class="sub">CT · passage rates · red flags</span></button>
+  <button class="domtab" data-dom="diur">Diuretics<span class="sub">MOA · electrolytes · IV vs oral</span></button>
+  <button class="domtab" data-dom="ua">Urinalysis<span class="sub">UA · casts · reflex interpretation</span></button>
+</div></div>
+
+<main>
+  <div id="tab-aki"></div>
+  <div id="tab-elect" style="display:none"></div>
+  <div id="tab-stone" style="display:none"></div>
+  <div id="tab-diur" style="display:none"></div>
+  <div id="tab-ua" style="display:none"></div>
+</main>
+<footer id="foot"></footer>
+
+<script>
+/* ===== SVG helpers ===== */
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 820 300'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+function card(c){return `<div class="card ${c.cls||''}"><h3>${c.n}</h3>${c.tag?`<div class="tagline">${c.tag}</div>`:''}${c.tip?`<div class="blk tip"><b>Key</b>${c.tip}</div>`:''}${c.dose?`<div class="blk dose"><b>${c.dL||'Treatment'}</b>${c.dose}</div>`:''}${c.buzz?`<div class="blk buzz"><b>Concept</b>${c.buzz}</div>`:''}${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}${c.doc?`<div class="blk doc"><b>Document</b>${c.doc}</div>`:'`'}</div>`;}
+function pearl(p,col){return `<div class="card" style="border-top-color:${col||'var(--gold)'}"><div class="blk"><b style="color:${col||'var(--gold)'};font-size:.65rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+
+/* ============================================================
+   TAB 1: AKI & DIALYSIS
+   ============================================================ */
+function akiModule(){
+ return akiStaging()+akiWorkup()+akiED()+dialysisED()+diurAKI();
+}
+
+function akiStaging(){
+ return `<h2 class="sec" id="aki-staging">1 · AKI — KDIGO staging &amp; definition</h2>
+ <p class="seclead">The KDIGO (Kidney Disease: Improving Global Outcomes) AKI definition is the standard. AKI = any of three criteria within specific time windows. Use whichever criterion is worse to assign the stage — creatinine AND urine output, not or.</p>
+ <div class="svgfig">${figAKIstaging()}<div class="figcap">KDIGO AKI staging. Stage by the worst criterion — if creatinine meets Stage 2 and urine output meets Stage 3, the patient is Stage 3. Stage 3 triggers RRT consideration.</div></div>
+ <div class="formula"><b>AKI Definition — any one of:</b><br>
+  Creatinine rise ≥ <b>0.3 mg/dL</b> within <b>48 hours</b><br>
+  OR creatinine ≥ <b>1.5× baseline</b> within <b>7 days</b><br>
+  OR urine output &lt; <b>0.5 mL/kg/h</b> for ≥ <b>6 hours</b>
+ </div>
+ <div class="note buzz"><b>The baseline problem:</b> creatinine staging requires a baseline — which in the ED is often unknown. Use the lowest creatinine from the prior 7 days (inpatient records), most recent outpatient value, or back-calculate using the MDRD equation assuming normal GFR (eGFR ~75–90). A "normal" creatinine of 0.9 in a frail elderly woman may already represent significant CKD if her true GFR is 30.</div>
+ <div class="cardgrid wide">
+   <div class="card aki"><h3>Stage 1</h3><div class="tagline">Cr 1.5–1.9× baseline or +0.3 mg/dL · UO &lt;0.5 mL/kg/h ×6–12h</div>
+     <div class="blk tip">Monitor: avoid nephrotoxins, volume optimize, hold NSAIDs/ACE/ARBs/contrast nephrotoxins if possible. Re-check Cr in 24–48h.</div>
+     <div class="blk buzz"><b>Concept</b>Many stage 1 AKIs are reversible with fluid resuscitation and nephrotoxin avoidance. Volume responsiveness testing (passive leg raise, clinical response to IVF) is critical.</div>
+   </div>
+   <div class="card aki"><h3>Stage 2</h3><div class="tagline">Cr 2.0–2.9× baseline · UO &lt;0.5 mL/kg/h ×12h</div>
+     <div class="blk tip">Higher risk for RRT. Nephrology consultation appropriate. Optimize volume, electrolytes, medications. Consider Foley for accurate UO monitoring.</div>
+   </div>
+   <div class="card aki"><h3>Stage 3 — potential RRT trigger</h3><div class="tagline">Cr 3.0× or ≥4 mg/dL or RRT initiated · UO &lt;0.3 mL/kg/h ×24h or anuria ×12h</div>
+     <div class="blk miss"><b>RRT indications (AEIOU)</b>Acidosis refractory (pH &lt;7.2), Electrolytes (hyperkalemia refractory), Ingestions (certain toxins), Overload (volume unresponsive to diuretics), Uremia (encephalopathy, pericarditis, coagulopathy, Cr &gt;~10 or BUN &gt;~100 with symptoms).</div>
+   </div>
+ </div>`;
+}
+
+function figAKIstaging(){
+ const W=820,H=220;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const stages=[
+  {x:20,w:230,col:'var(--good)',s:'Stage 1',cr:'Cr ×1.5–1.9',cr2:'or +0.3 mg/dL / 48h',uo:'UO &lt;0.5 mL/kg/h',uo2:'for 6–12 h'},
+  {x:275,w:230,col:'var(--gold)',s:'Stage 2',cr:'Cr ×2.0–2.9',cr2:'×baseline',uo:'UO &lt;0.5 mL/kg/h',uo2:'for ≥12 h'},
+  {x:530,w:270,col:'var(--aki)',s:'Stage 3',cr:'Cr ×3.0 or ≥4 mg/dL',cr2:'or RRT initiated',uo:'UO &lt;0.3 mL/kg/h ×24h',uo2:'or Anuria ×12h'}
+ ];
+ stages.forEach(s=>{
+  inner+=`<rect x="${s.x}" y="16" width="${s.w}" height="170" rx="10" fill="${s.col}" opacity="0.14" stroke="${s.col}" stroke-width="1.5"/>`;
+  inner+=tx(s.x+s.w/2,42,s.s,s.col,14,'middle',700);
+  inner+=`<rect x="${s.x+12}" y="52" width="${s.w-24}" height="52" rx="7" fill="var(--panel)" opacity="0.6"/>`;
+  inner+=tx(s.x+s.w/2,74,'Creatinine',s.col,9,'middle',700);
+  inner+=tx(s.x+s.w/2,90,s.cr,'var(--ink)',10,'middle',700);
+  inner+=tx(s.x+s.w/2,104,s.cr2,'var(--soft)',8,'middle');
+  inner+=`<rect x="${s.x+12}" y="114" width="${s.w-24}" height="52" rx="7" fill="var(--panel)" opacity="0.6"/>`;
+  inner+=tx(s.x+s.w/2,132,'Urine Output',s.col,9,'middle',700);
+  inner+=tx(s.x+s.w/2,148,s.uo,'var(--ink)',10,'middle',700);
+  inner+=tx(s.x+s.w/2,162,s.uo2,'var(--soft)',8,'middle');
+ });
+ inner+=tx(W/2,202,'Stage by WORST criterion (creatinine or urine output, whichever is higher)','var(--muted)',9,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function akiWorkup(){
+ return `<h2 class="sec">2 · AKI workup — pre-renal vs intrinsic vs post-renal</h2>
+ <div class="svgfig">${figAKIcauses()}<div class="figcap">AKI classification by location. Pre-renal (hypoperfusion — most common, reversible with volume). Intrinsic renal (tubular, glomerular, interstitial, vascular — ATN most common). Post-renal (obstruction). The urine indices and UA distinguish them.</div></div>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Parameter</th><th>Pre-renal</th><th>Intrinsic (ATN)</th><th>Post-renal</th></tr></thead>
+ <tbody>
+  <tr><th>Urine Na</th><td>&lt;20 mEq/L</td><td>&gt;40 mEq/L</td><td>Variable</td></tr>
+  <tr><th>FE<sub>Na</sub></th><td>&lt;1%</td><td>&gt;2%</td><td>Variable</td></tr>
+  <tr><th>FE<sub>Urea</sub></th><td>&lt;35%</td><td>&gt;50%</td><td>Variable</td></tr>
+  <tr><th>Urine Osm</th><td>&gt;500</td><td>&lt;350</td><td>Variable</td></tr>
+  <tr><th>BUN:Cr ratio</th><td>&gt;20:1</td><td>&lt;20:1</td><td>Variable</td></tr>
+  <tr><th>UA findings</th><td>Bland or hyaline casts</td><td>Muddy brown granular casts, RTE cells</td><td>Usually bland; RBCs if hematuria</td></tr>
+  <tr><th>Response to IVF</th><td>Creatinine improves</td><td>Doesn't improve with volume alone</td><td>Improves with relief of obstruction</td></tr>
+ </tbody></table></div>
+ <div class="formula"><b>FENa</b> = (Urine Na × Plasma Cr) / (Plasma Na × Urine Cr) × 100<br>
+  FENa &lt;1% = pre-renal (kidney holding onto Na) · FENa &gt;2% = ATN (tubules can't concentrate)<br>
+  <b>Use FEUrea in patients on diuretics</b> (diuretics force Na excretion, making FENa falsely high; urea excretion is not affected)
+ </div>
+ <div class="note buzz"><b>FENa caveats:</b> FENa &lt;1% can be seen in contrast nephropathy, myoglobinuria, early obstruction, and hepatorenal syndrome — it doesn't always mean pre-renal. FEUrea (&lt;35% = pre-renal) is more reliable in patients on diuretics. Always correlate with clinical volume status.</div>`;
+}
+
+function figAKIcauses(){
+ const W=820,H=160;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const cats=[
+  {x:20,w:250,col:'var(--elect)',t:'PRE-RENAL (most common)',items:['Volume depletion (dehydration, hemorrhage)','Low cardiac output (CHF, cardiogenic shock)','Septic shock (distributive)','Hepatorenal syndrome','NSAID / ACE / ARB-induced']},
+  {x:290,w:260,col:'var(--aki)',t:'INTRINSIC RENAL',items:['ATN (ischemia, nephrotoxins) — #1','Glomerulonephritis (hematuria, proteinuria)','Acute interstitial nephritis (drug rash)','Vascular (TTP/HUS, renal artery)','Contrast nephropathy (2–5 days post)']},
+  {x:570,w:230,col:'var(--stone)',t:'POST-RENAL (obstruction)',items:['BPH / prostate obstruction (#1 in men)','Bilateral ureteral obstruction','Bladder cancer / pelvic mass','Neurogenic bladder','Retroperitoneal fibrosis']}
+ ];
+ cats.forEach(c=>{
+  inner+=`<rect x="${c.x}" y="12" width="${c.w}" height="140" rx="9" fill="${c.col}" opacity="0.13" stroke="${c.col}" stroke-width="1.3"/>`;
+  inner+=tx(c.x+c.w/2,30,c.t,c.col,10,'middle',700);
+  c.items.forEach((it,i)=>inner+=tx(c.x+c.w/2,50+i*18,it,'var(--soft)',8,'middle'));
+ });
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function akiED(){
+ return `<h2 class="sec">3 · AKI management in the ED</h2>
+ <div class="cardgrid wide">
+   <div class="card aki"><h3>Immediate priorities</h3>
+     <div class="blk dose"><b>ABCs + volume</b>Identify and correct the cause. In hypovolemic/pre-renal AKI: IV isotonic crystalloid to restore perfusion (not necessarily to a target volume — titrate to MAP &gt;65, UO &gt;0.5 mL/kg/h, clinical signs). Stop nephrotoxins: NSAIDs, ACE/ARBs, aminoglycosides, contrast where possible.</div>
+     <div class="blk dose"><b>Electrolytes</b>Hyperkalemia is the killer — ECG, continuous monitoring; treat per level and symptoms (calcium, insulin/dextrose, kayexalate/patiromer, emergent dialysis). Correct acidosis if severe.</div>
+   </div>
+   <div class="card aki"><h3>Medications to hold / adjust</h3>
+     <div class="blk miss"><b>Hold</b>NSAIDs, ACE inhibitors, ARBs, aldosterone antagonists (all increase AKI risk or worsen it). Hold metformin (lactic acidosis risk). Renally clear medications: digoxin, direct oral anticoagulants, some antibiotics — adjust doses or hold.</div>
+     <div class="blk">Contrast: the benefit of necessary imaging usually outweighs the risk in AKI — don't withhold a needed CT for AKI concern. Pre-hydrate if elective.</div>
+   </div>
+   <div class="card aki"><h3>Foley + monitoring</h3>
+     <div class="blk">Place a urinary catheter for accurate urine output monitoring in significant AKI — UO is the most real-time indicator of renal perfusion. A response to IVF (UO increasing) confirms pre-renal and guides further fluid administration.</div>
+     <div class="blk miss"><b>Obstruction</b>A post-void residual (PVR &gt;300 mL) or bladder ultrasound at bedside rules out obstructive AKI before giving more fluids. In any man with AKI and no clear cause → place the Foley first.</div>
+   </div>
+   <div class="card aki"><h3>When to call nephrology</h3>
+     <div class="blk">Stage 2–3 AKI, AEIOU criteria for RRT (acidosis pH &lt;7.2, refractory hyperkalemia, toxin ingestion, volume overload, uremia), oliguria unresponsive to fluids, uncertain etiology (glomerulonephritis, TTP/HUS), prior CKD with acute decompensation.</div>
+   </div>
+ </div>`;
+}
+
+function dialysisED(){
+ return `<h2 class="sec">4 · The dialysis patient in the ED</h2>
+ <p class="seclead">The dialysis patient in the ED is a unique physiology — they have no (or minimal) renal function, they rely on HD (hemodialysis) or PD (peritoneal dialysis) sessions for fluid and electrolyte clearance, and they accumulate everything between sessions. Two-thirds of dialysis patient ED visits are for a complication of their ESRD or dialysis access.</p>
+ <div class="cardgrid wide">
+   <div class="card aki"><h3>The life-threatening triad</h3>
+     <div class="blk miss"><b>Hyperkalemia</b>Most dangerous. Accumulates between sessions; worsens with missed dialysis, dietary indiscretion, infection (catabolic), metabolic acidosis, blood transfusion. Target: &lt;5.5 mEq/L inter-dialytic. Treat per level + ECG: calcium gluconate, insulin/dextrose, bicarbonate, resonium/patiromer, emergent dialysis.</div>
+     <div class="blk miss"><b>Volume overload</b>Missed dialysis → pulmonary edema. Treat with dialysis — NOT diuretics (most ESRD patients make minimal urine). NIV (BiPAP) for acute pulmonary edema while arranging dialysis. Consider phlebotomy (500 mL) if no dialysis access immediately available and severe respiratory failure.</div>
+     <div class="blk miss"><b>Uremia</b>BUN &gt;~100 with symptoms: encephalopathy (uremic asterixis), pericardial friction rub (uremic pericarditis — no anticoagulation, emergent dialysis), platelet dysfunction (bleeding), nausea.</div>
+   </div>
+   <div class="card aki"><h3>Access complications</h3>
+     <div class="blk"><b>AV fistula/graft</b>Thrombosis (bruit/thrill absent), steal syndrome (ischemic hand), high-output cardiac failure. Thrombosis = emergent vascular/IR for declot. Never use the access arm for BP, phlebotomy, or IV placement.</div>
+     <div class="blk"><b>Tunneled HD catheter</b>Infection (fever in HD patient = catheter infection until proven otherwise — blood cultures ×2 from catheter + peripheral, broad antibiotics covering MRSA/gram-neg). Thrombosis (tPA lock). Catheter tip malposition.</div>
+     <div class="blk miss"><b>PD catheter</b>Peritonitis (cloudy PD effluent + abdominal pain + WBC &gt;100 in effluent) → antibiotics into the PD bag + nephrology.</div>
+   </div>
+   <div class="card aki"><h3>Medications in dialysis patients</h3>
+     <div class="blk dose"><b>Renally cleared — dose adjust or avoid</b>Metformin (avoid), direct oral anticoagulants (most — check drug-specific guidance), many antibiotics (aminoglycosides, vancomycin — check levels), gabapentin (toxic accumulation — encephalopathy), allopurinol, lithium, digoxin, H2 blockers.</div>
+     <div class="blk dose"><b>Safe</b>Most IV analgesia (fentanyl preferred over morphine — no active metabolite accumulation), ceftriaxone (biliary), metoprolol, ondansetron, proton pump inhibitors. Use hepatically cleared drugs where possible.</div>
+   </div>
+   <div class="card aki"><h3>ED-to-dialysis coordination</h3>
+     <div class="blk tip">Identify the patient's dialysis center and nephrology team. For life-threatening hyperkalemia/volume overload: arrange emergent dialysis in the ED or directly admit to a unit with dialysis capability. Don't wait for the next scheduled session.</div>
+     <div class="blk">Dialysis patients with access infections require admission and often surgical/IR evaluation — never discharge with a confirmed access infection.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>The missed dialysis patient:</b> a dialysis patient who missed sessions presents with a predictable combination — volume overload (dyspnea, edema, hypertension), hyperkalemia (ECG changes: peaked T-waves → widened QRS → sine wave), and metabolic acidosis. ECG is a rapid electrolyte screen. Get the ECG before the lab result.</div>`;
+}
+
+function diurAKI(){
+ return `<h2 class="sec">5 · Diuretics in AKI — beneficial or harmful?</h2>
+ <p class="seclead">One of the most debated questions in nephrology: should you give diuretics to a patient with AKI? The answer is nuanced — the context (why is there AKI, is the patient volume-overloaded, what stage) determines whether diuretics help, are neutral, or harm.</p>
+ <div class="cardgrid wide">
+   <div class="card aki"><h3>When diuretics CAN help in AKI</h3>
+     <div class="blk dose"><b>Volume overload + AKI</b>If AKI is in the setting of congestive heart failure or volume overload, loop diuretics (furosemide) are appropriate — relief of venous congestion improves renal perfusion. ACUTE DECOMPENSATED CHF: diurese, don't withhold furosemide because Cr is elevated.</div>
+     <div class="blk dose"><b>Convert oliguric to non-oliguric</b>High-dose furosemide can increase urine output, making fluid management easier and potentially improving tubular flow and cast washout — but evidence that this changes outcomes is weak.</div>
+   </div>
+   <div class="card aki"><h3>When diuretics HARM in AKI</h3>
+     <div class="blk miss"><b>Pre-renal AKI + diuretics = worsening</b>Diuretics in a volume-depleted patient (pre-renal AKI) further reduce intravascular volume and glomerular perfusion → worsens AKI. Assess volume status FIRST. Signs of hypovolemia (dry mucous membranes, low JVP, tachycardia, high urine osmolality) = give fluids, not diuretics.</div>
+     <div class="blk miss"><b>Diuretics don't treat the underlying AKI</b>They reduce the fluid in a patient, but they don't reverse tubular injury, don't improve survival, and don't prevent the need for dialysis. A meta-analysis (including ACUTE RCT data) found furosemide does not reduce mortality or RRT in ATN.</div>
+   </div>
+   <div class="card aki"><h3>The physiologic explanation</h3>
+     <div class="blk buzz"><b>How diuretics can paradoxically help in ATN</b>The tubuloglomerular feedback (TGF) loop: in AKI, necrotic tubular cells release tubular debris that blocks tubular flow → afferent arteriole vasoconstriction → further GFR drop. Loop diuretics (by blocking the NKCC2 co-transporter in the thick ascending limb) reduce NaCl delivery to the macula densa → blunt TGF → reduce afferent vasoconstriction. This is the theoretical benefit. Clinical evidence for this remains modest.</div>
+     <div class="blk miss"><b>AKI-diuretic resistance</b>In severe AKI, furosemide reaches the tubular lumen by active secretion (inhibited by organic acids that accumulate in AKI); high doses are needed. Furosemide resistance in AKI: consider dose escalation (up to 200–400 mg IV push), continuous infusion, or adding thiazide (metolazone) for synergy — or accept that the patient may need dialysis.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The clinical rule:</b> (1) Assess volume status first — hypovolemic AKI = fluids, not diuretics. (2) Volume-overloaded AKI = diuretics are appropriate and may help. (3) AKI from ATN with euvolemia = diuretics are neither clearly beneficial nor harmful — the decision is for urine output management, not to reverse AKI. (4) Don't withhold necessary diuresis in CHF+AKI — worsening congestion will hurt the kidneys more than the diuretic.</div>`;
+}
+
+/* ============================================================
+   TAB 2: SODIUM EMERGENCIES
+   ============================================================ */
+function electModule(){
+ return hypoNa()+hyperNa()+naCorrection();
+}
+
+function hypoNa(){
+ return `<h2 class="sec">1 · Hyponatremia</h2>
+ <p class="seclead">Hyponatremia (Na &lt;135 mEq/L) is the most common electrolyte disorder in hospitalized patients. The symptoms are neurologic and depend on both the severity AND the rate of development — chronic mild hyponatremia may be asymptomatic while acute severe hyponatremia is life-threatening.</p>
+ <div class="svgfig">${figHypoNaWorkup()}<div class="figcap">Hyponatremia workup: serum osmolality first (is it real?), then urine osmolality (is ADH on?), then urine sodium (what's driving ADH?) — this tree separates the major causes efficiently.</div></div>
+ <div class="cardgrid wide">
+   <div class="card elect"><h3>Symptoms by severity</h3>
+     <div class="blk"><b>Mild (&gt;125)</b>Often asymptomatic; nausea, malaise. <b>Moderate (120–125)</b>Headache, confusion, gait unsteady. <b>Severe (&lt;120 or acute)</b>Seizures, respiratory arrest, cerebral herniation. Acute (develops &lt;48h) is most dangerous — brain hasn't had time to adapt.</div>
+   </div>
+   <div class="card elect"><h3>Key causes by urine Na</h3>
+     <div class="blk dose"><b>Low urine Na (&lt;20) — kidney holding Na</b>Volume depletion (GI losses, diuretics), adrenal insufficiency, hypothyroidism.</div>
+     <div class="blk dose"><b>High urine Na (&gt;40) — kidney losing Na</b>SIADH (most common), renal failure, mineralocorticoid deficiency.</div>
+     <div class="blk dose"><b>SIADH diagnosis</b>Euvolemic, concentrated urine (Uosm &gt;100), urine Na &gt;40, normal thyroid/adrenal, no diuretics → SIADH. Common causes: pulmonary, CNS, drugs (SSRIs, carbamazepine, opioids, PPIs), nausea, pain.</div>
+   </div>
+   <div class="card elect"><h3>Treatment</h3>
+     <div class="blk dose"><b>Symptomatic/severe (&lt;120 or seizure/AMS)</b>3% saline 100–150 mL IV over 20 min (repeat ×1–2 if seizure). Target: raise Na by 4–6 mEq/L in the first hour to stop the brain swelling, then slow down to ≤8–10 mEq/L/24h total.</div>
+     <div class="blk dose"><b>Mild-moderate/asymptomatic</b>Fluid restriction (SIADH); isotonic saline (hypovolemic); treat the underlying cause. Rate: ≤6–8 mEq/L/24h (≤6 if high-risk for ODS).</div>
+     <div class="blk miss"><b>ODS risk</b>Over-rapid correction → osmotic demyelination syndrome. Highest risk: Na &lt;105, alcoholism, malnutrition, liver disease, hypokalemia. If correction is too fast → actively re-lower with D5W ± DDAVP.</div>
+   </div>
+ </div>`;
+}
+
+function figHypoNaWorkup(){
+ const W=820,H=240;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Tree nodes
+ function node(x,y,w,h,col,t,sub){
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${col}" opacity="0.18" stroke="${col}" stroke-width="1.3"/>`+
+   tx(x+w/2,y+h/2-4,t,col,10,'middle',700)+(sub?tx(x+w/2,y+h/2+10,sub,'var(--soft)',8,'middle'):'');
+ }
+ function arr(x1,y1,x2,y2,label){
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)" stroke-width="1.3" marker-end="url(#na)"/>`+
+   (label?tx((x1+x2)/2,(y1+y2)/2-5,label,'var(--muted)',7,'middle'):'');
+ }
+ inner+=node(330,12,160,36,'var(--elect)','Serum Osmolality','measure first');
+ inner+=arr(410,50,200,88,'&lt;270 (hypo-osm)');inner+=arr(410,50,620,88,'≥280 (normal/high)');
+ inner+=node(120,92,160,36,'var(--elect)','Urine Osmolality','ADH on?');
+ inner+=node(530,92,180,36,'var(--gold)','Pseudo/hypertonic','glucose, mannitol');
+ inner+=arr(200,130,100,168,'&lt;100 (ADH off)');inner+=arr(200,130,306,168,'&gt;100 (ADH on)');
+ inner+=node(20,172,140,36,'var(--good)','Primary polydipsia','excess water intake');
+ inner+=node(195,172,150,36,'var(--elect)','Urine Na','&gt;40 or &lt;20?');
+ inner+=arr(270,210,130,210,'');
+ inner+=arr(345,210,460,210,'');
+ inner+=tx(120,214,'&lt;20 → hypovolemic','var(--gold)',8,'middle');
+ inner+=tx(340,214,'&gt;40 → SIADH/renal','var(--elect)',8,'middle');
+ inner+=`<defs><marker id="na" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function hyperNa(){
+ return `<h2 class="sec">2 · Hypernatremia</h2>
+ <p class="seclead">Hypernatremia (Na &gt;145 mEq/L) almost always means the patient has lost free water and couldn't or didn't drink to replace it. It concentrates the brain → cellular dehydration → brain shrinkage → bleeding, seizures. Common in the elderly, infants, and those with impaired thirst or access to water.</p>
+ <div class="cardgrid wide">
+   <div class="card elect"><h3>Causes</h3>
+     <div class="blk dose"><b>Loss of free water (most common)</b>Insensible losses (fever, burns, hot environment), osmotic diuresis (hyperglycemia, mannitol, post-obstruction), diabetes insipidus (central — head trauma/surgery, or nephrogenic — lithium, amphotericin), GI losses (watery diarrhea).</div>
+     <div class="blk dose"><b>Excessive salt intake</b>Hypertonic saline, NaHCO3 administration, sea-water ingestion. Rare but important to recognize (doesn't respond to free water alone — need to also remove Na).</div>
+   </div>
+   <div class="card elect"><h3>Symptoms &amp; treatment</h3>
+     <div class="blk miss"><b>Symptoms</b>Thirst, restlessness, confusion, focal deficits, seizures, coma — severity correlates with Na and with rate of rise.</div>
+     <div class="blk dose"><b>Treatment — free water replacement</b>Calculate free water deficit: <b>0.6 × weight × (Na/140 − 1)</b>. Replace with D5W or enteral water. Rate: ≤10–12 mEq/L/24h (faster risks cerebral edema — brain has adapted with idiogenic osmoles and will swell when Na falls fast).</div>
+     <div class="blk dose"><b>Volume status first</b>If hypovolemic (most are) → isotonic saline first to restore perfusion, THEN free water for the hypernatremia. Check glucose (hyperosmolar hyperglycemia may be the driver).</div>
+   </div>
+ </div>`;
+}
+
+function naCorrection(){
+ return `<h2 class="sec">3 · Sodium correction — the rate matters more than the destination</h2>
+ <div class="svgfig">${figNaCorrection()}<div class="figcap">The two-way danger: correct hyponatremia too fast → osmotic demyelination (ODS); correct hypernatremia too fast → cerebral edema. Both are caused by the rate, not the final value. Maximum safe rates: hyponatremia ≤8 mEq/L/24h (≤6 if high-risk); hypernatremia ≤10–12 mEq/L/24h.</div></div>
+ <div class="note warn"><b>Adrogué-Madias formula for planning fluid choice:</b> Expected ΔNa per liter of fluid = (Fluid Na − Serum Na) / (TBW + 1). Use this to estimate how fast a given fluid will raise or lower the sodium — then recheck frequently because real-world ADH shifts make the actual trajectory diverge from predictions.</div>`;
+}
+
+function figNaCorrection(){
+ const W=820,H=180;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Hyponatremia side
+ inner+=`<rect x="20" y="16" width="370" height="148" rx="10" fill="var(--elect)" opacity="0.1" stroke="var(--elect)" stroke-width="1.5"/>`;
+ inner+=tx(205,38,'HYPONATREMIA correction','var(--elect)',13,'middle',700);
+ inner+=tx(205,60,'Rate: ≤8 mEq/L/24h (≤6 if high-risk)','var(--ink)',11,'middle');
+ inner+=tx(205,78,'High-risk: Na &lt;105, alcoholism, malnutrition, liver dz, ↓K','var(--soft)',8,'middle');
+ inner+=tx(205,98,'Too fast →','var(--warn)',10,'middle');
+ inner+=tx(205,115,'OSMOTIC DEMYELINATION SYNDROME','var(--warn)',11,'middle',700);
+ inner+=tx(205,133,'dysarthria, dysphagia, quadriplegia, locked-in','var(--soft)',8,'middle');
+ inner+=tx(205,152,'Rescue: D5W ± DDAVP to re-lower Na','var(--good)',8,'middle');
+ // Hypernatremia side
+ inner+=`<rect x="430" y="16" width="370" height="148" rx="10" fill="var(--gold)" opacity="0.1" stroke="var(--gold)" stroke-width="1.5"/>`;
+ inner+=tx(615,38,'HYPERNATREMIA correction','var(--gold)',13,'middle',700);
+ inner+=tx(615,60,'Rate: ≤10–12 mEq/L/24h','var(--ink)',11,'middle');
+ inner+=tx(615,78,'Brain has accumulated idiogenic osmoles to prevent shrinkage','var(--soft)',8,'middle');
+ inner+=tx(615,98,'Too fast →','var(--warn)',10,'middle');
+ inner+=tx(615,115,'CEREBRAL EDEMA','var(--warn)',11,'middle',700);
+ inner+=tx(615,133,'headache, seizures, herniation during correction','var(--soft)',8,'middle');
+ inner+=tx(615,152,'Rescue: slow/pause hypotonic fluid; re-check Na q2-4h','var(--good)',8,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   TAB 3: UROLITHIASIS
+   ============================================================ */
+function stoneModule(){
+ return stoneCT()+stonePassage()+stoneRedFlags()+stoneMgmt();
+}
+
+function stoneCT(){
+ return `<h2 class="sec" id="stone-ct">1 · CT for urolithiasis — what to read and why</h2>
+ <p class="seclead">Non-contrast CT (NCCT) of the abdomen/pelvis is the gold standard for suspected nephrolithiasis — near 100% sensitivity and specificity vs ~70% for US. Knowing what to look for and how to describe each finding makes the imaging count.</p>
+ <div class="svgfig">${figStoneCT()}<div class="figcap">Stone CT reading: measure the stone's maximum width in the narrowest plane (axial). Record location (proximal/mid/distal ureter or UVJ). Document HU (density predicts composition and ESWL suitability). Hydronephrosis grade and secondary signs are the other key findings.</div></div>
+ <div class="cardgrid wide">
+   <div class="card stone"><h3>What to document on CT</h3>
+     <div class="blk dose"><b>Stone characteristics</b>Size (measure maximum WIDTH — this is what predicts passage, not length), location (renal, proximal/mid/distal ureter, UVJ, bladder), density in Hounsfield units (HU), skin-to-stone distance (for ESWL planning).</div>
+     <div class="blk dose"><b>HU and stone composition</b>&lt;500 HU = uric acid (low density, radiolucent on plain film — only stone dissolvable medically); 500–1200 HU = calcium oxalate/phosphate; &gt;1200 HU = cystine/brushite. Struvite typically mixed/irregular. Higher HU = harder stone, less amenable to ESWL.</div>
+     <div class="blk dose"><b>Secondary signs</b>Hydroureteronephrosis (grade: mild/moderate/severe), perinephric fat stranding, periureteral edema (tissue rim sign — distinguishes ureteral stone from phlebolith: phlebolith has a "vascular" position and often a central lucency).</div>
+   </div>
+   <div class="card stone"><h3>Hydronephrosis grading</h3>
+     <div class="blk">Grade 1: Mild calyceal dilation; Grade 2: Moderate pelvi-calyceal dilation; Grade 3: Severe dilation with cortical thinning. Bilateral hydronephrosis or hydronephrosis in a solitary kidney = urgent.</div>
+     <div class="blk miss"><b>Important</b>Hydronephrosis can be absent with an acutely passed stone (recently passed, no time to dilate). It can also be chronic (not all hydronephrosis = acute obstruction). Clinical correlation essential.</div>
+   </div>
+   <div class="card stone"><h3>Tissue rim sign vs phlebolith</h3>
+     <div class="blk buzz">A ring of soft tissue surrounding a calcification = tissue rim sign = ureteral stone. A phlebolith (calcified pelvic vein) has no rim, often has a central lucency ("bull's eye"), and is in a vascular position not tracking along the ureter.</div>
+   </div>
+ </div>`;
+}
+
+function figStoneCT(){
+ const W=820,H=240;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Kidney outline
+ inner+=`<ellipse cx="160" cy="120" rx="70" ry="90" fill="#1c2430" stroke="#35404e" stroke-width="1.5"/>`;
+ inner+=`<ellipse cx="160" cy="120" rx="44" ry="60" fill="#0c1218" stroke="#263040" stroke-width="1"/>`;
+ inner+=tx(160,120,'kidney','var(--muted)',9,'middle');
+ // Ureter
+ inner+=`<path d="M168,208 Q200,230 220,280" fill="none" stroke="#35404e" stroke-width="3"/>`;
+ // Stones at different locations
+ // Renal pelvis stone
+ inner+=`<circle cx="168" cy="130" r="7" fill="var(--stone)"/>`;
+ inner+=tx(240,128,'Renal pelvis stone','var(--stone)',9,'start');
+ // Proximal ureter
+ inner+=`<circle cx="186" cy="222" r="5" fill="var(--stone)"/>`;
+ inner+=tx(240,222,'Proximal ureter','var(--stone)',9,'start');
+ // Distal ureter
+ inner+=`<circle cx="204" cy="264" r="6" fill="var(--stone)"/>`;
+ inner+=tx(240,264,'Distal ureter (UVJ)','var(--stone)',9,'start');
+ // Stone detail box
+ inner+=`<rect x="430" y="20" width="370" height="200" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="1"/>`;
+ inner+=tx(615,44,'CT STONE REPORT — key elements','var(--ink)',12,'middle',700);
+ const lines=[
+  ['Size:','Measure WIDTH (axial plane) — not length'],
+  ['Location:','Proximal / mid / distal ureter / UVJ'],
+  ['HU density:','<500 = uric acid (dissolvable); >1200 = hard'],
+  ['Hydronephrosis:','Grade 1/2/3 — bilateral = urgent'],
+  ['Stranding:','Perinephric fat stranding = acute obstruction'],
+  ['Rim sign:','Soft-tissue rim = stone; no rim = phlebolith']
+ ];
+ lines.forEach((l,i)=>{
+  inner+=tx(452,72+i*22,l[0],'var(--accent)',9,'start',700);
+  inner+=tx(520,72+i*22,l[1],'var(--soft)',8,'start');
+ });
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function stonePassage(){
+ return `<h2 class="sec">2 · Spontaneous passage rates — size, location, and patient factors</h2>
+ <p class="seclead">Passage rate data per the most current AUA 2024 / EAU 2024 guidelines and Jendeberg et al. meta-analysis. Stone WIDTH (not length) is the strongest predictor — the ureter's narrowest diameter is 3–4 mm, so anything over 5 mm has substantially reduced passage probability.</p>
+ <div class="svgfig">${figPassageRates()}<div class="figcap">Spontaneous passage rates by stone width. Passage rates drop sharply between 4–6 mm. Location modifies the rate — distal ureter (near bladder/UVJ) has the best passage rates for any given size; proximal ureter has the lowest. Medical expulsive therapy (tamsulosin) improves odds by ~29% absolute in 5–10mm stones.</div></div>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Stone width</th><th>Passage rate</th><th>Expected time</th><th>Recommendation</th></tr></thead>
+ <tbody>
+  <tr><th>&lt;3 mm</th><td style="color:var(--good)">~98%</td><td>Days to 1 week</td><td>Conservative — reassure, hydration, analgesia</td></tr>
+  <tr><th>3–4 mm</th><td style="color:var(--good)">~81–98%</td><td>1–2 weeks</td><td>Conservative; consider tamsulosin 0.4 mg daily</td></tr>
+  <tr><th>4–5 mm</th><td style="color:var(--good)">~65–80%</td><td>2–4 weeks</td><td>Tamsulosin; follow-up imaging at 4 weeks</td></tr>
+  <tr><th>5–6 mm</th><td style="color:var(--gold)">~33–65%</td><td>Up to 6 weeks</td><td>Tamsulosin; urology follow-up; max 4–6 weeks before intervention</td></tr>
+  <tr><th>6–7 mm</th><td style="color:var(--warn)">~25–33%</td><td>Unlikely by 6 weeks</td><td>Urology consultation; intervention likely</td></tr>
+  <tr><th>&gt;7–10 mm</th><td style="color:var(--warn)">&lt;25%</td><td>Unlikely</td><td>Urology consultation; URS/ESWL/PCNL</td></tr>
+  <tr><th>&gt;10 mm</th><td style="color:var(--aki)">&lt;5%</td><td>Very unlikely</td><td>Surgery — AUA/EAU guidelines: intervention recommended</td></tr>
+ </tbody></table></div>
+ <div class="cardgrid">
+   <div class="card stone"><h3>Modifying factors</h3>
+     <div class="blk dose"><b>Location</b>Distal ureter/UVJ (best) &gt; mid ureter &gt; proximal ureter (worst). A 5 mm distal stone is much more likely to pass than a 5 mm proximal stone.</div>
+     <div class="blk dose"><b>Sex</b>Women have a slightly shorter, wider ureteral path. Men have the prostate junction as an additional narrowing. Clinical difference is modest.</div>
+     <div class="blk dose"><b>Hydronephrosis</b>Moderate-severe hydronephrosis with an obstructing stone = higher renal pressure → less likely to pass spontaneously without damage. Intervention sooner.</div>
+   </div>
+   <div class="card stone"><h3>Medical expulsive therapy (MET)</h3>
+     <div class="blk dose"><b>Tamsulosin 0.4 mg daily</b>Alpha-1 blocker relaxes distal ureteral smooth muscle. Most effective for 5–10 mm stones. Absolute benefit ~29% improved passage vs observation. Side effects: orthostasis, retrograde ejaculation. AUA 2024: offer to patients with ureteral stones 5–10 mm.</div>
+     <div class="blk buzz"><b>Teaching point</b>The narrowest point of the ureter is at the UVJ (~3–4 mm). Any stone over 5 mm faces a challenging final passage — tamsulosin relaxes this sphincter and is why it works best for distal stones.</div>
+   </div>
+ </div>`;
+}
+
+function figPassageRates(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Data points: [size_label, x_pos, rate, col]
+ const pts=[
+  ['&lt;3 mm',80,98,'var(--good)'],[' 3 mm',160,98,'var(--good)'],[' 4 mm',240,81,'var(--good)'],
+  [' 5 mm',320,65,'var(--gold)'],[' 6 mm',400,33,'var(--warn)'],[' 7 mm',480,25,'var(--warn)'],
+  ['8-10mm',560,15,'var(--aki)'],['>10mm',640,5,'var(--aki)']
+ ];
+ // Axes
+ inner+=`<line x1="70" y1="20" x2="70" y2="165" stroke="var(--muted)" stroke-width="1.5"/>`;
+ inner+=`<line x1="70" y1="165" x2="680" y2="165" stroke="var(--muted)" stroke-width="1.5"/>`;
+ // Y axis labels
+ [0,25,50,75,100].forEach(v=>{ const y=165-v*1.4; inner+=tx(60,y+3,v+'%','var(--muted)',8,'end'); inner+=`<line x1="65" y1="${y}" x2="680" y2="${y}" stroke="var(--line2)" stroke-width="0.8"/>`; });
+ // Bars
+ pts.forEach(p=>{
+  const barH=p[2]*1.4;
+  inner+=`<rect x="${p[1]-18}" y="${165-barH}" width="36" height="${barH}" rx="4" fill="${p[2]}" opacity="0.0"/>`;
+  inner+=`<rect x="${p[1]-18}" y="${165-barH}" width="36" height="${barH}" rx="4" fill="${p[3]}" opacity="0.75"/>`;
+  inner+=tx(p[1],165-barH-6,p[2]+'%',p[3],9,'middle',700);
+  inner+=tx(p[1],180,p[0],'var(--muted)',8,'middle');
+ });
+ inner+=tx(375,12,'Spontaneous Passage Rate by Stone Width (AUA/EAU 2024 / Jendeberg data)','var(--ink)',11,'middle',700);
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function stoneRedFlags(){
+ return `<h2 class="sec">3 · Red flags — when the stone can't wait</h2>
+ <div class="cardgrid wide">
+   <div class="card aki"><h3>Infected obstructed kidney — sepsis</h3>
+     <div class="blk miss"><b>THE emergency</b>Ureteral stone + signs of infection (fever, costovertebral angle tenderness + tachycardia/hypotension) = obstructed infected collecting system = urosepsis. Requires URGENT drainage (ureteral stent or percutaneous nephrostomy) within hours — antibiotics alone are insufficient because the pus is trapped above the obstruction.</div>
+     <div class="blk dose"><b>Management</b>Broad antibiotics (gram-negative coverage — pip-tazo, ceftriaxone, or carbapenem if MDR risk), aggressive resuscitation, emergent urology/IR for drainage. Don't be reassured by "stable" vitals — obstruction + infection = time-critical.</div>
+   </div>
+   <div class="card aki"><h3>Solitary kidney / bilateral obstruction</h3>
+     <div class="blk miss">Any stone causing obstruction in a patient with a solitary functioning kidney or bilateral obstructing stones = urgent AKI risk. Creatinine will rise, dialysis may be needed without relief. Emergent urology regardless of stone size.</div>
+   </div>
+   <div class="card aki"><h3>Uncontrolled pain / vomiting</h3>
+     <div class="blk">Inability to manage pain with oral medications, persistent vomiting preventing oral hydration, inability to care for oneself → admission or extended observation. Most stone pain can be managed in the ED with IV ketorolac + IV opioid as needed + oral transition.</div>
+   </div>
+   <div class="card aki"><h3>Large stone / high-grade obstruction</h3>
+     <div class="blk">Stones &gt;10 mm: very unlikely to pass and risk prolonged obstruction causing irreversible renal damage after 4–6 weeks. Urology follow-up within 7 days. Complete obstruction = consult emergently. AUA/EAU: intervention within 4–6 weeks of initial presentation.</div>
+   </div>
+ </div>`;
+}
+
+function stoneMgmt(){
+ return `<h2 class="sec">4 · Acute management &amp; analgesia</h2>
+ <div class="cardgrid wide">
+   <div class="card stone"><h3>Pain management</h3>
+     <div class="blk dose"><b>First-line</b>NSAIDs (ketorolac 15–30 mg IV, or ibuprofen 600–800 mg PO) — NSAIDs are superior to opioids for ureteral colic (reduce ureteral smooth muscle spasm + prostaglandin-mediated peristalsis). Use with caution in AKI, elderly, and solitary kidney.</div>
+     <div class="blk dose"><b>Adjunct/rescue</b>IV opioids (morphine 0.1 mg/kg, fentanyl 1 mcg/kg) for breakthrough or NSAID contraindication.</div>
+   </div>
+   <div class="card stone"><h3>Hydration</h3>
+     <div class="blk">Aggressive IVF (formerly standard) is NOT recommended to force passage — large trials show no benefit over normal hydration. Encourage normal oral hydration (2–3 L/day). Avoid dehydration.</div>
+   </div>
+   <div class="card stone"><h3>Discharge instructions</h3>
+     <div class="blk dose"><b>Must include</b>Return for fever &gt;38.5°C (sign of infected obstruction), inability to urinate, worsening/uncontrolled pain, vomiting. Strain urine to capture the stone (composition guides prevention). Urology follow-up in 5–7 days if stone &gt;5 mm or pain not resolved.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   TAB 4: DIURETICS
+   ============================================================ */
+function diurModule(){
+ return diurNephron()+diurMOA()+diurElectrolytes()+diurIVvsPO()+diurCHF();
+}
+
+function diurNephron(){
+ return `<h2 class="sec" id="diur-nephron">1 · Where diuretics act in the nephron — the master diagram</h2>
+ <p class="seclead">The nephron is divided into functionally distinct segments, each with specific transporters. Each diuretic class targets a specific transporter at a specific location — which determines its potency, the electrolytes lost, and its clinical uses and interactions.</p>
+ <div class="svgfig">${figNephronDiuretics()}<div class="figcap">Full nephron with diuretic sites of action: Carbonic anhydrase inhibitors (proximal tubule), Loop diuretics (thick ascending limb/NKCC2), Thiazides (DCT/NCC), Potassium-sparing/Aldosterone antagonists (collecting duct). The loop is the powerhouse — ~25% of filtered Na is reabsorbed here, making loop diuretics the most potent class.</div></div>`;
+}
+
+function figNephronDiuretics(){
+ const W=820,H=420;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+
+ // ---- NEPHRON ANATOMY (simplified, left to right flow) ----
+ // Glomerulus
+ inner+=`<circle cx="110" cy="80" r="36" fill="#0a1a2a" stroke="var(--gfr)" stroke-width="2.5"/>`;
+ inner+=`<circle cx="110" cy="80" r="22" fill="#132030" stroke="var(--gfr)" stroke-width="1.5"/>`;
+ inner+=tx(110,80,'Glom','var(--gfr)',9,'middle',700);
+ inner+=tx(110,100,'filtration','var(--gfr)',7,'middle');
+ // PCT (proximal convoluted tubule)
+ inner+=`<path d="M146,80 Q200,50 230,80 Q260,110 230,140 Q200,170 170,140 Q155,130 170,110 Q190,90 206,110 Q218,130 200,150" fill="none" stroke="var(--tubule)" stroke-width="6" stroke-linecap="round"/>`;
+ inner+=tx(200,40,'Proximal Tubule (PCT)','var(--tubule)',9,'middle',700);
+ inner+=tx(200,54,'65% Na/water reabsorbed','var(--muted)',7,'middle');
+ // Loop of Henle - descending
+ inner+=`<path d="M202,152 Q220,180 220,240 Q220,300 200,320" fill="none" stroke="var(--loop)" stroke-width="6" stroke-linecap="round"/>`;
+ // Loop of Henle - ascending (thick)
+ inner+=`<path d="M200,320 Q180,300 180,240 Q180,180 200,152" fill="none" stroke="var(--loop)" stroke-width="9" stroke-linecap="round"/>`;
+ inner+=`<rect x="70" y="290" width="200" height="60" rx="8" fill="var(--loop)" opacity="0.15" stroke="var(--loop)" stroke-width="1.3"/>`;
+ inner+=tx(170,316,'Loop of Henle','var(--loop)',9,'middle',700);
+ inner+=tx(170,330,'Thick ascending limb','var(--loop)',8,'middle');
+ inner+=tx(170,345,'25% Na via NKCC2','var(--muted)',7,'middle');
+ // DCT
+ inner+=`<path d="M200,152 Q280,130 320,150 Q360,170 340,200 Q320,230 280,220 Q250,215 260,190 Q278,170 310,180 Q335,188 320,208" fill="none" stroke="var(--dct)" stroke-width="6" stroke-linecap="round"/>`;
+ inner+=tx(310,135,'Distal Convoluted Tubule (DCT)','var(--dct)',9,'middle',700);
+ inner+=tx(310,149,'5–7% Na via NCC','var(--muted)',7,'middle');
+ // Collecting duct
+ inner+=`<path d="M322,208 Q390,230 420,280 Q440,320 420,380" fill="none" stroke="var(--cd)" stroke-width="7" stroke-linecap="round"/>`;
+ inner+=tx(450,290,'Collecting Duct','var(--cd)',9,'start',700);
+ inner+=tx(450,304,'2–3% Na; aldosterone-regulated','var(--muted)',7,'start');
+ inner+=tx(450,318,'ENaC + K+ secretion','var(--muted)',7,'start');
+
+ // ---- DRUG LABELS with arrows ----
+ // CA inhibitors (Acetazolamide) → PCT
+ inner+=`<rect x="440" y="30" width="180" height="56" rx="8" fill="var(--tubule)" opacity="0.18" stroke="var(--tubule)" stroke-width="1.5"/>`;
+ inner+=tx(530,52,'CA Inhibitors','var(--tubule)',10,'middle',700);
+ inner+=tx(530,66,'(Acetazolamide)','var(--tubule)',9,'middle');
+ inner+=tx(530,80,'Block NHE3 in PCT','var(--muted)',7,'middle');
+ inner+=`<line x1="440" y1="60" x2="230" y2="95" stroke="var(--tubule)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+
+ // Loop diuretics → TAL
+ inner+=`<rect x="440" y="130" width="180" height="64" rx="8" fill="var(--loop)" opacity="0.18" stroke="var(--loop)" stroke-width="1.5"/>`;
+ inner+=tx(530,150,'LOOP DIURETICS','var(--loop)',10,'middle',700);
+ inner+=tx(530,166,'Furosemide, bumetanide,','var(--loop)',8,'middle');
+ inner+=tx(530,180,'torsemide, ethacrynic acid','var(--loop)',8,'middle');
+ inner+=tx(530,192,'Block NKCC2 in TAL','var(--muted)',7,'middle');
+ inner+=`<line x1="440" y1="162" x2="195" y2="250" stroke="var(--loop)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+
+ // Thiazides → DCT
+ inner+=`<rect x="440" y="240" width="180" height="64" rx="8" fill="var(--dct)" opacity="0.18" stroke="var(--dct)" stroke-width="1.5"/>`;
+ inner+=tx(530,260,'THIAZIDES','var(--dct)',10,'middle',700);
+ inner+=tx(530,276,'HCTZ, chlorthalidone,','var(--dct)',8,'middle');
+ inner+=tx(530,290,'metolazone, indapamide','var(--dct)',8,'middle');
+ inner+=tx(530,302,'Block NCC in DCT','var(--muted)',7,'middle');
+ inner+=`<line x1="440" y1="270" x2="310" y2="200" stroke="var(--dct)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+
+ // K-sparing → CD
+ inner+=`<rect x="590" y="330" width="215" height="72" rx="8" fill="var(--cd)" opacity="0.18" stroke="var(--cd)" stroke-width="1.5"/>`;
+ inner+=tx(697,350,'K-SPARING / ALDO ANTAGONISTS','var(--cd)',10,'middle',700);
+ inner+=tx(697,366,'Spironolactone, eplerenone,','var(--cd)',8,'middle');
+ inner+=tx(697,380,'amiloride, triamterene','var(--cd)',8,'middle');
+ inner+=tx(697,392,'Block ENaC / aldosterone','var(--muted)',7,'middle');
+ inner+=`<line x1="590" y1="366" x2="425" y2="320" stroke="var(--cd)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+
+ // Flow arrows along nephron
+ inner+=tx(120,145,'filtrate','var(--muted)',7,'middle');
+ inner+=tx(240,380,'papilla','var(--muted)',7,'middle');
+
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function diurMOA(){
+ return `<h2 class="sec">2 · Diuretic mechanism, expected electrolyte losses &amp; clinical use</h2>
+ <div class="gridwrap"><table class="cmp" style="min-width:900px">
+  <thead><tr><th>Class / Drug</th><th>Transporter blocked</th><th>Location</th><th>Na loss</th><th>K loss</th><th>Mg loss</th><th>Ca loss</th><th>HCO3/Acid-base</th><th>Key clinical use</th></tr></thead>
+  <tbody>
+   <tr><th>CA inhibitors<br><small>Acetazolamide</small></th><td>Carbonic anhydrase (NHE3)</td><td>Proximal tubule</td><td style="color:var(--tubule)">Moderate ↑↑</td><td>↑↑↑ (massive)</td><td>—</td><td>↑↑</td><td>Metabolic acidosis (↑bicarb loss)</td><td>Altitude sickness, glaucoma, metabolic alkalosis correction</td></tr>
+   <tr><th>LOOP<br><small>Furosemide, torsemide, bumetanide</small></th><td>NKCC2</td><td>Thick ascending limb</td><td style="color:var(--loop)">↑↑↑↑ (most potent)</td><td>↑↑↑</td><td>↑↑↑</td><td>↑↑↑</td><td>Metabolic alkalosis (↓H+ loss);<br>↑Ca excretion</td><td>Acute pulmonary edema, volume overload, CHF, hypertensive urgency, hypercalcemia</td></tr>
+   <tr><th>THIAZIDE<br><small>HCTZ, chlorthalidone, metolazone</small></th><td>NCC</td><td>DCT</td><td style="color:var(--dct)">↑↑ (moderate)</td><td>↑↑</td><td>↑</td><td>↓ (retains Ca)</td><td>Metabolic alkalosis; hyponatremia (unique — causes dilutional hypoNa)</td><td>Hypertension (1st-line), calcium stones (reduces Ca excretion), nephrogenic DI</td></tr>
+   <tr><th>K-sparing<br><small>Spironolactone, eplerenone</small></th><td>Aldosterone receptor</td><td>Collecting duct</td><td>↑ (mild)</td><td style="color:var(--good)">↓ (retains K)</td><td>—</td><td>—</td><td>Mild acidosis (↓H+ secretion)</td><td>CHF (mortality benefit), hyperaldosteronism, cirrhotic ascites, with loops to prevent hypoK</td></tr>
+   <tr><th>ENaC blockers<br><small>Amiloride, triamterene</small></th><td>ENaC</td><td>Collecting duct</td><td>↑ (mild)</td><td style="color:var(--good)">↓ (retains K)</td><td>—</td><td>—</td><td>Mild acidosis</td><td>Preserve K+ when using loops/thiazides; Liddle syndrome; prevent hypoK</td></tr>
+  </tbody>
+ </table></div>
+ <div class="note warn"><b>Critical interactions:</b> (1) Thiazide + loop = profound diuresis and hypokalemia (synergistic — macula densa bypass). (2) K-sparing + ACE/ARB = dangerous hyperkalemia. (3) Loop diuretics cause hypomagnesemia (Mg is reabsorbed in the TAL alongside Ca — loop blocks both) — hypomagnesemia perpetuates refractory hypokalemia (must replace both). (4) Acetazolamide causes hyperchloremic non-AG metabolic acidosis.</div>`;
+}
+
+function diurElectrolytes(){
+ return `<h2 class="sec">3 · Expected electrolyte shifts by diuretic — monitoring guide</h2>
+ <div class="svgfig">${figDiurElec()}<div class="figcap">Electrolyte effects by diuretic class. Loop diuretics cause the broadest electrolyte loss (Na, K, Mg, Ca). Thiazides uniquely retain Ca (useful for kidney stones, but can cause hypercalcemia in hyperparathyroidism). K-sparing agents cause hyperkalemia — the main danger.</div></div>
+ <div class="cardgrid wide">
+   <div class="card diur"><h3>Hypokalemia (loops and thiazides)</h3>
+     <div class="blk miss"><b>Mechanism</b>Increased Na delivery to the collecting duct (from loop/thiazide effect) → aldosterone-stimulated K+ secretion in exchange for Na+ reabsorption. The more Na that arrives at the collecting duct, the more K that's excreted. Treat with K supplementation and/or add a K-sparing agent.</div>
+     <div class="blk">Hypokalemia also worsens with alkalosis (K shifts intracellularly), and hypomagnesemia (must correct Mg to be able to correct K — the tubular K channel requires Mg). Always check Mg when correcting hypoK in a patient on diuretics.</div>
+   </div>
+   <div class="card diur"><h3>Thiazide and hyponatremia</h3>
+     <div class="blk miss"><b>Unique mechanism</b>Thiazides block NCC in the DCT, preventing the dilution of the urine AND stimulating ADH release — the combination causes hyponatremia that can be severe and even fatal in elderly patients. Thiazide-induced hyponatremia can occur even with a single dose. Monitor Na closely, especially in elderly women. Switch to a loop if Na is dropping.</div>
+   </div>
+   <div class="card diur"><h3>Loop + hypomagnesemia</h3>
+     <div class="blk">Mg is absorbed in the thick ascending limb alongside Ca via the TRPM6 channel, which is indirectly inhibited when NKCC2 is blocked. Prolonged loop diuretic use causes Mg wasting. Clinical impact: muscle cramps, arrhythmias, and — critically — refractory hypokalemia (Mg is required for K-ATPase function; hypoMg → K leaks out of cells → can't correct K until Mg is repleted).</div>
+   </div>
+ </div>`;
+}
+
+function figDiurElec(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const drugs=[
+  {x:30,label:'CA Inhibitors',Na:40,K:80,Mg:10,Ca:50,col:'var(--tubule)'},
+  {x:200,label:'LOOP',Na:90,K:80,Mg:80,Ca:75,col:'var(--loop)'},
+  {x:370,label:'THIAZIDE',Na:55,K:60,Mg:30,Ca:-30,col:'var(--dct)'},
+  {x:540,label:'K-sparing',Na:20,K:-40,Mg:0,Ca:0,col:'var(--cd)'},
+  {x:680,label:'ENaC blocker',Na:15,K:-30,Mg:0,Ca:0,col:'var(--good)'}
+ ];
+ const elects=[['Na',0,'#5b9bd5'],['K',28,'#e0b341'],['Mg',56,'#d64040'],['Ca',84,'#46c98a']];
+ const bw=24,gap=4;
+ drugs.forEach(d=>{
+  inner+=tx(d.x+70,18,d.label,d.col,9,'middle',700);
+  elects.forEach(e=>{
+   const val=d[e[0]];
+   const barH=Math.abs(val)*0.85;
+   const y=val>0 ? 100-barH : 100;
+   inner+=`<rect x="${d.x+e[1]+gap}" y="${y}" width="${bw}" height="${barH}" rx="3" fill="${e[2]}" opacity="0.75"/>`;
+   if(Math.abs(val)>8){inner+=tx(d.x+e[1]+gap+bw/2, val>0?y-5:y+barH+10, (val>0?'↑':'↓'), e[2], 8,'middle',700);}
+  });
+ });
+ // Zero line
+ inner+=`<line x1="20" y1="100" x2="${W-20}" y2="100" stroke="var(--muted)" stroke-width="1"/>`;
+ inner+=tx(14,103,'0','var(--muted)',8,'end');
+ // Legend
+ elects.forEach((e,i)=>{
+  inner+=`<rect x="${20+i*140}" y="${H-22}" width="12" height="12" rx="2" fill="${e[2]}"/>`;
+  inner+=tx(40+i*140,H-12,e[0],'var(--soft)',9,'start');
+ });
+ inner+=tx(650,H-12,'↑ = loss ↓ = retention','var(--muted)',8,'start');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function diurIVvsPO(){
+ return `<h2 class="sec">4 · IV vs oral diuretics — the pharmacokinetic differences</h2>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Parameter</th><th>IV Furosemide</th><th>PO Furosemide</th><th>PO Torsemide</th><th>PO Bumetanide</th></tr></thead>
+ <tbody>
+  <tr><th>Bioavailability</th><td style="color:var(--good)">~100% (direct)</td><td style="color:var(--warn)">10–100% (variable, avg ~50%)</td><td style="color:var(--good)">~80–90% (consistent)</td><td style="color:var(--good)">~80–90%</td></tr>
+  <tr><th>Onset of action</th><td>5–15 min</td><td>30–60 min</td><td>30–60 min</td><td>30–60 min</td></tr>
+  <tr><th>Peak effect</th><td>30 min</td><td>60–90 min</td><td>1–2 h</td><td>1–2 h</td></tr>
+  <tr><th>Duration</th><td>2–3 h</td><td>4–8 h (longer with lower dose)</td><td>6–8 h</td><td>4–6 h</td></tr>
+  <tr><th>Half-life</th><td>~0.5–1 h (IV)</td><td>~2 h (PO)</td><td>~3.5 h</td><td>~1–1.5 h</td></tr>
+  <tr><th>Na excretion (24h)</th><td style="color:var(--loop)">Higher, more reliable</td><td style="color:var(--gold)">Variable (absorption variable)</td><td style="color:var(--good)">Consistent, slightly lower peak</td><td>Consistent</td></tr>
+  <tr><th>K loss</th><td>Proportional to diuresis</td><td>Proportional to diuresis</td><td>Proportional to diuresis</td><td>Proportional to diuresis</td></tr>
+  <tr><th>Best use</th><td>Acute decompensated CHF, acute pulmonary edema, hospitalized</td><td>Outpatient maintenance (variable absorption limits use in CHF)</td><td>Preferred outpatient CHF (consistent bioavailability)</td><td>Maintenance when furosemide is insufficient</td></tr>
+ </tbody></table></div>
+ <div class="note buzz"><b>The furosemide absorption problem:</b> In decompensated CHF, gut wall edema dramatically reduces PO furosemide absorption (from ~50% baseline to as low as 10%). A patient who was "well-controlled" on PO furosemide 80 mg at home may need IV furosemide 40–80 mg in the ED to get equivalent effect — because their gut is edematous and not absorbing the oral drug. Torsemide has superior PO bioavailability and is now preferred for outpatient CHF maintenance (TRANSFORM-HF trial data).</div>
+ <div class="note warn"><b>Dose conversion:</b> Furosemide (Lasix) 40 mg PO = ~20 mg IV = Bumetanide 1 mg IV/PO = Torsemide ~20 mg PO. These are approximate — titrate to response.</div>`;
+}
+
+function diurCHF(){
+ return `<h2 class="sec">5 · IV fluids in cHF — the paradox, and diuretic strategy</h2>
+ <p class="seclead">The patient with chronic heart failure who presents to the ED in decompensation is usually volume overloaded, not volume depleted — and the treatment is diuresis, not fluids. However, the details matter: some CHF patients genuinely need cautious isotonic fluid, and the "low BP in CHF" trap kills patients.</p>
+ <div class="cardgrid wide">
+   <div class="card elect"><h3>Most decompensated CHF = diurese, not fluids</h3>
+     <div class="blk dose"><b>Strategy</b>IV loop diuretic (furosemide IV at 1–2.5× the patient's home PO dose, or 40–80 mg if new). Continuous infusion for severe cases (better UO with less peak toxicity). Target: brisk UO within 60–90 min (200–300 mL/h initially). BMP at 4–6h.</div>
+     <div class="blk miss"><b>Don't give NS or LR</b>Normal saline and LR both contain ~154 mEq Na/L — giving volume to an already sodium-overloaded, volume-overloaded patient worsens fluid accumulation. If you need to dilute a drug, use D5W or the minimum NS volume.</div>
+   </div>
+   <div class="card elect"><h3>When fluids ARE needed in CHF</h3>
+     <div class="blk dose"><b>Low-output CHF (cardiogenic shock)</b>If the patient is truly hypotensive (MAP &lt;65) from low cardiac output (not from vasodilation), a cautious 250–500 mL bolus of isotonic crystalloid may temporarily improve cardiac filling/CO while inotropes and vasopressors are arranged. But even then — fluids are a bridge, not therapy.</div>
+     <div class="blk dose"><b>Hypovolemia on top of CHF</b>Concurrent GI illness with vomiting/diarrhea in a CHF patient can cause relative volume depletion — creatinine rises, the patient is hypotensive, and their BNP is elevated. Cautious isotonic fluid (250 mL aliquots) with close monitoring.</div>
+   </div>
+   <div class="card elect"><h3>cHF + AKI + diuretics</h3>
+     <div class="blk miss"><b>The key insight</b>In decompensated CHF, the elevated venous pressure (right heart failure → elevated central venous pressure → renal venous hypertension) causes AKI by reducing the renal perfusion gradient, not by hypovolemia. This is called "cardiorenal syndrome." The treatment is STILL diuresis — reducing venous congestion improves renal perfusion. A rising creatinine during diuresis in CHF is not automatically a reason to stop diuretics.</div>
+     <div class="blk buzz"><b>Clinical rule</b>Creatinine rising by 0.3–0.5 mg/dL during aggressive diuresis in CHF is acceptable if the patient is clinically improving (weight down, less dyspnea, better O2 sat). Stop diuretics only if the patient has signs of true hypovolemia (dry mucous membranes, tachycardia, dropping BP) — not just a rising creatinine in a still-overloaded patient.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   TAB 5: URINALYSIS
+   ============================================================ */
+function uaModule(){
+ return uaDipstick()+uaMicroscopy()+uaCasts()+uaPatterns()+uaReflex();
+}
+
+function uaDipstick(){
+ return `<h2 class="sec">1 · Urinalysis (UA) dipstick — what each test means and why</h2>
+ <p class="seclead">The UA dipstick is a rapid semi-quantitative screen — each element reflects a specific pathophysiologic process. Knowing the mechanism behind each positive result prevents over- and under-interpretation.</p>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Dipstick test</th><th>Positive means</th><th>Mechanism</th><th>Key interpretation / traps</th></tr></thead>
+ <tbody>
+  <tr><th>pH</th><td>Acidic (4.5–6) or Alkaline (7–9)</td><td>H+ secretion by tubules and buffer systems</td><td>Alkaline urine = RTA (type 1), UTI with urease bugs, vomiting. Acidic = normal, or metabolic acidosis. Urine pH can't be normal if there's RTA type 1 — urine pH stays &gt;5.5 despite systemic acidosis.</td></tr>
+  <tr><th>Specific gravity</th><td>1.003–1.030</td><td>Osmole concentration (mostly Na, Cl, urea)</td><td>&gt;1.020 = concentrated (dehydration, pre-renal). &lt;1.010 = dilute (DI, overhydration, loss of concentrating ability in CKD). Fixed 1.010 (isosthenuria) = severe CKD, unable to concentrate or dilute.</td></tr>
+  <tr><th>Protein</th><td>1+ to 4+</td><td>Albumin detected by dye-binding</td><td>False-positive: alkaline urine, contrast, mucus. False-negative: non-albumin proteins (Bence-Jones). Spot urine protein:creatinine ratio is more accurate. &gt;3+ with RBCs = glomerulonephritis until proven otherwise.</td></tr>
+  <tr><th>Glucose</th><td>Presence of glucose</td><td>Exceeds tubular reabsorption threshold (~180 mg/dL)</td><td>Indicates hyperglycemia (DM, DKA) OR tubular injury (Fanconi — glucose in urine with normal blood glucose). Always correlate with serum glucose.</td></tr>
+  <tr><th>Ketones</th><td>Acetone/acetoacetate</td><td>Fatty acid metabolism (DKA, starvation)</td><td>DKA (large ketones + glucose). Starvation ketosis (ketones, no glucose). Isopropanol ingestion. Note: beta-hydroxybutyrate (the dominant DKA ketone) is NOT detected by dipstick — a "small" ketone in early DKA under-represents severity.</td></tr>
+  <tr><th>Blood / hemoglobin</th><td>RBC, hemoglobin, myoglobin</td><td>Heme peroxidase activity</td><td>Cannot distinguish: RBCs (hematuria) vs hemoglobinuria (hemolysis) vs myoglobinuria (rhabdo). Microscopy is required. Blood on dipstick + NO RBCs on micro = hemoglobin or myoglobin.</td></tr>
+  <tr><th>Leukocyte esterase (LE)</th><td>WBCs (neutrophils)</td><td>Esterase from neutrophil granules</td><td>Indicates pyuria — infection or sterile inflammation (interstitial nephritis, papillary necrosis, TB). False-positive: vaginal contamination, oxidizing cleaning agents. False-negative: low urine WBCs, dilute urine, high glucose.</td></tr>
+  <tr><th>Nitrite</th><td>Bacterial nitrate reduction</td><td>Gram-negative bacteria (E. coli, Klebsiella) contain nitrate reductase</td><td>Highly specific (&gt;90%) for infection. Sensitivity only ~50% — false-negative with Gram-positive bugs (enterococcus, staph), Pseudomonas, short incubation in bladder. Nitrite positive + LE positive = UTI until culture confirmed.</td></tr>
+  <tr><th>Bilirubin</th><td>Conjugated bilirubin</td><td>Liver disease/obstruction allowing conjugated bili into urine</td><td>Only conjugated bilirubin appears in urine (unconjugated is albumin-bound). Positive = hepatocellular disease or biliary obstruction. Pre-hepatic jaundice (hemolysis) → negative urine bili.</td></tr>
+  <tr><th>Urobilinogen</th><td>Urobilinogen</td><td>Normal gut bilirubin reduction product, reabsorbed and excreted</td><td>Increased: hemolysis, liver disease. Absent: biliary obstruction (no bile reaching gut). Normal level present in healthy urine.</td></tr>
+ </tbody></table></div>`;
+}
+
+function uaMicroscopy(){
+ return `<h2 class="sec">2 · Urine microscopy — how to read it</h2>
+ <div class="cardgrid wide">
+   <div class="card ua"><h3>RBCs (red blood cells)</h3>
+     <div class="blk dose"><b>Dysmorphic RBCs / acanthocytes (&gt;5% acanthocytes)</b>Glomerular origin — RBCs squeezed through the damaged glomerular membrane become distorted ("Mickey Mouse," "doughnut," "budding" forms). Glomerulonephritis until proven otherwise. The finding that changes a simple hematuria into a nephrology emergency.</div>
+     <div class="blk dose"><b>Isomorphic (normal-shaped) RBCs</b>Lower urinary tract bleeding (bladder, urethra, prostate, ureter) or trauma. Stone, tumor, infection, BPH. The shapes are preserved because they weren't squeezed through a damaged membrane.</div>
+     <div class="blk miss"><b>&gt;5 RBC/hpf with dysmorphia or RBC casts</b>= glomerulonephritis; nephrology emergently.</div>
+   </div>
+   <div class="card ua"><h3>WBCs (leukocytes)</h3>
+     <div class="blk dose"><b>&gt;5 WBC/hpf = pyuria</b>UTI, pyelonephritis, urethritis, STI (sterile pyuria: TB, Chlamydia, interstitial nephritis, papillary necrosis, renal calculi). WBC casts = upper tract (pyelonephritis or AIN).</div>
+     <div class="blk buzz"><b>Sterile pyuria</b>WBCs without bacteria on culture → consider TB (send AFB urine), Chlamydia (urine PCR), AIN (drug-induced: NSAIDs, antibiotics, PPIs — eosinophils in urine), or inadequate specimen.</div>
+   </div>
+   <div class="card ua"><h3>Bacteria, crystals, epithelial cells</h3>
+     <div class="blk">Bacteria + LE + nitrite = UTI. Bacteria without WBCs = contamination or asymptomatic bacteriuria (don't treat in most settings). Crystals: calcium oxalate (dumbbell/envelope — stone risk, EG toxicity), uric acid (rhomboid), struvite (coffin-lid — infection), cystine (hexagonal). Squamous epithelial cells &gt;3/hpf = contaminated specimen, repeat.</div>
+   </div>
+ </div>`;
+}
+
+function uaCasts(){
+ return `<h2 class="sec">3 · Urinary casts — the pathognomonic finding</h2>
+ <p class="seclead">Casts form in the tubular lumen when the Tamm-Horsfall mucoprotein (uromodulin) gels and traps whatever is in the tubule at the time. The content of the cast identifies the process in the tubule at the time of formation — making casts the most specific finding in urine microscopy.</p>
+ <div class="svgfig">${figCasts()}<div class="figcap">Cast morphology: the shape (cylindrical, matching the tubule lumen) is always the same — the COLOR and CONTENT tell you what was in the tubule. Hyaline casts are clear protein; granular casts progress from fine to coarse and eventually form muddy brown casts (classic ATN); RBC casts = glomerular bleeding; WBC casts = renal inflammation; waxy/broad casts = advanced CKD (dilated tubules).</div></div>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Cast type</th><th>Appearance</th><th>Contents</th><th>Pathologic meaning</th><th>Key diagnosis</th></tr></thead>
+ <tbody>
+  <tr><th>Hyaline casts</th><td>Clear, homogeneous, colorless</td><td>Tamm-Horsfall protein alone</td><td>Normal (small numbers) — increased with concentrated urine, fever, strenuous exercise, diuretics</td><td>Normal or non-specific</td></tr>
+  <tr><th>Granular casts ("muddy brown")</th><td>Coarse granular, brown-yellow pigment</td><td>Cellular debris, protein aggregates, hemoglobin pigment</td><td>Tubular injury — necrotic tubular epithelial cells fragmenting inside the lumen</td><td>ATN (classic finding) — the "muddy brown cast" is pathognomonic of ATN</td></tr>
+  <tr><th>RBC (red blood cell) casts</th><td>Red/orange tint, contains RBCs</td><td>Red blood cells within the cast</td><td>RBCs leaked through damaged glomeruli into the tubule</td><td>GLOMERULONEPHRITIS — pathognomonic. Requires nephrology, kidney biopsy planning</td></tr>
+  <tr><th>WBC (white blood cell) casts</th><td>Contains polymorphonuclear cells</td><td>Neutrophils or other WBCs</td><td>Renal parenchymal inflammation — upper tract infection or sterile inflammation</td><td>Pyelonephritis (infection), Acute interstitial nephritis (AIN — drug-induced)</td></tr>
+  <tr><th>Epithelial cell (RTE) casts</th><td>Large cells within cast</td><td>Renal tubular epithelial cells</td><td>Tubular cell sloughing from injury</td><td>ATN, nephrotoxic injury (cisplatin, aminoglycosides, contrast)</td></tr>
+  <tr><th>Fatty casts / oval fat bodies</th><td>Refractile, "Maltese cross" under polarized light</td><td>Lipid droplets</td><td>Heavy proteinuria — lipids leak into tubules with massive protein loss</td><td>Nephrotic syndrome — Maltese cross under polarized light is classic</td></tr>
+  <tr><th>Waxy / broad casts</th><td>Waxy, pale, wide diameter</td><td>Highly degraded protein, formed in dilated tubules</td><td>Advanced, longstanding kidney disease — tubules are dilated (few nephrons left) and stasis allows full degeneration</td><td>Advanced CKD, "end-stage" marker — wide diameter indicates nephron loss</td></tr>
+  <tr><th>Pigment casts (myoglobin)</th><td>Red-brown to brown, granular</td><td>Myoglobin pigment</td><td>Myoglobin precipitating in tubules, causing obstructive injury</td><td>Rhabdomyolysis — AKI from myoglobin tubular toxicity/obstruction</td></tr>
+ </tbody></table></div>`;
+}
+
+function figCasts(){
+ const W=820,H=120;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const casts=[
+  {x:20,col:'#a8b6c0',label:'Hyaline',desc:'clear protein; normal'},
+  {x:130,col:'#8b6a3a',label:'Granular/muddy',desc:'ATN — the classic'},
+  {x:260,col:'#c04040',label:'RBC cast',desc:'glomerulonephritis'},
+  {x:380,col:'#4a8ac0',label:'WBC cast',desc:'pyelo / AIN'},
+  {x:500,col:'#d4b060',label:'Fatty cast',desc:'nephrotic (Maltese X)'},
+  {x:630,col:'#78a878',label:'Waxy/broad',desc:'advanced CKD'},
+  {x:740,col:'#a04040',label:'Myoglobin',desc:'rhabdomyolysis'}
+ ];
+ casts.forEach(c=>{
+  // Cast shape — cylindrical tube
+  inner+=`<rect x="${c.x}" y="20" width="86" height="32" rx="14" fill="${c.col}" opacity="0.75"/>`;
+  inner+=`<ellipse cx="${c.x+8}" cy="36" rx="10" ry="14" fill="${c.col}" opacity="0.4"/>`;
+  inner+=`<ellipse cx="${c.x+78}" cy="36" rx="10" ry="14" fill="${c.col}" opacity="0.4"/>`;
+  // Content dots for granular/RBC/WBC
+  if(c.label==='Granular/muddy')for(let i=0;i<8;i++)inner+=`<circle cx="${c.x+16+i*8}" cy="${28+((i%3)-1)*5}" r="2.5" fill="#4a3a20"/>`;
+  if(c.label==='RBC cast')for(let i=0;i<6;i++)inner+=`<circle cx="${c.x+16+i*9}" cy="36" r="4" fill="#9a2020" opacity="0.8"/>`;
+  if(c.label==='WBC cast')for(let i=0;i<5;i++){inner+=`<circle cx="${c.x+18+i*10}" cy="36" r="4" fill="#2050a0" opacity="0.8"/>`;inner+=`<circle cx="${c.x+18+i*10}" cy="36" r="2" fill="#4080d0"/>`;} // segmented appearance
+  inner+=tx(c.x+43,70,c.label,c.col,8,'middle',700);
+  inner+=tx(c.x+43,84,c.desc,'var(--muted)',7,'middle');
+ });
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function uaPatterns(){
+ return `<h2 class="sec">4 · UA patterns — the clinical diagnosis picture</h2>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>UA Pattern</th><th>Key findings</th><th>Diagnosis</th><th>Next step</th></tr></thead>
+ <tbody>
+  <tr><th>Nephritic pattern</th><td>Hematuria, proteinuria (1–3+), dysmorphic RBCs, RBC casts, WBC casts, ↑Cr</td><td>Glomerulonephritis (GN) — IgA, post-infectious, lupus, ANCA-vasculitis, anti-GBM</td><td>Nephrology urgently; ANA, ANCA, anti-GBM, C3/C4, anti-dsDNA, CXR</td></tr>
+  <tr><th>Nephrotic pattern</th><td>Heavy proteinuria (&gt;3.5g/day, 3–4+ dipstick), oval fat bodies, fatty casts, Maltese cross; minimal hematuria; hypoalbuminemia, edema</td><td>Minimal change, FSGS, membranous nephropathy, diabetic nephropathy</td><td>Spot protein:Cr ratio; nephrology; lipid panel; glucose; HIV/HBV/HCV; complement</td></tr>
+  <tr><th>ATN pattern</th><td>Muddy brown granular casts, RTE cells, FENa &gt;2%, bland or minimal protein</td><td>Acute tubular necrosis (ischemia, nephrotoxins)</td><td>Identify and remove cause; volume optimize; watch electrolytes; nephrology</td></tr>
+  <tr><th>Pre-renal pattern</th><td>Hyaline casts only, concentrated (SG &gt;1.020), FENa &lt;1%, low urine Na</td><td>Pre-renal azotemia (volume depletion, low cardiac output)</td><td>IV fluid challenge; monitor UO and Cr response; treat underlying cause</td></tr>
+  <tr><th>AIN pattern</th><td>WBC casts, sterile pyuria, mild proteinuria, eosinophils in urine (low sensitivity); eosinophilia on CBC</td><td>Acute interstitial nephritis (NSAIDs, antibiotics, PPIs)</td><td>Stop the offending drug; nephrology; steroids for severe/biopsy-confirmed</td></tr>
+  <tr><th>UTI / pyelo</th><td>LE + nitrite, WBCs, bacteria, +/- WBC casts (upper tract)</td><td>UTI (lower) or pyelonephritis (upper — WBC casts, flank pain, fever)</td><td>Culture; antibiotics; WBC casts = admit for IV antibiotics</td></tr>
+  <tr><th>Rhabdomyolysis</th><td>Blood on dipstick, NO RBCs on microscopy, myoglobin casts (red-brown), ↑CK, ↑K, ↓Ca, ↑phosphate, ↑uric acid</td><td>Rhabdomyolysis</td><td>Aggressive IVF (target 200–300 mL/h UO), consider NaHCO3 (urine alkalinization), monitor electrolytes hourly</td></tr>
+  <tr><th>Diabetic nephropathy</th><td>Microalbuminuria → macroalbuminuria; bland sediment; no casts; gradual Cr rise</td><td>Diabetic nephropathy (most common cause of CKD in developed world)</td><td>ACE/ARB, glucose control, BP control; nephrology when eGFR &lt;30</td></tr>
+ </tbody></table></div>`;
+}
+
+function uaReflex(){
+ return `<h2 class="sec">5 · Reflex UA findings — the deep "why"</h2>
+ <p class="seclead">Every UA finding has a physiologic explanation. Understanding the mechanism makes the interpretation automatic — and makes you recognize when a finding is unexpected and therefore more important.</p>
+ <div class="cardgrid wide">
+   <div class="card ua"><h3>Why myoglobinuria looks like blood but isn't</h3>
+     <div class="blk buzz">The dipstick detects heme peroxidase activity — it can't distinguish between hemoglobin (from RBCs), free hemoglobin (hemolysis), or myoglobin (rhabdo). All three give a positive "blood" reading. Microscopy: if positive dipstick + no RBCs → it's myoglobin or free hemoglobin. Check CK and LDH: CK↑↑ = rhabdo; indirect bili/LDH↑ without CK = hemolysis.</div>
+   </div>
+   <div class="card ua"><h3>Why the dipstick misses Bence-Jones protein</h3>
+     <div class="blk buzz">The dipstick protein test uses a dye (tetrabromophenol blue) that binds albumin specifically. Bence-Jones proteins (immunoglobulin light chains — the protein of myeloma) are NOT albumin and therefore NOT detected by the dipstick. A patient with multiple myeloma can have massive proteinuria with a negative dipstick. Use the urine protein:creatinine ratio on a spot sample or 24-hour urine for total protein quantification.</div>
+   </div>
+   <div class="card ua"><h3>Why nitrite is specific but not sensitive</h3>
+     <div class="blk buzz">Nitrite-positive = only gram-negative bacteria with nitrate reductase (E. coli, Klebsiella, Proteus). Enterococcus, Staphylococcus, Pseudomonas, and Chlamydia don't produce nitrate reductase → nitrite-negative despite infection. Also false-negative if the urine hasn't been in the bladder long enough (needs ~4 hours of incubation). So a negative nitrite doesn't exclude UTI — but a positive one (in the right context) is nearly diagnostic.</div>
+   </div>
+   <div class="card ua"><h3>Why pH can't be normal in type 1 RTA</h3>
+     <div class="blk buzz">In distal (type 1) renal tubular acidosis, the alpha-intercalated cells of the collecting duct can't secrete H+ — meaning the kidney can't acidify urine below pH 5.3. Even with systemic acidosis (blood pH 7.25), the urine stays at pH 6–7. This is the diagnostic clue: systemic metabolic acidosis with inappropriately alkaline urine (pH &gt;5.5) = type 1 RTA. Type 2 (proximal) RTA loses HCO3 proximally but can still acidify distally.</div>
+   </div>
+   <div class="card ua"><h3>Why fatty casts show a Maltese cross</h3>
+     <div class="blk buzz">In nephrotic syndrome, massive proteinuria overwhelms tubular reabsorption — lipoproteins (filtered with protein) enter the tubule and are incorporated into casts. Cholesterol esters within the lipid droplets are anisotropic (birefringent) — when polarized light passes through them, they rotate the plane of light to create the characteristic four-pointed star ("Maltese cross"). This only happens with lipid-containing droplets, making it specific for heavy proteinuria/nephrotic syndrome.</div>
+   </div>
+   <div class="card ua"><h3>Why muddy brown casts = ATN specifically</h3>
+     <div class="blk buzz">In ATN, the proximal tubular cells (the most metabolically active and most vulnerable to ischemia/toxins) undergo necrosis and shed into the tubular lumen. These cellular debris fragments get wrapped in Tamm-Horsfall protein as the filtrate moves through the lumen → granular cast. The "muddy brown" color comes from hemoglobin/myoglobin pigment in the cellular debris. The key teaching point: you can't have muddy brown granular casts without tubular injury — this finding in a patient with rising Cr = ATN until proven otherwise.</div>
+   </div>
+   <div class="card ua"><h3>Why RBC casts = glomerulonephritis (not lower tract)</h3>
+     <div class="blk buzz">Casts form in the renal tubules — specifically in the loops of Henle and collecting ducts. If an RBC cast exists, the RBCs must have been in the TUBULAR LUMEN at the time the cast formed. The only way RBCs get into the tubular lumen is through a damaged glomerular filtration barrier (the GBM). Lower tract bleeding (bladder, urethra) never produces RBC casts — those RBCs come after the nephron. An RBC cast = nephron-level pathology = glomerulonephritis until proven by nephrology/biopsy.</div>
+   </div>
+ </div>
+ <div class="note good"><b>The UA workflow for any AKI:</b> (1) Dipstick — blood, protein, LE, glucose, pH, SG. (2) If blood without RBCs on micro → myoglobin (CK) or hemoglobin (hemolysis). (3) If proteinuria ≥2+ + hematuria → send spot protein:Cr, call nephrology. (4) Microscopy — casts, dysmorphic RBCs, WBC casts. (5) Interpret: muddy brown = ATN; RBC casts = GN; WBC casts = pyelo/AIN; hyaline = pre-renal; bland = obstruction. (6) Correlate with FENa and clinical volume status. The UA + microscopy is the most information-dense, cheapest test in nephrology — use it every time.</div>`;
+}
+
+/* ===== RENDER ===== */
+document.getElementById('tab-aki').innerHTML = akiModule();
+document.getElementById('tab-elect').innerHTML = electModule();
+document.getElementById('tab-stone').innerHTML = stoneModule();
+document.getElementById('tab-diur').innerHTML = diurModule();
+document.getElementById('tab-ua').innerHTML = uaModule();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians. AKI staging per KDIGO 2024 public draft. Stone passage rates per AUA 2024/EAU 2024 guidelines and Jendeberg et al. (Eur Radiol 2017). Diuretic pharmacokinetics per standard pharmacology references. All doses, thresholds, and correction rates are approximate teaching values that must be verified against current guidelines and institutional protocols. Not a protocol or a substitute for clinical judgment and specialist involvement.";
+
+/* TABS */
+(function(){
+ const tabs=document.querySelectorAll('.domtab');
+ const panels={aki:document.getElementById('tab-aki'),elect:document.getElementById('tab-elect'),stone:document.getElementById('tab-stone'),diur:document.getElementById('tab-diur'),ua:document.getElementById('tab-ua')};
+ function show(k){Object.keys(panels).forEach(p=>panels[p].style.display=p===k?'block':'none');tabs.forEach(t=>t.classList.toggle('on',t.dataset.dom===k));window.scrollTo({top:0,behavior:'smooth'});}
+ tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.dom)));
+ show('aki');
+})();
+/* THEME */
+(function(){
+ const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+ const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+ const root=document.documentElement,b=document.getElementById('themeToggle');
+ const ico=document.getElementById('themeIco'),txt=document.getElementById('themeTxt');
+ function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+ set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+ b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
