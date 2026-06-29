@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroke & Spinal Cord Atlas — Neurologic Emergencies I</title>
+<style>
+  :root{
+    --bg:#0c0e13;--bg2:#12161c;--panel:#151922;--panelhi:#1b2230;--line:#26303e;--line2:#1a212e;
+    --ink:#edf1f5;--soft:#a6b5c2;--muted:#768799;--faint:#546070;
+    --stroke:#e05a2e;--spine:#9b6cd6;--neuro:#3fa7d6;--safe:#46c98a;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --csf:#c8eaf5;--blood:#c0392b;--bone:#e6e0d2;--white:#d4cfe8;--grey:#8a9eb0;
+    --grid:#0e1217;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --stroke:#c4422a;--spine:#7e4fc0;--neuro:#1c7fb0;--safe:#1f9d6f;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;
+    --csf:#a8d8f0;--blood:#c0392b;--bone:#d8d0b6;--white:#b8b0d0;--grey:#6a8090;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:22px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:5px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.1rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.stroke{border-top-color:var(--stroke);}.card.spine{border-top-color:var(--spine);}.card.neuro{border-top-color:var(--neuro);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--accent);}.blk.miss b{color:var(--warn);}
+  .blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--stroke);background:color-mix(in srgb,var(--stroke) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .formula{font-family:"SF Mono",monospace;font-size:.85rem;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:11px 14px;margin:10px 0;color:var(--soft);}
+  .formula b{color:var(--ink);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+
+  /* cranial nerve + focal findings */
+  .brainmap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .brainmap svg{display:block;width:100%;height:auto;}
+  .cnrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin:12px 0;}
+  .cncard{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;border-left:4px solid var(--stroke);}
+  .cncard.sensory{border-left-color:var(--neuro);}
+  .cncard .cnfig{background:var(--bg2);padding:10px;border-bottom:1px solid var(--line2);display:flex;justify-content:center;}
+  .cncard .cnfig svg{display:block;width:100%;max-width:220px;height:auto;}
+  .cncard .cnbody{padding:10px 12px;}
+  .cncard h3{margin:0 0 1px;font-size:.95rem;font-weight:700;}
+  .cncard .cntag{font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:700;}
+  .cncard .cnblk{font-size:.82rem;margin:5px 0;color:var(--soft);}
+  .cncard .cnblk b{display:block;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+<header class="hero">
+  <div class="kick">Neurologic Emergencies · Atlas I</div>
+  <h1>Time is brain. <em>Read the scan, find the level.</em></h1>
+  <p>Stroke workup and imaging decision-making (CT without contrast vs CTA vs CTP and the rationale for each), the bedside NIHSS and neurologic exam, the spinal cord cross-section with tract anatomy and signal-flow infographic, UMN vs LMN comparison, and the spinal cord injury syndromes — each with a body-map showing what's lost where.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Stroke thresholds, imaging criteria, and treatment windows are teaching values reflecting current guidelines (AHA/ASA, DAWN/DEFUSE criteria) that must be verified against local protocols, institutional capabilities, and individual patient factors. Schematics are stylized original teaching diagrams. Educational synthesis, not a protocol.</div></div>
+<nav class="jump"><div class="inner">
+  <a href="#recognition">Stroke recognition</a>
+  <a href="#imaging">Imaging decisions</a>
+  <a href="#treatment">Treatment windows</a>
+  <a href="#nihss">NIHSS & bedside</a>
+  <a href="#mimics">Stroke mimics</a>
+  <a href="#spinalcord">Spinal cord anatomy</a>
+  <a href="#umnlmn">UMN vs LMN</a>
+  <a href="#syndromes">Cord syndromes</a>
+  <a href="#spinalpearls">Spinal pearls</a>
+  <a href="#focalfindings">Focal findings</a>
+  <a href="#cranialnerves">Cranial nerves</a>
+  <a href="#focalfindings">Focal findings</a>
+  <a href="#cranialnerves">Cranial nerves</a>
+</div></nav>
+<main id="main"></main>
+<footer id="foot"></footer>
+<script>
+/* ===== helpers ===== */
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 820 300'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+function card(c){return `<div class="card ${c.cls||''}"><h3>${c.n}</h3>${c.tag?`<div class="tagline">${c.tag}</div>`:''}${c.tip?`<div class="blk tip"><b>Key points</b>${c.tip}</div>`:''}${c.dose?`<div class="blk dose"><b>${c.dL||'Details'}</b>${c.dose}</div>`:''}${c.buzz?`<div class="blk buzz"><b>Rationale / buzzword</b>${c.buzz}</div>`:''}${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}${c.doc?`<div class="blk doc"><b>Document it</b>${c.doc}</div>`:'`'}</div>`;}
+function pearl(p,col){return `<div class="card" style="border-top-color:${col||'var(--gold)'}"><div class="blk"><b style="color:${col||'var(--gold)'};font-size:.65rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+
+/* ============================================================
+   STROKE RECOGNITION
+   ============================================================ */
+function strokeRecognition(){
+ return `<h2 class="sec" id="recognition">1 · Stroke recognition — the bedside screen</h2>
+ <p class="seclead">Every minute of untreated large-vessel occlusion costs ~1.9 million neurons. The ED job is to activate the stroke pathway fast, screen for hemorrhage, and get the right imaging to the right patient.</p>
+ <div class="cardgrid wide">
+   <div class="card stroke"><h3>Prehospital & triage screens</h3>
+     <div class="blk tip"><b>FAST / BE-FAST</b>Balance, Eyes (gaze deviation, visual field), Face droop, Arm drift, Speech, Time. FAST is a public tool; clinically, expand to the full screen below. A positive screen → stroke alert, clock starts.</div>
+     <div class="blk dose"><b>Cincinnati Prehospital Stroke Scale</b>Face droop, arm drift, abnormal speech — any one positive has ~72% sensitivity. Useful for rapid triage, not a replacement for NIHSS.</div>
+   </div>
+   <div class="card stroke"><h3>Last known well — the critical timestamp</h3>
+     <div class="blk miss"><b>Establish it immediately</b>"When was the patient last known to be at their normal baseline?" This — not the time of discovery — is the onset time. Wake-up strokes are treated as last-known-well = time of sleep. Every treatment decision keys off this time.</div>
+     <div class="blk">Collect from the patient, bystanders, EMS, family; document meticulously.</div>
+   </div>
+   <div class="card stroke"><h3>Hemorrhagic vs ischemic — can you tell clinically?</h3>
+     <div class="blk miss"><b>No.</b> You cannot reliably distinguish ischemic from hemorrhagic stroke clinically. Headache, vomiting, altered consciousness, and blood pressure may trend toward hemorrhagic, but overlap is profound. <b>CT without contrast is mandatory before any thrombolysis</b> — clinical judgment alone is not sufficient.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   IMAGING DECISION-MAKING
+   ============================================================ */
+function imaging(){
+ return `<h2 class="sec" id="imaging">2 · Imaging decisions — which scan, why, and when</h2>
+ <p class="seclead">The imaging sequence isn't one-size-fits-all — it's driven by the time window, the severity, and what question you're trying to answer. The current framework follows a two-key-question logic: <b>is there hemorrhage?</b> and <b>is there a large-vessel occlusion?</b></p>
+ <div class="svgfig">${figImagingFlow()}<div class="figcap">Stroke imaging decision tree: the time window and LVO suspicion drive which modalities you add beyond the mandatory non-contrast CT. Perfusion is reserved for the late/unknown window where it changes the EVT decision.</div></div>
+ <div class="cardgrid wide">
+   <div class="card stroke"><h3>CT without contrast (NCCT) — always first</h3>
+     <div class="blk tip"><b>Purpose</b>Exclude intracranial hemorrhage (the gatekeeper for tPA), identify established large infarct, calculate ASPECTS score, identify dense MCA sign (hyperdense artery = thrombus visible).</div>
+     <div class="blk dose"><b>ASPECTS</b>(Alberta Stroke Program Early CT Score) 0–10: score each of 10 MCA regions — subtract 1 per region showing early ischemic change. <b>ASPECTS ≥6</b> favors benefit from EVT. Lower scores suggest large established infarct — EVT riskier.</div>
+     <div class="blk buzz"><b>Rationale</b>Takes ~1–2 min, available everywhere, no contrast needed, fast interpretation. It's the minimum; everything else adds to it.</div>
+   </div>
+   <div class="card stroke"><h3>CT Angiography (CTA) — head & neck</h3>
+     <div class="blk tip"><b>Purpose</b>Detect large-vessel occlusion (LVO): ICA, M1/M2 MCA, basilar, vertebral. Assess the site, burden of thrombus, collateral status, tandem lesions, and guide EVT planning.</div>
+     <div class="blk dose"><b>Who gets it</b>NIHSS ≥6 (or cortical signs: aphasia, gaze deviation, visual field deficit, neglect) with or without ≥6 NIHSS — virtually any patient with significant neurologic deficit where EVT or transfer decisions are being made. <b>Time window 0–24 h for LVO work-up.</b></div>
+     <div class="blk buzz"><b>Rationale vs without perfusion</b>CTA alone (without CT perfusion) answers: <em>is there an LVO?</em> For the <b>0–6 h early window</b>, CTA + NCCT is often sufficient to proceed directly to EVT — you do NOT need perfusion to make the EVT call if the patient arrives early with ASPECTS ≥6 and an LVO. Adding perfusion in the early window adds time without changing the action.</div>
+     <div class="blk miss"><b>Don't delay EVT for perfusion</b>In a patient presenting within 6 h with NIHSS ≥6 and LVO on CTA: go. Perfusion won't change the decision and costs precious minutes.</div>
+   </div>
+   <div class="card stroke"><h3>CT Perfusion (CTP) — when and why</h3>
+     <div class="blk tip"><b>Purpose</b>Quantify the ischemic core (dead tissue — rCBF &lt;30%) vs the penumbra (at-risk but salvageable — Tmax &gt;6 s). The mismatch between them is the target of late-window therapy.</div>
+     <div class="blk dose"><b>When it changes management</b>Late/unknown time window (6–24 h, wake-up stroke): CTP (or MRI DWI-FLAIR mismatch) is required to identify patients with a small core + large penumbra who still benefit from EVT (DAWN/DEFUSE-3 trial criteria). <b>Core &lt;70 mL + mismatch ratio &gt;1.8 + mismatch volume &gt;15 mL</b> = candidates for EVT out to 24 h.</div>
+     <div class="blk buzz"><b>Rationale</b>In the early window you act on time; in the late window you act on tissue. CTP tells you what tissue is still salvageable when time doesn't. It also helps when onset is unknown — a small core with large penumbra = recently ischemic, not hours-old infarct.</div>
+     <div class="blk miss"><b>Don't over-use</b>CTP adds time and radiation; it's not needed in the early window for a clear LVO. Some centers use it routinely — know your local protocol and the rationale behind it.</div>
+   </div>
+   <div class="card stroke"><h3>MRI / MRA — when CT isn't enough</h3>
+     <div class="blk tip"><b>DWI-FLAIR mismatch</b>DWI lights up within minutes; FLAIR stays dark for ~4–6 h. DWI positive + FLAIR negative = stroke is likely &lt;4.5 h old → can be thrombolysed as if early window (useful for wake-up strokes without CTP).</div>
+     <div class="blk dose"><b>Use MRI when</b>Posterior fossa (CT is blind to brainstem/cerebellum — bone artifact); lacunar vs embolic distinction matters; CTP unavailable for late window; suspected venous sinus thrombosis or vasculitis; young patient with no obvious cause.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The imaging decision in one sentence:</b> NCCT (always) → add CTA if NIHSS ≥6 or cortical signs (virtually always in a true stroke alert) → add CTP only in the late/unknown window to confirm salvageable tissue. Perfusion without contrast = no good reason; CTA without perfusion = the early-window standard; CTA + CTP = the late-window standard.</div>`;
+}
+
+function figImagingFlow(){
+ const W=820,H=280;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // boxes
+ function box(x,y,w,h,col,label,sub){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="${col}" opacity="0.18" stroke="${col}" stroke-width="1.5"/>`+tx(x+w/2,y+h/2-6,label,col,12,'middle',700)+tx(x+w/2,y+h/2+10,sub,'var(--soft)',8,'middle');}
+ function arr(x1,y1,x2,y2){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#ifarr)"/>`;}
+ inner+=box(20,110,140,60,'var(--stroke)',"NCCT","always first — exclude hemorrhage");
+ inner+=arr(162,140,190,140);
+ inner+=box(192,60,180,60,'var(--neuro)',"Early window","0–6 h, NIHSS≥6");
+ inner+=box(192,160,180,60,'var(--spine)',"Late/unknown","6–24 h, wake-up");
+ inner+=arr(374,90,412,100);
+ inner+=arr(374,190,412,200);
+ inner+=box(414,70,160,60,'var(--neuro)',"CTA head+neck","LVO? → EVT decision");
+ inner+=box(414,170,160,60,'var(--spine)',"CTA + CTP","core / penumbra mismatch");
+ inner+=arr(576,100,614,100);
+ inner+=arr(576,200,614,200);
+ inner+=box(616,70,180,60,'var(--good)',"NIHSS≥6+LVO→EVT","don't delay for CTP");
+ inner+=box(616,170,180,60,'var(--gold)',"Core<70mL+mismatch","→ EVT out to 24h");
+ // labels
+ inner+=tx(410,260,"ASPECTS on NCCT — score ≥6 favors EVT benefit; dense MCA sign = LVO clue",'var(--muted)',9,'middle');
+ inner+=`<defs><marker id="ifarr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   TREATMENT WINDOWS
+   ============================================================ */
+function treatment(){
+ return `<h2 class="sec" id="treatment">3 · Treatment windows &amp; decisions</h2>
+ <div class="cardgrid wide">
+   <div class="card stroke"><h3>IV tPA (alteplase / tenecteplase)</h3>
+     <div class="blk dose"><b>Window</b>≤4.5 h from last known well. Dose: alteplase 0.9 mg/kg (max 90 mg), 10% bolus + 60-min infusion. Tenecteplase 0.25 mg/kg IV bolus (max 25 mg) is increasingly used and simpler; check local protocol.</div>
+     <div class="blk tip"><b>Key criteria</b>Ischemic stroke with measurable deficit; BP &lt;185/110 (treat to &lt;185/110 before giving); no hemorrhage on CT; no recent major surgery/ICH/AVM/severe coagulopathy. Extended window for wake-up using MRI DWI-FLAIR mismatch or CTP.</div>
+     <div class="blk miss"><b>BP is a modifiable contraindication</b>Hypertension alone doesn't exclude tPA — treat the pressure to target first, then give. Don't let an elevated BP time out the window without treating it.</div>
+   </div>
+   <div class="card stroke"><h3>Endovascular thrombectomy (EVT)</h3>
+     <div class="blk dose"><b>Early window (0–6 h)</b>LVO on CTA + NIHSS ≥6 + ASPECTS ≥6 → activate EVT; don't delay for CTP. Give tPA first (bridging) if within 4.5 h and no contraindication.</div>
+     <div class="blk dose"><b>Late window (6–24 h)</b>Requires CTP (or MRI) showing core &lt;70 mL + favorable mismatch (DAWN/DEFUSE-3 criteria). Wake-up strokes treated as unknown onset — use imaging to determine eligibility.</div>
+     <div class="blk buzz"><b>Time savings matter</b>Every 15 minutes saved in door-to-groin-puncture ≈ 1 month more of disability-free life. The ED's job is to compress the door-to-needle AND the door-to-groin time simultaneously.</div>
+   </div>
+   <div class="card stroke"><h3>Hemorrhagic stroke management</h3>
+     <div class="blk dose"><b>ICH</b>Rapid BP control (SBP target 140–150 per recent evidence); reverse anticoagulation (FFP/PCC for warfarin, idarucizumab for dabigatran, andexanet alfa for anti-Xa); neurosurgery consult; avoid hypotension; monitor ICP.</div>
+     <div class="blk tip"><b>SAH</b>Thunderclap headache + blood in cisterns → CT often positive; LP for xanthochromia if CT negative. Nimodipine for vasospasm prevention; avoid hypotension; neurosurgery/IR emergently for aneurysm securing.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   NIHSS & BEDSIDE EXAM
+   ============================================================ */
+function nihss(){
+ const items=[
+  ['1a','Level of consciousness','0 alert / 1 drowsy / 2 stupor / 3 coma'],
+  ['1b','LOC questions (month, age)','0 both / 1 one / 2 neither'],
+  ['1c','LOC commands (close eyes, fist)','0 both / 1 one / 2 neither'],
+  ['2','Gaze (horizontal)','0 normal / 1 partial palsy / 2 forced deviation'],
+  ['3','Visual fields','0 no loss / 1 partial hemianopia / 2 complete hemianopia / 3 bilateral/blind'],
+  ['4','Facial palsy','0 normal / 1 minor / 2 partial / 3 complete'],
+  ['5a/5b','Motor arm (L/R) — hold at 90°/45° × 10s','0 no drift / 1 drift before 10s / 2 falls before 10s / 3 no anti-gravity / 4 no movement'],
+  ['6a/6b','Motor leg (L/R) — hold at 30° × 5s','0 no drift / 1 drift before 5s / 2 falls / 3 no anti-gravity / 4 no movement'],
+  ['7','Limb ataxia','0 absent / 1 one limb / 2 two limbs'],
+  ['8','Sensory','0 normal / 1 mild loss / 2 severe loss / 3 total'],
+  ['9','Language (aphasia)','0 normal / 1 mild aphasia / 2 severe aphasia / 3 mute'],
+  ['10','Dysarthria','0 normal / 1 mild slur / 2 unintelligible'],
+  ['11','Extinction/neglect','0 none / 1 one modality / 2 profound']
+ ];
+ const head=`<tr><th>Item</th><th>Domain</th><th>Scoring</th></tr>`;
+ const body=items.map(r=>`<tr><th>${r[0]}</th><td style="color:var(--soft)">${r[1]}</td><td style="color:var(--soft)" class="mono-val">${r[2]}</td></tr>`).join('');
+ return `<h2 class="sec" id="nihss">4 · NIHSS &amp; the purposeful bedside neurologic exam</h2>
+ <p class="seclead">The NIHSS quantifies stroke severity, guides treatment eligibility, and documents trajectory. Max score = 42. Mild ≤5, moderate 6–15, moderate-severe 16–20, severe &gt;20. But the exam items have individual clinical weight — test each deliberately, not as a formality.</p>
+ <div class="gridwrap"><table class="cmp"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+ <div class="note buzz"><b>Why each item teaches:</b> Gaze deviation (item 2) = ipsilateral hemispheric or contralateral pontine lesion; Visual fields (3) = localize optic radiation/occipital; Limb ataxia (7) = cerebellar/posterior fossa vs pure motor; Neglect (11) = right hemisphere/non-dominant parietal. A "mild" NIHSS with gaze deviation, aphasia, or field cut = high LVO suspicion.</div>
+ <h3 class="sub">Why we test specific motor functions — the clinical reasoning</h3>
+ <div class="cardgrid wide">
+   <div class="card neuro"><h3>Arm drift / pronator drift</h3>
+     <div class="blk tip"><b>Purpose</b>Hold arms out at 90° (sitting) or 45° (supine), eyes closed, for 10 seconds. Pronation + downward drift of one arm = contralateral corticospinal tract (UMN) lesion — the pyramidal tract preferentially weakens wrist/finger extensors and hip flexors.</div>
+     <div class="blk buzz"><b>Why pronation?</b>UMN lesions cause a "flexor synergy" in the arm — pronators and flexors are relatively spared; extensors/supinators are lost first. Pronator drift is the earliest, subtlest sign.</div>
+   </div>
+   <div class="card neuro"><h3>Leg hold at 30° / dorsiflexion / toe wiggle</h3>
+     <div class="blk tip"><b>Purpose — the clinical reasoning you asked about</b>Hold the leg at 30° for 5 seconds; gravity-assisted drift → UMN weakness. <b>Dorsiflexion</b> of the foot (anterior tibialis, L4/L5, deep peroneal nerve) is one of the first cortical-motor targets weakened in hemisphere strokes — and is also the key L4/L5 disc level test for radiculopathy. <b>Toe/great-toe extension</b> is L5 via the extensor hallucis longus — exquisitely sensitive to L5 nerve root and early corticospinal-tract disruption.</div>
+     <div class="blk dose"><b>What it localizes</b>Inability to dorsiflex foot: (1) UMN stroke → contralateral hemisphere (foot area of motor cortex is medial, often watershed/ACA territory), (2) peroneal nerve palsy (foot drop, LMN — often at fibular head after crossleg sitting/cast), (3) L4/L5 radiculopathy (disc herniation). <b>Context distinguishes them:</b> UMN = hyperreflexia + Babinski; peroneal = normal reflexes + no Babinski, sensory over dorsal foot; radiculopathy = absent knee/ankle jerk pattern + dermatomal sensory loss.</div>
+     <div class="blk miss"><b>Don't dismiss "can\'t wiggle toes"</b>In a cord-injury or stroke patient, failure to dorsiflex/wiggle toes against gravity is a red flag that maps onto the NIHSS leg-motor item and helps you localize — it is part of the neurologic exam, not a formality.</div>
+   </div>
+   <div class="card neuro"><h3>Why localizing matters</h3>
+     <div class="blk">The purpose of each maneuver is to test a specific anatomic pathway, then confirm with the full context: <b>UMN signs</b> (hyperreflexia, Babinski, spasticity, clonus, no atrophy) = lesion above the anterior horn (cortex, internal capsule, brainstem, cord); <b>LMN signs</b> (flaccidity, areflexia, fasciculations, atrophy) = lesion at or below the anterior horn (root, plexus, peripheral nerve). Every motor test is a level-localizer.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   STROKE MIMICS
+   ============================================================ */
+function mimics(){
+ const M=[
+  {cls:'stroke',n:'Todd\'s palsy (postictal weakness)',tag:'post-seizure',tip:'Focal weakness/aphasia that clears over minutes-hours after a seizure. History of seizure activity; may have a witnessed event or bitten tongue.',miss:'Activate the stroke pathway until proven otherwise — you can\'t exclude ischemia without imaging.'},
+  {cls:'stroke',n:'Complex migraine',tag:'aura imitating TIA/stroke',tip:'Spreading slowly (20–30 min), positive phenomena (flickering, tingling), headache follows. History of prior episodes.',miss:'First-ever complex migraine in older adults deserves CT/CTA — a stroke can look identical.'},
+  {cls:'stroke',n:'Hypoglycemia',tag:'glucose first, always',tip:'Focal deficits, altered consciousness, aphasia — resolves with glucose. Check glucose BEFORE imaging.',miss:'Every stroke protocol includes a glucose check — this is the easiest miss and the most embarrassing.'},
+  {cls:'stroke',n:'Hypertensive encephalopathy / PRES',tag:'BP + encephalopathy',tip:'Headache, confusion, seizures, visual changes with severely elevated BP; white-matter changes (posterior > anterior) on MRI.',miss:'Can mimic posterior circulation stroke; look at BP and the MRI pattern.'},
+  {cls:'stroke',n:'Hemiplegic migraine',tag:'rare, familial',tip:'True hemiparesis during migraine — a diagnosis of exclusion in the ED; image and treat as stroke protocol first.',miss:'Family history is the only reliable clue; don\'t assume without imaging.'},
+  {cls:'stroke',n:'Functional neurologic disorder',tag:'diagnosis of exclusion',tip:'Non-anatomic patterns, inconsistency on repeated exam, "give-way" weakness, Hoover sign positive.',miss:'NEVER assign this diagnosis without imaging — hemorrhagic stroke and FND can coexist.'}
+ ];
+ return `<h2 class="sec" id="mimics">5 · Stroke mimics — the can't-miss look-alikes</h2>
+ <p class="seclead">The "stroke protocol" is activated for any of these — you rule out hemorrhage and ischemia first, then refine the diagnosis. The most dangerous miss is treating a mimic as a stroke (giving tPA to a Todd's palsy or subdural — both have happened); the second-most-dangerous is labeling a stroke as a mimic.</p>
+ <div class="cardgrid wide">${M.map(c=>`<div class="card ${c.cls}"><h3>${c.n}</h3><div class="tagline">${c.tag}</div><div class="blk tip"><b>Features</b>${c.tip}</div><div class="blk miss"><b>Don't miss</b>${c.miss}</div></div>`).join('')}</div>`;
+}
+
+/* ============================================================
+   SPINAL CORD ANATOMY — CROSS SECTION WITH TRACTS
+   ============================================================ */
+function spinalCord(){
+ return `<h2 class="sec" id="spinalcord">6 · Spinal cord anatomy — cross-section &amp; signal-flow infographic</h2>
+ <p class="seclead">The cord is organized into functional columns. Understanding which tract crosses where — and at what level — is the key to explaining why a Brown-Séquard patient is weak on one side but can't feel pain on the other.</p>
+ <div class="svgfig">${figCordXsection()}<div class="figcap">Spinal cord cross-section at a mid-cervical level — grey matter (H-shape, blue-grey) surrounded by white-matter tracts. The three clinically critical tracts with their decussation levels are shown. Dorsal columns carry ipsilateral fine touch/vibration and decussate in the medulla; spinothalamic tract carries contralateral pain/temperature and decussates near its entry level; corticospinal tract decussates in the medullary pyramid and descends ipsilaterally.</div></div>
+ <div class="svgfig">${figSignalFlow()}<div class="figcap">Signal-flow diagram: three parallel streams from sensory receptor / cortex to thalamus/consciousness. The decussation level of each determines the pattern of sensory dissociation in cord injuries (e.g., why Brown-Séquard shows ipsilateral motor/proprioception loss but contralateral pain/temperature loss).</div></div>
+ <div class="cardgrid wide">
+   <div class="card spine"><h3>Dorsal columns (DCML pathway)</h3>
+     <div class="blk tip"><b>Carries</b>Fine touch, vibration, proprioception, two-point discrimination — the "smart" sensory system.</div>
+     <div class="blk dose"><b>Course</b>Enters ipsilateral dorsal horn → ascends IPSILATERALLY in the dorsal columns → decussates in the <b>medulla</b> (gracile/cuneate nuclei) → contralateral thalamus (VPL) → somatosensory cortex.</div>
+     <div class="blk buzz"><b>Clinical rule</b>Dorsal column damage = IPSILATERAL loss of vibration/proprioception. Test with tuning fork, Romberg, joint position sense.</div>
+   </div>
+   <div class="card spine"><h3>Lateral spinothalamic tract (STT)</h3>
+     <div class="blk tip"><b>Carries</b>Pain and temperature — the "protective" sensory system.</div>
+     <div class="blk dose"><b>Course</b>Enters dorsal horn → second-order neuron decussates via the <b>anterior white commissure within 1–2 levels of entry</b> → ascends CONTRALATERALLY in the lateral funiculus → thalamus (VPL) → somatosensory cortex.</div>
+     <div class="blk buzz"><b>Clinical rule</b>STT damage = CONTRALATERAL loss of pain and temperature <b>one to two levels below the lesion</b>. Test with pinprick, temperature. The early crossover is why central cord lesions hit pain first in the sacral fibers.</div>
+   </div>
+   <div class="card spine"><h3>Corticospinal tract (CST) — lateral</h3>
+     <div class="blk tip"><b>Carries</b>Voluntary motor commands — the "action" highway.</div>
+     <div class="blk dose"><b>Course</b>Cortex (motor strip) → internal capsule → brainstem pyramids → decussates at the <b>medullary-cervical junction</b> → descends IPSILATERALLY in the lateral funiculus → anterior horn cell → lower motor neuron → muscle.</div>
+     <div class="blk buzz"><b>Clinical rule</b>CST damage BELOW the decussation = IPSILATERAL weakness + UMN signs (spasticity, hyperreflexia, Babinski). Damage ABOVE = contralateral (brain lesion).</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The somatotopic map</b>: in the dorsal columns, sacral fibers are most medial (gracile tract) and cervical fibers are most lateral (cuneate). In the spinothalamic tract, sacral fibers are most lateral and cervical are most medial. This is why a central cord lesion (central tumor, syrinx) hits spinothalamic in the cervical dermatomes first — and why a lateral compression (disc, epidural) may spare sacral sensation (sacral sparing = better prognosis).</div>`;
+}
+
+function figCordXsection(){
+ const W=900,H=440;
+ // Color palette matching reference style
+ const CORD_BG='#f5ece0';      // cream cord background
+ const GREY_MAT='#c8b8a8';     // grey matter
+ const GREY_HORN='#b8a898';    // horn fill
+ const SENSORY='#5b9bd5';      // blue - sensory ascending
+ const MOTOR='#d64040';        // red - motor descending
+ const SPINOCER='#2e8b57';     // spinocerebellar green
+ const SPINO_ANT='#7b68ee';    // spinothalamic anterior
+ const RUBROSPINAL='#c47a3a';  // rubrospinal
+ const OUTLINE='#8a7060';      // cord outline
+ 
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ 
+ // -- MAIN CORD OUTLINE (cervical, bilateral) --
+ const cx=W/2, cy=210;
+ // Outer cord oval
+ inner+=`<ellipse cx="${cx}" cy="${cy}" rx="170" ry="148" fill="${CORD_BG}" stroke="${OUTLINE}" stroke-width="2.5"/>`;
+ // Nerve roots / dura suggestion
+ inner+=`<ellipse cx="${cx}" cy="${cy}" rx="190" ry="162" fill="none" stroke="${OUTLINE}" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>`;
+ 
+ // -- GREY MATTER H-SHAPE --
+ // Central commissure
+ inner+=`<rect x="${cx-28}" y="${cy-14}" width="56" height="28" rx="14" fill="${GREY_MAT}"/>`;
+ // Dorsal horns (pointing up)
+ inner+=`<path d="M${cx-28},${cy-14} Q${cx-32},${cy-55} ${cx-18},${cy-88} Q${cx-10},${cy-100} ${cx-6},${cy-88} Q${cx-2},${cy-55} ${cx},${cy-14}" fill="${GREY_MAT}"/>`;
+ inner+=`<path d="M${cx+28},${cy-14} Q${cx+32},${cy-55} ${cx+18},${cy-88} Q${cx+10},${cy-100} ${cx+6},${cy-88} Q${cx+2},${cy-55} ${cx},${cy-14}" fill="${GREY_MAT}"/>`;
+ // Ventral horns (broader, pointing down)
+ inner+=`<path d="M${cx-28},${cy+14} Q${cx-36},${cy+50} ${cx-52},${cy+78} Q${cx-60},${cy+90} ${cx-48},${cy+96} Q${cx-28},${cy+86} ${cx},${cy+14}" fill="${GREY_MAT}"/>`;
+ inner+=`<path d="M${cx+28},${cy+14} Q${cx+36},${cy+50} ${cx+52},${cy+78} Q${cx+60},${cy+90} ${cx+48},${cy+96} Q${cx+28},${cy+86} ${cx},${cy+14}" fill="${GREY_MAT}"/>`;
+ // Central canal
+ inner+=`<circle cx="${cx}" cy="${cy}" r="5" fill="#a0c8e0"/>`;
+ 
+ // -- SENSORY TRACTS (ascending, BLUE) LEFT SIDE shown, mirrored right --
+ // Dorsal columns (DCML) - large dorsal blue region
+ inner+=`<path d="M${cx-8},${cy-100} Q${cx-40},${cy-148} ${cx-100},${cy-138} Q${cx-148},${cy-120} ${cx-158},${cy-80} Q${cx-130},${cy-105} ${cx-18},${cy-100} Z" fill="${SENSORY}" opacity="0.85"/>`;
+ inner+=`<path d="M${cx+8},${cy-100} Q${cx+40},${cy-148} ${cx+100},${cy-138} Q${cx+148},${cy-120} ${cx+158},${cy-80} Q${cx+130},${cy-105} ${cx+18},${cy-100} Z" fill="${SENSORY}" opacity="0.85"/>`;
+ 
+ // Spinocerebellar tracts - lateral mid positions (green)
+ inner+=`<ellipse cx="${cx-138}" cy="${cy-20}" rx="24" ry="30" fill="${SPINOCER}" opacity="0.75"/>`;
+ inner+=`<ellipse cx="${cx+138}" cy="${cy-20}" rx="24" ry="30" fill="${SPINOCER}" opacity="0.75"/>`;
+ // Ventral spinocerebellar (slightly anterior to dorsal)
+ inner+=`<ellipse cx="${cx-140}" cy="${cy+28}" rx="18" ry="18" fill="${SPINOCER}" opacity="0.55"/>`;
+ inner+=`<ellipse cx="${cx+140}" cy="${cy+28}" rx="18" ry="18" fill="${SPINOCER}" opacity="0.55"/>`;
+ 
+ // Spinothalamic tracts - anterolateral (blue, lighter)
+ inner+=`<ellipse cx="${cx-125}" cy="${cy+55}" rx="22" ry="18" fill="${SENSORY}" opacity="0.65"/>`;
+ inner+=`<ellipse cx="${cx+125}" cy="${cy+55}" rx="22" ry="18" fill="${SENSORY}" opacity="0.65"/>`;
+ // Anterior spinothalamic
+ inner+=`<ellipse cx="${cx-80}" cy="${cy+100}" rx="16" ry="12" fill="${SENSORY}" opacity="0.5"/>`;
+ inner+=`<ellipse cx="${cx+80}" cy="${cy+100}" rx="16" ry="12" fill="${SENSORY}" opacity="0.5"/>`;
+ 
+ // -- MOTOR TRACTS (descending, RED) --
+ // Lateral corticospinal (large posterolateral red)
+ inner+=`<ellipse cx="${cx-100}" cy="${cy+10}" rx="28" ry="38" fill="${MOTOR}" opacity="0.8"/>`;
+ inner+=`<ellipse cx="${cx+100}" cy="${cy+10}" rx="28" ry="38" fill="${MOTOR}" opacity="0.8"/>`;
+ // Anterior corticospinal (small anterior midline)
+ inner+=`<ellipse cx="${cx-20}" cy="${cy+106}" rx="14" ry="9" fill="${MOTOR}" opacity="0.7"/>`;
+ inner+=`<ellipse cx="${cx+20}" cy="${cy+106}" rx="14" ry="9" fill="${MOTOR}" opacity="0.7"/>`;
+ // Rubrospinal
+ inner+=`<ellipse cx="${cx-72}" cy="${cy+20}" rx="12" ry="16" fill="${RUBROSPINAL}" opacity="0.7"/>`;
+ inner+=`<ellipse cx="${cx+72}" cy="${cy+20}" rx="12" ry="16" fill="${RUBROSPINAL}" opacity="0.7"/>`;
+ // Reticulospinal (medial)
+ inner+=`<ellipse cx="${cx-55}" cy="${cy+80}" rx="10" ry="12" fill="${MOTOR}" opacity="0.45"/>`;
+ inner+=`<ellipse cx="${cx+55}" cy="${cy+80}" rx="10" ry="12" fill="${MOTOR}" opacity="0.45"/>`;
+ // Vestibulospinal
+ inner+=`<ellipse cx="${cx-42}" cy="${cy+104}" rx="9" ry="8" fill="${MOTOR}" opacity="0.5"/>`;
+ inner+=`<ellipse cx="${cx+42}" cy="${cy+104}" rx="9" ry="8" fill="${MOTOR}" opacity="0.5"/>`;
+
+ // -- MIDLINE dashed --
+ inner+=`<line x1="${cx}" y1="${cy-148}" x2="${cx}" y2="${cy+148}" stroke="${OUTLINE}" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>`;
+
+ // ---- TITLE ----
+ inner+=`<text x="${cx}" y="30" font-family="Helvetica Neue,sans-serif" font-size="17" font-weight="700" fill="var(--ink)" text-anchor="middle">Sensory &amp; Motor Tracts — Cervical Spinal Cord</text>`;
+ 
+ // ---- LEFT LABELS (SENSORY) ----
+ const lx=18;
+ function lline(y,label,sub,col){
+   return `<text x="${lx+2}" y="${y}" font-family="SF Mono,monospace" font-size="9.5" font-weight="700" fill="${col}" text-anchor="start">${label}</text>`
+     +(sub?`<text x="${lx+2}" y="${y+11}" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="start">${sub}</text>`:'');
+ }
+ inner+=`<text x="110" y="60" font-family="Helvetica Neue,sans-serif" font-size="12" font-weight="700" fill="${SENSORY}" text-anchor="middle">Sensory (Ascending)</text>`;
+ inner+=lline(90,'Dorsal Column–DCML',null,SENSORY);
+ inner+=lline(114,'Fasciculus Gracilis','(sacral/lumbar)',SENSORY);
+ inner+=lline(134,'Fasciculus Cuneatus','(thoracic/cervical)',SENSORY);
+ inner+=lline(170,'Spinocerebellar','(coord/proprioception)',SPINOCER);
+ inner+=lline(200,'Dorsal spinocerebellar',null,SPINOCER);
+ inner+=lline(218,'Ventral spinocerebellar',null,SPINOCER);
+ inner+=lline(254,'Spinothalamic','(pain/temperature)',SENSORY);
+ inner+=lline(274,'Lateral spinothalamic',null,SENSORY);
+ inner+=lline(292,'Anterior spinothalamic',null,SENSORY);
+ 
+ // ---- RIGHT LABELS (MOTOR) ----
+ const rx=W-18;
+ function rline(y,label,sub,col){
+   return `<text x="${rx-2}" y="${y}" font-family="SF Mono,monospace" font-size="9.5" font-weight="700" fill="${col}" text-anchor="end">${label}</text>`
+     +(sub?`<text x="${rx-2}" y="${y+11}" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="end">${sub}</text>`:'');
+ }
+ inner+=`<text x="${W-110}" y="60" font-family="Helvetica Neue,sans-serif" font-size="12" font-weight="700" fill="${MOTOR}" text-anchor="middle">Motor (Descending)</text>`;
+ inner+=rline(90,'Corticospinal (Pyramidal)',null,MOTOR);
+ inner+=rline(110,'Lateral corticospinal',null,MOTOR);
+ inner+=rline(128,'Anterior corticospinal',null,MOTOR);
+ inner+=rline(165,'Rubrospinal tract',null,RUBROSPINAL);
+ inner+=rline(200,'Reticulospinal tracts',null,MOTOR);
+ inner+=rline(220,'Lateral reticulospinal',null,MOTOR);
+ inner+=rline(238,'Medial reticulospinal',null,MOTOR);
+ inner+=rline(275,'Vestibulospinal tract',null,MOTOR);
+ inner+=rline(295,'Tectospinal tract',null,MOTOR);
+
+ // LEGEND
+ inner+=`<rect x="20" y="${H-42}" width="14" height="14" rx="3" fill="${SENSORY}"/><text x="40" y="${H-31}" font-family="SF Mono,monospace" font-size="10" fill="var(--soft)">Sensory / ascending</text>`;
+ inner+=`<rect x="180" y="${H-42}" width="14" height="14" rx="3" fill="${MOTOR}"/><text x="200" y="${H-31}" font-family="SF Mono,monospace" font-size="10" fill="var(--soft)">Motor / descending</text>`;
+ inner+=`<rect x="345" y="${H-42}" width="14" height="14" rx="3" fill="${SPINOCER}"/><text x="365" y="${H-31}" font-family="SF Mono,monospace" font-size="10" fill="var(--soft)">Spinocerebellar</text>`;
+
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+
+function figSignalFlow(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ 
+ const SENSORY='#5b9bd5'; const MOTOR='#d64040';
+ 
+ // Stream 1: Dorsal Columns
+ inner+=`<text x="148" y="24" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="${SENSORY}" text-anchor="middle">Dorsal Column (DCML)</text>`;
+ inner+=`<text x="148" y="38" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Fine touch · vibration · proprioception</text>`;
+ inner+=`<line x1="148" y1="44" x2="148" y2="88" stroke="${SENSORY}" stroke-width="2.5"/>`;
+ inner+=`<circle cx="148" cy="96" r="10" fill="${SENSORY}" opacity="0.85"/>`;
+ inner+=`<text x="148" y="100" font-family="SF Mono,monospace" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">✕</text>`;
+ inner+=`<text x="148" y="116" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Decussates: MEDULLA</text>`;
+ inner+=`<line x1="148" y1="122" x2="148" y2="155" stroke="${SENSORY}" stroke-width="2.5"/>`;
+ 
+ // Stream 2: Spinothalamic
+ inner+=`<text x="355" y="24" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="${SENSORY}" text-anchor="middle">Spinothalamic Tract</text>`;
+ inner+=`<text x="355" y="38" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Pain · temperature</text>`;
+ inner+=`<line x1="355" y1="44" x2="355" y2="58" stroke="${SENSORY}" stroke-width="2.5"/>`;
+ inner+=`<circle cx="355" cy="66" r="10" fill="${SENSORY}" opacity="0.85"/>`;
+ inner+=`<text x="355" y="70" font-family="SF Mono,monospace" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">✕</text>`;
+ inner+=`<text x="355" y="86" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Decussates: 1–2 SPINAL LEVELS</text>`;
+ inner+=`<line x1="355" y1="92" x2="355" y2="155" stroke="${SENSORY}" stroke-width="2.5"/>`;
+ 
+ // Stream 3: Lateral CST
+ inner+=`<text x="580" y="24" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="${MOTOR}" text-anchor="middle">Corticospinal Tract</text>`;
+ inner+=`<text x="580" y="38" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Voluntary motor</text>`;
+ inner+=`<line x1="580" y1="44" x2="580" y2="44" stroke="${MOTOR}" stroke-width="2.5"/>`;
+ inner+=`<circle cx="580" cy="52" r="10" fill="${MOTOR}" opacity="0.85"/>`;
+ inner+=`<text x="580" y="56" font-family="SF Mono,monospace" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">✕</text>`;
+ inner+=`<text x="580" y="72" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">Decussates: CAUDAL MEDULLA</text>`;
+ inner+=`<line x1="580" y1="78" x2="580" y2="155" stroke="${MOTOR}" stroke-width="2.5"/>`;
+ 
+ // Result bar
+ inner+=`<rect x="80" y="157" width="660" height="26" rx="9" fill="var(--spine)" opacity="0.28" stroke="var(--spine)" stroke-width="1.2"/>`;
+ inner+=`<text x="${W/2}" y="174" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="var(--spine)" text-anchor="middle">Thalamus (VPL nucleus) → Somatosensory cortex / Motor cortex</text>`;
+
+ // Ipsi/contra labels
+ inner+=`<text x="148" y="142" font-family="SF Mono,monospace" font-size="8" fill="var(--good)" text-anchor="middle">↑ IPSILATERAL ascent</text>`;
+ inner+=`<text x="355" y="142" font-family="SF Mono,monospace" font-size="8" fill="var(--gold)" text-anchor="middle">↑ CONTRALATERAL ascent</text>`;
+ inner+=`<text x="580" y="142" font-family="SF Mono,monospace" font-size="8" fill="var(--warn)" text-anchor="middle">↓ IPSILATERAL descent (below X)</text>`;
+ 
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+
+function umnLmn(){
+ return `<h2 class="sec" id="umnlmn">7 · UMN vs LMN — the exam separates them</h2>
+ <p class="seclead">Every motor deficit traces to either the upper motor neuron (cortex → anterior horn) or the lower motor neuron (anterior horn → muscle). The exam findings are opposite, and mixing them up leads to a missed spinal cord emergency or an unnecessary neurosurgery consult.</p>
+ <div class="svgfig">${figUMNLMN()}<div class="figcap">The two-neuron motor chain: UMN lesion (anywhere above the anterior horn cell) produces spastic paralysis — the brake is off; LMN lesion (anterior horn, root, plexus, nerve, NMJ, muscle) produces flaccid paralysis — the signal never arrives.</div></div>
+ <div class="gridwrap"><table class="cmp">
+  <thead><tr><th>Finding</th><th>UMN Lesion</th><th>LMN Lesion</th></tr></thead>
+  <tbody>
+   <tr><th>Tone</th><td style="color:var(--stroke)">Increased (spasticity / clasp-knife)</td><td style="color:var(--neuro)">Decreased (flaccidity)</td></tr>
+   <tr><th>Reflexes</th><td style="color:var(--stroke)">Hyperreflexia, clonus</td><td style="color:var(--neuro)">Hyporeflexia / areflexia</td></tr>
+   <tr><th>Plantar response</th><td style="color:var(--stroke)">Extensor (Babinski +)</td><td style="color:var(--neuro)">Flexor (normal) or absent</td></tr>
+   <tr><th>Atrophy</th><td>Mild (disuse, later)</td><td style="color:var(--neuro)">Pronounced, early</td></tr>
+   <tr><th>Fasciculations</th><td>Absent</td><td style="color:var(--neuro)">Present (anterior horn / nerve)</td></tr>
+   <tr><th>Weakness pattern</th><td>Extensor &gt; flexor arm; flexor &gt; extensor leg</td><td>Follows myotome / nerve territory</td></tr>
+   <tr><th>Location of lesion</th><td>Cortex, internal capsule, brainstem, spinal cord (above AHC)</td><td>Anterior horn, nerve root, plexus, peripheral nerve, NMJ, muscle</td></tr>
+  </tbody>
+ </table></div>
+ <div class="note buzz"><b>The Babinski reflex</b>: stroke the outer sole from heel to ball → normal (LMN intact) = plantar flexion of big toe. UMN lesion = extension + fanning (Babinski positive). Reliable in cooperative adults; normal in infants ≤18 mo (incomplete myelination). Clonus (sustained rhythmic contractions with maintained dorsiflexion of the foot) = UMN, not anxiety.</div>`;
+}
+
+function figUMNLMN(){
+ const W=700,H=240;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Cortex motor neuron (UMN)
+ inner+=`<ellipse cx="140" cy="40" rx="40" ry="22" fill="var(--stroke)" opacity="0.3" stroke="var(--stroke)" stroke-width="1.5"/>`;
+ inner+=tx(140,43,"Cortex / UMN",'var(--stroke)',10,'middle',700);
+ // Cord (anterior horn) AHC
+ inner+=`<ellipse cx="140" cy="160" rx="34" ry="20" fill="var(--grey)" opacity="0.8"/>`;
+ inner+=tx(140,163,"Ant. horn cell",'var(--ink)',9,'middle',700);
+ // Muscle
+ inner+=`<rect x="90" y="208" width="100" height="22" rx="8" fill="var(--musc||\'#b8524f\')" opacity="0.5"/>`;
+ // Musc fallback color
+ inner+=`<rect x="90" y="208" width="100" height="22" rx="8" fill="var(--stroke)" opacity="0.25"/>`;
+ inner+=tx(140,222,"Muscle",'var(--ink)',9,'middle');
+ // arrows UMN → AHC → muscle
+ inner+=`<line x1="140" y1="62" x2="140" y2="136" stroke="var(--stroke)" stroke-width="2" marker-end="url(#ua)"/>`;
+ inner+=`<line x1="140" y1="180" x2="140" y2="206" stroke="var(--neuro)" stroke-width="2" marker-end="url(#ua)"/>`;
+ // UMN lesion star
+ inner+=`<circle cx="140" cy="100" r="10" fill="var(--warn)" opacity="0.8"/>`;
+ inner+=tx(140,104,"✕",'var(--bg)',10,'middle',700);
+ // UMN result panel
+ inner+=`<rect x="200" y="60" width="220" height="100" rx="9" fill="var(--stroke)" opacity="0.12" stroke="var(--stroke)" stroke-width="1.2"/>`;
+ inner+=tx(310,82,"UMN Lesion",'var(--stroke)',11,'middle',700);
+ inner+=tx(310,100,"spasticity · hyperreflexia",'var(--soft)',9,'middle');
+ inner+=tx(310,116,"Babinski + · clonus",'var(--soft)',9,'middle');
+ inner+=tx(310,132,"no atrophy · no fasciculations",'var(--soft)',9,'middle');
+ // LMN lesion star
+ inner+=`<circle cx="500" cy="165" r="10" fill="var(--neuro)" opacity="0.8"/>`;
+ inner+=tx(500,169,"✕",'var(--bg)',10,'middle',700);
+ // copy lower chain on right
+ inner+=`<ellipse cx="500" cy="40" rx="40" ry="22" fill="var(--stroke)" opacity="0.3" stroke="var(--stroke)" stroke-width="1.5"/>`;
+ inner+=tx(500,43,"Cortex / UMN",'var(--stroke)',10,'middle',700);
+ inner+=`<ellipse cx="500" cy="160" rx="34" ry="20" fill="var(--grey)" opacity="0.8"/>`;
+ inner+=tx(500,163,"Ant. horn cell",'var(--ink)',9,'middle',700);
+ inner+=`<rect x="450" y="208" width="100" height="22" rx="8" fill="var(--stroke)" opacity="0.25"/>`;
+ inner+=tx(500,222,"Muscle",'var(--ink)',9,'middle');
+ inner+=`<line x1="500" y1="62" x2="500" y2="136" stroke="var(--stroke)" stroke-width="2" marker-end="url(#ua)"/>`;
+ // LMN result panel
+ inner+=`<rect x="560" y="80" width="130" height="120" rx="9" fill="var(--neuro)" opacity="0.12" stroke="var(--neuro)" stroke-width="1.2"/>`;
+ inner+=tx(625,100,"LMN Lesion",'var(--neuro)',11,'middle',700);
+ inner+=tx(625,116,"flaccidity",'var(--soft)',9,'middle');
+ inner+=tx(625,130,"areflexia",'var(--soft)',9,'middle');
+ inner+=tx(625,144,"fasciculations",'var(--soft)',9,'middle');
+ inner+=tx(625,158,"atrophy",'var(--soft)',9,'middle');
+ inner+=tx(625,172,"Babinski −",'var(--soft)',9,'middle');
+ inner+=`<defs><marker id="ua" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   CORD SYNDROMES
+   ============================================================ */
+function cordSyndromes(){
+ return `<h2 class="sec" id="syndromes">8 · Spinal cord injury syndromes</h2>
+ <p class="seclead">Each syndrome produces a characteristic deficit pattern that maps onto which tracts are injured. Localizing the syndrome identifies the mechanism and directs imaging and treatment urgency.</p>
+ <div class="svgfig">${figSyndromeMaps()}<div class="figcap">Body-map schematic for each spinal cord injury syndrome — shaded regions represent deficit zones. Motor loss (red), pain/temperature loss (gold), proprioception/vibration loss (blue). Bilateral = both sides; unilateral = one side.</div></div>
+ <div class="cardgrid wide">
+   <div class="card spine"><h3>Complete cord injury</h3>
+     <div class="tagline">complete transection</div>
+     <div class="blk miss"><b>Total deficit below the level</b>Loss of ALL motor and ALL sensory modalities bilaterally below the lesion. UMN signs below (after initial spinal shock, which presents as flaccid areflexia).</div>
+     <div class="blk dose"><b>Spinal shock</b>Immediately after severe injury: flaccid paralysis and areflexia BELOW the level — mimics LMN. Bulbocavernosus reflex returns first (minutes-hours); permanent UMN pattern emerges over days-weeks.</div>
+     <div class="blk buzz"><b>Cause</b>High-energy trauma, complete transection, massive hematoma.</div>
+   </div>
+   <div class="card spine"><h3>Anterior cord syndrome</h3>
+     <div class="tagline">anterior 2/3 — the worst prognosis</div>
+     <div class="blk miss"><b>Lost</b>Motor (CST) bilaterally + pain/temperature (STT) bilaterally below the level.</div>
+     <div class="blk dose"><b>Spared</b>DORSAL COLUMNS — vibration, proprioception, fine touch are PRESERVED. This dissociation (paralyzed but can feel tuning fork) is the hallmark.</div>
+     <div class="blk buzz"><b>Cause</b>Anterior spinal artery occlusion (the ASA supplies the anterior 2/3), hyperflexion injury, vascular surgery (aortic cross-clamp), severe central disc herniation at cervical level. Worst prognosis of the incomplete syndromes.</div>
+     <div class="blk doc"><b>Document</b>"Bilateral motor loss and pain/temperature loss below C[X], with preserved vibration and proprioception — anterior cord syndrome pattern."</div>
+   </div>
+   <div class="card spine"><h3>Brown-Séquard syndrome</h3>
+     <div class="tagline">hemicord — the classic exam syndrome</div>
+     <div class="blk miss"><b>Ipsilateral to lesion</b>Motor weakness (CST, ipsilateral descent) + proprioception/vibration loss (dorsal columns, ipsilateral ascent).</div>
+     <div class="blk dose"><b>Contralateral to lesion</b>Pain and temperature loss (STT crossed at entry level) — beginning 1–2 levels BELOW the lesion.</div>
+     <div class="blk buzz"><b>Cause</b>Penetrating trauma (most classic), lateral compression, herniated disc, epidural hematoma, MS. Best prognosis of cord syndromes — most patients walk.</div>
+     <div class="blk doc"><b>Document</b>"Right-sided weakness and proprioception loss with left-sided pain and temperature loss below [level] — Brown-Séquard pattern; ipsilateral motor/proprioception, contralateral pain/temperature."</div>
+   </div>
+   <div class="card spine"><h3>Central cord syndrome</h3>
+     <div class="tagline">most common incomplete — elderly</div>
+     <div class="blk miss"><b>Pattern</b>Arms &gt; legs weakness (somatotopic — cervical fibers are central in the CST; sacral fibers lateral); bladder dysfunction (sacral sparing of motor usually present); variable sensory loss below level.</div>
+     <div class="blk dose"><b>Sacral sparing</b>Because sacral sensory fibers are outermost in the STT, they are often SPARED in central cord lesions — the patient can feel perineal pinprick. This is a prognostically favorable sign.</div>
+     <div class="blk buzz"><b>Cause</b>Hyperextension in elderly with pre-existing cervical spondylosis (often no fracture); falls in osteoporotic patients. Most common incomplete cord syndrome.</div>
+     <div class="blk doc"><b>Document</b>"Bilateral upper &gt; lower extremity weakness with bladder dysfunction and preserved perineal sensation — central cord syndrome pattern; hyperextension mechanism."</div>
+   </div>
+   <div class="card spine"><h3>Posterior cord syndrome</h3>
+     <div class="tagline">dorsal columns — rare</div>
+     <div class="blk miss"><b>Lost</b>Proprioception, vibration, fine touch bilaterally below the lesion. Motor and pain/temperature PRESERVED.</div>
+     <div class="blk buzz"><b>Cause</b>Posterior spinal artery occlusion, B12 deficiency (subacute combined degeneration), tabes dorsalis, multiple sclerosis. Ataxic gait, positive Romberg.</div>
+     <div class="blk doc"><b>Document</b>"Gait ataxia and loss of vibration/proprioception below [level] with preserved pinprick and motor — posterior cord pattern; Romberg positive."</div>
+   </div>
+   <div class="card spine"><h3>Cauda equina syndrome</h3>
+     <div class="tagline">surgical emergency — LMN, not cord</div>
+     <div class="blk miss"><b>The emergency</b>Compression of the cauda equina roots (below L1–L2, where the cord ends) → LMN pattern: saddle anesthesia, bowel/bladder dysfunction (urinary retention is the most sensitive sign), bilateral leg weakness/areflexia. NEW urinary retention = call surgery NOW.</div>
+     <div class="blk dose"><b>Mechanism</b>Massive central disc herniation, tumor, epidural hematoma or abscess, trauma. MRI emergently.</div>
+     <div class="blk buzz"><b>Conus medullaris</b>Lesion at L1–L2 (cord termination) → MIXED UMN + LMN signs; saddle anesthesia but may have retained reflexes. Urgent imaging.</div>
+     <div class="blk doc"><b>Document</b>"Saddle anesthesia, urinary retention, bilateral lower extremity areflexia — cauda equina syndrome. MRI lumbosacral emergently; neurosurgery consulted."</div>
+   </div>
+ </div>`;
+}
+
+function figSyndromeMaps(){
+ const W=900,H=290;
+ const MOTOR='#d64040',PAIN='#e0b341',PROP='#5b9bd5',LMN='#46c98a',SADDLE='#9b6cd6',OUT='#a08060',BG='#f0e8dc';
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const syndromes=[
+  {x:20,  label:'Complete',      sub:'all tracts bilat.',   fills:[{r:'ALL',c:MOTOR,o:.5},{r:'ALL',c:PAIN,o:.25}]},
+  {x:165, label:'Anterior Cord', sub:'motor+pain/temp',     fills:[{r:'ALL',c:MOTOR,o:.5},{r:'ALL',c:PAIN,o:.3}]},
+  {x:310, label:'Brown-Séquard', sub:'hemi-cord',           fills:[{r:'L',c:MOTOR,o:.6},{r:'L',c:PROP,o:.3},{r:'R',c:PAIN,o:.5}]},
+  {x:455, label:'Central Cord',  sub:'arms>legs, bladder',  fills:[{r:'ARMS',c:MOTOR,o:.6},{r:'LEGS',c:MOTOR,o:.28}]},
+  {x:600, label:'Posterior Cord',sub:'vibration/prop',      fills:[{r:'ALL',c:PROP,o:.55}]},
+  {x:745, label:'Cauda Equina',  sub:'saddle+LMN legs',     fills:[{r:'SADDLE',c:SADDLE,o:.7},{r:'LEGS',c:LMN,o:.45}]}
+ ];
+ const bw=110;
+ syndromes.forEach(function(s){
+  const cx=s.x+bw/2;
+  // outlines
+  inner+=`<circle cx="${cx}" cy="34" r="14" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  inner+=`<rect x="${s.x+20}" y="52" width="${bw-40}" height="56" rx="9" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  inner+=`<rect x="${s.x+4}" y="58" width="16" height="44" rx="7" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  inner+=`<rect x="${s.x+bw-20}" y="58" width="16" height="44" rx="7" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  inner+=`<rect x="${s.x+24}" y="110" width="22" height="60" rx="9" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  inner+=`<rect x="${s.x+bw-46}" y="110" width="22" height="60" rx="9" fill="${BG}" stroke="${OUT}" stroke-width="1.5"/>`;
+  s.fills.forEach(function(f){
+   var o=f.o;
+   if(f.r==='ALL'){
+    inner+=`<circle cx="${cx}" cy="34" r="13" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+21}" y="53" width="${bw-42}" height="54" rx="8" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+5}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-19}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+25}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-45}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+   } else if(f.r==='L'){
+    inner+=`<rect x="${s.x+21}" y="53" width="${(bw-42)/2}" height="54" rx="4" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+5}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+25}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+   } else if(f.r==='R'){
+    var tx2=s.x+21+(bw-42)/2;
+    inner+=`<rect x="${tx2}" y="53" width="${(bw-42)/2}" height="54" rx="4" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-19}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-45}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+   } else if(f.r==='ARMS'){
+    inner+=`<rect x="${s.x+5}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-19}" y="59" width="14" height="42" rx="6" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+21}" y="53" width="${bw-42}" height="28" rx="8" fill="${f.c}" opacity="${o}"/>`;
+   } else if(f.r==='LEGS'){
+    inner+=`<rect x="${s.x+25}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+    inner+=`<rect x="${s.x+bw-45}" y="111" width="20" height="58" rx="8" fill="${f.c}" opacity="${o}"/>`;
+   } else if(f.r==='SADDLE'){
+    inner+=`<ellipse cx="${cx}" cy="118" rx="24" ry="14" fill="${f.c}" opacity="${o}"/>`;
+   }
+  });
+  inner+=`<text x="${cx}" y="196" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">${s.label}</text>`;
+  inner+=`<text x="${cx}" y="210" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">${s.sub}</text>`;
+ });
+ // legend
+ [[MOTOR,'Motor loss'],[PAIN,'Pain/temp loss'],[PROP,'Prop/vibration loss'],[LMN,'LMN/areflexia'],[SADDLE,'Saddle anesthesia']].forEach(function(it,i){
+  inner+=`<rect x="${20+i*168}" y="225" width="12" height="12" rx="3" fill="${it[0]}"/><text x="${36+i*168}" y="235" font-family="SF Mono,monospace" font-size="9" fill="var(--soft)">${it[1]}</text>`;
+ });
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+
+function spinalPearls(){
+ const P=[
+  ['Dorsal columns = ipsilateral','Vibration/proprioception travels up the same side; lost IPSILATERAL to the lesion below the decussation in the medulla.'],
+  ['Spinothalamic = contralateral','Pain/temperature crosses within 1–2 levels of entry; lost CONTRALATERAL to the lesion.'],
+  ['Anterior cord = worst prognosis','Motor + pain/temp lost bilaterally; proprioception/vibration SPARED = the hallmark.'],
+  ['Brown-Séquard = best prognosis','Ipsilateral motor/proprioception + contralateral pain/temp; penetrating injury; most walk again.'],
+  ['Central cord = arms > legs','Elderly + hyperextension + spondylosis = most common incomplete. Sacral sparing = good sign.'],
+  ['Cauda equina = surgery NOW','Saddle anesthesia + urinary retention + areflexia = emergent MRI + neurosurgery. LMN, not cord.'],
+  ['Spinal shock','Immediate flaccid areflexia below complete injury — evolves to UMN spasticity/hyperreflexia over days.'],
+  ['Dorsiflexion weakness = L4/L5 or UMN','Can\'t wiggle toes/dorsiflex → localize with the full exam: UMN signs vs peroneal nerve vs radiculopathy.'],
+  ['Babinski + clonus = UMN','Extensor plantar response in any adult is abnormal — it means the corticospinal tract is disrupted above the level.'],
+  ['MRI, not CT, for cord detail','CT is best for bony alignment/fractures; MRI shows cord contusion, disc, hematoma, epidural abscess — the soft tissue.']
+ ];
+ return `<h2 class="sec" id="spinalpearls">9 · Spinal cord pearls</h2><div class="cardgrid">${P.map(p=>pearl(p,'var(--spine)')).join('')}</div>`;
+}
+
+/* ===== render ===== */
+function focalFindings(){
+ return `<h2 class="sec" id="focalfindings">10 · Stroke focal deficits — localize by arterial territory</h2>
+ <p class="seclead">Each vascular territory produces a characteristic deficit fingerprint. Recognizing which combination maps to which artery lets you predict the LVO site, the imaging priority, and the treatment urgency before the CTA is back.</p>
+ <div class="svgfig">${figBrainArteries()}<div class="figcap">Arterial territory maps — lateral (left) and medial (right) views. MCA supplies most of the lateral cortex (motor/sensory face+arm, language, gaze, neglect). ACA supplies the medial strip (leg dominant). PCA supplies occipital/inferior temporal. Basilar/posterior circulation supplies the brainstem and cerebellum. Lacunar infarcts are deep (internal capsule, thalamus, pons).</div></div>
+ <div class="cardgrid wide">
+  <div class="card stroke"><h3>MCA — Middle cerebral artery</h3><div class="tagline">most common LVO</div>
+    <div class="blk tip"><b>Dominant hemisphere (usually left)</b>Contralateral face + arm ≥ leg weakness; face + arm sensory loss; APHASIA (expressive = frontal branch; receptive/global = complete trunk); gaze deviation TOWARD the lesion; contralateral visual field cut; arm pronator drift.</div>
+    <div class="blk dose"><b>Non-dominant (usually right)</b>Same motor/sensory pattern; NEGLECT (ignoring left side); dysarthria; constructional apraxia; no aphasia (but aprosodia).</div>
+    <div class="blk miss"><b>Gaze deviation teaching point</b>The cortical frontal eye field normally drives eyes to the opposite side. When infarcted, the contralateral hemisphere drives gaze TOWARD the lesion (eyes look at the stroke, away from the deficit). Pontine lesion does the opposite.</div>
+  </div>
+  <div class="card stroke"><h3>ACA — Anterior cerebral artery</h3><div class="tagline">medial surface — leg dominant</div>
+    <div class="blk tip">Contralateral leg ≫ arm weakness and sensory loss; abulia (flat affect, slowed initiation); urinary incontinence; grasp reflex. Often bilateral ACA territory after AComm aneurysm rupture/vasospasm.</div>
+    <div class="blk buzz"><b>Board point</b>Leg-predominant stroke with arm/face spared = ACA or parasagittal lesion. If the patient can't lift their leg but face and arm are normal — think ACA, not MCA.</div>
+  </div>
+  <div class="card stroke"><h3>PCA — Posterior cerebral artery</h3><div class="tagline">occipital + thalamus</div>
+    <div class="blk tip">Contralateral homonymous hemianopia (reading problems, may bump into things on one side); contralateral hemisensory loss if thalamus involved; alexia without agraphia (dominant PCA + splenium); memory impairment (hippocampal). NO significant weakness in a pure cortical PCA stroke.</div>
+    <div class="blk miss"><b>Visual field cut alone, no weakness = PCA.</b> Bilateral PCA = cortical blindness (Anton's syndrome — patient denies the blindness).</div>
+  </div>
+  <div class="card stroke"><h3>Lacunar infarcts</h3><div class="tagline">small vessel — deep structures</div>
+    <div class="blk tip"><b>Pure motor hemiplegia</b>(posterior limb internal capsule / pons): face + arm + leg weakness, NO cortical signs (no aphasia, no neglect, no field cut).</div>
+    <div class="blk dose"><b>Pure sensory</b>(ventral posterolateral thalamus): hemisensory loss only. <b>Ataxic hemiparesis</b>(pons): ipsilateral limb ataxia + contralateral weakness. <b>Dysarthria-clumsy hand</b>(pons/genu capsule): dysarthria + clumsiness.</div>
+    <div class="blk buzz"><b>Key feature</b>No cortical signs = lacunar. Small, discrete, NIHSS often ≤8 with a stereotyped syndrome.</div>
+  </div>
+  <div class="card stroke"><h3>Basilar artery / posterior fossa</h3><div class="tagline">deadly — CT blind here</div>
+    <div class="blk miss"><b>Basilar occlusion</b>Locked-in (awake, quadriplegic, blink only), coma, quadriplegia, cranial nerve findings. The "5 Ds + 3 Ns": Diplopia, Dysphagia, Dysarthria, Dizziness, Drop attacks + Nausea, Nystagmus, Numbness. PICA (Wallenberg): ipsilateral face sensory loss, contralateral body sensory loss; Horner; dysphagia; ataxia; vertigo.</div>
+    <div class="blk buzz"><b>Critical</b>CT is BLIND to the posterior fossa (bone artifact). Use MRI or CTA. Posterior circulation stroke is the most commonly missed stroke.</div>
+  </div>
+  <div class="card stroke"><h3>Watershed infarcts</h3><div class="tagline">border-zone ischemia</div>
+    <div class="blk">Occur at junctions of major territories during hypoperfusion or carotid stenosis. <b>MCA-ACA border</b>: arm ≥ leg ("man-in-barrel" — can't use arms but legs OK). <b>MCA-PCA border</b>: visual field cut + cortical sensory loss. Think hemodynamic cause (cardiac arrest, hypovolemia, carotid stenosis) rather than embolic.</div>
+  </div>
+ </div>`;
+}
+
+function figBrainArteries(){
+ const W=820, H=260;
+ const MCA='#e05a2e', ACA='#3fa7d6', PCA='#9b6cd6', BAS='#d68a2e', LAC='#46c98a';
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+
+ // LATERAL VIEW
+ inner+=`<ellipse cx="200" cy="118" rx="148" ry="108" fill="#e8e0d8" stroke="#a09080" stroke-width="2"/>`;
+ inner+=`<ellipse cx="195" cy="105" rx="118" ry="78" fill="${MCA}" opacity="0.45"/>`;
+ inner+=`<ellipse cx="136" cy="46" rx="68" ry="34" fill="${ACA}" opacity="0.55"/>`;
+ inner+=`<ellipse cx="300" cy="170" rx="62" ry="40" fill="${PCA}" opacity="0.55"/>`;
+ inner+=`<ellipse cx="196" cy="115" rx="24" ry="18" fill="${LAC}" opacity="0.65"/>`;
+ inner+=`<text x="186" y="118" font-family="SF Mono,monospace" font-size="13" font-weight="700" fill="white" text-anchor="middle">MCA</text>`;
+ inner+=`<text x="138" y="50" font-family="SF Mono,monospace" font-size="11" font-weight="700" fill="white" text-anchor="middle">ACA</text>`;
+ inner+=`<text x="300" y="173" font-family="SF Mono,monospace" font-size="11" font-weight="700" fill="white" text-anchor="middle">PCA</text>`;
+ inner+=`<text x="196" y="118" font-family="SF Mono,monospace" font-size="8" font-weight="700" fill="#111" text-anchor="middle">Lac</text>`;
+ inner+=`<text x="200" y="246" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">Lateral view</text>`;
+
+ // MEDIAL VIEW
+ inner+=`<ellipse cx="575" cy="118" rx="138" ry="102" fill="#e8e0d8" stroke="#a09080" stroke-width="2"/>`;
+ inner+=`<path d="M460,82 Q520,38 575,48 Q630,42 660,82 Q670,110 650,142 Q618,172 575,118 Q525,72 460,82 Z" fill="${ACA}" opacity="0.55"/>`;
+ inner+=`<ellipse cx="638" cy="166" rx="54" ry="36" fill="${PCA}" opacity="0.55"/>`;
+ inner+=`<ellipse cx="570" cy="140" rx="20" ry="14" fill="${BAS}" opacity="0.65"/>`;
+ inner+=`<rect x="551" y="194" width="44" height="32" rx="10" fill="${BAS}" opacity="0.6"/>`;
+ inner+=`<text x="573" y="214" font-family="SF Mono,monospace" font-size="8" font-weight="700" fill="white" text-anchor="middle">basilar</text>`;
+ inner+=`<text x="575" y="52" font-family="SF Mono,monospace" font-size="11" font-weight="700" fill="white" text-anchor="middle">ACA</text>`;
+ inner+=`<text x="638" y="170" font-family="SF Mono,monospace" font-size="11" font-weight="700" fill="white" text-anchor="middle">PCA</text>`;
+ inner+=`<text x="570" y="143" font-family="SF Mono,monospace" font-size="7" font-weight="700" fill="white" text-anchor="middle">thal</text>`;
+ inner+=`<text x="575" y="246" font-family="SF Mono,monospace" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">Medial view</text>`;
+
+ const leg=[MCA,'MCA (lateral)',ACA,'ACA (medial)',PCA,'PCA (visual/sensory)',BAS,'Basilar/thalamic',LAC,'Lacunar'];
+ for(let i=0;i<5;i++){
+  inner+=`<rect x="${12+i*166}" y="250" width="12" height="12" rx="2" fill="${leg[i*2]}"/>`;
+  inner+=`<text x="${28+i*166}" y="260" font-family="SF Mono,monospace" font-size="8" fill="var(--soft)">${leg[i*2+1]}</text>`;
+ }
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+function cranialNerves(){
+ return `<h2 class="sec" id="cranialnerves">11 · Cranial nerve exam — findings, localization &amp; documentation</h2>
+ <p class="seclead">Cranial nerve deficits localize the lesion from cortex to nerve. The <b>CN VII forehead distinction</b> (spared = UMN/stroke; involved = LMN/Bell's) is the single most-tested clinical point. Crossed syndromes (ipsilateral CN + contralateral hemiplegia) = brainstem.</p>
+ <div class="cnrow">
+  <div class="cncard sensory">
+   <div class="cnfig">${figCN2()}</div>
+   <div class="cnbody"><h3>CN II — Optic</h3><div class="cntag">Sensory</div>
+    <div class="cnblk"><b>Deficit / localization</b>Monocular loss = ipsilateral eye/nerve. Bitemporal hemianopia = chiasm (pituitary). Homonymous hemianopia = optic tract / radiation / cortex (contralateral).</div>
+    <div class="cnblk"><b>Document</b>"Visual fields full / [right/left] homonymous hemianopia; PERRL; afferent pupillary defect absent/present."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN3()}</div>
+   <div class="cnbody"><h3>CN III — Oculomotor</h3><div class="cntag">Motor</div>
+    <div class="cnblk"><b>Deficit</b>"Down and out" + ptosis + DILATED pupil = CN III palsy. Posterior communicating aneurysm compresses CN III (pupil involved first — surgical emergency). Diabetic CN III often pupil-sparing (ischemic).</div>
+    <div class="cnblk"><b>Document</b>"Right CN III palsy: eye down-and-out, ptosis, pupil 7 mm non-reactive — posterior communicating aneurysm ruled out with CTA."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN4()}</div>
+   <div class="cnbody"><h3>CN IV — Trochlear</h3><div class="cntag">Motor</div>
+    <div class="cnblk"><b>Deficit</b>Vertical diplopia worse going DOWN stairs; hypertropia (affected eye higher); head tilt AWAY from affected side (compensatory). Longest intracranial nerve — vulnerable to trauma.</div>
+    <div class="cnblk"><b>Document</b>"Left hypertropia corrected by right head tilt — left CN IV palsy pattern; trauma/microvascular etiology considered."</div>
+   </div>
+  </div>
+  <div class="cncard sensory">
+   <div class="cnfig">${figCN5()}</div>
+   <div class="cnbody"><h3>CN V — Trigeminal</h3><div class="cntag">Sensory + Motor</div>
+    <div class="cnblk"><b>Deficit</b>Facial sensory loss in V1 (forehead), V2 (cheek/upper lip), V3 (jaw/lower lip). Corneal reflex afferent = V1; jaw deviates toward weak side on opening (pterygoid weakness = V3 motor).</div>
+    <div class="cnblk"><b>Document</b>"Decreased pinprick V2/V3 distribution right; corneal reflex diminished on right; jaw midline on opening."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN6()}</div>
+   <div class="cnbody"><h3>CN VI — Abducens</h3><div class="cntag">Motor</div>
+    <div class="cnblk"><b>Deficit</b>Failure to abduct (eye turns in — esotropia); horizontal diplopia worse looking toward affected side. Most common ocular motor palsy; can be a false-localizing sign with elevated ICP (long course). </div>
+    <div class="cnblk"><b>Document</b>"Failure to abduct right eye with esotropia at rest — right CN VI palsy; ICP considered; CTA/MRI ordered."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN7()}</div>
+   <div class="cnbody"><h3>CN VII — Facial</h3><div class="cntag">Motor — THE KEY DISTINCTION</div>
+    <div class="cnblk"><b>Central (UMN = stroke)</b>Contralateral lower face weakness; FOREHEAD SPARED (bilateral cortical representation of forehead). <b>Peripheral (LMN = Bell's/parotid/trauma)</b>Ipsilateral complete face including FOREHEAD INVOLVED. Forehead = the single most important finding.</div>
+    <div class="cnblk"><b>Document</b>"Left lower face weakness with forehead sparing — right cortical/UMN CN VII palsy" OR "Complete right facial palsy including forehead — right LMN/peripheral CN VII palsy."</div>
+   </div>
+  </div>
+  <div class="cncard sensory">
+   <div class="cnfig">${figCN8()}</div>
+   <div class="cnbody"><h3>CN VIII — Vestibulocochlear</h3><div class="cntag">Sensory</div>
+    <div class="cnblk"><b>Deficit</b>Sensorineural hearing loss (CN VIII / cochlea): Rinne AC>BC, Weber lateralizes to GOOD ear. Conductive: BC>AC, Weber lateralizes to BAD ear. Vestibular: nystagmus (fast phase AWAY from lesion), vertigo, ataxia, positive head-impulse test.</div>
+    <div class="cnblk"><b>Document</b>"Sensorineural hearing loss right; Weber lateralizes left; head-impulse test positive right — right vestibular neuritis vs PICA stroke; MRI ordered."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN910()}</div>
+   <div class="cnbody"><h3>CN IX / X — Glossopharyngeal / Vagus</h3><div class="cntag">Motor + Sensory</div>
+    <div class="cnblk"><b>Deficit</b>Dysphagia, hoarseness, weak gag (afferent IX, efferent X); uvula deviates AWAY from the weak side (toward the intact side). Ipsilateral Horner + these signs = Wallenberg (lateral medullary) syndrome.</div>
+    <div class="cnblk"><b>Document</b>"Uvula deviates right — left CN X weakness; hoarseness; reduced gag on left; HINTS exam performed."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN11()}</div>
+   <div class="cnbody"><h3>CN XI — Spinal Accessory</h3><div class="cntag">Motor</div>
+    <div class="cnblk"><b>Deficit</b>Weakness of SCM (turning head to the opposite side) and trapezius (shoulder shrug); shoulder drooping; asymmetric neck muscle atrophy. Isolated CN XI lesion = posterior triangle neck trauma/mass/posterior fossa.</div>
+    <div class="cnblk"><b>Document</b>"Decreased right shoulder shrug; weakness turning head left; right trapezius atrophy — right CN XI palsy."</div>
+   </div>
+  </div>
+  <div class="cncard">
+   <div class="cnfig">${figCN12()}</div>
+   <div class="cnbody"><h3>CN XII — Hypoglossal</h3><div class="cntag">Motor</div>
+    <div class="cnblk"><b>Deficit</b>Tongue deviates TOWARD the weak side on protrusion (LMN). Fasciculations = LMN (anterior horn/nerve). Contralateral deviation would be UMN (rare/subtle). Dysarthria and dysphagia accompany severe CN XII palsy.</div>
+    <div class="cnblk"><b>Document</b>"Tongue deviates right on protrusion — right CN XII palsy; fasciculations present/absent; dysarthria noted."</div>
+   </div>
+  </div>
+ </div>
+ <div class="note buzz"><b>Crossed syndrome localization:</b> Ipsilateral CN palsy + contralateral hemiplegia = BRAINSTEM lesion (not supratentorial). CN III + contralateral hemiplegia = Weber syndrome (midbrain). CN VI/VII + contralateral hemiplegia = Millard-Gubler (pons). CN IX/X/XI + contralateral arm/leg = Wallenberg (lateral medulla, PICA). The CN tells you the LEVEL; the crossed weakness confirms it's the BRAINSTEM, not the cortex.</div>`;
+}
+
+/* CN illustration helpers */
+function mkSVG(body){ return `<svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet"><rect width="200" height="130" fill="var(--bg2)"/>${body}</svg>`; }
+function baseFace(){ return `<ellipse cx="100" cy="60" rx="38" ry="46" fill="#f0e8d8" stroke="#a09080" stroke-width="1.5"/>`; }
+function eyeL(){ return `<ellipse cx="82" cy="50" rx="20" ry="13" fill="#f5f0e8" stroke="#888" stroke-width="1.2"/><circle cx="82" cy="50" r="6" fill="#4a3a2a"/><circle cx="83" cy="49" r="2" fill="white" opacity="0.7"/>`; }
+function eyeR(){ return `<ellipse cx="118" cy="50" rx="20" ry="13" fill="#f5f0e8" stroke="#888" stroke-width="1.2"/><circle cx="118" cy="50" r="6" fill="#4a3a2a"/><circle cx="119" cy="49" r="2" fill="white" opacity="0.7"/>`; }
+function captionTx(t){ return `<text x="100" y="122" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">${t}</text>`; }
+
+function figCN2(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<path d="M62,50 l0,-16 l76,0 l0,16" fill="none" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>`+
+ `<rect x="130" y="35" width="36" height="30" rx="4" fill="#9b6cd6" opacity="0.35"/>`+
+ `<text x="148" y="53" font-family="SF Mono,monospace" font-size="8" fill="var(--spine)" text-anchor="middle">hemianopia</text>`+
+ captionTx("visual field testing")); }
+
+function figCN3(){ return mkSVG(baseFace()+
+ `<ellipse cx="82" cy="50" rx="20" ry="13" fill="#f5f0e8" stroke="#888" stroke-width="1.2"/>`+
+ `<circle cx="79" cy="53" r="8" fill="#3a2a1a" opacity="0.6"/>`+// down-out, large pupil
+ `<circle cx="79" cy="53" r="8" fill="none" stroke="#d64040" stroke-width="1.5"/>`+// dilated pupil mark
+ eyeR()+
+ `<path d="M68,40 Q82,36 88,40" fill="#c88" stroke="#a66" stroke-width="1.5" opacity="0.8"/>`+// ptosis
+ `<text x="80" y="36" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)" text-anchor="middle">ptosis</text>`+
+ captionTx("down-and-out + ptosis + mydriasis")); }
+
+function figCN4(){ return mkSVG(baseFace()+
+ `<ellipse cx="82" cy="46" rx="20" ry="13" fill="#f5f0e8" stroke="#888" stroke-width="1.2"/>`+
+ `<circle cx="82" cy="43" r="6" fill="#4a3a2a"/>`+// hypertropia
+ eyeR()+
+ `<text x="82" y="36" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)" text-anchor="middle">↑ hyper</text>`+
+ `<path d="M100,90 Q80,100 90,110" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="2 2"/>`+
+ captionTx("vertical diplopia, worse downstairs")); }
+
+function figCN5(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<path d="M100,30 L66,44 L70,80 Z" fill="#5b9bd5" opacity="0.3"/>`+
+ `<path d="M100,44 L65,62 L72,82 Z" fill="#5b9bd5" opacity="0.2"/>`+
+ `<path d="M100,62 L64,78 L76,100 Z" fill="#5b9bd5" opacity="0.3"/>`+
+ `<text x="56" y="44" font-family="SF Mono,monospace" font-size="7" fill="var(--neuro)">V1</text>`+
+ `<text x="54" y="64" font-family="SF Mono,monospace" font-size="7" fill="var(--neuro)">V2</text>`+
+ `<text x="56" y="84" font-family="SF Mono,monospace" font-size="7" fill="var(--neuro)">V3</text>`+
+ captionTx("3 sensory divisions of face")); }
+
+function figCN6(){ return mkSVG(baseFace()+
+ `<ellipse cx="82" cy="50" rx="20" ry="13" fill="#f5f0e8" stroke="#888" stroke-width="1.2"/>`+
+ `<circle cx="72" cy="50" r="6" fill="#4a3a2a"/>`+// esotropia - eye turned in
+ eyeR()+
+ `<line x1="56" y1="50" x2="68" y2="50" stroke="var(--warn)" stroke-width="2"/>`+
+ `<text x="64" y="46" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)">→</text>`+
+ captionTx("fails to abduct / esotropia")); }
+
+function figCN7(){ return mkSVG(
+ `<ellipse cx="56" cy="60" rx="34" ry="42" fill="#f0e8d8" stroke="#a09080" stroke-width="1.5"/>`+
+ `<ellipse cx="148" cy="60" rx="34" ry="42" fill="#f0e8d8" stroke="#a09080" stroke-width="1.5"/>`+
+ `<text x="56" y="14" font-family="SF Mono,monospace" font-size="7" font-weight="700" fill="var(--good)" text-anchor="middle">UMN (Central)</text>`+
+ `<text x="148" y="14" font-family="SF Mono,monospace" font-size="7" font-weight="700" fill="var(--warn)" text-anchor="middle">LMN (Peripheral)</text>`+
+ // Central: forehead intact, lower droops
+ `<path d="M40,40 Q56,38 72,40" fill="none" stroke="#888" stroke-width="1.5"/>`+// forehead ok
+ `<path d="M40,66 Q50,64 56,65 Q62,66 72,70" fill="none" stroke="#d64040" stroke-width="2.5"/>`+// droop
+ `<text x="56" y="118" font-family="SF Mono,monospace" font-size="7" fill="var(--good)" text-anchor="middle">forehead SPARED</text>`+
+ // Peripheral: both droop
+ `<path d="M132,40 Q148,44 164,40" fill="none" stroke="#d64040" stroke-width="2.5"/>`+// forehead droops
+ `<path d="M132,66 Q142,70 148,71 Q156,72 164,70" fill="none" stroke="#d64040" stroke-width="2.5"/>`+// lower droops
+ `<text x="148" y="118" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)" text-anchor="middle">forehead INVOLVED</text>`); }
+
+function figCN8(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<ellipse cx="62" cy="55" rx="6" ry="10" fill="#c88a30" opacity="0.7"/>`+
+ `<text x="52" y="46" font-family="SF Mono,monospace" font-size="7" fill="var(--gold)">ear</text>`+
+ `<path d="M118,52 l14,0 M118,56 l10,0 M118,60 l14,0" stroke="var(--accent)" stroke-width="1.5" opacity="0.7"/>`+
+ `<text x="136" y="50" font-family="SF Mono,monospace" font-size="6" fill="var(--accent)">nystagmus</text>`+
+ captionTx("hearing loss + nystagmus/vertigo")); }
+
+function figCN910(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<path d="M80,86 Q100,90 120,86" fill="none" stroke="#888" stroke-width="1.5"/>`+
+ `<ellipse cx="100" cy="76" rx="7" ry="4" fill="#c88a88" opacity="0.7"/>`+
+ `<path d="M100,73 L114,64" stroke="var(--warn)" stroke-width="2"/>`+
+ `<text x="118" y="62" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)">→ away</text>`+
+ captionTx("uvula deviates away from lesion")); }
+
+function figCN11(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<rect x="136" y="80" width="20" height="36" rx="6" fill="#f0e8d8" stroke="#a09080" stroke-width="1.5"/>`+
+ `<path d="M146,80 Q150,66 152,54" stroke="#888" stroke-width="1.5" fill="none"/>`+
+ `<line x1="136" y1="88" x2="158" y2="80" stroke="var(--warn)" stroke-width="2" stroke-dasharray="2 2"/>`+
+ `<text x="150" y="50" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)" text-anchor="middle">weak shrug</text>`+
+ captionTx("SCM + trapezius weakness")); }
+
+function figCN12(){ return mkSVG(baseFace()+eyeL()+eyeR()+
+ `<path d="M80,86 Q100,90 120,86" fill="none" stroke="#888" stroke-width="1.5"/>`+
+ `<ellipse cx="100" cy="80" rx="20" ry="8" fill="#c88a88" opacity="0.5"/>`+
+ `<ellipse cx="110" cy="80" rx="20" ry="8" fill="#c88a88" opacity="0.3"/>`+
+ `<path d="M100,77 L116,79" stroke="var(--warn)" stroke-width="2"/>`+
+ `<text x="120" y="76" font-family="SF Mono,monospace" font-size="7" fill="var(--warn)">→ toward weak</text>`+
+ captionTx("tongue deviates toward weak side")); }
+
+document.getElementById('main').innerHTML =
+ strokeRecognition()+imaging()+treatment()+nihss()+mimics()+spinalCord()+umnLmn()+cordSyndromes()+spinalPearls()+focalFindings()+cranialNerves();
+document.getElementById('foot').innerHTML="Master-level educational synthesis reflecting AHA/ASA stroke guidelines, DAWN/DEFUSE-3 trial criteria, and standard neuroanatomy and spinal-cord-injury teaching. Imaging thresholds (ASPECTS, NIHSS, core volumes), treatment windows, and dosing are approximate teaching values that must be verified against current institutional protocols and guidelines. All figures are stylized original teaching schematics. Not a protocol or a substitute for clinical judgment and specialist involvement.";
+
+(function(){
+ const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+ const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+ const root=document.documentElement,b=document.getElementById('themeToggle');
+ const ico=document.getElementById('themeIco'),txt=document.getElementById('themeTxt');
+ function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+ set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+ b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>
