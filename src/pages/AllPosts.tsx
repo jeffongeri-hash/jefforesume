@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Neurologic Emergencies Atlas — Stroke, Spine, Seizures & CNS Infections",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 23, 2026",
+      excerpt: "A two-part neurologic emergencies atlas: stroke syndromes and spinal cord emergencies, plus seizures, ASMs, and CNS infections with bedside pearls and management algorithms.",
+      image: businessPost,
+      slug: "neurologic-emergencies-atlas",
+      tags: ["Neurology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
       title: "Procedural Companions — Splinting, Nerve Blocks & Sedation",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",

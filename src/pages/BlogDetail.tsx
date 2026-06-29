@@ -361,6 +361,28 @@ const blogPosts = {
       <p><a href="/embeds/arrhythmia-origins.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "neurologic-emergencies-atlas": {
+    title: "Neurologic Emergencies Atlas — Stroke, Spine, Seizures & CNS Infections",
+    category: "HEALTHCARE",
+    date: "June 23, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A two-part neurologic emergencies atlas. Part I covers stroke syndromes, vascular territories, and spinal cord emergencies. Part II covers seizures, antiseizure medications, and CNS infections — with bedside pearls, imaging cues, and management algorithms.</p>
+      <h2>Part I — Stroke & Spinal Cord</h2>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/stroke-spinal-atlas.html" title="Stroke & Spinal Cord Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/stroke-spinal-atlas.html" target="_blank" rel="noopener">Open Part I in a new tab →</a></p>
+      <h2>Part II — Seizures, ASMs & CNS Infections</h2>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/seizure-cns-atlas.html" title="Seizures, ASMs & CNS Infections Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/seizure-cns-atlas.html" target="_blank" rel="noopener">Open Part II in a new tab →</a></p>
+    `
+  },
   "sacramento-suburb-guide-3br-housing-commute-budget": {
     title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
     category: "HEALTHCARE",
