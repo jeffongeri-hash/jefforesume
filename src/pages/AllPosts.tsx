@@ -19,6 +19,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Renal Emergency Atlas — AKI, Electrolytes, Stones, Diuretics & UA",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 24, 2026",
+      excerpt: "A renal emergency atlas covering acute kidney injury, electrolyte derangements, nephrolithiasis, diuretic pharmacology, and urinalysis interpretation — with GFR-based staging, stone management algorithms, and bedside pearls.",
+      image: businessPost,
+      slug: "renal-emergency-atlas",
+      tags: ["Nephrology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
       title: "Neurologic Emergencies Atlas — Stroke, Spine, Seizures & CNS Infections",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
