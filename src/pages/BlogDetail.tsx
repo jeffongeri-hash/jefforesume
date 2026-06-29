@@ -3302,6 +3302,28 @@ const blogPosts = {
       <p class="text-sm text-muted-foreground italic mt-6">Rent figures from Zillow and RentCafe. Commute estimates from Rome2Rio and Travelmath. Salary signals from Glassdoor and Indeed. Texas has no state income tax. Budget model uses Walmart-based grocery pricing and Houston utility rate estimates.</p>
     `
   },
+  "renal-emergency-atlas": {
+    title: "Renal Emergency Atlas — AKI, Electrolytes, Stones, Diuretics & UA",
+    category: "HEALTHCARE",
+    date: "June 24, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A renal emergency atlas covering acute kidney injury, electrolyte derangements, nephrolithiasis, diuretic pharmacology, and urinalysis interpretation — with GFR-based staging, stone management algorithms, and bedside pearls for the emergency department.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/renal-emergency-atlas.html"
+          title="Renal Emergency Atlas"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/renal-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
@@ -3315,6 +3337,13 @@ const blogPosts = {
 };
 
 const popularPosts = [
+  {
+    title: "Renal Emergency Atlas — AKI, Electrolytes, Stones, Diuretics & UA",
+    category: "HEALTHCARE",
+    date: "June 24, 2026",
+    image: businessPost,
+    slug: "renal-emergency-atlas"
+  },
   {
     title: "Pediatric EM Atlas — Board Review",
     category: "HEALTHCARE",
