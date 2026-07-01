@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Procedural Sedation Master Atlas — Anesthesiology Reference</title>
+<style>
+  :root{
+    --bg:#0b0d11;--bg2:#11151b;--panel:#141920;--panelhi:#1a2028;--line:#252e38;--line2:#18222c;
+    --ink:#edf1f5;--soft:#a8b5c0;--muted:#748596;--faint:#526070;
+    --min:#46c98a;--mod:#3fa7d6;--deep:#9b6cd6;--gen:#e05a2e;
+    --prop:#3fa7d6;--ket:#9b6cd6;--eto:#d6a32e;--benzo:#46c98a;--opioid:#e05a2e;--dex:#34b3bd;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --grid:#0d1015;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --min:#1f9d6f;--mod:#1c7fb0;--deep:#7e4fc0;--gen:#c4422a;
+    --prop:#1c7fb0;--ket:#7e4fc0;--eto:#b06f17;--benzo:#1f9d6f;--opioid:#c4422a;--dex:#0d8c97;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:22px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:5px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.75rem;font-weight:600;padding:6px 10px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.1rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.min{border-top-color:var(--min);}.card.mod{border-top-color:var(--mod);}.card.deep{border-top-color:var(--deep);}.card.gen{border-top-color:var(--gen);}
+  .card.prop{border-top-color:var(--prop);}.card.ket{border-top-color:var(--ket);}.card.eto{border-top-color:var(--eto);}
+  .card.benzo{border-top-color:var(--benzo);}.card.opioid{border-top-color:var(--opioid);}.card.dex{border-top-color:var(--dex);}
+  .card h3{margin:0 0 2px;font-size:1.05rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--accent);}.blk.miss b{color:var(--warn);}
+  .blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.vital b{color:var(--mod);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:780px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--gen);background:color-mix(in srgb,var(--gen) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .agentgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;}
+  .agentcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;}
+  .agentcard .ahead{padding:12px 16px;font-weight:800;font-size:1.1rem;display:flex;justify-content:space-between;align-items:center;}
+  .agentcard .abody{padding:14px 16px;font-size:.84rem;}
+  .agentcard .arow{display:grid;grid-template-columns:100px 1fr;gap:4px 10px;margin:4px 0;font-size:.82rem;}
+  .agentcard .arow .lbl{font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;padding-top:2px;}
+  .agentcard .arow .val{color:var(--ink);}
+  .vital-good{color:var(--good);}.vital-warn{color:var(--warn);}.vital-crit{color:var(--gen);}
+  .combo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:16px;margin:12px 0;}
+  .combo-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;border-left:5px solid var(--accent);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+<header class="hero">
+  <div class="kick">Procedural Sedation · Master Atlas</div>
+  <h1>Sedate with precision. <em>Monitor the continuum.</em></h1>
+  <p>A comprehensive sedation reference grounded in ASA anesthesiology guidelines — the four-level continuum from anxiolysis to general anesthesia, every major agent (propofol, ketamine, ketofol, etomidate, benzodiazepines, opioids, dexmedetomidine, nitrous oxide, barbiturates), agent combinations and ratios, monitoring requirements and capnography, expected vital sign changes, concerning signs, special populations, and recovery criteria.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Procedural sedation requires appropriate credentialing, monitoring equipment, personnel trained in airway rescue, and institutional protocols. Doses are teaching values reflecting standard references — verify against current literature, patient weight, comorbidities, and institutional formulary. This atlas reflects ASA guidelines and the published sedation literature. Not a standalone clinical protocol.</div></div>
+<nav class="jump"><div class="inner">
+  <a href="#continuum">ASA continuum</a>
+  <a href="#presed">Pre-sedation</a>
+  <a href="#monitoring">Monitoring</a>
+  <a href="#agents">Agents</a>
+  <a href="#combos">Combinations</a>
+  <a href="#vitals">Vital signs</a>
+  <a href="#concerning">Concerning signs</a>
+  <a href="#special">Special populations</a>
+  <a href="#recovery">Recovery &amp; discharge</a>
+  <a href="#pearls">Pearls</a>
+</div></nav>
+<main id="main"></main>
+<footer id="foot"></footer>
+<script>
+/* ===== helpers ===== */
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 820 260'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+function pearl(p,col){return `<div class="card" style="border-top-color:${col||'var(--gold)'}"><div class="blk"><b style="color:${col||'var(--gold)'};font-size:.65rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+
+/* ============================================================
+   SECTION 1: ASA SEDATION CONTINUUM
+   ============================================================ */
+function continuum(){
+ return `<h2 class="sec" id="continuum">1 · The ASA sedation continuum — four levels, one sliding scale</h2>
+ <p class="seclead">Sedation is not a binary on/off — it is a pharmacologic continuum with four defined levels. The ASA definition makes explicit that practitioners administering sedation at one level must be able to <b>rescue the patient from the next level deeper</b>, because individual responses are unpredictable and patients drift. This principle drives every monitoring, equipment, and personnel requirement that follows.</p>
+ <div class="svgfig">${figContinuum()}<div class="figcap">The ASA four-level sedation continuum. Each arrow represents the possibility of unintended drift to a deeper level. Recovery of airway and protective reflexes follows the reverse path. The key insight: the line between levels is pharmacologically blurry — you intend moderate, you may get deep.</div></div>
+ <div class="cardgrid">
+   <div class="card min"><h3>Minimal sedation — Anxiolysis</h3>
+     <div class="tagline">responds normally to voice · ASA level 1</div>
+     <div class="blk tip"><b>Characteristics</b>Normal response to verbal commands. Cognitive function and coordination may be mildly impaired. <b>Ventilatory and cardiovascular function unaffected.</b> Patient fully protective of their own airway.</div>
+     <div class="blk dose"><b>Agents</b>Low-dose benzodiazepines (midazolam 1–2 mg IV/PO), nitrous oxide (inhaled 30–50%), low-dose oral/intranasal agents. Used for anxious patients undergoing minor procedures, IV placement, minor wound care.</div>
+     <div class="blk buzz"><b>Rescue level required</b>Provider must be able to rescue to moderate sedation level — essentially always possible with verbal and positional airway maneuvers alone.</div>
+   </div>
+   <div class="card mod"><h3>Moderate sedation — "Conscious sedation"</h3>
+     <div class="tagline">purposeful response to voice/touch · ASA level 2</div>
+     <div class="blk tip"><b>Characteristics</b>A minimally depressed level of consciousness. Patient retains the <b>ability to maintain airway and respond purposefully to verbal or tactile stimulation.</b> Protective reflexes intact. Spontaneous ventilation adequate. The patient may not remember the procedure (amnesia common) but can respond if asked.</div>
+     <div class="blk dose"><b>Agents</b>Midazolam ± fentanyl, low-dose propofol, low-dose ketamine, nitrous oxide (higher concentrations), dexmedetomidine. The workhorse level for endoscopy, minor orthopedic manipulation, cardioversion.</div>
+     <div class="blk miss"><b>The "conscious sedation" misnomer</b>Patients undergoing "conscious sedation" are often NOT conscious — they are sedated to a point of amnesia and impaired cognition. The terminology persists but is increasingly replaced by "moderate sedation and analgesia."</div>
+   </div>
+   <div class="card deep"><h3>Deep sedation</h3>
+     <div class="tagline">purposeful response only to pain · ASA level 3</div>
+     <div class="blk tip"><b>Characteristics</b>Patient cannot be easily aroused but responds purposefully to repeated or painful stimulation. Airway may need support (jaw thrust, head tilt). Spontaneous ventilation may be inadequate. Cardiovascular function usually maintained. Protective reflexes partially lost — aspiration risk increases.</div>
+     <div class="blk dose"><b>Agents</b>Propofol infusion, ketamine (higher doses), propofol + ketamine, etomidate, high-dose benzodiazepines + opioids. Used for procedural sedation (joint reductions, abscess I&amp;D, complex wound care, pediatric procedures, endoscopy).</div>
+     <div class="blk miss"><b>Rescue level required</b>Provider must be able to manage a general anesthesia-level airway: BVM ventilation, supraglottic airway, intubation. This is the level where capnography, reversal agents, and airway kit are mandatory.</div>
+   </div>
+   <div class="card gen"><h3>General anesthesia</h3>
+     <div class="tagline">unarousable · ASA level 4</div>
+     <div class="blk tip"><b>Characteristics</b>Patient unarousable, even to painful stimulation. Airway intervention often required. Spontaneous ventilation frequently inadequate. Cardiovascular function may be impaired. Complete loss of protective reflexes. Requires an anesthesia provider.</div>
+     <div class="blk miss"><b>Unintended GA during procedural sedation</b>Occurs when excessive or rapidly administered agents push the patient through deep sedation. Recognition = loss of response + apnea → BVM immediately, call for help, prepare to intubate. Don't chase unconsciousness with more drug.</div>
+   </div>
+ </div>
+ <div class="svgfig">${figRescueLevels()}<div class="figcap">Rescue capability matrix: each provider level must be equipped to rescue one level below their target. A provider targeting moderate sedation must be able to manage a patient who accidentally reaches deep sedation. A provider targeting deep sedation must be able to manage a patient who reaches general anesthesia (bag-valve-mask, airway adjuncts, intubation capability). Equipment and personnel must match the rescue level, not just the intended level.</div></div>`;
+}
+
+function figContinuum(){
+ const W=820,H=180;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const levels=[
+  {x:14,w:177,col:'var(--min)',t:'MINIMAL',sub:'Anxiolysis',resp:'Normal verbal',airway:'Unaffected',vent:'Unaffected',cv:'Unaffected'},
+  {x:207,w:177,col:'var(--mod)',t:'MODERATE',sub:'"Conscious" sedation',resp:'Purposeful to verbal/touch',airway:'No intervention',vent:'Adequate',cv:'Usually maintained'},
+  {x:400,w:177,col:'var(--deep)',t:'DEEP',sub:'Deep sedation',resp:'Purposeful to pain only',airway:'May need support',vent:'May be inadequate',cv:'Usually maintained'},
+  {x:593,w:213,col:'var(--gen)',t:'GENERAL',sub:'General anesthesia',resp:'Unarousable',airway:'Intervention required',vent:'Often inadequate',cv:'May be impaired'}
+ ];
+ levels.forEach((l,i)=>{
+  inner+=`<rect x="${l.x}" y="12" width="${l.w}" height="158" rx="9" fill="${l.col}" opacity="0.15" stroke="${l.col}" stroke-width="1.5"/>`;
+  inner+=tx(l.x+l.w/2,32,l.t,l.col,11,'middle',700)+tx(l.x+l.w/2,48,l.sub,'var(--soft)',8,'middle');
+  inner+=tx(l.x+l.w/2,72,l.resp,'var(--ink)',8,'middle');
+  inner+=tx(l.x+l.w/2,92,l.airway,'var(--ink)',8,'middle');
+  inner+=tx(l.x+l.w/2,112,l.vent,'var(--ink)',8,'middle');
+  inner+=tx(l.x+l.w/2,132,l.cv,'var(--ink)',8,'middle');
+  if(i<3)inner+=`<path d="M${l.x+l.w+1},80 l12,0" stroke="var(--muted)" stroke-width="2" marker-end="url(#ca)"/>`;
+ });
+ inner+=tx(14,170,'Responsiveness','var(--muted)',7,'start');
+ inner+=tx(14,155,'','var(--muted)',7,'start');
+ inner+=`<defs><marker id="ca" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function figRescueLevels(){
+ const W=820,H=160;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ inner+=tx(W/2,22,'Rescue Capability Requirement','var(--ink)',12,'middle',700);
+ const rows=[
+  {target:'Target: Minimal',rescue:'Must rescue: Moderate',col:'var(--min)',rx:20},
+  {target:'Target: Moderate',rescue:'Must rescue: Deep',col:'var(--mod)',rx:220},
+  {target:'Target: Deep',rescue:'Must rescue: General anesthesia — BVM, airway kit, intubation ready',col:'var(--deep)',rx:420},
+ ];
+ rows.forEach((r,i)=>{
+  inner+=`<rect x="${r.rx}" y="38" width="180" height="34" rx="7" fill="${r.col}" opacity="0.18" stroke="${r.col}" stroke-width="1.3"/>`;
+  inner+=tx(r.rx+90,52,r.target,r.col,10,'middle',700)+tx(r.rx+90,65,'→ '+r.rescue,'var(--soft)',7,'middle');
+ });
+ inner+=tx(W/2,108,'Equipment rule: the rescue level determines what you MUST have in the room, not the target level','var(--muted)',9,'middle');
+ inner+=tx(W/2,128,'Deep sedation → BVM ventilation, NPA/OPA, laryngoscope + ETT, reversal agents, lipid emulsion, defibrillator immediately accessible','var(--soft)',8,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 2: PRE-SEDATION ASSESSMENT
+   ============================================================ */
+function preSedation(){
+ return `<h2 class="sec" id="presed">2 · Pre-sedation assessment — the evaluation that prevents complications</h2>
+ <p class="seclead">The pre-sedation evaluation determines the risk level, identifies contraindications, shapes agent selection, and sets the monitoring and personnel requirements. It must be documented. Performed by a physician or advanced practice provider, not delegated to nursing alone.</p>
+ <div class="svgfig">${figSOAPME()}<div class="figcap">SOAPME — the pre-procedural setup checklist. Every element should be confirmed present and functional before the first drug is given. Checking SOAPME out loud as a team confirms readiness and prevents the most dangerous complication: discovering the BVM doesn't work when you need it.</div></div>
+ <div class="cardgrid wide">
+   <div class="card mod"><h3>ASA physical status classification</h3>
+     <div class="blk dose"><b>ASA I</b>Normal healthy patient. <b>ASA II</b>Mild systemic disease (controlled HTN, DM, mild asthma, smoker, pregnancy). <b>ASA III</b>Severe systemic disease (COPD, morbid obesity BMI &gt;40, active hepatitis, poorly controlled DM/HTN, implanted pacemaker, ESRD on HD). <b>ASA IV</b>Life-threatening systemic disease. <b>ASA V</b>Moribund.</div>
+     <div class="blk miss"><b>Procedural sedation candidates</b>ASA I–II are ideal. ASA III with caution and additional monitoring. ASA IV–V → anesthesia consultation before proceeding with non-anesthesiologist sedation.</div>
+   </div>
+   <div class="card mod"><h3>Airway assessment — the most critical component</h3>
+     <div class="blk dose"><b>LEMON mnemonic</b>Look (obesity, large tongue, facial trauma, beard), Evaluate (3-3-2 rule: mouth open ≥3 fingers, hyoid-chin ≥3 fingers, hyoid-thyroid ≥2 fingers), Mallampati (I–IV), Obstruction (stridor, tumor, neck mass), Neck mobility.</div>
+     <div class="blk miss"><b>Mallampati III–IV, BMI &gt;40, or known difficult airway</b>→ alert anesthesia before proceeding; have a double-setup (plan A and plan B for airway rescue). A failed airway during sedation is a sentinel event.</div>
+   </div>
+   <div class="card mod"><h3>Fasting — the updated evidence</h3>
+     <div class="blk tip"><b>Traditional NPO</b>Clear liquids 2h, light meal 6h, heavy meal/fried/fatty 8h before elective procedures (ASA fasting guidelines).</div>
+     <div class="blk buzz"><b>ED/Emergency sedation</b>ACEP and multiple practice guidelines support that pre-procedural fasting status should NOT routinely delay urgent/emergent procedural sedation in the ED — the aspiration risk in emergency ED sedation is low and has not been linked to fasting duration in the literature. Weigh urgency vs risk, document the assessment, and use a lower aspiration-risk technique (upright positioning, BLS head of bed elevation) when fasting status is uncertain. Emergent cases = proceed with documentation of clinical necessity.</div>
+   </div>
+   <div class="card mod"><h3>Critical history items</h3>
+     <div class="blk">Prior sedation/anesthesia experiences (adverse reactions, difficult airway history, PONV), current medications (anticoagulants, antihypertensives, CNS depressants — additive effects), drug allergies (especially egg/soy for propofol if egg-allergic — the current evidence is that egg allergy is NOT a contraindication to propofol but document it), substance use (alcohol dependence → cross-tolerance, opioid tolerance), last meal time, pregnancy status.</div>
+   </div>
+ </div>`;
+}
+
+function figSOAPME(){
+ const W=820,H=120;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const items=[
+  {l:'S',t:'Suction',d:'Functional suction at bedside'},
+  {l:'O',t:'Oxygen',d:'Flow meter, mask, NRB ready'},
+  {l:'A',t:'Airway',d:'BVM, NPA, OPA, LMA, laryngoscope, ETT'},
+  {l:'P',t:'Pharmacy',d:'Reversal agents (naloxone, flumazenil), lipid emulsion, atropine'},
+  {l:'M',t:'Monitors',d:'SpO2, ETCO2, ECG, NIBP, temperature'},
+  {l:'E',t:'Equipment',d:'IV access ×2, defibrillator accessible, crash cart location confirmed'}
+ ];
+ const bw=130;
+ items.forEach((it,i)=>{
+  const x=6+i*bw;
+  inner+=`<rect x="${x}" y="10" width="${bw-5}" height="100" rx="9" fill="var(--accent)" opacity="0.12" stroke="var(--accent)" stroke-width="1.3"/>`;
+  inner+=tx(x+(bw-5)/2,36,it.l,'var(--accent)',22,'middle',700);
+  inner+=tx(x+(bw-5)/2,54,it.t,'var(--ink)',10,'middle',700);
+  const words=it.d.split(' ');let line='';let yy=70;
+  words.forEach(w=>{if((line+w).length>18){inner+=tx(x+(bw-5)/2,yy,line.trim(),'var(--soft)',7,'middle');line=w+' ';yy+=11;}else line+=w+' ';});
+  inner+=tx(x+(bw-5)/2,yy,line.trim(),'var(--soft)',7,'middle');
+ });
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 3: MONITORING
+   ============================================================ */
+function monitoring(){
+ return `<h2 class="sec" id="monitoring">3 · Monitoring — the ASA standards &amp; what each parameter tells you</h2>
+ <p class="seclead">The ASA requires that oxygenation, ventilation, circulation, and temperature be continuously monitored during any sedation. The key insight: monitoring can detect a complication before it becomes a catastrophe — but only if someone is watching it. A <b>dedicated observer separate from the proceduralist</b> is required for moderate and deep sedation.</p>
+ <div class="svgfig">${figMonitoringMatrix()}<div class="figcap">Monitoring requirements by sedation level. As depth increases, monitoring intensity must increase. The critical upgrade from minimal to moderate sedation is the addition of continuous capnography — capnography detects hypoventilation and apnea 60–90 seconds before SpO₂ drops, allowing intervention before desaturation.</div></div>
+ <div class="cardgrid wide">
+   <div class="card mod"><h3>SpO₂ — pulse oximetry</h3>
+     <div class="blk tip"><b>What it tells you</b>Peripheral oxygen saturation of hemoglobin. Continuous, non-invasive. Required for ALL sedation levels.</div>
+     <div class="blk miss"><b>Critical limitation</b>SpO₂ lags behind apnea by 60–90 seconds (on supplemental O₂, up to 2–3 minutes). A patient on supplemental O₂ can be apneic for over a minute while SpO₂ stays above 95%. <b>Supplemental O₂ during sedation masks hypoventilation on SpO₂ — this is why capnography is essential.</b></div>
+     <div class="blk dose"><b>Normal range</b>≥95% (94% triggers intervention consideration, &lt;90% = emergency). Note: SpO₂ is unreliable in low-perfusion states, nail polish (blue/black/green), motion artifact, severe anemia, carbon monoxide poisoning (reads falsely normal).</div>
+   </div>
+   <div class="card mod"><h3>Capnography (ETCO₂) — the airway sentinel</h3>
+     <div class="blk miss"><b>The single most important monitoring upgrade</b>Waveform capnography (not numeric alone) detects apnea, hypoventilation, airway obstruction, bronchospasm, and esophageal intubation in real time. Normal ETCO₂: 35–45 mmHg. Rising ETCO₂ = hypoventilation; flat line = apnea or disconnect.</div>
+     <div class="blk dose"><b>Waveform interpretation</b>Normal = square wave. Sloped upstroke = partial obstruction/bronchospasm. Absent waveform + clinical apnea = airway emergency. Low amplitude = low tidal volume or air leak. Rising plateau = hypoventilation (ETCO₂ rising above 50).</div>
+     <div class="blk tip"><b>During sedation</b>ETCO₂ &gt;50 mmHg or absence of waveform → stimulate, repositon airway, jaw thrust, reduce drug, BVM if no response. Don't wait for SpO₂ to drop — that's 90 seconds too late.</div>
+   </div>
+   <div class="card mod"><h3>ECG — continuous rhythm monitoring</h3>
+     <div class="blk">Continuous from induction through recovery. Required by ASA for all sedation. Allows detection of arrhythmias (QT prolongation — especially with droperidol, haloperidol, methadone; bradycardia with dexmedetomidine; tachycardia with ketamine; ventricular arrhythmia with large doses of local anesthetics).</div>
+     <div class="blk tip"><b>Fosphenytoin/phenytoin</b>Requires continuous ECG and blood pressure monitoring during IV infusion — can cause bradycardia, AV block, and QRS widening at excessive rates.</div>
+   </div>
+   <div class="card mod"><h3>Non-invasive blood pressure (NIBP)</h3>
+     <div class="blk">Cycle every 5 minutes during sedation (ASA minimum). More frequently during induction and at each dose change. Propofol causes dose-dependent vasodilation and hypotension; ketamine increases BP; opioids may decrease BP with large doses.</div>
+     <div class="blk dose"><b>Target</b>MAP ≥65 mmHg; SBP ≥90 mmHg. Hypotension (SBP &lt;20% of baseline or &lt;90) → reduce drug, fluids, consider vasopressor (phenylephrine 50–100 mcg IV for vasodilatory hypotension).</div>
+   </div>
+   <div class="card mod"><h3>Sedation depth assessment</h3>
+     <div class="blk dose"><b>Ramsay Sedation Scale</b>1: Agitated/anxious; 2: Cooperative, oriented, tranquil (TARGET for moderate); 3: Responds to commands only; 4: Brisk response to glabella tap/loud noise (TARGET for deep); 5: Sluggish response; 6: No response. ASA monitoring requires periodic clinical assessment of responsiveness.</div>
+     <div class="blk dose"><b>Richmond Agitation-Sedation Scale (RASS)</b>+1 to +4 (agitation), 0 (alert), −1 to −2 (light sedation: drowsy/light), −3 to −4 (deep sedation), −5 (unarousable). Target: −1 to −2 for most procedural sedation; −3 for deep.</div>
+     <div class="blk tip"><b>BIS monitor</b>Bispectral index (0–100): 100 = awake, 60–85 = sedation, 40–60 = general anesthesia, &lt;40 = deep anesthesia/burst suppression. Not universally used in procedural sedation but helpful for titrating infusions, especially propofol.</div>
+   </div>
+   <div class="card mod"><h3>Temperature</h3>
+     <div class="blk">Monitor when clinically significant temperature changes are expected (prolonged procedures, pediatric cases, room-temperature IVF). Hypothermia occurs with extended procedural sedation — especially in children. Ketamine preserves thermogenic reflexes better than propofol.</div>
+   </div>
+ </div>
+ <div class="note crit"><b>The dedicated observer rule:</b> The person monitoring the patient is NOT the proceduralist. During deep sedation, a dedicated clinical observer — who has no other procedural role — must continuously monitor the patient's airway, respiration, vital signs, and level of consciousness. If the proceduralist is the only person watching both the field and the patient simultaneously, safety is compromised. This is non-negotiable in accredited settings.</div>`;
+}
+
+function figMonitoringMatrix(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const cols=['Monitor','Minimal (Anxiolysis)','Moderate (Conscious)','Deep Sedation','General Anesthesia'];
+ const rows=[
+  ['SpO₂ (pulse ox)','✓ Continuous','✓ Continuous','✓ Continuous','✓ Continuous'],
+  ['Capnography (ETCO₂)','Optional','✓ Required (ASA)','✓ Required','✓ Required'],
+  ['ECG','✓ Continuous','✓ Continuous','✓ Continuous','✓ Continuous'],
+  ['NIBP','q15–30 min','q5 min','q5 min or arterial','q5 min or arterial'],
+  ['Dedicated observer','Not required','Required','Required','Required (anesthesia)'],
+  ['Airway rescue ready','BVM available','BVM at bedside','BVM + supraglottic + ETT','Full airway capability']
+ ];
+ const colW=[180,130,150,130,175];let cx=14;
+ cols.forEach((c,i)=>{
+  inner+=`<rect x="${cx}" y="10" width="${colW[i]-4}" height="26" rx="5" fill="var(--panelhi)"/>`;
+  inner+=tx(cx+colW[i]/2-2,27,c,'var(--soft)',9,'middle',700);
+  cx+=colW[i];
+ });
+ rows.forEach((r,ri)=>{
+  let cx2=14;
+  r.forEach((cell,ci)=>{
+   const y=42+ri*24;
+   const isOK=cell.startsWith('✓');
+   const isFail=cell.includes('Not req')||cell==='Optional';
+   const col=ci===0?'var(--soft)':isOK?'var(--good)':isFail?'var(--muted)':'var(--ink)';
+   inner+=tx(cx2+colW[ci]/2-2,y+8,cell,col,8,'middle',ci===0?700:0);
+   cx2+=colW[ci];
+  });
+ });
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 4: AGENTS — in-depth
+   ============================================================ */
+function agents(){
+ return `<h2 class="sec" id="agents">4 · Sedation agents — mechanism, dosing, hemodynamics, and clinical pearls</h2>
+ <p class="seclead">Each agent has a distinct mechanism, hemodynamic profile, airway impact, onset, and recovery. The art of sedation is matching the agent to the procedure, the patient, and the depth required — while understanding what your chosen drug does to the airway, the heart, and the brain.</p>
+ ${agentCard('PROPOFOL','Sedative-hypnotic (GABA-A PAM)','var(--prop)',{
+   MOA:'Positive allosteric modulation of GABA-A receptor → enhanced chloride influx → CNS depression. Does NOT provide analgesia — this is the most common mistake.',
+   Onset:'IV: 30–60 seconds (fastest onset of common agents)',
+   Duration:'5–10 minutes per bolus; offset by redistribution',
+   Induction:'0.5–1.5 mg/kg IV (reduce 30–50% in elderly, ASA III, hypovolemic — start 0.5 mg/kg)',
+   Maintenance:'25–75 mcg/kg/min infusion OR 0.5 mg/kg boluses PRN',
+   Airway:'Dose-dependent respiratory depression → apnea. Decreases upper airway tone. No bronchospasm (mildly bronchodilatory).',
+   Hemodynamics:'Significant VASODILATION + decreased myocardial contractility → hypotension (SBP drop 20–40%). The most hypotension-prone agent. Mitigated by slow titration and pre-hydration.',
+   Cautions:'No analgesia (pain → movement/inadequate sedation → more propofol → apnea). Propofol infusion syndrome (PRIS) with prolonged high-dose infusion (ICU). Pain on injection (use larger vein, lidocaine pretreatment). Soy/egg allergy: current evidence does NOT support propofol contraindication in egg allergy — allergy is to egg white (ovalbumin), propofol contains egg lecithin (yolk-derived, different protein). Document and proceed with awareness in severe egg allergy.',
+   BestFor:'Brief painful procedures requiring deep sedation (reductions, cardioversion, abscess I&D, endoscopy). Rapid recovery is the key advantage.',
+   Recovery:'Clearheaded, fast — typically 10–15 min post-last dose. Antiemetic properties.'
+ })}
+ ${agentCard('KETAMINE','Dissociative anesthetic (NMDA antagonist)','var(--ket)',{
+   MOA:'Non-competitive antagonism of NMDA glutamate receptors → "dissociative" state — electrophysiologic disconnection between thalamocortical and limbic systems. Provides sedation, ANALGESIA, and amnesia simultaneously. Preserves airway reflexes (unlike other agents). Activates sympathetic nervous system.',
+   Onset:'IV: 30–60 seconds; IM: 3–5 minutes',
+   Duration:'10–20 minutes (IV); 20–30 minutes (IM)',
+   Induction:'Sub-dissociative (analgesia/anxiolysis): 0.1–0.5 mg/kg IV. Full dissociative sedation: 1–2 mg/kg IV OR 3–5 mg/kg IM.',
+   Maintenance:'0.5 mg/kg IV boluses q10–15 min PRN',
+   Airway:'Maintains airway tone and protective reflexes better than any other sedation agent. Laryngeal reflexes preserved (though NOT abolished — risk still exists at very high doses or with secretion aspiration). Rare laryngospasm (~0.3%).',
+   Hemodynamics:'Indirect sympathomimetic effect → ↑HR, ↑BP, ↑cardiac output. Excellent for hemodynamically unstable patients. In catecholamine-depleted patients (severe sepsis, chronic illness), may cause cardiovascular depression.',
+   Cautions:'Emergence reactions (dysphoria, hallucinations — "emergence agitation") in 5–30% of adults; lower rate in children; treat with midazolam 1–2 mg IV pretreatment. Increased secretions (consider glycopyrrolate 0.2 mg IV if secretions concern). Elevated ICP (traditionally avoided in head injury — now largely debunked; may be safe or even beneficial by maintaining MAP). Psychosis history: use with caution. Do NOT use in active cardiovascular disease where tachycardia/hypertension is dangerous (aortic dissection, severe CAD).',
+   BestFor:'Pediatric procedures, hemodynamically unstable patients, painful procedures, IM administration when no IV access, patients who need analgesia AND sedation.',
+   Recovery:'Emergence phase (10–20 min) — patient may be confused/agitated. Slower return to baseline than propofol.'
+ })}
+ ${agentCard('ETOMIDATE','Sedative-hypnotic (GABA-A modulator)','var(--eto)',{
+   MOA:'Enhances GABA-A receptor function via imidazole binding site. No analgesia. Profound sedation with minimal cardiovascular effect.',
+   Onset:'15–45 seconds',
+   Duration:'3–8 minutes',
+   Induction:'0.1–0.3 mg/kg IV (typical 0.2 mg/kg)',
+   Maintenance:'Not typically used as an infusion in procedural sedation; repeat boluses 0.05–0.1 mg/kg',
+   Airway:'Minimal respiratory depression compared to propofol. Does not blunt laryngeal reflexes as much. Rarely causes apnea at standard doses.',
+   Hemodynamics:'The most hemodynamically stable sedation agent — minimal effect on BP, HR, and cardiac output. The agent of choice when any hypotension is dangerous (cardiogenic shock, severe aortic stenosis, severe hypovolemia being managed).',
+   Cautions:'Myoclonus (10–80%) — jerking movements that can interfere with procedures and be confused with seizures; treat with small benzodiazepine pretreatment. Adrenal suppression — even a single dose suppresses cortisol synthesis for 4–24h (inhibits 11-beta-hydroxylase); clinical significance debated for short procedural use but relevant in septic patients. No analgesia.',
+   BestFor:'Cardioversion, hemodynamically unstable patients, brief procedures where BP stability is critical.',
+   Recovery:'Fast, similar to propofol. Higher PONV than propofol.'
+ })}
+ ${agentCard('MIDAZOLAM','Benzodiazepine (GABA-A full agonist)','var(--benzo)',{
+   MOA:'Full agonist at benzodiazepine site on GABA-A receptor → ↑frequency of chloride channel opening → CNS depression. Provides sedation, anxiolysis, anterograde amnesia. No analgesia.',
+   Onset:'IV: 2–5 minutes (slower than propofol/ketamine); IN: 5–10 min; IM: 10–20 min',
+   Duration:'30–60 minutes (MUCH longer than propofol — important for recovery planning)',
+   Induction:'0.02–0.05 mg/kg IV (max 2.5 mg); titrate 1 mg q2–3 min for anxiolysis/moderate sedation. Elderly: start 0.5–1 mg and go slow.',
+   Maintenance:'1 mg increments q5–10 min PRN',
+   Airway:'Dose-dependent respiratory depression, especially with concurrent opioids — the benzo+opioid synergy for respiratory depression is the classic cause of oversedation. Upper airway muscles affected → snoring/obstruction common.',
+   Hemodynamics:'Mild decrease in BP and SVR. Generally well tolerated but synergistic hypotension with opioids and propofol.',
+   Cautions:'REVERSAL AGENT AVAILABLE (flumazenil 0.2 mg IV q1 min, max 1 mg) — but short-acting; patient can re-sedate after flumazenil wears off. Paradoxical reactions (agitation, disinhibition) — especially in elderly, young children, substance users. Long duration is the main ED disadvantage.',
+   BestFor:'Anxiolysis/premedication, component of multimodal regimens, alcohol withdrawal seizures, adjunct to reduce emergence reactions with ketamine.',
+   Recovery:'Prolonged compared to propofol/etomidate — 1–2h functional impairment minimum.'
+ })}
+ ${agentCard('FENTANYL','Opioid analgesic (mu-receptor agonist)','var(--opioid)',{
+   MOA:'Full agonist at mu-opioid receptors → analgesia, euphoria, respiratory depression, cough suppression. High lipophilicity → fast CNS penetration. Not a sedative — provides ANALGESIA and augments sedation when combined with sedatives.',
+   Onset:'IV: 1–3 minutes',
+   Duration:'30–60 minutes',
+   Induction:'1–2 mcg/kg IV titrated in 25–50 mcg increments. Start low in elderly/opioid-naive (0.5 mcg/kg). Analgesic dose vs sedation-adjunct dose.',
+   Maintenance:'25–50 mcg increments q5–10 min as needed for procedural pain',
+   Airway:'Dose-dependent respiratory depression — rate and tidal volume both decrease. High/rapid doses cause chest wall rigidity ("wooden chest") → difficult BVM ventilation → requires succinylcholine to reverse.',
+   Hemodynamics:'Minimal at standard doses. Bradycardia (vagal) at high doses. No significant vasodilation. Generally hemodynamically neutral.',
+   Cautions:'Chest wall rigidity (truncal rigidity) with large bolus doses (>5 mcg/kg rapid push). REVERSAL: naloxone 0.04–0.4 mg IV q2–3 min (titrate to reversal of respiratory depression, not complete reversal — may precipitate acute withdrawal/pain crisis).',
+   BestFor:'Analgesic component of procedural sedation — pair with propofol/midazolam for painful procedures. Solo use for mild painful procedures (fracture pain prior to X-ray, wound irrigation).',
+   Recovery:'Relatively fast; watch for re-narcotization if high doses were given (fentanyl redistribution back from tissues).'
+ })}
+ ${agentCard('DEXMEDETOMIDINE','Alpha-2 agonist','var(--dex)',{
+   MOA:'Selective alpha-2 adrenergic agonist → inhibits norepinephrine release from locus coeruleus → dose-dependent sedation and analgesia without respiratory depression. Produces a unique "cooperative sedation" — patients can be woken and communicate, then return to sedation when unstimulated.',
+   Onset:'Loading: 10–15 minutes infusion required; no rapid bolus onset',
+   Duration:'Duration of infusion + 10–20 min half-life',
+   Induction:'Loading dose: 1 mcg/kg over 10–20 min (can omit if cardiovascularly tenuous). Maintenance: 0.2–0.7 mcg/kg/h.',
+   Maintenance:'Titrate to RASS −1 to −2. Higher rates cause deeper sedation.',
+   Airway:'Minimal respiratory depression — the key advantage. Does NOT cause apnea at typical sedation doses. Makes dexmedetomidine valuable for procedures requiring patient cooperation or where airway is at risk.',
+   Hemodynamics:'Bradycardia and hypotension (especially with loading dose — give slowly or omit). Transient hypertension with rapid bolus (vasoconstriction from peripheral alpha-2 receptors before central effect). Contraindicated in severe bradycardia or heart block.',
+   Cautions:'Slow onset limits use in acute/urgent procedures. Bradycardia is common and may require atropine. Not approved for procedures requiring deep sedation alone. Caution in hepatic impairment (hepatically metabolized).',
+   BestFor:'Awake fiberoptic intubation, ICU sedation, procedures requiring patient cooperation (awake craniotomy, MRI in anxious patients), patients where respiratory depression is especially dangerous (OSA, morbid obesity, pulmonary compromise).',
+   Recovery:'Smooth, patient wakes without agitation or dysphoria. May be tired for 30–60 min.'
+ })}
+ ${agentCard('NITROUS OXIDE','Inhaled analgesic/anxiolytic','var(--min)',{
+   MOA:'Multiple mechanisms: NMDA antagonism, opioid receptor agonism, GABA-A modulation. Provides anxiolysis, analgesia, and mild sedation. Does NOT cause loss of consciousness at ≤70% concentrations (70% is the ceiling for use without O₂ contamination risk).',
+   Onset:'2–3 minutes (inhaled)',
+   Duration:'Rapid offset (2–5 min after stopping)',
+   Induction:'30–50% N₂O in O₂ for anxiolysis. 50–70% for mild procedural sedation. Always combined with ≥30% O₂.',
+   Maintenance:'Continuous inhalation via mask/nasal hood during procedure.',
+   Airway:'Minimal effect on airway/respiration at ≤70%. Preserves protective reflexes.',
+   Hemodynamics:'Mild sympathomimetic effect. Minimal hemodynamic impact in healthy patients. Can be cardiac depressant in very ill patients.',
+   Cautions:'Diffusion hypoxia on discontinuation (give 100% O₂ for 3–5 min after). Expansion of air-filled spaces — CONTRAINDICATED in bowel obstruction, pneumothorax, middle ear/sinus surgery, recent eye surgery (gas tamponade), intracranial gas. Chronic exposure causes B12 deficiency/neuropathy. Environmental pollution. Anti-nausea properties — paradoxically, some patients get PONV.',
+   BestFor:'Pediatric procedures (laceration repair, IV placement), anxious adults, brief minor procedures, adjunct to local/regional anesthesia.',
+   Recovery:'Fastest recovery of any agent — literally minutes.'
+ })}
+ ${agentCard('PHENOBARBITAL / BARBITURATES','Barbiturate (GABA-A)','var(--gen)',{
+   MOA:'Full agonist at barbiturate site of GABA-A receptor → increases duration of chloride channel opening (vs benzodiazepines which increase frequency). Profound CNS depression at high doses (can produce general anesthesia).',
+   Onset:'IV: 1–5 min; sedation within minutes',
+   Duration:'Long — hours (phenobarbital t½ 80–120 hours); methohexital (ultra-short-acting barbiturate, t½ ~4h) used in procedural sedation historically.',
+   Induction:'Phenobarbital: not typically used for procedural sedation. Status epilepticus: 15–20 mg/kg IV. Methohexital (if available): 1–1.5 mg/kg IV — used for ECT and procedural sedation where propofol unavailable.',
+   Maintenance:'Continuous infusion in refractory SE; not for procedural sedation.',
+   Airway:'Profound respiratory depression at high doses. Can cause apnea. No airway protection.',
+   Hemodynamics:'Vasodilation, myocardial depression, hypotension — more pronounced than propofol.',
+   Cautions:'Long duration limits use. Respiratory depression. Porphyria contraindication (absolute). Histamine release (urticaria, bronchospasm). Induces hepatic enzymes — major drug interactions. Not first-choice for most procedural sedation in the modern era.',
+   BestFor:'Refractory status epilepticus (phenobarbital), ECT (methohexital historically). Rare procedural use when other agents unavailable.',
+   Recovery:'Prolonged — hours for phenobarbital. Methohexital faster.'
+ })}`;
+}
+
+function agentCard(name,class_,col,d){
+ return `<div class="agentgrid" style="margin:16px 0"><div class="agentcard" style="border-top:4px solid ${col}">
+  <div class="ahead" style="background:color-mix(in srgb,${col} 14%,var(--panel))"><span style="color:${col}">${name}</span><span style="font-size:.75rem;font-weight:600;color:var(--soft)">${class_}</span></div>
+  <div class="abody">
+   <div class="arow"><div class="lbl">Mechanism</div><div class="val">${d.MOA}</div></div>
+   <div class="arow"><div class="lbl">Onset IV</div><div class="val">${d.Onset}</div></div>
+   <div class="arow"><div class="lbl">Duration</div><div class="val">${d.Duration}</div></div>
+   <div class="arow"><div class="lbl">Induction dose</div><div class="val" style="color:var(--good)">${d.Induction}</div></div>
+   <div class="arow"><div class="lbl">Maintenance</div><div class="val">${d.Maintenance}</div></div>
+   <div class="arow"><div class="lbl">Airway effects</div><div class="val" style="color:var(--warn)">${d.Airway}</div></div>
+   <div class="arow"><div class="lbl">Hemodynamics</div><div class="val">${d.Hemodynamics}</div></div>
+   <div class="arow"><div class="lbl">Cautions / traps</div><div class="val">${d.Cautions}</div></div>
+   <div class="arow"><div class="lbl">Best used for</div><div class="val" style="color:var(--accent)">${d.BestFor}</div></div>
+   <div class="arow"><div class="lbl">Recovery</div><div class="val">${d.Recovery}</div></div>
+  </div>
+ </div></div>`;
+}
+
+/* ============================================================
+   SECTION 5: COMBINATIONS
+   ============================================================ */
+function combinations(){
+ return `<h2 class="sec" id="combos">5 · Agent combinations — rationale, ratios, and the evidence</h2>
+ <p class="seclead">Combining agents is the standard in procedural sedation — no single agent provides the ideal combination of sedation, analgesia, hemodynamic stability, and airway preservation. The rationale for every combination is to use lower doses of each agent (reducing dose-dependent side effects) while achieving synergistic benefit.</p>
+ <div class="combo-grid">
+   <div class="combo-card" style="border-left-color:var(--ket)"><h3>Ketofol — ketamine + propofol</h3>
+     <div class="blk buzz"><b>The rationale</b>Ketamine (sympathomimetic, bronchodilatory, analgesic, airway-preserving) counteracts propofol's hypotension and respiratory depression. Propofol (sedating, antiemetic, smooth induction) counteracts ketamine's emergence reactions and excessive secretions. Together, they provide analgesia + sedation + hemodynamic stability.</div>
+     <div class="blk dose"><b>Ratios in the literature</b>
+     1:1 ratio (equal mix): most studied in ED. Each 1 mg/mL in combined syringe. Induction: 0.75–1.5 mg/kg total mixture.<br>
+     <b>1:4 ratio (ketamine:propofol — pharmacologically favored):</b> ketamine provides analgesia at sub-anesthetic doses; propofol provides most of the sedation. Induction: ketamine 0.5 mg/kg + propofol 1.5–2 mg/kg (given sequentially or drawn as 1:4 pre-mix).<br>
+     Separate syringes (titrate independently): emerging as preferred over fixed-ratio mixes to allow independent titration.</div>
+     <div class="blk dose"><b>Evidence</b>RCT evidence (Andolfatto et al.): ketofol did not reduce adverse respiratory events vs propofol alone, but provided more consistent sedation depth (46% of ketofol vs 65% of propofol required repeat dosing). Recovery agitation in 6/142 ketofol patients — mitigated by midazolam pretreatment.</div>
+     <div class="blk miss"><b>Cautions</b>Emergence agitation with ketamine component — premedicate with midazolam 1–2 mg IV. Excessive secretions — consider glycopyrrolate 0.1–0.2 mg IV. Don't assume the propofol "offsets" all ketamine side effects — emergence still occurs.</div>
+     <div class="blk tip"><b>Ideal for</b>Painful brief procedures (reductions, abscess I&D, cardioversion), hemodynamically borderline patients, and cases where you need both analgesia AND sedation.</div>
+   </div>
+   <div class="combo-card" style="border-left-color:var(--benzo)"><h3>Midazolam + fentanyl — the classic combination</h3>
+     <div class="blk buzz"><b>The rationale</b>Midazolam provides sedation and amnesia; fentanyl provides analgesia. Classic "conscious sedation" regimen for decades. Synergistic — much less of each is needed together than alone. Also synergistic for respiratory depression — the most dangerous aspect of this combination.</div>
+     <div class="blk dose"><b>Dosing</b>Fentanyl 1–2 mcg/kg IV (25–50 mcg increments) 3–5 minutes before midazolam. Midazolam 0.02–0.05 mg/kg (0.5–2 mg increments) titrated. Wait between doses — both have delayed onset and both are respiratory depressants.</div>
+     <div class="blk miss"><b>The synergy trap</b>The respiratory depression of midazolam + fentanyl is MORE than additive. Small doses of each alone may seem innocuous; together they cause apnea. This combination accounts for a large proportion of adverse events in moderate sedation — always have reversal agents (naloxone + flumazenil) immediately available and drawn.</div>
+     <div class="blk tip"><b>Reversal</b>Naloxone (opioid reversal) + flumazenil (benzo reversal). Flumazenil has a shorter half-life than midazolam — patient can re-sedate after flumazenil wears off. Watch for 1–2 hours post-reversal.</div>
+   </div>
+   <div class="combo-card" style="border-left-color:var(--prop)"><h3>Propofol + fentanyl (or other opioid)</h3>
+     <div class="blk buzz"><b>The rationale</b>Propofol provides fast, titratable sedation with no analgesia. Fentanyl adds analgesia. The opioid reduces the propofol requirement. Critical to give a small dose of opioid FIRST (analgesic pre-treatment), then titrate propofol — not the reverse.</div>
+     <div class="blk dose"><b>Dosing</b>Fentanyl 0.5–1 mcg/kg IV 3–5 min before propofol. Propofol 0.5–1 mg/kg IV titrated in increments. The opioid reduces the propofol induction dose by 20–30%.</div>
+     <div class="blk miss"><b>Hypotension risk</b>The propofol-opioid combination increases hypotension risk — both reduce SVR. Have phenylephrine or vasopressors ready.</div>
+   </div>
+   <div class="combo-card" style="border-left-color:var(--ket)"><h3>Ketamine + midazolam (for pediatric sedation)</h3>
+     <div class="blk buzz"><b>The rationale</b>Midazolam pretreatment (0.05–0.1 mg/kg IV, 1–3 min before ketamine) dramatically reduces ketamine emergence reactions without meaningfully prolonging recovery or increasing respiratory risk.</div>
+     <div class="blk dose"><b>Dosing</b>Midazolam 0.05 mg/kg IV → wait 2–3 min → ketamine 1–2 mg/kg IV (or 3–4 mg/kg IM). This is the standard pediatric procedural sedation regimen in most EDs.</div>
+     <div class="blk tip"><b>Ideal for</b>Pediatric laceration repair, fracture reduction, foreign body removal, burn dressing changes — any painful procedure in a child requiring full dissociation.</div>
+   </div>
+   <div class="combo-card" style="border-left-color:var(--dex)"><h3>Dexmedetomidine + ketamine (for high-risk airways)</h3>
+     <div class="blk buzz"><b>The rationale</b>Both agents preserve airway reflexes and spontaneous respiration. Together they provide sedation, analgesia, and hemodynamic stability with minimal respiratory depression — the safest combination for patients with OSA, morbid obesity, pulmonary disease, or known difficult airway who require procedural sedation.</div>
+     <div class="blk dose"><b>Dosing</b>Dexmedetomidine 0.5–1 mcg/kg over 10–20 min → ketamine 0.5–1 mg/kg IV or as needed. Lower ketamine doses used since dexmedetomidine reduces the requirement.</div>
+     <div class="blk miss"><b>Cautions</b>Slow onset of dexmedetomidine limits use in emergent procedures. Both agents cause bradycardia — monitor closely and have atropine ready.</div>
+   </div>
+   <div class="combo-card" style="border-left-color:var(--opioid)"><h3>Sub-dissociative ketamine (SDK) as analgesic adjunct</h3>
+     <div class="blk buzz"><b>The rationale</b>Ketamine at 0.1–0.3 mg/kg IV (sub-dissociative dose) provides potent analgesia and opioid-sparing effects without producing full dissociation. This allows the patient to remain conversant and cooperative while pain is well-controlled. Used as the "analgesic layer" before adding a sedative.</div>
+     <div class="blk dose"><b>Dosing</b>0.1–0.3 mg/kg IV over 10–15 min (push too fast → transient dysphoria). Can combine with propofol/midazolam and reduces their requirements by 25–40%.</div>
+     <div class="blk tip"><b>Ideal for</b>Opioid-sparing analgesia in orthopedic reductions (before reducing + sedating), burn wound care, patients with opioid tolerance, sickle cell pain, prior to laceration repair.</div>
+   </div>
+ </div>
+ <div class="svgfig">${figAgentCombo()}<div class="figcap">Agent combination comparison matrix: each combination rated across analgesia, sedation depth, hemodynamic stability, respiratory safety, and recovery speed. No single combination is ideal across all parameters — select based on the procedure's demands and the patient's physiology.</div></div>`;
+}
+
+function figAgentCombo(){
+ const W=820,H=220;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const combos=[
+  {name:'Propofol alone',vals:[0,5,3,2,5]},
+  {name:'Ketamine alone',vals:[5,4,5,5,3]},
+  {name:'Ketofol (1:1)',vals:[4,5,4,4,4]},
+  {name:'Midaz+fentanyl',vals:[3,3,4,2,2]},
+  {name:'Prop+fentanyl',vals:[3,5,3,2,5]},
+  {name:'Dex+ketamine',vals:[4,3,5,5,3]},
+ ];
+ const cats=['Analgesia','Sedation depth','Hemodynamic stability','Resp safety','Recovery speed'];
+ const catCols=['var(--opioid)','var(--deep)','var(--good)','var(--accent)','var(--gold)'];
+ const cw=120,bh=22;
+ inner+=tx(14,22,'Combination','var(--muted)',8,'start',700);
+ cats.forEach((c,i)=>inner+=tx(160+i*cw,22,c,catCols[i],8,'middle',700));
+ combos.forEach((c,ci)=>{
+  const y=38+ci*28;
+  inner+=tx(14,y+14,c.name,'var(--ink)',9,'start',700);
+  c.vals.forEach((v,i)=>{
+   const bx=160+i*cw-50;
+   inner+=`<rect x="${bx}" y="${y}" width="100" height="${bh}" rx="5" fill="var(--bg)" stroke="var(--line2)" stroke-width="1"/>`;
+   inner+=`<rect x="${bx}" y="${y}" width="${v*20}" height="${bh}" rx="5" fill="${catCols[i]}" opacity="${0.25+v*0.12}"/>`;
+   inner+=tx(bx+50,y+14,'●'.repeat(v)+' '.repeat(5-v),catCols[i],9,'middle');
+  });
+ });
+ inner+=tx(W/2,210,'●●●●● = excellent  ●●● = moderate  ● = poor','var(--muted)',8,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 6: EXPECTED VITAL SIGNS
+   ============================================================ */
+function vitalSigns(){
+ return `<h2 class="sec" id="vitals">6 · Expected vital sign changes by agent &amp; depth</h2>
+ <p class="seclead">Every sedation agent produces predictable physiologic changes. Knowing the expected changes prevents panic over normal drug effects — and knowing the abnormal boundaries identifies when a change is a complication rather than pharmacology.</p>
+ <div class="svgfig">${figVitalMatrix()}<div class="figcap">Expected vital sign changes during sedation by agent. Green = minimal/stable, amber = moderate change expected/monitor, red = significant change/intervention threshold. Ketamine is unique in its sympathomimetic cardiovascular profile; propofol is unique in its vasodilatory hypotension; dexmedetomidine uniquely spares respiration while causing bradycardia.</div></div>
+ <div class="cardgrid wide">
+   <div class="card mod"><h3>Heart rate patterns</h3>
+     <div class="blk vital"><b>By agent</b>Ketamine: ↑HR 10–20% (sympathomimesis — expected, not concerning). Propofol: mild ↓HR or unchanged; tachycardia response to hypotension may occur. Dexmedetomidine: ↓HR (bradycardia — may need treatment). Etomidate: HR minimally affected. Opioids: bradycardia (vagal) at high doses. Benzodiazepines: mild ↓HR or unchanged.</div>
+     <div class="blk miss"><b>Concerning HR changes</b>Bradycardia &lt;50 with hypotension (propofol + high opioid) → atropine 0.5 mg IV. Tachycardia &gt;130 in context of sedation = light plane, pain, hypoxia, anaphylaxis, laryngospasm — not just "the ketamine."</div>
+   </div>
+   <div class="card mod"><h3>Blood pressure patterns</h3>
+     <div class="blk vital"><b>Expected changes</b>Propofol: SBP ↓15–40 mmHg (vasodilation + cardiac depression). Etomidate: SBP stable ±5%. Ketamine: SBP ↑10–30% (sympathomimesis). Midazolam: mild ↓SVR. Dexmedetomidine: ↓BP after initial ↑ with rapid bolus. Opioids: minimal at procedural doses.</div>
+     <div class="blk miss"><b>Hypotension threshold</b>SBP &lt;90 mmHg or &gt;20% drop from baseline → stop drug, IV fluid bolus 250–500 mL LR, elevate legs, phenylephrine 50–100 mcg IV if vasodilatory. If persistent → reassess depth, consider reversal, get help.</div>
+   </div>
+   <div class="card mod"><h3>Respiratory rate &amp; pattern</h3>
+     <div class="blk vital"><b>Expected</b>All CNS depressants reduce RR. Propofol at induction doses: RR 8–14/min; apnea at higher doses. Opioids: rate slows first, tidal volume decreases. Ketamine: preserves RR and tidal volume best. Dexmedetomidine: minimal change.</div>
+     <div class="blk miss"><b>Apnea definition</b>No respiratory effort for &gt;15 seconds (some references &gt;20 sec). Treat immediately: stimulate (sternal rub), jaw thrust, BVM if no response. Don't wait for SpO₂ to drop — act on ETCO₂ flat-line and clinical assessment first.</div>
+   </div>
+   <div class="card mod"><h3>SpO₂ during supplemental O₂</h3>
+     <div class="blk buzz"><b>The masking problem</b>A patient on 4 L/min nasal cannula or face mask can maintain SpO₂ &gt;95% even during complete apnea for 60–120+ seconds because of the O₂ reservoir in the airway. SpO₂ &gt;95% does NOT confirm adequate ventilation when supplemental O₂ is running. This is why capnography is the only reliable apnea monitor when supplemental O₂ is given.</div>
+     <div class="blk dose"><b>Target SpO₂</b>≥95% at all times. Drop &lt;94% → increase O₂, jaw thrust, stimulate. Drop &lt;90% → BVM immediately, reduce drug, call for help. Keep in mind that SpO₂ &lt;90% = apnea that has been going on for at least 1–2 minutes already.</div>
+   </div>
+ </div>`;
+}
+
+function figVitalMatrix(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const agents=['Propofol','Ketamine','Etomidate','Midaz+fent','Dexmed'];
+ const params=['HR','BP','RR','SpO₂ (no O₂)','Airway tone'];
+ // Color coding: 0=stable(green), 1=moderate change(amber), 2=significant(red)
+ const data=[
+  [1,2,1,2,2], // propofol: HR ok, BP drops, RR drops, SpO2 drops, airway ↓
+  [2,2,0,0,0], // ketamine: HR ↑, BP ↑, RR ok, SpO2 ok, airway maintained
+  [0,0,1,1,1], // etomidate: HR ok, BP ok, RR mild drop, SpO2 mild, airway mild
+  [1,1,2,2,2], // midaz+fent: synergistic respiratory depression
+  [2,1,0,0,0], // dex: bradycardia, BP modest, RR ok, SpO2 ok
+ ];
+ const labels=[['stable','↑↑↑ (sympath)','stable','stable','↓↓ (brad)'],
+               ['↓↓↓ (vasodil)','↑↑ (sympath)','stable/↓','↓ mild','↓ mild'],
+               ['↓↓ (apnea risk)','maintained','↓ mild','↓↓ (synergy)','minimal'],
+               ['↓↓ (risk w/O2)','maintained','↓ mild','↓↓ (synergy)','maintained'],
+               ['↓ (tone ↓)','maintained','↓ mild','↓↓↓','maintained']];
+ const cols_c=['var(--good)','var(--gold)','var(--warn)'];
+ const cw=130,ch=26;
+ inner+=tx(14,22,'Agent','var(--muted)',8,'start',700);
+ params.forEach((p,i)=>inner+=tx(160+i*cw,22,p,'var(--soft)',8,'middle',700));
+ agents.forEach((a,ai)=>{
+  const y=36+ai*32;
+  inner+=tx(14,y+14,a,'var(--ink)',9,'start',700);
+  data[ai].forEach((v,pi)=>{
+   const bx=160+pi*cw-55;
+   inner+=`<rect x="${bx}" y="${y}" width="110" height="${ch}" rx="5" fill="${cols_c[v]}" opacity="${0.15+v*0.1}"/>`;
+   inner+=tx(bx+55,y+14,labels[pi][ai],cols_c[v],7.5,'middle');
+  });
+ });
+ const leg=[['var(--good)','Stable/expected'],['var(--gold)','Moderate change'],['var(--warn)','Significant/monitor']];
+ leg.forEach((l,i)=>{inner+=`<rect x="${200+i*200}" y="${H-18}" width="12" height="12" rx="2" fill="${l[0]}"/><text x="${216+i*200}" y="${H-8}" font-family="SF Mono,monospace" font-size="8" fill="var(--soft)">${l[1]}</text>`;});
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 7: CONCERNING SIGNS & EMERGENCIES
+   ============================================================ */
+function concerning(){
+ return `<h2 class="sec" id="concerning">7 · Concerning signs, symptoms &amp; emergency response</h2>
+ <p class="seclead">During sedation, the window between "comfortable patient" and "airway emergency" can close in seconds. Recognizing the concerning sign early and acting on protocol — not panic — determines the outcome. Each sign has a specific first response.</p>
+ <div class="cardgrid wide">
+   <div class="card gen"><h3>Apnea / respiratory arrest</h3>
+     <div class="blk miss"><b>Recognition</b>No chest rise, flat capnography waveform, ETCO₂ → 0, SpO₂ dropping (this is late), lips/nails cyanotic.</div>
+     <div class="blk dose"><b>Response sequence</b>(1) STIMULATE — sternal rub, call the patient's name loudly. (2) Jaw thrust + head tilt, reposition. (3) OPA/NPA insertion. (4) BVM ventilation with 100% O₂ at 10–12 breaths/min. (5) Call for help + announce "apnea." (6) If no response → laryngoscopy + intubation. (7) Reversal if appropriate (naloxone, flumazenil). Drug-induced apnea is managed with airway rescue, not more reversal drugs while airway is unprotected.</div>
+   </div>
+   <div class="card gen"><h3>Laryngospasm</h3>
+     <div class="blk miss"><b>Recognition</b>High-pitched inspiratory stridor (partial) or silence with chest-rise effort but no airflow (complete laryngospasm). SpO₂ drops rapidly. Most commonly occurs at light planes of sedation (secretions, saliva, blood, or scope touching the larynx).</div>
+     <div class="blk dose"><b>Response</b>(1) CPAP with tight-fitting mask — positive pressure can break laryngospasm. (2) Remove the stimulus. (3) Jaw thrust + bilateral mandibular advancement (pressure on retromandibular notch). (4) Deepen sedation OR propofol 0.5–1 mg/kg IV. (5) If complete and persistent → succinylcholine 0.5–1 mg/kg IV (1.5–2 mg/kg IM if no IV) → intubate. (6) Call for help early — laryngospasm can progress to complete airway loss in 1–2 minutes.</div>
+   </div>
+   <div class="card gen"><h3>Aspiration</h3>
+     <div class="blk miss"><b>Recognition</b>Sudden desaturation during/after procedure, coughing, bronchospasm, hypoxia, new crackles, food/bile in airway. Risk highest with impaired protective reflexes (deep sedation, opioids + benzos), full stomach, recent vomiting, supine positioning, obesity.</div>
+     <div class="blk dose"><b>Response</b>Suction immediately, turn lateral/head-down if possible, 100% O₂, BVM if apneic. If witnessed large-volume aspiration → intubate for airway protection and suction under direct vision. Chest X-ray; ICU monitoring. Antibiotics only if frank infection develops (prophylactic antibiotics not recommended).</div>
+   </div>
+   <div class="card gen"><h3>Hypotension</h3>
+     <div class="blk dose"><b>Response</b>Stop/reduce drug. IV fluid bolus 250–500 mL LR rapidly. Elevate legs. Phenylephrine 50–100 mcg IV for vasodilatory hypotension (propofol). Ephedrine 5–10 mg IV if bradycardia + hypotension. Atropine 0.5 mg IV if vagal bradycardia. Push-dose epinephrine (10–20 mcg IV) for severe/refractory. Get help if SBP &lt;70 or rapidly worsening — don't give more sedation.</div>
+   </div>
+   <div class="card gen"><h3>Emergence agitation (dysphoria)</h3>
+     <div class="blk dose"><b>Recognition</b>Usually ketamine (5–30% of adults, less common in children). Occurs as patient emerges from dissociation: crying, agitation, combativeness, delirium, dysphoria. Typically 10–20 min after IV ketamine.</div>
+     <div class="blk dose"><b>Prevention & treatment</b>Midazolam 1–2 mg IV 5 min before ketamine (most effective prevention). Quiet environment during emergence. Treatment: midazolam 1–2 mg IV, propofol 20–30 mg IV for severe agitation. Usually self-limited — patient returns to normal within 30 min.</div>
+   </div>
+   <div class="card gen"><h3>Anaphylaxis / allergic reaction</h3>
+     <div class="blk miss"><b>Recognition</b>Urticaria, angioedema, bronchospasm, hypotension, tachycardia during drug administration. Most common triggers in sedation: propofol (rare), opioids (histamine, not true allergy), IV contrast, latex, antibiotics given peri-procedurally.</div>
+     <div class="blk dose"><b>Response</b>EPINEPHRINE 0.3–0.5 mg IM (anterolateral thigh) immediately — this is the first-line drug, not antihistamines. Large-bore IV access, aggressive fluids, 100% O₂, consider early intubation if airway threatened. Antihistamines and steroids are adjuncts, not the primary treatment.</div>
+   </div>
+   <div class="card gen"><h3>Local anesthetic systemic toxicity (LAST)</h3>
+     <div class="blk miss"><b>Recognition</b>After regional block or large-volume local anesthetic: perioral numbness, metallic taste, tinnitus, agitation → seizures → cardiac arrhythmia/arrest. Can occur delayed (up to 30 min post-injection with lipid-soluble agents).</div>
+     <div class="blk dose"><b>Response</b>LIPID EMULSION 20%: 1.5 mL/kg bolus over 1 min → 0.25 mL/kg/min infusion. Airway/seizure control (benzos). ACLS modification: avoid lidocaine as antiarrhythmic, reduce epinephrine doses (&lt;1 mcg/kg), consider ECMO if refractory. Have lipid emulsion in the room for any high-volume regional block.</div>
+   </div>
+ </div>
+ <div class="svgfig">${figAlgorithm()}<div class="figcap">Airway emergency escalation algorithm: the linear decision tree for any airway crisis during procedural sedation. Start at the problem and work down the pathway — each step must be attempted before escalating to the next, with constant reassessment of SpO₂ and ETCO₂. Time from apnea to brain injury = 4–6 minutes; act decisively.</div></div>`;
+}
+
+function figAlgorithm(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const steps=[
+  {x:14,col:'var(--good)',t:'Stimulate',s:'Sternal rub, call name, jaw thrust'},
+  {x:170,col:'var(--gold)',t:'Reposition Airway',s:'Head tilt, chin lift, jaw thrust, NPA/OPA'},
+  {x:340,col:'var(--gold)',t:'O₂ via BVM',s:'15 L/min 100% O₂, 1 breath q5s'},
+  {x:510,col:'var(--warn)',t:'Supraglottic',s:'LMA/iGel — easiest rescue airway'},
+  {x:660,col:'var(--gen)',t:'Intubate / RSI',s:'Direct or video laryngoscopy, RSI if needed'}
+ ];
+ steps.forEach((s,i)=>{
+  inner+=`<rect x="${s.x}" y="18" width="140" height="80" rx="9" fill="${s.col}" opacity="0.15" stroke="${s.col}" stroke-width="1.5"/>`;
+  inner+=tx(s.x+70,44,s.t,s.col,11,'middle',700);
+  const words=s.s.split(', ');
+  words.slice(0,2).forEach((w,j)=>inner+=tx(s.x+70,62+j*14,w,'var(--soft)',7.5,'middle'));
+  if(i<steps.length-1)inner+=`<path d="M${s.x+142},58 l12,0" stroke="var(--muted)" stroke-width="2" marker-end="url(#ae)"/>`;
+ });
+ inner+=tx(W/2,120,'Concurrent at ALL steps: 100% O₂ · call for help early · reversal agents if appropriate · defibrillator ready','var(--soft)',9,'middle');
+ inner+=tx(W/2,140,'If intubation fails → declare cannot intubate/cannot oxygenate → surgical airway (cricothyrotomy)','var(--warn)',9,'middle');
+ inner+=tx(W/2,160,'Time from apnea to irreversible brain injury: 4–6 minutes. Begin BVM at step 3 without delay.','var(--gen)',9,'middle');
+ inner+=`<defs><marker id="ae" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   SECTION 8: SPECIAL POPULATIONS
+   ============================================================ */
+function specialPop(){
+ return `<h2 class="sec" id="special">8 · Special populations &amp; considerations</h2>
+ <div class="cardgrid wide">
+   <div class="card deep"><h3>Pediatric sedation</h3>
+     <div class="blk dose"><b>Dose adjustments</b>Children have faster metabolism, larger relative volume of distribution, immature hepatic enzymes (&lt;6 months). Weight-based dosing is critical. Use actual weight (not estimated).</div>
+     <div class="blk tip"><b>Preferred agents</b>Ketamine IM (3–4 mg/kg) is the gold standard for non-IV pediatric procedural sedation (fractures, laceration repair, I&D). Ketamine + midazolam pretreatment ± glycopyrrolate. Intranasal dexmedetomidine (1–2 mcg/kg) or midazolam (0.2 mg/kg IN) for anxiolysis before IV placement.</div>
+     <div class="blk miss"><b>Airway differences</b>Children have a relatively larger occiput (flexes the neck → sniffing position is natural), larger tongue, higher larynx, omega-shaped epiglottis, and smaller airways (a 1mm circumferential swelling reduces pediatric airway radius by 50% vs 16% in adults). Have pediatric-specific equipment: appropriately sized masks, ETT, NPA, LMA.</div>
+     <div class="blk miss"><b>Return of gag/swallow</b>Key discharge criterion in children — must demonstrate before discharge or fluids are given.</div>
+   </div>
+   <div class="card deep"><h3>Elderly patients</h3>
+     <div class="blk dose"><b>Physiology changes</b>Reduced hepatic and renal clearance → longer drug half-lives. Reduced plasma protein binding → more free drug at any dose. Reduced cardiac reserve → less hemodynamic compensation. Reduced brain volume → more sensitive to CNS depressants.</div>
+     <div class="blk miss"><b>Practice rules</b>"Start low, go slow." Reduce all doses 30–50%. Longer intervals between doses (drug onset is delayed). Increased risk of postoperative delirium. Delirium in elderly post-sedation is common — benzodiazepines are a particular risk. Consider avoiding or minimizing benzodiazepines in cognitively at-risk patients.</div>
+   </div>
+   <div class="card deep"><h3>Obese / OSA patients</h3>
+     <div class="blk miss"><b>The critical combination</b>Obesity + OSA + sedation + supine position = very high apnea risk. Upper airway obstruction is more likely and more severe. SpO₂ falls faster (less O₂ reserve).</div>
+     <div class="blk dose"><b>Strategies</b>Use weight-based dosing on ideal body weight (IBW) for propofol (use lean body weight for ketamine). Ramped position (ear-to-sternal notch level). Prefer airway-preserving agents (ketamine, dexmedetomidine). Heightened capnography threshold for intervention. Have jaw thrust, NPA, and supraglottic airway prepped. Reverse Trendelenburg helps. Extended monitoring post-procedure.</div>
+   </div>
+   <div class="card deep"><h3>Cardiac patients</h3>
+     <div class="blk dose"><b>Severe left ventricular dysfunction</b>Propofol causes significant vasodilation/hypotension → avoid or reduce dramatically. Etomidate or ketamine preferred (etomidate for hemodynamic stability; ketamine if tachycardia is acceptable). Target MAP ≥70.</div>
+     <div class="blk miss"><b>Aortic dissection / severe CAD</b>Ketamine-induced tachycardia and hypertension are dangerous. Prefer etomidate + fentanyl. Avoid ketamine.</div>
+     <div class="blk dose"><b>QT prolongation</b>Droperidol (antiemetic sometimes used peri-sedation), haloperidol, and some antibiotics prolong QT. Check baseline QTc and avoid stacking QT-prolonging agents.</div>
+   </div>
+   <div class="card deep"><h3>Pregnancy</h3>
+     <div class="blk miss"><b>Aspiration risk</b>Increased gastric acid secretion and delayed gastric emptying from the 2nd trimester onward → higher aspiration risk. Use cricoid pressure if deep sedation. Lower fasting thresholds for elective procedures.</div>
+     <div class="blk dose"><b>Agent considerations</b>Propofol crosses the placenta (FDA C); used during pregnancy with caution. Benzodiazepines (controversial teratogen risk in first trimester; avoid). Ketamine: generally avoided in the first trimester (potential teratogen at high doses in animal models); reasonable in emergencies after 12 weeks. Nitrous oxide: avoid in first trimester (B12 metabolism interference, teratogen concern).</div>
+     <div class="blk tip"><b>Fetal monitoring</b>If the fetus is viable (≥24 weeks), consider obstetric monitoring before and after sedation. Left lateral tilt to avoid aortocaval compression in second/third trimester.</div>
+   </div>
+   <div class="card deep"><h3>Renal/hepatic impairment</h3>
+     <div class="blk dose"><b>Hepatic failure</b>Propofol: hepatically eliminated, may accumulate. Midazolam: prolonged half-life — dramatically reduced doses. Fentanyl: caution (active metabolites accumulate). Ketamine: may be safer (partially renally eliminated). Monitor closely for prolonged effect.</div>
+     <div class="blk dose"><b>Renal failure</b>Morphine (active metabolite accumulation → prolonged respiratory depression) — avoid; prefer fentanyl. Midazolam metabolites accumulate. Dexmedetomidine may be preferred (hepatically metabolized).</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   SECTION 9: RECOVERY & DISCHARGE
+   ============================================================ */
+function recovery(){
+ return `<h2 class="sec" id="recovery">9 · Recovery, discharge criteria &amp; post-sedation care</h2>
+ <div class="cardgrid wide">
+   <div class="card mod"><h3>Recovery monitoring requirements</h3>
+     <div class="blk dose"><b>Minimum monitoring post-sedation</b>Continuous SpO₂ and ECG, vital signs every 15 minutes until discharge criteria met. Maintain supplemental O₂ until SpO₂ is stable on room air for at least 15 minutes. Dedicated recovery nursing (1:1 ratio until airway protective reflexes fully returned).</div>
+     <div class="blk miss"><b>Re-sedation risk</b>Watch for re-narcotization after opioid reversal (naloxone half-life ~30–90 min vs fentanyl 1–4h — patient can re-sedate after reversal wears off). Extended monitoring required if reversal agents were used.</div>
+   </div>
+   <div class="card mod"><h3>PACU-adapted discharge criteria</h3>
+     <div class="blk dose"><b>Modified Aldrete Score (≥9/10 for discharge)</b>Activity (4 limbs move on command = 2, 2 limbs = 1, 0 limbs = 0); Respiration (deep breath/cough = 2, limited = 1, none = 0); Circulation (BP ±20% of pre-procedure = 2, ±20–49% = 1, &gt;50% = 0); Consciousness (fully awake = 2, arousable = 1, no response = 0); O₂ saturation (≥92% room air = 2, O₂ required = 1, &lt;90% = 0).</div>
+     <div class="blk dose"><b>Must also confirm</b>Pain controlled adequately, no uncontrolled nausea/vomiting, voiding (for urologic procedures), responsible adult present (for outpatient), written discharge instructions provided and explained.</div>
+   </div>
+   <div class="card mod"><h3>Return to baseline criteria</h3>
+     <div class="blk dose">Vitals within 20% of pre-sedation baseline; normal orientation ×3; able to sit up without dizziness; able to swallow (key in children — must demonstrate before fluids); pain score ≤4/10; no active bleeding; SpO₂ ≥95% on room air for ≥15 min.</div>
+     <div class="blk miss"><b>NOT a criterion</b>The ability to walk. Many patients have residual sedation effect that impairs gait even when vitals are stable. Mandatory: no driving for 24 hours, no significant decisions, no alcohol, responsible adult to accompany home.</div>
+   </div>
+   <div class="card mod"><h3>Agent-specific recovery times</h3>
+     <div class="blk">Propofol: 10–20 min to alert. Ketamine: 20–40 min (longer emergence, watch for agitation). Etomidate: 10–20 min. Midazolam: 30–90 min functional impairment (patients may appear awake but have impaired judgment). Fentanyl: 30–60 min. Dexmedetomidine: 15–30 min after stopping. Nitrous oxide: 5–10 min (fastest). Ketofol: 20–30 min. Note: all agents combine — if a patient got multiple agents, use the longest-acting to estimate recovery.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   SECTION 10: PEARLS
+   ============================================================ */
+function pearls(){
+ const P=[
+  ['Rescue one level deeper','You must be equipped to manage the level BELOW what you intend — equipment and skills, not just intent.'],
+  ['Capnography before SpO₂','ETCO₂ detects apnea 60–90 seconds before SpO₂ drops — intervene at the flat waveform, not the desaturation.'],
+  ['Supplemental O₂ masks apnea','A patient on 4 L/min NC can be apneic for 1–2 minutes with SpO₂ &gt;95%. Capnography is the only reliable apnea detector when supplemental O₂ is running.'],
+  ['Propofol has no analgesia','Propofol does not relieve pain. Pain causes movement → more drug → apnea. Always pair with an analgesic (fentanyl, ketamine SDK) for painful procedures.'],
+  ['Ketamine timing for emergence','Midazolam 1–2 mg IV 5 min BEFORE ketamine dramatically reduces emergence reactions — not after the fact.'],
+  ['Ketofol = consistent depth','Ketofol provides more consistent sedation depth than propofol alone and requires fewer redosing interventions. Not clearly safer from a respiratory standpoint — but sedation quality is better.'],
+  ['Etomidate for hemodynamic risk','The most BP-neutral agent. Use when any degree of hypotension is dangerous (severe AS, cardiogenic shock, severe hypovolemia being managed).'],
+  ['Ketamine in hemodynamic instability','Ketamine\'s sympathomimesis maintains BP in shock — but in catecholamine-depleted patients (end-stage sepsis), it may cause cardiovascular depression instead. Not always a free pass.'],
+  ['Dexmed for airways at risk','OSA + obese + needs sedation = dexmedetomidine + ketamine. Preserves respiratory drive, maintains airway, provides analgesia.'],
+  ['1:4 ketamine:propofol','Pharmacological and clinical evidence favors 1:4 over 1:1 ketofol — lower ketamine reduces emergence reactions while preserving hemodynamic benefit.'],
+  ['Benzo + opioid = synergistic respiratory depression','This combination is multiplicative, not additive, for respiratory depression. Small doses of each alone may not cause problems; together they cause apnea. Reversal agents drawn and labeled before administration.'],
+  ['Fasting ≠ delay in the ED','ACEP guidance: urgent/emergent ED procedural sedation should not be delayed for fasting status alone — aspiration risk is low and NPO duration has not been linked to ED sedation outcomes.'],
+  ['Flumazenil shorter than midazolam','Flumazenil half-life 45–90 min; midazolam up to 6h. Re-sedation occurs. Monitor for at least 1 hour after flumazenil reversal.'],
+  ['Nitrous: expand air spaces','Contraindicated in pneumothorax, bowel obstruction, recent eye surgery with gas tamponade, sinusitis with blocked drainage, inner-ear surgery — N₂O diffuses into and expands air-filled spaces.'],
+  ['PACU Aldrete ≥9 for discharge','Modified Aldrete Score of ≥9/10 is the standard discharge criterion — document it, not just "patient appears OK."']
+ ];
+ return `<h2 class="sec" id="pearls">10 · High-yield sedation pearls</h2>
+ <div class="cardgrid">${P.map(p=>pearl(p,'var(--accent)')).join('')}</div>`;
+}
+
+/* ===== RENDER ===== */
+document.getElementById('main').innerHTML =
+ continuum()+preSedation()+monitoring()+agents()+combinations()+vitalSigns()+concerning()+specialPop()+recovery()+pearls();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained and credentialed clinicians, reflecting ASA Practice Guidelines for Moderate Procedural Sedation and Analgesia (2018), ASA Standards for Basic Anesthetic Monitoring, and the published procedural sedation literature (Andolfatto ketofol RCT, Ann Emerg Med 2012; dexmedetomidine ketamine data). Agent doses, ratios, and thresholds are standard teaching values that must be verified against current references, institutional protocols, patient weight, comorbidities, and drug availability. Procedural sedation requires appropriate credentialing, personnel trained in airway rescue, and institutional oversight. Not a standalone clinical protocol. Educational synthesis only.";
+
+/* THEME */
+(function(){
+ const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+ const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+ const root=document.documentElement,b=document.getElementById('themeToggle');
+ const ico=document.getElementById('themeIco'),txt=document.getElementById('themeTxt');
+ function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+ set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+ b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renal Pharmacology & UTI Atlas — CKD Dosing, Contrast, Bacteremia</title>
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#11161d;--panel:#141b22;--panelhi:#1a2330;--line:#263240;--line2:#192230;
+    --ink:#edf2f5;--soft:#a8b6c2;--muted:#748898;--faint:#527080;
+    --ckd1:#46c98a;--ckd2:#3fa7d6;--ckd3:#e0b341;--ckd4:#e05a2e;--ckd5:#c0392b;
+    --drug:#9b6cd6;--uti:#3fa7d6;--warn2:#d68a2e;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --grid:#0d1218;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --ckd1:#1f9d6f;--ckd2:#1c7fb0;--ckd3:#b3851f;--ckd4:#c4422a;--ckd5:#922b21;
+    --drug:#7e4fc0;--uti:#1c7fb0;--warn2:#b06f17;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 18px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.03;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:74ch;color:var(--soft);font-size:1.03rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  .domtabs{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:22px;}
+  .domtabs .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;gap:8px;flex-wrap:wrap;}
+  .domtab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-family:inherit;font-size:.86rem;font-weight:700;padding:9px 15px;border-radius:10px;cursor:pointer;}
+  .domtab:hover{border-color:var(--accent);color:var(--ink);}
+  .domtab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+  .domtab .sub{display:block;font-size:.58rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-top:1px;}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:38px 0 4px;scroll-margin-top:60px;}
+  h3.sub{font-size:1.08rem;font-weight:700;margin:22px 0 6px;color:var(--accent);}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+  .cardgrid.wide{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px;border-top:3px solid var(--accent);}
+  .card.ckd{border-top-color:var(--ckd2);}.card.drug{border-top-color:var(--drug);}.card.uti{border-top-color:var(--uti);}
+  .card.warn2{border-top-color:var(--warn2);}.card.crit{border-top-color:var(--warn);}
+  .card h3{margin:0 0 2px;font-size:1.04rem;font-weight:700;}
+  .card .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px;}
+  .blk{margin:8px 0;font-size:.85rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.dose b{color:var(--good);}.blk.dose{color:var(--ink);}
+  .blk.tip b{color:var(--accent);}.blk.miss b{color:var(--warn);}
+  .blk.buzz b{color:var(--gold);}.blk.buzz{color:var(--soft);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:12px 0;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:760px;font-size:.82rem;}
+  table.cmp th,table.cmp td{padding:9px 11px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;}
+  table.cmp thead th{position:sticky;top:0;background:var(--panelhi);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);z-index:2;}
+  table.cmp tbody th{font-weight:700;background:var(--panel);white-space:nowrap;font-size:.78rem;}
+  .ckdstage{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0;}
+  .ckdbox{border-radius:10px;padding:12px;text-align:center;}
+  .ckdbox .gfr{font-size:1.1rem;font-weight:800;}
+  .ckdbox .label{font-size:.7rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;}
+  .ckdbox .desc{font-size:.75rem;}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--ckd5);background:color-mix(in srgb,var(--ckd5) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  .tstage{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:700;}
+  .ok{background:color-mix(in srgb,var(--good) 20%,transparent);color:var(--good);}
+  .caution{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold);}
+  .avoid{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn);}
+  .contra{background:color-mix(in srgb,var(--ckd5) 20%,transparent);color:var(--warn);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,.domtabs .inner,main,footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
+<header class="hero">
+  <div class="kick">Renal Pharmacology & Infectious Disease · Atlas II</div>
+  <h1>Know the kidney. <em>Adjust the dose.</em></h1>
+  <p>CKD staging and the pharmacokinetic consequences, medication dosing across all CKD stages, the full ketorolac/NSAID guideline analysis, contrast nephropathy updated evidence, how often AKI is truly medication-induced, diuretics in CKD/dialysis patients, and a comprehensive UTI section from uncomplicated cystitis through gram-negative bacteremia and urosepsis — including the IDSA 2025 updated guidelines.</p>
+</header>
+<div class="disclaimer"><div><b>Reference for trained clinicians.</b> Dosing adjustments are teaching values reflecting standard references (KDIGO, FDA labeling, IDSA 2025, ACR 2024) — always verify against current drug references (Lexicomp, Micromedex), patient-specific eGFR, hepatic function, dialysis type, and institutional formulary. Not a substitute for clinical pharmacist consultation.</div></div>
+<div class="domtabs"><div class="inner">
+  <button class="domtab on" data-dom="ckd">CKD &amp; PK<span class="sub">staging · pharmacokinetics</span></button>
+  <button class="domtab" data-dom="meds">Medication Dosing<span class="sub">by CKD stage · ER meds</span></button>
+  <button class="domtab" data-dom="contrast">Contrast &amp; AKI<span class="sub">guidelines · prevention</span></button>
+  <button class="domtab" data-dom="uti">UTI &amp; Bacteremia<span class="sub">IDSA 2025 · urosepsis · admission</span></button>
+</div></div>
+<main>
+  <div id="tab-ckd"></div>
+  <div id="tab-meds" style="display:none"></div>
+  <div id="tab-contrast" style="display:none"></div>
+  <div id="tab-uti" style="display:none"></div>
+</main>
+<footer id="foot"></footer>
+<script>
+function svg(inner,vb){return `<svg viewBox="${vb||'0 0 820 260'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function tx(x,y,t,fill,sz,anchor,wt){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="${sz||9}" fill="${fill||'var(--soft)'}" text-anchor="${anchor||'middle'}"${wt?` font-weight="${wt}"`:''}>${t}</text>`;}
+function pearl(p,col){return `<div class="card" style="border-top-color:${col||'var(--gold)'}"><div class="blk"><b style="color:${col||'var(--gold)'};font-size:.65rem">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div>`;}
+function badge(t,cls){return `<span class="tstage ${cls}">${t}</span>`;}
+
+/* ============================================================
+   TAB 1: CKD & PHARMACOKINETICS
+   ============================================================ */
+function ckdModule(){
+ return ckdStaging()+ckdPK()+ckdDiuretics()+ckdDialysisDiur();
+}
+
+function ckdStaging(){
+ const stages=[
+  {n:'Stage 1',gfr:'≥90',col:'var(--ckd1)',desc:'Normal GFR; kidney damage markers present (albuminuria, hematuria)'},
+  {n:'Stage 2',gfr:'60–89',col:'var(--ckd2)',desc:'Mildly decreased GFR + damage markers'},
+  {n:'Stage 3a/b',gfr:'30–59',col:'var(--ckd3)',desc:'Moderate decrease; most dose adjustments begin here'},
+  {n:'Stage 4',gfr:'15–29',col:'var(--ckd4)',desc:'Severely decreased; prepare for RRT, major adjustments'},
+  {n:'Stage 5 / ESRD',gfr:'&lt;15 (or dialysis)',col:'var(--ckd5)',desc:'Kidney failure; dialysis or transplant'}
+ ];
+ return `<h2 class="sec">1 · CKD staging — what each stage means clinically &amp; pharmacologically</h2>
+ <p class="seclead">CKD is defined as kidney damage OR eGFR &lt;60 mL/min/1.73m² persisting for ≥3 months. The stage drives everything from screening frequency to medication dosing thresholds to dialysis preparation.</p>
+ <div class="ckdstage">${stages.map(s=>`<div class="ckdbox" style="background:color-mix(in srgb,${s.col} 15%,var(--panel));border:1.5px solid ${s.col}"><div class="label" style="color:${s.col}">${s.n}</div><div class="gfr" style="color:${s.col}">${s.gfr}</div><div class="desc" style="color:var(--soft);font-size:.74rem;margin-top:4px">${s.desc}</div></div>`).join('')}</div>
+ <div class="svgfig">${figCKDcurve()}<div class="figcap">CKD progression curve showing the inverse relationship between eGFR and drug clearance risk. As eGFR falls below 60, dose adjustments become necessary for most renally cleared drugs. Below 30, many drugs require significant reduction or are contraindicated. Below 15 (ESRD), pharmacokinetics change dramatically — dialysis removes some drugs while others accumulate dangerously.</div></div>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>Why CKD changes everything pharmacologically</h3>
+     <div class="blk tip"><b>The four mechanisms</b>(1) Reduced renal clearance → drug and metabolite accumulation (most impactful). (2) Uremic toxins displace drugs from protein binding sites → more free drug at same total level. (3) Altered gut absorption (uremic gastroparesis). (4) Altered hepatic metabolism (uremia changes CYP450 activity — unpredictably). The result: drugs that seem at therapeutic doses based on total levels may have dangerously elevated free fractions.</div>
+   </div>
+   <div class="card ckd"><h3>How to calculate eGFR in clinical practice</h3>
+     <div class="blk dose"><b>CKD-EPI equation</b>The standard for eGFR estimation; accounts for age, sex, and creatinine. More accurate than Cockcroft-Gault at higher GFR levels. Use for CKD staging.</div>
+     <div class="blk dose"><b>Cockcroft-Gault</b>CrCl = [(140 − age) × weight × (0.85 if female)] / (72 × SCr). Widely used for drug dosing because most pharmacokinetic studies used this formula. Use IBW in obese patients.</div>
+     <div class="blk miss"><b>The creatinine trap</b>A creatinine of 1.0 mg/dL in a 75-year-old, 55 kg woman ≈ eGFR ~48 mL/min (Stage 3a). The same creatinine in a 25-year-old, 90 kg man ≈ eGFR ~90. "Normal creatinine" does NOT mean normal renal function. Always calculate eGFR, especially before giving renally cleared drugs.</div>
+   </div>
+ </div>`;
+}
+
+function figCKDcurve(){
+ const W=820,H=200;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ inner+=tx(W/2,20,'eGFR vs Drug Accumulation Risk','var(--ink)',12,'middle',700);
+ // axes
+ inner+=`<line x1="70" y1="30" x2="70" y2="170" stroke="var(--muted)" stroke-width="1.5"/>`;
+ inner+=`<line x1="70" y1="170" x2="790" y2="170" stroke="var(--muted)" stroke-width="1.5"/>`;
+ // eGFR labels on x axis
+ [90,75,60,45,30,15,0].forEach((v,i)=>{ const x=70+(90-v)*8; inner+=tx(x,184,v,'var(--muted)',8,'middle'); inner+=`<line x1="${x}" y1="165" x2="${x}" y2="175" stroke="var(--muted)" stroke-width="1"/>`; });
+ // Y axis labels
+ inner+=tx(55,170,'Low','var(--good)',8,'end');inner+=tx(55,30,'High','var(--warn)',8,'end');
+ // Shaded CKD stages
+ const stageRanges=[[90,60,'var(--ckd1)'],[60,45,'var(--ckd2)'],[45,30,'var(--ckd3)'],[30,15,'var(--ckd4)'],[15,0,'var(--ckd5)']];
+ stageRanges.forEach(([a,b,col])=>{ const x1=70+(90-a)*8,x2=70+(90-b)*8; inner+=`<rect x="${x1}" y="30" width="${x2-x1}" height="140" fill="${col}" opacity="0.1"/>`; });
+ // Exponential-ish risk curve (high risk as eGFR drops)
+ const pts=[[90,145],[75,145],[60,140],[45,120],[30,90],[15,50],[0,30]];
+ const d=pts.map((p,i)=>`${i===0?'M':'L'}${70+(90-p[0])*8},${p[1]}`).join(' ');
+ inner+=`<path d="${d}" fill="none" stroke="var(--warn)" stroke-width="3"/>`;
+ // Stage labels
+ [['G1',75,10],['G2',52,10],['G3',37,10],['G4',22,10],['G5',8,10]].forEach(([l,ef,off])=>{ inner+=tx(70+(90-ef)*8,44,l,'var(--ink)',8,'middle',700); });
+ inner+=tx(W/2,194,'eGFR (mL/min/1.73m²)','var(--muted)',9,'middle');
+ inner+=tx(40,100,'Drug accumulation risk','var(--warn)',9,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function ckdPK(){
+ return `<h2 class="sec">2 · How CKD alters pharmacokinetics — the pathophysiology</h2>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>Half-life extension</h3>
+     <div class="blk buzz"><b>The core consequence</b>Half-life (t½) is inversely proportional to clearance. If the kidney normally clears 60% of a drug and eGFR drops by 50%, clearance drops by ~30%, and t½ can increase by 50–100%. For renally cleared drugs, this means: (1) time to steady state is longer (5 × t½), (2) accumulation is greater with regular dosing, (3) a "loading dose" may be appropriate to reach therapeutic levels faster but maintenance must be reduced.</div>
+     <div class="blk dose"><b>Examples of profound t½ extension in CKD</b>Gabapentin: t½ 6h (normal) → 52h (ESRD). Digoxin: t½ 36h → 4–6 days. Vancomycin: t½ 6h → 200h. Metformin: t½ 6h → indefinite clearance failure in severe CKD (lactic acidosis risk).</div>
+   </div>
+   <div class="card ckd"><h3>Protein binding changes</h3>
+     <div class="blk buzz"><b>Mechanism</b>Uremia accumulates organic acids (hippuric acid, indoxyl sulfate, etc.) that compete with drugs for albumin binding sites — especially acidic drugs (phenytoin, warfarin, NSAIDs). Result: more free (active, toxic) drug at the same total measured level.</div>
+     <div class="blk miss"><b>The phenytoin trap</b>In uremia, phenytoin free fraction rises from ~10% to 20–30%. A total level of 10 mcg/mL (normally "low") may actually represent a toxic FREE level. In CKD, measure FREE phenytoin levels, not total. Same principle applies to valproate.</div>
+   </div>
+   <div class="card ckd"><h3>Onset changes</h3>
+     <div class="blk">Many drugs have delayed onset in severe CKD because: (1) uremic gastroparesis slows oral absorption (peak is blunted and delayed), (2) altered gut flora reduce first-pass conversion of prodrugs, (3) tissue distribution changes due to fluid shifts (altered Vd). Furosemide onset is particularly variable — gut edema in CHF + CKD reduces oral bioavailability unpredictably.</div>
+   </div>
+   <div class="card ckd"><h3>Active metabolite accumulation</h3>
+     <div class="blk miss"><b>The hidden danger</b>Some drugs are safe but their metabolites are toxic and renally cleared. Examples: morphine-6-glucuronide (active, potent opioid) accumulates in CKD → prolonged respiratory depression; prefer fentanyl. Meperidine → normeperidine (neurotoxic: tremors, seizures) accumulates in CKD; NEVER use meperidine in CKD. Codeine → morphine accumulates. Allopurinol → oxypurinol accumulates (rash, bone marrow suppression).</div>
+   </div>
+   <div class="card ckd"><h3>Dialysis and drug removal</h3>
+     <div class="blk dose"><b>Factors determining dialyzability</b>Low molecular weight (&lt;500 Da), low protein binding (&lt;80%), high water solubility, small volume of distribution (&lt;1 L/kg). Drugs removed by HD: vancomycin (with high-flux membranes), aminoglycosides, metformin, lithium, many antibiotics. NOT removed: phenytoin (highly protein-bound), digoxin (high Vd), tricyclics, benzodiazepines.</div>
+     <div class="blk tip"><b>Dosing after dialysis</b>Drugs removed by HD should be given AFTER the dialysis session (or a supplemental dose given post-HD). Vancomycin: give after HD, check levels. Cefazolin: give after HD for wound infections.</div>
+   </div>
+ </div>`;
+}
+
+function ckdDiuretics(){
+ return `<h2 class="sec">3 · Diuretics in CKD — a complex relationship</h2>
+ <p class="seclead">Diuretics in CKD patients occupy a paradox — these patients often need diuretics for fluid management but have reduced responsiveness to them, and some diuretics actively worsen kidney function. The decision to use, which to use, and at what dose requires understanding the underlying physiology at each CKD stage.</p>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>Loop diuretics in CKD — the mainstay</h3>
+     <div class="blk tip"><b>Why loops over thiazides in CKD</b>Thiazides lose efficacy when eGFR falls below ~30 mL/min (the NCC transporter is less active, and the proximal tubule compensates). Loop diuretics (NKCC2 in the thick ascending limb) retain partial efficacy into CKD stage 4–5. For volume overload in CKD, loop diuretics are first-line.</div>
+     <div class="blk dose"><b>Furosemide dose escalation in CKD</b>The loop diuretic dose must increase as GFR falls — because tubular secretion (which delivers the drug to the lumen) is also impaired. CKD stage 3: furosemide 40–80 mg. Stage 4: 80–160 mg. ESRD on HD: often 80–200 mg (if any residual urine output). Monitor for ototoxicity at high doses (especially with aminoglycosides).</div>
+     <div class="blk miss"><b>Furosemide resistance in CKD</b>Several mechanisms: (1) reduced tubular secretion of drug (organic acid competition), (2) reduced GFR decreases the filtered load that diuretics can act on, (3) distal nephron hypertrophy compensates. Solution: higher doses, IV route, or add metolazone for distal nephron blockade (sequential nephron blockade).</div>
+   </div>
+   <div class="card ckd"><h3>Thiazides in CKD — limited role</h3>
+     <div class="blk dose"><b>Stage 1–2 CKD</b>Thiazides are first-line for hypertension and work well. Chlorthalidone is preferred over HCTZ (longer half-life, better blood pressure control in CKD).</div>
+     <div class="blk dose"><b>Stage 3 CKD</b>Thiazides become less effective for volume management but still work for BP. Combine with loop for synergy (sequential nephron blockade).</div>
+     <div class="blk miss"><b>Stage 4–5 CKD</b>Thiazides are largely ineffective as diuretics. Don't rely on thiazides for volume removal in advanced CKD. Metolazone is the exception — it retains some efficacy even with low GFR and is used in combination with loops for furosemide resistance.</div>
+   </div>
+   <div class="card ckd"><h3>K-sparing diuretics in CKD — dangerous</h3>
+     <div class="blk miss"><b>Hyperkalemia risk</b>In CKD, K+ excretion is already impaired (reduced distal delivery, reduced aldosterone response). Adding spironolactone, eplerenone, amiloride, or triamterene on top of CKD → additive hyperkalemia risk, particularly in combination with ACE/ARBs.</div>
+     <div class="blk dose"><b>When K-sparing CAN be used in CKD</b>Spironolactone/eplerenone have proven mortality benefit in CHF (RALES, EMPHASIS trials) even in CKD stage 2–3. Use with regular K+ monitoring. Avoid in eGFR &lt;30 or baseline K+ &gt;5.0 mEq/L. Stop if K+ rises above 5.5.</div>
+     <div class="blk miss"><b>The triple whammy</b>ACE/ARB + diuretic (loop) + NSAID = the triple whammy for acute AKI. All three reduce renal perfusion via different mechanisms. Seen commonly in the ED: a CKD patient on lisinopril + furosemide who takes ibuprofen for pain → acute AKI.</div>
+   </div>
+ </div>`;
+}
+
+function ckdDialysisDiur(){
+ return `<h2 class="sec">4 · Diuretics in dialysis patients — is there any role?</h2>
+ <p class="seclead">The common misconception is that dialysis patients don't need diuretics — after all, dialysis removes fluid. The reality is more nuanced: residual urine output (RUO) is one of the most important prognostic factors in dialysis patients, and preserving it matters.</p>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>Residual urine output — why it matters</h3>
+     <div class="blk buzz"><b>The underappreciated survival advantage</b>Dialysis patients with residual urine output (even 100–200 mL/day) have significantly better survival, better middle-molecule clearance, better phosphate control, better fluid management, and less left ventricular hypertrophy than anuric patients. Even small amounts of urine output contribute meaningfully to solute clearance and volume management.</div>
+     <div class="blk dose"><b>Loop diuretics preserve residual function</b>High-dose furosemide (80–250 mg/day) in HD patients with some residual urine output has been shown to maintain and prolong residual kidney function and increase urine volume. This is one of the few indications for diuretics in dialysis patients with evidence of benefit.</div>
+   </div>
+   <div class="card ckd"><h3>When diuretics ARE used in dialysis patients</h3>
+     <div class="blk dose"><b>1. Maintaining residual urine output</b>High-dose furosemide to preserve RUO in PD or early HD patients who still make urine. Torsemide preferred for PO in CHF (better bioavailability).</div>
+     <div class="blk dose"><b>2. Interdialytic fluid management</b>A HD patient who still produces urine — furosemide helps reduce interdialytic weight gain between sessions, reducing cardiovascular stress from fluid overload.</div>
+     <div class="blk dose"><b>3. PD patients</b>PD patients often retain some residual function longer than HD patients. Loop diuretics are commonly used to augment UO and reduce ultrafiltration requirements.</div>
+     <div class="blk miss"><b>Do NOT use diuretics in anuric dialysis patients</b>Completely anuric ESRD patients (no urine output) will not respond to diuretics — there is no functional renal tubule to act on. Giving furosemide to an anuric dialysis patient is ineffective and simply exposes them to side effects (ototoxicity, electrolyte disturbance). Fluid management in anuric ESRD = dialysis, not diuretics.</div>
+   </div>
+   <div class="card ckd"><h3>Outcomes evidence for diuretics in CKD/dialysis</h3>
+     <div class="blk buzz"><b>What the evidence shows</b>Multiple observational studies and small RCTs (including the FIDELIO-DKD and DAPA-CKD trials for SGLT2 inhibitors — not classical diuretics but relevant) and the PRESERVED-HF data suggest that diuresis in CKD with preserved urine output improves volume management, reduces hospitalizations, and reduces CVD events, primarily by preserving residual function and reducing interdialytic weight gain. The absolute benefit decreases as residual function declines.</div>
+     <div class="blk dose"><b>SGLT2 inhibitors in CKD</b>Empagliflozin, dapagliflozin, and canagliflozin are now recommended in diabetic CKD for cardiorenal protection (CREDENCE, DAPA-CKD trials). They have mild osmotic diuretic effects that may reduce eGFR slightly at initiation but provide long-term eGFR preservation. Use down to eGFR ~20 for CKD benefit (check current labeling).</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The clinical bottom line:</b> In CKD patients who still produce urine, diuretics (especially loop diuretics) improve volume management and may slow decline in residual function. In anuric ESRD, diuretics have no role in fluid management — dialysis is the only option. The grade-of-evidence shifts from "strong" to "conditional" as residual function declines, and disappears completely in anuria.</div>`;
+}
+
+/* ============================================================
+   TAB 2: MEDICATION DOSING IN CKD
+   ============================================================ */
+function medsModule(){
+ return medsIntro()+medsTable()+toradolDeepDive()+medAKI();
+}
+
+function medsIntro(){
+ return `<h2 class="sec">1 · Medication dosing by CKD stage — how to approach it</h2>
+ <p class="seclead">The principle: for drugs with significant renal elimination, dose adjustments should begin when eGFR drops below 60 mL/min (Stage 3a). The adjustment is either to reduce the dose (maintain the interval) or to extend the interval (maintain the dose) — which to choose depends on whether toxicity is driven by peak levels or trough accumulation. Verify every adjustment against current drug references for the actual patient.</p>
+ <div class="note warn"><b>Critical reminder:</b> Use the patient's current eGFR (calculated from serum creatinine using CKD-EPI or Cockcroft-Gault). A "normal" creatinine in an elderly, low-muscle-mass patient often represents significant CKD. In acute illness, use current creatinine — not baseline — as eGFR falls rapidly with AKI superimposed on CKD.</div>`;
+}
+
+function medsTable(){
+ const rows=[
+  // [Drug, Category, G1-2(>60), G3a(45-59), G3b(30-44), G4(15-29), G5/HD, notes]
+  ['Ketorolac (Toradol)','NSAID analgesic','Caution: short course only','Reduce dose; limit to 1–2 doses','Avoid','Contraindicated','Contraindicated','See dedicated deep-dive below. FDA: contraindicated in advanced renal impairment.'],
+  ['Ibuprofen / NSAIDs','NSAID','Caution: short term only','Caution: monitor Cr','Avoid unless no alternative','Contraindicated','Contraindicated','Triple-whammy risk with ACE/ARB + diuretic.'],
+  ['Acetaminophen','Analgesic','Normal dosing','Normal dosing','Normal dosing; max 2g/day','Max 2g/day; longer intervals','Max 2g/day; not dialyzed','Preferred analgesic in CKD. Avoid high doses in hepatic disease.'],
+  ['Morphine','Opioid','Use with caution','Reduce dose 25%','Reduce dose 50%; longer interval','Avoid — M6G accumulates','Avoid — M6G accumulates','Morphine-6-glucuronide (M6G) accumulates → prolonged respiratory depression.'],
+  ['Fentanyl','Opioid','Normal dosing','Normal dosing','Normal dosing','Reduce dose 25%','Reduce 25%; supplement after HD','Preferred opioid in advanced CKD. Hepatic metabolism, minimal active metabolites.'],
+  ['Hydromorphone','Opioid','Normal dosing','Normal dosing','Reduce 25%','Reduce 50%; caution','Reduce 50%; use with caution','Hydromorphone-3-glucuronide accumulates; use cautiously but preferable to morphine.'],
+  ['Gabapentin','Neuropathic pain','Normal: 300 mg TID','200-300 mg BID-TID','100-300 mg BID','100-300 mg QD','100-300 mg after each HD','Dramatic accumulation — t½ rises from 6h to 52h in ESRD. Common cause of iatrogenic encephalopathy in CKD.'],
+  ['Pregabalin','Neuropathic pain','Normal: 75-300 mg BID','75 mg BID–TID','25–75 mg BID','25–75 mg QD-BID','25 mg QD; supplement post-HD','Similar to gabapentin — renal clearance; dose reduce significantly.'],
+  ['Metformin','Antidiabetic','Normal dosing','Use with caution; monitor','Use with caution, eGFR 30–45','Contraindicated eGFR &lt;30','Contraindicated','Lactic acidosis risk. Hold before contrast. Hold 48h post-contrast before restarting.'],
+  ['Insulin','Antidiabetic','Dose per glucose','May need dose reduction','Reduce basal 10-20%','Reduce basal 25-50%','Reduce 25-50%; monitor closely','CKD reduces insulin clearance → hypoglycemia risk increases significantly.'],
+  ['Lisinopril/ACE inhibitors','Antihypertensive','1st-line for CKD','Reduce dose; monitor K+','Reduce dose; monitor K+/Cr','Use with caution; may worsen eGFR','Avoid in anuric; low dose if residual','Cr rise of 0.3 mg/dL acceptable. Stop if Cr rises &gt;30% or K+ &gt;5.5.'],
+  ['Atenolol','Beta-blocker','Normal dosing','Reduce dose 50%','25-50 mg q48h','12.5–25 mg q48-72h','Supplement post-HD','Renally cleared — significant accumulation. Use carvedilol or metoprolol instead.'],
+  ['Metoprolol','Beta-blocker','Normal dosing','Normal dosing','Normal dosing','Normal dosing; monitor','Normal dosing','Hepatic metabolism. Preferred beta-blocker in CKD (no dose adjustment needed).'],
+  ['Vancomycin','Antibiotic','AUC-guided dosing','AUC-guided; q24-36h','AUC-guided; q36-48h','AUC-guided; q48-72h','Give after HD; AUC monitoring','AUC/MIC-guided dosing is standard. Check levels. HD with high-flux removes vancomycin significantly.'],
+  ['Ceftriaxone','Antibiotic','Normal dosing','Normal dosing','Normal dosing','Normal dosing','Normal dosing; no supplement','Biliary/hepatic elimination. No dose adjustment in CKD — a key advantage. Not removed by HD.'],
+  ['Piperacillin-tazobactam','Antibiotic','Normal: 3.375g q6h','Normal dosing','3.375g q8h','2.25g q8h','2.25g q8h post-HD','Extend infusion (3–4h) to maximize PK/PD efficacy. Adjust in severe CKD/ESRD.'],
+  ['Meropenem','Antibiotic','1g q8h','1g q8-12h','0.5-1g q12h','0.5g q12-24h','0.5g q24h (post-HD)','Reduced dose in CKD. Lowers seizure risk vs imipenem. Removed by HD.'],
+  ['Ciprofloxacin','Antibiotic','250-500mg BID','250-500mg BID (reduce)','250-500mg q12-24h','250-500mg q24h','250mg q24h after HD','Renal + hepatic elimination. Reduce dose in advanced CKD. QT prolongation risk.'],
+  ['Nitrofurantoin','Antibiotic / UTI','Normal dosing','Use with caution','Avoid eGFR &lt;45','Contraindicated','Contraindicated','Ineffective AND toxic in CKD — inadequate urinary concentrations AND systemic accumulation → neuropathy. Do NOT use for UTI in CKD.'],
+  ['TMP-SMX','Antibiotic / UTI','Normal dosing','Normal dosing (caution K+)','Reduce dose; monitor K+/Cr','Avoid unless culture-directed','Use post-HD; caution','Blocks creatinine secretion (raises Cr without true GFR change). Causes hyperkalemia by blocking K+ channels. Cotrimoxazole can mimic AKI.'],
+  ['Digoxin','Cardiac','0.125-0.25mg QD','0.125mg QD; check levels','0.0625-0.125mg QD','0.0625mg QD; levels essential','0.0625mg QD; NOT removed by HD','Narrow therapeutic index. Uremia ↓ protein binding → toxicity at lower total levels. Monitor levels and watch for toxicity signs.'],
+  ['Apixaban','Anticoagulant','Normal: 5mg BID','Normal dosing','Reduce if 2 of 3: age≥80, wt≤60, Cr≥1.5','3 criteria: 2.5mg BID','Avoid; very limited data for dialysis','Use DOAC criteria carefully. Reduced dose if ≥2 of 3 factors (age≥80, wt≤60, Cr≥1.5). Avoid in ESRD unless approved indication.'],
+  ['Rivaroxaban','Anticoagulant','Normal: 20mg QD with food','Normal dosing','15mg QD for most indications','15mg QD with caution','Avoid; limited HD data','Avoid in eGFR &lt;15 for most indications. Check current labeling — indications vary.'],
+  ['Warfarin','Anticoagulant','Normal; careful INR monitoring','Lower doses often needed','Reduce dose; INR lability in CKD','Very sensitive; frequent INR checks','Very sensitive; altered protein binding','CKD alters albumin binding and vitamin K metabolism. Narrower therapeutic window. More frequent INR monitoring.'],
+  ['Ranitidine / Famotidine','H2 blocker','Normal dosing','Normal dosing','Famotidine 20mg q48h','20mg q72h','20mg after HD','Renally cleared. Famotidine safer than older H2 blockers. PPIs preferred in advanced CKD.'],
+  ['Clopidogrel','Antiplatelet','Normal dosing','Normal dosing','Normal dosing; caution','Normal dosing; caution bleeding','Normal dosing; caution','Minimal renal adjustment needed; however CKD patients have paradoxical platelet dysfunction + high bleeding risk.'],
+  ['Allopurinol','Gout','Normal: 100-300mg/day','100mg daily','50-100mg daily','50mg daily or every other day','50mg after each HD','Oxypurinol (active metabolite) accumulates in CKD → severe rash (allopurinol hypersensitivity) and bone marrow suppression at normal doses.'],
+  ['Colchicine','Gout','Normal','Normal dosing; single courses','Reduce dose; no extended courses','0.3mg/day; monitor for toxicity','Generally avoid — life-threatening neuromyopathy risk','Accumulates dramatically in CKD/ESRD. Colchicine toxicity (multi-organ failure) in ESRD is a recognized lethal adverse event.'],
+  ['Levetiracetam (Keppra)','Antiepileptic','Normal: 500-1500mg BID','500-1000mg BID','250-750mg BID','250-500mg BID','250-500mg after HD; supplement post-HD','Renal clearance — significant adjustment needed. But no CYP interactions — often preferred in CKD for this reason.'],
+  ['Phenytoin','Antiepileptic','Normal; check free levels','Normal; check free levels','Check free levels — Cr affects binding','Check free phenytoin levels ONLY','Check free phenytoin levels ONLY','In CKD, uremic organic acids displace phenytoin from albumin. Total levels are unreliable. Order FREE phenytoin level.'],
+  ['Atorvastatin','Statin','Normal dosing','Normal dosing','Normal dosing','Normal dosing; monitor myopathy','Normal dosing (hepatic elimination)','Hepatically metabolized. No dose reduction needed in CKD. Monitor for myopathy (↑risk in advanced CKD).'],
+ ];
+ const head=`<tr><th>Drug</th><th>Category</th><th>eGFR ≥60</th><th>eGFR 45–59</th><th>eGFR 30–44</th><th>eGFR 15–29</th><th>eGFR &lt;15/HD</th><th>Key notes</th></tr>`;
+ const body=rows.map(r=>{
+  const stageCols=(v)=>v.startsWith('Normal')?'color:var(--good)':v.startsWith('Contraindicated')||v.startsWith('Avoid')?'color:var(--warn)':'color:var(--gold)';
+  return `<tr><th>${r[0]}</th><td style="color:var(--muted)">${r[1]}</td>${r.slice(2,7).map(v=>`<td style="${stageCols(v)}">${v}</td>`).join('')}<td style="color:var(--soft)">${r[7]}</td></tr>`;
+ }).join('');
+ return `<h2 class="sec">2 · CKD medication dosing reference table</h2>
+ <p class="seclead">Dosing guidance by CKD stage for the most commonly encountered drugs in the ED and inpatient settings. Green = normal, amber = adjust/caution, red = avoid/contraindicated. Always verify with current drug references — these are teaching values, not a dosing calculator.</p>
+ <div class="gridwrap"><table class="cmp" style="min-width:1000px"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
+function toradolDeepDive(){
+ return `<h2 class="sec">3 · Ketorolac (Toradol) in CKD — the full analysis</h2>
+ <p class="seclead">Ketorolac is one of the most powerful analgesics in the ED arsenal and one of the most frequently given to patients who shouldn't receive it. Understanding the complete picture — mechanism of nephrotoxicity, guideline thresholds, risk stratification, and alternatives — is essential for safe practice.</p>
+ <div class="svgfig">${figToradolMech()}<div class="figcap">How ketorolac causes AKI: prostaglandins (PGE2, PGI2) maintain afferent arteriolar dilation in states of reduced renal perfusion. In healthy patients with normal perfusion, this matters little. In CKD, CHF, volume depletion, or any state of reduced renal blood flow, prostaglandins are the primary compensatory mechanism — blocking them with ketorolac removes this safety valve and precipitates AKI.</div></div>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>The mechanism — why the kidney is vulnerable</h3>
+     <div class="blk buzz"><b>Prostaglandin-dependent perfusion</b>In states of reduced renal blood flow (CKD, heart failure, volume depletion, NSAID use, advanced age), the kidney activates prostaglandin synthesis (PGE2, PGI2) to dilate the afferent arteriole and maintain GFR. This is a compensatory mechanism. NSAIDs — especially ketorolac (the most potent IV NSAID) — inhibit COX-1 and COX-2, blocking prostaglandin synthesis and removing this protective mechanism. Result: afferent arteriolar vasoconstriction → reduced GFR → AKI.</div>
+     <div class="blk miss"><b>Ketorolac is the highest-risk NSAID</b>Among individual NSAIDs, ketorolac carries an adjusted OR of 2.54 for CKD progression — higher than other NSAIDs. This is attributed to its potency (equivalent analgesia to 10 mg morphine), its IV route enabling high peak levels, and its renal clearance (both parent drug and metabolites accumulate in CKD).</div>
+   </div>
+   <div class="card crit"><h3>FDA labeling and guideline thresholds</h3>
+     <div class="blk miss"><b>FDA label</b>Ketorolac is explicitly contraindicated in patients with "advanced renal impairment or in patients at risk for renal failure due to volume depletion." Advanced renal impairment = elevated serum creatinine indicating CKD stage 3b or worse (eGFR &lt;45), though the FDA does not specify an exact eGFR cutoff.</div>
+     <div class="blk dose"><b>The practical thresholds</b>
+     eGFR &gt;60 (CKD 1–2): Single doses acceptable with caution; use lowest effective dose; limit to 1–2 doses; ensure adequate hydration. Max 30 mg IV or 10 mg PO per dose; max 5 days total (FDA limit).<br>
+     eGFR 30–59 (CKD 3): REDUCE dose to 15 mg IV / 10 mg PO; limit to 1–2 doses; avoid repeated use; monitor creatinine if given.<br>
+     eGFR &lt;30 (CKD 4–5): Contraindicated — do not use.<br>
+     Volume depletion (any eGFR): Contraindicated — even a single dose can precipitate AKI.</div>
+     <div class="blk dose"><b>ADQI consensus</b>"Moderate evidence to support NSAID avoidance in elderly patients with CrCl &lt;30 mL/min." Also cautions against NSAIDs in anyone with CKD + concurrent diuretics or ACE/ARBs (triple whammy).</div>
+   </div>
+   <div class="card crit"><h3>The "triple whammy" — the highest-risk combination</h3>
+     <div class="blk miss"><b>NSAID + ACE/ARB + diuretic = AKI</b>Each component attacks renal perfusion via a different mechanism:<br>
+     NSAID → blocks prostaglandin-mediated afferent dilation (reduces GFR)<br>
+     ACE/ARB → blocks angiotensin II-mediated efferent constriction (reduces GFR)<br>
+     Diuretic → reduces intravascular volume (reduces renal perfusion pressure)<br>
+     Together: the three pillars of renal autoregulation all fail simultaneously → acute hemodynamic AKI. AKI risk with all three is multiplicative, not additive. This combination appears frequently in the ED — a patient with CHF on lisinopril + furosemide who receives ketorolac for pain.</div>
+   </div>
+   <div class="card crit"><h3>Single dose risk in ED practice</h3>
+     <div class="blk buzz"><b>Can a single dose cause AKI?</b>Yes — documented cases of irreversible AKI after a single dose of ketorolac, even in patients with previously normal renal function, particularly in the elderly, dehydrated, or CKD patients. The AKI typically occurs 24–72h after administration — the patient looks fine when they leave the ED.</div>
+     <div class="blk dose"><b>Incidence</b>NSAIDs associated with 53% greater odds of developing AKI overall. In at-risk populations (CKD, CHF, elderly, volume-depleted), the risk is substantially higher. Ketorolac's AKI risk is highest in the first 1–7 days of use.</div>
+   </div>
+   <div class="card crit"><h3>Alternatives to ketorolac in CKD</h3>
+     <div class="blk dose"><b>For acute pain in CKD</b>
+     Acetaminophen 500–1000 mg IV/PO: preferred first-line; no renal concerns at standard doses (limit to 2g/day in severe CKD/hepatic disease).<br>
+     IV/PO fentanyl: opioid with minimal active metabolite accumulation; preferred opioid in CKD.<br>
+     Hydromorphone: preferred over morphine (less metabolite accumulation).<br>
+     Lidocaine infusion (IV): emerging option for refractory pain; no renal contraindication at typical doses.<br>
+     Sub-dissociative ketamine: no renal contraindication; provides analgesia without GFR impairment.<br>
+     Regional/nerve blocks: entirely safe in CKD, no systemic renal effect.</div>
+     <div class="blk miss"><b>The ED scenario</b>A patient with CKD stage 3 presents with renal colic. Ketorolac is contraindicated. First-line: acetaminophen IV (1g) + opioid (hydromorphone 0.2–0.4 mg IV) PRN + IV hydration (conservative — don't fluid-overload a CKD patient). Alpha-blocker (tamsulosin) if stone ≥5 mm.</div>
+   </div>
+ </div>`;
+}
+
+function figToradolMech(){
+ const W=820,H=180;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ // Afferent arteriole → glomerulus → efferent
+ inner+=`<path d="M50,90 Q100,70 150,90" fill="none" stroke="var(--ckd2)" stroke-width="6"/>`;
+ inner+=`<circle cx="150" cy="90" r="30" fill="#132030" stroke="var(--ckd3)" stroke-width="2"/>`;
+ inner+=tx(150,88,'Glomerulus','var(--ckd3)',9,'middle',700)+tx(150,100,'GFR','var(--muted)',7,'middle');
+ inner+=`<path d="M180,90 Q230,110 280,90" fill="none" stroke="var(--muted)" stroke-width="4"/>`;
+ // Prostaglandin pathway (normal)
+ inner+=`<rect x="20" y="20" width="160" height="36" rx="7" fill="var(--good)" opacity="0.18" stroke="var(--good)" stroke-width="1.2"/>`;
+ inner+=tx(100,32,'NORMAL state','var(--good)',8,'middle',700)+tx(100,44,'PGE2/PGI2: afferent dilated','var(--good)',7.5,'middle')+tx(100,55,'GFR maintained','var(--good)',7,'middle');
+ // Blocked by ketorolac
+ inner+=`<rect x="20" y="100" width="160" height="60" rx="7" fill="var(--warn)" opacity="0.18" stroke="var(--warn)" stroke-width="1.2"/>`;
+ inner+=tx(100,116,'KETOROLAC blocks COX','var(--warn)',8,'middle',700);
+ inner+=tx(100,130,'Prostaglandin ↓↓↓','var(--warn)',7.5,'middle');
+ inner+=tx(100,143,'Afferent constriction','var(--warn)',7.5,'middle');
+ inner+=tx(100,157,'GFR ↓→ AKI','var(--warn)',8,'middle',700);
+ // Context boxes
+ const contexts=['CKD (reduced baseline GFR)','CHF (low perfusion)','Volume depletion','Elderly (reduced renal reserve)','+ ACE/ARB + diuretic (triple whammy)'];
+ inner+=`<rect x="320" y="10" width="480" height="160" rx="9" fill="var(--ckd4)" opacity="0.12" stroke="var(--ckd4)" stroke-width="1.3"/>`;
+ inner+=tx(560,30,'HIGH-RISK CONTEXTS (prostaglandins critical)','var(--ckd4)',10,'middle',700);
+ contexts.forEach((c,i)=>{inner+=tx(560,50+i*22,'→ '+c,'var(--soft)',9,'middle');});
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function medAKI(){
+ return `<h2 class="sec">4 · Medication-induced AKI — how often is AKI truly drug-caused?</h2>
+ <p class="seclead">Up to 20–25% of hospital-acquired AKI cases are drug-induced (DAKI — drug-associated kidney injury). In outpatients, the figure is lower (~5–7%) but these are cases with identifiable preventable causes. The three leading mechanisms are hemodynamic, direct tubular toxicity, and allergic (interstitial nephritis).</p>
+ <div class="cardgrid wide">
+   <div class="card drug"><h3>Prevalence — the numbers</h3>
+     <div class="blk buzz"><b>Hospital-acquired AKI</b>Approximately 19–26% of all hospital-acquired AKI is medication-induced. The three leading drug classes: (1) NSAIDs/ketorolac (hemodynamic, most common in outpatients), (2) aminoglycosides (tubular toxicity, classic ICU AKI), (3) vancomycin (tubular toxicity, increasingly recognized). Contrast media is 3rd leading cause of hospital-acquired AKI but true incidence is debated (see contrast tab).</div>
+   </div>
+   <div class="card drug"><h3>Hemodynamic AKI (most common type)</h3>
+     <div class="blk dose"><b>Mechanism</b>Drugs that reduce renal perfusion without direct tubular toxicity. Reversible when drug is stopped (if caught early).</div>
+     <div class="blk miss"><b>Key culprits</b>NSAIDs/ketorolac (block prostaglandin-mediated afferent dilation), ACE inhibitors/ARBs (block efferent constriction — particularly in bilateral renal artery stenosis or volume-depleted states), calcineurin inhibitors (tacrolimus, cyclosporine — afferent constriction), triple whammy combinations.</div>
+   </div>
+   <div class="card drug"><h3>Tubular toxicity (nephrotoxic AKI)</h3>
+     <div class="blk dose"><b>Mechanism</b>Direct damage to the tubular epithelium → ATN. The proximal tubule is most vulnerable (highest metabolic activity). UA shows muddy brown granular casts and RTE cells.</div>
+     <div class="blk miss"><b>Key culprits</b>Aminoglycosides (gentamicin, tobramycin — accumulate in proximal tubule; onset 5–10 days; risk with trough levels, frequency of dosing, volume depletion; use once-daily dosing to reduce risk), vancomycin (AUC-dependent toxicity, especially with loops), cisplatin, amphotericin B (most nephrotoxic antifungal — use liposomal form), IV contrast (see tab 3), tenofovir (proximal tubule — Fanconi syndrome), methotrexate.</div>
+   </div>
+   <div class="card drug"><h3>Acute interstitial nephritis (AIN)</h3>
+     <div class="blk dose"><b>Mechanism</b>Immune-mediated inflammation of the interstitium. UA shows WBC casts, sterile pyuria, urine eosinophils (low sensitivity). Classic triad: rash, fever, eosinophilia (only in ~10%). Most cases present without the classic triad.</div>
+     <div class="blk miss"><b>Key culprits</b>NSAIDs (paradoxically — both hemodynamic AND interstitial), PPIs (increasingly recognized — onset weeks to months after starting; most underdiagnosed drug-induced AIN), antibiotics (penicillins, cephalosporins, sulfonamides, fluoroquinolones, rifampin), allopurinol, diuretics, immune checkpoint inhibitors (now common with cancer immunotherapy).</div>
+     <div class="blk tip"><b>PPI-induced AIN</b>PPIs are now one of the leading causes of chronic AIN. Patients on long-term PPIs (omeprazole, pantoprazole, etc.) who develop unexplained AKI — particularly with sterile pyuria and no granular casts — should have PPIs stopped and nephrology consulted. Recovery after stopping is typical but may be incomplete.</div>
+   </div>
+ </div>
+ <div class="note buzz"><b>The clinical takeaway:</b> When a patient has AKI and was recently given any new medication, consider drug causality seriously. Check the timing (hemodynamic AKI occurs within hours-days; tubular toxicity within 5–14 days; AIN within days-months). The most actionable step is stopping the offending drug early — recovery is much more likely before significant tubular necrosis or interstitial fibrosis develops.</div>`;
+}
+
+/* ============================================================
+   TAB 3: CONTRAST & AKI
+   ============================================================ */
+function contrastModule(){
+ return contrastEvidence()+contrastRisk()+contrastPrevention()+contrastMetformin();
+}
+
+function contrastEvidence(){
+ return `<h2 class="sec">1 · Contrast-associated AKI — the updated evidence</h2>
+ <p class="seclead">The term "contrast-induced nephropathy" (CIN) has been largely replaced by "contrast-associated AKI" (CA-AKI) to reflect an important paradigm shift: most "contrast-induced" AKI was likely coincidental — the AKI was occurring anyway from the underlying illness, and the contrast administration happened simultaneously. Modern low-osmolar and iso-osmolar contrast agents with modern dosing are far less nephrotoxic than historical data suggested.</p>
+ <div class="svgfig">${figContrastRisk()}<div class="figcap">CA-AKI risk by eGFR level. The risk rises steeply below eGFR 30. Above eGFR 45, the absolute risk of true contrast-induced AKI from IV contrast is very low (~2%) — much of what was historically called CIN above this threshold was likely coincidental AKI from the patient's illness.</div></div>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>The paradigm shift — the AMACING trial &amp; reanalysis</h3>
+     <div class="blk buzz"><b>What the AMACING trial showed (2017)</b>A large randomized controlled trial of 660,341 patients receiving IV contrast. Patients with eGFR 30–59 mL/min were randomized to prophylactic IV saline vs no pre-hydration. Result: <b>no significant difference in CA-AKI between the two groups.</b> This challenged decades of routine pre-hydration for moderate CKD before CT.</div>
+     <div class="blk dose"><b>Updated ACR Manual on Contrast Media (2024)</b>No pre-hydration required for IV contrast with eGFR ≥30 mL/min/1.73m² unless the patient has multiple high-risk factors. Routine screening of eGFR before IV contrast in low-risk outpatients (young, no CKD risk factors) is not required. The decision to obtain eGFR before contrast is risk-stratified.</div>
+     <div class="blk miss"><b>The important nuance</b>This evidence applies to IV (intravenous) contrast — not intra-arterial contrast (cardiac catheterization, angiography). Intra-arterial contrast still carries higher AKI risk because it delivers a much higher concentrated bolus directly to the renal arteries. Treat IA contrast and IV contrast differently.</div>
+   </div>
+   <div class="card ckd"><h3>Current ACR 2024 thresholds for concern</h3>
+     <div class="blk dose"><b>Low concern (no pre-hydration needed)</b>eGFR ≥45: no specific precautions for IV contrast in the absence of other risk factors. The risk of true contrast-induced AKI is ~1–2%, equivalent to background AKI rates in hospitalized patients.</div>
+     <div class="blk dose"><b>Moderate concern (consider pre-hydration)</b>eGFR 30–44 with diabetes, CHF, dehydration, large contrast volumes, or multiple nephrotoxins: consider IV hydration (500 mL NS before the scan if time allows).</div>
+     <div class="blk miss"><b>High concern (proceed with caution)</b>eGFR &lt;30 (Stage 4–5 CKD): Contrast should not be given routinely without nephrology consultation. If clinically necessary (life-threatening diagnosis), give with minimum volume of low-osmolar contrast, pre-hydrate if possible, hold nephrotoxins, and follow creatinine at 24–48h. Risk ~20–30% for CA-AKI, with some risk of permanent GFR decline.</div>
+   </div>
+   <div class="card ckd"><h3>Dialysis patients and contrast</h3>
+     <div class="blk tip"><b>No residual function to protect</b>Dialysis-dependent patients with no residual urine output can receive IV contrast without significant concern — there is no functioning kidney to injure. The contrast will be cleared by dialysis, though urgent dialysis is not needed solely because contrast was given (the risk of volume expansion from contrast is the primary concern).</div>
+     <div class="blk dose"><b>For patients with residual urine output on dialysis</b>There is a theoretical risk of contrast injuring residual nephrons and accelerating loss of residual function. Clinical judgment: if the scan is necessary, proceed; consider timing of dialysis within 24h in patients with significant contrast volume and residual function.</div>
+   </div>
+ </div>`;
+}
+
+function figContrastRisk(){
+ const W=820,H=180;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ inner+=tx(W/2,20,'CA-AKI Risk by eGFR','var(--ink)',12,'middle',700);
+ // axes
+ inner+=`<line x1="80" y1="30" x2="80" y2="155" stroke="var(--muted)" stroke-width="1.5"/>`;
+ inner+=`<line x1="80" y1="155" x2="800" y2="155" stroke="var(--muted)" stroke-width="1.5"/>`;
+ const bars=[
+  {gfr:'≥90',risk:1,col:'var(--ckd1)'},
+  {gfr:'60–89',risk:2,col:'var(--ckd2)'},
+  {gfr:'45–59',risk:4,col:'var(--ckd3)'},
+  {gfr:'30–44',risk:9,col:'var(--ckd4)'},
+  {gfr:'15–29',risk:20,col:'var(--ckd5)'},
+  {gfr:'&lt;15',risk:30,col:'var(--warn)'}
+ ];
+ bars.forEach((b,i)=>{
+  const x=100+i*115, h=b.risk*4.2;
+  inner+=`<rect x="${x}" y="${155-h}" width="90" height="${h}" rx="4" fill="${b.col}" opacity="0.75"/>`;
+  inner+=tx(x+45,155-h-5,b.risk+'%',b.col,9,'middle',700);
+  inner+=tx(x+45,170,b.gfr,'var(--muted)',8,'middle');
+ });
+ [5,10,15,20,25,30].forEach(v=>{const y=155-v*4.2;inner+=tx(74,y+3,v+'%','var(--muted)',7,'end');inner+=`<line x1="76" y1="${y}" x2="800" y2="${y}" stroke="var(--line2)" stroke-width="0.8"/>`;});
+ inner+=tx(W/2,182,'eGFR (mL/min/1.73m²)','var(--muted)',9,'middle');
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function contrastRisk(){
+ return `<h2 class="sec">2 · Risk stratification &amp; factors for CA-AKI</h2>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Risk factor</th><th>Mechanism</th><th>How to mitigate</th></tr></thead>
+ <tbody>
+  <tr><th>eGFR &lt;30</th><td>Reduced renal reserve; tubular toxicity more likely</td><td>Minimize contrast volume; pre-hydrate; follow Cr at 24–48h</td></tr>
+  <tr><th>Diabetes mellitus</th><td>Tubular dysfunction; altered prostaglandin response</td><td>Hold metformin; ensure adequate hydration; use low-osmolar contrast</td></tr>
+  <tr><th>Dehydration / volume depletion</th><td>Reduced renal perfusion; contrast concentrates in tubule</td><td>IV hydration before and after; delay non-urgent study until rehydrated</td></tr>
+  <tr><th>Heart failure / low cardiac output</th><td>Reduced renal perfusion (cardiorenal); volume sensitivity</td><td>Balance pre-hydration vs fluid overload; consult nephrology for high-risk procedures</td></tr>
+  <tr><th>High contrast volume</th><td>Direct dose-dependent tubular toxicity</td><td>Use minimum volume needed for diagnosis; consider low-dose protocols</td></tr>
+  <tr><th>Multiple nephrotoxins (NSAIDs, aminoglycosides)</th><td>Additive tubular injury</td><td>Hold NSAIDs/diuretics before contrast when possible</td></tr>
+  <tr><th>Intra-arterial contrast (not IV)</th><td>High bolus concentration to renal arteries</td><td>More aggressive pre-hydration; limit volume; staged procedures if possible</td></tr>
+ </tbody></table></div>`;
+}
+
+function contrastPrevention(){
+ return `<h2 class="sec">3 · Prevention strategy — what works and what doesn't</h2>
+ <div class="cardgrid wide">
+   <div class="card ckd"><h3>IV hydration (isotonic saline) — what works</h3>
+     <div class="blk dose"><b>When to hydrate</b>eGFR &lt;30 where contrast is clinically necessary, or eGFR 30–44 with multiple risk factors. Give 0.9% NS at 1–3 mL/kg/h for 1–12h pre and 6–12h post (elective). In the ED: 500 mL NS bolus 30–60 min pre-CT is practical and reasonable.</div>
+     <div class="blk buzz"><b>Mechanism</b>Dilutes the contrast in the tubule (reduces concentration-dependent tubular toxicity) and maintains renal perfusion. Simple and effective.</div>
+   </div>
+   <div class="card ckd"><h3>N-acetylcysteine (NAC) — does not work</h3>
+     <div class="blk miss"><b>No longer recommended</b>NAC (Mucomyst) was widely used for decades for CIN prophylaxis. Multiple large meta-analyses (including PRESERVE trial) showed no benefit vs placebo. NAC paradoxically lowers serum creatinine by 0.1–0.2 mg/dL through a non-renal mechanism — making the kidney appear better without actually being better. The ACR 2024 manual does NOT recommend NAC for CA-AKI prevention.</div>
+   </div>
+   <div class="card ckd"><h3>Minimize nephrotoxin exposure</h3>
+     <div class="blk dose">Hold NSAIDs 24–48h before elective contrast studies. Hold metformin for 48h after contrast in patients with CKD (risk of lactic acidosis if AKI occurs and metformin accumulates — restart only when Cr is confirmed stable). Use minimum contrast volume. Consider low-osmolar or iso-osmolar contrast agents (preferred in CKD).</div>
+   </div>
+   <div class="card ckd"><h3>What's NOT needed for IV contrast at eGFR ≥45</h3>
+     <div class="blk buzz">No routine eGFR check before IV contrast in young, healthy patients with no risk factors. No pre-hydration. No NAC. No forced delay of necessary imaging. The risk of contrast AKI in this population is equivalent to background AKI rates — the diagnostic benefit usually outweighs the risk. Don't let contrast concerns delay a necessary CT in the ED in a patient with reasonable eGFR.</div>
+   </div>
+ </div>`;
+}
+
+function contrastMetformin(){
+ return `<h2 class="sec">4 · Metformin and contrast — the protocol</h2>
+ <div class="cardgrid wide">
+   <div class="card drug"><h3>The risk and the rationale</h3>
+     <div class="blk buzz"><b>Why metformin matters with contrast</b>Metformin is renally cleared. If contrast causes AKI, metformin cannot be excreted → metformin accumulates → inhibits mitochondrial electron transport chain → lactic acidosis. Metformin-associated lactic acidosis (MALA) is rare but carries ~50% mortality. The risk is from the AKI that follows contrast, not from a direct interaction between metformin and contrast.</div>
+   </div>
+   <div class="card drug"><h3>The protocol</h3>
+     <div class="blk dose"><b>eGFR ≥60 (no CKD)</b>No metformin hold needed for IV contrast. Risk is negligible.</div>
+     <div class="blk dose"><b>eGFR 30–59 (CKD 3)</b>Hold metformin at the time of contrast. Check creatinine at 48h. If stable (Cr unchanged) → restart metformin.</div>
+     <div class="blk dose"><b>eGFR &lt;30 or acute kidney injury</b>Metformin is already contraindicated at eGFR &lt;30. Do not give.</div>
+     <div class="blk miss"><b>The ED scenario</b>A diabetic patient on metformin needs an emergent contrast CT. Give the contrast (emergent imaging is not delayed for metformin). Tell the patient to hold the metformin at home until their doctor checks a creatinine at 48h. Document this clearly in the discharge instructions.</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   TAB 4: UTI & BACTEREMIA
+   ============================================================ */
+function utiModule(){
+ return utiClassification()+utiManagement()+gramnegBacteremia()+utiAdmission()+utiSpecial()+utiPearls();
+}
+
+function utiClassification(){
+ return `<h2 class="sec">1 · UTI classification — getting the terminology right</h2>
+ <p class="seclead">The UTI landscape is divided by anatomic level (lower vs upper tract), by host factors (uncomplicated vs complicated), and by clinical syndrome (cystitis, pyelonephritis, urosepsis). Getting the terminology right drives antibiotic choice, duration, and disposition.</p>
+ <div class="cardgrid wide">
+   <div class="card uti"><h3>Uncomplicated UTI (cystitis)</h3>
+     <div class="blk dose"><b>Definition</b>Lower tract infection (bladder/urethra) in a non-pregnant, non-immunocompromised, non-catheterized, anatomically/functionally normal woman. No systemic symptoms. This is the textbook "uncomplicated."</div>
+     <div class="blk dose"><b>Management</b>Nitrofurantoin 100 mg ER BID ×5 days (preferred), or TMP-SMX DS BID ×3 days (if local resistance &lt;20%), or fosfomycin 3g single dose. Avoid fluoroquinolones for uncomplicated cystitis (reserve for more serious infections, resistance stewardship). Avoid nitrofurantoin in eGFR &lt;30 (ineffective AND toxic).</div>
+   </div>
+   <div class="card uti"><h3>Complicated UTI (cUTI)</h3>
+     <div class="blk dose"><b>Definition (IDSA 2025)</b>Any UTI that extends beyond the bladder (pyelonephritis), or any UTI in a man, or UTI associated with a structural/functional abnormality: catheter, urinary obstruction, indwelling stent, neurogenic bladder, post-transplant, immunocompromised, pregnancy, recent instrumentation.</div>
+     <div class="blk miss"><b>Important</b>Male gender is now explicitly a complicating factor per IDSA 2025 guidelines — all male UTIs are classified as complicated. Duration and management differ accordingly.</div>
+   </div>
+   <div class="card uti"><h3>Pyelonephritis</h3>
+     <div class="blk dose"><b>Definition</b>Upper tract infection involving the renal parenchyma. Presents with fever, flank pain/CVA tenderness, systemic symptoms (nausea, vomiting), and UA showing pyuria ± casts. May have bacteremia.</div>
+     <div class="blk dose"><b>Management</b>Culture before antibiotics. Outpatient: ciprofloxacin 500 mg BID ×5–7 days (if local susceptibility supports fluoroquinolone). TMP-SMX DS BID ×7–14 days is alternative but only if susceptibility known. Inpatient IV: ceftriaxone 1–2g q24h is the workhorse — covers most E. coli and gram-negatives. Narrow based on culture at 48–72h.</div>
+   </div>
+   <div class="card uti"><h3>Urosepsis</h3>
+     <div class="blk miss"><b>Life-threatening</b>Sepsis (organ dysfunction) arising from a UTI source. Hemodynamic instability, altered mental status, respiratory compromise, or elevated lactate from a urinary source. Gram-negative bacteremia (E. coli, Klebsiella most common) drives the presentation. Treatment: broad IV antibiotics + aggressive resuscitation + source control (relieve any obstruction).</div>
+   </div>
+ </div>`;
+}
+
+function utiManagement(){
+ return `<h2 class="sec">2 · UTI antibiotic selection — the current framework (IDSA 2025)</h2>
+ <div class="gridwrap"><table class="cmp"><thead><tr><th>Syndrome</th><th>First-line agents</th><th>Duration</th><th>Key notes</th></tr></thead>
+ <tbody>
+  <tr><th>Uncomplicated cystitis (women)</th><td>Nitrofurantoin 100mg BID, TMP-SMX DS BID, Fosfomycin 3g ×1</td><td>5d, 3d, 1 dose</td><td>Avoid FQ for uncomplicated cystitis. Avoid nitrofurantoin if eGFR &lt;30. Check local resistance before TMP-SMX.</td></tr>
+  <tr><th>Pyelonephritis (outpatient)</th><td>Ciprofloxacin 500mg BID (if susceptible), TMP-SMX DS BID (if susceptible)</td><td>5–7d (FQ); 7–14d (TMP-SMX)</td><td>Culture before antibiotics. Start empiric broad then narrow. IDSA 2025: 7-day non-FQ for most uncomplicated pyelonephritis.</td></tr>
+  <tr><th>Pyelonephritis (inpatient)</th><td>Ceftriaxone 1–2g IV q24h; pip/tazo if MDR concern</td><td>7 days total; IV→PO when criteria met</td><td>IV→PO transition once: afebrile, hemodynamically stable, tolerating PO, effective oral option available (IDSA 2025).</td></tr>
+  <tr><th>cUTI with bacteremia</th><td>Ceftriaxone 2g IV q24h; Carbapenem for ESBL/MDR</td><td>7 days total from first effective dose</td><td>IDSA 2025: 7 days (not 14) for gram-negative bacteremia from UTI if clinically improving. Shorter course supported.</td></tr>
+  <tr><th>Catheter-associated UTI (CAUTI)</th><td>Remove catheter if possible; same antibiotics as cUTI</td><td>7 days (shorter if prompt catheter removal)</td><td>Treat only if symptomatic — do not treat asymptomatic bacteriuria in catheterized patients.</td></tr>
+  <tr><th>Male UTI (all complicated)</th><td>Ciprofloxacin or TMP-SMX (oral) based on culture</td><td>7 days (FQ); prostatitis suspect → 10–14d</td><td>All UTIs in men are complicated per IDSA 2025. Prostatitis suspected (perineal pain, obstructive symptoms) → treat 10–14 days. Ciprofloxacin penetrates prostate best.</td></tr>
+  <tr><th>UTI in pregnancy</th><td>Nitrofurantoin (not 3rd trimester), amoxicillin-clavulanate, cephalexin</td><td>5–7 days</td><td>All UTIs in pregnancy require treatment. Avoid TMP-SMX (folate inhibition, 1st trim risk). Avoid nitrofurantoin after 36 weeks (neonatal hemolysis). Avoid FQ (cartilage effects in fetus).</td></tr>
+  <tr><th>Urosepsis</th><td>Piperacillin-tazobactam 3.375g q6h (extended) or meropenem 1g q8h if high MDR risk</td><td>7 days if improving; may extend for complications</td><td>Broad empiric coverage → narrow at 48-72h based on culture/sensitivities. Source control (relieve obstruction) is mandatory.</td></tr>
+ </tbody></table></div>
+ <div class="note warn"><b>The fluoroquinolone stewardship message:</b> Fluoroquinolones (ciprofloxacin, levofloxacin) should be reserved for conditions where they provide unique advantage (prostate penetration for prostatitis, culture-directed pyelonephritis treatment) and avoided for uncomplicated cystitis. E. coli resistance to fluoroquinolones is 20–30% in many US communities. Save them for when they're needed.</div>`;
+}
+
+function gramnegBacteremia(){
+ return `<h2 class="sec">3 · Gram-negative bacteremia from UTI — the admission case</h2>
+ <p class="seclead">Gram-negative bacteremia from a urinary source is one of the most important clinical scenarios in emergency medicine. It is almost universally an admission — the key questions are: how sick is the patient, what antibiotic, for how long, and when can they be stepped down to oral therapy?</p>
+ <div class="svgfig">${figBacteremiaFlow()}<div class="figcap">Gram-negative bacteremia from UTI — the clinical decision tree from presentation through disposition. The hallmark is that bacteremia from a UTI source is now managed with a 7-day total course (IV→PO transition when stable) per IDSA 2025, not the historical 14-day IV course.</div></div>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Why gram-negative bacteremia is almost always an admission</h3>
+     <div class="blk miss"><b>The immediate concerns</b>(1) Hemodynamic instability can develop or worsen within hours — urosepsis has a 6–30% mortality. (2) IV antibiotics are required initially for adequate bactericidal levels. (3) Blood cultures take 12–48h to finalize — empiric broad-spectrum coverage needs monitoring. (4) Source control may be needed (obstruction — stent/nephrostomy). (5) The patient needs serial vital sign and urine output monitoring unavailable in the outpatient setting.</div>
+     <div class="blk dose"><b>When might discharge be considered?</b>Selected clinically well-appearing patients with confirmed UTI bacteremia, no hemodynamic instability, effective oral antibiotics available (culture-directed), reliable follow-up within 24h, and ability to observe for deterioration may be discharged in consultation with ID/nephrology — this is NOT standard practice and requires careful case-by-case judgment.</div>
+   </div>
+   <div class="card crit"><h3>Presentation recognition</h3>
+     <div class="blk miss"><b>Classic presentation</b>Fever (≥38.3°C), chills/rigors (pathognomonic of bacteremia), tachycardia, flank pain/CVA tenderness, UA with pyuria and bacteriuria. Key: not all bacteremic patients look sick initially — an elderly patient may present with altered mental status only (occult urosepsis).</div>
+     <div class="blk dose"><b>Red flags for urosepsis</b>Hypotension (SBP &lt;90 or MAP &lt;65), tachycardia &gt;120, altered mental status, lactate &gt;2 mmol/L, respiratory rate &gt;22, bilateral costovertebral tenderness with obstruction on imaging, immunocompromised host, recent urologic procedure, indwelling stent/catheter. Any one of these → aggressive management, ICU consideration.</div>
+   </div>
+   <div class="card crit"><h3>IDSA 2025 — updated management</h3>
+     <div class="blk dose"><b>Total duration: 7 days</b>IDSA 2025 (published July 2025): for complicated UTI with associated gram-negative bacteremia, 7 days total of effective antibiotic therapy is recommended over the traditional 14 days — if the patient is clinically improving. Counted from the FIRST DAY OF EFFECTIVE THERAPY.</div>
+     <div class="blk dose"><b>IV→PO transition</b>Recommended once ALL three criteria are met: (1) clinically improving (afebrile, hemodynamically stable, symptoms resolving), (2) tolerating oral medications, and (3) an effective oral antibiotic is available for the identified organism. This applies to bacteremic patients as well as non-bacteremic cUTI.</div>
+     <div class="blk miss"><b>Exception: prostatitis</b>Male patients with febrile bacteremic UTI where acute bacterial prostatitis is suspected may benefit from 10–14 days of treatment — the prostate has poor antibiotic penetration and requires fluoroquinolones or TMP-SMX for adequate tissue levels.</div>
+   </div>
+   <div class="card crit"><h3>Blood culture protocol</h3>
+     <div class="blk dose"><b>When to culture</b>Blood cultures (×2 sets from separate sites) are indicated in: fever + systemic symptoms from a urinary source, all patients with suspected pyelonephritis + sepsis criteria, immunocompromised patients, known urologic obstruction, all patients requiring hospital admission for UTI, recurrent/refractory UTI not responding to prior treatment.</div>
+     <div class="blk miss"><b>What the culture tells you</b>Identifies the organism and sensitivities → allows antibiotic de-escalation at 48–72h. Bacteremia from E. coli (most common) can be stepped down to ceftriaxone or PO fluoroquinolone if susceptible. ESBL-producing organisms require carbapenem (ertapenem, meropenem).</div>
+   </div>
+ </div>
+ <div class="note crit"><b>The management principle:</b> Start broad, get the culture, narrow early. Gram-negative bacteremia from UTI → broad empiric coverage (pip-tazo or carbapenem depending on local resistance and patient risk factors) → cultures at 48-72h → step down to the narrowest effective agent. Early de-escalation is both appropriate stewardship AND associated with better outcomes than prolonged broad-spectrum therapy.</div>`;
+}
+
+function figBacteremiaFlow(){
+ const W=820,H=180;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ const steps=[
+  {x:14,w:140,col:'var(--warn)',t:'UTI + Bacteremia',s:'fever, rigors, pyuria, blood cx +'},
+  {x:174,w:140,col:'var(--ckd4)',t:'Assess stability',s:'vitals, lactate, mental status, source control?'},
+  {x:334,w:150,col:'var(--ckd3)',t:'Blood cultures ×2 + IV abx',s:'ceftriaxone 2g or pip/tazo BEFORE result'},
+  {x:504,w:140,col:'var(--ckd2)',t:'Monitor ×48–72h',s:'narrow to sensitivities; check response'},
+  {x:664,w:143,col:'var(--ckd1)',t:'IV→PO when stable',s:'7d total; discharge with reliable follow-up'}
+ ];
+ steps.forEach((s,i)=>{
+  inner+=`<rect x="${s.x}" y="18" width="${s.w}" height="136" rx="9" fill="${s.col}" opacity="0.14" stroke="${s.col}" stroke-width="1.5"/>`;
+  inner+=tx(s.x+s.w/2,44,s.t,s.col,10,'middle',700);
+  const words=s.s.split(',');
+  words.forEach((w,j)=>inner+=tx(s.x+s.w/2,64+j*22,w.trim(),'var(--soft)',8,'middle'));
+  if(i<steps.length-1)inner+=`<path d="M${s.x+s.w+2},86 l12,0" stroke="var(--muted)" stroke-width="2" marker-end="url(#bfa)"/>`;
+ });
+ inner+=tx(W/2,168,'IDSA 2025: 7 days total from first effective dose; IV→PO when afebrile + stable + effective oral available','var(--muted)',9,'middle');
+ inner+=`<defs><marker id="bfa" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--muted)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+function utiAdmission(){
+ return `<h2 class="sec">4 · UTI admission criteria — who goes in, who goes home</h2>
+ <div class="cardgrid wide">
+   <div class="card crit"><h3>Admit criteria — the reliable list</h3>
+     <div class="blk miss"><b>These patients need admission</b>Urosepsis (sepsis criteria + urinary source); hemodynamic instability (SBP &lt;90, HR &gt;120, altered mental status, lactate &gt;2); inability to tolerate oral medications (vomiting, dehydration); confirmed or suspected gram-negative bacteremia; high-grade fever (&gt;39.5°C) with systemic toxicity; urologic obstruction requiring source control; immunocompromised host (transplant, HIV, chemotherapy, steroids); pregnancy with pyelonephritis; anatomic abnormality (solitary kidney, bilateral disease); failure of outpatient therapy (pyelonephritis not improving on oral antibiotics); extremes of age (infants &lt;3 months with febrile UTI; elderly with delirium or high-grade fever); diabetic ketoacidosis + UTI as trigger.</div>
+   </div>
+   <div class="card crit"><h3>Safe discharge criteria — all must be met</h3>
+     <div class="blk dose"><b>Outpatient pyelonephritis (no bacteremia)</b>Afebrile or trending down; hemodynamically stable; tolerating PO fluids; pain controlled orally; effective oral antibiotic available (preferably culture-directed); reliable follow-up within 24–48h; no anatomic abnormality; not immunocompromised; not pregnant; not elderly with multiple comorbidities; caregiver support at home.</div>
+     <div class="blk buzz"><b>If any one criterion fails → admit</b>Pyelonephritis discharge failures come from inadequate antibiotic coverage (give a test dose and watch for 2–4h), poor pain/symptom control, social factors (lives alone, no follow-up), and unreliable compliance.</div>
+   </div>
+ </div>`;
+}
+
+function utiSpecial(){
+ return `<h2 class="sec">5 · Special UTI scenarios in the ED</h2>
+ <div class="cardgrid wide">
+   <div class="card uti"><h3>Asymptomatic bacteriuria — do NOT treat</h3>
+     <div class="blk miss"><b>When NOT to treat</b>Non-pregnant adults with bacteria on UA but no symptoms should NOT receive antibiotics. Treating asymptomatic bacteriuria drives resistance, causes harm (C. diff, drug reactions), and does not improve outcomes. The only indications to treat ASB: pregnancy, pre-urologic procedure. Dipstick positive + no symptoms = do NOT treat.</div>
+   </div>
+   <div class="card uti"><h3>CAUTI — catheter-associated UTI</h3>
+     <div class="blk dose"><b>The most important intervention: remove the catheter</b>If possible, remove the indwelling catheter before or at the start of antibiotic therapy. Catheter removal significantly improves treatment outcomes. If the catheter cannot be removed, change it and culture the new catheter.</div>
+     <div class="blk miss"><b>Do not treat CAUTI if asymptomatic</b>Bacteria in catheterized patients is universal after several days — colonization is not infection. Treat only if symptomatic (new fever, chills, altered mental status, flank pain, pelvic discomfort) after other causes excluded.</div>
+   </div>
+   <div class="card uti"><h3>Recurrent UTI in women</h3>
+     <div class="blk dose"><b>Definition</b>≥2 infections in 6 months or ≥3 in 12 months. Evaluation: urine culture, UA, renal US (exclude structural abnormality). Prevention: void after intercourse, wipe front-to-back, topical vaginal estrogen (postmenopausal), D-mannose, prophylactic antibiotics (TMP-SMX or nitrofurantoin QD) — reserve antibiotics for women with significant impact on quality of life.</div>
+   </div>
+   <div class="card uti"><h3>UTI in elderly patients</h3>
+     <div class="blk miss"><b>The altered-presentation trap</b>Elderly patients with UTI often present without classic dysuria — they may present with altered mental status, falls, anorexia, or functional decline. However: altered mental status alone is NOT sufficient to diagnose UTI in the elderly (high rates of asymptomatic bacteriuria). Diagnose UTI only with UA + symptoms or systemic signs, not bacteriuria + confusion alone.</div>
+     <div class="blk buzz"><b>The overdiagnosis problem</b>Elderly patients are frequently over-diagnosed with UTI based on a positive dipstick alone. Up to 50% of nursing home residents have asymptomatic bacteriuria — treating all of them causes C. difficile, resistance, and drug adverse events without benefit.</div>
+   </div>
+   <div class="card uti"><h3>ESBL-producing organisms — the growing ED problem</h3>
+     <div class="blk miss"><b>Recognition</b>Extended-spectrum beta-lactamase-producing Enterobacterales (ESBL-E) — E. coli or Klebsiella — resistant to most cephalosporins and penicillins. Common in: recent hospitalization, nursing home residents, prior antibiotic exposure, travel to high-resistance regions.</div>
+     <div class="blk dose"><b>Treatment</b>Carbapenems (ertapenem, meropenem) are first-line for serious ESBL infections. Ertapenem (1g IV q24h) is the outpatient-friendly option (once-daily dosing). Piperacillin-tazobactam is NOT recommended for ESBL bacteremia (MERINO trial — higher mortality). For uncomplicated cystitis with ESBL: nitrofurantoin or fosfomycin if susceptible.</div>
+   </div>
+   <div class="card uti"><h3>Perinephric abscess / emphysematous pyelonephritis</h3>
+     <div class="blk miss"><b>The surgical emergency</b>Perinephric abscess (collection around the kidney) and emphysematous pyelonephritis (gas-forming infection in the renal parenchyma — seen in diabetics) require urgent urology/IR consultation for drainage + IV antibiotics. Antibiotics alone are insufficient. Emphysematous pyelonephritis carries 20–40% mortality without surgical management.</div>
+   </div>
+ </div>`;
+}
+
+function utiPearls(){
+ const P=[
+  ['Gram-negative bacteremia from UTI = admission','Almost universally requires IV antibiotics, monitoring, and source control evaluation — very limited role for outpatient management.'],
+  ['IDSA 2025: 7 days, not 14','Gram-negative bacteremia from UTI with clinical improvement: 7-day total course from first effective dose. IV→PO when afebrile, stable, tolerating PO.'],
+  ['Prostatitis: extend to 10–14 days','Male febrile bacteremic UTI with prostatitis suspicion → 10–14 days; fluoroquinolone or TMP-SMX for prostate penetration.'],
+  ['Asymptomatic bacteriuria: do not treat','Bacteria on UA without symptoms = colonization. Don\'t treat except in pregnancy and pre-urologic procedure.'],
+  ['Rigors = bacteremia until proven otherwise','Shaking chills/rigors during UTI → blood cultures ×2 + broad IV coverage. This is not uncomplicated pyelonephritis.'],
+  ['Nitrofurantoin is contraindicated in CKD','Avoid nitrofurantoin in eGFR <30 — ineffective (can\'t concentrate in urine) and nephrotoxic. Choose trimethoprim-sulfamethoxazole or fosfomycin instead.'],
+  ['ESBL: don\'t use pip-tazo for bacteremia','MERINO trial: pip-tazo for ESBL bacteremia had higher 30-day mortality than meropenem. Use carbapenems for serious ESBL infections.'],
+  ['Remove the catheter first','In CAUTI, the most important intervention is catheter removal — antibiotics alone fail more often with the biofilm in place.'],
+  ['Elderly AMS ≠ UTI','Altered mental status + bacteriuria in an elder does not equal UTI. High rates of asymptomatic bacteriuria in this population. Diagnose UTI only with additional clinical criteria.'],
+  ['Emphysematous pyelo = surgical emergency','Gas in the renal parenchyma on CT in a diabetic with sepsis = emergent urology/IR. Antibiotics alone carry 40% mortality.'],
+  ['Avoid fluoroquinolones for uncomplicated cystitis','Growing resistance, collateral damage to microbiome, C. diff risk, tendinopathy. Reserve for pyelonephritis and prostatitis where they add value.'],
+  ['UTI source control matters in obstruction','Obstruction + infected urinary tract = antibiotics alone won\'t clear the infection. Drainage (stent or nephrostomy) is required — failure to drain is a common cause of persistent urosepsis.']
+ ];
+ return `<h2 class="sec">6 · UTI &amp; bacteremia pearls</h2>
+ <div class="cardgrid">${P.map(p=>pearl(p,'var(--uti)')).join('')}</div>`;
+}
+
+/* ===== RENDER ===== */
+document.getElementById('tab-ckd').innerHTML = ckdModule();
+document.getElementById('tab-meds').innerHTML = medsModule();
+document.getElementById('tab-contrast').innerHTML = contrastModule();
+document.getElementById('tab-uti').innerHTML = utiModule();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians. CKD staging per KDIGO 2024. Medication dosing per FDA labeling, Lexicomp/Micromedex standards, and standard pharmacology teaching references — verify all dosing against current drug references and patient-specific factors before administration. Ketorolac guidance reflects FDA label and ADQI 16 workgroup consensus. Contrast nephropathy guidance reflects ACR Manual on Contrast Media 2024 and AMACING trial data. UTI management reflects IDSA Complicated UTI Guideline (published July 2025) and IDSA AMR Guidance 2024. Drug-induced AKI data per Mehran/KDIGO literature. Not a protocol or a substitute for clinical pharmacist consultation and clinical judgment.";
+
+/* TABS */
+(function(){
+ const tabs=document.querySelectorAll('.domtab');
+ const panels={ckd:document.getElementById('tab-ckd'),meds:document.getElementById('tab-meds'),contrast:document.getElementById('tab-contrast'),uti:document.getElementById('tab-uti')};
+ function show(k){Object.keys(panels).forEach(p=>panels[p].style.display=p===k?'block':'none');tabs.forEach(t=>t.classList.toggle('on',t.dataset.dom===k));window.scrollTo({top:0,behavior:'smooth'});}
+ tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.dom)));
+ show('ckd');
+})();
+/* THEME */
+(function(){
+ const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+ const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+ const root=document.documentElement,b=document.getElementById('themeToggle');
+ const ico=document.getElementById('themeIco'),txt=document.getElementById('themeTxt');
+ function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+ set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+ b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
+})();
+</script>
+</body>
+</html>

@@ -3324,6 +3324,38 @@ const blogPosts = {
       <p><a href="/embeds/renal-emergency-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "renal-pharm-uti-atlas": {
+    title: "Renal Pharmacology & UTI Atlas — CKD Dosing, Contrast, Bacteremia",
+    category: "HEALTHCARE",
+    date: "June 25, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A renal pharmacology and UTI atlas covering CKD-based drug dosing, contrast nephropathy risk, and management of UTIs and bacteremia — with dose adjustments, avoid-in-CKD lists, and antibiotic selection pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/renal-pharm-uti-atlas.html" title="Renal Pharmacology & UTI Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/renal-pharm-uti-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sedation-master-atlas": {
+    title: "Procedural Sedation Master Atlas — Anesthesiology Reference",
+    category: "HEALTHCARE",
+    date: "June 25, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A procedural sedation master atlas covering sedation depth, agent selection (propofol, ketamine, etomidate, benzodiazepines, opioids, dexmedetomidine), dosing, monitoring, and rescue — with anesthesiology-grade pearls for the ED and bedside.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/sedation-master-atlas.html" title="Procedural Sedation Master Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/sedation-master-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
