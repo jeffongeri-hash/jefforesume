@@ -19,6 +19,26 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Renal Pharmacology & UTI Atlas — CKD Dosing, Contrast, Bacteremia",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 25, 2026",
+      excerpt: "CKD-based drug dosing, contrast nephropathy, and UTI/bacteremia management — with dose adjustments, avoid-in-CKD lists, and antibiotic selection pearls.",
+      image: businessPost,
+      slug: "renal-pharm-uti-atlas",
+      tags: ["Nephrology", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "Procedural Sedation Master Atlas — Anesthesiology Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 25, 2026",
+      excerpt: "Sedation depth, agent selection, dosing, monitoring, and rescue — an anesthesiology-grade reference for propofol, ketamine, etomidate, benzos, opioids, and dexmedetomidine.",
+      image: businessPost,
+      slug: "sedation-master-atlas",
+      tags: ["Sedation", "Anesthesiology", "Clinical Education"]
+    },
+    {
       title: "Renal Emergency Atlas — AKI, Electrolytes, Stones, Diuretics & UA",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
