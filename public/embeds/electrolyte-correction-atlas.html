@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrolyte &amp; Blood Product Correction Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --accent:#4f9e6e; --warn:#ff6b5e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --accent:#2f7a4d; --warn:#b5392b; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.6;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .croute-name, .calc-tag, .pearl-tag{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1100px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.45rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+
+nav.eltabs{display:flex; gap:6px; max-width:1100px; margin:14px auto 0; padding:0 22px; flex-wrap:wrap;}
+.eltab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 15px; border-radius:9px; cursor:pointer; font-size:.82rem; font-weight:600;}
+.eltab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
+main{max-width:1100px; margin:0 auto; padding:22px;}
+.elpanel{display:none;}
+.elpanel.active{display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; box-shadow:var(--shadow);}
+
+.el-intro{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; padding-bottom:14px; border-bottom:2px solid var(--tabclr);}
+.el-intro h2{font-size:1.6rem; color:var(--tabclr);}
+.el-normal{text-align:right;}
+.el-normal .flabel{display:block; font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);}
+.el-normal p{margin:2px 0 0; font-weight:600;}
+
+.el-block{margin-bottom:20px;}
+.el-block h3{font-size:1rem; margin-bottom:10px; color:var(--soft);}
+.el-list{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:8px;}
+.el-list li{font-size:.9rem; color:var(--soft);}
+.el-expected{font-size:.92rem; color:var(--ink); background:var(--panelhi); border-left:3px solid var(--tabclr); border-radius:8px; padding:12px 16px; margin:0;}
+
+.croute-grid{display:grid; gap:10px;}
+.croute{background:var(--panelhi); border-radius:10px; padding:10px 14px; border-left:3px solid var(--line2);}
+.croute-name{display:block; font-size:.72rem; font-weight:700; color:var(--tabclr); margin-bottom:3px;}
+.croute p{margin:0; font-size:.87rem; color:var(--soft);}
+
+.sev-block{background:var(--bg2); border:1px solid var(--line2); border-radius:12px; padding:14px 16px;}
+.sev-group{margin-bottom:12px;}
+.sev-group:last-child{margin-bottom:0;}
+.sev-groupname{display:block; font-size:.68rem; letter-spacing:.5px; color:var(--muted); margin-bottom:6px; font-family:'JetBrains Mono',monospace;}
+.sev-bar{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+.sev-seg{border-radius:9px; padding:9px 11px; display:flex; flex-direction:column; gap:3px; color:#241a06;}
+.sev-tier{font-weight:800; font-size:.78rem; letter-spacing:.3px;}
+.sev-rng{font-size:.72rem; font-weight:600; font-family:'JetBrains Mono',monospace;}
+.sev-action{font-size:.72rem; line-height:1.35;}
+.sev-mild{background:#e8d24a;}
+.sev-moderate{background:#e0a13c;}
+.sev-severe{background:#e2685a; color:#2a0e08;}
+html[data-theme="light"] .sev-mild{background:#f0dd70;}
+html[data-theme="light"] .sev-moderate{background:#eab568;}
+html[data-theme="light"] .sev-severe{background:#e8897c;}
+@media (max-width:640px){ .sev-bar{grid-template-columns:1fr;} }
+
+.calc-box{background:var(--bg2); border:1px dashed var(--tabclr); border-radius:12px; padding:16px 18px; margin-bottom:20px;}
+.calc-tag{font-size:.62rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--tabclr); font-weight:700;}
+.calc-box h4{font-size:1rem; margin:4px 0 12px;}
+.calc-row{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;}
+.calc-row label{display:flex; flex-direction:column; gap:4px; font-size:.75rem; color:var(--muted);}
+.calc-row input{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:7px 10px; width:120px; font-size:.9rem;}
+.calc-btn{background:var(--tabclr); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-weight:600; cursor:pointer; font-size:.82rem;}
+.calc-result{font-size:1rem; font-weight:700; margin:12px 0 4px; min-height:1.4em;}
+.calc-note{font-size:.75rem; color:var(--muted); margin:0;}
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.88rem;}
+
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:820px;}
+footer{max-width:1100px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Lab Values &amp; Corrections</span>
+      <h1>Electrolyte &amp; Blood Product Correction Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="eltabs"><button class="eltab active" data-target="potassium" style="--tabclr:#a76bd6">Potassium</button>
+<button class="eltab" data-target="calcium" style="--tabclr:#d9b23c">Calcium (+ Albumin Correction)</button>
+<button class="eltab" data-target="magnesium" style="--tabclr:#4f9e6e">Magnesium</button>
+<button class="eltab" data-target="sodium" style="--tabclr:#4a90c9">Sodium</button>
+<button class="eltab" data-target="phosphate" style="--tabclr:#d98a3c">Phosphate</button>
+<button class="eltab" data-target="iron" style="--tabclr:#a3603a">Iron &amp; Anemia</button>
+<button class="eltab" data-target="mtp" style="--tabclr:#c1432e">Massive Transfusion (MTP)</button></nav>
+</header>
+
+<main>
+  <div class="intro">
+    <p>Reference ranges, clinical considerations, correction routes (oral, liquid, IV) with typical doses, and expected-correction math for the electrolytes and blood products you replace most often — plus two quick calculators for the bedside math. Doses and rates are typical starting points; verify against your institution's protocol and current guidelines, and recheck labs after any significant correction.</p>
+  </div>
+  
+  <section class="elpanel active" data-eltab="potassium" style="--tabclr:#a76bd6">
+    <div class="el-intro">
+      <h2>Potassium</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>3.5 – 5.0 mEq/L (mmol/L)</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hypokalemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">3.0 – 3.4 mEq/L</span><span class="sev-action">Usually asymptomatic. Outpatient oral repletion reasonable if reliable follow-up.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">2.5 – 2.9 mEq/L</span><span class="sev-action">Weakness/ECG changes possible. IV repletion; consider admission, especially if symptomatic or on digoxin.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">&lt;2.5 mEq/L — OR any arrhythmia/ECG change at any level</span><span class="sev-action">Admit with continuous cardiac monitoring; aggressive IV repletion via central line if rate &gt;10 mEq/hr needed.</span></div></div></div>
+<div class="sev-group"><span class="sev-groupname">Hyperkalemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">5.1 – 5.5 mEq/L</span><span class="sev-action">Recheck (rule out hemolysis/pseudohyperkalemia); review diet/meds (ACEi/ARB, K-sparing diuretics).</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">5.6 – 6.4 mEq/L</span><span class="sev-action">Obtain ECG; treat cause, consider binder therapy (patiromer/SPS); recheck level.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≥6.5 mEq/L — OR any ECG changes (peaked T, widened QRS) at any level</span><span class="sev-action">Immediate treatment: IV calcium (membrane stabilization), insulin/dextrose, albuterol; continuous monitoring; consider dialysis.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>Almost entirely intracellular (~98%) — a serum level is a poor proxy for total body stores; large deficits can exist with a near-normal serum K⁺, and vice versa in acidosis (transcellular shift masks a true deficit).</li>
+<li>Hypomagnesemia makes hypokalemia refractory to correction — magnesium is required for the Na⁺/K⁺-ATPase and renal K⁺-ATPase to retain potassium; always check/replace Mg²⁺ first or alongside in resistant cases.</li>
+<li>ECG changes correlate loosely with severity: hypoK → flattened T, U waves, ST depression, prolonged QU (risk of torsades); hyperK → peaked T waves → widened QRS → sine wave → arrest.</li>
+<li>Renal function and concurrent K⁺-altering drugs (ACEi/ARB, K-sparing diuretics, loop/thiazide diuretics, insulin, β-agonists) change both the safe replacement dose and monitoring interval.</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Oral (PO)</span><p>Preferred first-line if the patient can tolerate PO and the deficit is not severe/symptomatic. Typical dose: 20–40 mEq PO, may repeat. Onset slower than IV but a lower risk of local vein irritation and no rate-limited infusion ceiling.</p></div>
+<div class="croute"><span class="croute-name">Liquid / effervescent PO</span><p>Faster GI absorption than tablets and useful when swallowing tablets is difficult, but more GI upset (nausea) is common; often dosed as 20 mEq per 15–20 mL solution, diluted and taken with food.</p></div>
+<div class="croute"><span class="croute-name">IV — peripheral line</span><p>Max concentration ~10 mEq/100 mL, max rate 10 mEq/hr peripherally — faster peripheral rates cause significant vein irritation/phlebitis and burning.</p></div>
+<div class="croute"><span class="croute-name">IV — central line + continuous cardiac monitoring</span><p>Allows faster replacement (commonly up to 20 mEq/hr, occasionally 40 mEq/hr in critical hypokalemia with arrhythmia) — requires continuous ECG monitoring given arrhythmia risk from rapid extracellular rise.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">Classic teaching: 10 mEq of KCl raises serum K⁺ by ~0.1 mEq/L. Modern data are more modest — a retrospective cohort found the daily rise was closer to 0.05–0.07 mEq/L per 10 mEq given, and a meta-analysis of 20 RCTs found no dose-dependent relationship at all above a ceiling (i.e., higher doses don't reliably produce a bigger rise once absorption/renal excretion catch up).</p>
+    </div>
+
+    
+        <div class="calc-box">
+          <span class="calc-tag">Calculator</span>
+          <h4>Estimated Potassium Replacement</h4>
+          <div class="calc-row">
+            <label>Current K⁺ (mEq/L) <input type="number" step="0.1" id="k-current" placeholder="3.0"></label>
+            <label>Target K⁺ (mEq/L) <input type="number" step="0.1" id="k-target" value="4.0"></label>
+          </div>
+          <button class="calc-btn" onclick="calcK()">Estimate mEq needed</button>
+          <p class="calc-result" id="k-result"></p>
+          <p class="calc-note">Uses the 10 mEq ≈ 0.1 mEq/L rule of thumb — treat this as a rough starting estimate, not a guarantee (see pearl below).</p>
+        </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>The 10:0.1 rule is a useful rough estimate for planning, not a guarantee — it is specifically LESS reliable in severe hypokalemia (K⁺ &lt;2.5) where potassium preferentially refills the enormous intracellular pool first, and it assumes normal renal function and no concurrent K⁺-wasting losses (diuretics, GI losses). Recheck levels after any significant replacement rather than trusting the formula alone.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="calcium" style="--tabclr:#d9b23c">
+    <div class="el-intro">
+      <h2>Calcium (+ Albumin Correction)</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>Total Ca: 8.5 – 10.5 mg/dL · Ionized Ca: 1.1 – 1.3 mmol/L</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hypocalcemia (corrected)</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">8.0 – 8.4 mg/dL</span><span class="sev-action">Often asymptomatic. Oral calcium ± vitamin D, outpatient follow-up.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">7.0 – 7.9 mg/dL</span><span class="sev-action">May have paresthesias, Chvostek's/Trousseau's sign. Consider IV calcium; check Mg/phos/PTH.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">&lt;7.0 mg/dL — OR symptomatic (tetany, seizure, QT prolongation/arrhythmia)</span><span class="sev-action">Immediate IV calcium (gluconate peripherally / chloride via central line), admission, cardiac monitoring.</span></div></div></div>
+<div class="sev-group"><span class="sev-groupname">Hypercalcemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">10.5 – 11.9 mg/dL</span><span class="sev-action">Often asymptomatic; outpatient workup (PTH, malignancy screen) reasonable if stable.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">12.0 – 13.9 mg/dL</span><span class="sev-action">"Stones, bones, groans, psychiatric overtones" symptoms; IV fluids, treat cause, consider admission.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≥14.0 mg/dL — OR symptomatic (AMS, severe dehydration) = hypercalcemic crisis</span><span class="sev-action">ICU admission; aggressive IV isotonic fluids, calcitonin/bisphosphonate, treat underlying cause emergently.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>~40% of serum calcium is protein-bound (mostly to albumin); only the ionized (unbound) fraction is physiologically active — this is why a low total calcium in a hypoalbuminemic patient can be entirely artifactual ("pseudohypocalcemia").</li>
+<li>Chvostek's sign (facial twitch with tapping over CN VII) and Trousseau's sign (carpal spasm with BP cuff inflation) are the classic bedside signs of true (ionized) hypocalcemia.</li>
+<li>When precision matters (critical illness, abnormal pH, large albumin swings, paraproteinemia), a directly measured ionized calcium is more reliable than any correction formula — the correction equations were derived decades ago and perform progressively worse as albumin falls further from normal.</li>
+<li>Correct magnesium and check phosphate/PTH/vitamin D as part of a hypocalcemia workup — hypomagnesemia impairs PTH secretion and action, producing a treatment-resistant hypocalcemia until Mg²⁺ is repleted.</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Oral — calcium carbonate</span><p>~40% elemental calcium by weight (e.g., 1250 mg CaCO₃ ≈ 500 mg elemental Ca); best absorbed with food/stomach acid present — poorly absorbed in patients on PPIs or with achlorhydria.</p></div>
+<div class="croute"><span class="croute-name">Oral — calcium citrate</span><p>~21% elemental calcium; absorption is acid-independent, making it the preferred oral form for patients on acid suppression or with a history of gastric bypass/achlorhydria.</p></div>
+<div class="croute"><span class="croute-name">IV — calcium gluconate</span><p>Preferred for peripheral IV administration — lower risk of tissue necrosis if extravasation occurs; standard acute symptomatic dose ~1–2 g IV over 10–20 min, repeat/infusion as needed.</p></div>
+<div class="croute"><span class="croute-name">IV — calcium chloride</span><p>Contains ~3x the elemental calcium of an equal volume of gluconate (better for cardiac arrest/severe symptomatic hypocalcemia or hyperkalemia-related arrhythmia), but is highly vesicant/necrotic on extravasation — central line strongly preferred.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">Payne formula (most widely used, though its accuracy is debated): Corrected Ca (mg/dL) = Measured total Ca + 0.8 × (4.0 − Albumin [g/dL]). A rough bedside rule: every 1 g/dL the albumin is below 4.0 g/dL, add 0.8 mg/dL to the measured total calcium.</p>
+    </div>
+
+    
+        <div class="calc-box">
+          <span class="calc-tag">Calculator</span>
+          <h4>Albumin-Corrected Calcium (Payne formula)</h4>
+          <div class="calc-row">
+            <label>Measured total Ca (mg/dL) <input type="number" step="0.1" id="ca-measured" placeholder="7.8"></label>
+            <label>Albumin (g/dL) <input type="number" step="0.1" id="ca-albumin" placeholder="2.0"></label>
+          </div>
+          <button class="calc-btn" onclick="calcCa()">Calculate corrected calcium</button>
+          <p class="calc-result" id="ca-result"></p>
+          <p class="calc-note">Formula: Corrected Ca = Measured Ca + 0.8 × (4.0 − Albumin). Order a direct ionized calcium if this result will change management.</p>
+        </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>Studies re-examining the Payne formula found it correlates only modestly with directly measured ionized calcium (correlation coefficients in the 0.45–0.8 range) and performs worst in the sickest patients — critical illness, severe hypoalbuminemia, and abnormal pH are exactly the situations where you most want an accurate number, and exactly where the formula is least trustworthy. If a treatment decision hinges on the result, order a directly measured ionized calcium instead.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="magnesium" style="--tabclr:#4f9e6e">
+    <div class="el-intro">
+      <h2>Magnesium</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>1.7 – 2.2 mg/dL (1.4 – 1.8 mEq/L)</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hypomagnesemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">1.4 – 1.7 mg/dL</span><span class="sev-action">Oral repletion, outpatient follow-up reasonable if asymptomatic.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">1.0 – 1.3 mg/dL</span><span class="sev-action">IV repletion; consider admission if symptomatic or concurrent K⁺/Ca²⁺ derangement.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">&lt;1.0 mg/dL — OR symptomatic (seizure, torsades, tetany)</span><span class="sev-action">Admit, IV MgSO₄ repletion, continuous cardiac monitoring (torsades risk).</span></div></div></div>
+<div class="sev-group"><span class="sev-groupname">Hypermagnesemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">2.2 – 3.9 mg/dL</span><span class="sev-action">Monitor; hold exogenous Mg sources (antacids, laxatives).</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">4.0 – 5.9 mg/dL</span><span class="sev-action">Loss of deep tendon reflexes possible; hold Mg, IV fluids/diuresis if renal function allows.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≥6.0 mg/dL — OR symptomatic (respiratory depression, heart block, arrest)</span><span class="sev-action">Immediate IV calcium to antagonize cardiac/neuromuscular effects; dialysis if renal failure.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>Mg²⁺ is required for normal PTH secretion/action and for the Na⁺/K⁺-ATPase — hypomagnesemia commonly drives refractory hypokalemia AND refractory hypocalcemia simultaneously; treat the Mg²⁺ first or you'll chase the other two indefinitely.</li>
+<li>Common causes: diuretics (loop &gt; thiazide), alcohol use disorder, PPI use (rare but described), diarrhea/malabsorption, and refeeding syndrome.</li>
+<li>ECG changes overlap with hypokalemia (prolonged QT/PR, U waves) — hypomagnesemia is a major precipitant of torsades de pointes and should be checked/empirically treated in any patient with polymorphic VT.</li>
+<li>Hypermagnesemia is almost always iatrogenic — eclampsia treatment or renal failure with ongoing Mg-containing antacid/laxative use; loss of deep tendon reflexes is the classic early warning sign before respiratory depression and cardiac arrest.</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Oral — magnesium oxide/gluconate</span><p>Reasonable for mild, asymptomatic deficiency; poorly absorbed (only ~4% for oxide) and reliably causes osmotic diarrhea at replacement doses, which itself can worsen losses — a real limitation of the oral route for this electrolyte specifically.</p></div>
+<div class="croute"><span class="croute-name">IV — magnesium sulfate (non-urgent)</span><p>Typical inpatient replacement: 1–2 g IV MgSO₄ infused over 1–2 hours for asymptomatic/mild-moderate deficiency; infuse slowly to avoid flushing, hypotension.</p></div>
+<div class="croute"><span class="croute-name">IV — magnesium sulfate (urgent: torsades, eclampsia)</span><p>2 g IV MgSO₄ push over 1–2 minutes for torsades de pointes/pulseless arrest; 4–6 g IV load over 15–20 min followed by an infusion for eclampsia seizure prophylaxis/treatment.</p></div>
+<div class="croute"><span class="croute-name">Renal impairment caution</span><p>Magnesium is renally cleared — reduce dose and infusion rate substantially and monitor levels/reflexes more frequently in CKD/dialysis patients, who are at high risk of iatrogenic hypermagnesemia.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">No reliable linear "X grams raises level by Y" rule exists for magnesium the way it does for potassium — total body Mg²⁺ stores are overwhelmingly intracellular/skeletal (similar to potassium and calcium), so a single IV dose produces only a modest, often transient rise in the serum level even though it may still correct the clinical problem (arrhythmia, refractory hypokalemia).</p>
+    </div>
+
+    
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>Because serum Mg²⁺ reflects such a small fraction of total body stores, a single normal level after one dose does NOT rule out ongoing deficiency — patients with continued losses (diuretics, alcohol, diarrhea) often need repeated dosing over days, guided by trend and clinical response rather than chasing one number.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="sodium" style="--tabclr:#4a90c9">
+    <div class="el-intro">
+      <h2>Sodium</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>135 – 145 mEq/L</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hyponatremia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">130 – 134 mEq/L</span><span class="sev-action">Often asymptomatic; outpatient workup possible if clinically stable.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">121 – 129 mEq/L</span><span class="sev-action">Nausea, confusion possible; admission for workup and monitored correction.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≤120 mEq/L — OR symptomatic (seizure, coma, severe AMS)</span><span class="sev-action">Immediate treatment with hypertonic (3%) saline bolus; ICU admission; cap correction ≤8 mEq/L/24h even acutely.</span></div></div></div>
+<div class="sev-group"><span class="sev-groupname">Hypernatremia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">146 – 149 mEq/L</span><span class="sev-action">Usually free water deficit; oral free water or mild IV correction, outpatient if stable.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">150 – 159 mEq/L</span><span class="sev-action">Admission likely; calculated IV free water replacement over 48h.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≥160 mEq/L — OR symptomatic (AMS, seizure)</span><span class="sev-action">ICU admission; correction capped ≤0.5 mEq/L/hr decline to avoid cerebral edema.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>The overarching safety principle for CHRONIC dyshyponatremia of either direction: correct SLOWLY. Overly rapid correction of chronic hyponatremia risks osmotic demyelination syndrome (ODS); overly rapid correction of chronic hypernatremia risks cerebral edema.</li>
+<li>Standard safe correction limit: ≤8 mEq/L per 24 hours for chronic hyponatremia (some guidelines use an even more conservative ≤6 mEq/L/24h in high-risk patients — alcoholics, malnourished, hypokalemic, liver disease).</li>
+<li>Acute, symptomatic, severe hyponatremia (seizure, coma, herniation risk) is the exception — an initial rapid bolus is appropriate and life-saving, but total correction is still capped over the full 24-hour window, and 3% hypertonic saline is dosed as a bolus (100–150 mL) rather than a continuous rapid infusion for this reason.</li>
+<li>The Adrogué-Madias formula estimates the effect of 1 L of a given infusate on serum Na⁺ but is only a starting estimate — ongoing free water losses/gains (osmotic diuresis, DI, GI losses) can make actual correction diverge substantially; recheck levels frequently (often q2–4h during active correction).</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Hyponatremia — oral salt tablets / fluid restriction</span><p>For mild, chronic, asymptomatic hyponatremia (e.g., SIADH), fluid restriction (&lt;800–1000 mL/day) ± oral sodium chloride tablets is first-line; effect is slow (days).</p></div>
+<div class="croute"><span class="croute-name">Hyponatremia — IV isotonic (0.9%) saline</span><p>First-line for hypovolemic hyponatremia to correct the volume-driven ADH stimulus; NOT appropriate for SIADH (may worsen hyponatremia via desalination if urine osmolality exceeds serum).</p></div>
+<div class="croute"><span class="croute-name">Hyponatremia — IV hypertonic (3%) saline</span><p>Reserved for severe/symptomatic hyponatremia; typically dosed as 100–150 mL bolus, may repeat once or twice, targeting a rise of only 4–6 mEq/L acutely to resolve symptoms — NOT full correction.</p></div>
+<div class="croute"><span class="croute-name">Hypernatremia — free water replacement (PO/D5W)</span><p>Oral free water (or IV D5W if NPO) to replace the free water deficit, calculated and given over 48+ hours for chronic hypernatremia to avoid cerebral edema; rate typically capped at ≤0.5 mEq/L/hr decline.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">Adrogué-Madias equation (estimated change in serum Na⁺ from 1 L of a given infusate): ΔNa⁺ ≈ (Infusate Na⁺ − Serum Na⁺) ÷ (Total Body Water + 1). Total body water is roughly weight (kg) × 0.6 (men) or × 0.5 (women), lower in the elderly.</p>
+    </div>
+
+    
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>The single highest-yield safety number in this entire section: cap correction of CHRONIC hyponatremia at 8 mEq/L per 24 hours. Overshooting is common when a patient auto-corrects faster than expected (e.g., water diuresis once the underlying cause, like adrenal insufficiency or a thiazide, is addressed) — if correction is running ahead of target, DDAVP + free water ("re-lowering") can be used to relower sodium and avoid ODS.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="phosphate" style="--tabclr:#d98a3c">
+    <div class="el-intro">
+      <h2>Phosphate</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>2.5 – 4.5 mg/dL</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hypophosphatemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">2.0 – 2.5 mg/dL</span><span class="sev-action">Oral repletion, outpatient follow-up if asymptomatic.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">1.0 – 1.9 mg/dL</span><span class="sev-action">IV repletion; monitor, especially in DKA recovery or refeeding.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">&lt;1.0 mg/dL — OR symptomatic (respiratory weakness, rhabdomyolysis)</span><span class="sev-action">Immediate IV repletion, admission/ICU, cardiorespiratory monitoring.</span></div></div></div>
+<div class="sev-group"><span class="sev-groupname">Hyperphosphatemia</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">4.5 – 5.9 mg/dL</span><span class="sev-action">Usually renal-related; dietary/binder adjustment, outpatient management.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">6.0 – 8.9 mg/dL</span><span class="sev-action">Treat underlying cause; monitor calcium for calcium-phosphate precipitation risk.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">≥9.0 mg/dL — OR symptomatic (tetany from resultant hypocalcemia)</span><span class="sev-action">Admission; consider dialysis, especially with concurrent renal failure or tumor lysis syndrome.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>Classic setting for severe, dangerous hypophosphatemia: refeeding syndrome (malnourished patient reintroduced to carbohydrates → insulin surge → phosphate shifts intracellularly) and recovery phase of DKA (insulin drives phosphate into cells).</li>
+<li>Severe hypophosphatemia (&lt;1.0 mg/dL) can cause respiratory muscle weakness/failure, rhabdomyolysis, hemolysis, and cardiac dysfunction — check and preemptively replace phosphate before extubating an at-risk patient.</li>
+<li>Hyperphosphatemia is most often seen in renal failure (impaired excretion) or tumor lysis syndrome — watch for the accompanying hypocalcemia, since calcium-phosphate complexes can precipitate in tissue when the calcium-phosphate product is high.</li>
+<li>Replacement products contain potassium OR sodium as the counter-ion — check the patient's potassium level before choosing (avoid K-phosphate in a hyperkalemic or renal failure patient).</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Oral — phosphate tablets</span><p>Reasonable for mild-moderate, asymptomatic hypophosphatemia (1.5–2.5 mg/dL); commonly causes diarrhea at replacement doses, limiting practical daily dose.</p></div>
+<div class="croute"><span class="croute-name">IV — potassium phosphate or sodium phosphate</span><p>For moderate-severe or symptomatic hypophosphatemia (&lt;1.5–2.0 mg/dL or unable to tolerate PO): typical dose 15–30 mmol IV infused over 4–6 hours; choose K- vs Na-phosphate based on concurrent potassium status.</p></div>
+<div class="croute"><span class="croute-name">Renal impairment caution</span><p>Slow the infusion and reduce total dose substantially in renal failure — impaired excretion raises the risk of overshoot hyperphosphatemia and secondary hypocalcemia/precipitation.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">No single validated linear replacement formula is in routine clinical use (unlike potassium) — dosing is empiric and guided by severity and symptoms, with a recheck 4–6 hours after an IV dose to guide further replacement.</p>
+    </div>
+
+    
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>Always recheck calcium and magnesium alongside phosphate during correction — rapid IV phosphate administration can cause acute hypocalcemia via calcium-phosphate complex formation, especially if given too fast or in a patient with pre-existing renal impairment.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="iron" style="--tabclr:#a3603a">
+    <div class="el-intro">
+      <h2>Iron &amp; Anemia</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>Hgb: 13.5–17.5 g/dL (M) / 12.0–15.5 g/dL (F) · Ferritin: 20–250 ng/mL (wide reference-range variability by lab/sex)</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Anemia (approximate adult bands — adjust for baseline/sex)</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">Hgb ~10.0 – 11.9 g/dL</span><span class="sev-action">Outpatient oral iron reasonable if hemodynamically stable and source identified/controlled.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">Hgb ~8.0 – 9.9 g/dL</span><span class="sev-action">Admission vs. outpatient depends on symptoms/comorbidities (CAD, elderly); consider IV iron for faster correction.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">Hgb &lt;8.0 g/dL — OR symptomatic (chest pain, hemodynamic instability, active bleeding)</span><span class="sev-action">Admission; consider transfusion, especially if symptomatic or actively bleeding, per restrictive-threshold guidelines.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>Iron deficiency anemia workup should identify the SOURCE (GI blood loss is the default assumption in an adult male or postmenopausal female until proven otherwise) — treating the anemia without finding the cause risks missing a GI malignancy.</li>
+<li>Ferritin is an acute phase reactant — a "normal" ferritin can still reflect true iron deficiency in the setting of concurrent inflammation/infection; a low ferritin (&lt;30 ng/mL) is highly specific for iron deficiency regardless of inflammatory state.</li>
+<li>Oral iron absorption is actively limited by hepcidin, which rises transiently after a dose and blunts absorption of a second dose taken later the same day — this is the physiologic basis for the modern alternate-day dosing strategy.</li>
+<li>IV iron largely bypasses the GI absorption/hepcidin bottleneck and is preferred when oral iron is not tolerated, ineffective, or correction is urgent (active bleeding, severe symptomatic anemia, malabsorption, CKD on erythropoiesis-stimulating agents).</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Oral — ferrous sulfate</span><p>325 mg tablet ≈ 65 mg elemental iron. Traditional dosing was 2–3x/day, but modern evidence favors ONE tablet daily or even every other day — alternate-day dosing improves total absorption and GI tolerability by working around the hepcidin response.</p></div>
+<div class="croute"><span class="croute-name">Oral — ferrous gluconate / fumarate</span><p>Alternative salts with different elemental iron content per tablet and marketed as better-tolerated, though evidence for superior tolerability over sulfate is inconsistent; useful second-line options if sulfate isn't tolerated.</p></div>
+<div class="croute"><span class="croute-name">IV — iron sucrose / ferric gluconate</span><p>Lower single-dose max, requiring multiple infusion visits (e.g., several 200–300 mg doses) to reach total replacement dose; favorable low-anaphylaxis-risk profile.</p></div>
+<div class="croute"><span class="croute-name">IV — ferric carboxymaltose / low-molecular-weight iron dextran</span><p>Newer high-single-dose formulations allow full or near-full replacement (e.g., 750–1000 mg) in one or two visits — favored when rapid, convenient correction is needed (e.g., pregnancy, pre-op anemia).</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">Oral iron benchmark: ~2 g/dL hemoglobin rise over 3 weeks is considered a successful response (roughly 0.1 g/dL/day); a smaller or absent rise at 2–3 weeks should prompt reassessment of adherence, ongoing losses, or an incorrect diagnosis. IV iron: hemoglobin typically begins rising within 1–2 weeks, with +1–2 g/dL by 2–4 weeks and maximal effect by 4–8 weeks.</p>
+    </div>
+
+    
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>If hemoglobin has NOT risen by the expected benchmark at 2–3 weeks on adequate oral therapy, the leading explanations are (in rough order): ongoing blood loss exceeding replacement, poor adherence/tolerability, malabsorption (celiac disease, prior bariatric surgery, H. pylori), or an incorrect diagnosis (e.g., anemia of chronic disease/inflammation instead of true iron deficiency) — don't just increase the dose.</p>
+    </div>
+  </section>
+
+  <section class="elpanel" data-eltab="mtp" style="--tabclr:#c1432e">
+    <div class="el-intro">
+      <h2>Massive Transfusion (MTP)</h2>
+      <div class="el-normal"><span class="flabel">Reference Range</span><p>MTP activation criteria vary by institution but commonly include: ≥10 units PRBC anticipated/given in 24h, or the ABC score / shock index, or clinician gestalt for ongoing life-threatening hemorrhage</p></div>
+    </div>
+
+    <div class="el-block sev-block">
+      <h3>Severity — Mild / Moderate / Severe</h3>
+      <div class="sev-group"><span class="sev-groupname">Hemorrhage severity / activation tier (approximates ATLS shock classes — institution-dependent)</span><div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-rng">Class I–II (&lt;30% blood volume loss; HR &lt;120, near-normal BP)</span><span class="sev-action">Type &amp;amp; screen/crossmatch, close monitoring, notify blood bank; MTP not yet activated.</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-rng">Class III (30–40% loss; HR &gt;120, dropping BP, shock index &gt;1)</span><span class="sev-action">Activate MTP — begin 1:1:1 PRBC:FFP:platelets; give TXA if within 3h of injury.</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-rng">Class IV (&gt;40% loss; HR &gt;140, hypotensive, altered mental status) OR ongoing uncontrolled hemorrhage</span><span class="sev-action">Full MTP rounds; empiric calcium replacement every ~4 units; emergent surgical/IR source control; consider whole blood.</span></div></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Clinical Considerations</h3>
+      <ul class="el-list"><li>The modern balanced-resuscitation principle: give red cells, plasma, and platelets together and EARLY rather than crystalloid-first with blood products added late — crystalloid-heavy resuscitation dilutes clotting factors and worsens trauma-induced coagulopathy.</li>
+<li>The PROPPR trial compared a 1:1:1 to a 1:1:2 (plasma:platelet:RBC) ratio and found no significant difference in 24-hour or 30-day mortality overall, though the 1:1:1 group had less death specifically from hemorrhage in the first 24 hours and achieved hemostasis faster — this is the primary evidence basis for the 1:1:1 standard.</li>
+<li>Give 1 g calcium chloride (or ~3 g calcium gluconate) for roughly every 4 units of blood product transfused — stored blood products are citrated as an anticoagulant, and citrate chelates ionized calcium, producing clinically significant hypocalcemia during rapid massive transfusion if not proactively replaced.</li>
+<li>Whole blood (naturally balanced 1:1:1 in a single unit) is increasingly used as the initial MTP product where available — aggregated data lean toward improved survival, especially with early use, though refrigerated storage does modestly reduce platelet function compared to fresh.</li></ul>
+    </div>
+
+    <div class="el-block">
+      <h3>Correction Methods &amp; Routes</h3>
+      <div class="croute-grid"><div class="croute"><span class="croute-name">Standard MTP "round" / cooler</span><p>6 units PRBC + 6 units FFP + 1 apheresis platelet unit (≈ 6 pooled units) — delivered as a package and repeated in subsequent rounds until bleeding is controlled and the protocol is deactivated.</p></div>
+<div class="croute"><span class="croute-name">Cryoprecipitate</span><p>Add ~10 units when fibrinogen falls below 150–200 mg/dL (or per institutional trigger) — cryoprecipitate is concentrated fibrinogen, Factor VIII, von Willebrand factor, and Factor XIII.</p></div>
+<div class="croute"><span class="croute-name">Calcium replacement (mandatory, not optional)</span><p>1 g CaCl₂ IV (central line preferred — vesicant) or 3 g calcium gluconate IV, empirically with every ~4 units of blood product, or guided by ionized calcium if point-of-care testing is available.</p></div>
+<div class="croute"><span class="croute-name">Tranexamic acid (TXA)</span><p>1 g IV over 10 minutes as early as possible (ideally within 3 hours of injury) followed by a 1 g infusion over 8 hours in trauma-related hemorrhage — benefit is time-sensitive and diminishes/reverses if given late.</p></div></div>
+    </div>
+
+    <div class="el-block">
+      <h3>Expected Correction</h3>
+      <p class="el-expected">1 unit PRBC raises hemoglobin by roughly ~1 g/dL (hematocrit by ~3%) in a non-bleeding, average-sized adult — this estimate is unreliable during ACTIVE hemorrhage, where ongoing losses can outpace any single unit's expected rise, which is why MTP is dosed by protocol/ratio and clinical response rather than by targeting a specific hemoglobin per unit given.</p>
+    </div>
+
+    
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical / Safety Pearl</span>
+      <p>Do not chase a hemoglobin number in real time during active massive hemorrhage — a fingerstick or even a send-out hemoglobin lags the true picture by the time it results, and early in acute hemorrhage the hemoglobin can look falsely reassuring before hemodilution/equilibration occurs. Treat physiology (vital signs, response to product, ongoing visible/suspected blood loss) and protocol ratios, not a single lab value.</p>
+    </div>
+  </section>
+</main>
+
+<footer>Electrolyte &amp; Blood Product Correction Atlas — original reference content for clinical education. Correction formulas (potassium 10:0.1 rule, Payne calcium formula) are widely taught approximations with documented limitations discussed in each section's clinical pearl — verify against current guidelines and institutional protocols before applying to patient care.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+
+  document.querySelectorAll('.eltab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.eltab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.elpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.elpanel[data-eltab="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+
+function calcK(){
+  var cur = parseFloat(document.getElementById('k-current').value);
+  var tgt = parseFloat(document.getElementById('k-target').value);
+  var out = document.getElementById('k-result');
+  if(isNaN(cur) || isNaN(tgt)){ out.textContent = 'Enter both values.'; return; }
+  var diff = tgt - cur;
+  if(diff <= 0){ out.textContent = 'Target is at or below current level — no replacement indicated by this estimate.'; return; }
+  var mEq = (diff / 0.1) * 10;
+  var mEqLow = (diff / 0.1) * 10 * 0.7;
+  out.textContent = '≈ ' + Math.round(mEqLow) + '–' + Math.round(mEq) + ' mEq total (rough estimate — divide into tolerated doses per route/rate limits above; recheck level after replacement).';
+}
+
+function calcCa(){
+  var ca = parseFloat(document.getElementById('ca-measured').value);
+  var alb = parseFloat(document.getElementById('ca-albumin').value);
+  var out = document.getElementById('ca-result');
+  if(isNaN(ca) || isNaN(alb)){ out.textContent = 'Enter both values.'; return; }
+  var corrected = ca + 0.8 * (4.0 - alb);
+  var interp = corrected < 8.5 ? 'still low after correction — likely true hypocalcemia' : (corrected > 10.5 ? 'corrected value is elevated' : 'within normal range after correction');
+  out.textContent = 'Corrected Ca ≈ ' + corrected.toFixed(2) + ' mg/dL (' + interp + ').';
+}
+</script>
+</body>
+</html>
