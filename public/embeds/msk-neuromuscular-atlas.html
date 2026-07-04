@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSK Neuromuscular Atlas — Innervation, Action & Movement Pathways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --muscle:#c1432e; --musclesoft:#8a3324; --nerve:#e0b341; --nervesoft:#a4832c;
+  --tendon:#d8cfa8; --accent:#4f9e6e; --warn:#ff6b5e; --good:#4f9e6e;
+  --grid:#0f1512; --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280;
+  --muscle:#a3341f; --musclesoft:#c1432e; --nerve:#93701e; --nervesoft:#b98f2a;
+  --tendon:#7a6f47; --accent:#2f7a4d; --warn:#b5392b; --good:#2f7a4d;
+  --grid:#e3ddc4; --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+html{color-scheme:dark light;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.6;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+  background-size: 26px 26px;
+}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; color:var(--ink); font-weight:600;}
+::selection{background:var(--muscle); color:#fff;}
+a{color:var(--nerve);}
+.mono, .flabel, .svg-lbl, .move-region, .step-num, .mcount, .injury-badge{font-family:'JetBrains Mono',monospace;}
+
+/* HEADER */
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1180px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand{display:flex; flex-direction:column; gap:2px;}
+.brand h1{font-size:1.5rem; letter-spacing:.2px;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--muscle);}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+
+nav.maintabs{display:flex; gap:8px; max-width:1180px; margin:14px auto 0; padding:0 22px; flex-wrap:wrap;}
+.maintab{background:transparent; border:1px solid var(--line); color:var(--soft); padding:10px 16px; border-radius:10px 10px 0 0; cursor:pointer; font-size:.86rem; font-weight:600; border-bottom:none;}
+.maintab.active{background:var(--panel); color:var(--ink); border-color:var(--line);}
+main{max-width:1180px; margin:0 auto; padding:22px;}
+.mainpanel{display:none;}
+.mainpanel.active{display:block;}
+
+/* REGION SUBTABS */
+.regiontabs{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:20px; padding:14px 16px; background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+.tab-cluster{display:flex; flex-direction:column; gap:7px;}
+.cluster-label{font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:2px; text-transform:uppercase; color:var(--muscle); padding-left:2px;}
+.cluster-btns{display:flex; gap:6px; flex-wrap:wrap; padding-right:22px; border-right:1px solid var(--line2);}
+.tab-cluster:last-child .cluster-btns{border-right:none; padding-right:0;}
+.regiontab{background:transparent; border:1px solid var(--line2); color:var(--muted); padding:7px 13px; border-radius:8px; cursor:pointer; font-size:.8rem; font-weight:600;}
+.regiontab.active{background:var(--muscle); color:#fff; border-color:var(--muscle);}
+.region-panel{display:none;}
+.region-panel.active{display:block;}
+.region-intro{display:flex; align-items:baseline; gap:12px; margin-bottom:16px;}
+.region-intro h2{font-size:1.5rem;}
+.mcount{color:var(--muted); font-size:.75rem;}
+
+/* MUSCLE CARDS */
+.mcard-list{display:grid; gap:16px;}
+.mcard, .movecard, .pathcard{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow);}
+.mcard-h, .move-h, .path-h{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--muscle); font-size:.85rem; border:1px solid var(--musclesoft); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3, .move-h h3{font-size:1.15rem;}
+.mcard-grid, .move-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px 18px; margin-bottom:12px;}
+.mfield .flabel{display:block; font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
+.mfield p{margin:0; font-size:.87rem; color:var(--soft);}
+.mfield.nerve .flabel{color:var(--nerve);}
+.mfield.nerve p{color:var(--ink);}
+.mpearl{background:var(--panelhi); border-left:3px solid var(--muscle); border-radius:8px; padding:10px 14px; margin-top:6px;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muscle); font-weight:700; font-family:'JetBrains Mono',monospace;}
+.mpearl p{margin:4px 0 0; font-size:.88rem; color:var(--ink);}
+
+/* MOVEMENTS */
+.movecard{display:grid; grid-template-columns:240px 1fr; gap:20px; align-items:start;}
+.move-visual{display:flex; flex-direction:column; gap:10px;}
+.visual-block{position:relative;}
+.visual-tag{display:block; font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:1.2px; text-transform:uppercase; color:var(--muted); margin-bottom:5px;}
+.visual-block:first-child{background:var(--bg2); border:1px solid var(--line2); border-radius:12px; padding:8px;}
+.msvg{width:100%; height:auto;}
+.seg-prox{stroke:var(--tendon); stroke-width:6; stroke-linecap:round;}
+.seg-dist{stroke:var(--muscle); stroke-width:7; stroke-linecap:round;}
+.warn-seg{stroke:var(--warn);}
+.joint-dot{fill:var(--nerve);}
+.muscle-dot{fill:var(--muscle); stroke:var(--bg2); stroke-width:2;}
+.warn-dot{fill:var(--warn);}
+.rot-ring{fill:none; stroke:var(--line2); stroke-width:2; stroke-dasharray:4 5;}
+.svg-lbl{fill:var(--muted); font-size:10px; text-anchor:middle;}
+.move-region{color:var(--nerve); font-size:.7rem;}
+.move-summary{font-size:.9rem; color:var(--soft); margin:6px 0 12px;}
+.injury-badge{display:inline-block; background:var(--warn); color:#1a0d0a; font-size:.6rem; padding:2px 8px; border-radius:20px; vertical-align:middle; margin-left:8px; font-weight:700;}
+
+/* PATHWAY TRACER */
+.path-steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.path-steps li{display:flex; gap:12px; align-items:flex-start; padding-left:0;}
+.step-num{flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--muscle); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700;}
+.path-steps li p{margin:0; font-size:.87rem; color:var(--soft); padding-top:3px;}
+.path-steps li:nth-child(odd) .step-num{background:var(--nervesoft);}
+
+/* INTRO BLOCK */
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin-bottom:22px;}
+.intro h2{font-size:1.35rem; margin-bottom:8px;}
+.intro p{color:var(--soft); font-size:.92rem; max-width:840px; margin:0 0 6px;}
+.legend{display:flex; gap:18px; margin-top:14px; flex-wrap:wrap;}
+.legend span{display:flex; align-items:center; gap:6px; font-size:.75rem; color:var(--muted);}
+.legend i{width:12px; height:12px; border-radius:3px; display:inline-block;}
+
+footer{max-width:1180px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+
+@media (max-width: 700px){
+  .movecard{grid-template-columns:1fr;}
+  .move-visual{max-width:280px; margin:0 auto;}
+}
+@media (prefers-reduced-motion: reduce){
+  [class*="anim-"]{animation:none !important;}
+}
+</style>
+
+<style>
+  .illus-box{background:#f4ecd8; border:1px solid #cdbf94; border-radius:10px; padding:10px;}
+  .illus-box svg{width:100%; height:auto; display:block;}
+  .ill-bg{fill:#f4ecd8;}
+  .ill-bone{fill:#e4d9b4; stroke:#8a7c58; stroke-width:2;}
+  .ill-tendon{fill:none; stroke:#a68f56; stroke-width:3; stroke-linecap:round;}
+  .ill-muscle{fill:#b5493a; fill-opacity:.82; stroke:#7c2f24; stroke-width:1.5;}
+  .ill-muscle2{fill:#c97a4a; fill-opacity:.82; stroke:#8a4d24; stroke-width:1.5;}
+  .ill-nerve{fill:none; stroke:#c99a2e; stroke-width:2.5; stroke-linecap:round;}
+  .ill-nervedot{fill:#c99a2e; stroke:#8a6b1c; stroke-width:1;}
+  .ill-lbl{font-family:'JetBrains Mono',monospace; font-size:8.5px; fill:#3a3226;}
+  .ill-lbl-sm{font-family:'JetBrains Mono',monospace; font-size:7.2px; fill:#5c5237;}
+  .ill-title{font-family:'Fraunces',serif; font-size:11px; font-weight:600; fill:#3a3226;}
+  .ill-leader{stroke:#5c5237; stroke-width:.75; fill:none;}
+  .ill-legend text{font-family:'JetBrains Mono',monospace; font-size:7px; fill:#5c5237;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Musculoskeletal System Atlas · Vol. I</span>
+      <h1>Neuromuscular Anatomy &amp; Movement Pathways</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="maintabs">
+    <button class="maintab active" data-target="panel-anatomy">Regional Anatomy</button>
+    <button class="maintab" data-target="panel-movements">Functional Movements</button>
+    <button class="maintab" data-target="panel-pathway">Movement Pathway Tracer</button>
+  </nav>
+</header>
+
+<main>
+
+  <section id="panel-anatomy" class="mainpanel active">
+    <div class="intro">
+      <h2>Regional Neuromuscular Anatomy</h2>
+      <p>Every major and minor muscle acting on the neck and both extremities, organized head-to-toe. Each entry pairs origin/insertion with its nerve and root levels, plus the exam and referred-pain findings that let you localize a lesion at the bedside.</p>
+      <div class="legend">
+        <span><i style="background:var(--muscle)"></i>Muscle / action</span>
+        <span><i style="background:var(--nerve)"></i>Nerve / innervation</span>
+        <span><i style="background:var(--tendon)"></i>Tendon / bony landmark</span>
+      </div>
+    </div>
+    <div class="regiontabs"><div class="tab-cluster">
+          <span class="cluster-label">Neck</span>
+          <div class="cluster-btns"><button class="regiontab active" data-target="neck">Neck</button></div>
+        </div>
+<div class="tab-cluster">
+          <span class="cluster-label">Upper Extremity</span>
+          <div class="cluster-btns"><button class="regiontab" data-target="shoulder">Shoulder Girdle</button><button class="regiontab" data-target="uarm">Upper Arm</button><button class="regiontab" data-target="forearm">Forearm &amp; Wrist</button><button class="regiontab" data-target="hand">Hand (Intrinsics)</button></div>
+        </div>
+<div class="tab-cluster">
+          <span class="cluster-label">Lower Extremity</span>
+          <div class="cluster-btns"><button class="regiontab" data-target="hip">Hip &amp; Thigh</button><button class="regiontab" data-target="leg">Leg</button><button class="regiontab" data-target="foot">Foot (Intrinsics)</button></div>
+        </div></div>
+    
+  <section class="region-panel active" data-region="neck">
+    <div class="region-intro"><h2>Neck</h2><span class="mcount">7 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Sternocleidomastoid (SCM)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Sternal head: manubrium; clavicular head: medial clavicle</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Mastoid process and lateral superior nuchal line</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Spinal accessory (CN XI) — motor; C2–C3 — proprioception/pain</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Unilateral: lateral flexion to same side + rotation of face to OPPOSITE side. Bilateral: neck flexion, accessory inspiration</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Sternocleidomastoid branch of occipital and superior thyroid arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Grasp the muscle belly between thumb and fingers as the patient rotates the head against resistance</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted rotation to the opposite side while palpating; CN XI tested via resisted shoulder shrug + head rotation against resistance</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Trigger points refer to the occiput, vertex, cheek, and periorbital region — classic non-vascular headache mimic</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Congenital torticollis presents with a palpable SCM mass/fibrosis in infancy; painful acute torticollis in adults is usually a muscle spasm, not a structural lesion — red flags (fever, trauma, neuro deficit) should prompt imaging</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Trapezius (upper/middle/lower fibers)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>External occipital protuberance, nuchal ligament, spinous processes C7–T12</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Upper: lateral clavicle; Middle: acromion/scapular spine; Lower: base of scapular spine</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Spinal accessory (CN XI) — motor; C3–C4 — proprioception</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Upper: scapular elevation + upward rotation; Middle: scapular retraction; Lower: scapular depression + upward rotation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Transverse cervical artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Trace from occiput along the nuchal line to the scapular spine and down to T12 spinous processes</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Shoulder shrug against resistance (upper fibers); scapular retraction against resistance (middle fibers)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Upper fibers: classic trigger point refers up the posterolateral neck to the temple — a very common tension headache generator</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Isolated CN XI injury (e.g., after lymph node biopsy in the posterior triangle) causes shoulder droop and winging with weak abduction past 90°, distinct from long thoracic nerve winging</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Scalenes (anterior, middle, posterior)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Transverse processes of C3–C7</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Anterior/middle: 1st rib; Posterior: 2nd rib</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ventral rami of C3–C8 (segmental)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Ipsilateral lateral flexion, contralateral rotation assist, elevate ribs 1–2 as accessory inspiratory muscles</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ascending cervical artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Palpate lateral to the SCM in the posterior triangle, deep and posterior to the clavicular head</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Adson's test (radial pulse change with neck extension/rotation to ipsilateral side + inspiration) screens for TOS, though poor specificity</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Refers to the chest, medial scapular border, and down the arm into the thumb and index finger — frequently mistaken for cervical radiculopathy</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The brachial plexus and subclavian artery pass between anterior and middle scalenes — hypertrophy or a cervical rib narrows this space, producing neurogenic or arterial thoracic outlet syndrome</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Longus colli / Longus capitis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Anterior vertebral bodies/transverse processes C1–T3</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Atlas and vertebral bodies above origin (colli); basilar occiput (capitis)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ventral rami C1–C6</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary neck flexors; stabilize cervical lordosis</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ascending cervical and vertebral arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Not directly palpable externally — deep prevertebral muscles</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted chin tuck / craniocervical flexion test</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep aching anterior neck pain, often with odynophagia when inflamed</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Retropharyngeal calcific tendinitis (longus colli) mimics epiglottitis/retropharyngeal abscess — CT shows amorphous calcification anterior to C1–C2 without a rim-enhancing fluid collection</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Splenius capitis / cervicis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Nuchal ligament, spinous processes C7–T6</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Capitis: mastoid process/superior nuchal line; Cervicis: transverse processes C1–C3</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Dorsal rami of middle cervical spinal nerves</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Bilateral: neck extension; Unilateral: ipsilateral lateral flexion and rotation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Occipital and deep cervical arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep to trapezius along the posterolateral neck below the occiput</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted neck extension with rotation toward the tested side</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Vertex headache (splenius capitis) — a classic cervicogenic headache pattern</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Part of the deep extensor sling most affected in whiplash-associated disorder; deconditioning here contributes to chronic post-whiplash headache</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Levator scapulae</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Transverse processes C1–C4</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Superior angle of scapula</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Dorsal scapular nerve (C5) + direct branches of C3–C4</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Scapular elevation and downward rotation; assists ipsilateral neck lateral flexion</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Transverse cervical and dorsal scapular arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Superior angle of the scapula, deep to upper trapezius</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted scapular elevation with the neck rotated and flexed away from the tested side (stretches the muscle under load)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Angle of the neck into the superior/medial scapular border — a very common myofascial pain complaint</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Text neck"/desk-posture pain generator — chronically shortened with forward head posture, producing the classic superior angle knot patients point to directly</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Suboccipital group (rectus capitis post. major/minor, obliquus capitis sup./inf.)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>C1–C2 posterior arch/spinous process and C2 transverse process</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Occiput and atlas transverse process (fine control of the atlanto-occipital/atlanto-axial joints)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Suboccipital nerve (dorsal ramus C1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Fine proprioceptive control and small-range extension/rotation of the head on C1–C2</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Vertebral and occipital arteries — the vertebral artery loops through this triangle, vulnerable in cervical manipulation</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Just below the occiput, medial to the mastoid process</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Not isolated on standard MMT; assessed indirectly via cervicogenic headache/dizziness provocation testing</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Occipital and retro-orbital headache — greater occipital neuralgia often originates from irritation near this group</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Extremely high proprioceptor density (among the highest of any skeletal muscle) — implicated in cervicogenic dizziness and cervicogenic headache via dense connections to the trigeminocervical nucleus</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="shoulder">
+    <div class="region-intro"><h2>Shoulder Girdle</h2><span class="mcount">11 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Deltoid (anterior / middle / posterior)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Anterior: lateral clavicle; Middle: acromion; Posterior: scapular spine</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Deltoid tuberosity of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Axillary nerve (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Anterior: flexion + internal rotation; Middle: abduction (0–90°, prime mover); Posterior: extension + external rotation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior circumflex humeral artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral shoulder over the humeral head; ask patient to abduct against resistance</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted abduction at 90°; sensory testing over the lateral shoulder (regimental badge area) for axillary nerve integrity</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Diffuse deep ache over the deltoid insertion (lateral arm) — a nonspecific referral zone shared with rotator cuff pathology</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Axillary nerve is the muscle most at risk in anterior shoulder dislocation and proximal humerus (surgical neck) fracture — always document regimental badge sensation before and after reduction</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Supraspinatus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Supraspinous fossa of scapula</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Greater tuberosity of humerus (superior facet)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Suprascapular nerve (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Initiates abduction (first 0–15°) and works with deltoid throughout abduction; compresses humeral head into glenoid (dynamic stabilizer)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Suprascapular artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Just anterior to the scapular spine in the supraspinous fossa, or the tendon insertion just anterior/inferior to the acromion</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Empty can (Jobe) test — resisted abduction at 90° with thumbs pointed down; drop-arm sign for full-thickness tear</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep lateral deltoid/upper arm ache — rarely localizes precisely to the scapula despite the muscle belly's location</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Most commonly torn rotator cuff tendon — impinges beneath the coracoacromial arch (Neer/Hawkins-Kennedy positive); full-thickness tears show a positive drop-arm sign</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Infraspinatus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Infraspinous fossa of scapula</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Greater tuberosity (middle facet)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Suprascapular nerve (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary external rotator of the arm with the shoulder at the side; dynamic humeral head stabilizer</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Suprascapular and circumflex scapular arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Below the scapular spine, over the infraspinous fossa</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted external rotation with elbow at 90° flexed and adducted to the side</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior shoulder and deep into the arm — infraspinatus trigger points are a very common source of anterior shoulder pain mistaken for biceps tendinopathy</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Weakness here (with intact teres minor) suggests a suprascapular nerve lesion at the spinoglenoid notch (e.g., from a paralabral cyst) rather than a primary cuff tear</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Teres minor</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Upper 2/3 of lateral scapular border</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Greater tuberosity (inferior facet)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Axillary nerve (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>External rotation and weak adduction/extension; dynamic stabilizer</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Circumflex scapular artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lower lateral scapular border, just above teres major</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Hornblower's sign — inability to hold the hand near the mouth with the arm abducted 90° indicates teres minor + infraspinatus tear</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior shoulder overlying the muscle itself, fairly localized compared to other cuff muscles</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Shares the axillary nerve with deltoid — quadrangular space syndrome (compression by fibrous bands/hypertrophy) can selectively weaken teres minor with posterior shoulder pain and lateral arm numbness</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Subscapularis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Subscapular fossa (anterior scapula)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Lesser tuberosity of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Upper and lower subscapular nerves (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary internal rotator; anterior dynamic stabilizer preventing anterior humeral head translation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Subscapular artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Difficult to palpate directly; assessed functionally rather than manually</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Lift-off test (Gerber) and belly-press test — inability to lift the hand off the lower back, or elbow drops back during belly press, indicates subscapularis dysfunction</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior shoulder capsule region despite being the most anterior cuff muscle — a frequent source of diagnostic confusion</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Subscapularis tear is the most commonly missed cuff tear on exam — always test it specifically, since anterior instability and biceps subluxation (through a torn pulley) often coexist</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Teres major</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Inferior angle of scapula</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Medial lip of intertubercular (bicipital) groove of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lower subscapular nerve (C5–C7)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Adduction, extension, and internal rotation — "lat's little helper"</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Subscapular artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Inferior scapular angle, anterior to latissimus dorsi as it wraps around</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted internal rotation and adduction from a flexed/abducted position</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior axillary fold and posterior arm, often indistinguishable from latissimus referral clinically</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Forms the posterior wall of the quadrangular space along with teres minor, long head of triceps, and humeral shaft — relevant landmark for axillary nerve/posterior circumflex humeral vessel compression</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Latissimus dorsi</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Spinous processes T7–L5, thoracolumbar fascia, iliac crest, lower 3–4 ribs, inferior scapular angle</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Floor of intertubercular groove of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Thoracodorsal nerve (C6–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Extension, adduction, and internal rotation of the shoulder; "cough muscle" / crutch-walking muscle (depresses the trunk on a fixed arm)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Thoracodorsal artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Posterior axillary fold — grasp it as the patient coughs or adducts against resistance</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted shoulder adduction/extension from an abducted, externally rotated start</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Inferior scapular angle and posterior shoulder, sometimes extending down the medial arm to the ring/little finger — mimics ulnar-sided complaints</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Harvested as a myocutaneous flap in breast reconstruction because of its reliable, isolated thoracodorsal pedicle — iatrogenic injury during axillary lymph node dissection produces winging distinct from serratus/trapezius patterns</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">08</span>
+        <h3>Pectoralis major (clavicular / sternocostal heads)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Clavicular head: medial clavicle; Sternocostal head: sternum and costal cartilages 1–6</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Lateral lip of intertubercular groove of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lateral pectoral nerve (clavicular head, C5–C7) and medial pectoral nerve (sternocostal head, C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Adduction and internal rotation; clavicular head flexes, sternocostal head extends the flexed arm back down</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Thoracoacromial and lateral thoracic arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Anterior chest wall/axillary fold; have the patient push hands together ("prayer test") to bring out the muscle bulk</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted horizontal adduction ("crush" test) with arms at 90° flexion</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior chest and medial arm — pectoral trigger points can mimic cardiac chest pain and must be distinguished with ECG/troponin when risk factors are present</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Rupture (classically bench-press-related) causes a palpable/visible defect and ecchymosis at the axillary fold; MRI grades tear location (myotendinous vs. bony avulsion) which drives surgical vs. conservative management</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">09</span>
+        <h3>Pectoralis minor</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Ribs 3–5</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Coracoid process of scapula</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Medial pectoral nerve (C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Scapular protraction/depression and downward rotation; accessory inspiration</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Thoracoacromial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep to pectoralis major, below the coracoid process</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Wright's test (hyperabduction) for pulse/symptom reproduction; pectoralis minor length test for postural shortening</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior chest with radiation into the ulnar forearm/hand when compressing the plexus</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Tight/hypertrophied pectoralis minor is a leading cause of neurogenic thoracic outlet syndrome by compressing the brachial plexus beneath the coracoid — reproduced by the hyperabduction (Wright's) test</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">10</span>
+        <h3>Serratus anterior</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Outer surfaces of ribs 1–8/9</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Costal (anterior) surface of the medial scapular border</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Long thoracic nerve (C5–C7)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Scapular protraction and upward rotation; holds the scapula against the thoracic wall</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Lateral thoracic artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral thoracic wall below the axilla, most easily felt during resisted protraction (a punching motion)</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Wall push-up test — medial scapular winging indicates serratus anterior weakness</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral chest wall pain that can mimic rib pathology or pleurisy</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Long thoracic nerve injury (axillary node dissection, chest tube placement, or backpack palsy) causes classic medial winging worst with a wall push-up, distinct from trapezius winging (lateral/inferior winging at rest)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">11</span>
+        <h3>Rhomboid major / minor</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Minor: C7–T1 spinous processes; Major: T2–T5 spinous processes</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Medial scapular border (minor above the spine, major below)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Dorsal scapular nerve (C4–C5)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Scapular retraction and downward rotation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Dorsal scapular artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Medial scapular border between the spine and scapula, deep to trapezius</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted scapular retraction with hands on hips, elbows pulled back ("prayer/reverse-fly" position)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Sharp, localized ache along the medial scapular border — one of the most common myofascial complaints in prolonged desk posture</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Dorsal scapular nerve runs through and can be compressed by the middle scalene — an underrecognized cause of interscapular burning pain in overhead athletes and desk workers</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="uarm">
+    <div class="region-intro"><h2>Upper Arm</h2><span class="mcount">4 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Biceps brachii (long / short head)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Long head: supraglenoid tubercle; Short head: coracoid process</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Radial tuberosity + bicipital aponeurosis into deep forearm fascia</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Musculocutaneous nerve (C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Elbow flexion (strongest when forearm supinated) and forearm supination (its primary mechanical advantage — stronger supinator than pronator teres is a pronator)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Brachial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Anterior arm; tendon palpable in the antecubital fossa, lateral to the brachial artery</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted elbow flexion with forearm supinated; Speed's test (resisted forward flexion with elbow extended, forearm supinated) for biceps tendinopathy/SLAP</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior shoulder into the muscle belly — biceps tendinopathy pain often overlaps with subacromial impingement pain</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Distal biceps rupture produces the "reverse Popeye" deformity (bulge moves proximally); the hook test (inability to hook a finger under the intact distal tendon) is highly sensitive and specific</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Triceps brachii (long / lateral / medial heads)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Long head: infraglenoid tubercle; Lateral head: posterior humerus above radial groove; Medial head: posterior humerus below radial groove</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Olecranon process of ulna</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Radial nerve (C6–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Elbow extension (long head also assists shoulder extension/adduction)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Deep brachial (profunda brachii) artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Posterior arm; tendon at the olecranon</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted elbow extension from a flexed position; test wrist/finger extension to screen concurrent radial nerve injury with humeral shaft fractures</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior elbow and forearm; a lateral head trigger point can refer pain over the lateral epicondyle, mimicking tennis elbow</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The radial nerve and profunda brachii artery run in the spiral (radial) groove directly against the humeral shaft between the lateral and medial heads — a midshaft humerus fracture here classically causes wrist drop (Holstein-Lewis pattern)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Brachialis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Distal anterior humerus</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Coronoid process and tuberosity of ulna</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Musculocutaneous nerve (C5–C6); a small lateral contribution from the radial nerve</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Pure elbow flexor regardless of forearm position — the true "workhorse" flexor, unlike biceps which is position-dependent</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Brachial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep to biceps, palpable at the distal medial and lateral arm just above the elbow</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted elbow flexion with the forearm pronated (minimizes biceps contribution)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep anterior elbow ache, sometimes radiating to the base of the thumb</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Because brachialis inserts on the ulna (not the radius), it flexes the elbow with equal strength in pronation or supination — useful for distinguishing brachialis-dominant from biceps-dominant weakness on exam</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Coracobrachialis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Coracoid process of scapula</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Medial mid-shaft of humerus</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Musculocutaneous nerve (C5–C7)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Shoulder flexion and adduction (weak, assistive)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Brachial artery (muscular branches)</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep in the axilla, medial to the short head of biceps; difficult to isolate on palpation</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Not typically isolated on standard MMT — assessed as part of shoulder flexion/adduction</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deltoid region and posterior arm along the triceps — an atypical, easily missed referral zone</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The musculocutaneous nerve pierces directly through coracobrachialis — a useful surgical/anatomic landmark and a rare site of nerve entrapment producing anterolateral forearm numbness</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="forearm">
+    <div class="region-intro"><h2>Forearm &amp; Wrist</h2><span class="mcount">14 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Pronator teres</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Humeral head: medial epicondyle; Ulnar head: coronoid process</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Middle lateral radius</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Median nerve (C6–C7)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Forearm pronation; weak elbow flexion</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar recurrent artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Proximal-medial forearm, crossing obliquely from the medial epicondyle</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted pronation with the elbow extended (removes brachioradialis contribution)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Proximal volar forearm, can extend into the palm along the median distribution</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Median nerve passes between its two heads — pronator teres syndrome causes proximal median compression with volar forearm pain WORSE with resisted pronation, distinguishing it from carpal tunnel (worse at night/with wrist flexion)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Pronator quadratus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Distal anterior ulna</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Distal anterior radius</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Anterior interosseous nerve, a branch of median (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Prime mover of forearm pronation (acts at all elbow positions, unlike pronator teres)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Anterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep, distal volar forearm just proximal to the wrist — not directly palpable</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted pronation with the elbow fully flexed to neutralize pronator teres</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep distal forearm ache, poorly localized</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Anterior interosseous nerve (AIN) syndrome (pure motor) weakens pronator quadratus, FPL, and FDP to index/middle — tested with the classic "OK sign": patient cannot form a circle and instead makes a triangular pinch (Kiloh-Nevin sign)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Supinator</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral epicondyle, radial collateral and annular ligaments, supinator crest of ulna</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Proximal lateral radius</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Posterior interosseous nerve (deep branch of radial, C5–C6)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Forearm supination (with biceps for power; alone for unresisted supination)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Radial recurrent artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep to the extensor muscle mass just distal to the lateral epicondyle — not well isolated</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted supination with the elbow flexed 90° and adducted to the trunk (minimizes biceps)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral elbow and proximal forearm, a major mimic of lateral epicondylitis</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The posterior interosseous nerve pierces the supinator through the arcade of Frohse — radial tunnel syndrome/PIN entrapment here causes deep lateral forearm pain WITHOUT sensory loss (PIN is purely motor distal to the elbow), unlike lateral epicondylitis</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Flexor carpi radialis (FCR)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Medial epicondyle (common flexor origin)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of 2nd (and 3rd) metacarpal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Median nerve (C6–C7)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Wrist flexion and radial deviation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Radial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Most radial of the volar wrist tendons; prominent with resisted wrist flexion</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted wrist flexion with radial deviation</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Volar radial wrist, can extend into the thenar eminence</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>FCR tendinopathy causes pain at the volar-radial wrist near the scaphoid tubercle, often confused with De Quervain's or scaphoid pathology — palpate the tendon in resisted flexion to differentiate</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Flexor carpi ulnaris (FCU)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Humeral head: medial epicondyle; Ulnar head: olecranon/posterior ulna</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Pisiform, hook of hamate, base of 5th metacarpal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ulnar nerve (C7–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Wrist flexion and ulnar deviation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Most ulnar of the volar wrist tendons, inserting on the pisiform</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted wrist flexion with ulnar deviation; Tinel's sign at the cubital tunnel screens the adjacent ulnar nerve</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Volar ulnar wrist and into the hypothenar eminence</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The ulnar nerve runs directly deep to FCU through the cubital tunnel — this is the classic site of ulnar nerve entrapment (cubital tunnel syndrome), producing ring/small finger paresthesias worsened by elbow flexion</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Palmaris longus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Medial epicondyle</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Palmar aponeurosis</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Median nerve (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Weak wrist flexion; tenses palmar fascia</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar artery (via the anterior ulnar recurrent)</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Most superficial and central volar wrist tendon — check for its presence with thumb-to-little-finger opposition and wrist flexion (Schaeffer's test)</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Not separately tested on standard MMT given frequent absence and redundancy with FCR/FCU</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Not a significant independent referred-pain generator</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Absent in ~10–15% of the population (unilateral or bilateral) with zero functional deficit — the most commonly harvested tendon graft (e.g., for UCL reconstruction, "Tommy John" surgery) precisely because it's expendable</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Flexor digitorum superficialis (FDS)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Medial epicondyle, coronoid process, proximal radius</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Sides of middle phalanges, digits 2–5</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Median nerve (C7–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flexes the PIP joints (and secondarily MCP/wrist); each finger can be tested in isolation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Volar forearm, deep to the superficial wrist flexors</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Isolate by holding adjacent fingers extended (blocks FDP) and asking the patient to flex only the tested finger's PIP joint</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Diffuse volar forearm; not classically a distinct referral pattern</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Zone II flexor tendon lacerations ("no man's land," A1–A4 pulleys) involve both FDS and FDP in a tight fibro-osseous sheath — repairs here have the highest adhesion/re-rupture risk in hand surgery</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">08</span>
+        <h3>Flexor digitorum profundus (FDP)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Proximal 3/4 of anterior/medial ulna and interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of distal phalanges, digits 2–5</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Radial half (index/middle): anterior interosseous (median, C8–T1); Ulnar half (ring/small): ulnar nerve (C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flexes DIP joints (only muscle that can) and secondarily PIP/MCP/wrist</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar and anterior interosseous arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep volar forearm, beneath FDS</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Isolate by holding the PIP joint extended and asking the patient to flex the DIP joint</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep volar forearm ache when strained</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Jersey finger" is FDP avulsion from the distal phalanx, classically the ring finger during a grasp-and-pull mechanism (e.g., grabbing a jersey) — inability to flex the DIP joint in isolation is diagnostic</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">09</span>
+        <h3>Flexor pollicis longus (FPL)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Anterior radius and interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of distal phalanx of thumb</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Anterior interosseous nerve (median, C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flexes the thumb IP joint (only muscle that can) and MCP joint</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Anterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Radial volar forearm, deep, difficult to isolate by palpation</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted flexion of the thumb IP joint while stabilizing the MCP joint</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Radial-volar forearm; overlaps with De Quervain's referral zone at the wrist</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Weakened in AIN syndrome along with FDP (index/middle) and pronator quadratus — the OK sign test directly assesses FPL</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">10</span>
+        <h3>Extensor carpi radialis longus (ECRL) / brevis (ECRB)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>ECRL: lateral supracondylar ridge; ECRB: lateral epicondyle (common extensor origin)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of 2nd metacarpal (ECRL), base of 3rd metacarpal (ECRB)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Radial nerve (ECRL) and posterior interosseous nerve (ECRB) — both C6–C7</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Wrist extension and radial deviation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Radial recurrent artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsoradial forearm, distal to the lateral epicondyle</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted wrist extension with radial deviation, elbow extended, reproduces lateral epicondylar pain if pathologic</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral epicondyle radiating down the dorsal forearm to the wrist</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>ECRB is the primary tendon involved in lateral epicondylitis ("tennis elbow") — repetitive eccentric overload produces angiofibroblastic tendinosis (degenerative, not primarily inflammatory) at its origin</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">11</span>
+        <h3>Extensor carpi ulnaris (ECU)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral epicondyle and posterior ulna</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of 5th metacarpal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Posterior interosseous nerve (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Wrist extension and ulnar deviation</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsal-ulnar wrist, distal to the ulnar head</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted wrist extension with ulnar deviation; provocative forearm supination/pronation with wrist flexion reproduces subluxation</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal-ulnar wrist, can mimic TFCC pathology</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Runs in its own subsheath (6th dorsal compartment) — subluxation out of the ulnar groove (ECU instability) causes a painful snapping at the dorsal-ulnar wrist with forearm rotation, common in racquet/golf athletes</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">12</span>
+        <h3>Extensor digitorum (ED) / Extensor digiti minimi (EDM) / Extensor indicis (EI)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral epicondyle (common extensor origin); EI also from posterior ulna</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Extensor expansion (dorsal hood) of digits 2–5 (ED), digit 5 (EDM), digit 2 (EI)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Posterior interosseous nerve (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>MCP extension of the fingers (PIP/DIP extension is via the intrinsics through the extensor hood); EI/EDM allow independent index/small extension while others are flexed</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsal forearm/hand; tendons visible as fingers extend</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted finger extension at the MCP joints with the IP joints relaxed</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal forearm and hand; sagittal band injury ("boxer's knuckle") causes extensor tendon subluxation at the MCP with a snapping/tracking deformity</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>PIN palsy (e.g., from a radial head dislocation or supinator entrapment) spares wrist extension via ECRL but drops finger and thumb extension — a classic exam distinction from a full radial nerve (wrist drop) or a saturday-night palsy pattern</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">13</span>
+        <h3>Abductor pollicis longus (APL) / Extensor pollicis brevis (EPB)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Posterior radius/ulna and interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>APL: base of 1st metacarpal; EPB: base of proximal phalanx of thumb</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Posterior interosseous nerve (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Thumb abduction (APL) and MCP extension (EPB); together form the volar border of the anatomic snuffbox</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Radial wrist, forming the volar border of the anatomic snuffbox</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Finkelstein's test — ulnar deviation of the wrist with the thumb tucked into a fist reproduces sharp radial wrist pain</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Radial wrist radiating into the thumb</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>These form the 1st dorsal compartment — De Quervain's tenosynovitis inflames this compartment, classically in new parents (repetitive thumb/wrist loading lifting an infant) and reproduced by Finkelstein's test</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">14</span>
+        <h3>Extensor pollicis longus (EPL)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Posterior ulna and interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of distal phalanx of thumb</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Posterior interosseous nerve (C7–C8)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Extends the thumb IP and MCP joints; adducts the extended thumb; forms the dorsal (ulnar) border of the snuffbox</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior interosseous artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsal-ulnar border of the snuffbox, hooks around Lister's tubercle</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted thumb extension with the hand flat on a table (isolates EPL from APL/EPB)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal wrist over Lister's tubercle</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>At risk of attritional rupture after distal radius fracture (even minimally displaced) due to its tight turn around Lister's tubercle — presents as sudden loss of thumb IP extension weeks after the injury</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="hand">
+    <div class="region-intro"><h2>Hand (Intrinsics)</h2><span class="mcount">5 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Thenar group (Abductor pollicis brevis, Flexor pollicis brevis, Opponens pollicis)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Flexor retinaculum, scaphoid, trapezium</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of thumb (APB, FPB) and radial shaft of 1st metacarpal (OP)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Recurrent motor branch of median nerve (C8–T1) — APB is the single most useful bedside screening muscle for median nerve function</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Thumb abduction, flexion, and opposition — enables pincer grasp</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Superficial palmar arch</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Thenar eminence at the base of the thumb</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Palmar abduction test — thumb lifted perpendicular to the palm against resistance, best isolates APB/median function</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Thenar eminence and radial palm; carpal tunnel referral can extend proximally up the volar forearm (Valleix phenomenon)</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Thenar wasting is a late, worrisome sign of severe/chronic carpal tunnel syndrome — the recurrent motor branch has a variable course (extraligamentous, subligamentous, or transligamentous) making it vulnerable during carpal tunnel release</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Adductor pollicis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Oblique head: capitate/bases of 2nd-3rd metacarpals; Transverse head: 3rd metacarpal shaft</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of thumb (ulnar side)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ulnar nerve, deep branch (C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Thumb adduction — key pincer/key-pinch strength muscle</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Deep palmar arch</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Web space between thumb and index finger</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Key pinch strength / Froment's sign (paper pinch between thumb and radial index finger)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>First web space, radiating into the thenar eminence</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Froment's sign: with ulnar nerve palsy, adductor pollicis is lost, so the patient substitutes FPL (median-innervated) to pinch paper — producing visible thumb IP flexion during key pinch</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Hypothenar group (Abductor digiti minimi, Flexor digiti minimi brevis, Opponens digiti minimi)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Pisiform, hook of hamate, flexor retinaculum</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of the little finger (ADM, FDMB) and ulnar shaft of 5th metacarpal (ODM)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ulnar nerve, deep branch (C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Little finger abduction, flexion, and opposition — cups the palm for grip</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Ulnar artery / deep palmar branch</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Hypothenar eminence at the base of the little finger</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted little finger abduction</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Hypothenar eminence and ulnar palm</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Guyon's canal syndrome (ulnar nerve compression at the wrist — cyclists, hook of hamate fracture) selectively weakens the hypothenar and interossei while typically sparing FCU and ring/small FDP, since those branch proximal to the canal</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Lumbricals (1–4)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Tendons of flexor digitorum profundus (unique muscle-from-tendon origin)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Radial side of the extensor expansion (dorsal hood), digits 2–5</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lumbricals 1–2 (index, middle): median nerve; Lumbricals 3–4 (ring, small): ulnar nerve</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flex the MCP joints while EXTENDING the IP joints simultaneously — essential for the fine coordination of writing and pinch</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Palmar metacarpal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Not individually palpable — deep intermetacarpal structures</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>MCP flexion with IP extension held actively against resistance (the "pen-holding" or writing position tests intact function)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Not a distinct clinical referred-pain pattern</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Lumbrical plus finger" is a paradoxical PIP extension deformity seen after FDP laceration/amputation when the lumbrical origin retracts, over-tensioning the extensor hood</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Dorsal interossei (4) / Palmar interossei (3)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Adjacent metacarpal shafts (dorsal: bipennate from two metacarpals; palmar: unipennate from one)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Extensor hood and base of proximal phalanges, digits 2–4 (palmar) and 2, 3(both sides), 4 (dorsal)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Ulnar nerve, deep branch (C8–T1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Dorsal (DAB — abduct): finger abduction away from the middle finger axis; Palmar (PAD — adduct): finger adduction toward the middle finger axis; both assist MCP flexion/IP extension</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Palmar and dorsal metacarpal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Interosseous spaces on the dorsum of the hand between metacarpals</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Finger abduction/adduction against resistance with fingers extended and resting on a flat surface (avoids substitution by extensors)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal hand web spaces; not classically a proximal referral generator</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Loss produces the classic ulnar claw hand (hyperextended MCPs, flexed IPs of ring/small fingers) — paradoxically WORSE in a distal (Guyon's canal) lesion than a proximal one, because a proximal lesion also denervates FDP (ring/small), removing the deforming flexor force ("ulnar paradox")</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="hip">
+    <div class="region-intro"><h2>Hip &amp; Thigh</h2><span class="mcount">9 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Iliopsoas (Iliacus + Psoas major)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Iliacus: iliac fossa; Psoas major: T12–L5 vertebral bodies/transverse processes</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Lesser trochanter of femur</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Iliacus: femoral nerve (L2–L4); Psoas major: direct branches of lumbar plexus (L1–L3)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary hip flexor; psoas also laterally flexes the lumbar spine</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Iliolumbar and medial femoral circumflex arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep abdominal palpation below the inguinal ligament, lateral to the femoral vessels; not well isolated by surface palpation</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted hip flexion with the hip flexed to 90° (Thomas test also screens for a flexion contracture)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior hip, groin, and low back — psoas trigger points are a frequently overlooked cause of "mechanical" low back pain</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A psoas abscess presents with hip flexion contracture and pain on hip extension (positive psoas sign) because extension stretches the inflamed muscle over the retroperitoneum — classically from adjacent vertebral osteomyelitis/discitis</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Gluteus maximus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Posterior ilium, sacrum, coccyx, sacrotuberous ligament</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Iliotibial tract and gluteal tuberosity of femur</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Inferior gluteal nerve (L5–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary hip extensor (dominant in running/climbing/rising from a chair) and external rotator</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Superior and inferior gluteal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Buttock; contracts firmly on standing from a seated position or with resisted hip extension</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted hip extension with the knee flexed 90° (minimizes hamstring contribution)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep buttock pain radiating to the posterior thigh — can closely mimic sciatica/piriformis syndrome</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Deep IM injections are directed to the superolateral (ventrogluteal/upper-outer) quadrant specifically to avoid the sciatic nerve, which runs beneath the muscle belly in the lower-inner region</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Gluteus medius / minimus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Outer/anterior ilium between the gluteal lines</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Greater trochanter of femur</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Superior gluteal nerve (L4–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary hip abductors; anterior fibers internally rotate, posterior fibers externally rotate; CRITICAL for pelvic stabilization in single-leg stance</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Superior gluteal artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral hip over the greater trochanter</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Trendelenburg test (observe pelvic drop on single-leg stance) and resisted hip abduction in side-lying</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral hip and thigh, often diagnosed as "greater trochanteric pain syndrome" when gluteus medius/minimus tendinopathy coexists with bursitis</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Weakness produces a positive Trendelenburg sign — the contralateral pelvis drops during single-leg stance on the weak side (a common finding after total hip arthroplasty via a lateral/anterolateral approach that traverses these muscles)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Tensor fasciae latae (TFL)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Anterior superior iliac spine (ASIS)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Iliotibial (IT) band, which inserts on Gerdy's tubercle of the tibia</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Superior gluteal nerve (L4–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Hip flexion, abduction, and internal rotation; tenses the IT band to stabilize the knee in extension</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Lateral femoral circumflex artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Just distal and lateral to the ASIS, anterior to gluteus medius</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Ober's test — inability to adduct a flexed, abducted leg to neutral in side-lying indicates IT band/TFL tightness</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral hip and thigh down to the lateral knee, following the IT band</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Chronically tight TFL/IT band is the classic driver of IT band syndrome in runners/cyclists — friction over the lateral femoral epicondyle occurs most at ~30° of knee flexion (foot strike), reproduced by Ober's test/Noble compression test</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Piriformis (+ deep six lateral rotators: obturator internus/externus, superior/inferior gemellus, quadratus femoris)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Piriformis: anterior sacrum; others: obturator foramen/ischium</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Greater trochanter of femur</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Piriformis: nerve to piriformis (S1–S2); others: nerve to obturator internus and nerve to quadratus femoris (L5–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>External rotation of the extended hip; ABDUCTION when the hip is flexed 90° (piriformis role reverses)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Superior/inferior gluteal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep buttock, midpoint between the sacrum and greater trochanter, often tender in symptomatic patients</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>FAIR test / resisted hip external rotation in the seated position reproduces deep buttock pain with sciatic radiation</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Deep buttock radiating down the posterior thigh, mimicking true sciatica</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Piriformis syndrome mimics S1 radiculopathy — the sciatic nerve passes below (typically) or occasionally through/above the piriformis; distinguishing feature is a NEGATIVE straight leg raise with a positive FAIR test (Flexion-Adduction-Internal Rotation) and no lumbar exam findings</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Adductor group (Longus, Brevis, Magnus, Gracilis, Pectineus)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Pubis and ischium (magnus also from ischial tuberosity)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Linea aspera of femur (longus, brevis, magnus adductor part); medial tibia via pes anserinus (gracilis); pectineal line (pectineus)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Obturator nerve (L2–L4) for most; magnus also receives tibial division of sciatic (hamstring part, L4)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Hip adduction; gracilis also flexes the knee; adductor magnus's posterior fibers assist hip extension</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Obturator and medial femoral circumflex arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Medial thigh, proximal insertion tender to palpation just distal to the pubic tubercle in acute strain</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted hip adduction with the hip in neutral, squeezing against the examiner's fist or a ball between the knees</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Groin and medial thigh, sometimes into the medial knee</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Adductor longus is the most commonly strained groin muscle in kicking/skating athletes — chronic cases ("athletic pubalgia"/sports hernia) require distinguishing adductor tendinopathy from an inguinal hernia or osteitis pubis, often overlapping</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Quadriceps femoris (Rectus femoris, Vastus lateralis, medialis, intermedius)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Rectus femoris: AIIS (only quad head crossing the hip); Vasti: femoral shaft</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Patella via quadriceps tendon, then tibial tuberosity via the patellar tendon</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Femoral nerve (L2–L4)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Knee extension (all four); rectus femoris also flexes the hip</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Femoral and lateral femoral circumflex arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Anterior thigh; VMO is the teardrop-shaped bulge just superomedial to the patella</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted knee extension; patellar tendon reflex tests the femoral nerve/L2-L4 reflex arc</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Rectus femoris trigger points refer to the anterior knee — a frequently overlooked contributor to anterior knee pain beyond patellofemoral causes</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Vastus medialis obliquus (VMO) fibers are the last to strengthen and first to atrophy — VMO weakness relative to vastus lateralis contributes to patellar maltracking and patellofemoral pain syndrome</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">08</span>
+        <h3>Hamstrings (Biceps femoris, Semitendinosus, Semimembranosus)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Ischial tuberosity (biceps femoris short head instead from the linea aspera)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Biceps femoris: fibular head; Semitendinosus/semimembranosus: medial tibia (pes anserinus and posteromedial tibial condyle)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Long head biceps femoris + semitendinosus + semimembranosus: tibial division of sciatic (L5–S2); short head biceps femoris: common fibular (peroneal) division of sciatic (L5–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Knee flexion and hip extension (biarticular — length/tension depends on both joint positions, which is why stretching/strain mechanics involve both)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Perforating branches of the profunda femoris artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Posterior thigh; the three tendons are palpable at the popliteal fossa borders (biceps laterally, semitendinosus/semimembranosus medially)</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted knee flexion with the hip extended; proximal hamstring origin tenderness at the ischial tuberosity with resisted extension for proximal tears</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior thigh into the popliteal fossa and calf — proximal hamstring tendinopathy classically causes deep buttock pain worse with sitting, mimicking a radiculopathy or ischial bursitis</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Because the short head of biceps femoris is innervated by the peroneal division while the rest of the hamstrings are tibial-innervated, isolated peroneal nerve injury can selectively weaken just this portion — relevant in proximal hamstring/sciatic nerve trauma</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">09</span>
+        <h3>Sartorius</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Anterior superior iliac spine (ASIS)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Proximal medial tibia (pes anserinus, most superficial of the three)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Femoral nerve (L2–L3)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Hip flexion, abduction, external rotation + knee flexion — the "tailor's muscle" (crosses the leg into the figure-4/seated cross-legged position)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Femoral artery (muscular branches)</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Longest muscle in the body; traceable diagonally from the ASIS to the medial knee</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted hip flexion + abduction + external rotation simultaneously (the "figure-4" motion)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior thigh along its diagonal course; pes anserine bursitis at the insertion can be confused with medial meniscus or MCL pathology</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Forms the roof of the femoral triangle along with the adductor longus (medial border) and inguinal ligament (superior border) — a key surgical/vascular access landmark (femoral artery/vein/nerve lie beneath it, lateral to medial: nerve-artery-vein, "NAVEL")</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="leg">
+    <div class="region-intro"><h2>Leg</h2><span class="mcount">7 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Tibialis anterior</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral tibial condyle and proximal shaft</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Medial cuneiform and base of 1st metatarsal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Deep fibular (peroneal) nerve (L4–L5)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Ankle dorsiflexion and foot inversion</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Anterior tibial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral to the tibial shaft, prominent tendon crossing the dorsal ankle to the 1st ray</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted dorsiflexion with inversion; foot drop (steppage gait) indicates deep peroneal or common peroneal nerve injury</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Anterior shin into the dorsum of the foot and great toe — a classic anterior shin splint (medial tibial stress syndrome is more posteromedial) referral</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>First and most sensitive muscle to become tender/firm in anterior compartment syndrome (anterior compartment: TA, EDL, EHL, peroneus tertius, deep peroneal nerve, anterior tibial artery) — pain with passive toe/ankle plantarflexion (passive stretch) is an early hard sign, before pulselessness (a late finding)</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Extensor digitorum longus (EDL) / Extensor hallucis longus (EHL) / Peroneus (fibularis) tertius</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral tibial condyle, fibula, interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>EDL: extensor expansion of digits 2–5; EHL: base of great toe distal phalanx; Tertius: base of 5th metatarsal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Deep fibular (peroneal) nerve (L5–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Extend the toes (EDL/EHL) and assist dorsiflexion/eversion (tertius)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Anterior tibial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsal lateral shin, tendons visible fanning to each toe with resisted extension</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted toe extension (EDL/EHL) with the ankle stabilized</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal foot; EHL trigger points can refer to the great toe, mimicking gout</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>All are anterior compartment muscles — weak toe/foot dorsiflexion after a tibial plateau fracture or tight cast should raise immediate concern for anterior compartment syndrome, a surgical emergency requiring fasciotomy within hours</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Peroneus (fibularis) longus / brevis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Fibular head and shaft</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Longus: base of 1st metatarsal/medial cuneiform (crosses under the foot); Brevis: base of 5th metatarsal</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Superficial fibular (peroneal) nerve (L5–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Foot eversion and assist plantarflexion; longus also supports the transverse arch</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Peroneal artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral leg over the fibula; tendons palpable posterior to the lateral malleolus</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted eversion; peroneal tendon subluxation test (resisted dorsiflexion/eversion from plantarflexion) for retinaculum injury</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral ankle and lower leg; often coexists with lateral ankle sprain (mechanism frequently strains the peroneals simultaneously)</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Common fibular nerve wraps superficially around the fibular neck — the most common site of lower extremity nerve compression injury (tight casts, prolonged leg crossing/squatting, fibular head fracture) producing foot drop with sensory loss over the dorsum of the foot</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Gastrocnemius (medial / lateral heads) + Soleus ("triceps surae")</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Gastrocnemius: femoral condyles (biarticular); Soleus: posterior tibia/fibula (uniarticular)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Calcaneus via the Achilles (calcaneal) tendon</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Tibial nerve (S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Primary plantarflexors; gastrocnemius also assists knee flexion; soleus is the main postural/endurance plantarflexor (slow-twitch dominant) versus gastrocnemius (fast-twitch, power)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Sural arteries (gastrocnemius); posterior tibial artery (soleus)</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Posterior calf; gastrocnemius bellies form the visible bulge, soleus is broader and deeper/distal</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Thompson (Simmonds) test for Achilles integrity; resisted plantarflexion with the knee extended (gastrocnemius-dominant) vs. flexed (soleus-isolated) to differentiate contribution</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterior calf and heel; gastrocnemius trigger points can refer into the arch of the foot and mimic plantar fasciitis</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Achilles rupture classically occurs 2–6 cm proximal to the calcaneal insertion (a relative watershed zone) — Thompson test (no plantarflexion with calf squeeze) is diagnostic; a positive test with a palpable gap confirms complete rupture</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Tibialis posterior</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Posterior tibia, fibula, interosseous membrane</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Navicular tuberosity with slips to nearly all tarsals/metatarsals</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Tibial nerve (L4–L5)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Ankle plantarflexion and foot inversion; primary dynamic support of the medial longitudinal arch</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior tibial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Posteromedial ankle, just posterior to the medial malleolus</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Single-leg heel raise (should invert the heel normally); resisted inversion with the foot plantarflexed</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Medial ankle and arch, contributing to medial tibial stress syndrome ("shin splints," posteromedial tibial border)</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Posterior tibial tendon dysfunction is the leading cause of adult-acquired flatfoot — the "too many toes" sign (excess lateral toes visible from behind) and inability to perform a single-leg heel raise are classic exam findings</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Flexor digitorum longus (FDL) / Flexor hallucis longus (FHL)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Posterior tibia (FDL) and posterior fibula (FHL)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>FDL: base of distal phalanges, digits 2–5; FHL: base of great toe distal phalanx</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Tibial nerve (S1–S3)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flex the toes; FHL is a key push-off stabilizer in gait and dance (relevé)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Posterior tibial artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep posteromedial ankle, difficult to isolate from tibialis posterior/FDL by surface palpation</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted great toe (FHL) or lesser toe (FDL) flexion at the DIP joints</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posteromedial ankle and plantar great toe</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Dancer's tendinitis" (FHL tenosynovitis) occurs as the tendon passes through the fibro-osseous tunnel behind the medial malleolus and beneath the sustentaculum tali — a posteromedial ankle pain pattern in ballet dancers performing repetitive relevé/en pointe</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Popliteus</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lateral femoral condyle</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Posterior proximal tibia</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Tibial nerve (L4–S1)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>"Unlocks" the fully extended knee by internally rotating the tibia on the femur to initiate flexion</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Genicular branches of the popliteal artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep popliteal fossa, difficult to isolate; tenderness assessed just above the lateral joint line with the knee flexed</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted internal tibial rotation with the knee flexed 90° ("popliteus test")</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Posterolateral knee, often confused with lateral meniscal or LCL pain</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Popliteus tendinopathy/strain occurs classically in downhill running (repetitive eccentric control of tibial rotation) and must be distinguished from lateral meniscus tears — tenderness is proximal-lateral, above the joint line</p></div>
+    </article></div>
+  </section>
+
+  <section class="region-panel" data-region="foot">
+    <div class="region-intro"><h2>Foot (Intrinsics)</h2><span class="mcount">7 muscles</span></div>
+    <div class="mcard-list">
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Extensor digitorum brevis / Extensor hallucis brevis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Dorsal calcaneus (anterior)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Extensor expansions of digits 1–4 (joining the long extensor tendons)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Deep fibular (peroneal) nerve (S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Assist toe extension, mainly at the MCP/MTP joints</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Dorsalis pedis artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Dorsolateral foot, anterior to the lateral malleolus</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted toe extension with the ankle in neutral (isolates from the long extensors, which cross the ankle)</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Dorsal midfoot, localized</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Common site of a visible/palpable soft-tissue mass mistaken for a tumor — EDB is one of the only muscle bellies visible as a distinct dorsal foot bulge, and can be injured or become painfully fibrotic after ankle sprains</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Abductor hallucis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Calcaneal tuberosity (medial process), flexor retinaculum, plantar aponeurosis</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of great toe (medial side)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Medial plantar nerve (branch of tibial, S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Great toe abduction and flexion assist; supports the medial longitudinal arch</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Medial plantar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Medial plantar-arch border, from the heel toward the great toe</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted great toe abduction with the foot flat</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Medial arch and heel; overlaps significantly with plantar fasciitis referral</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Forms the medial border of the tarsal tunnel — tarsal tunnel syndrome (posterior tibial nerve compression behind the medial malleolus) can cause burning plantar pain worse at night, a lower-extremity analog of carpal tunnel</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Flexor digitorum brevis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Calcaneal tuberosity (medial process), plantar aponeurosis</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Middle phalanges of digits 2–5 (analogous to FDS in the hand)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Medial plantar nerve (S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Flexes the PIP joints of the lesser toes</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Medial plantar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Central plantar arch, deep to the plantar fascia</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted lesser toe flexion at the PIP joints</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Central plantar arch and heel</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Lies directly deep to the plantar fascia — plantar fasciitis pain (worst with first steps in the morning, point tenderness at the medial calcaneal tubercle) is frequently accompanied by tenderness here that must be distinguished from a true muscle strain</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Abductor digiti minimi (foot)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Calcaneal tuberosity (lateral process)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of the 5th toe</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lateral plantar nerve (branch of tibial, S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>5th toe abduction and flexion assist; supports the lateral longitudinal arch</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Lateral plantar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Lateral plantar border of the foot</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted 5th toe abduction</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Lateral midfoot</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Its tendon/bony origin at the base of the 5th metatarsal is the site of the Jones fracture (metaphyseal-diaphyseal junction) — a notoriously poor-healing fracture due to a watershed blood supply, distinct from a simple avulsion fracture at the styloid tip</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Quadratus plantae (flexor accessorius)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Calcaneus (medial and lateral heads)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Lateral border of the FDL tendon</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lateral plantar nerve (S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Corrects the oblique pull of FDL to a straight anteroposterior line — refines toe flexion direction</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Lateral plantar artery</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Deep central plantar arch, not distinctly palpable</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Not isolated on standard MMT; functionally assessed via overall toe flexion quality</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Not a distinct referred-pain generator</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A uniquely "corrective" muscle with no analog in the hand — because FDL approaches the foot obliquely from the medial leg, quadratus plantae straightens its line of pull so toe flexion doesn't drift medially</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Lumbricals (foot, 1–4) / Interossei (dorsal 4, plantar 3)</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>Lumbricals: FDL tendons; Interossei: metatarsal shafts</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Extensor expansions and bases of proximal phalanges, digits 2–5</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>1st lumbrical: medial plantar nerve; 2nd–4th lumbricals + all interossei: lateral plantar nerve (S1–S3)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>MTP flexion with IP extension (lumbricals, mirroring the hand); toe abduction (dorsal interossei, "DAB") and adduction (plantar interossei, "PAD")</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Plantar metatarsal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Not individually palpable</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Observe active toe posture and ability to flex MTP joints while keeping IP joints extended</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Not a distinct referred-pain generator; clinically relevant mainly through the deformity they prevent when intact</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Loss of intrinsic function (e.g., from diabetic peripheral neuropathy affecting the small distal nerve branches first) produces claw toes — unopposed long extensor/flexor pull with MTP hyperextension and IP flexion, a major contributor to diabetic forefoot ulceration over the metatarsal heads</p></div>
+    </article>
+
+    <article class="mcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>Flexor hallucis brevis / Adductor hallucis</h3>
+      </header>
+      <div class="mcard-grid">
+        <div class="mfield"><span class="flabel">Origin</span><p>FHB: cuboid/lateral cuneiform; Adductor hallucis: metatarsal bases (oblique head) and MTP ligaments (transverse head)</p></div>
+        <div class="mfield"><span class="flabel">Insertion</span><p>Base of proximal phalanx of great toe (both sides, via medial and lateral sesamoids for FHB)</p></div>
+        <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>FHB: medial plantar nerve; Adductor hallucis: lateral plantar nerve (S1–S2)</p></div>
+        <div class="mfield"><span class="flabel">Action</span><p>Great toe MTP flexion (FHB, working through the sesamoid complex); great toe adduction (adductor hallucis, a deforming force in hallux valgus)</p></div>
+        <div class="mfield"><span class="flabel">Blood Supply</span><p>Plantar metatarsal arteries</p></div>
+        <div class="mfield"><span class="flabel">Palpation</span><p>Plantar surface of the 1st metatarsal head (sesamoids) and the first web space (adductor)</p></div>
+        <div class="mfield"><span class="flabel">Special Test</span><p>Resisted great toe MTP flexion; assess hallux valgus angle for adductor hallucis contracture</p></div>
+        <div class="mfield"><span class="flabel">Referred Pain</span><p>Plantar great toe/1st MTP; can mimic gout of the great toe</p></div>
+      </div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The medial and lateral sesamoids embedded in FHB tendons absorb enormous first-ray push-off load — sesamoiditis or a sesamoid stress fracture presents as focal plantar 1st MTP pain, and adductor hallucis tightness is a key deforming contributor in progressive hallux valgus (bunion)</p></div>
+    </article></div>
+  </section>
+  </section>
+
+  <section id="panel-movements" class="mainpanel">
+    <div class="intro">
+      <h2>Functional Movements</h2>
+      <p>Named motions and sport-specific patterns, mapped to the muscles and nerves that actually produce them — from simple hinge motions like dorsiflexion to whole-chain patterns like an overhead throw and the injury mechanism behind a non-contact ACL tear.</p>
+    </div>
+    <div class="mcard-list">
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Ankle motion diagram">
+      <line x1="110" y1="30" x2="110" y2="110" class="seg-prox"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-dorsiflexion" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="190" class="seg-dist"/>
+        <circle cx="110" cy="150" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="18" class="svg-lbl">Ankle</text>
+    </svg>
+    <style>
+      @keyframes spin-dorsiflexion {
+        0%,100% { transform: rotate(0deg); }
+        50% { transform: rotate(20deg); }
+      }
+      .anim-dorsiflexion { animation: spin-dorsiflexion 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Ankle Dorsiflexion — anterior compartment anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Ankle Dorsiflexion — anterior compartment</text>
+      
+    <line x1="120" y1="26" x2="112" y2="150" class="ill-bone" style="stroke-width:9"/>
+    <line x1="132" y1="30" x2="126" y2="150" class="ill-bone" style="stroke-width:5"/>
+    <path d="M112,150 L150,158 L165,170 L118,178 Z" class="ill-bone"/>
+    <path d="M114,55 Q95,80 100,120 Q102,140 116,148 L120,140 Q108,120 108,90 Q108,68 118,55 Z" class="ill-muscle"/>
+    <path d="M126,60 Q118,100 130,145 L138,142 Q130,105 134,65 Z" class="ill-muscle2"/>
+    <path d="M60,50 Q80,90 96,130 Q100,142 110,148" class="ill-nerve"/>
+    <circle cx="96" cy="130" r="2.4" class="ill-nervedot"/>
+    <line x1="96" y1="130" x2="60" y2="128" class="ill-leader"/>
+    <text x="15" y="126" class="ill-lbl-sm">Deep fibular n.</text>
+    <line x1="100" y1="90" x2="55" y2="78" class="ill-leader"/>
+    <text x="8" y="76" class="ill-lbl-sm">Tibialis anterior</text>
+    <line x1="130" y1="100" x2="175" y2="92" class="ill-leader"/>
+    <text x="150" y="90" class="ill-lbl-sm">EDL / EHL</text>
+    <text x="128" y="196" class="ill-lbl-sm">Talus/foot — dorsiflexed</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">01</span>
+          <div><h3>Ankle Dorsiflexion </h3><span class="move-region">Ankle/Foot</span></div>
+        </header>
+        <p class="move-summary">Bringing the top of the foot toward the shin — the swing-phase clearance motion of gait and the motion tested for foot drop.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Tibialis anterior</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Extensor digitorum longus, Extensor hallucis longus, Peroneus tertius</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Deep fibular (peroneal) nerve — L4, L5</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>Foot drop (inability to dorsiflex/clear the foot in swing phase, producing a steppage or high-stepping gait) localizes to injury anywhere along this pathway — most commonly the common fibular nerve at the fibular neck (tight cast, prolonged squatting/leg crossing, fibular fracture), but an L5 radiculopathy or peripheral neuropathy must also be on the differential.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Ankle motion diagram">
+      <line x1="110" y1="30" x2="110" y2="110" class="seg-prox"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-plantarflexion" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="190" class="seg-dist"/>
+        <circle cx="110" cy="150" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="18" class="svg-lbl">Ankle</text>
+    </svg>
+    <style>
+      @keyframes spin-plantarflexion {
+        0%,100% { transform: rotate(0deg); }
+        50% { transform: rotate(-30deg); }
+      }
+      .anim-plantarflexion { animation: spin-plantarflexion 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Ankle Plantarflexion — triceps surae anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Ankle Plantarflexion — triceps surae</text>
+      
+    <line x1="120" y1="26" x2="112" y2="140" class="ill-bone" style="stroke-width:9"/>
+    <path d="M112,140 L155,148 L170,168 L118,180 Z" class="ill-bone"/>
+    <path d="M92,45 Q70,75 78,110 Q82,130 105,142 L112,132 Q92,110 92,88 Q92,64 100,45 Z" class="ill-muscle"/>
+    <path d="M104,48 Q84,80 92,112 Q96,128 116,138 L122,128 Q102,105 106,80 Q108,60 112,48 Z" class="ill-muscle2"/>
+    <path d="M110,132 Q108,150 118,166 L155,148" class="ill-tendon" style="stroke-width:5"/>
+    <text x="140" y="160" class="ill-lbl-sm">Achilles tendon</text>
+    <path d="M55,60 Q60,95 78,120 Q92,138 108,145" class="ill-nerve"/>
+    <circle cx="78" cy="120" r="2.4" class="ill-nervedot"/>
+    <line x1="78" y1="120" x2="30" y2="115" class="ill-leader"/>
+    <text x="4" y="112" class="ill-lbl-sm">Tibial nerve</text>
+    <line x1="85" y1="85" x2="35" y2="70" class="ill-leader"/>
+    <text x="4" y="68" class="ill-lbl-sm">Gastrocnemius</text>
+    <line x1="108" y1="95" x2="175" y2="85" class="ill-leader"/>
+    <text x="140" y="83" class="ill-lbl-sm">Soleus (deep)</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">02</span>
+          <div><h3>Ankle Plantarflexion </h3><span class="move-region">Ankle/Foot</span></div>
+        </header>
+        <p class="move-summary">Pointing the foot down — the propulsive push-off motion of gait, jumping, and standing on the toes.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Gastrocnemius, Soleus</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Tibialis posterior, Flexor digitorum longus, Flexor hallucis longus, Peroneus longus/brevis</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Tibial nerve — S1, S2</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>A positive Thompson test (no plantarflexion with calf squeeze) signals Achilles tendon rupture distal to the muscle-tendon pathway, not a nerve problem — always distinguish a tendinous mechanical failure from a true S1 tibial neuropathy, which would also blunt the ankle (S1) reflex.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Overhead throwing motion diagram">
+      <circle cx="70" cy="70" r="6" class="joint-dot"/>
+      <text x="70" y="52" class="svg-lbl">SH</text>
+      <g class="anim-throwing-arm" style="transform-origin:70px 70px;">
+        <line x1="70" y1="70" x2="140" y2="70" class="seg-prox"/>
+        <circle cx="140" cy="70" r="6" class="joint-dot"/>
+        <g class="anim-throwing-fore" style="transform-origin:140px 70px;">
+          <line x1="140" y1="70" x2="205" y2="70" class="seg-dist"/>
+          <circle cx="205" cy="70" r="8" class="muscle-dot"/>
+        </g>
+      </g>
+      <text x="110" y="205" class="svg-lbl">Cocking → Acceleration → Release</text>
+    </svg>
+    <style>
+      @keyframes throwarm-throwing {
+        0% { transform: rotate(-70deg); }
+        55% { transform: rotate(-70deg); }
+        75% { transform: rotate(10deg); }
+        100% { transform: rotate(-70deg); }
+      }
+      @keyframes throwfore-throwing {
+        0% { transform: rotate(90deg); }
+        55% { transform: rotate(90deg); }
+        75% { transform: rotate(-10deg); }
+        100% { transform: rotate(90deg); }
+      }
+      .anim-throwing-arm { animation: throwarm-throwing 2.6s ease-in-out infinite; }
+      .anim-throwing-fore { animation: throwfore-throwing 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Throw — shoulder/arm kinetic chain anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Throw — shoulder/arm kinetic chain</text>
+      
+    <circle cx="60" cy="55" r="14" class="ill-bone"/>
+    <line x1="70" y1="60" x2="150" y2="40" class="ill-bone" style="stroke-width:8"/>
+    <line x1="150" y1="40" x2="205" y2="90" class="ill-bone" style="stroke-width:6"/>
+    <path d="M55,48 Q35,55 40,80 Q45,95 65,95 L68,85 Q52,80 52,65 Q52,55 60,48 Z" class="ill-muscle"/>
+    <text x="8" y="102" class="ill-lbl-sm">Deltoid/cuff</text>
+    <path d="M95,50 Q120,42 148,45" class="ill-muscle2" style="stroke-width:10; fill:none;"/>
+    <text x="90" y="35" class="ill-lbl-sm">Pec major / lat</text>
+    <path d="M158,52 Q175,68 190,85" class="ill-muscle" style="stroke-width:9; fill:none;"/>
+    <text x="160" y="105" class="ill-lbl-sm">Triceps</text>
+    <path d="M50,40 Q45,25 60,20" class="ill-nerve"/>
+    <circle cx="52" cy="30" r="2.2" class="ill-nervedot"/>
+    <text x="14" y="18" class="ill-lbl-sm">Axillary n.</text>
+    <path d="M150,42 Q160,60 165,80" class="ill-nerve"/>
+    <circle cx="160" cy="65" r="2.2" class="ill-nervedot"/>
+    <text x="168" y="65" class="ill-lbl-sm">Radial n.</text>
+    <text x="70" y="115" class="ill-lbl-sm">Late cocking → acceleration</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">03</span>
+          <div><h3>Overhead Throwing Motion (Baseball/Football) </h3><span class="move-region">Shoulder/Arm — kinetic chain</span></div>
+        </header>
+        <p class="move-summary">A whole-kinetic-chain motion in six phases: wind-up, early cocking, late cocking, acceleration, deceleration, and follow-through — each phase loads a different structure.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Posterior deltoid + rotator cuff (cocking), Pectoralis major + latissimus dorsi + subscapularis (acceleration/internal rotation), Triceps brachii (elbow extension)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Serratus anterior (scapular stability), Rotator cuff as a whole (dynamic humeral head centering), Forearm flexor-pronator mass (wrist snap/pronation at release)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Multiple: axillary/suprascapular (C5-C6) in cocking, thoracodorsal/medial+lateral pectoral (C6-T1) in acceleration, radial (C6-C8) for elbow extension, median/ulnar (C6-T1) for wrist/forearm at release</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>UCL injury classically occurs during the late-cocking-to-acceleration transition (peak valgus torque); the moving valgus stress test reproduces medial elbow pain specifically as the elbow moves through 70–120° of flexion, reproducing the injury-phase mechanism at the bedside.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Dynamic knee valgus diagram">
+      <line x1="90" y1="20" x2="90" y2="110" class="seg-prox"/>
+      <g class="anim-acl">
+        <line x1="90" y1="110" x2="115" y2="200" class="seg-dist warn-seg"/>
+        <circle cx="90" cy="110" r="8" class="muscle-dot warn-dot"/>
+      </g>
+      <text x="110" y="14" class="svg-lbl">Femur</text>
+      <text x="128" y="205" class="svg-lbl">Valgus collapse</text>
+    </svg>
+    <style>
+      @keyframes valgus-acl {
+        0%,100% { transform: translateX(0) rotate(0deg); }
+        50% { transform: translateX(14px) rotate(8deg); }
+      }
+      .anim-acl { animation: valgus-acl 2.4s ease-in-out infinite; transform-origin: 90px 110px; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Non-Contact ACL Mechanism anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Non-Contact ACL Mechanism</text>
+      
+    <line x1="115" y1="20" x2="105" y2="105" class="ill-bone" style="stroke-width:11"/>
+    <line x1="112" y1="115" x2="122" y2="200" class="ill-bone" style="stroke-width:9"/>
+    <ellipse cx="110" cy="112" rx="15" ry="8" class="ill-bone" style="fill:#efe6c6"/>
+    <path d="M102,100 L118,124" class="ill-nerve" style="stroke:#c1432e; stroke-width:3.5;"/>
+    <path d="M108,100 L114,124" class="ill-nerve" style="stroke:#e0b341; stroke-width:2.5;"/>
+    <text x="128" y="108" class="ill-lbl-sm">ACL (torn)</text>
+    <path d="M88,30 Q68,55 72,90 Q75,100 100,106 L104,96 Q82,85 82,60 Q82,45 92,30 Z" class="ill-muscle"/>
+    <text x="20" y="55" class="ill-lbl-sm">Quadriceps</text>
+    <path d="M130,140 Q150,150 155,175" class="ill-muscle2" style="fill:none; stroke-width:8;"/>
+    <text x="140" y="192" class="ill-lbl-sm">Hamstrings</text>
+    <path d="M108,110 Q125,118 128,140" class="ill-nerve" style="stroke-dasharray:3 3;"/>
+    <text x="130" y="132" class="ill-lbl-sm">valgus + IR</text>
+    <text x="45" y="205" class="ill-lbl-sm">Femur adducts/IR over planted foot</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">04</span>
+          <div><h3>Non-Contact ACL Injury Mechanism <span class="injury-badge">Injury Mechanism</span></h3><span class="move-region">Knee — deceleration/pivot</span></div>
+        </header>
+        <p class="move-summary">Not a normal movement, but the stereotyped failure pattern: rapid deceleration, near-full extension, dynamic knee valgus, and tibial internal rotation during a cut, land, or pivot.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Quadriceps (dominant, deforming force), Hamstrings (protective, insufficiently activated)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Gluteus medius (controls femoral/pelvic position, insufficiency worsens valgus collapse), Gastrocnemius (co-contracts with quad in the last 30° of extension, adding anterior tibial shear)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Femoral nerve (L2-L4) drives quad-dominant landing; deficient hip abductor control reflects superior gluteal nerve (L4-S1) - mediated neuromuscular control, not a focal nerve lesion</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>This is the biomechanical basis for ACL injury-prevention programs (e.g., PEP, FIFA 11+) that specifically train hamstring pre-activation, hip/core control, and safe landing mechanics — programs shown to meaningfully reduce non-contact ACL injury rates, especially in female athletes who show this valgus-collapse pattern more often.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Thumb to index pinch diagram">
+      <circle cx="110" cy="120" r="34" class="rot-ring"/>
+      <g class="anim-oksign-thumb" style="transform-origin:92px 150px;">
+        <line x1="92" y1="150" x2="92" y2="110" class="seg-dist"/>
+        <circle cx="92" cy="108" r="7" class="muscle-dot"/>
+      </g>
+      <g class="anim-oksign-index" style="transform-origin:128px 150px;">
+        <line x1="128" y1="150" x2="128" y2="110" class="seg-prox"/>
+        <circle cx="128" cy="108" r="7" class="muscle-dot" style="fill:var(--nerve)"/>
+      </g>
+      <text x="110" y="205" class="svg-lbl">FPL + FDP (index) → the "O"</text>
+    </svg>
+    <style>
+      @keyframes pinchT-oksign { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(22deg); } }
+      @keyframes pinchI-oksign { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
+      .anim-oksign-thumb { animation: pinchT-oksign 2.2s ease-in-out infinite; }
+      .anim-oksign-index { animation: pinchI-oksign 2.2s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="OK Sign — AIN motor screen anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">OK Sign — AIN motor screen</text>
+      
+    <line x1="60" y1="120" x2="95" y2="60" class="ill-bone" style="stroke-width:8"/>
+    <line x1="140" y1="130" x2="140" y2="55" class="ill-bone" style="stroke-width:7"/>
+    <circle cx="93" cy="55" r="5" class="ill-bone"/>
+    <circle cx="140" cy="50" r="5" class="ill-bone"/>
+    <path d="M70,110 Q60,90 78,70" class="ill-tendon" style="stroke-width:4"/>
+    <path d="M138,125 Q136,95 138,60" class="ill-tendon" style="stroke-width:4"/>
+    <text x="10" y="55" class="ill-lbl-sm">FPL tendon</text>
+    <text x="148" y="45" class="ill-lbl-sm">FDP (index)</text>
+    <path d="M60,155 Q90,175 130,165 Q150,158 155,140" class="ill-nerve"/>
+    <circle cx="90" cy="172" r="2.4" class="ill-nervedot"/>
+    <text x="35" y="192" class="ill-lbl-sm">Median n. → AIN</text>
+    <path d="M95,60 Q117,45 140,50" class="ill-tendon" style="stroke-dasharray:2 3; stroke-width:2;"/>
+    <text x="95" y="35" class="ill-lbl-sm">tips meet — the "O"</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">05</span>
+          <div><h3>"OK Sign" (Thumb–Index Pinch) </h3><span class="move-region">Hand/Forearm — median (AIN) screen</span></div>
+        </header>
+        <p class="move-summary">Bedside test forming a circle with the thumb and index finger — directly assesses the anterior interosseous nerve (AIN), a pure motor branch of the median nerve.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Flexor pollicis longus (thumb IP flexion), Flexor digitorum profundus to index (index DIP flexion)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Pronator quadratus (co-innervated by AIN, not directly visible in this test)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Anterior interosseous nerve (AIN), a branch of the median nerve — C7, C8, T1</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>AIN syndrome (Kiloh-Nevin syndrome) — from trauma, pronator teres fibrous bands, or a brachial neuritis (Parsonage-Turner variant) — produces a pathognomonic FLAT, triangular pinch instead of a circle, because the patient substitutes intact thenar/extrinsic muscles for the paralyzed FPL and index FDP. This is a pure motor syndrome with no sensory loss, since AIN carries no cutaneous sensory fibers.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Power grip diagram">
+      <rect x="55" y="120" width="105" height="55" rx="16" class="rot-ring" style="fill:none"/>
+      <g class="anim-grip-f0" style="transform-origin:70px 130px;"><line x1="70" y1="130" x2="70" y2="60" class="seg-dist"/></g><g class="anim-grip-f1" style="transform-origin:95px 130px;"><line x1="95" y1="130" x2="95" y2="60" class="seg-dist"/></g><g class="anim-grip-f2" style="transform-origin:120px 130px;"><line x1="120" y1="130" x2="120" y2="60" class="seg-dist"/></g><g class="anim-grip-f3" style="transform-origin:145px 130px;"><line x1="145" y1="130" x2="145" y2="60" class="seg-dist"/></g>
+      <text x="110" y="205" class="svg-lbl">FDS/FDP curl around the object</text>
+    </svg>
+    <style>
+      @keyframes gripf0-grip { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(45deg); } } .anim-grip-f0 { animation: gripf0-grip 2.3s ease-in-out infinite; animation-delay: 0.0s; }@keyframes gripf1-grip { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(49deg); } } .anim-grip-f1 { animation: gripf1-grip 2.3s ease-in-out infinite; animation-delay: 0.08s; }@keyframes gripf2-grip { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(53deg); } } .anim-grip-f2 { animation: gripf2-grip 2.3s ease-in-out infinite; animation-delay: 0.16s; }@keyframes gripf3-grip { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(57deg); } } .anim-grip-f3 { animation: gripf3-grip 2.3s ease-in-out infinite; animation-delay: 0.24s; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Power Grip — flexor tendons & wrist nerves anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Power Grip — flexor tendons & wrist nerves</text>
+      
+    <path d="M55,150 Q60,110 90,100 Q140,90 165,110 Q175,125 168,150 Q150,175 105,178 Q68,178 55,150 Z" class="ill-bone" style="fill:#efe6c6"/>
+    <line x1="72" y1="105" x2="60" y2="55" class="ill-tendon" style="stroke-width:5"/>
+    <line x1="98" y1="95" x2="92" y2="42" class="ill-tendon" style="stroke-width:5"/>
+    <line x1="128" y1="93" x2="126" y2="44" class="ill-tendon" style="stroke-width:5"/>
+    <line x1="152" y1="100" x2="156" y2="52" class="ill-tendon" style="stroke-width:5"/>
+    <path d="M65,120 Q45,105 50,80" class="ill-muscle"/>
+    <text x="6" y="76" class="ill-lbl-sm">Thenar</text>
+    <path d="M162,130 Q180,120 178,95" class="ill-muscle2"/>
+    <text x="150" y="88" class="ill-lbl-sm">Hypothenar</text>
+    <path d="M60,175 Q65,195 90,198" class="ill-nerve"/>
+    <circle cx="68" cy="190" r="2.2" class="ill-nervedot"/>
+    <text x="20" y="210" class="ill-lbl-sm">Median (carpal tunnel)</text>
+    <path d="M150,178 Q165,192 158,205" class="ill-nerve"/>
+    <circle cx="158" cy="192" r="2.2" class="ill-nervedot"/>
+    <text x="130" y="222" class="ill-lbl-sm">Ulnar (Guyon's canal)</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">06</span>
+          <div><h3>Power Grip / Grip Strength </h3><span class="move-region">Hand/Forearm</span></div>
+        </header>
+        <p class="move-summary">A full-fist power grasp integrates extrinsic finger flexors with intrinsic hand muscles and wrist stabilizers — the composite measure captured by a dynamometer.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Flexor digitorum profundus, Flexor digitorum superficialis</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Extensor carpi radialis longus/brevis + extensor carpi ulnaris (wrist extensor stabilization — grip is markedly weaker with the wrist flexed, the basis of lateral epicondylitis grip weakness), Lumbricals + interossei (MCP flexion/IP fine control), Thenar + hypothenar groups (cup the hand around the object)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Median nerve (C6-T1) for FDS/FDP radial half + thenar; Ulnar nerve (C8-T1) for FDP ulnar half + intrinsics + hypothenar; Radial nerve (C6-C8) for wrist extensor stabilization</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>Grip strength is a validated systemic biomarker — low grip strength independently predicts all-cause mortality, frailty, and post-surgical complications in large cohort studies, and is a routine part of a comprehensive geriatric or preoperative assessment, not just a hand-specific measure.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Shoulder motion diagram">
+      <line x1="110" y1="30" x2="110" y2="110" class="seg-prox"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-shoulder_abd" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="190" class="seg-dist"/>
+        <circle cx="110" cy="150" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="18" class="svg-lbl">Shoulder</text>
+    </svg>
+    <style>
+      @keyframes spin-shoulder_abd {
+        0%,100% { transform: rotate(0deg); }
+        50% { transform: rotate(90deg); }
+      }
+      .anim-shoulder_abd { animation: spin-shoulder_abd 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Shoulder Abduction anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Shoulder Abduction</text>
+      
+    <path d="M70,60 Q110,35 165,55 L170,70 Q120,55 78,75 Z" class="ill-bone"/>
+    <text x="95" y="48" class="ill-lbl-sm">Acromion</text>
+    <line x1="120" y1="65" x2="115" y2="170" class="ill-bone" style="stroke-width:9"/>
+    <path d="M95,58 Q80,62 78,80 Q78,95 100,100 L104,88 Q90,85 90,72 Q90,63 98,58 Z" class="ill-muscle2"/>
+    <text x="20" y="98" class="ill-lbl-sm">Supraspinatus</text>
+    <path d="M85,80 Q65,100 70,140 Q73,158 100,165 L106,152 Q85,140 85,110 Q85,95 92,82 Z" class="ill-muscle"/>
+    <text x="20" y="160" class="ill-lbl-sm">Deltoid</text>
+    <path d="M60,55 Q50,70 58,90" class="ill-nerve"/>
+    <circle cx="53" cy="72" r="2.2" class="ill-nervedot"/>
+    <text x="4" y="70" class="ill-lbl-sm">Suprascapular n.</text>
+    <path d="M78,95 Q68,110 78,130" class="ill-nerve"/>
+    <circle cx="70" cy="112" r="2.2" class="ill-nervedot"/>
+    <text x="4" y="132" class="ill-lbl-sm">Axillary n.</text>
+    <text x="118" y="190" class="ill-lbl-sm">0–15° supra → 15–90° deltoid</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">07</span>
+          <div><h3>Shoulder Abduction (Overhead Reach) </h3><span class="move-region">Shoulder</span></div>
+        </header>
+        <p class="move-summary">Raising the arm out to the side and overhead — a coordinated deltoid/rotator-cuff/scapulothoracic sequence, not a single-muscle motion.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Supraspinatus (0-15°), Deltoid (15-90°), Trapezius + serratus anterior (90-180°, scapulohumeral rhythm)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Infraspinatus + subscapularis (dynamic humeral head centering throughout)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Suprascapular nerve (C5-C6) → Axillary nerve (C5-C6) → Spinal accessory/CN XI + long thoracic (C5-C7)</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>A painful arc (pain specifically between ~60-120° of abduction) localizes to subacromial impingement, where the supraspinatus/subacromial bursa is compressed under the acromion — pain resolving above 120° as the greater tuberosity clears the arch is a classic distinguishing feature from a full-thickness cuff tear (often painless through that same arc if torn).</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Hip motion diagram">
+      <line x1="110" y1="30" x2="110" y2="110" class="seg-prox"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-hip_flex" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="190" class="seg-dist"/>
+        <circle cx="110" cy="150" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="18" class="svg-lbl">Hip</text>
+    </svg>
+    <style>
+      @keyframes spin-hip_flex {
+        0%,100% { transform: rotate(0deg); }
+        50% { transform: rotate(90deg); }
+      }
+      .anim-hip_flex { animation: spin-hip_flex 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Hip Flexion — sprint drive anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Hip Flexion — sprint drive</text>
+      
+    <path d="M60,30 L165,30 L160,60 L65,60 Z" class="ill-bone"/>
+    <text x="70" y="24" class="ill-lbl-sm">Lumbar spine / pelvis</text>
+    <line x1="115" y1="60" x2="128" y2="180" class="ill-bone" style="stroke-width:10"/>
+    <path d="M85,38 Q65,70 80,110 Q92,135 118,150 L124,138 Q100,120 95,90 Q90,65 100,40 Z" class="ill-muscle"/>
+    <text x="12" y="115" class="ill-lbl-sm">Iliopsoas</text>
+    <path d="M100,45 Q90,90 108,140 L118,135 Q102,95 110,50 Z" class="ill-muscle2"/>
+    <text x="130" y="70" class="ill-lbl-sm">Rectus femoris</text>
+    <path d="M70,45 Q60,70 78,100 Q90,120 112,132" class="ill-nerve"/>
+    <circle cx="78" cy="100" r="2.2" class="ill-nervedot"/>
+    <text x="10" y="150" class="ill-lbl-sm">Femoral n. (L2-L4)</text>
+    <text x="80" y="200" class="ill-lbl-sm">Knee drives up and forward</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">08</span>
+          <div><h3>Hip Flexion (Sprint Drive / Knee Drive) </h3><span class="move-region">Hip</span></div>
+        </header>
+        <p class="move-summary">Driving the knee upward and forward — the power phase of sprinting, kicking, and stair climbing.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Iliopsoas</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Rectus femoris, Sartorius, Tensor fasciae latae</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Lumbar plexus direct branches (L1-L3) for psoas; Femoral nerve (L2-L4) for iliacus/rectus femoris/sartorius</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>Iliopsoas strain/tendinopathy is common in sprinters and kickers, and iliopsoas bursitis can mimic hip joint pathology on exam — a positive resisted hip flexion test with the hip at 90° isolates the psoas relatively well; distinguishing bursitis from labral pathology often requires imaging (MR arthrogram) since both can produce anterior groin pain with flexion.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Knee motion diagram">
+      <line x1="110" y1="30" x2="110" y2="110" class="seg-prox"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-knee_ext" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="190" class="seg-dist"/>
+        <circle cx="110" cy="150" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="18" class="svg-lbl">Knee</text>
+    </svg>
+    <style>
+      @keyframes spin-knee_ext {
+        0%,100% { transform: rotate(90deg); }
+        50% { transform: rotate(0deg); }
+      }
+      .anim-knee_ext { animation: spin-knee_ext 2.6s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Knee Extension — kicking motion anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Knee Extension — kicking motion</text>
+      
+    <line x1="115" y1="20" x2="110" y2="120" class="ill-bone" style="stroke-width:11"/>
+    <ellipse cx="112" cy="128" rx="10" ry="14" class="ill-bone" style="fill:#efe6c6"/>
+    <line x1="115" y1="142" x2="120" y2="200" class="ill-bone" style="stroke-width:9"/>
+    <path d="M85,30 Q65,55 72,95 Q76,112 105,120 L110,108 Q85,100 85,75 Q85,55 95,32 Z" class="ill-muscle"/>
+    <path d="M105,32 Q92,70 100,112 L112,110 Q100,75 108,34 Z" class="ill-muscle2"/>
+    <text x="15" y="60" class="ill-lbl-sm">Vastus medialis/lateralis</text>
+    <text x="120" y="45" class="ill-lbl-sm">Rectus femoris</text>
+    <path d="M112,140 L118,190" class="ill-tendon" style="stroke-width:5"/>
+    <text x="122" y="175" class="ill-lbl-sm">Patellar tendon</text>
+    <path d="M55,50 Q50,80 65,110 Q78,130 100,138" class="ill-nerve"/>
+    <circle cx="65" cy="110" r="2.2" class="ill-nervedot"/>
+    <text x="6" y="105" class="ill-lbl-sm">Femoral n. (L2-L4)</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">09</span>
+          <div><h3>Knee Extension (Kicking Motion) </h3><span class="move-region">Knee</span></div>
+        </header>
+        <p class="move-summary">Straightening the knee against resistance — the terminal power phase of a kick or a rise from a squat.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Quadriceps femoris (rectus femoris, vastus lateralis, medialis, intermedius)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>None true — quadriceps is the sole knee extensor group; iliopsoas/rectus femoris contribute hip flexion in a kicking motion specifically</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Femoral nerve — L2, L3, L4</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>An absent or markedly diminished patellar tendon reflex (L2-L4, mediated by the femoral nerve and quadriceps muscle spindles) localizes a lesion to this exact pathway — seen in L3-L4 radiculopathy, femoral neuropathy (e.g., after pelvic/retroperitoneal surgery or hematoma), or diabetic polyneuropathy.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="Forearm rotation diagram">
+      <circle cx="110" cy="110" r="70" class="rot-ring"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-forearm_rot" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="45" class="seg-dist"/>
+        <circle cx="110" cy="55" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="205" class="svg-lbl">Forearm</text>
+    </svg>
+    <style>
+      @keyframes spin-forearm_rot {
+        0%,100% { transform: rotate(-80deg); }
+        50% { transform: rotate(80deg); }
+      }
+      .anim-forearm_rot { animation: spin-forearm_rot 2.8s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Forearm Pronation / Supination anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Forearm Pronation / Supination</text>
+      
+    <line x1="60" y1="40" x2="150" y2="150" class="ill-bone" style="stroke-width:7"/>
+    <line x1="150" y1="40" x2="60" y2="150" class="ill-bone" style="stroke-width:6"/>
+    <text x="30" y="35" class="ill-lbl-sm">Radius</text>
+    <text x="152" y="35" class="ill-lbl-sm">Ulna</text>
+    <path d="M100,45 Q75,55 78,80 Q80,95 100,98" class="ill-muscle2"/>
+    <text x="10" y="78" class="ill-lbl-sm">Supinator</text>
+    <path d="M65,105 Q90,110 115,120" class="ill-muscle" style="stroke-width:9; fill:none;"/>
+    <text x="20" y="135" class="ill-lbl-sm">Pronator teres</text>
+    <path d="M95,140 Q110,145 130,148" class="ill-muscle" style="stroke-width:7; fill:none;"/>
+    <text x="95" y="165" class="ill-lbl-sm">Pronator quadratus</text>
+    <path d="M155,50 Q168,75 160,100" class="ill-nerve"/>
+    <circle cx="164" cy="80" r="2.2" class="ill-nervedot"/>
+    <text x="168" y="78" class="ill-lbl-sm">PIN</text>
+    <path d="M70,60 Q60,90 75,115" class="ill-nerve"/>
+    <circle cx="65" cy="95" r="2.2" class="ill-nervedot"/>
+    <text x="6" y="115" class="ill-lbl-sm">Median n.</text>
+    <text x="60" y="200" class="ill-lbl-sm">Distal radioulnar joint rotation</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">10</span>
+          <div><h3>Forearm Pronation/Supination (Turning a Screwdriver) </h3><span class="move-region">Forearm</span></div>
+        </header>
+        <p class="move-summary">Rotating the radius around the ulna to turn the palm down (pronation) or up (supination) — the motion of turning a key or driving a screw.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Supinator + biceps brachii (supination), Pronator teres + pronator quadratus (pronation)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Brachioradialis (returns the forearm toward neutral from either extreme)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Musculocutaneous (C5-C6, biceps) + Posterior interosseous (C5-C6, supinator) for supination; Median nerve (C6-T1) for both pronators</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>Isolated pronator quadratus weakness (with normal pronator teres, so pronation is still present but weak specifically against resistance near full elbow flexion) is a subtle early sign of anterior interosseous nerve syndrome, easy to miss if only gross pronation strength is tested.</p></div>
+      </div>
+    </article>
+
+    <article class="movecard">
+      <div class="move-visual">
+        <div class="visual-block"><span class="visual-tag">Motion loop</span>
+    <svg viewBox="0 0 220 220" class="msvg" role="img" aria-label="C1-C2 (atlanto-axial) rotation diagram">
+      <circle cx="110" cy="110" r="70" class="rot-ring"/>
+      <circle cx="110" cy="110" r="6" class="joint-dot"/>
+      <g class="anim-neck_rot" style="transform-origin:110px 110px;">
+        <line x1="110" y1="110" x2="110" y2="45" class="seg-dist"/>
+        <circle cx="110" cy="55" r="9" class="muscle-dot"/>
+      </g>
+      <text x="110" y="205" class="svg-lbl">C1-C2 (atlanto-axial)</text>
+    </svg>
+    <style>
+      @keyframes spin-neck_rot {
+        0%,100% { transform: rotate(-60deg); }
+        50% { transform: rotate(60deg); }
+      }
+      .anim-neck_rot { animation: spin-neck_rot 2.8s ease-in-out infinite; }
+    </style></div>
+        <div class="visual-block"><span class="visual-tag">Anatomical model</span><div class="illus-box"><svg viewBox="0 0 240 240" role="img" aria-label="Neck Rotation anatomical illustration">
+      <rect x="0" y="0" width="1000" height="1000" class="ill-bg"/>
+      <text x="10" y="16" class="ill-title">Neck Rotation</text>
+      
+    <circle cx="115" cy="45" r="20" class="ill-bone"/>
+    <text x="100" y="20" class="ill-lbl-sm">Skull</text>
+    <rect x="105" y="65" width="16" height="14" rx="4" class="ill-bone"/>
+    <text x="125" y="76" class="ill-lbl-sm">C1</text>
+    <rect x="105" y="83" width="16" height="14" rx="4" class="ill-bone"/>
+    <text x="125" y="94" class="ill-lbl-sm">C2</text>
+    <line x1="113" y1="97" x2="118" y2="180" class="ill-bone" style="stroke-width:8"/>
+    <path d="M95,55 Q60,90 75,140 Q82,158 105,165 L110,152 Q88,138 86,110 Q84,85 100,60 Z" class="ill-muscle"/>
+    <text x="8" y="145" class="ill-lbl-sm">Sternocleidomastoid</text>
+    <path d="M135,60 Q160,90 150,135" class="ill-muscle2" style="fill:none; stroke-width:8;"/>
+    <text x="150" y="150" class="ill-lbl-sm">Splenius capitis</text>
+    <path d="M120,68 Q128,78 124,90" class="ill-nerve"/>
+    <circle cx="126" cy="80" r="2" class="ill-nervedot"/>
+    <text x="132" y="65" class="ill-lbl-sm">Suboccipital n.</text>
+    <text x="55" y="200" class="ill-lbl-sm">~50% of rotation occurs at C1-C2</text>
+    
+      <g class="ill-legend">
+        <rect x="8" y="216" width="8" height="8" fill="#b5493a"/><text x="19" y="223">Muscle</text>
+        <rect x="70" y="216" width="8" height="8" fill="#c99a2e"/><text x="81" y="223">Nerve</text>
+        <rect x="128" y="216" width="8" height="8" fill="#e4d9b4" stroke="#8a7c58"/><text x="139" y="223">Bone/tendon</text>
+      </g>
+    </svg></div></div>
+      </div>
+      <div class="move-body">
+        <header class="move-h">
+          <span class="mcard-num">11</span>
+          <div><h3>Neck Rotation </h3><span class="move-region">Cervical spine</span></div>
+        </header>
+        <p class="move-summary">Turning the head to look over the shoulder — roughly half the total range occurs at the single atlanto-axial (C1-C2) joint.</p>
+        <div class="move-grid">
+          <div class="mfield"><span class="flabel">Prime Mover(s)</span><p>Sternocleidomastoid (contralateral rotation), Splenius capitis/cervicis (ipsilateral rotation)</p></div>
+          <div class="mfield"><span class="flabel">Synergists</span><p>Suboccipital group (obliquus capitis inferior — fine C1-C2 rotational control), Scalenes (mild contralateral assist)</p></div>
+          <div class="mfield nerve"><span class="flabel">Nerve / Root</span><p>Spinal accessory (CN XI) + C2-C3 for SCM; Dorsal rami of cervical nerves for splenius/suboccipitals</p></div>
+        </div>
+        <div class="mpearl"><span class="pearl-tag">Clinical Correlation</span><p>Because C1-C2 contributes so much of total rotation, a patient who cannot rotate the head at all (versus reduced/painful rotation) should raise concern for an upper cervical instability or fracture (e.g., in trauma or inflammatory arthropathy like rheumatoid atlantoaxial subluxation) rather than simple myofascial strain, and warrants imaging before manipulation.</p></div>
+      </div>
+    </article></div>
+  </section>
+
+  <section id="panel-pathway" class="mainpanel">
+    <div class="intro">
+      <h2>Movement Pathway Tracer</h2>
+      <p>For each functional movement, the ordered sequence: where the signal originates, which nerve carries it, which muscle fires first, and what fires next — the same order you'd walk through to localize a weakness on exam.</p>
+    </div>
+    <div class="mcard-list">
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Ankle Dorsiflexion</h3><span class="move-region">Deep fibular (peroneal) nerve — L4, L5</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Corticospinal signal descends from the motor cortex (leg area, medial precentral gyrus)</p></li>
+<li><span class="step-num">2</span><p>Synapses onto L4–L5 anterior horn cells in the lumbar spinal cord</p></li>
+<li><span class="step-num">3</span><p>Exits via the L4–L5 nerve roots → forms the common fibular (peroneal) nerve within the sciatic nerve</p></li>
+<li><span class="step-num">4</span><p>Common fibular nerve wraps around the fibular neck (most vulnerable compression point in the body) → becomes the deep fibular nerve</p></li>
+<li><span class="step-num">5</span><p>Deep fibular nerve enters the anterior compartment, innervating tibialis anterior FIRST (primary mover)</p></li>
+<li><span class="step-num">6</span><p>Simultaneous/near-simultaneous activation of extensor digitorum longus, extensor hallucis longus, and peroneus tertius (synergists) via the same nerve</p></li>
+<li><span class="step-num">7</span><p>Tibialis anterior contracts concentrically, pulling the foot into dorsiflexion and slight inversion while the toe extensors assist and prevent toe drag</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Ankle Plantarflexion</h3><span class="move-region">Tibial nerve — S1, S2</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Motor cortex signal descends the corticospinal tract to S1–S2 anterior horn cells</p></li>
+<li><span class="step-num">2</span><p>S1–S2 roots combine into the tibial division of the sciatic nerve in the posterior thigh</p></li>
+<li><span class="step-num">3</span><p>Tibial nerve continues through the popliteal fossa into the posterior (deep and superficial) leg compartments</p></li>
+<li><span class="step-num">4</span><p>Innervates gastrocnemius and soleus (the prime-mover "triceps surae") — soleus fires first/tonically for postural control, gastrocnemius adds explosive power</p></li>
+<li><span class="step-num">5</span><p>Deep posterior compartment synergists (tibialis posterior, FDL, FHL) co-activate to stabilize the arch and toes during push-off</p></li>
+<li><span class="step-num">6</span><p>Triceps surae contracts, pulling the calcaneus upward via the Achilles tendon and driving the foot into plantarflexion for toe-off</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Overhead Throwing Motion (Baseball/Football)</h3><span class="move-region">Multiple: axillary/suprascapular (C5-C6) in cocking, thoracodorsal/medial+lateral pectoral (C6-T1) in acceleration, radial (C6-C8) for elbow extension, median/ulnar (C6-T1) for wrist/forearm at release</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Late cocking: legs/trunk generate force first ("kinetic chain" — the arm is the last and fastest-moving link) → scapula retracts/stabilizes via serratus anterior + rhomboids</p></li>
+<li><span class="step-num">2</span><p>Posterior deltoid + infraspinatus + teres minor (axillary + suprascapular nerves, C5–C6) externally rotate and abduct the humerus to maximal cocking (~170° of external rotation in elite pitchers) — this phase places peak anterior capsule/labral (SLAP) and UCL stress</p></li>
+<li><span class="step-num">3</span><p>Acceleration: rapid reversal — pectoralis major, latissimus dorsi, and subscapularis (medial/lateral pectoral C5-T1, thoracodorsal C6-C8, lower subscapular C5-C7) fire explosively to internally rotate the humerus — among the fastest joint rotations recorded in human movement (&gt;7000°/sec at the shoulder)</p></li>
+<li><span class="step-num">4</span><p>Simultaneously, the elbow whips into extension via triceps brachii (radial nerve, C6-C8), placing peak valgus stress on the ulnar collateral ligament (UCL) — the mechanism behind "Tommy John" injuries</p></li>
+<li><span class="step-num">5</span><p>Ball release: wrist flexors/pronators (median/ulnar nerves, C6-T1) snap the wrist and pronate the forearm for release accuracy and spin</p></li>
+<li><span class="step-num">6</span><p>Deceleration/follow-through: posterior cuff (infraspinatus, teres minor) and posterior deltoid eccentrically brake the arm — this eccentric deceleration phase is a major site of posterior cuff overuse injury in high-volume throwers</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Non-Contact ACL Injury Mechanism</h3><span class="move-region">Femoral nerve (L2-L4) drives quad-dominant landing; deficient hip abductor control reflects superior gluteal nerve (L4-S1) - mediated neuromuscular control, not a focal nerve lesion</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Athlete decelerates from a jump or cut with the knee near full extension (0–30° of flexion) — the position of least hamstring mechanical advantage and greatest ACL strain</p></li>
+<li><span class="step-num">2</span><p>Quadriceps fires dominantly (femoral nerve, L2-L4) to control landing/deceleration forces, generating a strong anterior tibial shear force via the patellar tendon's angle of pull</p></li>
+<li><span class="step-num">3</span><p>Hamstring co-contraction (which normally opposes anterior tibial translation) is neuromuscularly insufficient or delayed — often due to fatigue, poor pre-activation, or trunk/hip control deficits</p></li>
+<li><span class="step-num">4</span><p>Weak hip abductor/external rotator control (gluteus medius, superior gluteal nerve L4-S1) allows the femur to adduct and internally rotate relative to a planted foot → dynamic knee valgus ("knee-in, toe-out" collapse)</p></li>
+<li><span class="step-num">5</span><p>Combined anterior tibial shear + valgus + tibial internal rotation loads the ACL beyond its failure tensile strength, typically with an audible pop and immediate hemarthrosis</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">05</span>
+        <div><h3>"OK Sign" (Thumb–Index Pinch)</h3><span class="move-region">Anterior interosseous nerve (AIN), a branch of the median nerve — C7, C8, T1</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Median nerve descends the anterior forearm and gives off the anterior interosseous nerve (AIN) just distal to the elbow, deep to pronator teres</p></li>
+<li><span class="step-num">2</span><p>AIN travels along the interosseous membrane innervating (in order along its course) pronator quadratus, flexor pollicis longus, and the radial half of flexor digitorum profundus (index + middle)</p></li>
+<li><span class="step-num">3</span><p>Flexor pollicis longus contracts, flexing the thumb IP joint</p></li>
+<li><span class="step-num">4</span><p>Flexor digitorum profundus (index slip) contracts, flexing the index DIP joint</p></li>
+<li><span class="step-num">5</span><p>Both tips meet to form a rounded "O" — a normal, circular OK sign</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">06</span>
+        <div><h3>Power Grip / Grip Strength</h3><span class="move-region">Median nerve (C6-T1) for FDS/FDP radial half + thenar; Ulnar nerve (C8-T1) for FDP ulnar half + intrinsics + hypothenar; Radial nerve (C6-C8) for wrist extensor stabilization</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Wrist extensors (radial nerve, C6-C8) fire FIRST and continuously to stabilize the wrist in slight extension — this pre-positioning lengthens the finger flexors over the wrist for maximum tension (length-tension relationship), which is why grip strength drops sharply with the wrist flexed</p></li>
+<li><span class="step-num">2</span><p>FDS (median nerve) flexes the PIP joints, providing the bulk of early grip force generation</p></li>
+<li><span class="step-num">3</span><p>FDP (median nerve — radial half; ulnar nerve — ulnar half) flexes the DIP joints, completing full digital flexion around the object</p></li>
+<li><span class="step-num">4</span><p>Intrinsic muscles (lumbricals + interossei, median/ulnar nerves) fine-tune MCP flexion and prevent the extrinsic flexors from causing an inefficient claw-like grip pattern</p></li>
+<li><span class="step-num">5</span><p>Thenar and hypothenar muscles (median nerve for thenar; ulnar nerve for hypothenar) cup the palm around the object, and adductor pollicis (ulnar nerve) reinforces thumb-side closure for maximal force</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">07</span>
+        <div><h3>Shoulder Abduction (Overhead Reach)</h3><span class="move-region">Suprascapular nerve (C5-C6) → Axillary nerve (C5-C6) → Spinal accessory/CN XI + long thoracic (C5-C7)</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Supraspinatus (suprascapular nerve, C5-C6) initiates the first 0-15° of abduction and provides a compressive force that seats the humeral head in the glenoid</p></li>
+<li><span class="step-num">2</span><p>Deltoid (axillary nerve, C5-C6) takes over as the prime mover from roughly 15-90°, aided by continued rotator cuff centering to prevent superior humeral head migration</p></li>
+<li><span class="step-num">3</span><p>From 90-180°, the scapula itself must rotate upward for the arm to continue rising — trapezius (CN XI) and serratus anterior (long thoracic nerve, C5-C7) drive this scapulothoracic rotation in a fixed ~2:1 glenohumeral-to-scapulothoracic ratio (scapulohumeral rhythm)</p></li>
+<li><span class="step-num">4</span><p>Full overhead abduction is impossible without this final scapular contribution, even with a fully intact deltoid and cuff</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">08</span>
+        <div><h3>Hip Flexion (Sprint Drive / Knee Drive)</h3><span class="move-region">Lumbar plexus direct branches (L1-L3) for psoas; Femoral nerve (L2-L4) for iliacus/rectus femoris/sartorius</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Psoas major (direct lumbar plexus branches, L1-L3) and iliacus (femoral nerve, L2-L4) fire together as the iliopsoas — the dominant hip flexor, especially past 90° of flexion where the single-joint hip flexors have the greatest mechanical advantage</p></li>
+<li><span class="step-num">2</span><p>Rectus femoris (femoral nerve, L2-L4) contributes hip flexion torque up to about 90°, but loses mechanical advantage beyond that as it simultaneously shortens over the flexing knee (active insufficiency)</p></li>
+<li><span class="step-num">3</span><p>Sartorius and TFL (femoral and superior gluteal nerves) provide secondary assistance and help control the accompanying slight abduction/rotation of the swinging leg</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">09</span>
+        <div><h3>Knee Extension (Kicking Motion)</h3><span class="move-region">Femoral nerve — L2, L3, L4</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Femoral nerve (L2-L4) innervates all four quadriceps heads essentially simultaneously</p></li>
+<li><span class="step-num">2</span><p>Vastus intermedius and vastus lateralis/medialis provide pure knee extension torque regardless of hip position</p></li>
+<li><span class="step-num">3</span><p>Rectus femoris adds extra extension torque specifically when the hip is extending at the same time (as in the follow-through of a kick), because its two-joint action lets it transfer power efficiently between the hip and knee</p></li>
+<li><span class="step-num">4</span><p>The patella acts as a mechanical pulley, increasing the quadriceps tendon's lever arm through the terminal 30° of extension — this is why patellar pathology (chondromalacia, patellar tendinopathy) preferentially causes pain in this terminal-extension range</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">10</span>
+        <div><h3>Forearm Pronation/Supination (Turning a Screwdriver)</h3><span class="move-region">Musculocutaneous (C5-C6, biceps) + Posterior interosseous (C5-C6, supinator) for supination; Median nerve (C6-T1) for both pronators</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>Supination sequence: biceps brachii (musculocutaneous nerve, C5-C6) provides the POWERFUL supination torque (especially with the elbow flexed — the mechanical basis for driving a screw with the dominant right arm clockwise, exploiting biceps power) while supinator (posterior interosseous nerve, C5-C6) provides fine, unresisted supination at any elbow angle</p></li>
+<li><span class="step-num">2</span><p>Pronation sequence: pronator teres (median nerve, C6-C7) initiates and dominates against resistance near full elbow extension, while pronator quadratus (anterior interosseous nerve, C7-C8) is the true prime mover across the FULL range and at all elbow angles, since it acts purely at the distal radioulnar joint</p></li>
+<li><span class="step-num">3</span><p>Brachioradialis (radial nerve, C5-C6) assists returning the forearm to neutral (mid-prone) from either full pronation or full supination, exploiting its resting length advantage from the extreme positions</p></li></ol>
+    </article>
+
+    <article class="pathcard">
+      <header class="path-h">
+        <span class="mcard-num">11</span>
+        <div><h3>Neck Rotation</h3><span class="move-region">Spinal accessory (CN XI) + C2-C3 for SCM; Dorsal rami of cervical nerves for splenius/suboccipitals</span></div>
+      </header>
+      <ol class="path-steps"><li><span class="step-num">1</span><p>To rotate the head toward the RIGHT: the LEFT sternocleidomastoid (CN XI + C2-C3) contracts, pulling the mastoid process across and around toward the sternum, which turns the face to the right</p></li>
+<li><span class="step-num">2</span><p>Simultaneously, the RIGHT splenius capitis/cervicis (dorsal rami of middle cervical nerves) contracts, pulling the same-side mastoid/nuchal line posteriorly — an ipsilateral (same-side) rotator working synergistically with the contralateral SCM</p></li>
+<li><span class="step-num">3</span><p>The suboccipital group, especially obliquus capitis inferior (suboccipital nerve, dorsal ramus C1), fine-tunes the terminal rotation specifically at the atlanto-axial joint, which contributes roughly 50% of total cervical rotation range</p></li>
+<li><span class="step-num">4</span><p>Roughly half the total ~80-90° of head rotation occurs at this single C1-C2 joint; the remaining rotation is distributed across the C2-C7 segments</p></li></ol>
+    </article></div>
+  </section>
+
+</main>
+
+<footer>MSK Neuromuscular Atlas — original reference content for clinical education. Nerve root levels reflect the most commonly cited textbook ranges; individual variation exists and root levels for a given nerve can vary slightly by source. Verify against current anatomy references for teaching use.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+
+  document.querySelectorAll('.maintab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.maintab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.mainpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.regiontab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.regiontab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.region-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.region-panel[data-region="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
