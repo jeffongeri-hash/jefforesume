@@ -19,6 +19,26 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Electrolyte & Blood Product Correction Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 26, 2026",
+      excerpt: "Repletion strategies, correction formulas, transfusion thresholds, and blood product selection — with dosing pearls and monitoring pitfalls for the bedside.",
+      image: businessPost,
+      slug: "electrolyte-correction-atlas",
+      tags: ["Electrolytes", "Transfusion", "Clinical Education"]
+    },
+    {
+      title: "MSK Neuromuscular Atlas — Innervation, Action & Movement Pathways",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 26, 2026",
+      excerpt: "Muscles mapped to their innervation, actions, and movement pathways — with nerve routes, injury patterns, and bedside exam pearls.",
+      image: businessPost,
+      slug: "msk-neuromuscular-atlas",
+      tags: ["MSK", "Neurology", "Clinical Education"]
+    },
+    {
       title: "Renal Pharmacology & UTI Atlas — CKD Dosing, Contrast, Bacteremia",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",

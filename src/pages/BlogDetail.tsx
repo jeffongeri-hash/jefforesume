@@ -3356,6 +3356,38 @@ const blogPosts = {
       <p><a href="/embeds/sedation-master-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "electrolyte-correction-atlas": {
+    title: "Electrolyte & Blood Product Correction Atlas",
+    category: "HEALTHCARE",
+    date: "June 26, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An electrolyte and blood product correction atlas covering repletion strategies, correction formulas, transfusion thresholds, and product selection — with dosing pearls and monitoring pitfalls for the bedside.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/electrolyte-correction-atlas.html" title="Electrolyte & Blood Product Correction Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/electrolyte-correction-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "msk-neuromuscular-atlas": {
+    title: "MSK Neuromuscular Atlas — Innervation, Action & Movement Pathways",
+    category: "HEALTHCARE",
+    date: "June 26, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A musculoskeletal neuromuscular atlas mapping muscles to their innervation, actions, and movement pathways — with nerve routes, injury patterns, and bedside exam pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/msk-neuromuscular-atlas.html" title="MSK Neuromuscular Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/msk-neuromuscular-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
