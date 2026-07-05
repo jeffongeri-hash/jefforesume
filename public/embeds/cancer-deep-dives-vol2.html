@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancer Deep Dives Vol. II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .pearl-tag, .share-tag{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1160px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+nav.canctabs{display:flex; gap:8px; flex-wrap:wrap; max-width:1160px; margin:14px auto 0; padding:0 22px 14px;}
+.canctab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 16px; border-radius:9px; cursor:pointer; font-size:.85rem; font-weight:700;}
+.canctab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
+
+main{max-width:1160px; margin:0 auto; padding:22px;}
+.cancerpanel{display:none;}
+.cancerpanel.active{display:block;}
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:880px;}
+
+.subcard-list{display:grid; gap:18px;}
+.subcard{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--tabclr); border-radius:14px; padding:20px 24px; box-shadow:var(--shadow);}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--tabclr); font-size:.85rem; border:1px solid var(--tabclr); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.15rem; color:var(--tabclr);}
+.share-tag{font-size:.72rem; color:var(--muted);}
+.sub-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px;}
+.se-field{margin-bottom:14px;}
+.se-field .flabel{display:block; font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.se-field p{margin:0; font-size:.87rem; color:var(--soft);}
+.se-field.mgmt p{color:var(--ink);}
+.se-field.markers p{color:var(--ink);}
+@media (max-width:700px){ .sub-grid{grid-template-columns:1fr;} }
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:0;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.86rem; color:var(--ink);}
+
+footer{max-width:1160px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Oncology · Cancer Deep Dives, Vol. II</span>
+      <h1>Cancer Deep Dives Vol. II</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="canctabs"><button class="canctab active" data-panel="prostate" style="--tabclr:#4a90c9">Prostate</button>
+<button class="canctab" data-panel="colorectal" style="--tabclr:#4f9e6e">Colorectal</button>
+<button class="canctab" data-panel="melanoma" style="--tabclr:#8a6b4a">Melanoma</button>
+<button class="canctab" data-panel="lymphleuk" style="--tabclr:#a76bd6">Lymphoma &amp; Leukemia</button>
+<button class="canctab" data-panel="pancreatic" style="--tabclr:#d98a3c">Pancreatic</button>
+<button class="canctab" data-panel="ovarian" style="--tabclr:#c1432e">Ovarian</button>
+<button class="canctab" data-panel="thyroid" style="--tabclr:#d9b23c">Thyroid</button>
+<button class="canctab" data-panel="sarcoma" style="--tabclr:#5c7a6a">Sarcoma</button></nav>
+</header>
+
+<main>
+  
+  <section class="cancerpanel active" data-canceb="prostate">
+    <div class="intro"><p>Unlike lung or breast cancer, prostate cancer is best understood by RISK GROUP (combining PSA, Grade Group/Gleason score, and clinical T-stage) rather than histologic subtype — nearly all prostate cancer is acinar adenocarcinoma, so risk stratification is what actually drives the management conversation. See the Cancer Classification &amp; Staging Atlas for the full Gleason/Grade Group system.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Low-Risk Prostate Cancer</h3><span class="share-tag">PSA &lt;10 ng/mL, Grade Group 1 (Gleason ≤6), and clinical stage T1-T2a — a substantial share of screening-detected prostate cancer falls into this category.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Most often detected through PSA screening in asymptomatic men, typically age 55-69 per USPSTF shared-decision-making recommendations; incidence rises steeply with age, and Black men have both higher incidence and higher prostate-cancer-specific mortality at every risk level, a persistent disparity with both biological and access-related contributors.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Age is the dominant risk factor; family history (especially a first-degree relative), Black race, and germline BRCA2 mutations (associated with more aggressive disease specifically, less so with low-risk disease) are the other major established factors.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>AJCC prognostic staging for localized disease integrates PSA and Grade Group with T-stage; low-risk disease by definition has a low probability of occult nodal or distant spread, so staging imaging (bone scan, CT/MRI) is often OMITTED per NCCN guidance given the low pretest probability of a positive finding changing management.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Active surveillance (regular PSA, repeat biopsy, and MRI monitoring WITHOUT immediate treatment) is now the NCCN-preferred approach for most low-risk disease — a significant practice shift from a generation ago, reflecting recognition that many low-risk cancers will never become clinically significant in a man's remaining lifetime. Definitive treatment (surgery or radiation) remains an option for patients who prefer it or have a long life expectancy, but is no longer the default.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>PSA is the central marker for both initial risk stratification and ongoing active surveillance monitoring — a rising PSA velocity or PSA density (PSA relative to prostate volume) can trigger a repeat biopsy during surveillance even before a formal PSA threshold is crossed.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient hearing "you have cancer but we're not going to treat it" for low-risk disease often needs significant reassurance and explicit framing — active surveillance is not "doing nothing," it's a monitored strategy with defined triggers for intervention, and framing it this way improves acceptance and adherence.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Intermediate-Risk Prostate Cancer</h3><span class="share-tag">PSA 10-20 ng/mL and/or Grade Group 2-3 and/or clinical stage T2b-T2c — NCCN further subdivides this into FAVORABLE intermediate (predominantly Grade Group 1-2 pattern, &lt;50% of biopsy cores positive) and UNFAVORABLE intermediate risk, which behave differently enough to warrant different management defaults.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Similar screening-detected population as low-risk disease, though often slightly older or with a somewhat higher PSA at detection.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same risk factor profile as low-risk disease (age, family history, Black race, BRCA2) — risk group is a function of the tumor's biology at diagnosis, not a distinct risk-factor exposure pattern from low-risk disease.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Staging imaging (bone scan, pelvic MRI, sometimes PSMA-PET where available) becomes more routinely considered for UNFAVORABLE intermediate-risk disease given a meaningfully higher pretest probability of occult spread compared to low-risk or favorable intermediate disease.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Favorable intermediate-risk disease can still be offered active surveillance in appropriately selected, well-informed patients, though with closer monitoring than low-risk disease. Unfavorable intermediate-risk disease generally moves to definitive treatment (radical prostatectomy or radiation) — radiation is often combined with a SHORT course (4-6 months) of androgen deprivation therapy (ADT) specifically for unfavorable intermediate-risk disease, a meaningfully shorter ADT duration than high-risk disease requires.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>PSA remains central; PSMA-PET imaging (targeting prostate-specific membrane antigen) is an increasingly used staging tool in this and higher risk groups, with substantially better sensitivity for detecting small-volume metastatic disease than conventional bone scan/CT.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The favorable vs. unfavorable intermediate-risk distinction is a genuinely high-yield nuance often missed — two patients both labeled "intermediate risk" can have meaningfully different management defaults (surveillance-eligible vs. not) purely based on this NCCN sub-stratification.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>High-Risk / Locally Advanced Prostate Cancer</h3><span class="share-tag">PSA &gt;20 ng/mL, and/or Grade Group 4-5, and/or clinical stage ≥T3a — NCCN also defines a "very high-risk" tier (multiple high-risk features, T3b-T4, or Grade Group 5 with substantial core involvement) that drives even more aggressive combined-modality treatment.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present with a higher PSA and/or more advanced local exam findings; a meaningful proportion is diagnosed after a delay in screening or symptom-triggered workup (urinary obstruction, bone pain from occult metastasis) rather than routine screening.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same core risk factors as other risk groups, though delayed screening/diagnosis (due to reduced screening access or engagement) disproportionately contributes to a higher-risk presentation in some populations — part of the disparity seen in Black men's outcomes specifically.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Staging imaging (bone scan, CT or MRI, and increasingly PSMA-PET) is standard and important at this risk level given a substantially higher probability of occult nodal or distant disease that would change management if found.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Combined-modality treatment is standard: radiation PLUS a LONG course of androgen deprivation therapy (typically 18-36 months, substantially longer than the short course used for unfavorable intermediate-risk disease) — or radical prostatectomy with extended pelvic lymph node dissection in selected surgical candidates. Adding a second-generation antiandrogen (abiraterone, apalutamide, or enzalutamide) to ADT + radiation has become standard for very high-risk/node-positive disease following recent practice-changing trials.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>PSA remains central for both staging and treatment response monitoring; PSMA-PET is particularly valuable at this risk level for detecting oligometastatic disease that might otherwise be missed by conventional imaging, potentially changing the treatment approach if limited metastatic sites are found.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Remember the LHRH agonist tumor flare phenomenon (covered in the Oncology Side Effects Atlas) specifically applies here — an anti-androgen bridge should be co-administered when starting ADT in a patient with high tumor burden to prevent a symptomatic testosterone surge.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Metastatic Prostate Cancer (Castration-Sensitive → Castration-Resistant)</h3><span class="share-tag">A minority of new diagnoses present as de novo metastatic disease, but a substantial additional fraction of localized/high-risk disease eventually recurs and progresses to this stage over time.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Older men overall, given the natural history of progression from localized disease over years, though de novo metastatic presentation skews toward men with reduced healthcare access/screening.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same core risk factors; disease that reaches this stage reflects either aggressive de novo biology or, more often, disease that was understaged, undertreated, or has simply progressed despite appropriate earlier treatment.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Staged as M1 (Stage IV) by definition; further sub-classified by SITE and VOLUME of metastatic disease (bone-only vs. visceral involvement; "high-volume" vs. "low-volume" per CHAARTED trial criteria) since this distinction meaningfully changes systemic treatment intensity recommendations.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Metastatic CASTRATION-SENSITIVE disease (still responding to ADT) is treated with ADT PLUS an additional agent — a second-generation antiandrogen (abiraterone, apalutamide, enzalutamide) and/or docetaxel chemotherapy, with intensity guided by metastatic volume — this "doublet" or "triplet" approach from the outset has substantially improved survival compared to ADT alone. Once disease progresses to castration-RESISTANT status (progressing despite adequate testosterone suppression), treatment shifts to next-generation antiandrogens not yet used, chemotherapy (docetaxel, cabazitaxel), PARP inhibitors (for BRCA-mutated disease), or radiopharmaceuticals (Lutetium-177 PSMA, Radium-223 for bone-predominant disease) — see the Oncology Interventions Atlas radiation modalities section.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>PSA remains the primary monitoring tool for treatment response (a falling PSA on treatment is reassuring, a rising PSA signals progression/castration resistance), though PSA kinetics can occasionally dissociate from true clinical/radiographic progression, so imaging remains important alongside it, not as a replacement.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Castration-resistant" does NOT mean the cancer has stopped depending on androgen signaling entirely — most castration-resistant prostate cancer still relies on androgen receptor signaling through alternative pathways (which is exactly why next-generation antiandrogens still work in this setting), a nuance worth explaining since the terminology itself is often misunderstood as "hormone therapy no longer matters."</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="colorectal">
+    <div class="intro"><p>Colorectal cancer splits along two independent, clinically important axes: ANATOMIC location (right- vs. left-sided colon, and rectal cancer as its own distinct management category given its unique local-recurrence risk) and MOLECULAR subtype (MSI-H/dMMR vs. MSS) — both change management independent of each other.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Right-Sided (Proximal) Colon Cancer</h3><span class="share-tag">Right-sided tumors (cecum, ascending colon, proximal transverse colon) account for a substantial minority of colon cancers and have been rising in relative proportion in some population data.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present at an older age and disproportionately in women compared to left-sided disease; often presents more insidiously — with iron-deficiency anemia from occult chronic blood loss rather than an obstructive symptom, since stool is still liquid at this point in the colon and a partially obstructing mass doesn't produce the same caliber-change symptoms seen distally.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Shares general colorectal cancer risk factors (age, family history, Lynch syndrome, inflammatory bowel disease, diet, obesity) but is more strongly associated with MSI-H/dMMR molecular status and BRAF mutations than left-sided disease, a biological distinction with real prognostic and treatment implications.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM colorectal staging applies identically regardless of side — but right-sided tumors are more likely to present at a LATER stage on average, in part because the insidious anemia-driven presentation described above tends to delay diagnosis compared to the more symptomatic presentation typical of left-sided/rectal tumors.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical resection (right hemicolectomy) follows the same general staged-based adjuvant chemotherapy framework as colorectal cancer generally, but right-sided, RAS/BRAF wild-type metastatic tumors respond substantially LESS well to anti-EGFR therapy (cetuximab/panitumumab) than left-sided tumors with the same molecular profile — a specific, counterintuitive treatment-selection nuance that changes first-line metastatic regimen choice based on side alone, independent of mutation status.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CEA is used for post-treatment surveillance (as with colorectal cancer generally); RAS/BRAF mutation testing and MSI/dMMR testing are mandatory for metastatic disease to guide anti-EGFR eligibility and immunotherapy eligibility respectively — right-sided tumors are enriched for BRAF V600E mutations, which independently predict a poor prognosis and guide a specific triplet targeted regimen (encorafenib + cetuximab ± binimetinib) if identified.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Anti-EGFR therapy is now generally AVOIDED as first-line therapy in RAS/BRAF wild-type right-sided metastatic colorectal cancer specifically because of the side-based efficacy difference — this is a real, guideline-affecting nuance distinct from simply checking mutation status, and missing it can lead to selecting a demonstrably less effective first-line regimen.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Left-Sided (Distal) Colon Cancer</h3><span class="share-tag">Left-sided tumors (descending colon, sigmoid colon) account for the majority of the remaining colon cancer cases outside the right side/rectum.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present somewhat younger than right-sided disease and more often with classic obstructive symptoms (change in stool caliber, constipation, or overt hematochezia) given the more solid stool consistency and narrower lumen at this point in the colon.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same general colorectal risk factor profile; more strongly associated with classic chromosomal instability pathway tumors (APC/KRAS/TP53 mutation pattern) than the MSI-H/BRAF-enriched pattern seen more often on the right side.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging; tends to be diagnosed at a somewhat earlier average stage than right-sided disease given its more overtly symptomatic presentation pattern.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical resection (left hemicolectomy or sigmoidectomy) with stage-based adjuvant chemotherapy, following the same general framework as colorectal cancer overall. In METASTATIC RAS/BRAF wild-type disease, anti-EGFR therapy (cetuximab/panitumumab) combined with chemotherapy IS an effective and preferred first-line option specifically because of the favorable side-based efficacy profile — the mirror image of the right-sided nuance above.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Same core marker panel as right-sided disease (CEA for surveillance, RAS/BRAF/MSI testing for metastatic treatment selection) — left-sided tumors are simply less likely to be BRAF-mutant or MSI-H, which is what drives the different typical treatment-selection outcome rather than a fundamentally different marker panel.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Side" (right vs. left) is now considered an independent predictive factor for anti-EGFR benefit in colorectal cancer guidelines, not just a description of tumor location — always confirm and document primary tumor side when reviewing a metastatic colorectal cancer case, since it directly changes the optimal first-line regimen.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Rectal Cancer</h3><span class="share-tag">Rectal cancer accounts for roughly a third of all colorectal cancers and is managed as its OWN distinct entity from colon cancer, even though it's often grouped together in "colorectal cancer" epidemiology statistics.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Similar general risk factor and age distribution as distal colon cancer; presents classically with hematochezia, tenesmus, or a change in bowel habits, and rectal exam/rigid proctoscopy can often directly palpate or visualize the tumor given its accessible location.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same general colorectal cancer risk factors; the rectum's confined pelvic anatomy (fixed within the bony pelvis, close proximity to the mesorectal fascia and pelvic sidewalls) is what drives its distinct management approach, not a distinct risk factor profile.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging, but with a CRITICAL additional imaging step not routinely needed for colon cancer: pelvic MRI (or endorectal ultrasound) to assess mesorectal fascia involvement/circumferential resection margin risk — this specifically determines whether NEOADJUVANT therapy is needed before surgery, a decision point unique to rectal cancer's anatomy.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Localized rectal cancer at risk for a positive margin or nodal involvement receives NEOADJUVANT chemoradiation (or, increasingly, total neoadjuvant therapy — chemotherapy AND chemoradiation both given before surgery) followed by total mesorectal excision surgery — this neoadjuvant-first sequencing is the single biggest management difference from colon cancer, which is generally resected upfront. A "watch-and-wait" (non-operative management) approach is now a validated option for patients achieving a complete clinical response to neoadjuvant therapy, allowing carefully selected patients to avoid surgery (and its associated bowel/bladder/sexual function morbidity) entirely.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CEA is used for surveillance as in colon cancer; MSI/dMMR testing matters for the SAME reason as colon cancer (immunotherapy eligibility in the small subset of MSI-H rectal cancer, which can achieve dramatic, sometimes complete responses to neoadjuvant immunotherapy alone in emerging trial data) — RAS/BRAF testing matters primarily once/if metastatic disease develops.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The watch-and-wait approach for a complete clinical responder is a genuinely significant, function-preserving option that didn't exist as standard practice a decade ago — patients facing a permanent colostomy discussion for low rectal tumors should be evaluated for neoadjuvant response potential and complete-response surveillance eligibility before assuming surgery is inevitable.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>MSI-H / dMMR Colorectal Cancer (Molecular Subtype)</h3><span class="share-tag">MSI-H/dMMR (mismatch repair deficient) tumors account for roughly 15% of colorectal cancer overall — a minority, but a disproportionately important one given the specific treatment implications.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Two distinct populations converge on this molecular subtype: (1) LYNCH SYNDROME patients (germline mismatch repair gene mutation — MLH1, MSH2, MSH6, or PMS2), who are typically younger at diagnosis and have a strong family cancer history (colorectal, endometrial, and other Lynch-associated cancers); and (2) SPORADIC MSI-H tumors (via acquired MLH1 promoter hypermethylation, not a germline mutation), which are typically older, right-sided, and NOT associated with a hereditary cancer syndrome — universal tumor testing (immunohistochemistry ± MLH1 methylation/BRAF testing to distinguish the two) is now standard for every new colorectal cancer diagnosis specifically to identify Lynch syndrome for family cascade testing.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Lynch syndrome (autosomal dominant, ~1 in 300 people in the general population, though under-recognized) is the dominant hereditary risk factor; sporadic MSI-H disease instead correlates with older age, right-sided location, and BRAF V600E mutation — the same molecular biology (defective mismatch repair leading to microsatellite instability) but through two entirely different mechanisms.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses the identical AJCC TNM framework as any other colorectal cancer — MSI/dMMR status does not change the anatomic staging system itself, but it profoundly changes treatment selection at every stage, especially metastatic disease.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Localized MSI-H colorectal cancer generally does NOT benefit from single-agent 5-FU adjuvant chemotherapy the way MSS tumors do (a well-established, guideline-changing finding) — treatment decisions in the localized setting must account for this reduced/absent chemotherapy benefit. In METASTATIC disease, MSI-H/dMMR status is one of the most powerful predictive biomarkers in all of oncology for immune checkpoint inhibitor benefit — pembrolizumab is preferred FIRST-LINE therapy over chemotherapy for MSI-H metastatic colorectal cancer given dramatically better outcomes in this specific biomarker-defined population, one of the clearest biomarker-to-treatment-selection relationships in solid tumor oncology.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Mismatch repair protein immunohistochemistry (MLH1, MSH2, MSH6, PMS2) and/or PCR-based microsatellite instability testing are the defining tests — a finding of dMMR/MSI-H should always trigger germline genetic counseling referral to evaluate for Lynch syndrome, since this has direct family-member screening implications well beyond the individual patient's own treatment.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Universal MMR/MSI testing on every new colorectal cancer diagnosis (regardless of age or family history) is now standard specifically because relying on clinical criteria alone (young age, strong family history) misses a meaningful fraction of true Lynch syndrome cases — don't skip this testing in an older patient with no apparent family history just because they don't fit the classic hereditary-syndrome profile.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="melanoma">
+    <div class="intro"><p>Melanoma is staged by Breslow depth and ulceration rather than by histologic subtype (see the Cancer Classification &amp; Staging Atlas) — but the four classic subtypes below still matter clinically because they differ in typical location, growth pattern, and how easily/quickly they're recognized, which meaningfully affects stage at diagnosis.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#8a6b4a">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Superficial Spreading Melanoma</h3><span class="share-tag">~70% of melanomas — the most common subtype by far, especially in fair-skinned populations.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Most common in fair-skinned individuals (Fitzpatrick skin types I-II) with a history of intermittent intense UV exposure/sunburn (rather than chronic cumulative exposure) — classically arises on intermittently sun-exposed areas like the trunk in men and the legs in women.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>UV exposure (especially blistering sunburns, particularly in childhood/adolescence), fair skin/light eyes/red or blonde hair, high nevus count, dysplastic nevus syndrome, family history, and immunosuppression are the dominant risk factors.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC melanoma TNM staging via Breslow depth and ulceration status; because this subtype grows radially (spreading laterally within the epidermis) for a relatively long period before invading vertically, it's often caught at a THINNER Breslow depth than nodular melanoma, contributing to its generally more favorable average prognosis as a group.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Wide local excision with margins determined by Breslow depth, ± sentinel lymph node biopsy per thickness/ulceration thresholds — identical framework to melanoma management generally (see the Cancer Classification &amp;amp; Staging Atlas). Adjuvant immunotherapy (anti-PD-1) or targeted therapy (BRAF/MEK inhibitor combination if BRAF-mutant) is added for stage III-IV disease following practice-changing adjuvant trials.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>BRAF V600E/K mutation testing is essential for any stage III-IV melanoma regardless of subtype — roughly 40-50% of cutaneous melanomas overall carry a BRAF mutation, directly determining eligibility for BRAF/MEK inhibitor combination therapy as an alternative or sequential option to immunotherapy. LDH is incorporated into M-stage substaging for metastatic disease (elevated LDH indicates a worse M1c/M1d substage) and is checked at diagnosis of metastatic disease.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Superficial spreading melanoma's relatively slow radial growth phase is exactly why public awareness campaigns (the ABCDE rule — Asymmetry, Border irregularity, Color variation, Diameter &gt;6mm, Evolution) can meaningfully catch this subtype earlier than nodular melanoma, which often skips this detectable radial phase entirely.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#8a6b4a">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Nodular Melanoma</h3><span class="share-tag">~15-20% of melanomas — the second most common subtype, but disproportionately responsible for melanoma mortality given its aggressive natural history.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur in a similar demographic to superficial spreading melanoma, but classically presents as a rapidly growing, often symmetric, uniformly dark (or sometimes amelanotic/pink) papule or nodule WITHOUT the classic asymmetric, irregular-border appearance the public is taught to look for.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same core risk factors as melanoma generally (UV exposure, fair skin, nevus count, family history) — its aggressive behavior reflects a distinct growth pattern rather than a distinct risk-factor exposure profile.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC melanoma staging — but nodular melanoma grows VERTICALLY (invasively) from the outset, skipping the prolonged radial growth phase seen in superficial spreading melanoma, which means it is frequently diagnosed at a GREATER Breslow depth simply because there's no earlier, thin, radially-growing phase to catch it during.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Same wide local excision + sentinel node biopsy framework, but nodular melanoma more often qualifies for sentinel node biopsy and adjuvant systemic therapy simply because it more often presents at a thicker Breslow depth at diagnosis — the management framework is identical, but the population undergoing more intensive treatment is proportionally larger for this subtype.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Same BRAF and LDH testing framework as melanoma generally applies once staged as III-IV disease.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Because nodular melanoma doesn't follow the classic ABCDE pattern (it's often symmetric, uniform in color, and doesn't show the same dramatic evolution over the same visible timeframe before becoming invasive), the "EFG" mnemonic (Elevated, Firm, Growing) is sometimes taught specifically to catch this subtype — a patient or provider relying only on ABCDE criteria can miss a rapidly growing nodular melanoma that doesn't fit that pattern.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#8a6b4a">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Lentigo Maligna Melanoma</h3><span class="share-tag">~5-10% of melanomas — disproportionately affects older adults and specific anatomic sites.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Classically occurs in OLDER adults on chronically sun-damaged skin — most commonly the face, ears, and neck — reflecting cumulative lifetime UV exposure rather than the intermittent intense exposure pattern linked to superficial spreading melanoma.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Cumulative, chronic UV exposure over decades (rather than episodic sunburns) is the dominant risk factor, along with older age itself and fair skin — occupational or lifelong high sun-exposure history (e.g., outdoor workers) is a relevant historical detail to elicit.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC staging via Breslow depth; the PRECURSOR lesion (lentigo maligna, confined to the epidermis, essentially melanoma in situ) can persist and slowly enlarge for YEARS before any invasive component develops, meaning early recognition of the flat, irregularly pigmented precursor patch is a genuine opportunity to intervene before invasion ever occurs.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical excision remains standard, though the often large, irregular, poorly-defined margins of the precursor lentigo maligna lesion on cosmetically sensitive facial skin can make achieving clear margins surgically challenging — Mohs micrographic surgery or staged excision techniques are frequently used specifically to balance complete margin control against tissue/cosmetic preservation on the face. Topical imiquimod (an immune-response modifier) is sometimes used for the in-situ (lentigo maligna) precursor when surgery is not feasible, though it is not considered equivalent to surgical excision for definitive treatment.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Same BRAF/LDH framework once/if invasive melanoma with regional or distant spread is identified.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A slowly enlarging, irregularly pigmented, flat patch on an older patient's chronically sun-damaged face that's been dismissed as "just a sun spot" or lentigo for years deserves biopsy consideration — the long, indolent in-situ phase of this subtype is both its most dangerous feature (easy to dismiss) and its greatest opportunity (still curable before invasion if caught during this phase).</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#8a6b4a">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Acral Lentiginous Melanoma</h3><span class="share-tag">Rare overall (~2-3% of all melanomas in fair-skinned populations) but represents the MOST COMMON melanoma subtype in patients with darker skin (Black, Asian, and Hispanic populations), where overall melanoma incidence is much lower but this specific subtype still occurs at a comparable absolute rate to other populations.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Occurs on the palms, soles, and subungual (under the nail) regions — anatomic sites that are NOT primarily UV-exposed, which is why this subtype does not show the same UV-exposure-driven racial/ethnic incidence skew seen in cutaneous melanoma overall.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Unlike the other three subtypes, UV exposure is NOT a clearly established major risk factor for acral lentiginous melanoma — the underlying biology and risk factor profile remain less well-characterized, which is an active area of research; it is not primarily a sun-exposure-driven cancer.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC melanoma staging via Breslow depth applies, but this subtype is disproportionately diagnosed at a LATER, thicker stage across all populations — both because it arises in body areas patients and clinicians examine less routinely, and because a pigmented lesion under a nail or on the sole is more easily mistaken for a benign finding (a subungual hematoma, a plantar wart, or a callus) than a similar lesion on more visible skin.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Same wide excision + sentinel node biopsy framework as melanoma generally, though subungual/acral location can require amputation of the affected digit or more complex reconstructive planning depending on depth and location — a functional/anatomic consideration distinct from the other subtypes' typical surgical planning.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Same BRAF/LDH framework for staged disease, though BRAF mutation rates are notably LOWER in acral lentiginous melanoma than in UV-associated subtypes — KIT mutations are more frequently identified in this subtype instead and represent an alternative targetable pathway in KIT-mutant advanced disease.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A changing pigmented lesion under a nail or on the sole/palm should never be dismissed as "just a bruise" or callus without close follow-up, especially if it doesn't resolve over the expected timeframe for a hematoma to grow out or a callus to respond to mechanical offloading — this diagnostic delay pattern is a major contributor to acral lentiginous melanoma's disproportionately worse average stage at diagnosis and worse outcomes.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="lymphleuk">
+    <div class="intro"><p>Lymphoma and leukemia are grouped together here as hematologic malignancies, but they're staged and classified by entirely separate frameworks from solid tumors — lymphoma uses Ann Arbor/Lugano staging (see the Cancer Classification &amp; Staging Atlas), while leukemia is classified primarily by cytogenetics/molecular subtype and acuity (acute vs. chronic) rather than an anatomic stage at all.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Hodgkin Lymphoma</h3><span class="share-tag">~10% of all lymphomas — far less common than non-Hodgkin lymphoma overall, but with a distinctive bimodal age distribution (a peak in young adults age 15-35, and a second smaller peak in older adults &gt;55).</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>The young-adult peak is one of the most distinctive epidemiologic features in all of oncology — a young adult with new painless cervical/supraclavicular lymphadenopathy and B symptoms (fever, night sweats, weight loss) should prompt consideration of Hodgkin lymphoma specifically.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Epstein-Barr virus (EBV) infection is linked to a substantial fraction of cases (particularly the classic mixed cellularity subtype), immunosuppression (HIV, post-transplant), and a first-degree relative with Hodgkin lymphoma are the main established risk factors — the young-adult peak's cause remains incompletely understood beyond the EBV association.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Ann Arbor/Lugano staging (see the Cancer Classification &amp;amp; Staging Atlas) — Hodgkin lymphoma is one of the few malignancies where the historical A/B symptom-status suffix (presence/absence of fever, night sweats, weight loss) is STILL formally retained in modern Lugano staging, unlike non-Hodgkin lymphoma where it's been dropped as prognostically less relevant.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>ABVD chemotherapy (doxorubicin, bleomycin, vinblastine, dacarbazine) remains the backbone regimen for most stages, with radiation added for limited-stage disease in some regimens and PET-guided treatment adaptation (escalating or de-escalating based on interim PET response) increasingly standard. Relapsed/refractory disease has excellent salvage options including brentuximab vedotin (an antibody-drug conjugate) and checkpoint inhibitors (Hodgkin lymphoma is exceptionally PD-1-responsive, among the most immunotherapy-sensitive malignancies known) followed by autologous stem cell transplant for eligible patients.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No routine serum tumor marker is used for Hodgkin lymphoma diagnosis or monitoring (unlike solid tumors) — PET-CT (using the Deauville 5-point scale) functions as the primary "marker" of treatment response and residual disease, both at interim assessment and end of treatment.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Hodgkin lymphoma's exceptional curability (cure rates exceeding 80-90% even for advanced-stage disease with modern regimens) means long-term survivorship planning — specifically screening for anthracycline cardiotoxicity, bleomycin pulmonary toxicity, and secondary malignancy risk from any radiation received (see the Oncology Side Effects Atlas) — is just as important a conversation as the initial treatment plan itself, given how many years of survivorship most patients will experience.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Diffuse Large B-Cell Lymphoma (DLBCL)</h3><span class="share-tag">The most common non-Hodgkin lymphoma subtype, accounting for roughly 30% of all NHL — an AGGRESSIVE (fast-growing) lymphoma, in contrast to follicular lymphoma below.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur at any age but median age at diagnosis is in the 60s; often presents with a rapidly enlarging nodal or extranodal mass (DLBCL can arise in virtually any organ) and frequently with B symptoms given its aggressive growth rate.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Immunosuppression (HIV, post-transplant, autoimmune disease requiring immunosuppressive therapy), prior low-grade lymphoma transformation (indolent lymphomas like follicular lymphoma can transform into DLBCL over time), and increasing age are the major recognized risk factors.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Ann Arbor/Lugano staging applies, but for DLBCL specifically, the International Prognostic Index (IPI — incorporating age, stage, LDH, performance status, and number of extranodal sites) is at least as important as anatomic stage alone for treatment planning and prognosis discussion.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>R-CHOP (rituximab + cyclophosphamide, doxorubicin, vincristine, prednisone) remains the standard curative-intent first-line regimen for most patients, typically given for 6 cycles — despite being an aggressive lymphoma, DLBCL is CURABLE in the majority of patients with this regimen, a critical framing point for patients who assume "aggressive" means a worse prognosis than "indolent." Relapsed/refractory disease increasingly uses CAR-T cell therapy (axicabtagene ciloleucel, tisagenlecleucel, and others) or bispecific antibodies, which have transformed outcomes for patients who previously had very limited options after relapse.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>LDH is directly incorporated into the IPI prognostic score and is checked at diagnosis; interim and end-of-treatment PET-CT (Deauville scale) guides response assessment, similar to Hodgkin lymphoma.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Aggressive" lymphoma and "poor prognosis" are NOT synonyms — DLBCL's rapid growth is exactly why it responds so completely to chemotherapy (a general oncologic principle: faster-dividing cells are often more chemosensitive), and most patients are cured with standard R-CHOP, a point worth actively explaining since patients understandably but incorrectly assume "aggressive" is uniformly worse than "indolent."</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Follicular Lymphoma</h3><span class="share-tag">The second most common NHL subtype overall (~20-25% of NHL) and the most common INDOLENT (slow-growing) lymphoma.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Typically presents in older adults with slowly progressive, often widespread (multiple nodal regions, frequently already Ann Arbor stage III-IV at diagnosis) painless lymphadenopathy that may have been present and slowly growing for months to years before diagnosis.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Similar general risk factor profile to other lymphomas (immunosuppression, family history) though less strongly linked to any single established exposure compared to some other lymphoma subtypes; the characteristic t(14;18) translocation (BCL2-IGH) driving BCL2 overexpression is a defining molecular feature rather than an external risk factor.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Ann Arbor/Lugano staging applies, but — importantly — advanced STAGE (III-IV) at diagnosis does NOT carry the same ominous prognostic weight it does in aggressive lymphomas or solid tumors, since follicular lymphoma's indolent biology means even widespread disease can remain asymptomatic and slow-growing for years; the Follicular Lymphoma International Prognostic Index (FLIPI) is a more clinically useful prognostic tool than Ann Arbor stage alone.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>A genuinely distinctive management principle: many asymptomatic, low-tumor-burden patients are managed with "watchful waiting" (observation without treatment) even with advanced-stage disease at diagnosis, since early treatment has not been shown to improve overall survival compared to waiting until symptoms or high tumor burden develop. When treatment is needed, rituximab-based chemoimmunotherapy (bendamustine-rituximab or R-CHOP) followed by rituximab maintenance is standard; follicular lymphoma is generally NOT curable with standard chemoimmunotherapy (unlike DLBCL) and follows a relapsing-remitting course over many years, though newer agents (bispecific antibodies, CAR-T) are changing the later-line landscape.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No specific serum marker; LDH and beta-2 microglobulin (see the Oncology Emergencies Atlas tumor marker section) contribute to prognostic scoring (FLIPI) alongside clinical factors.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The watchful-waiting approach for advanced-stage, asymptomatic follicular lymphoma is one of the best illustrations in oncology that STAGE and PROGNOSIS/URGENCY are not the same thing — explicitly separating these concepts when counseling a newly diagnosed patient prevents the understandable but often incorrect assumption that stage IV always means starting treatment immediately.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Acute Myeloid Leukemia (AML)</h3><span class="share-tag">The most common ACUTE leukemia in adults; incidence rises steadily with age, with most cases diagnosed in the 60s-70s.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Presents acutely (days to weeks) with symptoms of bone marrow failure — fatigue/anemia, infection from neutropenia, and bleeding/bruising from thrombocytopenia — as leukemic blasts crowd out normal hematopoiesis; older age and comorbidities significantly affect treatment tolerance and are a major factor in management decisions.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Prior chemotherapy exposure (particularly alkylating agents and topoisomerase-II inhibitors — see the Oncology Interventions/Side Effects Atlases on secondary malignancy risk), prior myelodysplastic syndrome, certain inherited syndromes (Down syndrome, Fanconi anemia), and benzene exposure are the major established risk factors; most cases arise without an identifiable prior exposure.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>AML is NOT staged anatomically (there is no TNM-equivalent) — it is classified and risk-stratified entirely by CYTOGENETICS and MOLECULAR MUTATIONS into favorable, intermediate, and adverse/poor-risk categories (per NCCN/ELN criteria) — core-binding factor abnormalities (t(8;21), inv(16)) and favorable NPM1-mutated/FLT3-wild-type disease are favorable-risk; complex karyotype, monosomal karyotype, and TP53 mutations are adverse-risk.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Fit patients receive intensive induction chemotherapy (classically "7+3" — 7 days of cytarabine plus 3 days of an anthracycline) followed by consolidation, with allogeneic stem cell transplant reserved for intermediate/adverse-risk disease in eligible patients given transplant's curative potential balanced against its significant toxicity. Less-fit/older patients increasingly receive lower-intensity regimens (azacitidine or decitabine plus venetoclax) that have meaningfully improved outcomes for patients previously considered ineligible for any effective treatment. Acute promyelocytic leukemia (APL, the t(15;17) subtype) is a specific emergency-relevant exception — it's treated with ATRA (all-trans retinoic acid) ± arsenic trioxide rather than standard induction, and carries a high early risk of differentiation syndrome and DIC-driven fatal hemorrhage if not recognized and treated immediately.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No serum tumor marker; diagnosis and risk stratification rely entirely on bone marrow biopsy with flow cytometry, cytogenetics, and molecular mutation panels (FLT3, NPM1, CEBPA, TP53, and others) — measurable residual disease (MRD) testing after treatment is an increasingly important tool for refining prognosis and guiding consolidation/transplant decisions.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Suspected APL is a hematologic EMERGENCY distinct from other AML subtypes — ATRA should be started empirically on clinical/morphologic suspicion (classic bilobed promyelocytes, often with a coagulopathy picture) WITHOUT waiting for genetic confirmation, since delay significantly increases early fatal hemorrhage risk from APL's characteristic severe coagulopathy.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <div><h3>Acute Lymphoblastic Leukemia (ALL)</h3><span class="share-tag">The most common CHILDHOOD cancer overall (peak incidence age 2-5), though it also occurs in adults with a distinctly worse prognosis at older ages.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Bimodal-ish distribution: predominantly a pediatric disease with excellent outcomes (pediatric cure rates now exceed 90% with modern regimens), and a smaller adult population with meaningfully worse outcomes at the same disease stage — a stark illustration of how the SAME diagnosis can carry a very different prognosis purely based on age/regimen tolerance and underlying disease biology differences between pediatric and adult ALL.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Down syndrome (significantly elevated risk), certain inherited genetic syndromes, and prior chemotherapy/radiation exposure are established risk factors; most childhood cases arise without an identifiable predisposing factor.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Like AML, ALL is not anatomically staged — classified by immunophenotype (B-cell vs. T-cell lineage) and cytogenetics/molecular subtype, with Philadelphia chromosome-positive (BCR-ABL1, t(9;22)) ALL representing a specific, historically high-risk subtype that has been transformed by targeted therapy (see management below).</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Multi-phase, multi-year chemotherapy protocols (induction, consolidation, maintenance, with CNS-directed therapy given ALL's strong propensity for CNS relapse) are standard, largely adapted from pediatric protocols even in adult patients where tolerated, since pediatric-inspired regimens have improved adult outcomes. Philadelphia-chromosome-positive ALL now receives a BCR-ABL tyrosine kinase inhibitor (imatinib or a newer-generation TKI) added to chemotherapy, dramatically improving what was previously the worst-prognosis ALL subtype. CAR-T cell therapy (tisagenlecleucel) is a transformative option for relapsed/refractory B-cell ALL, particularly in children and young adults.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No serum tumor marker; diagnosis relies on bone marrow biopsy with flow cytometry immunophenotyping and cytogenetics/molecular testing (specifically including BCR-ABL1 testing given its direct treatment implication); lumbar puncture with CSF cytology is performed at diagnosis given ALL's CNS relapse propensity, distinct from most AML.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The dramatic age-based prognosis gap in ALL is a genuinely important counseling point — an adult diagnosed with ALL should understand their prognosis differs meaningfully from the childhood ALL statistics they may have heard about, while also understanding that pediatric-inspired protocols and targeted therapy for Philadelphia-positive disease have substantially narrowed this gap compared to a decade ago.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <div><h3>Chronic Lymphocytic Leukemia (CLL)</h3><span class="share-tag">The most common LEUKEMIA overall in Western adults, predominantly affecting older adults (median age at diagnosis in the 70s).</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Often diagnosed INCIDENTALLY on a routine CBC showing lymphocytosis in an entirely asymptomatic patient — a substantial fraction of patients never require treatment and live a normal lifespan, reflecting CLL's often indolent natural history, though a meaningful subset has more aggressive disease requiring earlier treatment.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Age is the dominant risk factor; family history (first-degree relatives have an elevated risk), and it is one of the few malignancies with an established, though modest, association with certain occupational/environmental exposures (e.g., some studies link Agent Orange exposure) — most cases have no identifiable specific cause.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses the Rai staging system (US, based on lymphocytosis, lymphadenopathy, organomegaly, anemia, thrombocytopenia) or the Binet system (Europe, based on the number of involved lymphoid areas plus anemia/thrombocytopenia) — NOT Ann Arbor (despite being a lymphoid malignancy) and NOT TNM; cytogenetics (particularly del(17p)/TP53 mutation, associated with a poor prognosis and reduced chemotherapy responsiveness) are increasingly more clinically decisive than Rai/Binet stage alone for modern treatment selection.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Asymptomatic, early-stage CLL is managed with WATCHFUL WAITING (observation) — similar in principle to follicular lymphoma — since early treatment has not been shown to improve survival in low-risk disease. When treatment is needed (progressive symptoms, cytopenias, or high-risk cytogenetics), BTK inhibitors (ibrutinib, acalabrutinib, zanubrutinib) and BCL2 inhibitors (venetoclax) have largely replaced traditional chemoimmunotherapy as first-line therapy, given superior efficacy and tolerability, including specifically in del(17p)/TP53-mutated disease that responded poorly to older chemotherapy-based regimens.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No serum tumor marker for diagnosis; beta-2 microglobulin (see the Oncology Emergencies Atlas) has prognostic value; FISH/cytogenetic testing for del(17p), del(11q), trisomy 12, and IGHV mutation status are essential before selecting first-line therapy given how strongly these predict treatment response.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>An asymptomatic patient found to have CLL on routine bloodwork often experiences significant anxiety disproportionate to their actual near-term risk — clearly explaining that watchful waiting is an appropriate, evidence-based strategy (not a delay in needed care) for early-stage disease is an important part of the initial counseling conversation.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <div><h3>Chronic Myeloid Leukemia (CML)</h3><span class="share-tag">A less common leukemia overall, but one of oncology's greatest targeted-therapy success stories — CML has gone from a historically fatal disease (median survival ~3-5 years pre-TKI era) to a chronic, manageable condition with a near-normal life expectancy for most patients on modern therapy.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Median age at diagnosis in the 60s, though it can occur at any age; often diagnosed incidentally on a CBC showing marked leukocytosis, or with symptoms of splenomegaly (early satiety, left upper quadrant fullness) — the disease is driven entirely by a single defining molecular event, the Philadelphia chromosome/BCR-ABL1 fusion, t(9;22).</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Prior exposure to ionizing radiation is the main established environmental risk factor (historically observed in atomic bomb survivors and some radiation-exposed occupational cohorts); most cases have no identifiable specific cause, and unlike CLL, there is minimal evidence for a strong familial predisposition.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Not staged anatomically — classified by PHASE (chronic phase, the vast majority of new diagnoses; accelerated phase; and blast phase/crisis, which behaves essentially like acute leukemia and carries a much worse prognosis) — phase, not an anatomic stage, is what drives treatment intensity and prognosis discussion.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>BCR-ABL tyrosine kinase inhibitors (imatinib, and second/third-generation options — dasatinib, nilotinib, bosutinib, ponatinib) are the entire foundation of modern CML treatment for chronic-phase disease, inducing deep and durable molecular remissions in the large majority of patients — a genuinely transformative story, since before TKIs, allogeneic stem cell transplant (with its associated significant morbidity/mortality) was the only potentially curative option. A meaningful subset of patients achieving a sustained deep molecular response can even attempt TREATMENT-FREE REMISSION (stopping the TKI under close molecular monitoring) — an emerging, evidence-supported option that didn't exist in earlier treatment eras. Blast phase disease requires more intensive, AML-like treatment approaches and carries a substantially worse prognosis than chronic phase.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>BCR-ABL1 transcript level by quantitative PCR is THE central monitoring tool in CML — measured at diagnosis and then serially throughout treatment to assess and track molecular response (major molecular response, deep molecular response) — this is one of the most precise, quantitative treatment-response monitoring tools in all of oncology, arguably more refined than any solid-tumor marker in routine use.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>CML's transformation via TKI therapy is one of the best patient-education stories in oncology to actively share — many newly diagnosed patients still carry an outdated mental model of CML as a rapidly fatal disease, when in fact most patients on modern TKI therapy can expect a near-normal life expectancy, which meaningfully changes the psychological framing of the diagnosis from the outset.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="pancreatic">
+    <div class="intro"><p>Pancreatic ductal adenocarcinoma (PDAC) accounts for roughly 90-95% of pancreatic cancers and is organized here by RESECTABILITY status — the single biggest driver of treatment sequencing — with pancreatic neuroendocrine tumors (PNETs) covered separately given their entirely distinct biology and much better prognosis.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#d98a3c">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Resectable Pancreatic Ductal Adenocarcinoma (PDAC)</h3><span class="share-tag">Only a minority (~15-20%) of PDAC is resectable at diagnosis — this cancer is notorious for presenting late given the pancreas's deep retroperitoneal location and the vague/absent early symptoms.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Median age at diagnosis in the 60s-70s; often presents with painless jaundice (if the tumor is in the pancreatic head, obstructing the common bile duct), or with vague abdominal/back pain and unexplained weight loss if in the body/tail, where symptoms present later since there's no early biliary obstruction to prompt workup.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Smoking is the single largest modifiable risk factor; chronic pancreatitis, long-standing type 2 diabetes (especially new-onset diabetes in an older adult, which can actually be an early PARANEOPLASTIC manifestation of otherwise-occult pancreatic cancer rather than a risk factor per se), obesity, and hereditary syndromes (BRCA1/2, Lynch syndrome, familial atypical multiple mole melanoma/CDKN2A, hereditary pancreatitis) are the other major established factors.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging; "resectable" is defined specifically by the ABSENCE of tumor contact with major vessels (superior mesenteric artery, celiac axis, common hepatic artery, superior mesenteric/portal vein) on high-quality pancreatic-protocol CT — this vascular-anatomy-based definition (not simple size) is what actually determines surgical candidacy.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical resection (Whipple procedure/pancreaticoduodenectomy for head tumors, distal pancreatectomy for body/tail tumors) followed by adjuvant chemotherapy (modified FOLFIRINOX or gemcitabine-based regimens) is standard — but increasingly, NEOADJUVANT chemotherapy (given before surgery) is being used even for resectable disease in many centers, based on evidence that it may improve the odds of a margin-negative resection and treat occult micrometastatic disease earlier, a meaningful shift in sequencing philosophy over the past decade.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CA 19-9 is the primary marker used — checked at diagnosis, followed serially after resection to help detect recurrence, and trended during neoadjuvant/adjuvant treatment as a rough surrogate for response, though it is NOT diagnostic on its own (see the Oncology Emergencies Atlas tumor marker section for its false-positive/negative patterns, including the important Lewis-antigen-negative false-negative pitfall).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>New-onset diabetes in an older adult without the classic risk factors for type 2 diabetes (or a sudden, otherwise-unexplained worsening of previously well-controlled diabetes) should prompt at least a moment's consideration of occult pancreatic cancer — this paraneoplastic association is real and sometimes precedes a pancreatic cancer diagnosis by up to a year or more.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d98a3c">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Borderline Resectable / Locally Advanced PDAC</h3><span class="share-tag">A substantial fraction of newly diagnosed PDAC falls into this intermediate category between clearly resectable and clearly unresectable/metastatic disease.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Same general demographic and risk factor profile as resectable disease — this category reflects anatomic extent of vascular involvement at diagnosis rather than a distinct population.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Identical risk factor profile to resectable PDAC (smoking, chronic pancreatitis, diabetes, hereditary syndromes) — again, this is a staging/anatomic distinction, not a distinct disease risk profile.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>"Borderline resectable" means the tumor has LIMITED contact with major vessels (a defined degree of abutment without full encasement) that makes an upfront margin-negative resection unlikely but not impossible; "locally advanced" (sometimes called unresectable but non-metastatic) means more extensive vascular involvement/encasement that precludes surgery regardless of neoadjuvant response, though this line has shifted somewhat as neoadjuvant approaches and vascular reconstruction techniques have improved.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>NEOADJUVANT chemotherapy (typically FOLFIRINOX or gemcitabine/nab-paclitaxel) ± chemoradiation is standard for borderline resectable disease specifically to shrink the tumor away from vasculature and improve the odds of a margin-negative resection — a meaningful subset of borderline resectable patients successfully "downstage" to resectable status after neoadjuvant therapy and go on to surgery, which was much less common before modern regimens. Locally advanced disease is generally treated with systemic chemotherapy ± chemoradiation with a goal of disease control/possible downstaging, though a smaller fraction ultimately become surgical candidates compared to borderline resectable disease.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CA 19-9 response to neoadjuvant therapy (a substantial decline) is used as one factor supporting a decision to proceed to surgery, alongside repeat imaging — though imaging and CA 19-9 trend together are more reliable than either alone given imaging's difficulty distinguishing residual tumor from post-treatment fibrosis in this anatomic region.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A key modern shift: borderline resectable disease is no longer automatically treated as "probably not going to be resectable" — successful neoadjuvant downstaging to a margin-negative resection happens often enough that this category should be approached with real surgical intent from the outset, not just palliative-intent systemic therapy.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d98a3c">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Metastatic Pancreatic Ductal Adenocarcinoma (PDAC)</h3><span class="share-tag">A substantial proportion of PDAC presents as metastatic disease at diagnosis, reflecting how often this cancer remains clinically silent until it has already spread, most commonly to the liver, peritoneum, and lung.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Same general demographic/risk factor profile as earlier-stage PDAC; metastatic presentation is more common with body/tail tumors specifically, given their tendency toward a later, more vague symptom presentation compared to head-of-pancreas tumors that obstruct the bile duct earlier.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same established risk factors as PDAC generally; germline BRCA1/2 and other DNA-repair pathway mutations carry a SPECIFIC treatment implication in metastatic disease (see markers below), making germline testing more directly actionable at this stage than at earlier stages.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Stage IV (M1) by definition — further sub-characterized by the specific site(s) and burden of metastatic disease, which factors into performance-status-based treatment intensity decisions (fit patients get more aggressive combination chemotherapy; less fit patients get single-agent or less intensive regimens).</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>FOLFIRINOX (a four-drug combination) or gemcitabine/nab-paclitaxel are the standard first-line regimens for fit patients, chosen based on performance status and comorbidity given FOLFIRINOX's greater toxicity burden but generally superior efficacy in appropriately selected patients. PARP inhibitor maintenance therapy (olaparib) is a specific option for patients with a germline BRCA1/2 mutation who have responded to initial platinum-based chemotherapy — one of the only biomarker-driven targeted options currently available in PDAC, reflecting how much less molecularly "drugable" this cancer has been compared to lung or breast cancer to date.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CA 19-9 remains the primary monitoring marker for treatment response in metastatic disease; germline (and increasingly tumor/somatic) BRCA1/2 and other homologous-recombination-repair gene testing should be pursued in every metastatic PDAC patient given the direct PARP inhibitor treatment implication, not just for family risk counseling purposes.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Unlike lung cancer's extensive biomarker-driven targeted therapy landscape, pancreatic cancer still has comparatively few actionable molecular targets — BRCA-mutated disease and PARP inhibitor eligibility is one of the most important exceptions to actively look for, since it's one of the few situations where molecular testing meaningfully expands options beyond chemotherapy in this disease.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d98a3c">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Pancreatic Neuroendocrine Tumors (PNETs)</h3><span class="share-tag">A small minority (~5%) of pancreatic tumors overall, but biologically an entirely distinct entity from PDAC with a markedly better average prognosis.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur sporadically at any age, or as part of hereditary syndromes (MEN1 — multiple endocrine neoplasia type 1 — being the most significant, along with von Hippel-Lindau disease and neurofibromatosis type 1); functional PNETs (secreting a hormone that causes a distinct clinical syndrome — insulinoma causing hypoglycemia, gastrinoma causing Zollinger-Ellison syndrome, and others) can present very differently from the vague symptoms typical of PDAC.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>MEN1 syndrome carriers have a markedly elevated PNET risk and require lifelong surveillance; sporadic cases have a less well-defined risk factor profile than PDAC, and PNETs are NOT strongly linked to smoking or chronic pancreatitis the way PDAC is.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses a separate, neuroendocrine-tumor-specific grading and staging system based on proliferative rate (Ki-67 index and mitotic count, classifying tumors as Grade 1, 2, or 3) alongside a TNM-like anatomic staging — grade is often MORE prognostically important than anatomic stage alone for PNETs, unlike PDAC where anatomic/resectability status dominates the conversation.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical resection is potentially curative for localized disease and is pursued even for some metastatic/liver-limited disease (debulking or liver-directed therapy) given PNETs' generally much slower growth rate than PDAC, making a more aggressive local approach to metastatic disease reasonable in a way it rarely is for PDAC. Somatostatin analogs (octreotide, lanreotide) control both hormonal symptoms in functional tumors AND have an independent antiproliferative effect in appropriate low-grade disease; targeted therapy (everolimus, sunitinib) and peptide receptor radionuclide therapy (Lutetium-177 DOTATATE — see the Oncology Interventions Atlas radiation modalities section) are options for progressive/higher-grade or somatostatin-receptor-positive disease.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Chromogranin A is the primary circulating biomarker for both diagnosis support and monitoring; specific hormone levels (insulin/C-peptide for insulinoma, gastrin for gastrinoma, and others) are checked when a functional syndrome is suspected clinically. Ki-67 proliferation index from tumor tissue is the central GRADING marker driving prognosis and treatment intensity, distinct from any circulating serum marker.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>PNETs are frequently and mistakenly lumped together with PDAC in casual conversation given their shared organ of origin, but a PNET diagnosis carries a fundamentally different, generally much more favorable prognosis and treatment approach — actively clarifying this distinction for a newly diagnosed patient prevents unwarranted anxiety based on PDAC's generally poor reputation.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="ovarian">
+    <div class="intro"><p>Ovarian cancer is a broad category encompassing several biologically distinct tumor types arising from different cells within the ovary — epithelial tumors (the vast majority), germ cell tumors, and sex cord-stromal tumors — each with a different typical age, behavior, and management approach.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>High-Grade Serous Ovarian Carcinoma</h3><span class="share-tag">~70% of epithelial ovarian cancer and the most common ovarian cancer subtype overall by a wide margin.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Typically postmenopausal women, often presenting with vague, nonspecific symptoms (bloating, early satiety, pelvic pain/pressure, urinary frequency) that are frequently misattributed to benign GI or urinary causes for months before a correct diagnosis — this diagnostic delay pattern is a major contributor to its typically advanced stage (III-IV) at diagnosis.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Germline BRCA1/2 mutations carry a dramatically elevated lifetime risk (BRCA1 particularly) and are found in a meaningful minority of high-grade serous cases even without a strong family history; nulliparity, early menarche/late menopause, and NOT having used oral contraceptives (which are protective) are additional established factors. Increasing evidence points to the FALLOPIAN TUBE (specifically the fimbriated end) as the actual site of origin for most high-grade serous carcinoma, not the ovary itself — a paradigm shift with direct implications for risk-reducing surgery (see management).</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>FIGO staging (see the Cancer Classification &amp;amp; Staging Atlas) applies — most high-grade serous cancer is diagnosed at FIGO stage III-IV given the vague early symptom pattern and lack of an effective screening test (unlike cervical cancer's Pap smear); surgical staging (with comprehensive surgical exploration, not just imaging) is essential and routinely reveals a more advanced stage than preoperative imaging suggested.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Cytoreductive ("debulking") surgery aiming for no visible residual disease, combined with platinum-based chemotherapy (carboplatin/paclitaxel), is the foundation of treatment — the SEQUENCE (surgery first vs. neoadjuvant chemotherapy followed by interval debulking) is individualized based on whether upfront optimal cytoreduction appears achievable. PARP inhibitor maintenance therapy (olaparib, niraparib) after response to platinum-based chemotherapy has substantially improved progression-free survival, especially (though not exclusively) in BRCA-mutated disease — bevacizumab is another maintenance option in appropriate patients. For BRCA1/2 mutation carriers, risk-reducing bilateral salpingo-oophorectomy (removing tubes AND ovaries, reflecting the fallopian-tube-origin evidence above) is a major primary prevention strategy once childbearing is complete.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CA-125 is the primary marker — used for monitoring treatment response and detecting recurrence, though NOT validated for population-level screening given insufficient specificity in average-risk women (see the Oncology Emergencies Atlas tumor marker section for the full false-positive discussion). Germline (and tumor) BRCA1/2 testing is essential for every high-grade serous diagnosis given its direct PARP inhibitor treatment implication, not just hereditary risk counseling.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The persistent, vague GI/urinary symptom pattern (bloating, early satiety, urinary frequency) lasting weeks in a woman, especially postmenopausal, deserves consideration of ovarian cancer in the differential rather than repeated reflexive treatment for presumed benign GI causes — this recognition gap is one of the most fixable contributors to ovarian cancer's typically late stage at diagnosis.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Low-Grade Serous &amp;amp; Other Epithelial Ovarian Carcinomas (Endometrioid, Clear Cell, Mucinous)</h3><span class="share-tag">Collectively account for the remaining ~25-30% of epithelial ovarian cancer, each a biologically distinct entity from high-grade serous carcinoma despite the shared broad "epithelial ovarian cancer" label.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Low-grade serous carcinoma tends to affect somewhat YOUNGER women than high-grade serous disease and behaves in a markedly more indolent fashion; endometrioid carcinoma is associated with a background of endometriosis and sometimes coexists with endometrial cancer; clear cell carcinoma is also strongly associated with endometriosis and is disproportionately more common in some Asian populations.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Endometriosis is a specific, well-established risk factor for both endometrioid and clear cell ovarian carcinoma (distinct from the BRCA/reproductive-history risk factor profile dominant in high-grade serous disease); low-grade serous carcinoma's risk factor profile is less well-characterized and less strongly linked to BRCA than high-grade serous.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>FIGO staging applies identically across all epithelial subtypes, but low-grade serous and mucinous carcinomas are more often diagnosed at an EARLIER stage than high-grade serous disease, given their generally slower growth pattern.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical cytoreduction remains foundational across all subtypes, but SYSTEMIC therapy diverges meaningfully from high-grade serous disease: low-grade serous carcinoma responds poorly to standard platinum chemotherapy (a critical, counterintuitive difference from high-grade serous) and is instead often treated with hormonal therapy (aromatase inhibitors) or MEK inhibitors given its distinct MAPK-pathway-driven molecular biology; clear cell carcinoma is also relatively chemoresistant to standard platinum regimens compared to high-grade serous disease.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>CA-125 monitoring applies similarly across subtypes, though mucinous ovarian carcinoma specifically shows a more modest CA-125 elevation than serous subtypes (see the Oncology Emergencies Atlas tumor marker section) — CA 19-9 is sometimes additionally elevated in mucinous tumors and can support monitoring in this specific histology.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Treating low-grade serous ovarian carcinoma with the same platinum-based chemotherapy default used for high-grade serous disease is a recognized pitfall — recognizing this specific histologic subtype should prompt consideration of hormonal or MEK-inhibitor-based approaches rather than assuming standard chemotherapy will be equally effective.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Ovarian Germ Cell Tumors</h3><span class="share-tag">Rare overall (~2-5% of ovarian cancers) but disproportionately important because they occur in a YOUNGER population and are, like their testicular counterparts, often highly curable even at an advanced stage.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Predominantly affects adolescents and young women (median age in the 20s), a starkly different demographic from the postmenopausal population typical of epithelial ovarian cancer — an ovarian mass in a teenager or young woman should raise germ cell tumor on the differential specifically because of this age skew.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>No strong established environmental or hereditary risk factor profile comparable to BRCA in epithelial disease — germ cell tumors arise from a fundamentally different cell lineage (primordial germ cells) with different underlying biology.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>FIGO staging applies, but — critically, mirroring testicular germ cell tumor staging — SERUM TUMOR MARKERS (AFP, beta-hCG, LDH) are directly incorporated into the staging/risk-assessment framework and monitored serially, not just measured once at diagnosis.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>FERTILITY-SPARING surgery (removing the affected ovary/tube while preserving the uterus and contralateral ovary) is appropriate and standard for most young patients even with advanced-stage disease, given how effectively adjuvant chemotherapy (BEP — bleomycin, etoposide, cisplatin, the same regimen used in testicular germ cell tumors) treats this tumor type — this fertility-preserving approach is a major, patient-priority-relevant difference from the more extensive cytoreductive surgery typical of epithelial ovarian cancer. Cure rates are excellent (often &gt;90%) even for advanced-stage disease with appropriate BEP chemotherapy.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>AFP, beta-hCG, and LDH are essential at diagnosis and monitored serially during/after treatment as the primary tools for assessing response and detecting recurrence — an expected exponential decline in these markers with appropriate half-life kinetics is tracked closely, mirroring testicular germ cell tumor monitoring exactly (see the Oncology Emergencies Atlas tumor marker section).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A young woman with an ovarian mass should prompt AFP/beta-hCG/LDH testing before surgery whenever feasible, since these results both support the diagnosis and establish the crucial baseline needed to monitor treatment response afterward — and fertility-sparing surgical planning should be explicitly discussed given how effectively this tumor type responds to chemotherapy even when advanced.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Ovarian Sex Cord-Stromal Tumors</h3><span class="share-tag">Rare (~5-8% of ovarian cancers), arising from the ovarian stroma/sex cord cells (which normally support and hormonally regulate the germ cells) rather than the epithelial surface or the germ cells themselves.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur across a wide age range depending on the specific subtype — granulosa cell tumors (the most common sex cord-stromal subtype) show a bimodal pattern with a juvenile form in children/adolescents and an adult form typically in postmenopausal women; Sertoli-Leydig cell tumors tend to affect younger women.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>No strong established environmental risk factor profile; these tumors are notable for their HORMONAL activity — granulosa cell tumors classically produce estrogen (causing postmenopausal bleeding or precocious puberty in the juvenile form), while Sertoli-Leydig tumors can produce androgens (causing virilization) — the resulting hormonal syndrome is often what prompts the initial workup rather than a mass-related symptom.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>FIGO staging applies, but these tumors are generally diagnosed at an early stage more often than epithelial ovarian cancer, in part because their hormonal symptoms often prompt earlier medical attention than the vague symptoms typical of epithelial disease.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgery (often fertility-sparing in younger patients, given the generally indolent behavior of most sex cord-stromal tumors) is the primary treatment for localized disease; adjuvant chemotherapy is reserved for higher-stage or recurrent disease, using regimens distinct from epithelial ovarian cancer's platinum/taxane standard (often BEP, similar to germ cell tumors, reflecting these tumors' relative rarity and the resulting reliance on smaller trial data and extrapolated regimens).</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Inhibin B and anti-Müllerian hormone (AMH) are the characteristic circulating markers for granulosa cell tumors specifically — reflecting these tumors' origin from hormonally active granulosa cells — and are used similarly to CA-125 in epithelial disease for monitoring treatment response and detecting recurrence.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A hormonal presentation (postmenopausal bleeding with an ovarian mass, or precocious puberty/virilization in a younger patient) should prompt specific consideration of a sex cord-stromal tumor rather than assuming a standard epithelial ovarian cancer workup and marker panel (CA-125) alone — inhibin B/AMH testing is the more relevant marker panel for this specific presentation.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="thyroid">
+    <div class="intro"><p>Thyroid cancer spans an enormous prognostic range within a single organ — from papillary thyroid carcinoma (excellent prognosis, sometimes even eligible for active surveillance) to anaplastic thyroid carcinoma (one of the most rapidly fatal malignancies known) — making histologic subtype the single most important factor in the entire management conversation.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Papillary Thyroid Carcinoma (PTC)</h3><span class="share-tag">~80-85% of all thyroid cancers — the most common thyroid cancer subtype by a wide margin, and a major contributor to thyroid cancer's rising incidence (largely attributed to increased incidental detection on imaging obtained for unrelated reasons).</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur at any age but most common in adults 30-50; disproportionately affects women (roughly 3:1 female predominance); often detected incidentally as a thyroid nodule on imaging performed for an unrelated reason, or found on physical exam as a painless nodule.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Prior head/neck radiation exposure (including childhood radiation therapy for an unrelated condition) is the most well-established risk factor; family history and certain genetic syndromes (familial adenomatous polyposis, among others) contribute a smaller fraction of cases; iodine status has a complex, less clearly directional relationship with PTC risk specifically compared to other thyroid cancer subtypes.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>AJCC staging for differentiated thyroid cancer (papillary and follicular) has a distinctive AGE-BASED cutoff (55 years) built directly into the staging system — patients under 55 can only be staged I or II regardless of how extensive the local/nodal disease is (reflecting differentiated thyroid cancer's excellent prognosis even with regional spread in younger patients), while patients 55 and older use a more conventional stage I-IV framework — a staging peculiarity essentially unique to this cancer type.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgery (lobectomy or total thyroidectomy, depending on tumor size/features) is standard for most PTC; for very small, low-risk PTC (papillary microcarcinoma, generally &amp;lt;1cm, without concerning features), ACTIVE SURVEILLANCE without immediate surgery is now a validated, guideline-supported option, mirroring the paradigm shift seen in low-risk prostate cancer. Radioactive iodine (I-131) ablation is used selectively after surgery based on risk stratification (not routinely for all patients) — see the Oncology Interventions Atlas radiation modalities section for RAI mechanism/contraindications. TSH suppression with levothyroxine (keeping TSH below the normal range, since TSH can stimulate residual thyroid tissue/cancer growth) is a lifelong, risk-stratified component of follow-up care.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Thyroglobulin, produced only by thyroid tissue (normal or malignant), is the primary POST-THYROIDECTOMY monitoring marker — since a total thyroidectomy removes essentially all thyroglobulin-producing tissue, ANY detectable thyroglobulin afterward is a sensitive signal for persistent or recurrent disease; anti-thyroglobulin antibodies must be checked alongside it since their presence can falsely lower the measured thyroglobulin level and mask true recurrence.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A papillary thyroid microcarcinoma diagnosis often causes disproportionate anxiety given the word "carcinoma" — clearly explaining that this specific, low-risk category has an excellent prognosis and, per current guidelines, may not even require immediate surgery, helps recalibrate a patient's understandable but often excessive initial fear.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Follicular Thyroid Carcinoma (FTC)</h3><span class="share-tag">~10-15% of thyroid cancers — the second most common differentiated thyroid cancer subtype.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present at a somewhat older age than papillary carcinoma and, unlike PTC, is DISPROPORTIONATELY diagnosed in iodine-deficient regions globally — an epidemiologic pattern distinct from PTC.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Iodine deficiency is a more clearly established risk factor for FTC than for PTC; prior radiation exposure and family history contribute similarly to PTC, though less data specifically isolates FTC's radiation-association strength compared to PTC's well-established one.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses the same AJCC differentiated thyroid cancer staging framework (including the same age-55 cutoff peculiarity) as papillary carcinoma — FTC and PTC are grouped together as "differentiated thyroid cancer" for staging purposes despite being histologically distinct.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Follows a broadly similar surgical + selective RAI + TSH suppression framework as papillary carcinoma, but with one critical PRE-OPERATIVE diagnostic limitation: follicular carcinoma CANNOT be reliably distinguished from a benign follicular adenoma on fine-needle aspiration cytology alone — the distinguishing feature (capsular or vascular invasion) can only be assessed on the FULL surgical specimen, meaning a "follicular neoplasm" FNA result generally necessitates diagnostic surgery (lobectomy) to obtain a definitive answer, unlike papillary carcinoma which is often diagnosable by FNA cytology alone before any surgery.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Thyroglobulin monitoring after thyroidectomy follows the same framework as papillary carcinoma; FTC has a somewhat higher propensity for HEMATOGENOUS spread (bone, lung) compared to papillary carcinoma's more classically lymphatic/nodal spread pattern, which can influence post-treatment surveillance imaging choices.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A "follicular neoplasm, cannot exclude malignancy" cytology result is a genuinely common and often confusing point in a patient's diagnostic journey — explaining upfront that this specific cytology category inherently requires diagnostic surgery to resolve (rather than representing an ambiguous or failed test) helps set appropriate expectations before the FNA result even comes back.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Medullary Thyroid Carcinoma (MTC)</h3><span class="share-tag">~2-4% of thyroid cancers — arises from the parafollicular (C) cells rather than the follicular epithelial cells that give rise to papillary/follicular carcinoma, making it biologically and behaviorally distinct from the "differentiated thyroid cancer" category entirely.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Roughly 75% of cases are SPORADIC (typically presenting in the 40s-50s), while the remaining ~25% are HEREDITARY — as part of MEN2A or MEN2B syndrome, or as familial MTC without the other MEN2 features — hereditary cases present at a notably younger age, sometimes in childhood, reflecting germline RET proto-oncogene mutation.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Germline RET mutation is the defining risk factor for hereditary MTC (MEN2A/2B/familial MTC) — genetic testing for RET mutations is essential in every new MTC diagnosis, since a positive result has direct implications for the patient's OTHER MEN2-associated tumor risks (pheochromocytoma, primary hyperparathyroidism in MEN2A) and for prophylactic screening/thyroidectomy timing in at-risk family members.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses its OWN separate AJCC staging system distinct from differentiated thyroid cancer (no age-55 cutoff peculiarity here) — MTC's staging and prognosis correlate closely with preoperative and postoperative calcitonin levels (see below) in addition to conventional TNM factors.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Total thyroidectomy with prophylactic CENTRAL neck lymph node dissection is standard, given MTC's meaningful propensity for nodal metastasis even in apparently localized disease — RAI ablation is NOT effective for MTC (since C cells don't take up iodine the way follicular cells do), a critical distinction from papillary/follicular carcinoma management. Advanced/metastatic MTC increasingly uses RET-inhibitor targeted therapy (selpercatinib, pralsetinib) for RET-altered disease, or multikinase inhibitors (vandetanib, cabozantinib) more broadly — a meaningful recent expansion of systemic options for a disease that previously had few effective treatments beyond surgery.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Calcitonin (see the Oncology Emergencies Atlas tumor marker section) is central to diagnosis, preoperative risk assessment (higher preoperative levels correlate with more extensive nodal disease, guiding surgical extent), and postoperative surveillance — an undetectable postoperative calcitonin suggests biochemical cure, while a persistently elevated or rising level indicates residual/recurrent disease. CEA is also followed as a secondary marker, and a rising CEA with STABLE or falling calcitonin (calcitonin escape) can paradoxically signal a more aggressive, dedifferentiated disease course.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Every new MTC diagnosis should trigger RET germline mutation testing and, if positive, family cascade testing — this is one of the clearest examples in oncology where a single patient's molecular result directly changes screening recommendations for blood relatives who haven't been diagnosed with anything yet.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Anaplastic Thyroid Carcinoma (ATC)</h3><span class="share-tag">&amp;lt;2% of thyroid cancers, but responsible for a disproportionate share of thyroid cancer DEATHS given its extraordinarily aggressive behavior — median survival historically measured in MONTHS rather than years without effective treatment.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Almost exclusively occurs in OLDER adults (median age 65-70), often arising in a patient with a long-standing, previously untreated thyroid nodule/goiter, or occasionally through DEDIFFERENTIATION from a pre-existing, previously more indolent differentiated thyroid cancer.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>A pre-existing, long-standing goiter or undiagnosed differentiated thyroid cancer that undergoes late dedifferentiation is the most recognized clinical antecedent; iodine deficiency has some epidemiologic association given its link to goiter formation generally; there is no strong distinct hereditary risk factor profile comparable to MTC's RET association.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>ATC is staged as AT LEAST stage IVA by definition regardless of tumor size or apparent extent at diagnosis (unlike any other thyroid cancer subtype) — reflecting the universally poor prognosis and aggressive behavior of this histology from the moment of diagnosis, a staging convention similar in spirit to inflammatory breast cancer's automatic T4d/locally-advanced classification.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>This is a true oncologic emergency requiring immediate multidisciplinary evaluation given ATC's rapid growth and high risk of airway compromise from local invasion/compression — treatment intensity depends heavily on whether the disease is resectable at presentation (a minority of cases) versus unresectable. A major, genuinely practice-changing recent advance: BRAF V600E-mutant ATC (found in a meaningful subset of cases) can respond dramatically to combined BRAF/MEK inhibitor therapy (dabrafenib/trametinib), sometimes converting an initially unresectable tumor to a resectable one after neoadjuvant response — molecular testing for BRAF mutation status should be pursued urgently given this direct, potentially life-saving treatment implication.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No specific circulating tumor marker is routinely used for ATC monitoring the way thyroglobulin or calcitonin are used in other thyroid cancer subtypes; BRAF V600E mutation testing is the single most actionable molecular test given its direct treatment implication described above, and should be expedited rather than awaited passively given how rapidly this disease progresses.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A rapidly enlarging thyroid mass or long-standing goiter with new, quickly progressive symptoms (hoarseness, dysphagia, or airway compromise) in an older adult should prompt urgent same-day-to-next-day evaluation rather than routine outpatient thyroid nodule workup timelines — the speed of ATC's progression means diagnostic delay directly costs treatment options and survival time in a way that doesn't apply to the far more common, far more indolent papillary thyroid carcinoma.</p></div>
+    </article></div>
+  </section>
+
+  <section class="cancerpanel" data-canceb="sarcoma">
+    <div class="intro"><p>Sarcomas are a rare (~1% of adult cancers), extraordinarily heterogeneous category of mesenchymal-origin tumors — over 100 distinct histologic subtypes exist, so this section covers four representative subtypes spanning the soft-tissue/bone divide and the adult/pediatric divide, rather than being exhaustive. All sarcomas are best managed at specialized sarcoma centers given this rarity and diagnostic complexity.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#5c7a6a">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Soft Tissue Sarcoma (General Adult — e.g., Leiomyosarcoma, Liposarcoma, Undifferentiated Pleomorphic Sarcoma)</h3><span class="share-tag">Soft tissue sarcomas collectively account for the majority of adult sarcomas, with leiomyosarcoma (smooth muscle origin), liposarcoma (fat origin), and undifferentiated pleomorphic sarcoma (a diagnosis of exclusion, previously called malignant fibrous histiocytoma) among the most common adult subtypes.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can occur at any adult age but incidence rises with age for most subtypes; most commonly arise in an extremity or the retroperitoneum, often presenting as a painless, enlarging soft tissue mass that can be mistaken for a benign lesion (lipoma, hematoma) for a concerning length of time before biopsy.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Prior radiation exposure to the affected area (radiation-induced sarcoma, sometimes arising years to decades after treatment for an unrelated cancer — see the Oncology Side Effects Atlas late-effects section), certain genetic syndromes (Li-Fraumeni syndrome, neurofibromatosis type 1), and chronic lymphedema (Stewart-Treves syndrome, a rare angiosarcoma arising in chronically lymphedematous limbs) are the main established risk factors; most cases have no identifiable cause.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses AJCC TNM staging, but with GRADE (assessed by the FNCLCC grading system, incorporating differentiation, mitotic count, and necrosis) playing an unusually dominant prognostic role relative to size/depth alone — a small, high-grade sarcoma can carry a worse prognosis than a considerably larger low-grade one, a pattern distinct from most epithelial carcinomas where size more consistently tracks with stage/prognosis.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Wide surgical excision with negative margins is the primary curative-intent treatment for localized disease, often combined with radiation (particularly for larger, deeper, or higher-grade tumors) to reduce local recurrence risk — chemotherapy's role in localized disease is more selective/controversial than in most carcinomas, reserved more often for higher-grade, larger tumors or specific chemosensitive subtypes. Metastatic disease (most commonly to the lung) is treated with systemic chemotherapy (anthracycline-based regimens remain a backbone — see the Oncology Interventions Atlas), though response rates are generally more modest than in many carcinomas, reflecting sarcomas' overall lower chemosensitivity as a category compared to epithelial cancers.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No routine circulating tumor marker exists for soft tissue sarcoma as a category (unlike most carcinomas) — diagnosis and subtyping rely on core needle biopsy with immunohistochemistry and increasingly molecular/cytogenetic testing, since the specific histologic subtype (of over 100 possible) meaningfully changes both prognosis and treatment approach.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Any soft tissue mass that is enlarging, greater than 5cm, deep to the fascia, or persists/grows despite conservative management deserves prompt core needle biopsy (ideally at or in coordination with a sarcoma referral center BEFORE any surgical intervention) rather than presumptive excision as a "probably benign" lesion — an unplanned excision without a preoperative tissue diagnosis is a well-recognized, avoidable complication that can compromise future definitive surgical margins and sometimes worsen oncologic outcomes.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#5c7a6a">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Osteosarcoma</h3><span class="share-tag">The most common primary malignant bone tumor overall, with a distinctive bimodal age distribution — a large peak in adolescents/young adults (coinciding with the adolescent growth spurt) and a smaller second peak in older adults, often associated with an underlying condition.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>The adolescent/young adult peak is classic and well-known — a teenager with progressive bone pain (often initially attributed to "growing pains" or a sports injury) and a palpable mass, most commonly around the knee (distal femur/proximal tibia) given these are the fastest-growing growth plates during the adolescent growth spurt.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>The older-adult peak is disproportionately associated with pre-existing Paget's disease of bone (a recognized, though uncommon, malignant transformation risk) or prior radiation exposure to the affected bone; Li-Fraumeni syndrome and hereditary retinoblastoma (RB1 mutation carriers) both carry a significantly elevated osteosarcoma risk in the younger population.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses AJCC bone sarcoma staging (grade, size, and presence of "skip" metastases within the same bone are specific features factored in, distinct from soft tissue sarcoma staging); like soft tissue sarcoma, grade is highly prognostically important — though the vast majority of osteosarcoma is high-grade at diagnosis, unlike the more grade-heterogeneous soft tissue sarcoma population.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>NEOADJUVANT chemotherapy (typically incorporating high-dose methotrexate, doxorubicin, and cisplatin) followed by limb-sparing surgical resection (or amputation when limb-sparing isn't feasible) and then further adjuvant chemotherapy is the standard curative-intent approach — the degree of tumor necrosis seen in the surgical specimen after neoadjuvant chemotherapy (≥90% necrosis considered a good response) is a major prognostic factor that also sometimes informs adjuvant treatment intensity decisions. Osteosarcoma is one of the relatively few solid tumors where PULMONARY METASTASECTOMY (surgically resecting lung metastases) is a standard, potentially curative-intent component of management for limited lung-only metastatic disease, reflecting the disease's biology and the relative chemoresistance of gross metastatic disease.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Alkaline phosphatase and LDH are commonly elevated and used as nonspecific prognostic/monitoring markers (higher levels at diagnosis correlate with a larger tumor burden and somewhat worse prognosis) rather than as diagnostic or highly specific markers.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Persistent, progressive bone pain in an adolescent — especially pain that wakes the patient at night or occurs at rest, not just with activity — deserves imaging rather than being reflexively attributed to growing pains or a minor sports injury, since this exact presentation is the classic, often-delayed initial osteosarcoma symptom pattern.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#5c7a6a">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Ewing Sarcoma</h3><span class="share-tag">The second most common primary malignant bone tumor in children/adolescents after osteosarcoma, though it can also arise in soft tissue (extraosseous Ewing sarcoma) — defined by a specific, near-universal molecular signature rather than a purely histologic appearance.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Predominantly affects children, adolescents, and young adults, with a slightly younger typical age at diagnosis than osteosarcoma; classically arises in the diaphysis (shaft) of long bones or the pelvis, in contrast to osteosarcoma's more classic metaphyseal/growth-plate location.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Unlike osteosarcoma, Ewing sarcoma has NO strong established hereditary syndrome association (no clear Li-Fraumeni or retinoblastoma-type link) — it is defined by a specific ACQUIRED (not inherited) chromosomal translocation, most commonly EWSR1-FLI1 (t(11;22)), found in the large majority of cases and central to both diagnosis and the tumor's underlying biology.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses a localized vs. metastatic framework (rather than the same AJCC bone sarcoma system used for osteosarcoma) given how strongly the presence of METASTASIS at diagnosis (most commonly lung, bone, or bone marrow) dominates the prognosis discussion — roughly a quarter of patients present with metastatic disease, which substantially changes expected outcomes compared to localized disease.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Multi-agent chemotherapy (a regimen typically alternating vincristine/doxorubicin/cyclophosphamide with ifosfamide/etoposide) is given both before AND after local control (surgery, radiation, or both, depending on the tumor's location and resectability) — Ewing sarcoma is notably MORE chemosensitive and more radiosensitive than osteosarcoma as a general rule, which is part of why radiation plays a larger routine role in Ewing sarcoma local control compared to osteosarcoma, where surgery is preferred whenever feasible.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No routine circulating tumor marker; diagnosis relies on biopsy with molecular confirmation of the characteristic EWSR1 gene rearrangement (by FISH or molecular testing) — LDH is sometimes elevated and used as a nonspecific prognostic indicator similar to its role in osteosarcoma.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The EWSR1-FLI1 (or related EWSR1 partner gene) translocation is close to a defining, near-universal feature of Ewing sarcoma — its identification is what allows Ewing sarcoma to be reliably distinguished from other small round blue cell tumors of childhood (a challenging differential diagnosis category on morphology alone) that require very different treatment approaches.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#5c7a6a">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Rhabdomyosarcoma</h3><span class="share-tag">The most common soft tissue sarcoma of CHILDHOOD, though it also occurs (less commonly, and with a worse average prognosis) in adults.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Predominantly a pediatric cancer with a median age at diagnosis around 5-6 years for the more common embryonal subtype; the alveolar subtype tends to present in slightly older children/adolescents and behaves more aggressively; sites vary widely by age and subtype — head/neck and genitourinary sites are especially common in young children with the embryonal subtype, while extremity involvement is more typical of the alveolar subtype.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Certain genetic syndromes (Li-Fraumeni syndrome, neurofibromatosis type 1, Beckwith-Wiedemann syndrome, and Costello syndrome among others) carry an elevated rhabdomyosarcoma risk; the alveolar subtype is defined by a specific, near-diagnostic PAX3-FOXO1 or PAX7-FOXO1 gene fusion, analogous in diagnostic importance to Ewing sarcoma's EWSR1-FLI1 fusion.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses a specific pediatric rhabdomyosarcoma risk-stratification system (incorporating the Intergroup Rhabdomyosarcoma Study clinical grouping, site, size, nodal/metastatic status, and — critically — fusion-gene status for the alveolar subtype) rather than the adult soft tissue sarcoma AJCC framework, reflecting its status as a distinct pediatric oncology entity managed largely through Children's Oncology Group protocols.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Multimodality treatment — combination chemotherapy (vincristine, actinomycin D/dactinomycin, and cyclophosphamide forming a classic backbone regimen), surgery, and radiation as needed for local control based on site and resectability — is standard, with treatment intensity and specific regimen risk-stratified by histologic subtype (embryonal generally more favorable than alveolar), fusion-gene status, primary site, and extent of disease at diagnosis.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No routine circulating tumor marker; PAX3/PAX7-FOXO1 fusion gene testing is essential for accurately classifying embryonal vs. alveolar histology, since this distinction meaningfully changes risk stratification and treatment intensity independent of how the tumor looks under the microscope alone.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Rhabdomyosarcoma's overall favorable outcomes in modern pediatric oncology (driven substantially by risk-stratified Children's Oncology Group protocols) stand in meaningful contrast to the historically much worse outcomes in adult rhabdomyosarcoma — age and access to pediatric-specific treatment protocols and expertise genuinely change the outcome picture for what is nominally the "same" diagnosis.</p></div>
+    </article></div>
+  </section>
+</main>
+
+<footer>Cancer Deep Dives Vol. II — original reference content for clinical education, grounded in NCCN guidelines by disease site, AJCC 8th edition staging, ELN/NCCN leukemia risk stratification, and primary trial literature as referenced per topic. Companion to the Lung &amp; Breast Cancer Atlas (Vol. I), the Cancer Classification &amp; Staging Atlas, and the Oncology Emergencies/Interventions/Side Effects atlases. Verify current guideline versions before clinical use.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.canctab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.canctab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.cancerpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.cancerpanel[data-canceb="' + btn.dataset.panel + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

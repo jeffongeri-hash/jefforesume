@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lung & Breast Cancer Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .pearl-tag, .share-tag{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1140px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+nav.canctabs{display:flex; gap:8px; max-width:1140px; margin:14px auto 0; padding:0 22px;}
+.canctab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:11px 22px; border-radius:10px 10px 0 0; cursor:pointer; font-size:.92rem; font-weight:700; border-bottom:none;}
+.canctab.active{background:var(--panel); color:var(--ink);}
+.canctab[data-panel="lung"].active{border-bottom:3px solid #4a90c9; color:#4a90c9;}
+.canctab[data-panel="breast"].active{border-bottom:3px solid #c1432e; color:#c1432e;}
+
+main{max-width:1140px; margin:0 auto; padding:22px;}
+.cancerpanel{display:none;}
+.cancerpanel.active{display:block;}
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
+
+.subcard-list{display:grid; gap:18px;}
+.subcard{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--tabclr); border-radius:14px; padding:20px 24px; box-shadow:var(--shadow);}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--tabclr); font-size:.85rem; border:1px solid var(--tabclr); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.2rem; color:var(--tabclr);}
+.share-tag{font-size:.72rem; color:var(--muted);}
+.sub-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px;}
+.se-field{margin-bottom:14px;}
+.se-field .flabel{display:block; font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.se-field p{margin:0; font-size:.88rem; color:var(--soft);}
+.se-field.mgmt p{color:var(--ink);}
+.se-field.markers p{color:var(--ink);}
+@media (max-width:700px){ .sub-grid{grid-template-columns:1fr;} }
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:0;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.87rem; color:var(--ink);}
+
+footer{max-width:1140px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Oncology · Cancer Deep Dives</span>
+      <h1>Lung &amp; Breast Cancer Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="canctabs">
+    <button class="canctab active" data-panel="lung">Lung Cancer</button>
+    <button class="canctab" data-panel="breast">Breast Cancer</button>
+  </nav>
+</header>
+
+<main>
+  
+  <section class="cancerpanel active" data-canceb="lung">
+    <div class="intro"><p>Lung cancer is broadly split into non-small cell lung cancer (NSCLC, ~85% of cases) and small cell lung cancer (SCLC, ~15%) — a distinction that matters more for management than almost any other lung cancer classification, since SCLC is staged and treated fundamentally differently from all three NSCLC subtypes below.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Adenocarcinoma</h3><span class="share-tag">~40% of all lung cancers — the single most common lung cancer subtype overall</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Occurs in both smokers and non-smokers — it is the most common lung cancer subtype seen in LIFETIME NON-SMOKERS (especially never-smoking women and East Asian populations, where EGFR mutation rates are notably higher), unlike squamous cell carcinoma which is much more tightly smoking-linked.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Smoking remains the dominant risk factor overall, but radon exposure, secondhand smoke, occupational exposures (asbestos, arsenic), and specific EGFR-driver mutations in never-smokers are all relevant; family history and prior radiation to the chest also contribute.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging (8th edition) — size/local extension defines T, nodal stations define N, distant spread (including malignant pleural effusion, now classified as M1a) defines M; typically arises in the peripheral lung, often detected incidentally on imaging before symptoms develop given its peripheral location away from major airways.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Early-stage (I-II): surgical resection ± adjuvant chemotherapy. Locally advanced (III): concurrent chemoradiation, increasingly followed by consolidation immunotherapy (durvalumab) per the PACIFIC trial paradigm. Metastatic (IV): treatment selection is now fundamentally BIOMARKER-DRIVEN — EGFR-mutant tumors get an EGFR TKI (osimertinib) first-line, ALK/ROS1-rearranged tumors get the corresponding targeted TKI, and biomarker-negative/PD-L1-high tumors get checkpoint inhibitor-based therapy (± chemotherapy) — molecular testing before starting first-line therapy is now considered mandatory, not optional, for metastatic non-squamous NSCLC.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>EGFR mutation, ALK rearrangement, ROS1 rearrangement, KRAS G12C, and PD-L1 expression (tumor proportion score) are the routinely tested biomarkers that DIRECTLY determine first-line treatment selection — this is one of the clearest examples in oncology of a biomarker changing management rather than just prognosis. CEA is sometimes elevated but is nonspecific and not used for diagnosis or staging.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Never-smoker adenocarcinoma should never be dismissed as low-risk or unlikely — it's specifically enriched for targetable driver mutations (EGFR especially), and a full molecular panel should be pursued just as rigorously as in a heavy smoker, arguably more so given the higher pretest probability of a targetable alteration.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Squamous Cell Carcinoma</h3><span class="share-tag">~25-30% of all lung cancers</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Most strongly and specifically linked to cigarette smoking of any major lung cancer subtype — a patient with squamous histology and no significant smoking history should prompt reconsideration of the diagnosis or a search for an alternative exposure.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Smoking (dose- and duration-dependent) is overwhelmingly the dominant risk factor; occupational exposures (asbestos) and COPD (itself often smoking-related) are additional contributors.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging; classically arises CENTRALLY near a main bronchus (unlike adenocarcinoma's peripheral tendency), which means it's more likely to present with obstructive symptoms (post-obstructive pneumonia, hemoptysis, atelectasis) at diagnosis and is more accessible to bronchoscopic biopsy.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Early-stage: surgical resection ± adjuvant chemotherapy, similar framework to adenocarcinoma. Locally advanced: concurrent chemoradiation + consolidation immunotherapy. Metastatic: targetable driver mutations are RARE in squamous histology (unlike adenocarcinoma) — first-line therapy is more often chemotherapy + checkpoint inhibitor combination rather than a targeted TKI, and antiangiogenic agents like bevacizumab are generally AVOIDED in squamous histology specifically due to an elevated risk of life-threatening pulmonary hemorrhage seen in early trials.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Molecular testing yields far fewer actionable targets than adenocarcinoma — PD-L1 expression remains relevant for immunotherapy selection, but routine EGFR/ALK/ROS1 testing has a much lower yield and is not uniformly recommended the way it is for adenocarcinoma.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The bevacizumab-squamous-histology hemorrhage risk is a specific, must-know contraindication distinct from most other lung cancer treatment decisions — confirming histology before selecting an antiangiogenic agent is a hard safety checkpoint, not a minor detail.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Large Cell Carcinoma</h3><span class="share-tag">~5-10% of all lung cancers — the least common major NSCLC subtype, and its diagnostic incidence has been DECLINING as improved immunohistochemistry techniques reclassify many historically "large cell" tumors as poorly-differentiated adenocarcinoma or squamous cell carcinoma instead.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Can arise anywhere in the lung (unlike the more location-predictable adenocarcinoma/squamous patterns); tends to present at a more advanced stage and behave more aggressively than the other NSCLC subtypes on average.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Smoking is a major risk factor, broadly similar to the other NSCLC subtypes, though the evidence base is smaller given its rarity and the diagnostic reclassification trend described above.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Standard AJCC TNM staging, applied the same way as for adenocarcinoma/squamous — large cell carcinoma is essentially a NSCLC "diagnosis of exclusion," lacking the clear glandular (adenocarcinoma) or squamous differentiation features that would place it in either of the other two categories.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Follows the same general stage-based NSCLC treatment framework (surgery for early stage, chemoradiation for locally advanced, systemic therapy for metastatic disease) — because large cell carcinoma lacks distinctive molecular drivers as a category, treatment selection for metastatic disease still starts with the same reflexive molecular/PD-L1 testing used for other NSCLC, since occasional actionable mutations are still found.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>No subtype-defining biomarker — testing follows the same panel as adenocarcinoma (EGFR/ALK/ROS1/PD-L1) since occasional targetable alterations are still identified despite lacking the enrichment seen in adenocarcinoma specifically.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A "large cell carcinoma" diagnosis should prompt consideration that repeat or additional immunohistochemical staining might reclassify the tumor into a more specific (and more molecularly informative) category — this diagnostic evolution is worth discussing with pathology, especially before finalizing a treatment plan for metastatic disease.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Small Cell Lung Cancer (SCLC)</h3><span class="share-tag">~15% of all lung cancers — categorically distinct from the three NSCLC subtypes above, both biologically and in how it's staged/treated.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Almost exclusively a disease of current/former smokers — SCLC in a true never-smoker is rare enough to warrant diagnostic reconsideration; it is a neuroendocrine tumor arising from pulmonary neuroendocrine cells, biologically distinct from the epithelial NSCLC subtypes.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Smoking is by far the dominant risk factor, more tightly linked to SCLC than to any NSCLC subtype — the vast majority of SCLC patients have a substantial smoking history.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>SCLC uses its OWN simplified staging system rather than routine TNM in most clinical practice: Limited stage (disease confined to one hemithorax, encompassable within a single tolerable radiation field, roughly analogous to stage I-III NSCLC) versus Extensive stage (disease beyond this, including distant metastases) — though the AJCC TNM system can also be applied and increasingly is, the limited/extensive distinction remains the more clinically actionable framework driving treatment decisions.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>SCLC grows and spreads far more rapidly than NSCLC and is rarely amenable to surgery (most patients present with at least limited-stage disease beyond surgical candidacy, and even early detection is uncommon given its aggressive doubling time). Limited-stage: concurrent chemoradiation with curative intent, plus prophylactic cranial irradiation (PCI) or close MRI surveillance given SCLC's high propensity for early brain metastasis. Extensive-stage: platinum-etoposide chemotherapy PLUS a checkpoint inhibitor (atezolizumab or durvalumab) has become the standard first-line regimen following practice-changing trials, a meaningful advance in a disease with historically poor systemic therapy options.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>Neuroendocrine markers (chromogranin, synaptophysin, NSE, CD56) support the pathologic diagnosis but are NOT used for staging or treatment monitoring the way epithelial tumor markers are used elsewhere — SCLC lacks the biomarker-driven targeted therapy paradigm seen in NSCLC adenocarcinoma, reflecting how few actionable molecular drivers have been identified in this histology to date.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>SCLC's high early brain metastasis rate is why prophylactic cranial irradiation (or at minimum vigilant surveillance MRI) is specifically built into limited-stage management — this is a disease-specific practice that doesn't have a direct parallel in NSCLC management, where PCI is not routinely used.</p></div>
+    </article></div>
+  </section>
+  
+  <section class="cancerpanel" data-canceb="breast">
+    <div class="intro"><p>Breast cancer is classified along two independent axes that both drive management: histologic subtype (ductal vs. lobular, in situ vs. invasive) and biomarker/receptor status (ER, PR, HER2) — the AJCC 8th edition formally combines both axes, plus grade and genomic assay results when available, into a single prognostic stage. See the Cancer Classification &amp; Staging Atlas for the general biomarker-integrated staging framework.</p></div>
+    <div class="subcard-list">
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <div><h3>Ductal Carcinoma In Situ (DCIS)</h3><span class="share-tag">~20-25% of newly diagnosed breast cancers in screened populations — its detection rate rose dramatically with the introduction of widespread mammographic screening, since DCIS is very often asymptomatic and non-palpable.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Detected overwhelmingly by SCREENING mammography (as microcalcifications) rather than by a palpable mass or symptom — reflects an increasingly aging screened population as mammography programs have matured.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Shares the same risk factor profile as invasive breast cancer broadly: BRCA1/2 mutation carriers, strong family history, prior chest radiation (e.g., for pediatric Hodgkin lymphoma), nulliparity/later first pregnancy, and hormonal exposure factors (early menarche, late menopause, hormone replacement therapy).</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>By definition, Stage 0 — confined within the ductal basement membrane, has NOT invaded surrounding stroma and therefore carries no metastatic potential in its pure form; the entire clinical significance of DCIS is its status as a direct precursor that can progress to invasive ductal carcinoma if untreated, not as a currently metastasis-capable lesion.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Breast-conserving surgery (lumpectomy) plus adjuvant radiation is standard for most DCIS, or mastectomy for more extensive/multicentric disease; adjuvant endocrine therapy (tamoxifen or an aromatase inhibitor) is added for ER-positive DCIS to reduce recurrence risk. Sentinel lymph node biopsy is generally NOT required for pure DCIS (since it cannot have already metastasized) except when mastectomy is being performed (precluding future sentinel node mapping) or when invasive disease can't be fully excluded on biopsy.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>ER/PR status is routinely tested on DCIS specifically to guide adjuvant endocrine therapy decisions; HER2 testing and genomic recurrence-risk assays are used more selectively than in invasive disease, since DCIS-specific evidence for some of these tools is less robust.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A DCIS diagnosis should never be conflated with invasive cancer when counseling patients — the excellent prognosis and fundamentally different management (notably, no chemotherapy and no systemic staging workup needed for pure DCIS) reflects a biologically distinct, non-metastasis-capable entity, even though it shares the word "carcinoma."</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <div><h3>Invasive Ductal Carcinoma (IDC)</h3><span class="share-tag">~70-80% of all invasive breast cancers — by far the most common invasive breast cancer histology.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>The most common invasive breast cancer type across essentially all demographic groups; incidence rises steadily with age, with median age at diagnosis in the early-to-mid 60s in most population data.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Same broad risk factor profile as breast cancer generally — BRCA1/2 (and other, less common susceptibility genes like PALB2, CHEK2), family history, prior chest radiation, obesity (particularly postmenopausal), alcohol use, and hormonal/reproductive factors; age remains the single strongest overall risk factor.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Full AJCC 8th edition biomarker-integrated staging applies — anatomic T/N/M combined with grade and ER/PR/HER2 status (and genomic assay score when applicable) produces the final prognostic stage; sentinel lymph node biopsy is standard at diagnosis to assess nodal status.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgery (lumpectomy + radiation, or mastectomy) is foundational for non-metastatic disease. Adjuvant systemic therapy is entirely RECEPTOR-STATUS-DRIVEN: ER/PR-positive tumors get endocrine therapy (tamoxifen premenopausal, aromatase inhibitors postmenopausal) ± chemotherapy depending on genomic recurrence-risk assay results and clinical risk factors; HER2-positive tumors get HER2-targeted therapy (trastuzumab ± pertuzumab) added regardless of ER/PR status, since HER2 positivity independently drives a specific, highly effective targeted therapy pathway.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>ER, PR, and HER2 (by immunohistochemistry and/or FISH) are mandatory on every invasive ductal carcinoma diagnosis and directly determine the systemic therapy pathway. Genomic recurrence-risk assays (e.g., the 21-gene recurrence score) further refine chemotherapy benefit prediction specifically in ER-positive, HER2-negative, node-negative or limited node-positive disease — helping identify patients who can safely skip chemotherapy despite invasive disease. CA 15-3/CA 27-29 have a role in MONITORING known metastatic disease response but are not used for initial diagnosis or staging (see the Oncology Emergencies Atlas tumor marker section).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Two patients with an identical tumor size and identical negative lymph nodes can receive completely different systemic therapy (or none at all) purely based on receptor status and genomic assay result — this is the clearest illustration of why biomarker testing, not anatomic stage alone, drives modern breast cancer systemic treatment decisions.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <div><h3>Invasive Lobular Carcinoma (ILC)</h3><span class="share-tag">~10-15% of invasive breast cancers — the second most common invasive histology after ductal carcinoma.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present at a somewhat older median age than ductal carcinoma and is more frequently associated with LOSS of E-cadherin expression (a cell-adhesion protein) at the molecular level, which underlies its classic, distinctive growth pattern.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Shares the general breast cancer risk factor profile, but is NOTABLY more strongly associated with combined estrogen-progestin hormone replacement therapy use than ductal carcinoma — this specific association was a significant contributor to the decline in HRT-associated breast cancer risk discussions after the Women's Health Initiative trial findings.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Uses the same AJCC biomarker-integrated staging framework as ductal carcinoma, but with an important practical caveat: ILC grows in a diffuse, single-file infiltrative pattern (rather than forming a discrete, well-defined mass) that makes it notoriously harder to detect and to accurately size on mammography and even on physical exam — tumors are frequently LARGER than pre-operative imaging suggested once the surgical specimen is examined pathologically.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Follows the same general receptor-status-driven systemic therapy framework as ductal carcinoma (endocrine therapy for ER/PR-positive disease, HER2-targeted therapy if HER2-positive) — ILC is overwhelmingly more likely to be ER-positive/HER2-negative than ductal carcinoma as a group, which shapes the overall treatment pattern seen across this population. Surgical planning requires extra vigilance about margins given the tendency toward occult, more extensive disease than imaging suggests; MRI is used more liberally in ILC specifically for this reason.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>ER/PR/HER2 testing follows the same protocol as ductal carcinoma; ILC is disproportionately ER-positive/HER2-negative as a group compared to ductal carcinoma, which is part of why genomic recurrence-risk assays are frequently applied in this population as well.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Because ILC can be substantially underestimated in size on standard imaging, a wider preoperative imaging workup (often including breast MRI) and a lower threshold for re-excision if margins are close should be actively anticipated — don't be surprised when the final pathologic size exceeds what imaging predicted.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <div><h3>Triple-Negative Breast Cancer (TNBC)</h3><span class="share-tag">~10-15% of invasive breast cancers — defined by what it LACKS (ER-negative, PR-negative, HER2-negative) rather than a distinct histologic pattern, so it can arise from either ductal or lobular architecture (though it's disproportionately ductal).</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Disproportionately affects younger patients and, in the US, Black women at a meaningfully higher rate than other racial/ethnic groups — a well-documented disparity with contributing biological and social/access factors that remain an active area of research.</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>BRCA1 mutation carriers specifically (more so than BRCA2) have a markedly elevated risk of developing TNBC compared to receptor-positive subtypes — germline BRCA1 testing should be considered for any TNBC diagnosis, particularly in younger patients, given the treatment and family-counseling implications.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>Same AJCC biomarker-integrated staging framework, but the ABSENCE of ER/PR/HER2 expression means grade and genomic assays (which rely heavily on ER-pathway gene expression) are less informative here — anatomic stage carries relatively more weight in TNBC prognosis than in receptor-positive disease.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Because TNBC lacks the endocrine and HER2-targeted therapy options available to other subtypes, chemotherapy (often including a platinum agent, given TNBC's relative platinum sensitivity) remains the backbone of systemic therapy. Immunotherapy (pembrolizumab) combined with chemotherapy has become standard for PD-L1-positive TNBC and, notably, in the neoadjuvant/adjuvant curative-intent setting for high-risk early-stage TNBC as well — a significant recent expansion of immunotherapy into earlier-stage, curative-intent breast cancer treatment. PARP inhibitors are an option specifically for BRCA-mutated TNBC.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>By definition, ER/PR/HER2 are all negative — the relevant biomarkers instead become PD-L1 status (determines immunotherapy eligibility) and germline/somatic BRCA status (determines PARP inhibitor eligibility) — TNBC is a good example of "negative" biomarker findings still generating a distinct, actionable biomarker-driven treatment pathway rather than a lack of options.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>TNBC's historically worse prognosis reputation is becoming outdated for a meaningful subset of patients — the combination of platinum chemotherapy sensitivity, immunotherapy eligibility, and PARP inhibitor options for BRCA-mutated disease has substantially changed outcomes for appropriately biomarker-tested patients compared to a decade ago, and this shift is worth actively communicating to patients who may have outdated information about this diagnosis.</p></div>
+    </article>
+
+    <article class="subcard" style="--tabclr:#c1432e">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <div><h3>Inflammatory Breast Cancer (IBC)</h3><span class="share-tag">~1-5% of breast cancers — rare, but disproportionately aggressive and important to recognize given how different its presentation is from typical breast cancer.</span></div>
+      </header>
+      <div class="sub-grid">
+        <div class="se-field"><span class="flabel">Population Most Affected</span><p>Tends to present at a younger age than typical breast cancer and disproportionately affects Black women, similar to the demographic skew seen in TNBC (with which IBC has meaningful histologic/biomarker overlap, though IBC is a distinct clinical entity defined by presentation, not receptor status).</p></div>
+        <div class="se-field"><span class="flabel">Risk Factors</span><p>Shares general breast cancer risk factors, though the specific epidemiology of IBC is less well-characterized than more common subtypes given its rarity; obesity has been specifically associated with IBC in some studies.</p></div>
+      </div>
+      <div class="se-field"><span class="flabel">Staging Notes</span><p>IBC is CLINICALLY defined (not primarily by imaging or a discrete mass) by diffuse erythema, edema/peau d'orange skin changes, and warmth involving at least one-third of the breast, developing rapidly (often over weeks) — it is automatically staged as AT LEAST T4d (locally advanced) by definition, regardless of whether a discrete underlying mass is even identifiable, because the defining pathology is dermal lymphatic invasion by tumor cells causing the skin findings, not a palpable mass per se.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Always treated with a multimodality approach starting with NEOADJUVANT chemotherapy (never upfront surgery, given how advanced-stage IBC is by definition at presentation), followed by mastectomy (breast-conserving surgery is not appropriate given the diffuse skin involvement) and adjuvant radiation — HER2-targeted therapy and endocrine therapy are added per the same receptor-status rules as other invasive breast cancer if the tumor is HER2-positive or hormone-receptor-positive.</p></div>
+      <div class="se-field markers"><span class="flabel">Staging-Relevant Markers / Biomarkers</span><p>ER/PR/HER2 testing follows standard protocol and drives the same targeted/endocrine therapy additions as other invasive breast cancer — IBC is defined by its clinical presentation and dermal lymphatic invasion pattern, not by a unique biomarker profile, so any receptor combination is possible.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>IBC is a classic diagnosis that gets MISSED or delayed because it can closely mimic mastitis or a simple skin infection (redness, warmth, swelling) — a presentation that doesn't improve with a course of antibiotics, especially in a patient without an obvious infectious source (e.g., not postpartum/lactating), should prompt urgent breast imaging and skin punch biopsy to evaluate for IBC rather than a second antibiotic course.</p></div>
+    </article></div>
+  </section>
+</main>
+
+<footer>Lung &amp; Breast Cancer Atlas — original reference content for clinical education, grounded in AJCC 8th edition staging, NCCN Non-Small Cell Lung Cancer/Small Cell Lung Cancer/Breast Cancer guidelines, and primary trial literature (PACIFIC, IMpower/CASPIAN, KEYNOTE) as referenced per topic. See the companion Cancer Classification &amp; Staging Atlas and Oncology Emergencies Atlas (tumor markers) for related content. Verify current guideline versions before clinical use.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.canctab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.canctab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.cancerpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.cancerpanel[data-canceb="' + btn.dataset.panel + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
