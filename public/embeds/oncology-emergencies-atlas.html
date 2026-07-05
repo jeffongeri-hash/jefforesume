@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oncology Emergencies Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --accent:#4f9e6e; --warn:#ff6b5e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --accent:#2f7a4d; --warn:#b5392b; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .refs-tag, .pearl-tag, .mk-normal{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1120px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+
+nav.onctabs{display:flex; gap:6px; max-width:1120px; margin:14px auto 0; padding:0 22px; flex-wrap:wrap;}
+.onctab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 15px; border-radius:9px; cursor:pointer; font-size:.8rem; font-weight:600;}
+.onctab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
+.onctab.marker-tab{border-style:dashed;}
+main{max-width:1120px; margin:0 auto; padding:22px;}
+.oncpanel{display:none;}
+.oncpanel.active{display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; box-shadow:var(--shadow);}
+
+.onc-intro{border-bottom:2px solid var(--tabclr); padding-bottom:12px; margin-bottom:16px;}
+.onc-intro h2{font-size:1.55rem; color:var(--tabclr);}
+.onc-block{margin-bottom:18px;}
+.onc-block h3{font-size:.95rem; color:var(--soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; font-family:'JetBrains Mono',monospace;}
+.onc-block p{margin:0 0 8px; font-size:.9rem; color:var(--ink);}
+.onc-block p:last-child{margin-bottom:0;}
+.def-block p{color:var(--soft);}
+.onc-list{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:8px;}
+.onc-list li{font-size:.89rem; color:var(--soft);}
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:14px;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.88rem;}
+.refs-block{border-top:1px solid var(--line2); padding-top:10px;}
+.refs-tag{font-size:.62rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-weight:700;}
+.refs-block p{margin:4px 0 0; font-size:.76rem; color:var(--faint); font-style:italic;}
+
+/* MARKERS */
+.markcard-list{display:grid; gap:16px;}
+.markcard{background:var(--panelhi); border:1px solid var(--line2); border-radius:12px; padding:18px 20px;}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--accent); font-size:.85rem; border:1px solid var(--accent); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.1rem; flex:1;}
+.mk-normal{font-size:.72rem; color:var(--accent); background:var(--bg2); padding:4px 10px; border-radius:20px;}
+.mk-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px 18px;}
+.mfield.wide{grid-column:1 / -1;}
+.mfield .flabel{display:block; font-size:.62rem; letter-spacing:1.3px; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
+.mfield p{margin:0; font-size:.86rem; color:var(--soft);}
+.mfield.warn .flabel{color:var(--warn);}
+.mfield.warn p{color:var(--ink);}
+@media (max-width:680px){ .mk-grid{grid-template-columns:1fr;} }
+
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:840px;}
+footer{max-width:1120px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Oncology · Emergency Medicine</span>
+      <h1>Oncology Emergencies Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="onctabs"><button class="onctab active" data-target="fn" style="--tabclr:#c1432e">Febrile Neutropenia</button>
+<button class="onctab" data-target="tls" style="--tabclr:#a76bd6">Tumor Lysis Syndrome</button>
+<button class="onctab" data-target="mscc" style="--tabclr:#4a90c9">Malignant Spinal Cord Compression</button>
+<button class="onctab" data-target="svc" style="--tabclr:#d9b23c">Superior Vena Cava (SVC) Syndrome</button>
+<button class="onctab" data-target="hcm" style="--tabclr:#d98a3c">Hypercalcemia of Malignancy</button>
+<button class="onctab marker-tab" data-target="markers" style="--tabclr:#4f9e6e">Tumor Markers</button></nav>
+</header>
+
+<main>
+  <div class="intro">
+    <p>Five core oncologic emergencies — febrile neutropenia (pediatric and adult), tumor lysis syndrome, malignant spinal cord compression, SVC syndrome, and hypercalcemia of malignancy — each with labs to order, risk stratification, and management, cited to ASCO and NCCN guidance where each has the more directly relevant recommendation. A full tumor marker reference follows, covering tissue of origin, how levels change management, and the false positive/negative patterns that trip people up. Doses, thresholds, and guideline specifics should be verified against the current source before clinical use.</p>
+  </div>
+  
+  <section class="oncpanel active" data-onctab="fn" style="--tabclr:#c1432e">
+    <div class="onc-intro">
+      <h2>Febrile Neutropenia</h2>
+    </div>
+    <div class="onc-block def-block">
+      <h3>Definition</h3>
+      <p>Fever: single temp ≥38.3°C (101°F) oral, or ≥38.0°C (100.4°F) sustained &gt;1 hour. Neutropenia: ANC &lt;500/µL, or &lt;1000/µL with an anticipated decline to ≤500/µL over the next 48 hours.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Labs to Order</h3>
+      <ul class="onc-list"><li>CBC with differential (confirm/quantify ANC), CMP (renal/hepatic function, electrolytes)</li>
+<li>Blood cultures ×2 from separate sites — always include a peripheral draw AND each lumen of any central line if present (helps localize a line infection via differential time to positivity)</li>
+<li>Urinalysis + urine culture; CXR if respiratory symptoms/signs (may be subtle/absent given blunted inflammatory response)</li>
+<li>Lactate if any hemodynamic concern; site-specific cultures/imaging as directed by symptoms (e.g., stool studies for diarrhea, wound cultures)</li>
+<li>CRP/procalcitonin are sometimes trended but should not delay empiric antibiotics or override clinical risk stratification</li></ul>
+    </div>
+    <div class="onc-block">
+      <h3>Risk Stratification</h3>
+      <p>Adults: MASCC score ≥21 = low risk (may be candidate for oral outpatient therapy per ASCO/IDSA 2018 guideline, using clinical judgment + psychosocial/logistic factors); NCCN incorporates MASCC + CISNE and additionally requires anticipated severe neutropenia &lt;7 days, ECOG 0-1, no hepatic/renal insufficiency, and no other indication for admission to call a patient low-risk. High-risk: ANC &lt;100/µL, anticipated neutropenia &gt;7 days, hemodynamic instability, mucositis ≥grade 3, GI symptoms, new pulmonary infiltrate, or hepatic/renal insufficiency.</p><p>Pediatrics: Risk stratification (Alexander/COG-style criteria) considers: outpatient status at presentation, anticipated neutropenia duration &lt;7 days, and no high-risk clinical concerns (hemodynamic instability, grade ≥3 mucositis, respiratory distress, dehydration, moderate-severe abdominal pain, altered mental status, recent surgery, complex infection). The 2023 ASCO/IDSA/COG pediatric guideline update (J Clin Oncol 2023;41(9):1774-1785) governs modern practice and endorses risk-stratified empiric antibiotic selection and de-escalation rather than universal broad-spectrum coverage.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Management</h3>
+      <p>Empiric antibacterial therapy within 1 HOUR of triage/recognition — this timing is one of the highest-yield safety numbers in oncologic emergency care. First-line: anti-pseudomonal beta-lactam monotherapy (cefepime, piperacillin-tazobactam, or a carbapenem). Add vancomycin only for specific indications: hemodynamic instability/sepsis, suspected line infection/severe mucositis with viridans strep risk, skin/soft tissue infection, pneumonia, or known MRSA colonization — vancomycin should NOT be added routinely to every febrile neutropenic patient. Antifungal coverage is added for persistent fever ≥4-7 days despite broad-spectrum antibiotics without an identified source, particularly in high-risk/prolonged neutropenia. G-CSF is used prophylactically (not typically to treat an established episode) for patients on high-risk (&gt;20%) chemotherapy regimens.</p>
+    </div>
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Pediatric patients with febrile neutropenia can look deceptively well even with bacteremia — do not let a reassuring general appearance delay the 1-hour antibiotic target. Absolute monocyte count (AMC) recovery is an emerging, earlier marker than ANC recovery for safely discontinuing antibiotics in select low-risk patients, though ANC-based criteria remain the guideline standard.</p>
+    </div>
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>ASCO/IDSA Outpatient Management of Fever and Neutropenia in Adults (2018 update); Guideline for the Management of Fever and Neutropenia in Pediatric Patients with Cancer and HCT Recipients: 2023 Update, J Clin Oncol 2023;41(9):1774-1785; NCCN Prevention and Treatment of Cancer-Related Infections v3.2024.</p>
+    </div>
+  </section>
+
+  <section class="oncpanel" data-onctab="tls" style="--tabclr:#a76bd6">
+    <div class="onc-intro">
+      <h2>Tumor Lysis Syndrome</h2>
+    </div>
+    <div class="onc-block def-block">
+      <h3>Definition</h3>
+      <p>Massive release of intracellular potassium, phosphate, and nucleic acids (metabolized to uric acid) from lysed tumor cells — spontaneous or, more commonly, within 3 days before to 7 days after initiating cytotoxic therapy.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Labs to Order</h3>
+      <ul class="onc-list"><li>Laboratory TLS (Cairo-Bishop criteria) — 2 or more of the following within the same 24-hour period: Uric acid ≥8.0 mg/dL or 25% rise from baseline; Potassium ≥6.0 mEq/L or 25% rise; Phosphate ≥4.5 mg/dL or 25% rise; Calcium ≤7.0 mg/dL (albumin-corrected) or 25% fall</li>
+<li>Clinical TLS = laboratory TLS PLUS one or more of: creatinine ≥1.5× age-adjusted ULN, cardiac arrhythmia/sudden death, or a seizure not otherwise attributable</li>
+<li>Baseline + serial (often q4-6h in high-risk patients starting before chemotherapy): BMP, phosphate, calcium, uric acid, CBC; ECG if any potassium/calcium derangement</li>
+<li>Grading (Cairo-Bishop 0-5) incorporates creatinine elevation, arrhythmia severity, and seizure activity — used to guide escalation of care/ICU need</li></ul>
+    </div>
+    <div class="onc-block">
+      <h3>Risk Stratification</h3>
+      <p>High risk: Burkitt lymphoma/leukemia, lymphoblastic lymphoma, ALL with high presenting WBC, bulky/rapidly proliferative tumors, and pre-existing renal impairment or elevated baseline uric acid. Intermediate risk: most other aggressive lymphomas/leukemias without the above features. Low risk: most solid tumors and indolent hematologic malignancies.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Management</h3>
+      <p>Prevention is the primary strategy. IV hydration (aggressive, without added potassium/calcium in the fluids) for all at-risk patients. Intermediate risk: allopurinol (started 2-3 days before chemo, continued 10-14 days) — blocks new uric acid formation but does not reduce existing uric acid. High risk: rasburicase (recombinant urate oxidase) — directly degrades existing uric acid; typical adult dosing 3-6 mg single fixed dose, pediatric ~0.2 mg/kg; CONTRAINDICATED in G6PD deficiency (causes hemolysis/methemoglobinemia via hydrogen peroxide byproduct) — screen at-risk populations before dosing. Treat resulting hyperkalemia/hyperphosphatemia/hypocalcemia per standard electrolyte protocols; avoid calcium supplementation for asymptomatic hypocalcemia (risk of calcium-phosphate precipitation) — reserve IV calcium for symptomatic hypocalcemia or arrhythmia. Dialysis indications: refractory hyperkalemia, severe fluid overload, symptomatic uremia, or oliguric renal failure unresponsive to fluids.</p>
+    </div>
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Uric acid samples must be handled correctly if the patient is receiving rasburicase — blood must be collected into pre-chilled tubes and kept on ice, then processed in a pre-cooled centrifuge; uric acid continues to degrade ex vivo at room temperature after a rasburicase dose, producing a falsely low level that can mask ongoing lysis. Also remember: TLS can occur WITHOUT chemotherapy exposure in rapidly proliferative untreated tumors — don't anchor on "they haven't started treatment yet" to rule it out.</p>
+    </div>
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>Cairo MS, Bishop M. Br J Haematol. 2004;127:3-11 (original criteria); Expert consensus (modified Delphi) guidelines for TLS prophylaxis/management, Support Care Cancer 2023; NCCN and BCSH guidelines for rasburicase/allopurinol use.</p>
+    </div>
+  </section>
+
+  <section class="oncpanel" data-onctab="mscc" style="--tabclr:#4a90c9">
+    <div class="onc-intro">
+      <h2>Malignant Spinal Cord Compression</h2>
+    </div>
+    <div class="onc-block def-block">
+      <h3>Definition</h3>
+      <p>Compression of the thecal sac/spinal cord by direct tumor extension or, most commonly, an epidural metastatic deposit from a vertebral body metastasis — a true oncologic emergency where treatment delay of even hours can produce irreversible paralysis.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Labs to Order</h3>
+      <ul class="onc-list"><li>This is primarily an imaging + exam diagnosis, not a lab-driven one — but obtain: CBC, BMP, coagulation studies (INR/PTT) prior to any planned procedure/biopsy</li>
+<li>Consider relevant tumor markers if diagnosis unknown and may support treatment decisions without tissue (e.g., PSA for suspected prostate primary, serum/urine immunoglobulins for suspected myeloma) — per UK guidance, chemotherapy is unlikely to be started without tissue UNLESS markers strongly support a specific diagnosis</li>
+<li>Post-void residual/bladder scan if bowel or bladder dysfunction is reported — one of the most concerning and prognostically significant findings</li></ul>
+    </div>
+    <div class="onc-block">
+      <h3>Risk Stratification</h3>
+      <p>Any current or prior cancer diagnosis + new/escalating back pain (especially thoracic, band-like, worse recumbent/at night, worse with cough/Valsalva), radicular pain, new weakness, sensory level, or bowel/bladder dysfunction should be treated as MSCC until proven otherwise — this is NOT a routine back pain workup. Pretreatment ambulatory/neurologic status is the single strongest predictor of functional outcome, which is why time to treatment matters so much.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Management</h3>
+      <p>Dexamethasone should be given AS SOON AS MSCC is clinically suspected — do not wait for MRI confirmation if there are neurological signs/symptoms. Typical regimen: 10 mg IV loading dose, then 16 mg/day in divided doses (e.g., 4 mg IV/PO q6h), with gastroprotection (PPI) and a taper once definitive treatment is underway; some protocols use a lower 16 mg/day total without a large loading dose — very high-dose regimens (96 mg/day) show only marginal added benefit with substantially more steroid toxicity and are not routinely recommended. Urgent MRI of the WHOLE spine within 24 hours (emergent, same-day if progressing deficits) — skip-lesions at other spinal levels are common and change surgical planning. Definitive treatment is multidisciplinary: separation surgery + adjuvant radiation for spinal instability or an oligometastatic/radioresistant tumor with cord compression, versus radiation alone (conventional or stereotactic body radiotherapy) for a radiosensitive tumor without instability — decisions are increasingly framed using the NOMS (Neurologic, Oncologic, Mechanical, Systemic) framework.</p>
+    </div>
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Don't wait for profound/complete paralysis to act — earlier warning signs (escalating spinal pain, new nocturnal pain, pain on movement, radicular symptoms, subtle gait or sensory change) are the actionable window; by the time bowel/bladder dysfunction or dense weakness is present, the prognosis for meaningful neurologic recovery is markedly worse regardless of how quickly treatment starts afterward.</p>
+    </div>
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>NICE NG234 Spinal Metastases and Metastatic Spinal Cord Compression (2023); Loblaw DA, Laperriere NJ. Emergency treatment of malignant extradural spinal cord compression: an evidence-based guideline; NCCN Central Nervous System Cancers guideline (spinal cord compression section).</p>
+    </div>
+  </section>
+
+  <section class="oncpanel" data-onctab="svc" style="--tabclr:#d9b23c">
+    <div class="onc-intro">
+      <h2>Superior Vena Cava (SVC) Syndrome</h2>
+    </div>
+    <div class="onc-block def-block">
+      <h3>Definition</h3>
+      <p>Obstruction of blood flow through the SVC — most often external compression by a mediastinal mass, less commonly intraluminal thrombosis (increasingly from central venous catheters/pacemaker leads) — producing impaired venous return from the head, neck, and upper extremities.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Labs to Order</h3>
+      <ul class="onc-list"><li>No lab test is diagnostic — this is a clinical + imaging diagnosis (facial/neck/upper extremity edema, distended neck/chest wall collateral veins, Pemberton's sign)</li>
+<li>CT chest WITH IV contrast is the primary imaging study (defines the site/cause of obstruction and the extent of collaterals); consider LOWER extremity IV access for the contrast injection when feasible to avoid injecting through an already-compromised upper extremity venous system</li>
+<li>Tissue diagnosis (sputum cytology, bronchoscopy, mediastinoscopy, or image-guided biopsy) whenever the patient is stable enough — treatment choice depends heavily on tumor type/chemosensitivity, so biopsy-before-treatment is preferred unless the patient has impending airway compromise or cerebral edema</li></ul>
+    </div>
+    <div class="onc-block">
+      <h3>Risk Stratification</h3>
+      <p>~85-95% of malignant SVC syndrome is due to an intrathoracic malignancy, most commonly lung cancer, followed by lymphoma and other mediastinal metastatic disease. True emergencies (requiring treatment before a tissue diagnosis is obtained) are those with laryngeal edema (stridor, hoarseness) or cerebral edema (headache, confusion, visual changes) — these are the minority of presentations.</p>
+    </div>
+    <div class="onc-block">
+      <h3>Management</h3>
+      <p>For most stable patients: obtain tissue diagnosis FIRST, then treat definitively with chemotherapy and/or radiation targeted to the underlying tumor type (highly chemosensitive tumors like small cell lung cancer or lymphoma may respond within days). Endovascular stenting provides the fastest symptomatic relief (often within 24-72 hours) and is increasingly used as first-line symptom palliation independent of, or alongside, oncologic treatment — particularly useful when rapid relief is needed or the underlying tumor is not highly chemosensitive. Catheter/device-associated thrombus is managed with anticoagulation ± catheter removal. Adjunctive measures (head-of-bed elevation, diuretics, corticosteroids) are commonly used but have weak evidence individually.</p>
+    </div>
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Don't reflexively rush to treat before biopsy just because the diagnosis is dramatic-looking — unless there's airway or cerebral edema, empiric treatment without tissue risks giving the wrong regimen (or radiation that obscures future biopsy) for what will guide the patient's entire subsequent oncologic course.</p>
+    </div>
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>AAFP Oncologic Emergencies: Recognition and Initial Management (2018); Azizi AH et al. Superior Vena Cava Syndrome. JACC Cardiovasc Interv. 2020;13(24):2896-2910; NCCN guidelines by primary tumor type (lung, lymphoma) address SVC syndrome management within disease-specific pathways.</p>
+    </div>
+  </section>
+
+  <section class="oncpanel" data-onctab="hcm" style="--tabclr:#d98a3c">
+    <div class="onc-intro">
+      <h2>Hypercalcemia of Malignancy</h2>
+    </div>
+    <div class="onc-block def-block">
+      <h3>Definition</h3>
+      <p>The most common life-threatening metabolic complication of cancer — most often from tumor secretion of parathyroid hormone-related protein (PTHrP, "humoral hypercalcemia of malignancy," ~80% of cases), followed by local osteolytic bone metastases (e.g., breast cancer, multiple myeloma) and, less commonly, ectopic 1,25-dihydroxyvitamin D production (lymphoma).</p>
+    </div>
+    <div class="onc-block">
+      <h3>Labs to Order</h3>
+      <ul class="onc-list"><li>Albumin-corrected total calcium (or directly measured ionized calcium — see the Electrolyte Correction Atlas for the full correction formula and its limitations)</li>
+<li>PTH (typically suppressed in malignancy-associated hypercalcemia, unlike primary hyperparathyroidism), PTHrP if humoral mechanism suspected, 1,25-(OH)₂ vitamin D if lymphoma suspected</li>
+<li>BMP (renal function — nephrogenic diabetes insipidus-like polyuria from hypercalcemia causes volume depletion, which worsens the hypercalcemia further in a feed-forward loop), phosphate (often low/low-normal in PTHrP-mediated disease, distinct from the hyperphosphatemia typically seen in primary hyperparathyroidism)</li>
+<li>ECG for QT shortening/arrhythmia risk in moderate-severe elevation</li></ul>
+    </div>
+    <div class="onc-block">
+      <h3>Risk Stratification</h3>
+      <p>Mild 10.5-11.9 mg/dL: often asymptomatic. Moderate 12.0-13.9 mg/dL: classic "stones, bones, groans, psychiatric overtones" symptom complex. Severe ≥14.0 mg/dL OR symptomatic with altered mental status/severe dehydration = hypercalcemic crisis requiring ICU-level aggressive treatment (matches the severity framework in the Electrolyte Correction Atlas).</p>
+    </div>
+    <div class="onc-block">
+      <h3>Management</h3>
+      <p>First-line: aggressive isotonic (0.9%) IV fluid rehydration — corrects the volume depletion driving further calcium reabsorption; this alone can meaningfully lower calcium before any other agent is given. Loop diuretics (furosemide) are NOT first-line and should only be added after adequate rehydration if there's a specific need to manage volume status — historically overused for "forced diuresis," which risks worsening the underlying volume depletion if given too early. IV bisphosphonate: zoledronic acid 4 mg IV over ≥15 minutes is the preferred agent (faster infusion, more potent than pamidronate); pamidronate 60-90 mg IV over 2-24 hours is the alternative — onset for either takes 2-4 days, with nadir around day 4-7, so a bridging agent is needed for the interim. Calcitonin (4 IU/kg SC/IM q12h) provides a rapid but short-lived and self-limited (tachyphylaxis within 48 hours) drop in calcium — used as a bridge during the first 24-48 hours while bisphosphonates take effect. Denosumab is preferred in renal impairment (bisphosphonates are renally cleared/nephrotoxic) or bisphosphonate-refractory hypercalcemia. Dialysis is reserved for severe, refractory hypercalcemia with renal failure or when fluids/bisphosphonates are contraindicated or too slow for the clinical severity.</p>
+    </div>
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Monitor phosphate and magnesium after bisphosphonate dosing — mild hypocalcemia, hypophosphatemia, and hypomagnesemia are recognized adverse effects of treatment itself, not just the underlying disease, and can compound existing electrolyte derangements if not anticipated.</p>
+    </div>
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>Stewart AF. Hypercalcemia associated with cancer. N Engl J Med. 2005;352(4):373-379; AAFP Treatment of Oncologic Emergencies (2006, principles still current); NCCN supportive care guidelines address bisphosphonate/denosumab selection by renal function.</p>
+    </div>
+  </section>
+  
+  <section class="oncpanel" data-onctab="markers" style="--tabclr:#4f9e6e">
+    <div class="onc-intro"><h2>Tumor Markers Reference</h2></div>
+    <div class="markcard-list">
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>AFP (Alpha-Fetoprotein)</h3>
+        <span class="mk-normal">&lt;10–20 ng/mL (adult, non-pregnant)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>Major protein of fetal serum (produced by fetal liver/yolk sac); falls to near-undetectable levels shortly after birth and is not normally produced by adult tissue.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Hepatocellular carcinoma (HCC) and nonseminomatous germ cell tumors (yolk sac tumor component especially) are the primary associations; occasionally mild elevation in other GI cancers, rarely &gt;1000 ng/mL from non-HCC/non-germ-cell sources.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>In a cirrhotic patient with a liver mass, AFP &gt;1000 ng/mL (in the appropriate imaging context) can support a presumptive HCC diagnosis without biopsy per some society criteria; trended serially to assess treatment response/recurrence in both HCC and germ cell tumors — a rising AFP after definitive treatment is a strong recurrence signal, often preceding imaging findings.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Cirrhosis and active viral hepatitis commonly cause mild-moderate elevation (usually &lt;500 ng/mL, occasionally higher) — this overlap with HCC's own risk population is the single biggest interpretive pitfall; pregnancy (physiologic).</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>A meaningful fraction of HCC (particularly well-differentiated tumors) does not secrete AFP at all — histologic grade correlates with AFP level (poorly differentiated tumors tend to have much higher levels than well-differentiated ones), so a normal AFP never excludes HCC.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>CEA (Carcinoembryonic Antigen)</h3>
+        <span class="mk-normal">&lt;3.0 ng/mL (non-smoker) / &lt;5.0 ng/mL (smoker)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A cell-surface glycoprotein normally expressed during fetal gut development; re-expressed by many epithelial adenocarcinomas, most classically colorectal cancer.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Colorectal cancer is the primary clinical use; also seen with gastric, pancreatic, lung, breast, and medullary thyroid cancers among others — it is a broadly non-specific epithelial tumor marker.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Not used for screening or diagnosis (poor sensitivity/specificity for early disease). Primary clinical role is POST-treatment surveillance in colorectal cancer — a rising trend after resection is one of the earliest signals of recurrence, often preceding imaging, and prompts further workup; also used to gauge prognosis (higher preoperative levels correlate with worse stage/outcome).</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Cigarette smoking (this is why the reference range itself is smoker-adjusted), inflammatory bowel disease, pancreatitis, cirrhosis/hepatitis, and other benign inflammatory GI conditions.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Early-stage colorectal cancer frequently has a normal CEA — sensitivity is heavily stage-dependent, which is exactly why it isn't validated as a standalone screening test.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>PSA (Prostate-Specific Antigen)</h3>
+        <span class="mk-normal">&lt;4.0 ng/mL (age- and lab-dependent; not a hard cutoff)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A serine protease produced by normal AND malignant prostate epithelial cells — it is organ-specific, not cancer-specific, which is the central limitation of PSA as a marker.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Prostate cancer — used for both screening (controversial, shared decision-making per USPSTF) and post-treatment surveillance (should become undetectable after radical prostatectomy; "biochemical recurrence" = a defined rise after nadir following either surgery or radiation).</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Positive predictive value for cancer is only ~20–30% at PSA 4–10 ng/mL, rising to ~50% above 10 ng/mL — a mildly elevated PSA alone is a relatively weak diagnostic signal and drives further risk stratification (free-to-total PSA ratio, PSA density, MRI, biopsy) rather than an automatic biopsy in isolation. Postoperative/post-radiation trend is central to surveillance and triggers salvage therapy decisions.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Benign prostatic hyperplasia, prostatitis/UTI, recent prostate manipulation (biopsy, cystoscopy, even vigorous digital rectal exam or ejaculation in some protocols), urinary retention.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>5-alpha-reductase inhibitors (finasteride/dutasteride) lower PSA roughly by half independent of cancer status — failing to account for this in a patient on these medications can falsely reassure; some aggressive/poorly differentiated prostate cancers (and rare small-cell/neuroendocrine prostate cancer) produce disproportionately little PSA relative to tumor burden.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>CA-125</h3>
+        <span class="mk-normal">&lt;35 U/mL</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A glycoprotein expressed by fetal coelomic epithelium and adult mesothelial cells (peritoneum, pleura, pericardium) — its broad tissue distribution explains its poor specificity.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Epithelial ovarian cancer is the primary use — both for monitoring treatment response/recurrence and (combined with imaging/menopausal status via the ROMA or RMI indices) for risk-stratifying an adnexal mass; also seen in other gynecologic and non-gynecologic malignancies (e.g., pancreatic, breast) and mucinous ovarian tumors specifically show more modest elevation than serous subtypes.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Not used for population screening (insufficient specificity, low ovarian cancer prevalence makes false positives common) — a large randomized screening trial did not show a mortality benefit from CA-125-based screening in average-risk women. Serial values are the primary use during/after ovarian cancer treatment to track response and detect recurrence.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Menstruation, endometriosis, pelvic inflammatory disease, uterine fibroids, pregnancy, and any cause of peritoneal irritation/ascites (including benign conditions like cirrhosis or heart failure) — mesothelial surfaces of any cause of ascites/pleural effusion can drive CA-125 up.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Mucinous ovarian tumors (a distinct histologic subtype) characteristically show only modest CA-125 elevation even when malignant, unlike the serous subtype — this is a well-recognized diagnostic blind spot for this specific tumor type.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>CA 19-9</h3>
+        <span class="mk-normal">&lt;37 U/mL</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A sialylated Lewis-antigen carbohydrate epitope; individuals who are Lewis-antigen-negative (a minority of the population, more common in certain ethnic groups) genetically CANNOT produce CA 19-9 at all, regardless of tumor burden.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Pancreatic and biliary tract cancers are the primary association; also elevated in colorectal, gastric, hepatocellular, esophageal, and ovarian (especially mucinous) cancers.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Positive predictive value is &lt;1% in an asymptomatic population — not validated for screening. In a patient with a clinical picture consistent with pancreatic cancer (e.g., painless jaundice + pancreatic mass), levels &gt;1000 U/mL carry a reported ~97% positive predictive value and predict metastatic disease. Postoperative decline/normalization predicts longer survival; a postoperative RISE (a reported ~2.45-fold increase) is a strong recurrence signal, often preceding imaging detection.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Any cause of biliary obstruction/cholestasis (including benign gallstone disease) can markedly elevate CA 19-9 independent of malignancy — this is the most important confounder, since relieving obstruction (e.g., stenting) often normalizes a falsely elevated level; also pancreatitis and cirrhosis.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Roughly 5–10% of the population is Lewis-antigen negative (Le(a-b-) genotype) and will have an undetectably low CA 19-9 even with bulky, biologically active pancreatic cancer — a normal CA 19-9 never excludes pancreatic cancer in isolation.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">06</span>
+        <h3>Beta-hCG (Human Chorionic Gonadotropin)</h3>
+        <span class="mk-normal">&lt;5 mIU/mL (non-pregnant)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>Normally produced by placental trophoblastic tissue; ectopically produced by trophoblastic elements within certain tumors (germ cell tumors, gestational trophoblastic disease) and rarely by other epithelial cancers.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Choriocarcinoma and other gestational trophoblastic disease, nonseminomatous germ cell tumors (embryonal carcinoma, choriocarcinoma component), and a subset of seminomas (roughly 15–20% show mild elevation from syncytiotrophoblastic giant cells even without a choriocarcinoma component).</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Central to germ cell tumor staging (part of the S-stage serum marker criteria alongside AFP and LDH) and to monitoring treatment response — an expected exponential decline with an appropriate half-life (~24–36 hours) after definitive treatment/orchiectomy is tracked closely; a plateau or rise signals treatment failure or recurrence. In gestational trophoblastic disease, serial quantitative trends define remission versus the need for further chemotherapy.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Pregnancy is the dominant confounder and must always be excluded first in a person who could be pregnant; marijuana use has been reported to cause mild false elevation in some heterophile-antibody-affected assays; certain assay interference (heterophile antibodies) can produce a spuriously elevated result unrelated to any hCG-producing tissue.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Pure seminoma (without a choriocarcinoma/syncytiotrophoblastic component) typically does NOT elevate beta-hCG — a normal level does not exclude a germ cell tumor, and marker pattern (AFP/hCG/LDH combination) helps distinguish seminomatous from nonseminomatous histology even before pathology returns.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">07</span>
+        <h3>CA 15-3</h3>
+        <span class="mk-normal">&lt;30 U/mL</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A glycoprotein (MUC1 gene product) shed from the surface of glandular epithelial cells, most notably breast ductal epithelium.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Breast cancer is the primary association, used mainly for monitoring metastatic/recurrent disease rather than diagnosis; also nonspecifically elevated in other adenocarcinomas (ovarian, lung, pancreatic) and even renal cell carcinoma.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Not recommended for screening or diagnosis of early breast cancer (poor sensitivity in early-stage disease). Primary use is serial monitoring of known metastatic breast cancer alongside imaging to assess treatment response — a rising trend suggests progression, though levels can transiently rise with early effective treatment (a recognized "flare" phenomenon) and should be interpreted alongside imaging rather than in isolation.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Benign breast disease (fibrocystic changes, breast infection), hepatic disease, and any inflammatory condition affecting glandular/epithelial tissue; pregnancy and lactation.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Early-stage, non-metastatic breast cancer very often has a normal CA 15-3 — its sensitivity is concentrated in advanced/metastatic disease, which is exactly why it has no role in early detection.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">08</span>
+        <h3>Calcitonin</h3>
+        <span class="mk-normal">&lt;10 pg/mL (male) / &lt;5 pg/mL (female), assay-dependent</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>Produced by parafollicular (C) cells of the thyroid gland; C-cell hyperplasia and medullary thyroid carcinoma both derive from and secrete via this cell line.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Medullary thyroid carcinoma (MTC) — both sporadic and hereditary (MEN2A/2B, familial MTC via RET proto-oncogene mutations); also used to screen at-risk family members of a patient with hereditary MTC.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Baseline and postoperative calcitonin trend is central to MTC management — an elevated preoperative level supports the diagnosis and correlates with tumor burden/nodal disease risk, guiding the extent of surgery (e.g., prophylactic central neck dissection). Postoperative undetectable calcitonin suggests biochemical cure; a persistently elevated or rising postoperative level indicates persistent/recurrent disease and triggers further localization workup. Doubling time on serial measurement is used prognostically.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Proton pump inhibitor use, hypercalcemia (of any cause, via direct C-cell stimulation), renal insufficiency (reduced clearance), neuroendocrine tumors elsewhere, and some other thyroid conditions including Hashimoto's thyroiditis in certain assays.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Small, early MTC (particularly microscopic/incidental disease) may not raise calcitonin above the reference range — a normal level does not fully exclude early disease, though sensitivity is generally good for clinically apparent tumors.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">09</span>
+        <h3>LDH (Lactate Dehydrogenase)</h3>
+        <span class="mk-normal">~140–280 U/L (lab-dependent — a nonspecific enzyme, not a true tumor marker)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>Ubiquitous intracellular glycolytic enzyme released from ANY damaged or rapidly turning-over tissue (not tumor-specific in any way) — its oncologic value comes from reflecting tumor burden/cell turnover/tissue breakdown broadly rather than a specific tissue of origin.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Used as a prognostic/staging marker across many malignancies: a core component of the International Prognostic Index for lymphoma, part of the S-stage criteria for testicular germ cell tumors (alongside AFP/beta-hCG), and part of the M1c substage/prognostic stratification in metastatic melanoma.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>Elevated LDH at diagnosis generally correlates with higher tumor burden/more aggressive disease and worse prognosis across the settings above, directly influencing risk-stratified treatment intensity (e.g., IPI score for lymphoma treatment planning) and is trended during treatment as a rough surrogate for tumor lysis/response.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Hemolysis (including poor phlebotomy technique/sample handling — a very common preanalytical false elevation), myocardial infarction, hepatitis, muscle injury/rhabdomyolysis, and many other causes of tissue damage entirely unrelated to cancer.</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Not applicable in the traditional sense since LDH is a nonspecific tumor-burden marker rather than a cancer-specific one — a normal LDH simply does not rule out malignancy of any type, low-burden or otherwise.</p></div>
+      </div>
+    </article>
+
+    <article class="markcard">
+      <header class="mcard-h">
+        <span class="mcard-num">10</span>
+        <h3>Beta-2 Microglobulin (β2M)</h3>
+        <span class="mk-normal">~0.8–2.4 mg/L (renal function–dependent)</span>
+      </header>
+      <div class="mk-grid">
+        <div class="mfield"><span class="flabel">Tissue of Origin</span><p>A component of MHC class I molecules present on essentially all nucleated cells; shed into circulation proportional to cell turnover and cleared renally — reflects both tumor cell turnover AND renal clearance simultaneously.</p></div>
+        <div class="mfield"><span class="flabel">Associated Cancers</span><p>Multiple myeloma (a key component of the International Staging System, alongside albumin) and lymphoproliferative disorders (chronic lymphocytic leukemia, various lymphomas) are the primary oncologic uses; also reported as a prognostic marker in renal cell carcinoma.</p></div>
+        <div class="mfield wide"><span class="flabel">Levels &amp; How They Alter Management</span><p>In multiple myeloma, β2M is directly incorporated into formal disease staging (International Staging System) and prognosis — higher levels at diagnosis indicate greater tumor burden and worse prognosis, directly informing risk-adapted treatment intensity discussions. Serial trend also tracks disease burden/response in CLL and lymphoma.</p></div>
+        <div class="mfield warn"><span class="flabel">False Positives</span><p>Renal insufficiency of ANY cause is the dominant confounder — because β2M is renally cleared, impaired kidney function alone (common in myeloma patients from light-chain cast nephropathy) elevates the level independent of tumor burden, which is why ISS staging must be interpreted with renal function in mind; also elevated in chronic inflammatory conditions and viral infections (including HIV).</p></div>
+        <div class="mfield warn"><span class="flabel">False Negatives</span><p>Not a major concern for this marker given its broad cellular expression, though very low-burden/early disease may show only mild elevation that overlaps with the normal range.</p></div>
+      </div>
+    </article></div>
+  </section>
+</main>
+
+<footer>Oncology Emergencies Atlas — original reference content for clinical education, grounded in ASCO/IDSA, NCCN, and NICE guidance as cited per section. Verify current guideline versions and institutional protocols before applying doses or thresholds to patient care.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.onctab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.onctab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.oncpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.oncpanel[data-onctab="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

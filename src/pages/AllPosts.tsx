@@ -19,6 +19,86 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Cancer Classification & Staging Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Tumor origin, histologic grade, TNM staging, and prognostic groups — with bedside pearls for interpreting pathology and imaging.",
+      image: businessPost,
+      slug: "cancer-classification-staging-atlas",
+      tags: ["Oncology", "Staging", "Clinical Education"]
+    },
+    {
+      title: "Lung & Breast Cancer Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Histologic subtypes, molecular markers, staging pearls, and treatment pathways for lung and breast cancer.",
+      image: businessPost,
+      slug: "lung-breast-cancer-atlas",
+      tags: ["Oncology", "Lung Cancer", "Breast Cancer"]
+    },
+    {
+      title: "Cancer Deep Dives Vol. II",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Volume II — expanded organ-system oncology coverage with molecular drivers, staging, treatment pathways, and prognostic pearls.",
+      image: businessPost,
+      slug: "cancer-deep-dives-vol2",
+      tags: ["Oncology", "Clinical Education"]
+    },
+    {
+      title: "Oncology Emergencies Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Tumor lysis, hypercalcemia of malignancy, cord compression, neutropenic fever, SVC syndrome, and hyperviscosity — recognition and management.",
+      image: businessPost,
+      slug: "oncology-emergencies-atlas",
+      tags: ["Oncology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Oncology Interventions Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Surgery, radiation, chemotherapy, targeted therapy, immunotherapy, and supportive care — with modality selection pearls.",
+      image: businessPost,
+      slug: "oncology-interventions-atlas",
+      tags: ["Oncology", "Treatment", "Clinical Education"]
+    },
+    {
+      title: "Oncology Side Effects Atlas — Chemo & Radiation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Chemo and radiation toxicities by organ system — with grading, monitoring, and management pearls.",
+      image: businessPost,
+      slug: "oncology-side-effects-atlas",
+      tags: ["Oncology", "Toxicity", "Clinical Education"]
+    },
+    {
+      title: "Cosmetic Dermatology Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Neuromodulators, fillers, chemical peels, lasers, and resurfacing — with anatomy pearls and complication management.",
+      image: businessPost,
+      slug: "cosmetic-dermatology-atlas",
+      tags: ["Dermatology", "Cosmetic", "Clinical Education"]
+    },
+    {
+      title: "Outpatient Dermatology Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 3, 2026",
+      excerpt: "Acne, rosacea, eczema, psoriasis, pigmentary disorders, skin cancer screening, and common in-office procedures.",
+      image: businessPost,
+      slug: "outpatient-dermatology-atlas",
+      tags: ["Dermatology", "Outpatient", "Clinical Education"]
+    },
+    {
       title: "Electrolyte & Blood Product Correction Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",

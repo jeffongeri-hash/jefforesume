@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oncology Side Effects Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --accent:#c1432e; --accent2:#4a90c9; --warn:#ff6b5e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --accent:#a3341f; --accent2:#356d94; --warn:#b5392b; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .refs-tag, .pearl-tag, .sev-tier{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1160px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+
+nav.modetabs{display:flex; gap:8px; max-width:1160px; margin:14px auto 0; padding:0 22px;}
+.modetab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:11px 20px; border-radius:10px 10px 0 0; cursor:pointer; font-size:.92rem; font-weight:700; border-bottom:none;}
+.modetab.active{background:var(--panel); color:var(--ink);}
+.modetab[data-mode="chemo"].active{border-bottom:3px solid var(--accent); color:var(--accent);}
+.modetab[data-mode="rad"].active{border-bottom:3px solid var(--accent2); color:var(--accent2);}
+
+main{max-width:1160px; margin:0 auto; padding:22px;}
+.modeblock{display:none;}
+.modeblock.active{display:block;}
+.cattabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; padding:10px; background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+.cattab{background:transparent; border:1px solid var(--line2); color:var(--muted); padding:7px 13px; border-radius:8px; cursor:pointer; font-size:.8rem; font-weight:600;}
+.cattab[data-mode="chemo"].active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.cattab[data-mode="rad"].active{background:var(--accent2); color:#fff; border-color:var(--accent2);}
+.catpanel{display:none;}
+.catpanel.active{display:block;}
+
+.secard-list{display:grid; gap:16px;}
+.secard{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow);}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:.85rem; border:1px solid var(--line2); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.15rem;}
+.se-field{margin-bottom:14px;}
+.se-field .flabel{display:block; font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.se-field p{margin:0; font-size:.88rem; color:var(--soft);}
+.se-field.mgmt p{color:var(--ink);}
+
+.sev-bar{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px;}
+.sev-seg{border-radius:9px; padding:9px 11px; display:flex; flex-direction:column; gap:3px; color:#241a06;}
+.sev-tier{font-weight:800; font-size:.75rem;}
+.sev-desc{font-size:.72rem; line-height:1.35;}
+.sev-mild{background:#e8d24a;}
+.sev-moderate{background:#e0a13c;}
+.sev-severe{background:#e2685a; color:#2a0e08;}
+html[data-theme="light"] .sev-mild{background:#f0dd70;}
+html[data-theme="light"] .sev-moderate{background:#eab568;}
+html[data-theme="light"] .sev-severe{background:#e8897c;}
+@media (max-width:640px){ .sev-bar{grid-template-columns:1fr;} }
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:12px;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.87rem;}
+.refs-block{border-top:1px solid var(--line2); padding-top:8px;}
+.refs-tag{font-size:.62rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-weight:700;}
+.refs-block p{margin:4px 0 0; font-size:.75rem; color:var(--faint); font-style:italic;}
+
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
+footer{max-width:1160px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Oncology · Supportive Care</span>
+      <h1>Oncology Side Effects Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="modetabs">
+    <button class="modetab active" data-mode="chemo">Chemotherapy Side Effects</button>
+    <button class="modetab" data-mode="rad">Radiation Side Effects</button>
+  </nav>
+</header>
+
+<main>
+  <div class="intro">
+    <p>A complete, exhaustive reference of chemotherapy and radiation side effects — organized by organ system, each with the pathology behind it, likely causative agents, CTCAE-style mild/moderate/severe grading, and the specific agents/interventions that actually work (magic mouthwash for mucositis, ondansetron/aprepitant/dexamethasone for CINV, mesna for hemorrhagic cystitis, and more). Cited to ASCO, NCCN, MASCC, and ASTRO guidance per topic. Doses and protocols should be verified against current guidelines before clinical use.</p>
+  </div>
+  
+  <div class="modeblock active" data-modeblock="chemo">
+    <div class="cattabs"><button class="cattab active" data-target="chemo-gi" data-mode="chemo">Gastrointestinal</button>
+<button class="cattab" data-target="chemo-heme" data-mode="chemo">Hematologic</button>
+<button class="cattab" data-target="chemo-derm" data-mode="chemo">Dermatologic</button>
+<button class="cattab" data-target="chemo-neuro" data-mode="chemo">Neurologic</button>
+<button class="cattab" data-target="chemo-cardiopulm" data-mode="chemo">Cardiopulmonary</button>
+<button class="cattab" data-target="chemo-renal" data-mode="chemo">Renal &amp; GU</button>
+<button class="cattab" data-target="chemo-endo" data-mode="chemo">Endocrine &amp; Metabolic</button>
+<button class="cattab" data-target="chemo-systemic" data-mode="chemo">Reproductive &amp; Systemic</button></div>
+    <section class="catpanel active" data-cat="chemo-gi"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Chemotherapy-Induced Nausea/Vomiting (CINV)</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Highly emetogenic: cisplatin, cyclophosphamide (high-dose), anthracyclines (esp. combined with cyclophosphamide). Moderately emetogenic: carboplatin, oxaliplatin, irinotecan.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Chemotherapy triggers serotonin (5-HT3) release from enterochromaffin cells in the gut, activating vagal afferents to the brainstem chemoreceptor trigger zone (acute phase, first 24h); a delayed phase (24h-5 days) is more substance P/NK1-receptor-mediated. Anticipatory nausea is a separate, classically conditioned phenomenon from prior poorly-controlled cycles.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">1-2 episodes/24h, tolerating oral intake</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">3-5 episodes/24h or IV fluids indicated &lt;24h</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">≥6 episodes/24h or IV fluids/tube feeding/TPN indicated ≥24h, or life-threatening consequences</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>First-line prophylaxis is risk-stratified per MASCC/ESMO and ASCO antiemetic guidelines: highly emetogenic regimens get a 4-drug combination (5-HT3 antagonist [ondansetron/granisetron], NK1 antagonist [aprepitant], dexamethasone, ± olanzapine); moderately emetogenic regimens typically use a 5-HT3 antagonist + dexamethasone. Olanzapine is specifically effective for breakthrough/refractory CINV and delayed nausea. Ondansetron (Zofran) remains the most recognizable and widely used 5-HT3 antagonist for acute-phase control.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Anticipatory nausea does not respond to antiemetics started on the day of treatment — it requires anxiolytic/behavioral intervention (e.g., lorazepam, relaxation techniques) BEFORE the next cycle, and the best prevention is aggressive control of nausea during the first cycle so the conditioned response never develops.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASCO Antiemetics Guideline Update (2020); MASCC/ESMO Antiemetic Guideline; NCCN Antiemesis guideline.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Oral Mucositis / Stomatitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>5-fluorouracil, methotrexate, high-dose melphalan (HCT conditioning), doxorubicin; risk amplified by concurrent head/neck radiation.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Direct cytotoxic injury to rapidly-dividing basal oral mucosal epithelium, followed by an inflammatory cascade (pro-inflammatory cytokine release, NF-κB activation) that amplifies tissue damage beyond the initial insult — ulceration typically peaks around day 7-14 post-exposure as the epithelium fails to regenerate fast enough.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Erythema/soreness, able to eat a soft/regular diet</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Patchy ulceration, pain that limits oral intake, requiring a modified diet</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Confluent ulceration, unable to tolerate any oral intake — may require IV hydration, feeding tube, or parenteral nutrition</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>"Magic mouthwash" (compounded combination — typically viscous lidocaine + diphenhydramine ± an antacid such as magnesium/aluminum hydroxide, formulations vary by institution) is the classic topical symptomatic agent for pain control. Basic oral care protocols (bland rinses, soft toothbrush) are foundational per MASCC/ISOO guidelines. Oral cryotherapy (ice chips held in the mouth during and shortly after bolus 5-FU infusion) is a specifically evidence-supported PREVENTIVE measure for 5-FU-induced mucositis. Palifermin (recombinant keratinocyte growth factor) is reserved for high-dose chemotherapy/autologous HCT conditioning settings given cost/narrow indication.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Cryotherapy timing only works for bolus 5-FU (vasoconstriction reduces drug delivery to oral mucosa during the brief infusion) — it is NOT effective for continuous-infusion 5-FU or most other mucotoxic agents, so don't extrapolate the intervention beyond its evidence base.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>MASCC/ISOO Clinical Practice Guidelines for the Management of Mucositis; NCCN Supportive Care guidelines.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Chemotherapy-Induced Diarrhea</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Irinotecan (both an early cholinergic and a later, more severe secretory mechanism), 5-fluorouracil/capecitabine, some targeted therapies (EGFR/TKI class).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Irinotecan's active metabolite (SN-38) causes direct mucosal injury to the intestinal epithelium (delayed, secretory-type diarrhea, typically &gt;24h after dosing); a separate EARLY cholinergic mechanism (within hours) results from irinotecan's acetylcholinesterase-inhibiting activity, distinct in timing and treatment from the delayed type.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Increase of &lt;4 stools/day over baseline</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Increase of 4-6 stools/day over baseline; IV fluids indicated &lt;24h</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Increase of ≥7 stools/day; incontinence; hospitalization; or life-threatening hemodynamic collapse</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Early cholinergic (irinotecan, within hours of infusion): atropine (anticholinergic) is specifically effective and should be given promptly, sometimes prophylactically in patients with a prior episode. Delayed/secretory diarrhea: high-dose loperamide (higher and more frequent dosing than OTC labeling) is first-line; octreotide is used for loperamide-refractory or severe cases. Aggressive oral/IV hydration and electrolyte monitoring are essential regardless of cause given the risk of rapid dehydration.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Don't give loperamide for irinotecan's EARLY cholinergic diarrhea — it won't address the underlying acetylcholinesterase-mediated mechanism the way atropine will, and recognizing which phase you're treating changes the entire management approach.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline (chemotherapy-induced diarrhea); ASCO/ONS guidance on irinotecan-specific management.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Chemotherapy-Induced Constipation</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Vincristine and other vinca alkaloids (autonomic/enteric neuropathy); opioid analgesics used for cancer pain compound the risk.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Vinca alkaloids disrupt microtubule function in enteric neurons (the same mechanism causing peripheral neuropathy), impairing normal peristaltic autonomic signaling — this is a genuine neuropathic constipation, distinct from simple opioid-induced slowed transit, though the two commonly coexist and compound each other.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Occasional symptoms, stool softener/laxative sufficient</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Persistent symptoms requiring regular laxative use, limiting instrumental ADLs</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Obstipation/fecal impaction requiring manual evacuation, or bowel obstruction requiring intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Prophylactic bowel regimen (senna ± docusate) started AT THE SAME TIME as vincristine or opioids, rather than waiting for symptoms, is standard practice. Escalate to osmotic laxatives (polyethylene glycol) for breakthrough symptoms; avoid bulk-forming fiber laxatives in patients with reduced motility (can worsen obstruction risk).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Unrecognized vincristine-related ileus can progress to a true bowel obstruction picture — a cancer patient on vincristine with worsening abdominal distension and no bowel movements needs prompt evaluation, not just an increased laxative dose.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline; ONS Putting Evidence Into Practice — constipation.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">05</span>
+        <h3>Chemotherapy-Associated Hepatotoxicity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Methotrexate (cumulative dose-related hepatic fibrosis with long-term/chronic low-dose use), many oral targeted therapies/TKIs (transaminitis), high-dose regimens generally.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Methotrexate depletes hepatic folate stores and directly promotes hepatic stellate cell activation with chronic exposure, leading to periportal fibrosis over years of cumulative dosing (most classically described with chronic low-dose use in rheumatologic disease, but relevant to oncologic dosing schedules as well); many TKIs cause idiosyncratic or dose-related hepatocellular injury via direct/metabolic mechanisms specific to each agent.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">AST/ALT &gt;1-3x ULN, asymptomatic</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">AST/ALT &gt;3-5x ULN, or symptomatic (fatigue, jaundice)</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">AST/ALT &gt;5-20x ULN or evidence of hepatic decompensation/failure</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Routine LFT monitoring at defined intervals is the primary preventive strategy, allowing dose interruption/reduction before progression to fibrosis or acute liver injury. Established hepatic fibrosis from chronic methotrexate may warrant periodic liver biopsy or noninvasive fibrosis staging (elastography) in long-term use; acute hepatocellular injury from TKIs generally requires holding the agent and, for higher grades, permanent discontinuation.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Baseline hepatitis B/C screening before starting many chemotherapy and especially immunotherapy/monoclonal antibody regimens is important not just for hepatotoxicity risk but for viral reactivation risk (see rituximab/anti-CD20 hepatitis B reactivation) — don't conflate the two mechanisms when a patient's LFTs rise.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care/hepatotoxicity monitoring guidance; methotrexate long-term hepatic monitoring literature.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-heme"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Chemotherapy-Induced Neutropenia / Myelosuppression</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Nearly all cytotoxic chemotherapy classes, most severely alkylating agents, anthracyclines, and high-dose combination regimens; less pronounced with vincristine and bleomycin specifically.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Cytotoxic agents preferentially kill rapidly-dividing bone marrow progenitor cells alongside tumor cells (the basis of the whole therapeutic-index concept in chemotherapy) — the neutrophil lineage has the shortest half-life of the major cell lines, so neutropenia is typically the first and most clinically significant cytopenia to manifest, generally nadiring 7-14 days after treatment.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">ANC 1000-1500/µL</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">ANC 500-1000/µL</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">ANC &lt;500/µL (Grade 4) — see the Oncology Emergencies Atlas for febrile neutropenia management specifically</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Primary G-CSF prophylaxis (filgrastim/pegfilgrastim) for regimens with &gt;20% febrile neutropenia risk; secondary prophylaxis after a prior febrile neutropenia episode. Dose reduction/delay for recurrent significant neutropenia. See the Oncology Emergencies Atlas for the full febrile neutropenia management pathway once fever occurs.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>G-CSF is prevention/recovery support, not a treatment FOR an active febrile neutropenia episode's infection — antibiotics remain the primary treatment once fever occurs; don't let growth factor administration create false reassurance that delays empiric antibiotics.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASCO/ASH Growth Factor Guideline; NCCN Hematopoietic Growth Factors guideline (see also the Oncology Interventions Atlas).</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Chemotherapy-Induced Anemia</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Platinum agents (especially carboplatin), and cumulative myelosuppression from any multi-cycle regimen.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Direct marrow suppression of erythroid progenitors plus, in some cases, relative erythropoietin deficiency or blunted marrow response to endogenous erythropoietin — anemia typically develops more gradually than neutropenia given the red cell's much longer (~120 day) lifespan, so it often becomes clinically apparent only after several cycles.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Hgb 10-11.9 g/dL</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Hgb 8-9.9 g/dL, or transfusion indicated</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Hgb &lt;8 g/dL or life-threatening consequences requiring urgent intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>RBC transfusion for symptomatic or severe anemia. ESAs (epoetin/darbepoetin) are restricted to palliative-intent chemotherapy per FDA black-box labeling given mortality/VTE/tumor-progression signals — see the Oncology Interventions Atlas for full detail. Iron studies should be checked, since functional iron deficiency blunts any ESA response and iron repletion alone may improve mild anemia.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Always confirm chemotherapy intent (curative vs. palliative) before offering an ESA for chemotherapy-induced anemia — this single distinction is the crux of the FDA safety label discussed in depth in the Oncology Interventions Atlas.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>See Oncology Interventions Atlas (Iron/ESA/G-CSF section) for full ESA safety data and references.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Chemotherapy-Induced Thrombocytopenia</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Carboplatin (notably more myelosuppressive to platelets than cisplatin), gemcitabine, high-dose combination regimens.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Direct marrow suppression of megakaryocyte progenitors; platelets have a short circulating lifespan (~7-10 days) similar to neutrophils, so thrombocytopenia often nadirs on a similar timeline to neutropenia within a treatment cycle.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Platelets 75,000-99,000/µL</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Platelets 50,000-74,000/µL</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Platelets &lt;25,000/µL or any bleeding requiring transfusion/intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Platelet transfusion for severe thrombocytopenia with bleeding or before invasive procedures (typical threshold &lt;10,000-20,000/µL prophylactically, higher threshold before procedures). Dose reduction/delay of the causative agent for recurrent severe thrombocytopenia. Thrombopoietin-receptor agonists (romiplostim, eltrombopag) have a more limited, situation-specific oncologic role (e.g., chemotherapy-induced thrombocytopenia in specific trial-supported settings) rather than routine use.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Don't anchor on chemotherapy as the automatic cause of a falling platelet count without considering heparin-induced thrombocytopenia or DIC in the right clinical context (e.g., a hospitalized patient on prophylactic heparin) — the workup differs substantially.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASCO Platelet Transfusion Guideline; NCCN Supportive Care guideline.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-derm"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Alopecia</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Taxanes (paclitaxel/docetaxel), cyclophosphamide, anthracyclines (doxorubicin) — essentially any agent targeting rapidly dividing cells, including hair follicle matrix cells.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Hair follicle matrix cells are among the most rapidly dividing cells in the body (turnover rivaling bone marrow and GI epithelium), making them collaterally vulnerable to the same cytotoxic mechanisms targeting tumor cells — hair loss is nearly always reversible after treatment ends, though regrowth texture/color can transiently differ.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Hair loss &lt;50% of normal, not requiring a wig if patient chooses to camouflage</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Hair loss ≥50%, readily apparent, patient may elect a wig for camouflage</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Not typically graded beyond moderate — psychosocial impact can still be severe even without a higher CTCAE grade</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Scalp cooling devices (e.g., DigniCap, Paxman) worn during and after infusion reduce follicular blood flow/drug delivery and have reasonable evidence for reducing (not eliminating) hair loss with specific regimens, most established in breast cancer taxane/anthracycline protocols. No pharmacologic agent reliably prevents chemotherapy alopecia. Wigs, scarves, and psychosocial support/counseling remain the mainstay of management.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Set expectations before treatment starts — alopecia is one of the most psychologically distressing side effects despite being medically minor, and proactive counseling (timing of onset, expected regrowth, scalp cooling eligibility) meaningfully improves the patient experience even when little can be pharmacologically prevented.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Survivorship guideline; scalp cooling device clinical trial literature (breast cancer taxane regimens).</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Hand-Foot Syndrome (Palmar-Plantar Erythrodysesthesia)</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Capecitabine (classic association), 5-fluorouracil, liposomal doxorubicin.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Drug is concentrated and slowly eliminated through eccrine sweat glands in the palms/soles (high density in these areas), producing direct local cytotoxic injury to the skin — a distinct entity from the hand-foot SKIN REACTION seen with multi-kinase inhibitors (a different, hyperkeratotic mechanism, seen with agents like sorafenib/regorafenib).</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Minimal skin changes/dermatitis without pain</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Skin changes with pain, limiting instrumental ADLs</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe skin changes with pain, limiting self-care ADLs (ulceration, blistering, severe desquamation)</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Dose modification/interruption of the causative agent for moderate-severe symptoms is the primary effective intervention. Supportive measures: emollients/moisturizers, avoiding heat/friction/tight footwear, cooling. Evidence for pyridoxine (vitamin B6) prophylaxis is inconsistent/limited despite common use. Topical corticosteroids may help symptomatically but don't address the underlying mechanism.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Hand-foot SYNDROME (capecitabine/5-FU) and hand-foot SKIN REACTION (multi-kinase TKIs) look similar but have different mechanisms, different typical distributions (skin reaction is more localized to pressure points/friction areas), and different management nuances — don't use the terms interchangeably in documentation or when researching management.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline; capecitabine/5-FU prescribing information dermatologic toxicity sections.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>EGFR-Inhibitor Acneiform Rash</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Cetuximab, panitumumab (monoclonal antibodies), erlotinib, gefitinib (TKIs) — any EGFR-pathway-targeted agent.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>EGFR is normally expressed in the epidermal basal layer and is essential for normal keratinocyte proliferation/differentiation — blocking this pathway paradoxically produces an inflammatory, acne-like follicular eruption (not a true infectious/hormonal acne) typically on the face/scalp/upper trunk within the first 1-2 weeks of treatment.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Papules/pustules covering &lt;10% BSA, may or may not have associated symptoms</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Papules/pustules covering 10-30% BSA, with mild symptoms and psychosocial impact</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Papules/pustules covering &gt;30% BSA with severe symptoms, limiting self-care ADLs, or superinfection</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Prophylactic treatment starting BEFORE or at the onset of therapy (rather than waiting for the rash to develop) is specifically supported by trial evidence: oral doxycycline or minocycline plus a topical steroid/moisturizer reduces rash severity. Established rash is managed with the same combination, escalating topical steroid potency for higher grades, and dose modification only for severe/refractory cases since the rash itself has been correlated with better treatment response in some studies.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>This rash correlating with better tumor response in several EGFR-inhibitor trials is a genuinely useful (if counterintuitive) reassurance point for patients distressed by a prominent rash — but it doesn't mean the rash should go untreated, since severe cases still meaningfully impair quality of life and can superinfect.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>MASCC Skin Toxicity Study Group guidelines for EGFR-inhibitor dermatologic toxicity.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">04</span>
+        <h3>Extravasation / Vesicant Injury</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Anthracyclines (doxorubicin, daunorubicin — severe vesicants), vinca alkaloids (vincristine, vinblastine — severe vesicants), and other vesicant/irritant classes to a lesser degree.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Accidental infiltration of a vesicant drug into the subcutaneous tissue (rather than the vein) causes direct cytotoxic tissue injury; unlike a typical irritant, vesicants continue to cause progressive tissue necrosis over days-to-weeks after the event because the drug binds locally and is not readily cleared, unlike a simple chemical irritant reaction.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Erythema, swelling &lt;5cm without ulceration</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Erythema/swelling ≥5cm, or associated pain/induration</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Ulceration, tissue necrosis, or need for surgical intervention/debridement</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>STOP the infusion immediately upon suspicion, aspirate residual drug from the line before removal, and elevate the limb. Agent-specific antidotes matter: dexrazoxane (IV, systemic) is FDA-approved specifically for anthracycline extravasation and should be given within 6 hours; hyaluronidase (local injection) is used for vinca alkaloid extravasation to promote drug dispersion/absorption. Cold compresses are generally used for anthracycline extravasation (vasoconstriction limits spread) while WARM compresses are used for vinca alkaloid extravasation (vasodilation promotes local drug clearance) — using the wrong temperature for the wrong drug class is a recognized, avoidable error.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The cold-vs-warm compress distinction is the single most commonly missed detail in extravasation management — always confirm which drug class you're dealing with before applying either, since the wrong choice can worsen the outcome rather than help.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ONS/ESMO Extravasation Management Guidelines; ISMP guidance on vesicant chemotherapy safe handling.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-neuro"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Chemotherapy-Induced Peripheral Neuropathy (CIPN)</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Platinum agents (cisplatin, oxaliplatin — oxaliplatin has a distinct acute cold-triggered variant), taxanes (paclitaxel, docetaxel), vinca alkaloids (vincristine), bortezomib, thalidomide.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Multiple convergent mechanisms depending on drug class: platinum agents accumulate in dorsal root ganglia (outside the blood-brain barrier) causing direct sensory neuron cell body injury; taxanes and vinca alkaloids disrupt axonal microtubule transport; bortezomib affects mitochondrial function in sensory neurons — the common endpoint is a length-dependent, predominantly sensory (occasionally motor/autonomic) axonal neuropathy.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Asymptomatic or mild symptoms, not limiting ADLs</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate symptoms limiting instrumental ADLs</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe symptoms limiting self-care ADLs, or disabling</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Duloxetine is the only agent with ASCO-endorsed moderate-quality evidence for established CIPN treatment (based on a randomized trial in mixed platinum/taxane-induced neuropathy) — other commonly tried agents (gabapentin, pregabalin, tricyclics) have weaker or extrapolated evidence from other neuropathic pain conditions. Dose reduction, delay, or discontinuation of the causative agent remains the most effective PREVENTIVE strategy once significant symptoms emerge, since no agent has strong evidence for true prevention.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Oxaliplatin's acute neuropathy is specifically triggered/worsened by cold exposure (cold drinks, air conditioning, touching cold objects) within days of infusion — patient counseling to avoid cold exposure around infusion days is a simple, evidence-informed intervention distinct from the chronic cumulative neuropathy seen with continued dosing.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASCO Guideline: Prevention and Management of Chemotherapy-Induced Peripheral Neuropathy.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Ifosfamide-Related Encephalopathy</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Ifosfamide (risk increased with renal impairment, low albumin, prior/concurrent CNS disease, and higher doses).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Chloroacetaldehyde, a neurotoxic ifosfamide metabolite, accumulates and is thought to impair mitochondrial oxidative metabolism in the CNS, producing a reversible metabolic encephalopathy ranging from mild confusion to coma — distinct from and easily mistaken for CNS disease progression or an unrelated delirium.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild confusion/somnolence, no intervention needed beyond monitoring</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate confusion requiring holding the next dose and closer monitoring</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe confusion, seizure, or coma requiring ICU-level care and pharmacologic reversal</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Methylene blue is the specific treatment for established ifosfamide encephalopathy and is also used prophylactically in patients with risk factors or a prior episode who require continued ifosfamide therapy. Supportive care (holding the causative dose, ensuring adequate hydration/renal function) is essential alongside methylene blue.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Before assuming a confused patient on ifosfamide has disease progression or an unrelated cause of delirium, always check the medication list specifically for ifosfamide — this is one of the more reversible and specifically treatable causes of altered mental status in oncology, and methylene blue response can be diagnostic as well as therapeutic.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline; ifosfamide prescribing information neurotoxicity section.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Cancer-Treatment-Related Cognitive Impairment ("Chemo Brain")</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Broadly reported across many regimens, most studied in breast cancer chemotherapy (anthracycline/cyclophosphamide-based regimens) but not isolated to any single drug class.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Proposed mechanisms include direct neurotoxicity, treatment-related neuroinflammation, hormonal changes (especially with concurrent endocrine therapy), and secondary contributors (fatigue, sleep disruption, depression/anxiety, anemia) — the relative contribution of direct chemotherapy neurotoxicity versus these confounding factors remains an active area of research and is likely multifactorial in most patients.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild cognitive changes noticed by patient, not affecting work/daily function</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate changes affecting work performance or instrumental ADLs</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe changes significantly impairing independence/self-care</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Cognitive rehabilitation/training programs and structured aerobic exercise have the best current evidence for improving symptoms. Addressing reversible contributors (treating anemia, sleep disorders, depression/anxiety) is a critical and often underemphasized first step. Pharmacologic options (methylphenidate and other stimulants) have inconsistent trial evidence and are not first-line.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Before attributing cognitive complaints entirely to chemotherapy, systematically screen for and address the reversible contributors (anemia, poor sleep, mood symptoms, hypothyroidism) — meaningful improvement is often achievable by treating these rather than accepting cognitive decline as an inevitable, untreatable consequence of chemotherapy.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Survivorship guideline (cognitive function); ASCO/ONS cognitive impairment supportive care literature.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-cardiopulm"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Anthracycline Cardiotoxicity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Doxorubicin, daunorubicin, epirubicin, idarubicin — risk is cumulative-dose-dependent (see the Oncology Interventions Atlas for specific dose thresholds).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Anthracyclines generate reactive oxygen species and inhibit topoisomerase-2β specifically in cardiomyocytes (which have limited antioxidant reserve and essentially no regenerative capacity compared to most other tissues), producing progressive, often irreversible myocardial injury that is dose-cumulative rather than idiosyncratic.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Asymptomatic LVEF decline (e.g., 10-19% drop from baseline or to 50-59%), no intervention beyond monitoring</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptomatic heart failure responsive to medical management, or asymptomatic LVEF decline to 40-49%</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe/refractory heart failure, LVEF &lt;40%, or life-threatening cardiac decompensation</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>See the Oncology Interventions Atlas for full detail — dexrazoxane for high cumulative-dose patients, baseline/serial LVEF monitoring, and standard heart failure medical therapy (ACE inhibitors/ARBs, beta-blockers) for established cardiotoxicity, often in cardio-oncology co-management.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Unlike trastuzumab cardiotoxicity (often reversible), anthracycline cardiotoxicity is frequently only partially reversible or irreversible — this distinction should shape how aggressively cumulative dose limits and cardioprotective strategies are enforced from the start of treatment rather than reactively after damage appears.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>See Oncology Interventions Atlas (Antitumor Antibiotics section) for full cardiotoxicity dose data and references.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Bleomycin Pulmonary Toxicity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Bleomycin (risk increases with cumulative dose, age &gt;70, renal impairment, and — critically — any subsequent supplemental oxygen exposure at any future time point).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Bleomycin generates reactive oxygen species preferentially in lung tissue (which has relatively low levels of the detoxifying enzyme bleomycin hydrolase compared to other tissues), producing progressive pulmonary fibrosis; supplemental oxygen at ANY point after bleomycin exposure — including remote future surgeries — can trigger acute lung injury by amplifying this same oxidative mechanism, regardless of how long ago treatment occurred.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Asymptomatic, radiographic changes only or mild dyspnea on exertion</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptomatic dyspnea limiting instrumental ADLs, requiring intervention</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe dyspnea limiting self-care ADLs, hypoxia requiring oxygen, or life-threatening respiratory failure</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Discontinue bleomycin promptly at the first sign of toxicity (declining DLCO on serial pulmonary function testing is often the earliest detectable change, sometimes preceding symptoms). Corticosteroids are used for symptomatic pneumonitis. Critically, minimize supplemental oxygen exposure indefinitely after treatment when clinically feasible (e.g., during future anesthesia) — this is a lifelong consideration the patient should carry forward, not just a concern during active treatment.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Every patient who has ever received bleomycin should be counseled to inform ALL future anesthesia/surgical teams of this exposure, indefinitely — this single communication gap (a patient not mentioning remote bleomycin exposure before an unrelated future surgery) is a recognized, preventable cause of serious harm.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>Bleomycin prescribing information pulmonary toxicity section; anesthesia literature on bleomycin-associated oxygen toxicity risk.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-renal"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Cisplatin Nephrotoxicity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Cisplatin (dose-related and cumulative; carboplatin is comparatively much less nephrotoxic).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Cisplatin is actively transported into proximal renal tubular cells (via organic cation transporters) at concentrations exceeding plasma levels, causing direct tubular cell injury, oxidative stress, and inflammation — the proximal tubule's role in concentrating/reabsorbing filtrate is exactly what concentrates the drug there in the first place.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Creatinine 1.5-2x baseline, no intervention needed</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Creatinine 2-3x baseline, or intervention indicated</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Creatinine &gt;3x baseline, life-threatening consequences, or dialysis indicated</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Aggressive IV pre- and post-hydration (6-8 hour infusion protocols) ± mannitol is the primary preventive strategy — see the Oncology Interventions Atlas for full detail. Magnesium and other electrolyte repletion (cisplatin causes concurrent renal magnesium wasting) is important supportive care. Renal function must return to baseline before redosing; substitution with carboplatin is considered if nephrotoxicity limits continued cisplatin use.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Cisplatin-induced renal magnesium wasting can cause a refractory hypomagnesemia that persists for months after treatment ends — see the Electrolyte Correction Atlas for magnesium replacement strategies, and remember that this specific electrolyte disturbance can outlast the acute nephrotoxicity itself.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>See Oncology Interventions Atlas (Platinum-Based Chemotherapy section) for full nephrotoxicity data and references.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Hemorrhagic Cystitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Cyclophosphamide and ifosfamide (via their shared toxic metabolite, acrolein).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Acrolein, a metabolite of both cyclophosphamide and ifosfamide, is excreted in the urine and directly damages the bladder urothelium, causing mucosal inflammation, ulceration, and hemorrhage — the bladder is essentially exposed to a concentrated toxic metabolite bath during urination after these agents.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Microscopic hematuria only</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Gross hematuria without clots</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Gross hematuria with clots, requiring transfusion, or urinary tract obstruction requiring intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Mesna (a thiol compound that binds/neutralizes acrolein directly in the bladder) given concurrently with cyclophosphamide/ifosfamide is the primary preventive agent — essential with ifosfamide and higher-dose cyclophosphamide regimens. Aggressive hydration and frequent bladder emptying reduce urothelial contact time with acrolein. Established severe hemorrhagic cystitis may require bladder irrigation, and refractory/severe cases can require hyperbaric oxygen (borrowing from the radiation cystitis literature) or cystoscopic intervention.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Mesna prevents hemorrhagic cystitis but has NO effect on the antitumor efficacy or other toxicities of cyclophosphamide/ifosfamide — it is a purely protective adjunct targeted at one specific toxic metabolite pathway, not a general chemoprotectant.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline; mesna/cyclophosphamide/ifosfamide prescribing information.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-endo"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Chemotherapy-Associated SIADH</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Vincristine, cyclophosphamide (especially high-dose IV), cisplatin.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>These agents can directly stimulate hypothalamic/pituitary antidiuretic hormone release or, in cyclophosphamide's case, potentiate ADH's effect at the renal collecting duct — the result is water retention and dilutional hyponatremia despite normal or expanded volume status, the hallmark of SIADH as opposed to hypovolemic hyponatremia.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Sodium 130-134 mEq/L, asymptomatic</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Sodium 121-129 mEq/L, or mild symptoms (nausea, headache)</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Sodium ≤120 mEq/L or symptomatic (seizure, altered mental status) — see the Electrolyte Correction Atlas for full severity/correction protocol</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Fluid restriction is first-line for mild-moderate cases. Hold/avoid the causative agent if the pattern is clearly drug-related and recurrent. See the Electrolyte Correction Atlas for the full sodium correction protocol (including the critical ≤8 mEq/L/24h chronic correction cap) for moderate-severe cases.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Cyclophosphamide-induced SIADH classically occurs within hours of a HIGH-DOSE IV pulse — if a patient is also receiving aggressive IV hydration around the same high-dose cyclophosphamide dose (common in conditioning regimens), the combination can produce rapid, clinically significant hyponatremia that's easy to miss if sodium isn't checked proactively.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>See Electrolyte Correction Atlas (Sodium section) for full correction protocol; NCCN Supportive Care guideline.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Hormonal Therapy Tumor Flare Phenomenon</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>LHRH/GnRH agonists (leuprolide, goserelin) in prostate cancer without an anti-androgen bridge; tamoxifen (rarely) in breast cancer.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>GnRH agonists initially cause a paradoxical SURGE in LH/FSH and consequently testosterone (or estrogen, mechanistically analogous) before the negative feedback/receptor downregulation that produces their intended suppressive effect takes hold days later — this transient surge can stimulate hormone-sensitive tumor growth, worsening bone pain, urinary obstruction, or spinal cord compression symptoms in patients with existing metastatic burden.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Transient increase in existing symptoms (bone pain, urinary symptoms) without acute complication</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptom flare requiring additional analgesia or urgent evaluation</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Flare precipitating an oncologic emergency (spinal cord compression, urinary obstruction, pathologic fracture) — see the Oncology Emergencies Atlas</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Co-administer an anti-androgen (e.g., bicalutamide) starting a few days BEFORE and continuing for a couple weeks after starting an LHRH agonist in prostate cancer patients with significant metastatic burden — this bridging strategy blocks the peripheral effect of the testosterone surge and is standard practice specifically to prevent this phenomenon, not an optional add-on.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Tumor flare is entirely predictable and preventable with the anti-androgen bridging strategy — a patient who develops worsening bone pain or new urinary retention shortly after starting an LHRH agonist WITHOUT a bridging anti-androgen should prompt immediate consideration of this mechanism rather than assumed disease progression.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Prostate Cancer guideline (androgen deprivation therapy initiation).</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="chemo-systemic"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Chemotherapy-Related Infertility / Gonadal Toxicity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Alkylating agents (cyclophosphamide, ifosfamide, busulfan, melphalan) carry the highest risk among chemotherapy classes; risk is dose- and age-dependent.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Alkylating agents damage the ovarian follicle pool (a fixed, non-renewable reserve depleted faster than natural aging would deplete it) and testicular germ cells (Sertoli/spermatogonial cells specifically, which have high proliferative turnover) — the degree of damage is both cumulative-dose-dependent and age-dependent, with older patients having less reserve to begin with.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Temporary oligospermia/menstrual irregularity, expected recovery</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Prolonged amenorrhea/oligospermia (&gt;1 year), uncertain recovery</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Permanent infertility/premature ovarian failure or azoospermia</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Fertility preservation counseling and referral BEFORE treatment starts is the single most important intervention — sperm banking (straightforward, quick) and oocyte/embryo cryopreservation (requires more lead time, ovarian stimulation) should be discussed with every reproductive-age patient regardless of how urgent treatment initiation feels, since even a short delay for banking rarely meaningfully changes oncologic outcomes. GnRH agonist co-administration during chemotherapy for ovarian protection has mixed/inconsistent trial evidence and should be framed as adjunctive at best, not a substitute for fertility preservation.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Fertility preservation counseling is frequently skipped or rushed in the urgency of starting cancer treatment — but for most regimens, the few days needed for a sperm bank referral (and often feasible timelines for oocyte/embryo banking) do not meaningfully delay oncologic treatment, and patients consistently report this counseling as something they wish had been offered even when they ultimately decline it.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASCO Fertility Preservation Guideline; NCCN Adolescent and Young Adult Oncology guideline.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Infusion Reactions / Hypersensitivity</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Taxanes (paclitaxel — related to the cremophor solvent vehicle, less common with albumin-bound nab-paclitaxel), platinum agents (cumulative-exposure-related, more common with re-treatment), monoclonal antibodies (rituximab especially with the first infusion, given high circulating target-cell burden).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Mechanisms vary by cause: taxane reactions are often a direct/non-IgE-mediated reaction to the cremophor EL solvent vehicle itself rather than the drug; platinum hypersensitivity is a true IgE-mediated reaction that develops and intensifies with repeated exposure (unlike most drug allergies that are stable or present from first exposure); rituximab's first-infusion reactions relate to rapid cytokine release from a large burden of CD20+ cells being targeted simultaneously (a cytokine-release-like phenomenon more than classic anaphylaxis).</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild transient flushing/rash, intervention not indicated, infusion can continue</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptoms requiring interruption of infusion, responsive to symptomatic treatment (antihistamine, brief pause)</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe reaction (bronchospasm, hypotension, urticaria with systemic symptoms) requiring urgent intervention and infusion discontinuation</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Premedication (corticosteroids, H1/H2 antihistamines) before taxane and platinum infusions is standard and specifically reduces reaction incidence/severity. Slowing the infusion rate at the first sign of reaction, followed by symptomatic treatment, allows many mild-moderate reactions to resolve without full discontinuation. For patients who need a specific agent despite a prior hypersensitivity reaction (common with platinum re-treatment in ovarian cancer), formal desensitization protocols (structured, graded step-up re-exposure under close monitoring) allow continued safe treatment in many cases rather than abandoning an effective agent outright.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Platinum hypersensitivity classically WORSENS with cumulative exposure/retreatment (unlike most drug reactions) — a patient tolerating carboplatin fine for 4 cycles can still develop a significant reaction on cycle 6 or a later retreatment course after a treatment-free interval, so ongoing vigilance shouldn't fade just because prior cycles were uneventful.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Supportive Care guideline (infusion reaction management); desensitization protocol literature for platinum hypersensitivity.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Cancer-Related Fatigue</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Virtually universal across chemotherapy and radiation, and often persists independent of any single causative agent.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Multifactorial and incompletely understood — proposed contributors include treatment-related inflammatory cytokine release, anemia, sleep disruption, deconditioning, and psychological distress, with most patients experiencing a combination rather than one dominant cause; unlike ordinary fatigue, cancer-related fatigue is characteristically disproportionate to recent activity and not fully relieved by rest.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Fatigue relieved by rest, not limiting ADLs</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Fatigue not fully relieved by rest, limiting instrumental ADLs</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Fatigue not relieved by rest, limiting self-care ADLs, or requiring bed rest</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Structured aerobic exercise has the strongest and most consistent evidence of any intervention for cancer-related fatigue — counterintuitively more effective than rest. Systematically screen for and treat reversible contributors (anemia, hypothyroidism, sleep disorders, depression/anxiety, pain, deconditioning) as the second pillar of management. Pharmacologic stimulants (methylphenidate) have inconsistent evidence and are considered only after the above have been addressed.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The instinct to recommend more rest for a fatigued cancer patient is usually wrong — structured, supervised exercise programs (even modest ones) outperform rest-focused recommendations in the trial literature, and this counterintuitive point is worth actively explaining to patients who assume rest is the obvious answer.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Cancer-Related Fatigue guideline; ASCO Cancer-Related Fatigue Guideline.</p></div>
+    </article></div></section>
+  </div>
+  
+  <div class="modeblock" data-modeblock="rad">
+    <div class="cattabs"><button class="cattab active" data-target="rad-skin" data-mode="rad">Skin</button>
+<button class="cattab" data-target="rad-gi" data-mode="rad">Mucosal / GI</button>
+<button class="cattab" data-target="rad-pulm" data-mode="rad">Pulmonary</button>
+<button class="cattab" data-target="rad-gu" data-mode="rad">Genitourinary</button>
+<button class="cattab" data-target="rad-neuro" data-mode="rad">Neurologic</button>
+<button class="cattab" data-target="rad-hn" data-mode="rad">Head &amp; Neck Specific</button>
+<button class="cattab" data-target="rad-lymph" data-mode="rad">Lymphatic</button>
+<button class="cattab" data-target="rad-late" data-mode="rad">Late / Systemic Effects</button></div>
+    <section class="catpanel active" data-cat="rad-skin"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation Dermatitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Any external beam field, most prominently breast, head &amp; neck, and skin-surface-proximal treatment areas; risk increases with higher total dose, larger fraction size, and concurrent chemotherapy (radiosensitization).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Ionizing radiation damages basal keratinocyte stem cells in the epidermis, impairing normal skin turnover/repair — combined with direct microvascular injury and an inflammatory response, this produces a spectrum from erythema to moist desquamation as the skin's regenerative capacity is progressively overwhelmed over the course of a multi-week treatment course.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Faint erythema or dry desquamation</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate to brisk erythema, or patchy moist desquamation mostly confined to skin folds</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Moist desquamation in areas other than skin folds, bleeding with minor trauma, or life-threatening skin necrosis/ulceration</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Gentle skin care (fragrance-free moisturizers, avoiding harsh soaps/adhesives/sun exposure to the field) is foundational preventive care throughout treatment. Topical corticosteroids (mid-potency) reduce severity/symptoms for higher-grade reactions. Silver sulfadiazine or other moist wound-care dressings are used for established moist desquamation to promote healing and reduce infection risk.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Avoid recommending most topical antiperspirants/deodorants and certain metallic-ingredient creams in the treatment field during active radiation — some can increase surface dose (a "bolus effect") and worsen the reaction, though evidence on which specific products matter is more nuanced than older blanket restrictions suggested; check current institutional skin care protocols.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ONS/MASCC skin toxicity management guidelines; ASTRO patient education materials on radiation dermatitis.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-gi"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation Mucositis / Esophagitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Head &amp; neck radiation (oral/pharyngeal mucositis), thoracic radiation for lung cancer or mediastinal lymphoma (esophagitis) — risk amplified substantially by concurrent chemotherapy (chemoradiation).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Same fundamental basal epithelial injury mechanism as chemotherapy mucositis (rapidly-dividing mucosal stem cells are radiosensitive), but radiation mucositis is more localized to the treatment field and tends to worsen progressively and more severely as cumulative fractionated dose accumulates over a multi-week course, rather than peaking and resolving within a single chemotherapy cycle.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Erythema of the mucosa, minimal pain, able to eat a regular diet</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Patchy mucositis, or moderate pain limiting to a soft/liquid diet</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Confluent mucositis with severe pain preventing adequate oral intake — often requiring a feeding tube or IV nutrition support</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>"Magic mouthwash" and other topical analgesic rinses provide symptomatic relief; opioid analgesia (including, for severe head/neck mucositis, sometimes a fentanyl patch or IV PCA) is frequently needed given the severity possible with concurrent chemoradiation. Proactive nutrition support planning (dietitian involvement, sometimes prophylactic feeding tube placement before treatment starts in high-risk head/neck chemoradiation) prevents the weight loss/dehydration spiral that can otherwise interrupt treatment.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Unlike chemotherapy mucositis (which typically peaks and resolves within one cycle), radiation mucositis tends to worsen progressively through the ENTIRE multi-week treatment course and often peaks AFTER treatment ends — proactive, escalating pain and nutrition management planned from the start of treatment (not reactive management once severe) is essential for treatment completion.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>MASCC/ISOO Mucositis Guidelines (radiation-specific sections); NCCN Head and Neck Cancers guideline supportive care section.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Radiation Proctitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Pelvic radiation for prostate, cervical, endometrial, anal, or rectal cancer.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Direct radiation injury to the rectal mucosa and its microvasculature — acute proctitis (during/shortly after treatment) reflects direct mucosal inflammation, while CHRONIC/late proctitis (months to years later) results from progressive vascular fibrosis/ischemia and characteristically produces fragile, bleeding telangiectasias rather than active inflammation.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Rectal discomfort, intermittent bleeding not requiring intervention</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate symptoms, intermittent bleeding requiring occasional intervention (e.g., topical treatment)</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe bleeding requiring transfusion, or bowel obstruction/fistula/perforation requiring surgical intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Acute proctitis is typically managed with dietary modification (low-residue diet), topical/rectal anti-inflammatory agents, and sucralfate enemas (mucosal protectant). CHRONIC radiation proctitis with recurrent bleeding from telangiectasias is specifically well-treated with argon plasma coagulation (endoscopic cauterization of the bleeding vessels) and, for more diffuse/refractory chronic injury, hyperbaric oxygen therapy (promotes angiogenesis/tissue healing in chronically ischemic irradiated tissue).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Chronic radiation proctitis bleeding often does NOT respond to the same anti-inflammatory approach used for acute proctitis, because the underlying pathology (vascular telangiectasia/fibrosis, not active inflammation) is fundamentally different — recognizing this distinction is what correctly points toward argon plasma coagulation or hyperbaric oxygen rather than escalating anti-inflammatory therapy that won't help.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASTRO/ASCRS guidance on chronic radiation proctitis management; hyperbaric oxygen therapy literature for radiation-induced tissue injury.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">03</span>
+        <h3>Radiation Enteritis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Abdominal or pelvic radiation fields encompassing small/large bowel (cervical, endometrial, rectal, some GU cancers).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Analogous mechanism to proctitis but affecting small/large bowel mucosa broadly within the treatment field — acute enteritis reflects direct mucosal injury and altered motility/absorption, while chronic enteritis results from progressive submucosal fibrosis and vascular injury that can eventually cause stricture, malabsorption, or bowel obstruction years after treatment.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Increase of &lt;4 stools/day, mild cramping</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Increase of 4-6 stools/day, or moderate cramping/pain requiring medication</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe diarrhea/pain, bowel obstruction, or fistula/perforation requiring surgical intervention</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Low-residue/low-fat diet and loperamide for acute symptoms; octreotide for more severe or refractory acute diarrhea. Chronic enteritis with stricture/obstruction may require surgical intervention if severe; hyperbaric oxygen has supporting evidence for some chronic radiation-induced GI injury, similar to its role in proctitis.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Chronic radiation enteritis can present YEARS after treatment completion with vague symptoms (bloating, intermittent obstruction-like symptoms) that get misattributed to unrelated GI disease or cancer recurrence — a remote radiation history should stay on the differential for GI symptoms indefinitely in these patients, not just during the acute post-treatment period.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASTRO supportive care guidance; radiation enteritis chronic management literature.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-pulm"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation Pneumonitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Thoracic radiation for lung cancer, breast cancer (especially with internal mammary node coverage), or mediastinal lymphoma; risk increases with larger irradiated lung volume, concurrent chemotherapy, and pre-existing lung disease.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Radiation injures alveolar epithelial and capillary endothelial cells within the treatment field, triggering an inflammatory cascade (cytokine-mediated) that typically manifests 1-6 months after completing radiation — a distinctly delayed timeline compared to most acute radiation effects, reflecting the time needed for the inflammatory/fibrotic cascade to become clinically apparent.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Radiographic changes only, asymptomatic, no intervention needed</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptomatic (cough, dyspnea) requiring medical intervention (e.g., corticosteroids)</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe symptoms with hypoxia requiring oxygen support, or life-threatening respiratory failure</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Corticosteroids (typically prednisone, started at a moderate dose) are first-line for symptomatic pneumonitis, with a SLOW taper over weeks to months — tapering too quickly risks a rebound flare of inflammation. Rule out infection and pulmonary embolism before attributing new respiratory symptoms to pneumonitis, since the clinical/radiographic picture can overlap.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The slow corticosteroid taper is not a minor detail — rebound pneumonitis flares from tapering too quickly are a well-recognized pitfall, and patients/providers should be counseled that the taper itself may take considerably longer than the initial treatment course.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASTRO clinical guidance on radiation pneumonitis; NCCN Non-Small Cell Lung Cancer guideline supportive care section.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-gu"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation Cystitis</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Pelvic radiation for prostate, bladder, cervical, or endometrial cancer.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Similar mechanism to radiation proctitis but affecting bladder urothelium and its microvasculature — acute cystitis reflects direct mucosal irritation (urgency, frequency, dysuria during/shortly after treatment), while chronic/late radiation cystitis results from vascular telangiectasia and fibrosis, presenting months to years later with recurrent hematuria and, in severe cases, reduced bladder capacity/compliance.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild urinary frequency/urgency, not requiring medication</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptoms requiring medication, or intermittent hematuria not requiring intervention</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Gross hematuria requiring transfusion/intervention, or severe bladder dysfunction (contracted bladder, obstruction) requiring surgical management</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Acute symptoms respond to hydration, urinary analgesics (phenazopyridine), and anticholinergics for urgency/frequency. Chronic hemorrhagic radiation cystitis is a primary indication for hyperbaric oxygen therapy (promotes healing in chronically hypoxic, fibrotic irradiated tissue) and can also be managed with intravesical agents or, for severe refractory bleeding, cystoscopic fulguration.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>New hematuria in a patient with a distant history of pelvic radiation should prompt consideration of radiation cystitis, but should NOT be assumed without first excluding a new bladder malignancy (radiation itself is a risk factor for secondary bladder cancer) — cystoscopy to directly visualize the bladder is usually warranted rather than presuming the radiation history explains the bleeding.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>Hyperbaric oxygen therapy literature for hemorrhagic radiation cystitis; AUA guidance on hematuria evaluation.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-neuro"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation Necrosis (Brain)</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Brain/CNS radiation, particularly stereotactic radiosurgery (SRS) for brain metastases and high-dose conventional radiation for primary brain tumors; risk increases with treated volume, total dose, and re-irradiation.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Progressive radiation-induced vascular injury (endothelial damage, vessel wall thickening, eventual vascular occlusion) leads to localized tissue ischemia and necrosis, typically presenting months to a few years after treatment — critically, radiation necrosis is often radiographically difficult to distinguish from TUMOR RECURRENCE/progression on standard MRI, since both can show a new or enlarging enhancing lesion with surrounding edema.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Asymptomatic, radiographic finding only</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Symptomatic (headache, focal deficit) responsive to corticosteroids</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe symptoms/mass effect requiring surgical intervention, or life-threatening herniation</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Corticosteroids reduce the vasogenic edema associated with radiation necrosis and are first-line for symptomatic disease. Bevacizumab (anti-VEGF) has good evidence specifically for radiation necrosis (targeting the VEGF-mediated vascular permeability/edema driving symptoms) and is used for corticosteroid-refractory or steroid-dependent cases. Surgical resection is reserved for cases with significant mass effect or when tissue diagnosis is needed to distinguish necrosis from recurrent tumor.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Advanced imaging (MR perfusion, PET, or sometimes biopsy) is often needed to distinguish radiation necrosis from tumor recurrence when standard MRI is ambiguous — this distinction fundamentally changes management (bevacizumab/steroids vs. further oncologic treatment for recurrence), so don't assume a new enhancing lesion after brain radiation is automatically progression.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Central Nervous System Cancers guideline (radiation necrosis section); bevacizumab radiation necrosis trial literature.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Lhermitte's Sign &amp; Radiation Myelopathy</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Radiation fields including the cervical or thoracic spinal cord — head &amp; neck radiation, mediastinal radiation (lymphoma), or any field with the cord in the beam path.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Lhermitte's sign (an electric-shock sensation radiating down the spine/limbs with neck flexion) reflects TRANSIENT demyelination of spinal cord white matter tracts — a self-limited phenomenon typically appearing 1-6 months after radiation and resolving over weeks to months as remyelination occurs. TRUE radiation myelopathy (permanent spinal cord injury) is a separate, much rarer, dose-dependent late effect from vascular/white matter injury exceeding the cord's tolerance, generally avoided by respecting established spinal cord dose constraints during treatment planning.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Lhermitte's sign only — transient sensory phenomenon, no weakness/other deficit</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Not typically applicable to transient Lhermitte's; escalate to "severe" categorization only if a persistent deficit emerges</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">True radiation myelopathy with persistent motor/sensory deficit or paralysis — a rare, largely preventable late effect</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Lhermitte's sign requires reassurance and symptomatic management only — it is self-limited and does NOT predict or progress to true myelopathy. True radiation myelopathy has no established restorative treatment beyond supportive/rehabilitative care, which is precisely why strict adherence to spinal cord dose tolerance limits during radiation planning is the operative "treatment" — prevention rather than cure.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Don't let a patient's Lhermitte's sign cause undue alarm about impending paralysis — explicitly counseling that this transient, self-limited phenomenon does NOT predict permanent myelopathy (a separate, dose-limited, largely prevented complication) meaningfully reduces unnecessary anxiety.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASTRO spinal cord dose tolerance guidance; radiation myelopathy/Lhermitte's sign clinical literature.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-hn"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Xerostomia (Radiation-Induced Dry Mouth)</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Head &amp; neck radiation with parotid/salivary gland exposure in the treatment field.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Salivary gland acinar cells are relatively radiosensitive; radiation causes progressive, often permanent glandular atrophy and fibrosis with cumulative dose — modern IMRT (intensity-modulated radiation therapy) techniques that specifically spare at least one parotid gland below its functional dose threshold have substantially reduced (though not eliminated) the severity of this once near-universal complication.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild dryness, minimal dietary alteration</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate dryness requiring frequent sipping of liquids/oral lubricants, altered diet</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe dryness with inability to adequately swallow food, requiring feeding tube support</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Parotid-sparing IMRT planning is the primary PREVENTIVE strategy and should be prioritized during treatment planning whenever oncologically feasible. Pilocarpine (a cholinergic sialogogue, stimulates residual functioning gland tissue) is the primary pharmacologic treatment for established xerostomia. Saliva substitutes/artificial saliva products provide symptomatic relief. Amifostine (a radioprotectant given before each fraction) has evidence for reducing xerostomia but has fallen out of routine use given its own significant side effect burden (hypotension, nausea) relative to the benefit of modern IMRT sparing techniques.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Xerostomia severity has meaningfully DECREASED in the IMRT era specifically because parotid sparing is now a standard planning goal, not just an aspiration — this is a good example of a technical radiation planning advance directly translating into reduced chronic toxicity, worth explaining to patients anxious about historical accounts of severe radiation dry mouth.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>ASTRO/IMRT parotid-sparing planning literature; NCCN Head and Neck Cancers guideline supportive care section.</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Radiation Caries &amp; Osteoradionecrosis (ORN) of the Jaw</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Head &amp; neck radiation including the mandible/maxilla and salivary glands in the field.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Radiation-induced xerostomia removes saliva's protective antibacterial/buffering function, dramatically accelerating dental caries; separately, radiation causes direct bone hypovascularity/hypocellularity in the mandible specifically, so that even minor dental trauma or extraction after treatment can fail to heal, exposing necrotic bone (osteoradionecrosis) — a distinct, serious complication from radiation caries though related through the same field.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Dental caries managed with routine dental care, no bone exposure</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Limited bone exposure not requiring surgical intervention, managed conservatively</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Extensive osteoradionecrosis requiring surgical debridement/resection, or pathologic fracture</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Comprehensive dental clearance and extraction of any high-risk teeth BEFORE radiation begins is the essential preventive step — extractions performed AFTER radiation carry substantially higher ORN risk than the same extraction done first. Fluoride treatment and meticulous oral hygiene reduce ongoing caries risk from radiation-induced xerostomia. Established ORN is managed with conservative measures first (antibiotics, minor debridement) and, for refractory cases, the PENTOCLO protocol (pentoxifylline + tocopherol/vitamin E + clodronate) or hyperbaric oxygen therapy, with surgical resection reserved for severe/refractory disease.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Pre-radiation dental clearance is a genuinely time-sensitive, easy-to-overlook step — a head/neck cancer patient who needs extractions should ideally have them completed and allow some healing time BEFORE radiation starts, not after, and this coordination between oncology and dentistry should happen at the very beginning of treatment planning, not as an afterthought.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Head and Neck Cancers guideline (dental evaluation prior to radiation); PENTOCLO protocol literature for osteoradionecrosis.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-lymph"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Lymphedema</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Radiation to lymph node basins (axillary, pelvic, inguinal), especially when COMBINED with surgical lymph node dissection in the same region — the combination carries substantially higher risk than either alone.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Radiation causes fibrosis of lymphatic channels and remaining lymph nodes within the treatment field, impairing lymphatic drainage capacity — when combined with surgical removal of nodes (e.g., axillary lymph node dissection for breast cancer, inguinal/pelvic dissection for melanoma or gynecologic cancers), the residual lymphatic system has substantially reduced reserve capacity to compensate, and swelling can develop months to even years after treatment.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild swelling, noticeable but not significantly limiting function, minimal limb size discrepancy</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate swelling limiting instrumental ADLs, or interfering with function</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe swelling causing significant disability, or recurrent cellulitis/lymphangitis</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Complete decongestive therapy (manual lymphatic drainage performed by a certified lymphedema therapist, combined with compression bandaging/garments and specific exercises) is the evidence-based standard of care. Compression garments for long-term maintenance after the initial decongestive phase. Patient education on infection prevention (meticulous skin care, prompt treatment of any cellulitis in the affected limb) is essential since lymphedematous tissue has impaired immune surveillance and infection risk is both higher and more consequential.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A cancer survivor with a history of nodal dissection + radiation who develops sudden limb swelling, redness, and warmth should be treated urgently for possible cellulitis (lymphedematous tissue is highly infection-prone and can progress rapidly) rather than assumed to simply be a lymphedema flare — infection in this setting is a genuine, sometimes limb-threatening emergency, not a routine chronic symptom exacerbation.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>NCCN Survivorship guideline (lymphedema section); ASCO/ONS lymphedema management guidance.</p></div>
+    </article></div></section>
+<section class="catpanel" data-cat="rad-late"><div class="secard-list">
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">01</span>
+        <h3>Radiation-Associated Secondary Malignancy</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Any radiation field, with risk proportional to dose, treated volume, and — critically — younger age at treatment (longer subsequent lifespan for a malignancy to manifest).</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Radiation-induced DNA damage in cells at the margin of the treatment field (receiving a meaningful but sub-therapeutic dose) can, over a long latency period (often 10-20+ years), result in a new, radiation-induced malignancy distinct from the original cancer — classic examples include secondary sarcomas in the radiation field, breast cancer after mantle radiation for Hodgkin lymphoma, and thyroid cancer after childhood head/neck radiation.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Not applicable as an acute severity scale — this is a long-term risk-counseling and surveillance issue rather than an acute toxicity</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Not applicable</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Diagnosis of a secondary malignancy — managed as its own new cancer diagnosis</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>There is no acute "treatment" for this risk — management consists entirely of PREVENTION (using the lowest effective dose/volume, proton therapy or other normal-tissue-sparing techniques when appropriate, especially in children/young adults with long expected survivorship) and long-term surveillance per survivorship guidelines for the specific field/organ at risk.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>This risk is precisely why proton therapy is preferentially used in pediatric CNS tumors (see the Oncology Interventions Atlas radiation modalities section) — the entire clinical rationale is reducing integral dose to normal tissue specifically to lower this long-latency secondary malignancy risk over a child's full expected lifespan.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>See Oncology Interventions Atlas (Radiation Modalities section); NCCN Survivorship guideline (secondary malignancy surveillance by prior treatment exposure).</p></div>
+    </article>
+
+    <article class="secard">
+      <header class="mcard-h">
+        <span class="mcard-num">02</span>
+        <h3>Radiation Fibrosis Syndrome</h3>
+      </header>
+      <div class="se-field"><span class="flabel">Likely Causative Agents / Modality</span><p>Any radiation field, with risk increased by higher cumulative dose, larger treated volume, and re-irradiation of previously treated tissue.</p></div>
+      <div class="se-field"><span class="flabel">Pathology / Mechanism</span><p>Chronic, progressive fibrotic transformation of irradiated soft tissue (muscle, fascia, blood vessels, sometimes nerve) driven by ongoing low-grade inflammation and fibroblast activation that can continue evolving for years after treatment — unlike acute radiation effects that resolve, fibrosis is a genuinely progressive late effect that can cause pain, restricted range of motion, and, when nerves are involved, radiation-induced plexopathy or neuropathy.</p></div>
+      <div class="se-field">
+        <span class="flabel">Severity (CTCAE-style)</span>
+        <div class="sev-bar"><div class="sev-seg sev-mild"><span class="sev-tier">Mild</span><span class="sev-desc">Mild stiffness/tightness, not limiting function</span></div>
+<div class="sev-seg sev-moderate"><span class="sev-tier">Moderate</span><span class="sev-desc">Moderate restriction limiting instrumental ADLs or causing chronic pain requiring management</span></div>
+<div class="sev-seg sev-severe"><span class="sev-tier">Severe</span><span class="sev-desc">Severe contracture/dysfunction significantly limiting self-care ADLs, or disabling plexopathy/neuropathy</span></div></div>
+      </div>
+      <div class="se-field mgmt"><span class="flabel">Management &amp; Most Effective Agents</span><p>Physical therapy (stretching, range-of-motion exercises) started early and maintained long-term is the primary management strategy to slow functional decline, though it does not reverse established fibrosis. Pentoxifylline combined with vitamin E has some evidence for improving established radiation fibrosis (similar rationale to its use in osteoradionecrosis) though effect sizes are modest. There is no agent that reliably reverses established fibrosis, which is why early, sustained physical therapy engagement matters more than waiting for a pharmacologic fix.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Radiation fibrosis syndrome can continue to progress for YEARS after treatment ends, unlike most other radiation toxicities which stabilize — a survivor reporting new, gradually worsening stiffness/pain long after treatment completion should be evaluated for this rather than assumed to have an unrelated new musculoskeletal problem, especially in a previously irradiated field.</p></div>
+      <div class="refs-block"><span class="refs-tag">References</span><p>Radiation fibrosis syndrome clinical review literature; pentoxifylline/vitamin E trial literature for radiation-induced fibrosis.</p></div>
+    </article></div></section>
+  </div>
+</main>
+
+<footer>Oncology Side Effects Atlas — original reference content for clinical education, grounded in ASCO, NCCN, MASCC/ISOO, and ASTRO guidance as cited per entry. Verify current guideline versions and institutional protocols before applying doses or thresholds to patient care.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+
+  document.querySelectorAll('.modetab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.modetab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.modeblock').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.modeblock[data-modeblock="' + btn.dataset.mode + '"]').classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.cattab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var mode = btn.dataset.mode;
+      document.querySelectorAll('.cattab[data-mode="' + mode + '"]').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.modeblock[data-modeblock="' + mode + '"] .catpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.catpanel[data-cat="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

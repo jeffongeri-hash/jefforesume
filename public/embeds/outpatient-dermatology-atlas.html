@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outpatient Dermatology Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .pearl-tag, .algo-num{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1140px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+nav.dtabs{display:flex; gap:6px; flex-wrap:wrap; max-width:1140px; margin:14px auto 0; padding:0 22px 14px;}
+.dtab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 15px; border-radius:9px; cursor:pointer; font-size:.82rem; font-weight:700;}
+.dtab.active{background:var(--tabclr); color:#1a1206; border-color:var(--tabclr);}
+
+main{max-width:1140px; margin:0 auto; padding:22px;}
+.dermpanel{display:none;}
+.dermpanel.active{display:block;}
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
+
+/* ALGORITHM */
+.algo-list{display:flex; flex-direction:column; gap:16px;}
+.algostep{background:var(--panel); border:1px solid var(--line); border-left:4px solid #e0b341; border-radius:14px; padding:20px 24px;}
+.algo-h{display:flex; align-items:center; gap:12px; margin-bottom:8px;}
+.algo-num{width:30px; height:30px; border-radius:50%; background:#e0b341; color:#1a1206; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;}
+.algo-h h3{font-size:1.05rem;}
+.algo-q{color:var(--soft); font-size:.88rem; margin:0 0 14px; font-style:italic;}
+.algo-branches{display:flex; flex-direction:column; gap:8px;}
+.algo-branch{background:var(--panelhi); border-radius:9px; padding:10px 14px;}
+.branch-cond{display:block; color:#e0b341; font-weight:700; font-size:.82rem; margin-bottom:3px;}
+.algo-branch p{margin:0; font-size:.85rem; color:var(--soft);}
+
+/* CONDITION / PROCEDURAL CARDS */
+.condcard-list{display:grid; gap:16px;}
+.condcard{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--tabclr); border-radius:14px; padding:18px 22px; box-shadow:var(--shadow);}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--tabclr); font-size:.85rem; border:1px solid var(--tabclr); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.1rem; color:var(--tabclr);}
+.se-field{margin-bottom:12px;}
+.se-field .flabel{display:block; font-size:.63rem; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.se-field p{margin:0; font-size:.87rem; color:var(--soft);}
+.se-field.mgmt p{color:var(--ink);}
+.se-field.warn .flabel{color:var(--warn);}
+.se-field.warn p{color:var(--ink);}
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:11px 15px; margin-bottom:0;}
+.pearl-tag{font-size:.63rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.86rem; color:var(--ink);}
+
+footer{max-width:1140px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Full-Time Practice · Outpatient Dermatology</span>
+      <h1>Outpatient Dermatology Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="dtabs"><button class="dtab active" data-target="algorithm" style="--tabclr:#e0b341">New Rash Algorithm</button>
+<button class="dtab" data-target="inflammatory" style="--tabclr:#c1432e">Inflammatory Dermatoses</button>
+<button class="dtab" data-target="skincancer" style="--tabclr:#4a90c9">Skin Cancer &amp; Dermoscopy</button>
+<button class="dtab" data-target="procedural" style="--tabclr:#4f9e6e">Procedural Dermatology</button>
+<button class="dtab" data-target="hairnail" style="--tabclr:#a76bd6">Hair, Nail &amp; Mucosal</button>
+<button class="dtab" data-target="pediatric" style="--tabclr:#d9b23c">Pediatric Dermatology</button></nav>
+</header>
+
+<main>
+  
+  <section class="dermpanel active" data-dtab="algorithm">
+    <div class="intro"><p>Work through these five steps in order for any new rash in clinic. Each step narrows the differential and tells you what to do next — treat, biopsy, or escalate.</p></div>
+    <div class="algo-list">
+    <article class="algostep">
+      <header class="algo-h"><span class="algo-num">1</span><h3>1. Acute or Chronic?</h3></header>
+      <p class="algo-q">How long has this been present?</p>
+      <div class="algo-branches"><div class="algo-branch"><span class="branch-cond">Acute (days, new onset)</span><p>Think: drug reaction, contact dermatitis, viral exanthem, urticaria, acute infection — go to Step 2 with an acute lens.</p></div>
+<div class="algo-branch"><span class="branch-cond">Chronic/recurrent (weeks-months-years)</span><p>Think: psoriasis, atopic dermatitis, lichen planus, chronic contact dermatitis, cutaneous lupus — go to Step 2 with a chronic lens.</p></div></div>
+    </article>
+    <article class="algostep">
+      <header class="algo-h"><span class="algo-num">2</span><h3>2. Primary Morphology — what does the individual lesion actually look like?</h3></header>
+      <p class="algo-q">Papulosquamous (scaly plaques)? Vesiculobullous (fluid-filled)? Urticarial (wheals, migratory, &lt;24h per lesion)? Purpuric (non-blanching)? Pustular?</p>
+      <div class="algo-branches"><div class="algo-branch"><span class="branch-cond">Papulosquamous</span><p>Psoriasis, atopic dermatitis, seborrheic dermatitis, tinea, lichen planus, secondary syphilis, pityriasis rosea.</p></div>
+<div class="algo-branch"><span class="branch-cond">Vesiculobullous</span><p>HSV/VZV, contact dermatitis (allergic, can vesiculate), bullous pemphigoid, dyshidrotic eczema — if mucosal + skin sloughing, treat as an emergency (SJS/TEN) and don't manage in routine clinic.</p></div>
+<div class="algo-branch"><span class="branch-cond">Urticarial (each lesion resolves &lt;24h, migrates)</span><p>Acute or chronic urticaria, urticarial drug reaction — ask about a new medication in the last 1-6 weeks specifically.</p></div>
+<div class="algo-branch"><span class="branch-cond">Purpuric / non-blanching</span><p>STOP — this changes the entire workup. Vasculitis, thrombocytopenia, coagulopathy, or a severe infectious process need same-day evaluation, not routine derm follow-up; blanch-test every concerning rash.</p></div>
+<div class="algo-branch"><span class="branch-cond">Pustular</span><p>Acne, folliculitis, pustular psoriasis, acute generalized exanthematous pustulosis (AGEP, drug-related) — ask about recent new medication if widespread and febrile.</p></div></div>
+    </article>
+    <article class="algostep">
+      <header class="algo-h"><span class="algo-num">3</span><h3>3. Distribution Pattern</h3></header>
+      <p class="algo-q">Flexural vs extensor? Photodistributed (face/dorsal hands/V of neck, sparing under chin/behind ears)? Dermatomal? Follicular? Palms/soles?</p>
+      <div class="algo-branches"><div class="algo-branch"><span class="branch-cond">Flexural (antecubital/popliteal fossae)</span><p>Classic atopic dermatitis distribution in older children/adults.</p></div>
+<div class="algo-branch"><span class="branch-cond">Extensor surfaces (elbows, knees, scalp)</span><p>Classic psoriasis distribution.</p></div>
+<div class="algo-branch"><span class="branch-cond">Photodistributed, sparing shaded areas</span><p>Photosensitive drug eruption or cutaneous lupus — ask about new medications and sun exposure timing.</p></div>
+<div class="algo-branch"><span class="branch-cond">Strictly unilateral, dermatomal, stops at midline</span><p>Herpes zoster — even without classic vesicles yet, dermatomal pain/burning preceding a rash is highly suggestive.</p></div>
+<div class="algo-branch"><span class="branch-cond">Palms and soles specifically involved</span><p>Secondary syphilis, hand-foot-mouth disease (children), some drug reactions, dyshidrotic eczema — a rash that classically SPARES palms/soles (like most viral exanthems) becomes notable when it doesn't.</p></div></div>
+    </article>
+    <article class="algostep">
+      <header class="algo-h"><span class="algo-num">4</span><h3>4. Associated Symptoms &amp; Systemic Signs</h3></header>
+      <p class="algo-q">Itch vs. pain vs. burning? Fever? Mucosal involvement? Joint pain? Recent new medication (check the 1-6 week window even for drugs started a while ago)?</p>
+      <div class="algo-branches"><div class="algo-branch"><span class="branch-cond">Itch-dominant, well-appearing</span><p>Most inflammatory dermatoses (eczema, psoriasis, urticaria, contact dermatitis) — proceed with routine outpatient workup.</p></div>
+<div class="algo-branch"><span class="branch-cond">Pain out of proportion to what you see, or rapidly progressive</span><p>Consider necrotizing soft tissue infection or a severe drug reaction — this is a same-day-escalation red flag, not a routine follow-up.</p></div>
+<div class="algo-branch"><span class="branch-cond">Fever + rash + mucosal involvement (eyes/mouth/genitals)</span><p>Red flag for SJS/TEN, DRESS, or Kawasaki disease (children) — refer/escalate urgently, do not manage as routine dermatitis.</p></div>
+<div class="algo-branch"><span class="branch-cond">New joint pain, photosensitivity, or oral ulcers alongside the rash</span><p>Consider a connective tissue disease workup (lupus, dermatomyositis) rather than treating as isolated dermatitis.</p></div></div>
+    </article>
+    <article class="algostep">
+      <header class="algo-h"><span class="algo-num">5</span><h3>5. Decide: Treat Empirically, Biopsy, or Refer/Escalate</h3></header>
+      <p class="algo-q">Based on the above, does this fit a classic, low-risk pattern; does the diagnosis remain unclear after morphology + distribution; or are there red flags present?</p>
+      <div class="algo-branches"><div class="algo-branch"><span class="branch-cond">Classic pattern, no red flags</span><p>Treat empirically per the relevant condition card in this atlas; schedule routine follow-up to confirm response.</p></div>
+<div class="algo-branch"><span class="branch-cond">Diagnosis unclear, or atypical/persistent despite first-line treatment</span><p>Punch or shave biopsy (see Procedural Dermatology tab) rather than continuing to guess — a non-diagnostic empiric treatment trial that fails is a common, avoidable delay.</p></div>
+<div class="algo-branch"><span class="branch-cond">Any red flag from Steps 2-4 (purpura, mucosal involvement, pain out of proportion, systemic symptoms)</span><p>Escalate same-day — do not schedule routine follow-up for these.</p></div></div>
+    </article></div>
+  </section>
+  <section class="dermpanel" data-dtab="inflammatory"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Psoriasis (Plaque-Type)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Well-demarcated, erythematous plaques with thick, silvery-white scale; Auspitz sign (pinpoint bleeding when scale is removed) supports the diagnosis clinically.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Classic extensor distribution — elbows, knees, scalp, lower back, and the intergluteal cleft; nail pitting/onycholysis and joint symptoms (psoriatic arthritis) should be actively screened for at every visit.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis; biopsy reserved for atypical presentations or when the diagnosis is genuinely unclear. Screen for psoriatic arthritis symptoms (joint pain/stiffness, dactylitis) at every visit since missed PsA has real joint-damage consequences.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical corticosteroids ± vitamin D analogs (calcipotriene) for limited disease; phototherapy (narrowband UVB) for more widespread disease; biologic therapy (IL-17, IL-23, or TNF-alpha inhibitors) for moderate-severe disease or when topical/phototherapy fails — biologic selection is increasingly guided by comorbid psoriatic arthritis, since some agents treat both effectively.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Erythrodermic psoriasis (&gt;75-90% body surface area involvement) or generalized pustular psoriasis are dermatologic emergencies requiring same-day evaluation, not routine follow-up.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Always screen for psoriatic arthritis at every visit, even years into a patient's psoriasis diagnosis — PsA can develop well after the skin disease and is frequently under-recognized until joint damage is already present.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Atopic Dermatitis (Eczema)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Poorly-demarcated, erythematous, scaly, often excoriated patches/plaques; chronic lesions show lichenification (thickened, leathery skin with accentuated skin lines from chronic scratching).</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Age-dependent: infants — face and extensor surfaces; older children/adults — classic flexural distribution (antecubital and popliteal fossae, neck, wrists, ankles).</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis in the vast majority of cases; consider patch testing if a superimposed allergic contact dermatitis is suspected (worsening despite good routine management, or an atypical distribution suggesting an external trigger).</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Emollients/moisturizers as the foundation for ALL severity levels (not just an adjunct); topical corticosteroids for flares, stepped by potency to the affected body site (low-potency for face/skin folds, higher-potency for thicker-skinned areas); topical calcineurin inhibitors (tacrolimus, pimecrolimus) as steroid-sparing options, especially for facial/eyelid involvement; systemic options (dupilumab, JAK inhibitors) for moderate-severe disease refractory to topical management.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Eczema herpeticum (widespread, punched-out vesicles/erosions, often with fever, on a background of atopic dermatitis) is a dermatologic emergency requiring same-day antiviral treatment — don't mistake it for a simple flare.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Soak and smear" (bathing followed immediately by moisturizer application while skin is still damp) meaningfully improves barrier function and reduces flare frequency — this practical counseling point is often more impactful for day-to-day control than escalating medication alone.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Acne Vulgaris</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Comedones (open/closed), inflammatory papules/pustules, and — in more severe disease — nodules/cysts that can scar; graded mild/moderate/severe based on lesion type/count and scarring risk.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Face, chest, and back — areas with the highest density of sebaceous follicles; distribution/pattern can hint at an underlying driver (jawline/chin predominance in adult women raises consideration of a hormonal component).</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis; consider a hormonal workup (PCOS screening — irregular menses, hirsutism, elevated androgens) in adult women with jawline-predominant acne, especially with other suggestive symptoms.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical retinoids are the foundation of most regimens (comedolytic + anti-inflammatory); benzoyl peroxide added for its antibacterial effect and to reduce resistance when combined with topical/oral antibiotics; topical or oral antibiotics for inflammatory disease (time-limited courses given resistance concerns); combined oral contraceptives or spironolactone for hormonally-driven adult female acne; isotretinoin for severe/scarring/treatment-refractory acne, with mandatory pregnancy prevention program compliance (iPLEDGE in the US) given its teratogenicity.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Acne fulminans (sudden, severe, ulcerative acne with systemic symptoms — fever, joint pain) is rare but requires urgent escalation, often with systemic corticosteroids alongside isotretinoin initiation under specialist guidance.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Set expectations explicitly that most acne regimens take 6-8 weeks to show meaningful improvement and often cause an initial "purging" period with retinoids — patients who don't know this frequently discontinue an effective regimen prematurely.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Rosacea</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Centrofacial erythema, telangiectasias, and inflammatory papules/pustules — classically WITHOUT comedones (a key distinguishing feature from acne, despite superficial similarity); phymatous change (rhinophyma) represents a more advanced, sebaceous-gland-driven subtype.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Centrofacial — cheeks, nose, chin, forehead; periorbital sparing is common and can help distinguish it from other facial dermatoses.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis; ask about trigger exposures (sun, heat, spicy food, alcohol, stress) since trigger avoidance is a foundational management component alongside medication.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical metronidazole, azelaic acid, or ivermectin for the inflammatory papulopustular component; topical brimonidine or oxymetazoline for background erythema/flushing specifically (these are vasoconstrictors, treating a different aspect of the disease than the anti-inflammatory agents); oral doxycycline (at anti-inflammatory, sub-antimicrobial dosing) for more significant inflammatory disease; laser/light-based therapy for persistent telangiectasias that don't respond to topical treatment.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Ocular rosacea (dry, irritated, red eyes with lid margin involvement) is common and under-recognized — ask about eye symptoms specifically, since untreated ocular rosacea can threaten vision in severe cases and needs ophthalmology co-management.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Distinguishing rosacea from acne matters clinically because benzoyl peroxide and some acne regimens can actually WORSEN rosacea's inflammatory component — don't reflexively apply an acne-style regimen to a centrofacial eruption without confirming the diagnosis first.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Seborrheic Dermatitis</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Erythematous patches with greasy, yellowish scale — distinct from psoriasis's drier, more silvery scale, though the two can coexist and overlap ("sebopsoriasis").</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Areas with high sebaceous gland density — scalp, eyebrows, nasolabial folds, ears, and central chest; infantile seborrheic dermatitis ("cradle cap") is a distinct, generally self-limited entity in the pediatric population.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis; persistent, severe, or treatment-refractory seborrheic dermatitis in an adult should prompt consideration of HIV testing, since severe seborrheic dermatitis can be a presenting sign of underlying immunosuppression.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Antifungal shampoos/creams (ketoconazole, selenium sulfide, zinc pyrithione) targeting the Malassezia yeast implicated in its pathogenesis; low-potency topical corticosteroids for more inflammatory flares, used intermittently rather than continuously given facial/scalp steroid-atrophy risk with prolonged use.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>No acute emergency association, but disproportionately severe/refractory disease is the red flag described above (immunosuppression workup).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Cradle cap in infants is generally reassuring and self-limited, resolving over months without aggressive treatment — gentle emollients and mineral oil to soften scale before washing is usually sufficient, and overly aggressive treatment causes more parental anxiety than the condition warrants.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">06</span><h3>Allergic vs. Irritant Contact Dermatitis</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Allergic: well-demarcated, often vesicular/weepy, intensely pruritic patches, classically with sharp geometric borders or streaking that hints at an external cause (a plant brushing against skin, a piece of jewelry). Irritant: more diffuse, often burning more than itching, with less sharp demarcation.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Directly correlates with the site of allergen/irritant contact — a shape that doesn't match a known dermatosis pattern (a rectangle, a streak, a ring matching a piece of jewelry) is itself a diagnostic clue.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Patch testing is the gold-standard diagnostic tool for allergic contact dermatitis when the culprit allergen isn't obvious from history — a detailed exposure history (new products, occupational exposures, hobbies) is the essential first step before reflexively ordering patch testing.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Identify and avoid the causative agent (the single most important intervention — no medication substitutes for allergen avoidance); topical corticosteroids for the inflammatory component; cool compresses and barrier creams for irritant contact dermatitis specifically, where the goal is restoring skin barrier function rather than suppressing an allergic response.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Widespread or facial/periorbital involvement with significant swelling can mimic angioedema or a more serious process — assess airway/systemic symptoms if the reaction is severe or rapidly progressive.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Poison ivy/oak/sumac (urushiol-induced allergic contact dermatitis) classically shows LINEAR streaking where the plant brushed against skin — this pattern is nearly diagnostic on its own even without a clear history of plant exposure.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">07</span><h3>Lichen Planus</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Classic "6 Ps": Purple, Polygonal, Planar (flat-topped), Pruritic Papules and Plaques; fine white lines (Wickham's striae) are visible on the surface of lesions with close inspection, and oral involvement (white, lacy patches on the buccal mucosa) is common and should be actively examined for.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Flexor surfaces of wrists/forearms, ankles, and lower back are classic; the Koebner phenomenon (new lesions arising at sites of skin trauma/scratching) is characteristic.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Often a clinical diagnosis given the classic morphology, but biopsy is frequently pursued given overlap with other papulosquamous conditions and to confirm before starting more aggressive treatment; screen for hepatitis C, which has a recognized association with lichen planus.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical corticosteroids (often higher-potency, given the disease's relative steroid-resistance compared to eczema) for cutaneous disease; intralesional corticosteroid injection for thick, localized plaques; oral corticosteroids or other systemic immunomodulators for widespread or refractory disease; oral lichen planus specifically requires closer surveillance given a small but real increased risk of oral squamous cell carcinoma with chronic erosive disease.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Erosive oral or genital lichen planus causing significant pain/dysfunction, or any suspicious oral lesion showing induration/ulceration in chronic disease, warrants biopsy to exclude malignant transformation.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Actively examine the oral mucosa in any patient with a new lichen planus diagnosis — oral involvement is common, often asymptomatic early on, and its presence/absence changes both the differential consideration (hepatitis C screening) and long-term surveillance needs.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">08</span><h3>Bullous Pemphigoid</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Tense, fluid-filled bullae on an erythematous or urticarial-appearing base — the bullae are TENSE (don't rupture easily) in contrast to more fragile blistering conditions, and Nikolsky's sign is classically NEGATIVE (distinguishing it from pemphigus vulgaris, where it's positive).</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Trunk and extremities, often with a preceding urticarial/eczematous prodrome for weeks before frank bullae appear; predominantly affects OLDER adults (typically &gt;60), unlike pemphigus vulgaris which can affect a younger population.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Biopsy with direct immunofluorescence is required for definitive diagnosis, showing a characteristic linear band of IgG/C3 deposition at the dermal-epidermal junction — this is not a diagnosis to manage purely clinically given how much the treatment differs from other blistering conditions.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical or systemic corticosteroids depending on extent of disease; steroid-sparing immunosuppressants (doxycycline, dapsone, or more potent immunosuppressants) for widespread or steroid-refractory disease; the biologic dupilumab has emerging evidence as an effective, better-tolerated option, an important development given how poorly older adults with bullous pemphigoid often tolerate prolonged systemic corticosteroids.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Widespread bullae with significant body surface area involvement in an elderly patient carries real morbidity/mortality risk (infection, fluid losses) — this population often has more comorbidities and less physiologic reserve than younger blistering-disease patients, making the practical management challenges different even when the disease itself is present.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A NEW bullous eruption in an older adult should prompt dermatology referral for biopsy with direct immunofluorescence rather than empiric treatment — bullous pemphigoid, pemphigus vulgaris, and drug-induced blistering conditions require different management, and getting this wrong has real consequences.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="skincancer"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Actinic Keratosis</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Rough, scaly, erythematous papules/patches, often easier to feel than see ("sandpaper" texture) — considered a precursor lesion on a continuum toward squamous cell carcinoma rather than a cancer itself.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Chronically sun-exposed areas — face, ears, scalp (in bald men), dorsal hands/forearms; multiple lesions are common given shared cumulative UV exposure across the affected area.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis; biopsy if a lesion is indurated, tender, rapidly growing, ulcerated, or otherwise atypical for a simple AK — these features suggest possible progression to invasive SCC.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Cryotherapy (liquid nitrogen) for isolated/few lesions is the most common in-office treatment; field therapy (topical 5-fluorouracil, imiquimod, or photodynamic therapy) for widespread actinic damage/multiple subclinical lesions, treating the whole affected field rather than each lesion individually.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>A lesion that becomes tender, indurated, or rapidly enlarges should raise concern for transformation to invasive SCC and prompt biopsy rather than continued cryotherapy.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>AKs are simultaneously extremely common and a genuine SCC risk marker — the actual rate of any individual AK progressing to invasive SCC is low, but the presence of multiple AKs identifies a patient population worth closer periodic skin cancer surveillance overall, not just treatment of the visible lesions.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Basal Cell Carcinoma (BCC)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Classic nodular BCC: a pearly, translucent papule/nodule with rolled borders and often visible telangiectasias, sometimes with central ulceration ("rodent ulcer"); superficial BCC presents as a more subtle, scaly, erythematous patch that can mimic eczema/psoriasis if not examined closely.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Overwhelmingly on sun-exposed skin, especially the head and neck — the most common malignancy overall, reflecting cumulative UV exposure as the dominant driver.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Shave or punch biopsy to confirm diagnosis and histologic subtype before definitive treatment — subtype (nodular vs. superficial vs. more aggressive infiltrative/morpheaform) meaningfully changes both risk assessment and treatment choice.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical excision with margins, or Mohs micrographic surgery for high-risk locations (face, especially around the eyes/nose/ears/lips) or aggressive histologic subtypes, given Mohs's superior margin control and tissue-sparing advantage in cosmetically/functionally sensitive areas. Electrodesiccation and curettage is an option for low-risk, superficial BCC in non-critical locations. Topical imiquimod or 5-FU can be used for superficial BCC when surgery isn't preferred/feasible. Advanced/metastatic (rare) BCC has hedgehog-pathway-inhibitor targeted therapy (vismodegib, sonidegib) as a systemic option.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>BCC essentially never metastasizes, but LOCAL tissue destruction can be extensive and disfiguring if neglected/untreated for a long time, especially around the eyes/nose — this is the actual risk to communicate, not death from metastasis.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient hearing "basal cell carcinoma" often assumes the same mortality risk as melanoma — explicitly reassuring that BCC's danger is local tissue destruction rather than metastatic spread (while still emphasizing the real need for prompt treatment) improves both understanding and treatment adherence.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Squamous Cell Carcinoma (SCC)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Firm, often tender, hyperkeratotic or ulcerated papule/nodule/plaque — more likely to be tender than BCC, and grows more quickly on average; can arise de novo or from a pre-existing actinic keratosis.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Sun-exposed skin similarly to BCC, but with a meaningfully higher risk of metastasis than BCC, especially for high-risk features (large size, poor differentiation, perineural invasion, immunosuppressed patients, or lip/ear location).</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Biopsy (shave or punch) to confirm diagnosis and assess histologic risk features (differentiation grade, depth of invasion, perineural invasion) — these features directly drive whether sentinel lymph node evaluation or more aggressive surgical margins are needed.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Surgical excision with margins guided by risk stratification, or Mohs surgery for high-risk features/locations, similar logic to BCC but with lower threshold given SCC's metastatic potential; regional lymph node evaluation/imaging for high-risk tumors; systemic therapy (immunotherapy — cemiplimab, pembrolizumab) for advanced/metastatic/unresectable disease, a significant recent advance for a population that previously had limited systemic options.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>SCC arising on the lip, ear, or in a chronically immunosuppressed patient (transplant recipients specifically carry a markedly elevated SCC risk and more aggressive disease behavior) should be treated with a lower threshold for aggressive management and closer surveillance.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Solid organ transplant recipients have a dramatically elevated SCC risk (up to 100-fold in some populations) and their SCCs behave more aggressively — this population needs more frequent skin surveillance than general dermatology patients, and this should be built into their routine post-transplant care, not left to patient-initiated visits.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Melanoma</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Follow the ABCDE rule for initial screening (Asymmetry, Border irregularity, Color variation, Diameter &gt;6mm, Evolution/change) — but remember nodular melanoma often does NOT fit this pattern (see the Cancer Deep Dives Vol. II atlas) and instead presents as a rapidly growing, often symmetric, uniformly-colored nodule.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Can occur anywhere, including non-sun-exposed sites (acral lentiginous subtype on palms/soles/nail beds, especially important to recognize in patients with darker skin where this is the predominant subtype) — see the Cancer Deep Dives Vol. II atlas for the full subtype breakdown.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Excisional biopsy with narrow margins (1-3mm) is preferred over shave biopsy whenever melanoma is a real consideration — a shave biopsy risks transecting the base of the lesion and compromising accurate Breslow depth measurement, which directly drives staging and treatment decisions downstream.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Wide local excision with margins determined by Breslow depth, ± sentinel lymph node biopsy per NCCN thickness/ulceration thresholds — see the Cancer Classification &amp;amp; Staging and Cancer Deep Dives Vol. II atlases for the full staging and systemic treatment framework for more advanced disease.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Any pigmented lesion under a nail, on a palm/sole, or a rapidly changing/growing lesion regardless of how "typical" or "atypical" it looks by ABCDE criteria warrants a low biopsy threshold — melanoma is the diagnosis you cannot afford to miss in outpatient dermatology.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Dermoscopy substantially improves diagnostic accuracy for pigmented lesions beyond naked-eye exam alone (asymmetric pigment network, atypical vascular patterns, blue-white veil, and irregular streaks/pseudopods are concerning dermoscopic features) — building dermoscopic exam into routine full-body skin checks, not just for lesions that already look worrying on gross exam, catches earlier disease.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Dermoscopy Fundamentals</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Not a single lesion but a technique: dermoscopy (epiluminescence microscopy) reveals subsurface pigment/vascular structures invisible to the naked eye, substantially improving sensitivity and specificity for distinguishing benign nevi from melanoma and for subtyping non-melanoma skin cancers.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Applied to any pigmented or suspicious lesion during a full-body skin exam — building dermoscopic evaluation into routine practice (not reserved only for lesions that already look concerning) catches subtly atypical lesions earlier.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Key patterns to recognize: a regular, symmetric pigment network with even color favors a benign nevus; an ASYMMETRIC pigment network, blue-white veil, irregular streaks/pseudopods at the periphery, and atypical/polymorphous vasculature favor melanoma; arborizing (branching) vessels favor BCC; a "strawberry" pattern with fine white scale favors actinic keratosis/SCC in situ.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Dermoscopy is a diagnostic aid, not a replacement for biopsy when a lesion is genuinely concerning — its main practical value is improving the threshold decision of WHICH lesions to biopsy among many nevi, reducing both missed melanomas and unnecessary biopsies of clearly benign lesions.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Don't let a reassuring dermoscopic pattern override a strong clinical concern (rapid change reported by the patient, a lesion that "doesn't fit" the patient's other nevi — the "ugly duckling" sign) — dermoscopy improves but does not replace clinical judgment and biopsy threshold.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The "ugly duckling" sign — a lesion that looks different from the patient's other nevi, even if it doesn't meet strict ABCDE criteria on its own — is one of the most practically useful screening heuristics in a full-body skin exam, especially in patients with many nevi where individually applying ABCDE to every lesion isn't practical.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="procedural"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Shave Biopsy</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>Superficial or exophytic (raised, protruding) lesions where full-thickness sampling isn't essential — most BCC and SCC evaluations, seborrheic keratosis removal, and superficial nevi where melanoma is NOT a significant concern.</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>A blade (or flexible razor blade) is used to shave the lesion off at or just below the skin surface, typically under local anesthesia; hemostasis achieved with aluminum chloride solution or light electrocautery.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>AVOID for any lesion where melanoma is a genuine consideration — shave biopsy risks transecting the lesion base and losing accurate Breslow depth measurement, which directly compromises staging (see the Melanoma card above).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Before performing a shave biopsy on ANY pigmented lesion, explicitly ask yourself "could this be melanoma?" — if there's real uncertainty, default to an excisional or deep punch/saucerization technique instead rather than risking a compromised depth measurement that can't be recovered later.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Punch Biopsy</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>Inflammatory dermatoses requiring full-thickness dermal sampling (to evaluate architecture and depth of inflammatory infiltrate), and smaller lesions where a cylindrical full-thickness sample is diagnostically useful.</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>A circular punch tool (typically 3-6mm) is rotated through the epidermis and dermis (sometimes into subcutaneous fat) to obtain a cylindrical tissue core; the resulting defect is usually closed with one or two sutures for punches ≥4mm.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>Less ideal for large or highly heterogeneous lesions where a small punch may not be representative of the whole lesion (sampling error) — consider multiple punches from different areas of a large, variably-appearing lesion, or an incisional/excisional approach instead.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>For inflammatory dermatoses where the diagnosis is genuinely unclear (the classic "could be several things" papulosquamous eruption), a punch biopsy sent for both routine histology AND direct immunofluorescence (if a blistering/autoimmune process is on the differential) maximizes diagnostic yield from a single procedure.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Excisional Biopsy</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>Any lesion where melanoma is a real consideration (preferred over shave biopsy specifically to preserve accurate depth measurement), and lesions requiring complete removal for both diagnostic and therapeutic purposes (e.g., a lesion that needs to be entirely gone, not just sampled).</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>The entire lesion is removed with a narrow margin of surrounding normal skin (typically 1-3mm for a diagnostic excision of a pigmented lesion of concern), extending into subcutaneous fat, followed by layered closure.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>Larger lesions in cosmetically sensitive areas may require referral for a more complex closure (flap or graft) rather than routine primary closure — plan the biopsy approach with the eventual definitive treatment/closure in mind, not just the immediate diagnostic need.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>When biopsying a lesion where melanoma is suspected, resist the temptation to take an overly wide margin at the DIAGNOSTIC biopsy stage — a narrow diagnostic margin (1-3mm) is preferred, since a wider therapeutic excision (determined by the eventual Breslow depth) is planned as a separate, second procedure once the diagnosis and depth are confirmed.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Cryotherapy (Liquid Nitrogen)</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>Actinic keratoses, warts (verrucae), seborrheic keratoses, and some superficial BCCs in low-risk locations — a fast, well-tolerated, no-suture office procedure for appropriately selected superficial lesions.</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>Liquid nitrogen is applied (spray or cotton-tip applicator) to freeze the lesion and a small margin of surrounding tissue, typically for one or two freeze-thaw cycles depending on the lesion type and desired depth of destruction.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>Avoid for pigmented lesions where melanoma is a consideration (destroys the tissue, preventing any histologic diagnosis) and for lesions in patients with cold-sensitivity conditions (cryoglobulinemia, cold urticaria, Raynaud's) or over superficial nerves (risk of nerve injury with overly aggressive freezing).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Counsel patients explicitly about expected post-treatment blistering/crusting and, importantly, the real risk of post-inflammatory hypo- or hyperpigmentation — this is disproportionately more noticeable and more likely to prompt a return visit or complaint in patients with darker skin tones, and setting expectations upfront prevents unnecessary alarm.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Curettage &amp;amp; Electrodesiccation (C&amp;amp;E)</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>Low-risk, superficial BCC in non-critical anatomic locations, seborrheic keratoses, and some other superficial benign/low-risk lesions where tissue-sparing cosmesis isn't the top priority.</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>The lesion is scraped away with a curette (a sharp, spoon-shaped instrument) down to a firm dermal base, followed by electrodesiccation (light electrocautery) of the base to achieve hemostasis and destroy any remaining microscopic tumor extension; often repeated for 2-3 cycles.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>AVOID for high-risk BCC subtypes (infiltrative, morpheaform), high-risk anatomic locations (central face, around eyes/nose/ears/lips), or recurrent BCC at a previously treated site — Mohs surgery is preferred in these situations given C&amp;amp;E's less precise margin control compared to Mohs.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>C&amp;amp;E leaves NO tissue for histologic margin confirmation the way excision or Mohs does — this is an appropriate trade-off for genuinely low-risk lesions, but it means C&amp;amp;E should only be selected when you're already confident in the diagnosis and risk category from a prior biopsy, not as a first diagnostic step.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4f9e6e">
+      <header class="mcard-h"><span class="mcard-num">06</span><h3>When to Refer for Mohs Micrographic Surgery</h3></header>
+      <div class="se-field"><span class="flabel">Indication</span><p>High-risk BCC/SCC by location (central face, periorbital, perinasal, perioral, periauricular, genitalia, hands/feet), high-risk histologic subtype (infiltrative/morpheaform BCC, poorly differentiated or perineural-invasion-positive SCC), recurrent tumors at a previously treated site, or large tumors where tissue conservation matters significantly for function/cosmesis.</p></div>
+      <div class="se-field"><span class="flabel">Technique</span><p>Not applicable in the same sense — Mohs is performed by a fellowship-trained Mohs surgeon, examining 100% of the surgical margin in real-time during the procedure (versus the small sampling of margins typical with standard excision pathology), allowing immediate re-excision of any positive margin in the same setting.</p></div>
+      <div class="se-field warn"><span class="flabel">Contraindications / Avoid When</span><p>Not necessary/cost-effective for straightforward, low-risk lesions in non-critical locations where standard excision achieves excellent cure rates with less procedural complexity and cost — reserving Mohs for genuinely high-risk situations (rather than defaulting to it for every skin cancer) is appropriate resource stewardship.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Knowing WHEN to refer for Mohs (rather than either over-referring low-risk lesions or under-referring high-risk ones) is one of the most practically important judgment calls in a general dermatology practice — the NCCN high-risk feature list above is worth having memorized rather than looked up case-by-case.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="hairnail"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Androgenetic Alopecia</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Progressive, patterned hair thinning — bitemporal recession and vertex thinning in men (Norwood-Hamilton pattern); diffuse crown thinning with a preserved frontal hairline in women (Ludwig pattern) — this male/female pattern distinction is itself diagnostically useful.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Scalp, following the sex-specific patterns above; family history is common though not universal.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis based on pattern and progression; consider checking iron studies, thyroid function, and (in women) androgen levels if the pattern is atypical, rapidly progressive, or accompanied by other signs of hyperandrogenism (hirsutism, acne, irregular menses).</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Topical minoxidil (OTC) is first-line for both sexes; oral finasteride (a 5-alpha-reductase inhibitor) is an effective option for men, generally avoided in women of reproductive age given teratogenicity risk if pregnant; spironolactone is a common off-label option for women with a hormonal component; low-level laser therapy and platelet-rich plasma injections are additional, more variably evidence-supported options.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Rapid, patchy (rather than patterned/diffuse), or inflammatory/scarring hair loss is NOT androgenetic alopecia and needs a different workup (see Alopecia Areata below, or consider scarring alopecia/lupus if there's associated scalp erythema or scarring).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Set expectations that minoxidil and finasteride are meant to SLOW further loss and modestly regrow some hair, not restore a full head of hair to a pre-loss baseline — mismatched expectations are one of the most common reasons patients discontinue an otherwise appropriately effective regimen.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Alopecia Areata</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Well-circumscribed, round/oval patches of complete hair loss with a smooth, non-scarring scalp surface; "exclamation point" hairs (hairs that taper toward the scalp) at the patch margins are a classic supportive finding.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Can affect any hair-bearing area (scalp most commonly, but eyebrows/eyelashes/beard too); alopecia totalis (complete scalp hair loss) and alopecia universalis (complete body hair loss) represent more severe ends of the same disease spectrum.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis; biopsy reserved for atypical presentations where scarring alopecia or another process is a genuine consideration; screen for other autoimmune conditions given alopecia areata's association with autoimmune thyroid disease and vitiligo.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Intralesional corticosteroid injection is first-line for limited patchy disease; topical high-potency corticosteroids or contact immunotherapy (diphencyprone) for more extensive disease; JAK inhibitors (baricitinib and others) represent a significant recent advance for extensive/refractory alopecia areata, including alopecia totalis/universalis, a population with previously very limited effective systemic options.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>No acute emergency association, but the psychological impact of alopecia areata (especially rapid, visible hair loss) is significant and often under-addressed — screen for and address the mental health impact, not just the hair loss itself.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Explicitly counsel patients that alopecia areata is autoimmune, not contagious or caused by anything they did, and that spontaneous regrowth is common in limited disease — this reassurance meaningfully reduces the anxiety and self-blame many patients bring to this diagnosis.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Onychomycosis</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Thickened, discolored (yellow-brown), brittle, and often crumbling nail plate, typically starting distally and progressing proximally; subungual debris accumulation is common.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Toenails far more commonly than fingernails, reflecting the warm, moist, occlusive shoe environment that favors dermatophyte growth.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Confirm the diagnosis before treating systemically — KOH prep, fungal culture, or PAS staining on a nail clipping — since several other conditions (psoriatic nail disease, lichen planus, trauma) can closely mimic onychomycosis clinically, and oral antifungal treatment carries real hepatotoxicity monitoring requirements not worth incurring for a misdiagnosis.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Oral terbinafine is first-line for confirmed onychomycosis given superior cure rates compared to topical therapy, but requires baseline and monitoring liver function given hepatotoxicity risk; topical ciclopirox or efinaconazole are lower-efficacy but lower-risk options, reasonable for milder disease or when oral therapy is contraindicated/declined.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>No acute emergency association, but recognize that recurrence after successful treatment is common (30-50% in various studies), especially without addressing environmental reservoirs (shoes, shower surfaces) — a purely medication-focused approach without this counseling often leads to relapse.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Always confirm onychomycosis with a KOH prep/culture/PAS stain BEFORE starting oral terbinafine — treating presumptively based on appearance alone is a common source of unnecessary systemic medication exposure (with its monitoring burden) for what may actually be psoriatic nail disease or another mimic entirely.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Key Nail Signs as Systemic Disease Clues</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Clubbing (bulbous fingertip enlargement with loss of the normal nail angle) — pulmonary/cardiac disease. Pitting — psoriasis (most common) or alopecia areata. Beau's lines (transverse grooves) — a marker of a prior systemic illness/physiologic stress at a specific point in time (can be dated by measuring distance from the cuticle). Splinter hemorrhages — endocarditis (classically) though also seen with trauma and several other conditions, so context matters. Half-and-half nails (proximal white, distal pink/brown) — chronic kidney disease.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Nail findings should be examined bilaterally and across multiple digits — a single-digit finding is more likely trauma-related, while a symmetric, multi-digit finding is more likely systemic.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Correlate any concerning nail finding with the broader clinical picture and history rather than interpreting it in isolation — nail clubbing found incidentally, for example, warrants a pulmonary/cardiac workup discussion, not just a dermatology note.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Management is entirely directed at the underlying systemic condition once identified — the nail finding itself is a diagnostic clue, not something to treat directly.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>New clubbing or new splinter hemorrhages in a patient with fever or a murmur should prompt urgent consideration of endocarditis rather than a routine dermatology referral.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Nail exam is a genuinely high-yield, frequently-skipped part of the skin exam — a few extra seconds looking at all ten nails during any full-body skin check can surface a systemic disease clue that would otherwise be missed entirely.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Oral &amp;amp; Genital Mucosal Lesions (Lichen Planus, Aphthous Ulcers, Lichen Sclerosus)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Oral lichen planus: white, lacy (reticular) patches on buccal mucosa, sometimes with painful erosive areas. Aphthous ulcers: shallow, painful, round-to-oval ulcers with a yellow-white base and red halo, recurring in the same general oral locations. Lichen sclerosus (genital): white, atrophic, "cigarette-paper" thin skin, classically in a figure-eight distribution around the vulva/perianal area in women, or affecting the glans/foreskin in men.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Oral mucosa (buccal, gingival, tongue) for the first two; anogenital skin specifically for lichen sclerosus — though extragenital lichen sclerosus can rarely occur elsewhere.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Biopsy for any persistent, atypical, indurated, or non-healing oral or genital lesion to exclude malignancy — oral and genital squamous cell carcinoma can arise within chronic lichen planus or lichen sclerosus, and a lesion that isn't following the expected benign course needs tissue diagnosis.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>High-potency topical corticosteroids remain the mainstay for both erosive oral lichen planus and lichen sclerosus (ultra-potent topical steroids specifically for lichen sclerosus, which responds well and requires long-term maintenance therapy to prevent progressive scarring); topical anesthetics/protective pastes and addressing any local trauma triggers for recurrent aphthous ulcers; recurrent, severe, or atypical aphthous ulcers should prompt consideration of an underlying systemic condition (Behçet's disease, inflammatory bowel disease, HIV, nutritional deficiency).</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Any oral or genital lesion showing induration, non-healing ulceration, or failure to respond to appropriate treatment over a reasonable timeframe needs biopsy to exclude malignant transformation — this is a genuinely underappreciated site for missed squamous cell carcinoma given patient/provider reluctance to examine and biopsy these areas thoroughly.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Untreated lichen sclerosus causes PROGRESSIVE, irreversible anatomic scarring (labial fusion, clitoral hood adhesions, phimosis) if not adequately treated long-term — this is not a cosmetic-only concern, and patients need to understand that ongoing maintenance therapy (even when asymptomatic) is about preventing permanent anatomic change, not just symptom control.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="pediatric"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Atopic Dermatitis (Pediatric-Specific Considerations)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Same core morphology as adult atopic dermatitis (erythematous, scaly, pruritic patches) but with an AGE-DEPENDENT distribution shift — infants show facial and extensor involvement (the flexural pattern typical of older children/adults hasn't developed yet), transitioning to the classic flexural pattern as the child gets older and starts crawling/walking.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Infants: cheeks, scalp, extensor surfaces of extremities (areas not subject to friction from crawling). Older children/adults: classic flexural (antecubital/popliteal fossae).</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis; consider food allergy evaluation only in infants/young children with moderate-severe eczema and a clear history suggesting a specific food trigger (immediate reaction pattern) — routine, broad food-allergy testing without a clear clinical trigger is generally discouraged given poor predictive value and the risk of unnecessarily restrictive diets.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Same core treatment approach as adult atopic dermatitis (emollients as foundation, topical corticosteroids stepped by potency and body site, topical calcineurin inhibitors as steroid-sparing options) — pediatric-specific counseling should emphasize that appropriately-dosed topical steroids used correctly are safe and that "steroid phobia" (a very common parental concern) often leads to undertreatment and worse outcomes than appropriate steroid use.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Same eczema herpeticum red flag as adults applies to children — widespread, punched-out vesicles/erosions on an eczema background, especially with fever, needs same-day evaluation and antiviral treatment.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Most childhood atopic dermatitis improves or resolves by adolescence — sharing this natural history explicitly with parents (alongside effective symptom management in the meantime) helps contextualize the current treatment burden as a temporary, manageable phase rather than an assumed lifelong condition.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Diaper Dermatitis</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Irritant contact dermatitis pattern: erythematous, sometimes erosive patches on convex surfaces in direct contact with the diaper (buttocks, thighs, lower abdomen), classically SPARING the skin folds (since urine/stool contact is reduced in the protected folds) — this sparing pattern helps distinguish it from candidal diaper dermatitis.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Diaper-covered area; a distribution that specifically INVOLVES the skin folds with satellite papules/pustules beyond the main rash border suggests superimposed candidiasis rather than simple irritant dermatitis.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis based on the distribution pattern described above; consider a KOH prep if candidal superinfection is suspected but the diagnosis is unclear.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Frequent diaper changes, gentle cleansing, and barrier ointments (zinc oxide, petrolatum) are foundational for simple irritant diaper dermatitis; add a topical antifungal (nystatin, clotrimazole) if candidal superinfection is suspected (fold involvement, satellite lesions, or failure to improve with barrier measures alone); low-potency topical corticosteroids can be added briefly for significant inflammation, but higher-potency steroids should be avoided given occlusion under the diaper markedly increases systemic absorption risk in this age group.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Diaper dermatitis that is severe, persistent despite appropriate treatment, or accompanied by other skin findings elsewhere should prompt consideration of an underlying condition (severe seborrheic dermatitis, Langerhans cell histiocytosis in refractory/atypical cases, zinc deficiency in severe erosive cases) rather than simply escalating topical treatment indefinitely.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>AVOID higher-potency topical corticosteroids in the diaper area specifically because occlusion under the diaper significantly increases systemic absorption in infants — this is a common, avoidable prescribing pitfall distinct from steroid potency selection elsewhere on an infant's body.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Molluscum Contagiosum</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Small (2-5mm), dome-shaped, flesh-colored to pearly papules with a characteristic central umbilication (a small central dimple) — this central umbilication is the key distinguishing feature from other small papular eruptions.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Can occur anywhere but commonly clusters in areas of skin-to-skin contact or shaving/friction (trunk, extremities, and in older children/adults, the genital area via sexual transmission — genital molluscum in an adult should prompt broader STI screening consideration).</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis based on the classic umbilicated papule appearance; biopsy is rarely needed given how characteristic the morphology is.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Molluscum is generally self-limited in immunocompetent children, resolving over months to a couple of years without treatment — WATCHFUL WAITING (no treatment) is a completely reasonable, evidence-supported default, especially for asymptomatic lesions in young children. When treatment is desired (parental preference, lesions in a cosmetically sensitive area, or an immunocompromised patient with more extensive/persistent disease), options include cantharidin application, cryotherapy, or curettage.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>Widespread, unusually large, or persistent molluscum in an adult or child should prompt consideration of underlying immunosuppression (including HIV in the appropriate context) given how disproportionately extensive molluscum can become in immunocompromised patients.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Many parents present specifically requesting treatment out of concern the lesions will spread or scar — explicitly counseling that watchful waiting is a legitimate, guideline-supported option (not "doing nothing" or neglecting the problem) helps parents feel comfortable choosing observation over a procedure their child may find distressing.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Verruca (Warts)</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Verruca vulgaris (common wart): rough, hyperkeratotic papules, often on hands/fingers. Verruca plantaris (plantar wart): similar but on the sole, often flattened by weight-bearing pressure and sometimes mistaken for a callus — paring the surface reveals characteristic pinpoint bleeding (thrombosed capillaries), a helpful distinguishing feature from a simple callus.</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Hands and feet most commonly, reflecting HPV inoculation through minor skin breaks in these frequently-exposed, frequently-traumatized areas.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Clinical diagnosis based on morphology, including the pinpoint-bleeding-on-paring finding described above; biopsy is rarely needed except for atypical, treatment-refractory, or diagnostically uncertain lesions.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Many warts resolve spontaneously over time, especially in children, making watchful waiting a reasonable option for asymptomatic lesions, similar in principle to molluscum management. When treatment is desired: over-the-counter or in-office salicylic acid application, cryotherapy, or cantharidin for pediatric patients (often better tolerated than cryotherapy's discomfort in young children); more refractory lesions may need combination therapy or referral for more advanced options (intralesional immunotherapy, laser).</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>A rapidly growing, painful, bleeding, or atypical-appearing "wart"— particularly in an older adult or an unusual location — should prompt biopsy to exclude a squamous cell carcinoma or amelanotic melanoma mimicking a wart, since these can be visually confused, especially on the sole.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Cryotherapy is often more painful for young children than cantharidin application, which is generally painless at the time of application (though it does cause a blister afterward) — matching the treatment modality to what a specific child will actually tolerate meaningfully improves follow-through with treatment.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Infantile Hemangioma</h3></header>
+      <div class="se-field"><span class="flabel">Morphology / Appearance</span><p>Bright red ("strawberry"), raised, well-demarcated vascular lesion — classically ABSENT or barely visible at birth, appearing in the first few weeks of life and then undergoing a proliferative growth phase (rapid enlargement over the first several months) before spontaneously involuting/regressing over subsequent years — this characteristic growth-then-involution timeline is itself diagnostic and distinguishes it from other vascular lesions (like a port-wine stain, which is present at birth and does not proliferate or involute).</p></div>
+      <div class="se-field"><span class="flabel">Distribution</span><p>Can occur anywhere, but location matters significantly for risk assessment — periorbital hemangiomas can threaten vision (amblyopia from occlusion or astigmatism from globe compression), and hemangiomas over the lower face/neck/chin in a "beard" distribution raise concern for an associated airway hemangioma.</p></div>
+      <div class="se-field"><span class="flabel">Workup</span><p>Usually a clinical diagnosis based on the characteristic appearance and growth timeline; imaging (ultrasound or MRI) is reserved for deep/segmental hemangiomas, those in high-risk locations (periorbital, airway-adjacent), or when the diagnosis is genuinely unclear from the surface appearance alone; multiple (5+) cutaneous hemangiomas should prompt an abdominal ultrasound to screen for hepatic hemangiomas.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Management</span><p>Most small, uncomplicated infantile hemangiomas require NO treatment and are observed through their natural growth-and-involution course. Oral propranolol (a beta-blocker) is first-line for hemangiomas requiring treatment (functional risk — periorbital, airway; ulceration; or significant cosmetic concern in a visible location), and has transformed management of this condition — started early in the proliferative phase for maximal effect, with cardiovascular monitoring given propranolol's systemic beta-blocking effects in an infant.</p></div>
+      <div class="se-field warn"><span class="flabel">Red Flags</span><p>A periorbital hemangioma, a "beard-distribution" hemangioma (airway involvement risk), or any hemangioma showing ulceration or rapid growth threatening a vital structure needs prompt referral rather than routine watchful-waiting follow-up.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The distinction between a hemangioma (absent at birth, proliferates then involutes) and a vascular malformation like a port-wine stain (present at birth, grows proportionately with the child, does NOT spontaneously involute) is a fundamental, easily-taught distinction that changes the entire counseling conversation with parents — a port-wine stain will not simply go away and warrants different long-term planning (including screening for associated syndromes like Sturge-Weber if periocular/forehead).</p></div>
+    </article></div></section>
+</main>
+
+<footer>Outpatient Dermatology Atlas — original reference content for clinical education. Companion to the Dermatology Emergency Atlas (acute/ER-focused morphology and disposition) and the Cancer Classification &amp; Staging / Cancer Deep Dives Vol. II atlases (melanoma staging and systemic treatment detail). Verify current guidelines and institutional protocols before clinical use.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.dtab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.dermpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.dermpanel[data-dtab="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

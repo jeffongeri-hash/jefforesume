@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oncology Interventions Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --accent:#4f9e6e; --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --accent:#2f7a4d; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .refs-tag, .pearl-tag{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1160px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+
+nav.ivtabs{display:flex; gap:6px; max-width:1160px; margin:14px auto 0; padding:0 22px; flex-wrap:wrap;}
+.ivtab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 14px; border-radius:9px; cursor:pointer; font-size:.78rem; font-weight:600; max-width:220px;}
+.ivtab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
+main{max-width:1160px; margin:0 auto; padding:22px;}
+.ivpanel{display:none;}
+.ivpanel.active{display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; box-shadow:var(--shadow);}
+
+.iv-intro{border-bottom:2px solid var(--tabclr); padding-bottom:12px; margin-bottom:18px;}
+.iv-intro h2{font-size:1.5rem; color:var(--tabclr);}
+.iv-block{margin-bottom:18px;}
+.iv-block h3{font-size:.85rem; color:var(--soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; font-family:'JetBrains Mono',monospace;}
+.iv-block p{margin:0; font-size:.89rem; color:var(--ink);}
+.iv-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px;}
+.iv-grid .iv-block{margin-bottom:0;}
+.iv-block.good{border-left:3px solid var(--good); padding-left:14px;}
+.iv-block.bad{border-left:3px solid var(--warn); padding-left:14px;}
+@media (max-width:720px){ .iv-grid{grid-template-columns:1fr;} }
+
+.cancer-table{width:100%; border-collapse:collapse; font-size:.85rem;}
+.cancer-table th{text-align:left; color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.5px; padding:6px 10px; border-bottom:1px solid var(--line2); font-family:'JetBrains Mono',monospace;}
+.cancer-table td{padding:8px 10px; border-bottom:1px solid var(--line2); color:var(--soft); vertical-align:top;}
+.cancer-table tr:last-child td{border-bottom:none;}
+.cancer-table td:first-child{color:var(--ink); font-weight:600; width:32%;}
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:14px;}
+.pearl-tag{font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.88rem;}
+.refs-block{border-top:1px solid var(--line2); padding-top:10px;}
+.refs-tag{font-size:.62rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-weight:700;}
+.refs-block p{margin:4px 0 0; font-size:.76rem; color:var(--faint); font-style:italic;}
+
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
+footer{max-width:1160px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Oncology · Therapeutics</span>
+      <h1>Oncology Interventions Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="ivtabs"><button class="ivtab active" data-target="supportive" style="--tabclr:#4f9e6e">Iron, ESAs &amp; G-CSF (Supportive Hematologic Therapies)</button>
+<button class="ivtab" data-target="platinum" style="--tabclr:#4a90c9">Platinum-Based Chemotherapy</button>
+<button class="ivtab" data-target="antibiotics" style="--tabclr:#c1432e">Antitumor Antibiotics (Anthracyclines, Bleomycin, Others)</button>
+<button class="ivtab" data-target="alkylators" style="--tabclr:#a76bd6">Alkylating Agents</button>
+<button class="ivtab" data-target="antimetabolites" style="--tabclr:#d9b23c">Antimetabolites</button>
+<button class="ivtab" data-target="mitotic" style="--tabclr:#d98a3c">Taxanes &amp; Vinca Alkaloids (Mitotic Inhibitors)</button>
+<button class="ivtab" data-target="targeted" style="--tabclr:#c1432e">Targeted Therapy &amp; Immunotherapy</button>
+<button class="ivtab" data-target="radiation" style="--tabclr:#4f9e6e">Radiation Modalities (Proton, Photon, Brachytherapy, Radiopharmaceuticals)</button></nav>
+</header>
+
+<main>
+  <div class="intro">
+    <p>Eight major categories of cancer therapy — supportive hematologic agents (iron, ESAs, G-CSF), platinum chemotherapy, antitumor antibiotics, alkylating agents, antimetabolites, taxanes/vinca alkaloids, targeted therapy &amp; immunotherapy, and radiation modalities (proton, photon, brachytherapy, radiopharmaceuticals) — each with mechanism, a cancers-treated breakdown, indications, contraindications, benefits, toxicities with real safety statistics, and how it integrates with other treatments. Doses, thresholds, and cumulative limits should be verified against current prescribing information and institutional protocol before clinical use.</p>
+  </div>
+  
+  <section class="ivpanel active" data-ivtab="supportive" style="--tabclr:#4f9e6e">
+    <div class="iv-intro"><h2>Iron, ESAs &amp; G-CSF (Supportive Hematologic Therapies)</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>Three distinct supportive agents that correct chemotherapy- or disease-related cytopenias rather than treat the cancer itself: (1) IV/oral iron repletes iron stores needed for erythropoiesis; (2) erythropoiesis-stimulating agents (ESAs — epoetin alfa, darbepoetin alfa) mimic endogenous erythropoietin to stimulate RBC production; (3) myeloid growth factors (G-CSF: filgrastim, pegfilgrastim; GM-CSF: sargramostim) stimulate neutrophil progenitor proliferation/maturation.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Any solid or hematologic malignancy on myelosuppressive chemotherapy</td><td>G-CSF: primary/secondary prophylaxis against febrile neutropenia when regimen risk &gt;20% (primary) or after a prior FN episode (secondary)</td></tr>
+<tr><td>Chemotherapy-induced anemia (any tumor type), palliative intent</td><td>ESA: adjunct to reduce transfusion needs — restricted to palliative-intent chemotherapy per FDA labeling</td></tr>
+<tr><td>Iron deficiency anemia from GI blood loss (any GI malignancy) or functional iron deficiency during ESA therapy</td><td>IV iron: preferred over oral when rapid correction needed or oral not tolerated/effective</td></tr>
+<tr><td>Peripheral blood stem cell mobilization (autologous/allogeneic transplant)</td><td>G-CSF: mobilizes CD34+ progenitors into peripheral blood pre-apheresis</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>G-CSF: high-risk (&gt;20%) febrile neutropenia regimens (primary prophylaxis), prior FN episode (secondary prophylaxis), stem cell mobilization. ESA: symptomatic chemotherapy-induced anemia in patients receiving PALLIATIVE-intent chemotherapy only — not curative-intent regimens. IV iron: true or functional iron deficiency, especially with concurrent ESA use (iron studies should be checked before/during ESA therapy since ESAs are far less effective without adequate iron).</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>G-CSF: hypersensitivity to E. coli-derived proteins (filgrastim) or the product itself; caution/avoid in concurrent chemo+radiation to the mediastinum (theoretical risk from marrow stimulation near radiation field) and avoid giving within 24h before through 24h after cytotoxic chemo (theoretical risk of increased myelosuppression from stimulating rapidly-dividing progenitors during chemo exposure). ESA: uncontrolled hypertension, and — per black-box warning — curative-intent chemotherapy or radiation therapy (increased risk of tumor progression/recurrence and shortened survival in several trials).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>G-CSF reliably shortens neutropenia duration and reduces febrile neutropenia incidence, allowing chemotherapy dose density/intensity to be maintained. ESAs reduce RBC transfusion requirements by roughly a third in the original pivotal trials. IV iron corrects deficiency faster than oral and bypasses GI absorption limitations/hepcidin blockade (see the Electrolyte &amp; Blood Product Atlas for iron dosing/route details).</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>G-CSF: bone pain (very common), rare but serious splenic rupture (educate patients on left upper quadrant/shoulder tip pain), rare ARDS in neutropenic sepsis. ESAs carry an FDA black-box warning (added 2007) for increased risk of death, tumor progression, and venous thromboembolism when used outside labeled palliative-intent indications — pivotal safety signals included a mortality difference emerging within 4 months in a metastatic breast cancer trial (8.7% vs 3.4%) and a meta-analytic mortality hazard ratio around 1.06–1.17 across pooled oncology trials, alongside an elevated VTE rate (~7.5% vs 4.9%). IV iron: rare infusion reactions/anaphylaxis (much less common with modern formulations than older high-molecular-weight dextran).</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>G-CSF is standard-of-care adjunctive support alongside dose-dense/dose-intense curative chemotherapy regimens (e.g., dose-dense AC-T in breast cancer) and is NOT itself a cancer treatment. ESAs are used only as an adjunct within palliative-intent regimens per REMS (Risk Evaluation and Mitigation Strategy) requirements, including documented informed consent about the mortality/VTE risk. Iron studies should be checked before and periodically during ESA therapy since functional iron deficiency blunts ESA response.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>The 2007 FDA black-box warning fundamentally changed ESA prescribing patterns — real-world data (e.g., VA cancer patient cohorts) showed a roughly 90-95% drop in ESA use for chemotherapy-induced anemia after the warning and subsequent REMS program, with average hemoglobin trigger for initiation dropping further after 2010. Always confirm chemotherapy INTENT (curative vs. palliative) before considering an ESA — this single distinction is the crux of the entire safety label.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>FDA black-box warning for ESAs (2007) and subsequent REMS (2010); ASCO/ASH Guideline on Use of White Blood Cell Growth Factors; NCCN Hematopoietic Growth Factors guideline.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="platinum" style="--tabclr:#4a90c9">
+    <div class="iv-intro"><h2>Platinum-Based Chemotherapy</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>Platinum agents (cisplatin, carboplatin, oxaliplatin) form intrastrand and interstrand DNA crosslinks (platinum-DNA adducts), distorting the DNA helix and blocking replication/transcription — ultimately triggering apoptosis in rapidly dividing cells. Cisplatin is the prototype; carboplatin is a less reactive analog (better tolerated, less nephro/ototoxic, more myelosuppressive); oxaliplatin has a distinct DACH-platinum structure conferring activity in colorectal cancer and a unique cold-triggered peripheral neuropathy.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Testicular germ cell tumors</td><td>Cisplatin-based combination (BEP) — curative intent, one of oncology's great chemotherapy success stories (&gt;90% cure in good-risk disease)</td></tr>
+<tr><td>Head and neck squamous cell carcinoma</td><td>Cisplatin concurrent with radiation (definitive or adjuvant) — standard of care</td></tr>
+<tr><td>Non-small cell and small cell lung cancer</td><td>Platinum doublet (with pemetrexed, taxane, etc.) — backbone of first-line therapy</td></tr>
+<tr><td>Ovarian cancer</td><td>Carboplatin + paclitaxel — standard first-line adjuvant/primary regimen</td></tr>
+<tr><td>Colorectal cancer</td><td>Oxaliplatin-based (FOLFOX) — adjuvant and metastatic settings</td></tr>
+<tr><td>Bladder (urothelial) cancer</td><td>Cisplatin-based (if eligible) — neoadjuvant/adjuvant and metastatic</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Curative and palliative regimens across a very broad range of solid tumors as above; cisplatin favored when maximal efficacy is prioritized and renal/hearing function allow it, carboplatin favored when better tolerability or reduced nephro/ototoxicity is needed (e.g., ovarian cancer, elderly/frail patients), oxaliplatin specifically for GI/colorectal indications.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Significant pre-existing renal impairment (cisplatin especially — dose-adjust or substitute carboplatin, which is dosed by renal function via the Calvert formula rather than body surface area), pre-existing significant hearing loss (relative, for cisplatin), pre-existing peripheral neuropathy (relative, worse with oxaliplatin/cisplatin), myelosuppression/active infection, known hypersensitivity (platinum hypersensitivity reactions increase with cumulative exposure and can require desensitization protocols for retreatment).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Broad-spectrum efficacy across many of the most common solid tumors, curative potential in several settings (testicular cancer being the classic example), and a well-characterized toxicity profile with established mitigation strategies (hydration protocols, growth factor support).</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Cisplatin nephrotoxicity: dose-related cumulative renal insufficiency is the classic dose-limiting toxicity, reported in roughly 28–36% of patients after even a single 50 mg/m² dose without adequate hydration — mitigated with 6–8 hour IV hydration ± mannitol; renal function must normalize before redosing. Ototoxicity: reported in up to ~31% of patients after a single 50 mg/m² dose, cumulative and potentially irreversible, worse in children (40–60% incidence) — audiometric monitoring is recommended before treatment and periodically after. Peripheral neuropathy (all three agents, oxaliplatin's is classically cold-triggered/acute and reversible early, chronic/cumulative with ongoing dosing). Significant nausea/vomiting (cisplatin is one of the most emetogenic chemotherapy agents, requiring aggressive triple/quadruple antiemetic prophylaxis). Myelosuppression (more prominent with carboplatin).</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Frequently combined with radiation as a radiosensitizer (concurrent chemoradiation in head/neck and cervical cancer) and with other cytotoxic classes (taxanes, antimetabolites) as doublet/triplet regimens; growth factor support and antiemetic prophylaxis are considered integral parts of the regimen, not optional add-ons, given how predictable these toxicities are.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>A common medication-error pathway is confusing cisplatin's mg/m² BSA-based dosing with carboplatin's AUC-based (Calvert formula, incorporating renal function) dosing — inadvertent cisplatin overdose from this confusion is explicitly flagged in prescribing information as a preventable, serious error; always confirm which platinum agent and which dosing convention before verifying an order.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>Cisplatin FDA prescribing information; NCCN guidelines by tumor type (testicular, NSCLC, ovarian, colorectal, bladder, head &amp; neck) for platinum regimen selection.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="antibiotics" style="--tabclr:#c1432e">
+    <div class="iv-intro"><h2>Antitumor Antibiotics (Anthracyclines, Bleomycin, Others)</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>A chemically diverse group (not related to antimicrobial antibiotics by mechanism, only by natural/microbial origin) that damages DNA through several routes: anthracyclines (doxorubicin, daunorubicin, epirubicin, idarubicin) intercalate DNA and inhibit topoisomerase II, generating double-strand breaks and reactive oxygen species; bleomycin causes direct oxidative DNA strand breakage; mitomycin C is a DNA-crosslinking alkylator-like agent; dactinomycin (actinomycin D) intercalates DNA to block transcription.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Breast cancer</td><td>Doxorubicin (AC regimen) — adjuvant/neoadjuvant curative-intent backbone</td></tr>
+<tr><td>Diffuse large B-cell lymphoma &amp; Hodgkin lymphoma</td><td>Doxorubicin (R-CHOP) / bleomycin (ABVD) — curative-intent standard regimens</td></tr>
+<tr><td>Sarcomas (soft tissue, osteosarcoma)</td><td>Doxorubicin — a chemotherapy backbone across most subtypes</td></tr>
+<tr><td>Testicular germ cell tumors</td><td>Bleomycin as part of BEP alongside cisplatin/etoposide — curative intent</td></tr>
+<tr><td>Wilms tumor and other pediatric solid tumors</td><td>Dactinomycin — curative-intent pediatric regimens</td></tr>
+<tr><td>Superficial bladder cancer</td><td>Intravesical mitomycin C — local/adjuvant instillation therapy</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Curative-intent combination regimens across breast cancer, lymphoma, sarcoma, germ cell tumors, and several pediatric malignancies; mitomycin also used regionally (intravesical bladder instillation) rather than only systemically.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Anthracyclines: significant pre-existing cardiac dysfunction/reduced LVEF, prior anthracycline exposure at or near the cumulative lifetime dose ceiling (see negatives below), concurrent trastuzumab without careful cardiac monitoring (additive cardiotoxicity). Bleomycin: pre-existing pulmonary disease/reduced diffusion capacity, and critically — supplemental oxygen exposure (including routine perioperative O2) can precipitate bleomycin lung injury even years after treatment, so prior bleomycin exposure should be flagged for anesthesia teams indefinitely.</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Anthracyclines are among the most broadly active and curative-intent-critical cytotoxic agents in oncology (central to curing many lymphomas, sarcomas, and a substantial fraction of breast cancers). Bleomycin causes minimal myelosuppression relative to other agents, allowing it to be combined more easily with dose-intense myelosuppressive partners (as in BEP/ABVD).</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Anthracycline cardiotoxicity is the defining long-term risk: cumulative lifetime dose should generally not exceed 450–550 mg/m² doxorubicin-equivalent (some high-risk patients capped at 400 mg/m²); subclinical myocardial changes are seen on biopsy in over 90% of patients above 240 mg/m², and a contemporary sarcoma trial without dexrazoxane reported a 5.4% heart failure incidence at 360–450 mg/m² cumulative dose — dexrazoxane (an iron-chelating cardioprotectant) meaningfully reduces this risk when given from the outset, though FDA labeling restricts routine use to patients who have already received ≥300 mg/m² and need continued anthracycline therapy. Bleomycin pulmonary toxicity (fibrosis) is dose-related and can be fatal; oxygen exposure at ANY point after treatment (even remote from treatment, including future surgeries) can trigger acute lung injury — this is a lifelong anesthesia-relevant fact the patient should carry with them. Myelosuppression and mucositis are common to the class; anthracyclines are also potent vesicants (severe tissue necrosis with extravasation).</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Anthracyclines are frequently combined with cyclophosphamide (an alkylator) and taxanes in sequential curative breast cancer regimens, and with vincristine/prednisone in lymphoma (CHOP/R-CHOP); baseline and serial LVEF assessment (echo or MUGA) is standard practice before and during anthracycline-containing regimens, and cardiology/cardio-oncology co-management is increasingly standard for higher cumulative doses.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Always ask about TOTAL LIFETIME anthracycline exposure across ALL prior treatment courses (including childhood cancer treatment that a patient may not think to mention) before starting or continuing anthracycline therapy — cumulative dose tracking that misses a remote prior exposure is a recognized preventable cause of cardiotoxicity.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>Anthracycline Cardiotoxicity, JACC: CardioOncology State-of-the-Art Review (2024); Dexrazoxane FDA labeling restrictions; NCCN guidelines by tumor type for anthracycline/bleomycin-containing regimens.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="alkylators" style="--tabclr:#a76bd6">
+    <div class="iv-intro"><h2>Alkylating Agents</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>Form covalent alkyl group crosslinks with DNA (most commonly at the N7 position of guanine), producing interstrand/intrastrand crosslinks and DNA strand breaks that block replication and trigger apoptosis — activity is largely cell-cycle-phase-nonspecific, unlike many other chemotherapy classes.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Breast cancer</td><td>Cyclophosphamide (AC regimen) — adjuvant/neoadjuvant curative-intent backbone</td></tr>
+<tr><td>Non-Hodgkin lymphoma &amp; CLL</td><td>Cyclophosphamide (R-CHOP) / bendamustine — curative and palliative regimens</td></tr>
+<tr><td>Multiple myeloma</td><td>Melphalan — conditioning for autologous stem cell transplant and standalone regimens</td></tr>
+<tr><td>Glioblastoma and other CNS tumors</td><td>Temozolomide — oral alkylator, crosses blood-brain barrier, standard concurrent/adjuvant with radiation</td></tr>
+<tr><td>Ovarian cancer, sarcoma, germ cell tumors</td><td>Ifosfamide — often combined with mesna for uroprotection</td></tr>
+<tr><td>Autoimmune conditions &amp; lymphoma/leukemia conditioning</td><td>Cyclophosphamide — also used for stem cell transplant conditioning and severe autoimmune disease</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Extremely broad use across solid tumors, lymphomas, leukemias, and transplant conditioning regimens; temozolomide specifically valued for CNS penetration in glioblastoma.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Severe myelosuppression/active infection, significant bladder toxicity history (cyclophosphamide/ifosfamide — hemorrhagic cystitis risk), significant renal impairment (ifosfamide neurotoxicity risk rises with impaired clearance), pregnancy (teratogenic).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Broad activity across cell-cycle phases (useful in both rapidly and slowly dividing tumor populations), oral bioavailability for some agents (temozolomide, cyclophosphamide) allowing outpatient dosing, and a long track record enabling well-established supportive care protocols (mesna, hyperhydration).</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Hemorrhagic cystitis from acrolein (a toxic cyclophosphamide/ifosfamide metabolite excreted in urine) — mitigated with mesna (binds/neutralizes acrolein in the bladder) and aggressive hydration; ifosfamide carries a distinct encephalopathy risk (confusion, somnolence, occasionally seizures/coma) related to a chloroacetaldehyde metabolite, more common with renal impairment or low albumin — methylene blue is used both prophylactically in high-risk patients and to treat established encephalopathy. Secondary malignancies (particularly therapy-related myelodysplastic syndrome/AML) are a recognized long-term risk of alkylator exposure, typically emerging years after treatment. Gonadal toxicity/infertility risk is significant and dose-dependent — fertility preservation counseling is standard before treatment in reproductive-age patients. Myelosuppression is common across the class.</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Cyclophosphamide is a near-universal combination partner (with anthracyclines in breast cancer, with vincristine/doxorubicin/prednisone in lymphoma) and serves a distinct dual role as both a cytotoxic agent and a transplant-conditioning/immunosuppressive agent at different dose intensities. Temozolomide's defining integration is concurrent daily dosing WITH radiation therapy in glioblastoma (the Stupp protocol), followed by adjuvant cycles.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Ifosfamide encephalopathy can look identical to disease progression or unrelated delirium — before assuming a confused oncology patient has CNS progression, always check what chemotherapy they're on and whether ifosfamide (or another agent with a similar reversible metabolic encephalopathy) is a more likely and more treatable explanation.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>Stupp R, et al. Radiotherapy plus concomitant and adjuvant temozolomide for glioblastoma. NEJM 2005 (established the Stupp protocol); NCCN guidelines by tumor type for alkylator-containing regimens.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="antimetabolites" style="--tabclr:#d9b23c">
+    <div class="iv-intro"><h2>Antimetabolites</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>Structural analogs of normal metabolic substrates (folate, pyrimidines, purines) that are incorporated into or block synthesis of DNA/RNA during the S-phase of the cell cycle, disrupting nucleotide synthesis and replication — cell-cycle-phase-specific, making scheduling/duration of exposure clinically important.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Colorectal and other GI cancers</td><td>5-fluorouracil (5-FU) / capecitabine (oral prodrug) — backbone of FOLFOX/FOLFIRI regimens</td></tr>
+<tr><td>Pancreatic cancer</td><td>Gemcitabine — standalone or combination (e.g., with nab-paclitaxel)</td></tr>
+<tr><td>Acute lymphoblastic leukemia &amp; lymphoma</td><td>Methotrexate (high-dose, with leucovorin rescue) — CNS-penetrant, curative-intent component</td></tr>
+<tr><td>Acute myeloid leukemia</td><td>Cytarabine — backbone of induction ("7+3") and consolidation regimens</td></tr>
+<tr><td>Breast cancer</td><td>Capecitabine — metastatic/adjuvant settings</td></tr>
+<tr><td>Autoimmune disease &amp; some leukemias (low-dose)</td><td>Methotrexate — distinct low-dose use outside oncology</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Broad use across GI malignancies (5-FU/capecitabine backbone), pancreatic cancer (gemcitabine), and leukemias/lymphomas (methotrexate, cytarabine) — often combination-regimen backbones rather than single agents.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>DPD (dihydropyrimidine dehydrogenase) enzyme deficiency is an important pre-treatment consideration for 5-FU/capecitabine — patients with reduced/absent DPD activity cannot adequately metabolize the drug and are at markedly increased risk of severe, sometimes fatal toxicity; some guidelines now recommend pre-treatment DPD testing. Renal impairment (methotrexate is renally cleared — impaired clearance risks severe/prolonged toxicity, requiring dose adjustment or avoidance). Active infection/severe myelosuppression. Third-space fluid collections (ascites, pleural effusions) markedly prolong methotrexate clearance and increase toxicity risk with high-dose regimens.</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Well-established, decades-long track record with predictable toxicity profiles and well-developed rescue/mitigation strategies (leucovorin rescue for methotrexate); oral formulations (capecitabine) allow outpatient convenience; broad efficacy across some of the most common solid tumors.</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>5-FU/capecitabine: hand-foot syndrome (painful erythema/desquamation of palms/soles, capecitabine especially), diarrhea/mucositis, and rare but serious cardiotoxicity (coronary vasospasm presenting as chest pain/ACS-mimicking symptoms during infusion) — DPD-deficient patients can develop severe, rapid-onset myelosuppression and mucositis. Methotrexate: mucositis, myelosuppression, hepatotoxicity, and nephrotoxicity from precipitation in renal tubules at high doses — high-dose regimens require aggressive hydration, urine alkalinization, and leucovorin rescue timed precisely to methotrexate levels; delayed clearance is a medical emergency requiring glucarpidase in severe cases. Cytarabine: cerebellar toxicity (ataxia, dysarthria) with high-dose regimens, conjunctivitis (mitigated with prophylactic corticosteroid eye drops), myelosuppression.</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>5-FU is combined with oxaliplatin (FOLFOX) or irinotecan (FOLFIRI) as GI cancer backbones; capecitabine serves as an oral 5-FU substitute in many of the same regimens for outpatient convenience; methotrexate requires tightly protocolized leucovorin rescue timing that must be followed precisely — this is one of the higher-stakes medication-safety processes in oncology given the narrow margin between efficacy and severe toxicity.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>A patient on capecitabine or 5-FU who develops severe, disproportionate mucositis/myelosuppression after a normal or low dose should raise immediate suspicion for undiagnosed DPD deficiency — this is a recognized, potentially fatal pharmacogenomic pitfall, and some centers now screen for it before the first dose specifically to prevent this scenario.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>NCCN guidelines on DPD deficiency testing considerations for fluoropyrimidines; ASCO/other guidance on high-dose methotrexate monitoring and glucarpidase use for delayed clearance.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="mitotic" style="--tabclr:#d98a3c">
+    <div class="iv-intro"><h2>Taxanes &amp; Vinca Alkaloids (Mitotic Inhibitors)</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>Both classes target microtubules but with opposite mechanisms: taxanes (paclitaxel, docetaxel) STABILIZE microtubules, preventing their normal disassembly and arresting cells in mitosis; vinca alkaloids (vincristine, vinblastine) INHIBIT microtubule polymerization/assembly, also arresting mitosis but by the opposite structural mechanism — both ultimately trigger apoptosis in dividing cells.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Breast cancer</td><td>Paclitaxel/docetaxel — adjuvant/neoadjuvant and metastatic settings, standard combination partner</td></tr>
+<tr><td>Ovarian cancer</td><td>Paclitaxel + carboplatin — standard first-line regimen</td></tr>
+<tr><td>Non-small cell lung cancer &amp; prostate cancer</td><td>Docetaxel — first-line/subsequent-line settings</td></tr>
+<tr><td>Non-Hodgkin lymphoma &amp; Hodgkin lymphoma</td><td>Vincristine (CHOP/ABVD) — curative-intent regimen component</td></tr>
+<tr><td>Acute lymphoblastic leukemia (pediatric and adult)</td><td>Vincristine — induction/maintenance backbone</td></tr>
+<tr><td>Pancreatic cancer</td><td>Nab-paclitaxel (albumin-bound, reduces hypersensitivity risk) combined with gemcitabine</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Taxanes: broad solid tumor use (breast, ovarian, lung, prostate). Vinca alkaloids: primarily hematologic malignancies (lymphoma, leukemia) and some pediatric solid tumors.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Significant pre-existing peripheral neuropathy (relative contraindication/dose-limiting for both classes), severe hepatic impairment (both classes are hepatically metabolized — dose adjustment required), known severe hypersensitivity to the drug or its solvent (paclitaxel's cremophor vehicle is a distinct hypersensitivity risk, mitigated with premedication or use of the albumin-bound formulation).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Taxanes are among the most broadly active agents in solid tumor oncology with strong curative-intent contributions in breast cancer specifically; vincristine's minimal myelosuppression (distinct from most other cytotoxics) allows it to be combined with more myelosuppressive partners without compounding blood count toxicity, a key reason it's a near-universal lymphoma/leukemia backbone.</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Peripheral neuropathy is the shared dose-limiting toxicity of both classes — taxane neuropathy is typically sensory/stocking-glove and dose-cumulative; vincristine neuropathy can be sensory, motor, or autonomic (including severe constipation/ileus) and is a hard dose-capping toxicity (vincristine has a maximum single-dose cap, unlike most chemotherapy which is BSA-scaled without an absolute ceiling — inadvertently exceeding this cap is a recognized fatal medication error, particularly in pediatric dosing confusion). Hypersensitivity reactions (paclitaxel, cremophor-vehicle-related) can be severe, requiring premedication with steroids/antihistamines/H2 blockers. Vincristine is a potent vesicant with severe tissue injury on extravasation, and is FATAL if given intrathecally by error (a catastrophic, well-documented "never event" in oncology — vincristine must NEVER be dispensed in a syringe compatible with intrathecal administration).</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Taxanes are combined with platinum agents (ovarian, lung) or anthracyclines/alkylators in sequence (breast cancer); vincristine is combined with an anthracycline, alkylator, and steroid in both CHOP (lymphoma) and standard ALL induction — its lack of myelosuppression is specifically what allows these dose-intense combinations to be tolerated.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>The absolute vincristine dose cap (commonly 2 mg per dose regardless of BSA in adults) and the strict prohibition on intrathecal-compatible syringes exist because of real, fatal historical errors — this is one of the few chemotherapy safety rules that should be treated as completely non-negotiable regardless of clinical context or urgency.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>ISMP (Institute for Safe Medication Practices) alerts on vincristine intrathecal fatal errors and dose-capping recommendations; NCCN guidelines by tumor type for taxane/vinca-containing regimens.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="targeted" style="--tabclr:#c1432e">
+    <div class="iv-intro"><h2>Targeted Therapy &amp; Immunotherapy</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>A heterogeneous, rapidly growing category distinct from cytotoxic chemotherapy: small-molecule tyrosine kinase inhibitors (TKIs) block specific oncogenic signaling pathways (e.g., EGFR, ALK, BCR-ABL); monoclonal antibodies target specific cell-surface antigens (e.g., HER2, CD20) for direct antitumor effect or antibody-dependent cytotoxicity; immune checkpoint inhibitors (anti-PD-1/PD-L1, anti-CTLA-4) block inhibitory signals that tumors exploit to evade immune detection, effectively "releasing the brakes" on the patient's own T-cell response.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Melanoma</td><td>Anti-PD-1 (nivolumab/pembrolizumab) ± anti-CTLA-4 (ipilimumab) — first-line standard, curative potential in a subset</td></tr>
+<tr><td>NSCLC (EGFR/ALK-mutant or PD-L1-high)</td><td>TKI (osimertinib, alectinib) or checkpoint inhibitor depending on biomarker — biomarker-driven first-line selection</td></tr>
+<tr><td>HER2-positive breast cancer</td><td>Trastuzumab ± pertuzumab — transformed prognosis of this subtype</td></tr>
+<tr><td>Chronic myeloid leukemia</td><td>BCR-ABL TKI (imatinib and successors) — converted a once-fatal disease into a chronic manageable condition</td></tr>
+<tr><td>Renal cell carcinoma</td><td>VEGF-pathway TKI or checkpoint inhibitor combinations — first-line standard</td></tr>
+<tr><td>Non-Hodgkin lymphoma (CD20+)</td><td>Rituximab — added to chemotherapy backbones (R-CHOP) as standard of care</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Increasingly biomarker/molecular-profile-driven rather than purely histology-driven — treatment selection requires confirming the relevant target (EGFR mutation, ALK fusion, HER2 amplification, PD-L1 expression, CD20 positivity, BCR-ABL) before initiating the corresponding agent.</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Active/untreated autoimmune disease is a relative contraindication for checkpoint inhibitors (risk of severe flare via the same immune-activating mechanism); prior organ transplant is a strong relative contraindication for checkpoint inhibitors (risk of organ rejection from immune activation); significant pre-existing cardiac dysfunction for trastuzumab (additive cardiotoxicity risk, especially with prior/concurrent anthracycline); active hepatitis B/C should be addressed before rituximab (risk of reactivation).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Generally more tumor-selective mechanisms with different (often more tolerable day-to-day) toxicity profiles than traditional cytotoxic chemotherapy; transformative, durable, sometimes curative responses in specific biomarker-defined populations (CML with TKIs, a meaningful fraction of metastatic melanoma with checkpoint inhibitors); can often be combined with or sequenced alongside traditional chemotherapy rather than replacing it entirely.</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Immune-related adverse events (irAEs) from checkpoint inhibitors are the signature toxicity of this class and can affect virtually any organ system — reported incidence of any-grade irAE ranges roughly 15-90% depending on agent/combination, with anti-CTLA-4 therapy (~90% any-grade, up to 72% in some analyses) generally causing more frequent/severe irAEs than anti-PD-1/PD-L1 monotherapy (~70% any-grade), and combination checkpoint therapy carrying the highest rates of all; colitis alone occurs in 19-54% depending on regimen, and immune-related pneumonitis, though less common (roughly 1-10%, higher with combination therapy), carries outsized mortality risk. Overall irAE-attributable mortality is estimated under 1% but is not negligible given the sheer volume of patients now treated. TKI toxicities are agent-specific (e.g., hand-foot skin reaction, hypertension, QT prolongation, hepatotoxicity) and generally require ongoing monitoring rather than a single acute toxicity window. Trastuzumab cardiotoxicity is typically reversible (unlike anthracycline cardiotoxicity) but still requires baseline and serial LVEF monitoring.</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Checkpoint inhibitors are increasingly combined with chemotherapy in first-line regimens for several tumor types (e.g., chemo-immunotherapy in NSCLC) rather than used as chemotherapy-free alternatives; rituximab is added to (not substituted for) standard chemotherapy backbones in CD20+ lymphoma; management of irAEs requires a fundamentally different playbook than chemotherapy toxicity — immunosuppression (corticosteroids, sometimes additional agents like infliximab for refractory colitis) rather than dose reduction/growth factor support, and often requires permanent discontinuation of the causative agent for higher-grade events.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>Because irAEs can present with vague, nonspecific symptoms (fatigue, mild diarrhea, headache) that overlap heavily with disease progression or unrelated illness, a low threshold to ask "is this patient on a checkpoint inhibitor" and to check basic endocrine/hepatic/renal labs is essential — endocrinopathies in particular (thyroiditis, hypophysitis, adrenal insufficiency) are frequently missed early because they don't look dramatic at onset, yet can become life-threatening (adrenal crisis) if unrecognized.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>ASCO Guideline Update: Management of Immune-Related Adverse Events in Patients Treated With ICI Therapy, J Clin Oncol 2021; NCCN Management of Immunotherapy-Related Toxicities guideline.</p>
+    </div>
+  </section>
+
+  <section class="ivpanel" data-ivtab="radiation" style="--tabclr:#4f9e6e">
+    <div class="iv-intro"><h2>Radiation Modalities (Proton, Photon, Brachytherapy, Radiopharmaceuticals)</h2></div>
+
+    <div class="iv-block">
+      <h3>Mechanism</h3>
+      <p>All radiation modalities work by damaging tumor cell DNA (directly or via free-radical generation) to induce cell death, but differ in HOW dose is delivered: conventional photon (X-ray) external beam radiation deposits dose along the entire beam path (entrance and exit dose); proton therapy exploits the Bragg peak — protons deposit most of their energy at a defined depth and then stop, sharply reducing dose beyond the target and to nearby normal tissue; brachytherapy places a radioactive source directly inside or immediately adjacent to the tumor for a highly localized, rapidly dose-falloff treatment; radiopharmaceuticals are systemically administered radioactive isotopes that concentrate selectively in target tissue (via a targeting molecule or the tissue's own biology) for internal, targeted radiation delivery.</p>
+    </div>
+
+    <div class="iv-block">
+      <h3>Cancers Typically Treated</h3>
+      <table class="cancer-table">
+        <thead><tr><th>Cancer / Setting</th><th>Role of This Therapy</th></tr></thead>
+        <tbody><tr><td>Pediatric CNS tumors and select adult tumors near critical structures</td><td>Proton therapy — favored specifically to reduce dose to surrounding normal tissue (growing brain, spinal cord, optic apparatus) given a young patient's long survivorship</td></tr>
+<tr><td>Prostate cancer</td><td>Brachytherapy (seed implant) — definitive monotherapy option for appropriate-risk disease, or external beam boost</td></tr>
+<tr><td>Cervical/gynecologic cancers</td><td>Brachytherapy — essential component of curative-intent definitive chemoradiation, not merely a boost</td></tr>
+<tr><td>Differentiated thyroid cancer</td><td>Radioactive iodine (I-131) — adjuvant/ablative therapy exploiting thyroid tissue's unique iodine uptake</td></tr>
+<tr><td>Metastatic castration-resistant prostate cancer with bone metastases</td><td>Radium-223 (bone-seeking alpha emitter) or Lutetium-177 PSMA-targeted therapy — systemic targeted radiopharmaceutical options</td></tr>
+<tr><td>Neuroendocrine tumors</td><td>Lutetium-177 DOTATATE (peptide receptor radionuclide therapy) — targets somatostatin receptor-expressing tumor cells</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block"><h3>Indications</h3><p>Proton therapy: preferentially used where sparing adjacent normal tissue meaningfully changes long-term outcomes — pediatric tumors (reducing second-malignancy and neurocognitive risk over a long expected survivorship), skull-base/ocular tumors, and re-irradiation scenarios. Brachytherapy: tumors accessible for direct/interstitial source placement, particularly prostate and cervical cancer, where it materially improves cure rates beyond external beam alone. Radiopharmaceuticals: tumors with a targetable biological feature (iodine avidity in thyroid tissue, PSMA expression in prostate cancer, somatostatin receptor expression in neuroendocrine tumors, or osteoblastic bone metastases for Radium-223).</p></div>
+      <div class="iv-block"><h3>Contraindications</h3><p>Radioactive iodine: pregnancy/breastfeeding (absolute contraindication), and it will not work without adequate TSH stimulation and iodine-avid disease (some recurrent/metastatic thyroid cancer dedifferentiates and loses iodine avidity over time, at which point RAI is no longer effective). Brachytherapy: prior radiation to the same field (cumulative normal tissue tolerance), significant anatomic distortion precluding safe source placement. Proton therapy: not more effective than photon therapy for many tumor sites and is not universally covered/available — appropriate patient selection matters, since the benefit is normal-tissue-sparing rather than superior tumor control for most indications. Radiopharmaceuticals: significant baseline bone marrow suppression or renal impairment (agent-dependent — Lutetium-based therapies are renally excreted and require adequate renal function).</p></div>
+    </div>
+
+    <div class="iv-grid">
+      <div class="iv-block good"><h3>Benefits</h3><p>Proton therapy substantially reduces integral (unnecessary) dose to normal tissue, translating to fewer long-term late effects in appropriately selected patients (particularly children and re-irradiation cases) — though for many common adult tumor sites, photon-based techniques (IMRT, SBRT) already achieve excellent conformality and the incremental benefit of protons is less clearly established. Brachytherapy achieves an extremely steep dose fall-off, allowing very high tumoricidal doses to the target while sparing immediately adjacent normal structures (bladder, rectum) better than external beam alone. Radiopharmaceuticals deliver systemic, targeted therapy to disease that may be too widespread for local radiation, with a more favorable side-effect profile than systemic chemotherapy for the same disease burden in several settings.</p></div>
+      <div class="iv-block bad"><h3>Negatives / Toxicities</h3><p>Proton therapy: higher cost, more limited availability (fewer centers), and for many tumor sites the added clinical benefit over modern photon techniques remains an area of ongoing study/debate — appropriate patient selection matters more than defaulting to "newer is better." Brachytherapy: procedural/anesthesia risk from source placement, and expertise-dependent outcomes (results are more operator/center-dependent than external beam). Radioactive iodine: sialadenitis (salivary gland damage/dry mouth), transient bone marrow suppression at high activities, and a small but real long-term secondary malignancy risk with cumulative high-activity dosing — patients must follow radiation safety precautions (isolation period, distancing from others, particularly children/pregnant contacts) after treatment. Radiopharmaceuticals: myelosuppression (dose-limiting for most agents), and specific to Radium-223, no proven benefit (and possible harm signal in a prior trial when combined with abiraterone/prednisone) outside its studied monotherapy context — agent-specific trial data should guide combination use rather than assuming radiopharmaceuticals combine safely with all other agents by default.</p></div>
+    </div>
+
+    <div class="iv-block">
+      <h3>Integration With Other Treatments</h3>
+      <p>Brachytherapy is typically combined with external beam radiation (a boost) or, in cervical cancer, considered a mandatory component of curative-intent chemoradiation rather than optional; radioactive iodine follows total/near-total thyroidectomy as an adjuvant step rather than a standalone treatment; radiopharmaceuticals are generally used in the metastatic/systemic disease setting alongside (not instead of) other systemic therapies, with sequencing guided by tumor biology and prior treatment lines.</p>
+    </div>
+
+    <div class="mpearl">
+      <span class="pearl-tag">Clinical Pearl</span>
+      <p>A patient's radiation safety instructions after radioactive iodine (distancing from children/pregnant people, separate bathroom/laundry precautions for a defined period) are not optional courtesies — they reflect real, quantified radiation exposure risk to close contacts, and clinicians should reinforce adherence rather than treat them as boilerplate discharge paperwork.</p>
+    </div>
+
+    <div class="refs-block">
+      <span class="refs-tag">References</span>
+      <p>ASTRO (American Society for Radiation Oncology) model policies on proton therapy patient selection; NCCN guidelines by tumor type (thyroid, prostate, cervical, neuroendocrine) for radiotherapy/radiopharmaceutical sequencing.</p>
+    </div>
+  </section>
+</main>
+
+<footer>Oncology Interventions Atlas — original reference content for clinical education, grounded in FDA prescribing information, ASCO/NCCN guidance, and primary literature as cited per section. Verify current guideline versions, cumulative dose limits, and institutional protocols before applying to patient care.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.ivtab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.ivtab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.ivpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.ivpanel[data-ivtab="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
