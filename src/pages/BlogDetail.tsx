@@ -3388,6 +3388,134 @@ const blogPosts = {
       <p><a href="/embeds/msk-neuromuscular-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "cancer-classification-staging-atlas": {
+    title: "Cancer Classification & Staging Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A cancer classification and staging atlas covering tumor origin, histologic grade, TNM staging, and prognostic groups — with bedside pearls for interpreting pathology and imaging.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cancer-classification-staging-atlas.html" title="Cancer Classification & Staging Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cancer-classification-staging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "lung-breast-cancer-atlas": {
+    title: "Lung & Breast Cancer Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A lung and breast cancer atlas covering histologic subtypes, molecular markers, staging pearls, and treatment pathways — with bedside pearls for workup and management.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/lung-breast-cancer-atlas.html" title="Lung & Breast Cancer Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/lung-breast-cancer-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cancer-deep-dives-vol2": {
+    title: "Cancer Deep Dives Vol. II",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Volume II of the cancer deep dives series — expanded organ-system coverage with molecular drivers, staging, treatment pathways, and prognostic pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cancer-deep-dives-vol2.html" title="Cancer Deep Dives Vol. II" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cancer-deep-dives-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "oncology-emergencies-atlas": {
+    title: "Oncology Emergencies Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An oncology emergencies atlas covering tumor lysis, hypercalcemia of malignancy, spinal cord compression, neutropenic fever, SVC syndrome, and hyperviscosity — with recognition, workup, and management pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/oncology-emergencies-atlas.html" title="Oncology Emergencies Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/oncology-emergencies-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "oncology-interventions-atlas": {
+    title: "Oncology Interventions Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An oncology interventions atlas covering surgery, radiation, chemotherapy, targeted therapy, immunotherapy, and supportive care — with modality selection and bedside pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/oncology-interventions-atlas.html" title="Oncology Interventions Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/oncology-interventions-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "oncology-side-effects-atlas": {
+    title: "Oncology Side Effects Atlas — Chemo & Radiation",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An oncology side effects atlas covering chemotherapy and radiation toxicities by organ system — with grading, monitoring, and management pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/oncology-side-effects-atlas.html" title="Oncology Side Effects Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/oncology-side-effects-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cosmetic-dermatology-atlas": {
+    title: "Cosmetic Dermatology Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A cosmetic dermatology atlas covering neuromodulators, fillers, chemical peels, lasers, and skin resurfacing — with anatomy pearls, technique notes, and complication management.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cosmetic-dermatology-atlas.html" title="Cosmetic Dermatology Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cosmetic-dermatology-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "outpatient-dermatology-atlas": {
+    title: "Outpatient Dermatology Atlas",
+    category: "HEALTHCARE",
+    date: "July 3, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An outpatient dermatology atlas covering acne, rosacea, eczema, psoriasis, pigmentary disorders, skin cancer screening, and common in-office procedures — with treatment algorithms and bedside pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/outpatient-dermatology-atlas.html" title="Outpatient Dermatology Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/outpatient-dermatology-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
