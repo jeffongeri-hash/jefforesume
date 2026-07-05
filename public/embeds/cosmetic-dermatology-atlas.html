@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmetic Dermatology Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
+  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
+  --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
+}
+html[data-theme="light"]{
+  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
+  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
+  --shadow: 0 10px 24px rgba(60,50,20,.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
+.mono, .flabel, .pearl-tag, .verdict-tag{font-family:'JetBrains Mono',monospace;}
+
+header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.top-inner{max-width:1140px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
+.brand h1{font-size:1.4rem;}
+.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
+nav.dtabs{display:flex; gap:6px; flex-wrap:wrap; max-width:1140px; margin:14px auto 0; padding:0 22px 14px;}
+.dtab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 15px; border-radius:9px; cursor:pointer; font-size:.82rem; font-weight:700;}
+.dtab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
+
+main{max-width:1140px; margin:0 auto; padding:22px;}
+.dermpanel{display:none;}
+.dermpanel.active{display:block;}
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
+.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
+
+.condcard-list{display:grid; gap:16px;}
+.condcard{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--tabclr); border-radius:14px; padding:18px 22px; box-shadow:var(--shadow);}
+.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--tabclr); font-size:.85rem; border:1px solid var(--tabclr); border-radius:6px; padding:2px 7px; flex-shrink:0;}
+.mcard-h h3{font-size:1.1rem; color:var(--tabclr);}
+.se-field{margin-bottom:12px;}
+.se-field .flabel{display:block; font-size:.63rem; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+.se-field p{margin:0; font-size:.87rem; color:var(--soft);}
+.se-field.mgmt p{color:var(--ink);}
+.se-field.warn .flabel{color:var(--warn);}
+.se-field.warn p{color:var(--ink);}
+
+.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:11px 15px; margin-bottom:0;}
+.pearl-tag{font-size:.63rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
+.mpearl p{margin:4px 0 0; font-size:.86rem; color:var(--ink);}
+
+.verdict-box{border-radius:8px; padding:12px 16px; margin-top:4px;}
+.verdict-tag{font-size:.63rem; letter-spacing:1.5px; text-transform:uppercase; font-weight:700;}
+.verdict-box p{margin:4px 0 0; font-size:.87rem;}
+.verdict-good{background:rgba(79,158,110,.15); border-left:3px solid var(--good);}
+.verdict-good .verdict-tag{color:var(--good);}
+.verdict-good p{color:var(--ink);}
+.verdict-bad{background:rgba(255,107,94,.15); border-left:3px solid var(--warn);}
+.verdict-bad .verdict-tag{color:var(--warn);}
+.verdict-bad p{color:var(--ink);}
+
+footer{max-width:1140px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="eyebrow">Full-Time Practice · Cosmetic Dermatology</span>
+      <h1>Cosmetic Dermatology Atlas</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle">Light mode</button>
+  </div>
+  <nav class="dtabs"><button class="dtab active" data-target="periorbital" style="--tabclr:#a76bd6">Periorbital Concerns</button>
+<button class="dtab" data-target="acne" style="--tabclr:#c1432e">Comedones &amp; Acne (AAD 2024)</button>
+<button class="dtab" data-target="darkspots" style="--tabclr:#d9b23c">Dyspigmentation / Dark Spots</button>
+<button class="dtab" data-target="ingredients" style="--tabclr:#4a90c9">Cosmetic Ingredient Reference</button></nav>
+</header>
+
+<main>
+  <div class="intro">
+    <p>Cosmetic-focused dermatology reference — periorbital concerns (dark circles and traumatic bruising), comedones and acne severity grading per the AAD's 2024 guideline update, dyspigmentation/dark spots, and a cosmetic ingredient reference with an explicit evidence-check on each, including two social-media trend ingredients. Companion to the Outpatient Dermatology Atlas (medical/inflammatory dermatoses) and the Dermatology Emergency Atlas.</p>
+  </div>
+  <section class="dermpanel active" data-dtab="periorbital"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Periorbital Hyperpigmentation ("Dark Circles")</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Multifactorial — thin periorbital skin makes underlying vasculature more visible (a vascular/structural cause, not true pigment); genetic/constitutional pigmentation; post-inflammatory hyperpigmentation from chronic eye rubbing (allergies, atopic dermatitis); volume loss with aging creating a shadowing effect from the orbital rim; and true dermal melanin deposition in some patients, especially with darker skin types.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>A simple bedside maneuver distinguishes the mechanism: gently stretching the skin — if darkness LESSENS, a vascular/shadow component is more likely; if it persists unchanged, true pigment is more likely. Ask specifically about allergy/eye-rubbing history and family history (a strong genetic component is common and should be named explicitly to set realistic expectations).</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical: vitamin C, niacinamide, or low-strength retinoids can modestly improve true pigmentary causes; hydroquinone is used off-label in some cases but periorbital skin's thinness and proximity to the eye increase irritation risk, so it's used cautiously and briefly. Vascular/structural component: address the underlying volume loss (dermal filler in appropriately selected patients) or simply manage expectations, since topical products won't meaningfully change a primarily vascular/shadow-based appearance. Address any underlying allergy/eczema driving chronic rubbing first — treating the cause often improves the pigment more than any topical lightening agent will.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Periorbital skin is thin, sensitive, and close to the eye — any active ingredient (retinoids, hydroquinone, AHAs) should be introduced cautiously, at lower concentration, and never applied close enough to risk ocular exposure.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Set expectations explicitly and early — a large genetic/structural component to dark circles means many patients will see only modest improvement from topical products alone, and this honest framing prevents frustration with an appropriately-executed but inherently limited treatment plan.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#a76bd6">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Periorbital Ecchymosis ("Black Eye" — Traumatic Bruising)</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Blunt trauma to the periorbital region causing subcutaneous/subdermal hemorrhage — blood tracks through the thin, loose periorbital tissue, which is why bruising here often appears more dramatic and spreads further than a bruise of similar force elsewhere on the body.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Always examine for associated injury before treating this as a purely cosmetic concern — assess visual acuity, extraocular movements, pupillary function, and palpate the orbital rim for step-offs/tenderness suggesting a fracture; bilateral periorbital ecchymosis without a clear direct mechanism ("raccoon eyes") should raise concern for a basilar skull fracture and warrants urgent imaging, not cosmetic reassurance.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Cold compress (ice) in the first 24-48 hours to reduce swelling/further hemorrhage, then switching to WARM compress afterward to promote resorption of the existing bruise; arnica (topical or oral) has some patient-reported benefit for bruise resolution speed, though the evidence base is mixed/limited; camouflage makeup (color-correcting concealer, typically using a peach/orange-toned corrector to counteract the blue-purple bruise tone before applying regular concealer) is a reasonable cosmetic bridge while the bruise resolves naturally over 1-2 weeks.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Do not dismiss this as purely cosmetic without the red-flag assessment above — vision changes, inability to move the eye fully, or a palpable step-off/depression at the orbital rim all need urgent facial trauma/ophthalmology evaluation before any cosmetic management is even relevant.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>"Raccoon eyes" without a clear direct blow to that exact area is a classic, sometimes subtle sign of a basilar skull fracture — don't let the common, almost mundane cosmetic framing of "a black eye" cause this specific pattern to be under-triaged.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="acne"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Open Comedones ("Blackheads")</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>A dilated follicular opening plugged with oxidized sebum/keratin — the DARK color is from melanin and oxidation of the plug's contents at the exposed surface, not trapped dirt (a very common patient misconception worth correcting directly).</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Non-inflammatory acne lesion — flat or slightly raised, with a visible dark central punctum; typically concentrated on the nose, chin, and central face where sebaceous density is highest.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical retinoids (adapalene OTC, or prescription-strength tretinoin/tazarotene) are the most effective evidence-based comedolytic agents, normalizing follicular keratinization to prevent new comedone formation; salicylic acid (a BHA) is lipophilic and penetrates the sebum-filled follicle effectively, providing a reasonable OTC option; manual extraction by a trained professional using a comedone extractor can provide immediate cosmetic improvement for existing lesions but does NOT prevent new ones from forming — it's an adjunct to, not a replacement for, topical retinoid therapy.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Aggressive at-home extraction/picking risks secondary inflammation, infection, and post-inflammatory hyperpigmentation or scarring — professional extraction technique matters, and patients should be counseled against DIY extraction with fingernails or unsterile tools.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Correcting the "it's trapped dirt" misconception directly is genuinely useful patient education — it reframes the treatment conversation toward consistent topical retinoid use (which addresses the actual mechanism) rather than a patient's understandable but misdirected focus on more aggressive cleansing.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Closed Comedones ("Whiteheads")</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Similar follicular plugging to open comedones, but the follicular opening is closed/covered by a thin layer of skin — since the plug isn't exposed to air, it doesn't oxidize and darken, appearing instead as a small, flesh-colored to whitish bump.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Non-inflammatory acne lesion — small, firm, dome-shaped papules without significant surrounding erythema; can be subtle and easily overlooked on casual exam, especially in oilier or more textured skin.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Same foundational approach as open comedones — topical retinoids as the primary evidence-based comedolytic, salicylic acid as an OTC option; closed comedones are generally LESS amenable to manual extraction than open comedones given the intact overlying skin (extraction requires a small incision/lancing by a trained professional, carrying more infection/scarring risk than open comedone extraction).</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Attempting to "pop" a closed comedone without proper technique/sterility risks pushing the plug contents deeper and worsening inflammation, potentially converting a non-inflammatory lesion into an inflammatory papule/pustule.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Closed comedones are a useful early clinical sign that a patient's current skincare regimen isn't adequately preventing follicular plugging — their presence, even without visible inflammatory lesions yet, is a reasonable trigger to reinforce or intensify topical retinoid use before more inflammatory acne develops.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Acne Vulgaris — Mild (IGA Grade 1-2)</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Predominantly comedonal acne with few inflammatory papules/pustules — driven by the same core acne pathophysiology (follicular hyperkeratinization, sebum overproduction, C. acnes proliferation, and localized inflammation) but at a lower overall lesion burden and inflammatory intensity than moderate/severe disease.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Per the AAD's 2024 guideline-endorsed Investigator's Global Assessment (IGA), Grade 1 ("almost clear") shows rare non-inflammatory lesions with rare inflammatory lesions; Grade 2 ("mild") shows some non-inflammatory lesions with a few inflammatory lesions — no nodules present at this severity level.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical monotherapy or combination therapy per the AAD's strong recommendations: benzoyl peroxide, a topical retinoid, and/or a topical antibiotic (in fixed-dose combinations when appropriate) — combination therapy using agents with different mechanisms is a core AAD "good practice statement" even at mild severity, rather than reflexively starting with a single agent and escalating only after failure.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Topical retinoids commonly cause initial dryness/irritation ("retinization") in the first 2-4 weeks — counsel proactively (start every-other-night, use a moisturizer, expect this to improve) to prevent premature discontinuation of an appropriately effective regimen.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Even mild, comedone-predominant acne benefits from combination topical therapy rather than a single agent — the AAD's emphasis on combining mechanisms (comedolytic + antimicrobial/anti-inflammatory) applies across severity levels, not just to more advanced disease.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Acne Vulgaris — Moderate (IGA Grade 3)</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>A meaningful shift toward more numerous, more inflammatory lesions — reflecting a higher degree of follicular occlusion, C. acnes-driven inflammation, and innate immune activation compared to mild disease.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>IGA Grade 3 ("moderate") shows many non-inflammatory lesions and many inflammatory lesions, with up to one small nodule allowed at this grade — the presence of even limited nodularity is what separates this from Grade 2.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical combination therapy remains foundational (benzoyl peroxide + retinoid ± topical antibiotic), but oral therapy is now more often warranted: oral doxycycline has a STRONG AAD recommendation for inflammatory acne at this severity; hormonal options (combined oral contraceptives, spironolactone) are appropriate for many adult women, and topical clascoterone (targeting androgen receptors directly in the skin) is a newer topical option specifically useful for hormonally-influenced acne without systemic hormonal effects. AAD guidance explicitly discourages oral antibiotic MONOTHERAPY — always pair with a topical retinoid/benzoyl peroxide to reduce resistance risk and improve outcomes.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Limit oral antibiotic courses to the shortest effective duration (typically 3-4 months per AAD guidance) with planned reassessment, rather than open-ended prescribing, given resistance concerns and antibiotic-associated adverse effects (GI upset, photosensitivity with doxycycline specifically).</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient who has "tried everything" over-the-counter at this severity level, without ever combining mechanisms or considering an oral agent, hasn't actually failed appropriate therapy — reframing the conversation around combination and possibly oral treatment (rather than assuming acne-resistant skin) often meaningfully changes outcomes.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#c1432e">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Acne Vulgaris — Severe (IGA Grade 4)</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Extensive inflammatory disease with multiple nodules and/or cysts — deep, painful lesions reflecting follicular rupture and a robust inflammatory response extending into the deeper dermis, carrying the highest risk of permanent scarring of any acne severity tier.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>IGA Grade 4 ("severe") shows nodular and inflammatory lesions covering most of the face (or affected area), often with scarring already present at the time of evaluation — per the AAD, ANY acne causing significant psychosocial burden or scarring should be considered/treated as severe regardless of the strict lesion-count grade, an important clinical judgment override built directly into the 2024 guideline.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral isotretinoin is STRONGLY recommended by the AAD for severe acne, acne causing psychosocial burden or scarring, or acne failing standard oral/topical therapy — this is not a last-resort agent to reach only after exhausting everything else, but an appropriately early, guideline-endorsed option once severity/impact criteria are met. Standard daily dosing is conditionally preferred over intermittent dosing per the 2024 update. Monitoring: baseline and periodic LFTs and a fasting lipid panel are reasonable, but the 2024 guideline explicitly states CBC monitoring is NOT needed in otherwise healthy patients — a meaningful reduction in monitoring burden compared to older practice patterns. Mandatory pregnancy prevention (iPLEDGE program in the US) for any patient with pregnancy potential, given isotretinoin's clear teratogenicity.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>The 2024 AAD guideline explicitly states that population-based studies have NOT identified an increased risk of neuropsychiatric conditions (depression/suicidality) or inflammatory bowel disease in acne patients undergoing isotretinoin treatment — this is important, current, guideline-level reassurance against older, less well-supported concerns that still circulate widely among patients and some providers.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Don't withhold isotretinoin as a "last resort" for a patient who clearly meets severity/scarring/psychosocial-burden criteria — the 2024 AAD guideline explicitly frames isotretinoin as an appropriately early option for this population, and delaying it while cycling through less effective options risks additional permanent scarring in the interim.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="darkspots"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Melasma</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>A chronic pigmentary disorder driven by melanocyte hyperactivity, strongly influenced by UV exposure, hormonal factors (pregnancy — "the mask of pregnancy" — oral contraceptives, hormone therapy), and genetic predisposition; disproportionately affects women and those with darker skin phototypes.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Symmetric, blotchy, tan-to-brown patches classically on the cheeks, forehead, upper lip, and chin (centrofacial pattern); a Wood's lamp exam can help distinguish epidermal melasma (accentuates under UV light) from dermal melasma (does not accentuate) — dermal melasma is notably more treatment-resistant, so this distinction has real prognostic value before starting treatment.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Strict, consistent sun protection (broad-spectrum sunscreen, ideally with iron oxide/tinted formulations that also block visible light, which can worsen melasma in darker skin types — plain UV-filtering sunscreen alone is often insufficient) is the non-negotiable foundation of ANY melasma treatment plan; without this, other treatments underperform or fail entirely. Topical hydroquinone remains a first-line lightening agent, often combined with a retinoid and a mild corticosteroid in a "triple combination" formulation for enhanced efficacy. Azelaic acid and tranexamic acid (topical or oral) are additional evidence-supported options, with oral tranexamic acid increasingly used for more refractory cases under appropriate contraindication screening (personal/family history of clotting disorders). Chemical peels and certain laser/light-based treatments can help but carry a real risk of WORSENING melasma (post-inflammatory hyperpigmentation or paradoxical darkening) if performed too aggressively or in inappropriately selected patients — this is a treatment where more aggressive isn't automatically better.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Melasma is notoriously recurrent and chronic — set expectations for a management/control approach rather than a one-time cure, and emphasize that discontinuing sun protection after achieving improvement is the most common reason for relapse.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient starting or restarting oral contraceptives, or entering a new pregnancy, should be counseled that melasma may recur or worsen — proactively naming this hormonal trigger prevents the frustration of an unexpected flare being mistaken for treatment failure.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Post-Inflammatory Hyperpigmentation (PIH)</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Excess melanin deposition following any cutaneous inflammation or injury (acne, eczema flares, cuts/abrasions, aggressive extraction or cosmetic procedures) — disproportionately more common and more pronounced in darker skin types (Fitzpatrick IV-VI), where it's often a bigger patient concern than the original inflammatory condition itself.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Flat, brown-to-gray-brown macules/patches that directly correspond to the distribution of a prior inflammatory lesion or injury — the key distinguishing clinical clue from melasma is this clear correspondence to a specific prior insult rather than melasma's more diffuse, hormonally/UV-driven centrofacial pattern.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Treating and controlling the UNDERLYING inflammatory condition (e.g., getting acne adequately controlled) is the essential first step — PIH will keep recurring with every new inflammatory lesion if the root cause isn't addressed. Topical agents: azelaic acid, niacinamide, vitamin C, and retinoids all have reasonable evidence for accelerating PIH resolution; hydroquinone is effective but should be used for a limited duration given a small risk of exogenous ochronosis (a paradoxical blue-gray darkening) with prolonged, high-concentration use. Sun protection is essential throughout treatment, since UV exposure both worsens existing PIH and prolongs its resolution.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Chemical peels and laser treatments for PIH itself carry a real risk of WORSENING pigmentation, especially in darker skin types, if too aggressive — a conservative, gradual approach with lower-risk topical agents first is generally safer before escalating to procedural options in this specific population.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>PIH typically fades gradually over months even without any treatment — explicitly sharing this natural history helps set realistic timelines and prevents a patient from assuming a topical regimen has failed simply because visible improvement takes longer than they expected.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#d9b23c">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Solar Lentigines ("Age Spots"/"Sun Spots")</h3></header>
+      <div class="se-field"><span class="flabel">Cause</span><p>Cumulative UV-induced melanocyte proliferation and increased melanin production over years of sun exposure — a distinct entity from melasma (not hormonally driven) and from PIH (not preceded by inflammation), reflecting pure cumulative photodamage instead.</p></div>
+      <div class="se-field"><span class="flabel">Assessment</span><p>Well-demarcated, uniformly tan-to-brown macules on chronically sun-exposed skin (dorsal hands, forearms, face, upper chest, shoulders) — generally stable in appearance once established, though new ones continue to appear with ongoing sun exposure over time; any lesion with irregular color variation, an irregular/changing border, or rapid change should prompt biopsy consideration to exclude a pigmented lesion of concern (see the Outpatient Dermatology Atlas Skin Cancer/Dermoscopy section) rather than being assumed to be a simple lentigo.</p></div>
+      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical hydroquinone or retinoids can produce gradual lightening with consistent use over months; cryotherapy provides fast, effective spot treatment for individual lesions in appropriately selected patients; laser/light-based treatments (IPL, Q-switched lasers) are effective and often preferred for broader photodamage or multiple lesions given faster, more consistent results than topical therapy alone.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Sun protection is essential both to prevent new lentigines and to prevent post-treatment recurrence/rebound pigmentation at treated sites — any lentigo treatment plan without a sun protection component is working against itself.</p></div>
+      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The presence of multiple solar lentigines is itself a marker of significant cumulative sun exposure — this is a reasonable, low-friction opening to a broader skin cancer risk conversation and full-body skin exam recommendation, not just a cosmetic treatment discussion in isolation.</p></div>
+    </article></div></section>
+  <section class="dermpanel" data-dtab="ingredients"><div class="condcard-list">
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">01</span><h3>Glycolic Acid (Alpha-Hydroxy Acid — AHA)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A water-soluble alpha-hydroxy acid derived (originally) from sugar cane, the smallest and most penetrating AHA molecule, widely used in both OTC and professional chemical peel concentrations.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Loosens corneodesmosomal bonds between stratum corneum cells, promoting exfoliation of the outer skin layer; higher concentrations penetrate more deeply and can stimulate dermal collagen production with regular use.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Reasonable evidence for improving mild photoaging, superficial dyschromia, and overall skin texture/tone; commonly used at 5-10% in OTC leave-on products and 20-70% in professional peels.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Start with lower concentrations (5-10%) a few times weekly, gradually increasing frequency as tolerated; ALWAYS pair with daily sunscreen, since AHAs measurably increase photosensitivity.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Can cause irritation, stinging, and increased sun sensitivity — higher-concentration professional peels carry a real risk of post-inflammatory hyperpigmentation in darker skin types if not performed by an experienced provider with appropriate concentration/technique selection.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED for texture, mild photoaging, and tone — a legitimate, well-studied cosmetic ingredient, not a trend claim.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">02</span><h3>Salicylic Acid (Beta-Hydroxy Acid — BHA)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A lipophilic (oil-soluble) beta-hydroxy acid, which — unlike the water-soluble AHAs — can penetrate INTO the oil-filled follicle itself, making it particularly useful for acne-prone/oily skin specifically.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Exfoliates within the follicle and has mild anti-inflammatory properties; the AAD's 2024 acne guideline gives topical salicylic acid a CONDITIONAL recommendation for acne specifically.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Solid evidence for mild-moderate comedonal acne and oily skin; commonly formulated at 0.5-2% in OTC cleansers/leave-on products.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Can be used daily as a cleanser or leave-on treatment depending on formulation and individual tolerance; combine cautiously with other actives (retinoids, other exfoliants) to avoid over-exfoliation/irritation.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Can cause dryness/irritation, especially when combined with other exfoliating actives; salicylate sensitivity (rare) is a specific contraindication to ask about, particularly in patients with aspirin allergy.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED specifically for comedonal/oily acne-prone skin — has an actual AAD guideline recommendation behind it.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">03</span><h3>Retinol (OTC) vs. Prescription Retinoids (Tretinoin, Tazarotene, Adapalene)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>All are vitamin A derivatives, but they differ significantly in potency: retinol (OTC) must be enzymatically converted to retinoic acid (the active form) in the skin, a less efficient process than prescription retinoids, which are either already active (tretinoin) or bind receptors more directly/selectively (adapalene, tazarotene).</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Normalize follicular keratinization (preventing comedone formation), increase epidermal cell turnover, and stimulate dermal collagen production with sustained use — the same core mechanism across the whole class, differing mainly in potency and receptor selectivity.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Prescription retinoids have the strongest evidence base of any topical class for both acne (AAD strong recommendation) and photoaging/fine lines; OTC retinol has more modest but real evidence for cosmetic anti-aging use, appropriate for patients wanting a gentler entry point or who can't access/tolerate prescription strength.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Start low and slow regardless of which product — every-other-night application initially, buffered with moisturizer if needed, gradually increasing frequency as tolerated ("retinization" — see the Acne Vulgaris Mild card) — this applies to both OTC retinol and prescription retinoids, just with different starting potencies.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Photosensitizing — daily sunscreen is non-negotiable with any retinoid/retinol use; contraindicated in pregnancy (all forms, including OTC retinol, given theoretical teratogenicity concerns despite topical absorption being low) — this should be proactively discussed with any patient of reproductive age.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED across the board — this is one of the best-studied cosmetic/therapeutic ingredient classes in all of dermatology, with the caveat that OTC and prescription strength are genuinely different products, not just marketing distinctions.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">04</span><h3>Vitamin C (L-Ascorbic Acid)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A potent antioxidant, most effective in its L-ascorbic acid form, though this form is notably unstable (degrades with light/air/heat exposure) — many stabilized derivative forms exist (ascorbyl palmitate, sodium ascorbyl phosphate) with generally lower but more stable efficacy.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Neutralizes UV- and pollution-generated free radicals, inhibits tyrosinase (reducing melanin production — relevant for dyspigmentation), and is a required cofactor for collagen synthesis.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Reasonable evidence for improving photoaging, mild hyperpigmentation, and providing some additional antioxidant photoprotection when used alongside (never as a replacement for) sunscreen.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Apply in the morning under sunscreen for antioxidant synergy; look for L-ascorbic acid concentrations in the 10-20% range in a low-pH, appropriately packaged (opaque, air-limiting) formulation to preserve stability, since an oxidized (turned yellow/brown) vitamin C product has lost meaningful efficacy.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Can cause irritation/stinging, especially at higher concentrations or in sensitive skin; unstable formulations that have oxidized provide little benefit and are essentially wasted product.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED as an antioxidant/adjunct — genuinely useful but formulation stability matters enormously, more so than for most other ingredients on this list.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">05</span><h3>Niacinamide (Vitamin B3)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A water-soluble vitamin B3 derivative, notable for being generally well-tolerated across skin types (including sensitive/rosacea-prone skin) compared to more irritating actives like retinoids or AHAs.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Multiple mechanisms: reduces sebum production, strengthens the skin barrier (increases ceramide synthesis), has anti-inflammatory properties, and inhibits melanosome transfer (reducing hyperpigmentation).</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Reasonable evidence for improving mild acne, redness/rosacea-associated symptoms, barrier function, and mild hyperpigmentation — generally more modest effect sizes than retinoids or hydroquinone for any single indication, but with a much better tolerability profile.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Well-tolerated at 2-10% concentrations, generally usable daily and layerable with most other actives (a genuine practical advantage — niacinamide has few significant ingredient-interaction concerns compared to combining, say, a retinoid with an AHA).</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Minimal significant cautions — occasional mild flushing/irritation reported, generally at higher concentrations or in already-compromised/sensitive skin barriers.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED as a well-tolerated, multi-purpose ingredient — a reasonable default "first active" for patients with sensitive skin who haven't tolerated more potent options.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">06</span><h3>Hyaluronic Acid (Topical)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A naturally-occurring humectant found in the skin's extracellular matrix; topical formulations use various molecular weights, which affects how deeply the ingredient penetrates and where it holds water.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Draws and holds water within the skin (a humectant, not a moisturizing occlusive agent on its own) — higher molecular weight forms sit more superficially, while lower molecular weight forms penetrate somewhat deeper.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Reasonable evidence for improving skin hydration and the appearance of fine lines related to dehydration specifically — it does not address deeper structural/collagen-related wrinkles the way retinoids can.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Apply to slightly damp skin and follow with an occlusive moisturizer to seal in the hydration — applying to completely dry skin, or in a very dry/low-humidity environment without follow-up occlusion, can paradoxically draw moisture FROM the skin rather than adding it.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Minimal cautions — very well tolerated across skin types, including sensitive skin; the main practical pitfall is the application-technique issue described above rather than any significant adverse effect risk.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED for hydration specifically — genuinely effective for its narrow, specific purpose, but shouldn't be marketed or expected to address wrinkles/aging broadly.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">07</span><h3>Hydroquinone</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>The most extensively studied and historically most effective topical skin-lightening agent, available OTC at lower concentrations (2%) in the US and at higher concentrations (4%+) by prescription.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Inhibits tyrosinase, the rate-limiting enzyme in melanin synthesis, directly reducing new melanin production at the treated site.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Strong evidence as a first-line agent for melasma, PIH, and solar lentigines — often combined with a retinoid and mild corticosteroid in "triple combination" formulations for enhanced efficacy in melasma specifically (see the Dark Spots tab).</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Typically applied once or twice daily to affected areas only, generally used for defined treatment courses (often 3-6 months) rather than indefinite continuous use, given the ochronosis risk described below.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Prolonged, high-concentration use carries a real (though uncommon) risk of exogenous ochronosis — a paradoxical blue-gray darkening of the treated skin that can be difficult to reverse; some countries have restricted or banned OTC hydroquinone sale specifically because of this and misuse/overuse concerns, so used-for-limited-duration counseling matters.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>EVIDENCE-SUPPORTED and effective, but genuinely warrants a duration limit and monitoring — this is not an ingredient to recommend for indefinite daily use without a treatment endpoint in mind.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">08</span><h3>Sunscreen — Chemical vs. Mineral Filters</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>Chemical (organic) filters (avobenzone, octinoxate, oxybenzone, and others) absorb UV radiation and convert it to heat; mineral (inorganic/physical) filters (zinc oxide, titanium dioxide) primarily reflect/scatter UV radiation, though modern micronized formulations also absorb some UV.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Both filter types ultimately prevent UV-induced DNA damage and photoaging — the difference is mechanism and, practically, cosmetic feel/tolerability rather than one being definitively "better" for everyone.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>Both filter categories are well-supported for photoprotection when used correctly (adequate amount, adequate reapplication); mineral filters (particularly with iron oxide added) additionally block visible light, which is specifically relevant for melasma-prone patients in darker skin types, where visible light alone can worsen pigmentation — a real, evidence-based reason to prefer mineral/tinted formulations in this specific population rather than a purely cosmetic preference.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Apply a full amount (roughly a shot-glass-sized amount for full body, about a nickel-to-quarter-sized amount for the face alone) and reapply every 2 hours with sun exposure/sweating — under-application is the most common real-world reason sunscreen underperforms its labeled SPF, far more often than filter type choice.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Chemical filters have raised some systemic absorption questions in FDA studies, though clinical significance remains unclear and under study; mineral filters can leave a visible white cast (less of an issue with modern tinted/micronized formulations) and are generally preferred for sensitive skin or young children given a lower irritation profile.</p></div>
+      <div class="verdict-box verdict-good"><span class="verdict-tag">Evidence-Check Verdict</span><p>BOTH ARE EVIDENCE-SUPPORTED — the "chemical vs. mineral" debate is often overstated in casual skincare discussion; consistent, adequate, correctly-reapplied use of EITHER type matters far more than which filter category a patient chooses, with the specific exception of melasma patients, where a tinted mineral formulation has a genuine evidence-based edge.</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">09</span><h3>Tonic Water (Social Media Trend — Topical/Under-Eye Use)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A carbonated beverage containing a small amount of quinine (an alkaloid), heavily diluted compared to therapeutic/historical antimalarial concentrations; social media trends have claimed topical application (soaked cotton pads under the eyes, or as a general skin "toner") reduces puffiness, dark circles, or brightens skin.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>No established dermatologic mechanism exists for quinine improving dark circles, puffiness, or skin brightness when applied topically — the trend appears to conflate quinine's historical (oral, high-dose) use for leg cramps/malaria with an entirely unrelated topical cosmetic claim that has no comparable pharmacologic basis.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>NO clinical evidence supports topical tonic water for any dermatologic cosmetic benefit — this is a social-media-originated claim without supporting dermatologic literature, unlike the other ingredients on this list, which all have at least reasonable published evidence behind their claimed uses.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Not recommended — there is no established beneficial protocol to describe, since the underlying premise isn't supported.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Quinine is a documented, if uncommon, cause of allergic skin reactions including fixed drug eruptions and photosensitivity/phototoxic reactions — applying a quinine-containing liquid topically, especially to thin, sensitive periorbital skin, carries a real (if low-probability) irritant/allergic risk for a benefit that isn't established to exist at all.</p></div>
+      <div class="verdict-box verdict-bad"><span class="verdict-tag">Evidence-Check Verdict</span><p>NOT EVIDENCE-SUPPORTED — actively counsel against this specific trend. There's no established mechanism for benefit, and there's a real, if uncommon, documented risk of allergic/photosensitivity reaction from topical quinine exposure. This is a useful example to discuss with patients as a template for evaluating other social-media skincare trends: ask "what's the actual mechanism, and is there published evidence," not just "does it sound plausible."</p></div>
+    </article>
+
+    <article class="condcard" style="--tabclr:#4a90c9">
+      <header class="mcard-h"><span class="mcard-num">10</span><h3>DIY Lemon Juice for Dark Spots (Social Media/Folk Trend)</h3></header>
+      <div class="se-field"><span class="flabel">What It Is</span><p>A long-standing folk remedy and recurring social media trend suggesting raw lemon juice applied directly to skin lightens dark spots/hyperpigmentation given its natural acidity and vitamin C content.</p></div>
+      <div class="se-field"><span class="flabel">Mechanism</span><p>Lemon juice does contain some vitamin C and citric acid (an AHA), which could theoretically provide mild exfoliation/antioxidant effect in principle — but raw lemon juice is far more acidic (pH ~2) and unstandardized in concentration compared to formulated cosmetic vitamin C or AHA products, without any of the stabilization or pH-buffering that makes formulated products both effective and reasonably safe.</p></div>
+      <div class="se-field"><span class="flabel">Evidence</span><p>No controlled clinical evidence supports raw lemon juice as an effective or safe hyperpigmentation treatment — what evidence exists for vitamin C/AHA benefit comes from properly formulated, pH-appropriate cosmetic products, not raw citrus juice applied directly to skin.</p></div>
+      <div class="se-field mgmt"><span class="flabel">How to Use</span><p>Not recommended — redirect patients toward formulated vitamin C serums or appropriately-concentrated AHA products instead, which provide the plausible underlying benefit mechanism without the specific risks below.</p></div>
+      <div class="se-field warn"><span class="flabel">Cautions</span><p>Raw lemon juice's low pH and direct sun-exposed application combination creates a real risk of phytophotodermatitis (a phototoxic chemical burn reaction when citrus psoralens are exposed to UV light) — this can cause significant irritation, blistering, and PARADOXICALLY WORSE post-inflammatory hyperpigmentation, the exact opposite of the intended effect.</p></div>
+      <div class="verdict-box verdict-bad"><span class="verdict-tag">Evidence-Check Verdict</span><p>NOT EVIDENCE-SUPPORTED and carries a real, well-documented risk of phytophotodermatitis — a clear example where a plausible-sounding natural remedy can actively cause the problem it claims to solve; redirect to formulated products with a comparable but properly tested/buffered active ingredient instead.</p></div>
+    </article></div></section>
+</main>
+
+<footer>Cosmetic Dermatology Atlas — original reference content for clinical education, grounded in the AAD's 2024 Guidelines of Care for the Management of Acne Vulgaris (J Am Acad Dermatol 2024) and current cosmetic dermatology literature. Verify current guideline versions before clinical use.</footer>
+
+<script>
+(function(){
+  var themeBtn = document.getElementById('themeToggle');
+  var root = document.documentElement;
+  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
+  applyTheme('dark');
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  document.querySelectorAll('.dtab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.dermpanel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelector('.dermpanel[data-dtab="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
