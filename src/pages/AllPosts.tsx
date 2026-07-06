@@ -19,6 +19,36 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Hematopoiesis & Cellular Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "Stem cell lineages, erythropoiesis, granulopoiesis, lymphopoiesis, and megakaryopoiesis — with morphology pearls and clinical correlates.",
+      image: businessPost,
+      slug: "hematology-hematopoiesis-atlas",
+      tags: ["Hematology", "Clinical Education"]
+    },
+    {
+      title: "CBC & Coagulation Labs Interpretation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "Step-by-step interpretation of the CBC, differential, and coagulation panels — with panic values, patterns, and workup pearls.",
+      image: businessPost,
+      slug: "hematology-cbc-coag-labs-atlas",
+      tags: ["Hematology", "Labs", "Clinical Education"]
+    },
+    {
+      title: "Coagulation, Clotting Disorders & Anticoagulation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "The coagulation cascade, bleeding and clotting disorders, anticoagulant and antiplatelet pharmacology, and reversal strategies.",
+      image: businessPost,
+      slug: "hematology-coagulation-atlas",
+      tags: ["Hematology", "Anticoagulation", "Clinical Education"]
+    },
+    {
       title: "Cancer Classification & Staging Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
