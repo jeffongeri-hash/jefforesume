@@ -13,6 +13,20 @@ import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
 import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 import houstonSuburbs from '@/assets/houston-suburbs.jpg';
+import imgCardiology from '@/assets/blog/cardiology.jpg';
+import imgPulmonary from '@/assets/blog/pulmonary.jpg';
+import imgRenal from '@/assets/blog/renal.jpg';
+import imgHematology from '@/assets/blog/hematology.jpg';
+import imgNeurology from '@/assets/blog/neurology.jpg';
+import imgInfectious from '@/assets/blog/infectious-disease.jpg';
+import imgOncology from '@/assets/blog/oncology.jpg';
+import imgDermatology from '@/assets/blog/dermatology.jpg';
+import imgObgyn from '@/assets/blog/obgyn.jpg';
+import imgPediatrics from '@/assets/blog/pediatrics.jpg';
+import imgPsychiatry from '@/assets/blog/psychiatry.jpg';
+import imgMsk from '@/assets/blog/msk.jpg';
+import imgToxicology from '@/assets/blog/toxicology.jpg';
+import imgProcedures from '@/assets/blog/procedures.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
@@ -510,9 +524,32 @@ const AllPosts = () => {
     "Procedures",
   ];
 
+  const systemImage: Record<string, string> = {
+    "Cardiology": imgCardiology,
+    "Pulmonary & Critical Care": imgPulmonary,
+    "Renal": imgRenal,
+    "Hematology": imgHematology,
+    "Neurology": imgNeurology,
+    "Infectious Disease": imgInfectious,
+    "Oncology": imgOncology,
+    "Dermatology": imgDermatology,
+    "OB/GYN": imgObgyn,
+    "Pediatrics": imgPediatrics,
+    "Psychiatry": imgPsychiatry,
+    "Musculoskeletal": imgMsk,
+    "Toxicology": imgToxicology,
+    "Procedures": imgProcedures,
+  };
+
   const getSystem = (post: Post) => systemBySlug[post.slug] || post.subcategory || "Other";
 
-  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education");
+  const withSystemImage = (post: Post): Post => {
+    if (post.subcategory !== "Clinical Education") return post;
+    const sys = getSystem(post);
+    return systemImage[sys] ? { ...post, image: systemImage[sys] } : post;
+  };
+
+  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education").map(withSystemImage);
   const otherPosts = postsToShow.filter((p) => p.subcategory !== "Clinical Education");
 
   const grouped: Record<string, Post[]> = {};
