@@ -524,9 +524,32 @@ const AllPosts = () => {
     "Procedures",
   ];
 
+  const systemImage: Record<string, string> = {
+    "Cardiology": imgCardiology,
+    "Pulmonary & Critical Care": imgPulmonary,
+    "Renal": imgRenal,
+    "Hematology": imgHematology,
+    "Neurology": imgNeurology,
+    "Infectious Disease": imgInfectious,
+    "Oncology": imgOncology,
+    "Dermatology": imgDermatology,
+    "OB/GYN": imgObgyn,
+    "Pediatrics": imgPediatrics,
+    "Psychiatry": imgPsychiatry,
+    "Musculoskeletal": imgMsk,
+    "Toxicology": imgToxicology,
+    "Procedures": imgProcedures,
+  };
+
   const getSystem = (post: Post) => systemBySlug[post.slug] || post.subcategory || "Other";
 
-  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education");
+  const withSystemImage = (post: Post): Post => {
+    if (post.subcategory !== "Clinical Education") return post;
+    const sys = getSystem(post);
+    return systemImage[sys] ? { ...post, image: systemImage[sys] } : post;
+  };
+
+  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education").map(withSystemImage);
   const otherPosts = postsToShow.filter((p) => p.subcategory !== "Clinical Education");
 
   const grouped: Record<string, Post[]> = {};
