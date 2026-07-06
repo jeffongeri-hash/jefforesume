@@ -383,6 +383,22 @@ const blogPosts = {
       <p><a href="/embeds/seizure-cns-atlas.html" target="_blank" rel="noopener">Open Part II in a new tab →</a></p>
     `
   },
+  "neuralgia-migraine-spine-atlas": {
+    title: "Neuralgia, Migraine & Spinal Pain Atlas",
+    category: "HEALTHCARE",
+    date: "July 6, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A clinical atlas covering neuralgia subtypes, migraine pathophysiology and acute management, spinal pain generators, radiculopathy patterns, and bedside pearls for distinguishing neuropathic, vascular, and mechanical spine pain.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/neuralgia-migraine-spine-atlas.html" title="Neuralgia, Migraine & Spinal Pain Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/neuralgia-migraine-spine-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "sacramento-suburb-guide-3br-housing-commute-budget": {
     title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
     category: "HEALTHCARE",
