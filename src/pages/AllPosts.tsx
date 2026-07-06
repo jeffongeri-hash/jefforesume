@@ -19,6 +19,36 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Hematopoiesis & Cellular Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "Stem cell lineages, erythropoiesis, granulopoiesis, lymphopoiesis, and megakaryopoiesis — with morphology pearls and clinical correlates.",
+      image: businessPost,
+      slug: "hematology-hematopoiesis-atlas",
+      tags: ["Hematology", "Clinical Education"]
+    },
+    {
+      title: "CBC & Coagulation Labs Interpretation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "Step-by-step interpretation of the CBC, differential, and coagulation panels — with panic values, patterns, and workup pearls.",
+      image: businessPost,
+      slug: "hematology-cbc-coag-labs-atlas",
+      tags: ["Hematology", "Labs", "Clinical Education"]
+    },
+    {
+      title: "Coagulation, Clotting Disorders & Anticoagulation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "The coagulation cascade, bleeding and clotting disorders, anticoagulant and antiplatelet pharmacology, and reversal strategies.",
+      image: businessPost,
+      slug: "hematology-coagulation-atlas",
+      tags: ["Hematology", "Anticoagulation", "Clinical Education"]
+    },
+    {
       title: "Cancer Classification & Staging Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -412,6 +442,89 @@ const AllPosts = () => {
 
   const postsToShow = filteredPosts.length > 0 ? filteredPosts : blogPosts;
 
+  // Map each post slug to a clinical system for grouping.
+  const systemBySlug: Record<string, string> = {
+    // Cardiology
+    "ekg-strip-atlas": "Cardiology",
+    "arrhythmia-origin-atlas": "Cardiology",
+    // Pulmonary & Critical Care
+    "ventilator-atlas": "Pulmonary & Critical Care",
+    "abg-interpreter": "Pulmonary & Critical Care",
+    "resuscitation-atlas": "Pulmonary & Critical Care",
+    "fluid-dynamics-atlas": "Pulmonary & Critical Care",
+    // Renal
+    "renal-emergency-atlas": "Renal",
+    "renal-pharm-uti-atlas": "Renal",
+    "electrolyte-correction-atlas": "Renal",
+    // Neurology
+    "neurologic-emergencies-atlas": "Neurology",
+    // Toxicology
+    "toxidrome-atlas": "Toxicology",
+    // Procedures
+    "reduction-field-manual": "Procedures",
+    "pocus-atlas": "Procedures",
+    "procedural-companions-atlas": "Procedures",
+    "sedation-master-atlas": "Procedures",
+    "wound-burn-abscess-atlas": "Procedures",
+    // Dermatology
+    "cosmetic-dermatology-atlas": "Dermatology",
+    "outpatient-dermatology-atlas": "Dermatology",
+    "dermatology-emergency-atlas": "Dermatology",
+    // Oncology
+    "cancer-classification-staging-atlas": "Oncology",
+    "lung-breast-cancer-atlas": "Oncology",
+    "cancer-deep-dives-vol2": "Oncology",
+    "oncology-emergencies-atlas": "Oncology",
+    "oncology-interventions-atlas": "Oncology",
+    "oncology-side-effects-atlas": "Oncology",
+    // OB/GYN
+    "obgyn-emergency-atlas": "OB/GYN",
+    // Psychiatry
+    "psychiatric-emergency-atlas": "Psychiatry",
+    // Pediatrics
+    "pediatric-em-atlas": "Pediatrics",
+    // Infectious Disease
+    "antimicrobial-atlas": "Infectious Disease",
+    // MSK
+    "msk-neuromuscular-atlas": "Musculoskeletal",
+    // Hematology
+    "hematology-hematopoiesis-atlas": "Hematology",
+    "hematology-cbc-coag-labs-atlas": "Hematology",
+    "hematology-coagulation-atlas": "Hematology",
+  };
+
+  const systemOrder = [
+    "Cardiology",
+    "Pulmonary & Critical Care",
+    "Renal",
+    "Hematology",
+    "Neurology",
+    "Infectious Disease",
+    "Oncology",
+    "Dermatology",
+    "OB/GYN",
+    "Pediatrics",
+    "Psychiatry",
+    "Musculoskeletal",
+    "Toxicology",
+    "Procedures",
+  ];
+
+  const getSystem = (post: Post) => systemBySlug[post.slug] || post.subcategory || "Other";
+
+  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education");
+  const otherPosts = postsToShow.filter((p) => p.subcategory !== "Clinical Education");
+
+  const grouped: Record<string, Post[]> = {};
+  clinicalPosts.forEach((p) => {
+    const sys = getSystem(p);
+    (grouped[sys] ||= []).push(p);
+  });
+  const orderedSystems = [
+    ...systemOrder.filter((s) => grouped[s]?.length),
+    ...Object.keys(grouped).filter((s) => !systemOrder.includes(s)).sort(),
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -438,19 +551,59 @@ const AllPosts = () => {
           showCategoryFilter={true}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {postsToShow.map((post, index) => (
-            <BlogCard
-              key={post.slug}
-              title={post.title}
-              category={post.category}
-              date={post.date}
-              excerpt={post.excerpt}
-              image={post.image}
-              href={`/blog/${post.slug}`}
-              isSmall={false}
-            />
+        <div className="max-w-4xl mx-auto space-y-12">
+          {orderedSystems.map((system) => (
+            <section key={system}>
+              <div className="flex items-center gap-4 mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground whitespace-nowrap">
+                  {system}
+                </h2>
+                <span className="text-sm text-muted-foreground">
+                  {grouped[system].length} {grouped[system].length === 1 ? "post" : "posts"}
+                </span>
+                <div className="flex-1 h-px bg-border" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {grouped[system].map((post) => (
+                  <BlogCard
+                    key={post.slug}
+                    title={post.title}
+                    category={post.category}
+                    date={post.date}
+                    excerpt={post.excerpt}
+                    image={post.image}
+                    href={`/blog/${post.slug}`}
+                    isSmall={false}
+                  />
+                ))}
+              </div>
+            </section>
           ))}
+
+          {otherPosts.length > 0 && (
+            <section>
+              <div className="flex items-center gap-4 mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground whitespace-nowrap">
+                  More Posts
+                </h2>
+                <div className="flex-1 h-px bg-border" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {otherPosts.map((post) => (
+                  <BlogCard
+                    key={post.slug}
+                    title={post.title}
+                    category={post.category}
+                    date={post.date}
+                    excerpt={post.excerpt}
+                    image={post.image}
+                    href={`/blog/${post.slug}`}
+                    isSmall={false}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
       <Footer />
