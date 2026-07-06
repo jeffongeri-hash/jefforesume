@@ -210,6 +210,16 @@ const AllPosts = () => {
       tags: ["Neurology", "Emergency Medicine", "Clinical Education"]
     },
     {
+      title: "Neuralgia, Migraine & Spinal Pain Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 6, 2026",
+      excerpt: "A clinical atlas covering neuralgia subtypes, migraine pathophysiology and acute management, spinal pain generators, radiculopathy patterns, and bedside pearls for distinguishing neuropathic, vascular, and mechanical spine pain.",
+      image: businessPost,
+      slug: "neuralgia-migraine-spine-atlas",
+      tags: ["Neurology", "Pain", "Clinical Education"]
+    },
+    {
       title: "Procedural Companions — Splinting, Nerve Blocks & Sedation",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -479,6 +489,7 @@ const AllPosts = () => {
     "electrolyte-correction-atlas": "Renal",
     // Neurology
     "neurologic-emergencies-atlas": "Neurology",
+    "neuralgia-migraine-spine-atlas": "Neurology",
     // Toxicology
     "toxidrome-atlas": "Toxicology",
     // Procedures
