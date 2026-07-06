@@ -13,6 +13,20 @@ import pslfFinder from '@/assets/pslf-finder.jpg';
 import sanJoseSuburbs from '@/assets/san-jose-suburbs.jpg';
 import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 import houstonSuburbs from '@/assets/houston-suburbs.jpg';
+import imgCardiology from '@/assets/blog/cardiology.jpg';
+import imgPulmonary from '@/assets/blog/pulmonary.jpg';
+import imgRenal from '@/assets/blog/renal.jpg';
+import imgHematology from '@/assets/blog/hematology.jpg';
+import imgNeurology from '@/assets/blog/neurology.jpg';
+import imgInfectious from '@/assets/blog/infectious-disease.jpg';
+import imgOncology from '@/assets/blog/oncology.jpg';
+import imgDermatology from '@/assets/blog/dermatology.jpg';
+import imgObgyn from '@/assets/blog/obgyn.jpg';
+import imgPediatrics from '@/assets/blog/pediatrics.jpg';
+import imgPsychiatry from '@/assets/blog/psychiatry.jpg';
+import imgMsk from '@/assets/blog/msk.jpg';
+import imgToxicology from '@/assets/blog/toxicology.jpg';
+import imgProcedures from '@/assets/blog/procedures.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
