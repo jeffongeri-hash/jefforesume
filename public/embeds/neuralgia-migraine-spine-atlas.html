@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuralgia, Migraine & Spinal Pain Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#15130f; --bg2:#1c1a15; --card:#211f19; --text:#ece6d9; --text-dim:#a89f8c;
+  --border:#33302a; --accent-default:#c98a4b; --mono:'JetBrains Mono',monospace;
+  --serif:'Fraunces',serif; --sans:'Inter',sans-serif;
+}
+[data-theme="light"]{
+  --bg:#faf7f0; --bg2:#f1ece0; --card:#ffffff; --text:#241f16; --text-dim:#5c5347;
+  --border:#ddd4c2;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
+  line-height:1.55; transition:background .2s, color .2s;
+}
+h1,h2,h3{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em;}
+header{
+  padding:28px 24px 18px; border-bottom:1px solid var(--border); background:var(--bg2);
+  display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+}
+header .title h1{margin:0 0 4px; font-size:1.7rem;}
+header .title p{margin:0; color:var(--text-dim); font-size:0.92rem; max-width:640px;}
+.theme-toggle{
+  background:var(--card); border:1px solid var(--border); color:var(--text);
+  padding:8px 14px; border-radius:8px; cursor:pointer; font-family:var(--mono); font-size:0.8rem;
+}
+nav{
+  display:flex; flex-wrap:wrap; gap:10px 16px; padding:16px 24px; background:var(--bg);
+  border-bottom:1px solid var(--border); position:sticky; top:0; z-index:20;
+}
+.navgroup{display:flex; flex-direction:column; gap:6px;}
+.navgroup-label{font-family:var(--mono); font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent, var(--accent-default)); opacity:0.85;}
+.navgroup > .navgroup-label{color:var(--accent);}
+.navgroup .navbtn{display:inline-block; margin-right:6px; margin-bottom:6px;}
+.navbtn{
+  background:var(--card); border:1px solid var(--border); color:var(--text-dim);
+  padding:6px 12px; border-radius:20px; cursor:pointer; font-size:0.82rem; font-family:var(--sans);
+  transition:all .15s;
+}
+.navbtn:hover{color:var(--text); border-color:var(--accent, var(--accent-default));}
+.navbtn.active{background:var(--accent, var(--accent-default)); color:#161310; border-color:transparent; font-weight:600;}
+main{max-width:1100px; margin:0 auto; padding:24px;}
+.panel-head{
+  border-left:4px solid var(--accent, var(--accent-default)); padding-left:16px; margin-bottom:20px;
+}
+.cat-pill{
+  font-family:var(--mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--accent, var(--accent-default)); display:block; margin-bottom:4px;
+}
+.panel-head h2{margin:0; font-size:1.5rem;}
+.quickref{
+  display:grid; grid-template-columns:1fr; gap:0; background:var(--card); border:1px solid var(--border);
+  border-radius:10px; overflow:hidden; margin-bottom:24px;
+}
+.quickrow{display:grid; grid-template-columns:140px 1fr; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border); font-size:0.88rem;}
+.quickrow:last-child{border-bottom:none;}
+.qk{font-family:var(--mono); font-size:0.72rem; text-transform:uppercase; color:var(--text-dim); letter-spacing:0.04em; padding-top:2px;}
+.qv{color:var(--text);}
+.content-grid{display:grid; grid-template-columns:1fr 1fr; gap:32px;}
+.content-col.single{max-width:820px;}
+@media (max-width:860px){.content-grid{grid-template-columns:1fr;}}
+h3{font-size:1.05rem; margin:20px 0 8px; color:var(--accent, var(--accent-default));}
+h3:first-child{margin-top:0;}
+p{margin:0 0 10px; font-size:0.94rem; color:var(--text);}
+.efficacy-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+.efficacy-list li{
+  display:flex; justify-content:space-between; gap:12px; padding:8px 12px; border-radius:8px;
+  background:var(--card); border:1px solid var(--border); font-size:0.86rem;
+}
+.eff-name{color:var(--text);}
+.eff-level{font-family:var(--mono); font-size:0.75rem; text-align:right; flex-shrink:0; max-width:55%;}
+.eff-high .eff-level{color:#7fbf7f;}
+.eff-mod .eff-level{color:#d9b25c;}
+.eff-low .eff-level{color:#c98a6b;}
+.eff-avoid .eff-level{color:#d97f7f;}
+.tool-intro{color:var(--text-dim); margin-bottom:16px;}
+.filters{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px; align-items:flex-end;}
+.filter-group{display:flex; flex-direction:column; gap:4px;}
+.filter-group label{font-family:var(--mono); font-size:0.68rem; text-transform:uppercase; color:var(--text-dim);}
+.filter-group select{
+  background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:6px;
+  padding:7px 10px; font-family:var(--sans); font-size:0.85rem; min-width:170px;
+}
+.reset-btn{
+  background:transparent; border:1px solid var(--border); color:var(--text-dim); padding:7px 14px;
+  border-radius:6px; cursor:pointer; font-size:0.82rem;
+}
+.reset-btn:hover{color:var(--text); border-color:var(--accent-default);}
+.table-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:10px;}
+table{width:100%; border-collapse:collapse; font-size:0.85rem;}
+.diff-table th, .diff-table td, .modality-table th, .modality-table td{
+  padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top;
+}
+.diff-table thead th, .modality-table thead th{
+  background:var(--bg2); font-family:var(--mono); font-size:0.68rem; text-transform:uppercase;
+  color:var(--text-dim); letter-spacing:0.04em; position:sticky; top:0;
+}
+.diff-table tbody tr{cursor:pointer; transition:background .12s;}
+.diff-table tbody tr:hover{background:var(--bg2);}
+.diff-table tbody tr td:first-child{font-weight:600; color:var(--accent-default);}
+.diff-table tbody tr{border-left:3px solid transparent;}
+.badge{padding:3px 9px; border-radius:12px; font-family:var(--mono); font-size:0.72rem; white-space:nowrap;}
+.b-high{background:rgba(127,191,127,0.15); color:#7fbf7f;}
+.b-mod{background:rgba(217,178,92,0.15); color:#d9b25c;}
+.b-low{background:rgba(201,138,107,0.15); color:#c98a6b;}
+footer{padding:24px; text-align:center; color:var(--text-dim); font-size:0.78rem; border-top:1px solid var(--border);}
+.verify-note{
+  background:var(--card); border:1px dashed var(--border); border-radius:8px; padding:12px 16px;
+  font-size:0.82rem; color:var(--text-dim); margin:20px 0 0;
+}
+</style>
+</head>
+<body data-theme="dark">
+<header>
+  <div class="title">
+    <h1>Neuralgia, Migraine &amp; Spinal Pain Atlas</h1>
+    <p>Cranial and peripheral neuralgias, occipital migraine overlap, and structural spinal pain — pathology, differentiators, exam findings, and treatment/efficacy for each. Cross-reference the Steroid and Modality Efficacy reference tabs for comparative treatment data.</p>
+  </div>
+  <button id="theme-toggle" class="theme-toggle">Light mode</button>
+</header>
+<nav><div class="navgroup"><button class="navbtn active" data-target="differentiator">Differentiator Tool</button></div>
+<div class="navgroup"><div class="navgroup-label" style="--accent:#c98a4b">Cranial &amp; Facial Neuralgias</div><button class="navbtn" data-target="trigeminal-neuralgia" style="--accent:#c98a4b">TN</button><button class="navbtn" data-target="occipital-neuralgia" style="--accent:#c98a4b">ON</button><button class="navbtn" data-target="cervical-neuralgia" style="--accent:#c98a4b">Cervical neuralgia</button><button class="navbtn" data-target="glossopharyngeal-neuralgia" style="--accent:#c98a4b">GPN</button><button class="navbtn" data-target="sphenopalatine-neuralgia" style="--accent:#c98a4b">SPN</button><button class="navbtn" data-target="supraorbital-neuralgia" style="--accent:#c98a4b">Supraorbital neuralgia</button></div>
+<div class="navgroup"><div class="navgroup-label" style="--accent:#8a6fb0">Occipital Migraine &amp; Headache Overlap</div><button class="navbtn" data-target="occipital-migraine" style="--accent:#8a6fb0">Occipital migraine</button></div>
+<div class="navgroup"><div class="navgroup-label" style="--accent:#5f9e8f">Peripheral &amp; Truncal Neuralgias</div><button class="navbtn" data-target="postherpetic-neuralgia" style="--accent:#5f9e8f">PHN</button><button class="navbtn" data-target="ilioinguinal-neuralgia" style="--accent:#5f9e8f">Ilioinguinal neuralgia</button></div>
+<div class="navgroup"><div class="navgroup-label" style="--accent:#4d7ea8">Spinal &amp; Radicular Pain</div><button class="navbtn" data-target="cervical-radiculopathy" style="--accent:#4d7ea8">Cervical radiculopathy</button><button class="navbtn" data-target="lumbar-radiculopathy" style="--accent:#4d7ea8">Lumbar radiculopathy</button><button class="navbtn" data-target="cervical-myelopathy" style="--accent:#4d7ea8">Cervical myelopathy</button><button class="navbtn" data-target="foraminal-stenosis" style="--accent:#4d7ea8">Foraminal stenosis</button><button class="navbtn" data-target="spinal-canal-stenosis" style="--accent:#4d7ea8">Spinal stenosis</button></div>
+<div class="navgroup"><button class="navbtn" data-target="steroid-ref">Steroids: Oral vs Injection</button><button class="navbtn" data-target="modality-ref">Modality Efficacy Reference</button></div></nav>
+<main>
+
+    <section class="panel" id="panel-differentiator" data-dom="differentiator" style="display:block;">
+      <div class="panel-head" style="--accent:#9a7b4f">
+        <span class="cat-pill">Interactive Tool</span>
+        <h2>Pain Pattern Differentiator</h2>
+      </div>
+      <div class="content-col single">
+        <p class="tool-intro">Filter by location and pain quality to narrow the differential, then tap a row to jump to the full entry. This is a bedside/teaching aid, not a diagnostic algorithm.</p>
+        <div class="filters">
+          <div class="filter-group">
+            <label>Location</label>
+            <select id="filter-location"><option value="">Any</option></select>
+          </div>
+          <div class="filter-group">
+            <label>Pain quality</label>
+            <select id="filter-quality"><option value="">Any</option></select>
+          </div>
+          <div class="filter-group">
+            <label>Category</label>
+            <select id="filter-cat"><option value="">Any</option></select>
+          </div>
+          <button id="filter-reset" class="reset-btn">Reset</button>
+        </div>
+        <div class="table-wrap">
+          <table class="diff-table" id="diff-table">
+            <thead>
+              <tr><th>Condition</th><th>Location</th><th>Quality</th><th>Duration</th><th>Key trigger</th><th>Key exam clue</th></tr>
+            </thead>
+            <tbody id="diff-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <section class="panel" id="panel-trigeminal-neuralgia" data-dom="trigeminal-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Trigeminal Neuralgia (TN)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Face — V2/V3 &gt;&gt; V1; unilateral</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Electric shock, stabbing, paroxysmal</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Seconds; volleys over minutes</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Light touch, chewing, brushing teeth, wind, talking</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Normal neuro exam (classical TN); refractory trigger zones on face</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Carbamazepine or oxcarbazepine</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Classical TN is caused in ~80-90% of cases by neurovascular compression of the trigeminal root entry zone (most often the superior cerebellar artery), producing focal demyelination and ephaptic ("cross-talk") transmission between adjacent nerve fibers — light-touch A-beta fibers trigger firing in adjacent nociceptive fibers. ICHD-3 divides TN into classical (neurovascular compression with morphological changes on MRI), idiopathic (no identifiable cause), and secondary (multiple sclerosis plaque, tumor, or arteriovenous malformation compressing the nerve). MS-associated TN is bilateral more often and occurs at a younger age — always obtain MRI in atypical presentations to exclude demyelinating plaque or a cerebellopontine angle mass.</p>
+          <h3>What Differentiates It</h3>
+          <p>The defining feature is paroxysmal, electric-shock-like pain lasting seconds (not hours), strictly unilateral, confined to one or more trigeminal divisions (V2 and V3 far more often than V1), and triggered by innocuous stimuli (light touch, cold wind, chewing, talking, brushing teeth). There is a refractory period after each paroxysm. This differs from postherpetic trigeminal neuralgia (continuous burning pain with a dermatomal vesicular scar history), from persistent idiopathic facial pain (constant, poorly localized, no trigger zones), and from SUNCT/SUNA (shorter paroxysms with prominent autonomic features — tearing, conjunctival injection, rhinorrhea). Giant cell arteritis must be excluded in patients over 50 with new facial/temporal pain, jaw claudication, or scalp tenderness before attributing symptoms to TN, given the risk of irreversible vision loss.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Classical TN has a normal neurological exam between attacks — this is a key diagnostic pearl; any sensory deficit, bilateral involvement, or abnormal corneal reflex should prompt urgent MRI to rule out a secondary cause (MS plaque, schwannoma, meningioma). Palpation or light stroking of trigger zones (nasolabial fold, gums, lips) reproduces the paroxysm. Corneal reflex and facial sensation to light touch/pinprick should be intact and symmetric in classical disease.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line (pharmacologic):</strong> Carbamazepine 100-200 mg BID titrated to 400-800 mg/day (max 1200 mg/day) is the FDA-approved, best-studied agent — placebo-controlled trials show roughly 70-75% achieve substantial or complete relief, versus ~25% with placebo. Oxcarbazepine (300-600 mg BID) is equally effective with a more favorable side-effect and drug-interaction profile and is often preferred as initial therapy. Monitor CBC, sodium (hyponatremia with oxcarbazepine), and liver enzymes.</p>
+<p><strong>Second-line:</strong> Lamotrigine or baclofen added to or substituted for a first-line agent; gabapentin/pregabalin are commonly used adjuncts especially with MS-associated TN, though evidence is weaker than for carbamazepine head-to-head.</p>
+<p><strong>Refractory/procedural:</strong> Microvascular decompression (MVD) offers the highest long-term pain-free rates (~70-80% at 1 year, durable in many patients for a decade) but carries surgical risk (hearing loss, CSF leak, rare stroke) — best for younger, surgically fit patients with confirmed vascular compression. Percutaneous options (glycerol rhizotomy, balloon compression, radiofrequency thermocoagulation) and stereotactic (Gamma Knife) radiosurgery are lower-risk alternatives with somewhat shorter durability and a higher rate of facial numbness. Botulinum toxin-A injections into the affected dermatome are a reasonable option for medication-refractory or intolerant patients.</p>
+<p><strong>Not first-line:</strong> Opioids have poor evidence in TN and are not recommended for chronic management; NSAIDs are largely ineffective against paroxysmal neuropathic pain. Topical lidocaine patches have limited data in TN specifically (better evidence in postherpetic neuralgia) but may help with milder trigger-zone pain.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Carbamazepine/oxcarbazepine (oral)</span><span class="eff-level">High — ~70-75% substantial relief; gold standard</span></li>
+<li class="eff-high"><span class="eff-name">Microvascular decompression</span><span class="eff-level">High — 70-80% pain-free at 1yr, most durable</span></li>
+<li class="eff-mod"><span class="eff-name">Stereotactic radiosurgery / percutaneous rhizotomy</span><span class="eff-level">Moderate-high, shorter durability, more numbness</span></li>
+<li class="eff-mod"><span class="eff-name">Lamotrigine/baclofen (2nd line)</span><span class="eff-level">Moderate, weaker evidence base</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/pregabalin</span><span class="eff-level">Moderate, mainly MS-associated TN</span></li>
+<li class="eff-mod"><span class="eff-name">Botulinum toxin-A</span><span class="eff-level">Moderate, for refractory/intolerant cases</span></li>
+<li class="eff-low"><span class="eff-name">Topical lidocaine</span><span class="eff-level">Low-moderate, adjunct only</span></li>
+<li class="eff-low"><span class="eff-name">NSAIDs/opioids</span><span class="eff-level">Low — not recommended for chronic use</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-occipital-neuralgia" data-dom="occipital-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Occipital Neuralgia (ON)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Suboccipital region radiating over the vertex; greater &gt; lesser &gt; third occipital nerve distribution</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Paroxysmal, sharp, stabbing, shooting; may have interictal dull ache/dysesthesia</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Seconds to minutes, paroxysmal; can also have background dull ache</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Neck movement, palpation over C2 (Arnold's point), scalp touch (allodynia)</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Tenderness over the greater occipital nerve at the nuchal ridge; scalp allodynia; POSITIVE diagnostic nerve block is part of ICHD-3 criteria</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Diagnostic/therapeutic greater occipital nerve (GON) block</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>ON arises from irritation or entrapment of the greater, lesser, or third occipital nerves — branches of the C2 (and C3) dorsal rami — as they pierce the semispinalis capitis and trapezius fascia near the nuchal ridge. Causes include muscular entrapment, prior whiplash/trauma, cervical spondylosis, C1-C2 pathology, or idiopathic irritation. Because these nerves converge on the trigeminocervical complex with trigeminal afferents in the upper cervical spinal cord, occipital pathology can refer pain frontally and orbitally — part of why it overlaps clinically with migraine.</p>
+          <h3>What Differentiates It</h3>
+          <p>ICHD-3 diagnostic criteria require unilateral or bilateral pain in the greater, lesser, and/or third occipital nerve distribution with at least two of: paroxysmal and lasting seconds to minutes, severe intensity, and shooting/stabbing/sharp quality; PLUS tenderness over the affected nerve OR trigger points at the emergence of the GON or in the C2 distribution; PLUS pain eased temporarily by local anesthetic block of the nerve. That diagnostic block response is itself part of the diagnostic criteria — a hallmark that separates ON from primary headache disorders. Key differentiator from occipital migraine: ON is typically strictly unilateral, has reproducible focal nerve tenderness, and responds dramatically (often &gt;50% relief) to a diagnostic block; migraine is more often throbbing, associated with nausea/photophobia/phonophobia, and not reliably abolished by a single occipital block (though GON block can still help as adjunct migraine therapy). Cervicogenic headache overlaps mechanistically but is defined by a cervical spine source (facet, disc) with head pain triggered by neck movement/posture rather than isolated nerve irritation.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Firm palpation at the nuchal ridge (Arnold's point, ~2-3cm lateral to the external occipital protuberance) reproduces the pain and paresthesias. Scalp allodynia (pain from light touch/combing hair) is common. Range of motion of the neck may be limited by pain but true neurologic deficit (weakness, reflex change) is absent — if present, evaluate for cervical radiculopathy/myelopathy instead. A diagnostic block with local anesthetic (± steroid) providing significant relief supports the diagnosis.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Conservative measures (heat, massage, NSAIDs, muscle relaxants) for mild cases, escalating to a greater/lesser occipital nerve block with local anesthetic plus corticosteroid (e.g., 1-2 mL bupivacaine or lidocaine with 20-40 mg methylprednisolone or 4 mg dexamethasone) — response rates are high, with case series showing significant pain reduction and reduced analgesic requirement lasting weeks to several months; ultrasound guidance may modestly improve short-term accuracy/efficacy versus landmark technique.</p>
+<p><strong>Adjunct pharmacologic:</strong> Gabapentin or tricyclic antidepressants (amitriptyline, nortriptyline) for background neuropathic pain; muscle relaxants (tizanidine, cyclobenzaprine) if cervical myofascial component is prominent.</p>
+<p><strong>Refractory disease:</strong> Pulsed radiofrequency ablation (PRFA) or continuous radiofrequency ablation of the GON shows durable benefit (≥50% pain reduction maintained at 12 months in the majority of appropriately selected patients in cohort data) and is generally preferred over repeated blocks alone for chronic refractory cases; response to the diagnostic block predicts RFA success. OnabotulinumtoxinA injection and peripheral nerve stimulation are options for block/RFA failures.</p>
+<p><strong>Physical therapy/chiropractic:</strong> Manual therapy and postural correction can help when cervical myofascial dysfunction or forward-head posture contributes, though evidence is largely observational rather than RCT-level for ON specifically.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">GON block (LA + steroid)</span><span class="eff-level">High — first-line, often dramatic short-term relief</span></li>
+<li class="eff-high"><span class="eff-name">Pulsed/continuous radiofrequency ablation</span><span class="eff-level">High for refractory cases — most durable non-surgical option</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin / TCA (background pain)</span><span class="eff-level">Moderate adjunct</span></li>
+<li class="eff-mod"><span class="eff-name">OnabotulinumtoxinA</span><span class="eff-level">Moderate, for block/RFA failures</span></li>
+<li class="eff-mod"><span class="eff-name">PT/manual therapy/chiropractic</span><span class="eff-level">Moderate, best with myofascial component</span></li>
+<li class="eff-low"><span class="eff-name">NSAIDs/muscle relaxants</span><span class="eff-level">Low-moderate, mild cases only</span></li>
+<li class="eff-low"><span class="eff-name">Oral opioids</span><span class="eff-level">Low — avoid for chronic use</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-occipital-migraine" data-dom="occipital-migraine" style="display:none;">
+      <div class="panel-head" style="--accent:#8a6fb0">
+        <span class="cat-pill">Occipital Migraine &amp; Headache Overlap</span>
+        <h2>Occipital-Predominant Migraine</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Can start occipitally/nuchal and spread frontally/orbitally, or be holocranial</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Throbbing/pulsatile, moderate-severe, builds over minutes to hours</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">4-72 hours untreated (ICHD-3 migraine duration criteria)</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Typical migraine triggers: stress, sleep change, hormonal, foods, weather; not reliably touch-triggered</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Normal exam; photophobia/phonophobia during attack; nerve palpation NOT reliably tender; NOT abolished by single diagnostic block</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Standard migraine-specific therapy (triptans/CGRP agents) + preventive strategy</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>"Occipital migraine" is not a distinct ICHD-3 entity — it describes migraine attacks whose pain is felt predominantly in the occipital/nuchal region, which happens in a substantial minority of migraineurs, particularly with concurrent neck involvement. Mechanistically this reflects convergence of upper cervical (C1-C3) afferents and trigeminal nociceptive input onto second-order neurons in the trigeminocervical complex in the upper cervical spinal cord/caudal brainstem — the same anatomic convergence point implicated in occipital neuralgia and cervicogenic headache, which is why these three entities are frequently confused clinically and can coexist in the same patient.</p>
+          <h3>What Differentiates It</h3>
+          <p>The critical distinguishing features from occipital neuralgia are: (1) throbbing/pulsatile quality building over minutes-hours rather than sudden electric paroxysms; (2) associated migrainous features — nausea/vomiting, photophobia, phonophobia, and sometimes aura; (3) longer attack duration (hours, per ICHD-3 4-72h criterion) versus seconds-to-minutes paroxysms of ON; (4) lack of reproducible focal nerve-point tenderness and lack of dramatic, near-complete abolition with a single diagnostic occipital nerve block (although GON block is a reasonable adjunctive migraine treatment, it is not diagnostic the way it is for ON); (5) typical migraine triggers (hormonal cycle, sleep disruption, specific foods, weather change, stress) rather than mechanical/tactile triggers. Comorbid cervical muscle tension and occipital neuralgia can coexist with migraine ("hybrid" presentations), and neck pain is actually one of the most common migraine premonitory/associated symptoms — so neck/occipital pain alone should not automatically be labeled occipital neuralgia without meeting the ICHD-3 ON criteria.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Exam is typically normal between and often during attacks aside from photophobia/phonophobia and general discomfort with light/sound/movement. Pericranial muscle tenderness is common (part of migraine's central sensitization) but lacks the sharply localized single-point tenderness at the GON emergence characteristic of true ON. No focal neurologic deficit.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>Abortive:</strong> NSAIDs or triptans for mild-moderate attacks; triptans, gepants (rimegepant, ubrogepant) or ditans (lasmiditan) for moderate-severe attacks; antiemetics for associated nausea.</p>
+<p><strong>Preventive (if ≥4 migraine days/month or disabling attacks):</strong> Beta-blockers (propranolol, metoprolol), topiramate, or divalproex as traditional first-line preventives; CGRP monoclonal antibodies (erenumab, fremanezumab, galcanezumab, eptinezumab) or gepants (atogepant, rimegepant) as newer, well-tolerated preventive options, especially after traditional agent failure or intolerance.</p>
+<p><strong>Adjunct/overlap treatment:</strong> GON block can reduce migraine frequency/severity for weeks in some patients even without meeting ON's diagnostic criteria — useful as an adjunct in refractory or hybrid occipital-predominant migraine, and particularly helpful when cervical myofascial tenderness coexists. OnabotulinumtoxinA (PREEMPT protocol) is FDA-approved for chronic migraine (≥15 headache days/month) and includes occipital injection sites.</p>
+<p><strong>Non-pharmacologic:</strong> Physical therapy/chiropractic care for coexisting cervical dysfunction, biofeedback, cognitive behavioral therapy, and lifestyle regularity (sleep, hydration, meal timing) all have supportive evidence as adjuncts, though none replace migraine-specific abortive/preventive therapy for true migraine biology.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Triptans/gepants/ditans (abortive)</span><span class="eff-level">High for acute attacks</span></li>
+<li class="eff-high"><span class="eff-name">CGRP mAbs / gepants (preventive)</span><span class="eff-level">High, well-tolerated, newer standard</span></li>
+<li class="eff-mod"><span class="eff-name">Beta-blockers/topiramate/valproate (preventive)</span><span class="eff-level">Moderate-high, first-line traditional</span></li>
+<li class="eff-mod"><span class="eff-name">OnabotulinumtoxinA (chronic migraine)</span><span class="eff-level">Moderate-high for ≥15 headache days/mo</span></li>
+<li class="eff-mod"><span class="eff-name">GON block (adjunct)</span><span class="eff-level">Moderate, helpful in hybrid/occipital-predominant cases</span></li>
+<li class="eff-mod"><span class="eff-name">PT/chiropractic/biofeedback</span><span class="eff-level">Moderate adjunct, esp. with cervical component</span></li>
+<li class="eff-low"><span class="eff-name">NSAIDs alone (chronic reliance)</span><span class="eff-level">Low long-term — medication overuse headache risk</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-cervical-neuralgia" data-dom="cervical-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Cervical Neuralgia / Cervicogenic Headache</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Unilateral neck/occipital pain referring to frontal/temporal/orbital region</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Dull, aching, non-throbbing; may have superimposed sharp exacerbations</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Variable, often fluctuating with neck position/activity; can be prolonged/continuous</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Neck movement, sustained posture, pressure over upper cervical facet/muscles</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Restricted cervical ROM, reproducible pain with neck movement or C1-C3 facet palpation; improved with diagnostic cervical facet/nerve block</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Physical therapy/manual therapy + diagnostic cervical block if refractory</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Cervicogenic headache (CGH) is head pain referred from a structural cervical spine source — upper cervical facet joints (C1-C2, C2-C3), discs, or the C2/C3 nerve roots — again via convergence onto the trigeminocervical nucleus. Common structural drivers include upper cervical facet arthropathy, prior whiplash injury, degenerative disc disease, and C2-C3 disc pathology. Unlike occipital neuralgia (a peripheral nerve entrapment/irritation syndrome) or migraine (a primary neurovascular/central disorder), CGH is by definition secondary to demonstrable cervical spine pathology.</p>
+          <h3>What Differentiates It</h3>
+          <p>ICHD-3 and the Cervicogenic Headache International Study Group criteria require: unilateral head pain (though it can become bilateral) without side-shift, provoked by neck movement/sustained posture or external pressure over the ipsilateral upper cervical/occipital region, restricted cervical range of motion, and pain abolished by diagnostic anesthetic blockade of a cervical structure (facet joint, C2 nerve root). This differs from ON in that the source is articular/discogenic rather than purely a peripheral nerve entrapment, and pain quality is more often a dull ache with mechanical (movement/posture-related) triggers rather than the electric paroxysms of ON. It differs from migraine in typically lacking prominent nausea/photophobia/phonophobia and in being reliably reproduced by neck movement or cervical structure palpation. Considerable overlap exists in practice, and some patients meet criteria for more than one diagnosis simultaneously.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Reduced and painful cervical range of motion, especially rotation; reproducible pain with the flexion-rotation test (assesses C1-C2) or with pressure over the C2-C3 facet joints; possible referred tenderness to the occiput/temple with sustained neck posture testing. No long tract signs — if hyperreflexia, clonus, or gait disturbance are present, evaluate for cervical myelopathy instead.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Physical therapy emphasizing upper cervical mobilization, deep neck flexor strengthening, and postural correction; this has the best evidence base of any single modality for CGH. Manual therapy/chiropractic manipulation has moderate-quality evidence supporting benefit, particularly combined with exercise therapy, though caution and vascular risk screening are warranted before high-velocity cervical manipulation.</p>
+<p><strong>Pharmacologic:</strong> NSAIDs for flares; muscle relaxants (tizanidine, cyclobenzaprine) short-term; gabapentin or tricyclic antidepressants if a neuropathic/chronic pain component is prominent. Oral steroids are not routinely used for CGH itself (reserve for acute radicular flares — see radiculopathy).</p>
+<p><strong>Interventional:</strong> Diagnostic/therapeutic cervical medial branch (facet) blocks or C2/C3 nerve blocks for refractory cases — a positive diagnostic block response supports proceeding to radiofrequency ablation of the medial branches for more durable relief (months) in appropriately selected patients.</p>
+<p><strong>Other:</strong> Trigger point injections for associated myofascial pain; ergonomic and postural modification for sustained-posture triggers (screen height, phone use).</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">PT — mobilization + deep neck flexor strengthening</span><span class="eff-level">High — best-supported single modality</span></li>
+<li class="eff-high"><span class="eff-name">Cervical medial branch block → RFA (refractory)</span><span class="eff-level">High for confirmed facet-mediated pain</span></li>
+<li class="eff-mod"><span class="eff-name">Manual therapy/chiropractic (with exercise)</span><span class="eff-level">Moderate-high</span></li>
+<li class="eff-mod"><span class="eff-name">Muscle relaxants/NSAIDs (flares)</span><span class="eff-level">Moderate, short-term</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/TCA (chronic component)</span><span class="eff-level">Moderate adjunct</span></li>
+<li class="eff-mod"><span class="eff-name">Trigger point injections</span><span class="eff-level">Moderate, for myofascial overlay</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-glossopharyngeal-neuralgia" data-dom="glossopharyngeal-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Glossopharyngeal Neuralgia</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Throat, tonsillar fossa, base of tongue, ear (may radiate to angle of jaw)</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Electric shock/stabbing paroxysms, similar quality to TN</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Seconds; paroxysmal</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Swallowing, coughing, talking, yawning, chewing, cold liquids</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Rare vasovagal syncope/bradycardia/asystole during attacks (cardiac subtype); otherwise normal exam</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Carbamazepine/oxcarbazepine, same as TN</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Neurovascular compression of the glossopharyngeal (and often adjacent vagus) nerve root, most commonly by the posterior inferior cerebellar artery (PICA) or vertebral artery, analogous to the mechanism in TN. A rare but important "cardiac" or "vagal" subtype produces bradycardia, hypotension, and syncope due to reflex vagal activation during a pain paroxysm and can mimic cardiac syncope.</p>
+          <h3>What Differentiates It</h3>
+          <p>Distinguished from TN by pain location (throat/tonsil/ear rather than face) and triggers (swallowing/coughing/talking rather than facial touch). Distinguished from eagle syndrome (elongated styloid process causing similar throat/ear pain, often positional/with head turning, palpable on tonsillar fossa exam and confirmed on CT) and from otologic/pharyngeal structural causes (tonsillar tumor, peritonsillar abscess) which must be excluded with direct visualization/imaging given the overlapping presentation. The syncope/bradycardia subtype should prompt cardiology co-evaluation and can be dramatic enough to be mistaken for a primary cardiac arrhythmia.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Oropharyngeal exam is typically normal in idiopathic/classical GPN — a mass, tonsillar asymmetry, or lesion should prompt evaluation for a structural or secondary cause. Palpation of tonsillar fossa or applying topical anesthetic to the pharynx can reproduce/relieve triggered pain diagnostically. Cardiac monitoring is warranted if syncope accompanies attacks.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Carbamazepine or oxcarbazepine, dosed as in TN — response rates are similarly favorable though the evidence base is smaller given the rarity of GPN.</p>
+<p><strong>Second-line:</strong> Gabapentin, pregabalin, baclofen, or lamotrigine for partial responders or those intolerant of first-line agents.</p>
+<p><strong>Refractory/procedural:</strong> Microvascular decompression of the glossopharyngeal (and often vagus) nerve root offers durable relief and is preferred in surgically fit patients, especially with the cardiac/syncopal subtype where a pacemaker is not a substitute for treating the underlying trigger. Percutaneous radiofrequency rhizotomy of the glossopharyngeal nerve is an alternative for non-surgical candidates. Topical anesthetic to the throat (viscous lidocaine) can provide short-term symptomatic relief and is also used diagnostically.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Carbamazepine/oxcarbazepine</span><span class="eff-level">High — first-line, similar profile to TN</span></li>
+<li class="eff-high"><span class="eff-name">Microvascular decompression</span><span class="eff-level">High, most durable for refractory/cardiac subtype</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/pregabalin/lamotrigine/baclofen</span><span class="eff-level">Moderate, second-line</span></li>
+<li class="eff-mod"><span class="eff-name">Percutaneous radiofrequency rhizotomy</span><span class="eff-level">Moderate-high for non-surgical candidates</span></li>
+<li class="eff-low"><span class="eff-name">Topical pharyngeal lidocaine</span><span class="eff-level">Low-moderate, short-term/diagnostic</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-sphenopalatine-neuralgia" data-dom="sphenopalatine-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Sphenopalatine (Pterygopalatine) Neuralgia</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Deep face, nose, upper jaw, orbit, hard palate — often described as 'behind the cheekbone/eye'</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Sharp, boring, or aching paroxysms; may have autonomic features</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Minutes to hours, can be recurrent throughout the day</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Often none identifiable; sometimes sinus congestion or barometric change</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Tenderness deep to the posterior maxilla; ipsilateral lacrimation/rhinorrhea/nasal congestion may accompany attacks</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Sphenopalatine ganglion (SPG) block (intranasal or injection)</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Also historically called Sluder's neuralgia, this reflects irritation of the pterygopalatine (sphenopalatine) ganglion, an autonomic relay station adjacent to the sphenopalatine foramen that also carries parasympathetic fibers to the lacrimal and nasal mucosal glands — explaining the autonomic accompaniments (tearing, rhinorrhea, congestion) that overlap with trigeminal autonomic cephalalgias (cluster headache, paroxysmal hemicrania). Its nosologic status is debated; many contemporary specialists consider most cases previously labeled SPN to actually represent cluster headache or another TAC, and true isolated SPN is now considered rare.</p>
+          <h3>What Differentiates It</h3>
+          <p>Key differentiator from cluster headache is that cluster attacks are shorter (15-180 min), strictly periodic/circadian, associated with restlessness (patients pace, unlike migraine patients who prefer stillness), and respond specifically to high-flow oxygen and triptans — features not classically part of SPN. Differentiate from sinus disease (which shows purulent discharge, mucosal changes on nasal exam/CT, and fever/systemic signs) and from trigeminal neuralgia by the deeper, less electric, more autonomic-predominant character and the lack of cutaneous facial trigger zones. Given diagnostic overlap, most modern headache specialists will treat presumed SPN empirically as a possible TAC variant if criteria are ambiguous.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Deep tenderness on palpation posterior to the maxilla/behind the molars; observe for ipsilateral conjunctival injection, lacrimation, rhinorrhea, or nasal congestion during an attack (supports autonomic/TAC-spectrum pathology). Nasal endoscopy or sinus CT to exclude structural sinonasal disease if any red flags (purulence, unilateral polyp, mass).</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Sphenopalatine ganglion block — either topical intranasal application of local anesthetic (cotton-tip applicator or specialized intranasal catheter delivering lidocaine/bupivacaine to the ganglion through the nasal mucosa) or a transnasal/lateral injection approach — is both diagnostic and therapeutic, often providing rapid relief.</p>
+<p><strong>Adjunct pharmacologic:</strong> Given diagnostic overlap with TACs, a trial of high-flow oxygen and/or a triptan during an attack can be both therapeutically useful and diagnostically clarifying (strong response favors cluster headache over isolated SPN). Preventive agents used for TACs (verapamil for cluster, indomethacin for paroxysmal hemicrania — the latter being diagnostic via absolute response) should be considered if the presentation drifts toward a TAC phenotype.</p>
+<p><strong>Refractory:</strong> Radiofrequency ablation or neurostimulation of the sphenopalatine ganglion for cases with a clear, reproducible response to diagnostic blocks but recurrent symptoms.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">SPG block (topical/injection)</span><span class="eff-level">High — first-line, diagnostic and therapeutic</span></li>
+<li class="eff-low"><span class="eff-name">Trial of O2/triptan (clarify TAC overlap)</span><span class="eff-level">Variable — diagnostic value if cluster-like</span></li>
+<li class="eff-high"><span class="eff-name">Indomethacin trial (if hemicrania features)</span><span class="eff-level">High if truly paroxysmal hemicrania (absolute responder)</span></li>
+<li class="eff-mod"><span class="eff-name">Verapamil (if cluster-like)</span><span class="eff-level">Moderate-high for cluster phenotype</span></li>
+<li class="eff-mod"><span class="eff-name">SPG radiofrequency ablation/neurostimulation</span><span class="eff-level">Moderate, for refractory confirmed cases</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-supraorbital-neuralgia" data-dom="supraorbital-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#c98a4b">
+        <span class="cat-pill">Cranial &amp; Facial Neuralgias</span>
+        <h2>Supraorbital / Supratrochlear Neuralgia</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Forehead, medial eyebrow, scalp above the orbit (V1 distribution)</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Sharp, aching, or burning; may have background dysesthesia between paroxysms</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Variable — can be continuous ache with superimposed paroxysms</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Pressure at the supraorbital notch/foramen, forehead touch, sinus congestion</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Point tenderness/Tinel's sign at the supraorbital notch; sensory changes in the forehead/scalp</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Supraorbital nerve block (local anesthetic ± steroid)</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Entrapment or irritation of the supraorbital and/or supratrochlear nerve (terminal branches of the ophthalmic division of the trigeminal nerve, V1) as they exit the supraorbital notch/foramen. Causes include direct trauma (including forehead lacerations or prior surgery), chronic pressure (tight headwear, sleep mask straps, sinusitis with local swelling), or idiopathic entrapment.</p>
+          <h3>What Differentiates It</h3>
+          <p>Distinguished from V1 trigeminal neuralgia by its more localized, reproducible point tenderness/Tinel's sign directly over the supraorbital notch rather than diffuse trigger zones, and by frequently having a background continuous ache/dysesthesia rather than purely paroxysmal shock-like pain. Distinguished from migraine and sinus headache by the highly localized, reproducible tenderness and lack of associated nausea/photophobia (though coexisting migraine is common and should be screened for). Frontal sinusitis should be excluded, especially with associated purulent nasal discharge, fever, or sinus tenderness beyond the notch itself.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Firm palpation directly over the supraorbital notch (medial third of the superior orbital rim) reproduces pain and often causes radiating paresthesias into the forehead/scalp (Tinel's sign). Sensory testing may reveal hypoesthesia or dysesthesia in the affected distribution if chronic nerve injury/entrapment is present.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Supraorbital/supratrochlear nerve block with local anesthetic (± corticosteroid, e.g., 1 mL 1% lidocaine with a small dose of dexamethasone or methylprednisolone) at the notch — this is both diagnostic and often therapeutic, with relief lasting days to months in many cases.</p>
+<p><strong>Adjunct pharmacologic:</strong> Gabapentin or a tricyclic antidepressant for background neuropathic pain; topical lidocaine patch over the forehead for milder or intermittent cases.</p>
+<p><strong>Refractory:</strong> Pulsed radiofrequency ablation or, rarely, surgical decompression/neurectomy for cases with a clear positive block response but recurrent disabling symptoms; identify and remove any mechanical cause (tight strap/headgear, correct underlying sinus disease).</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Supraorbital nerve block (LA ± steroid)</span><span class="eff-level">High — first-line, diagnostic and therapeutic</span></li>
+<li class="eff-high"><span class="eff-name">Removal of mechanical trigger (strap/headgear)</span><span class="eff-level">High when an obvious cause is identified</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/TCA (background pain)</span><span class="eff-level">Moderate adjunct</span></li>
+<li class="eff-low"><span class="eff-name">Topical lidocaine patch</span><span class="eff-level">Low-moderate, mild/intermittent cases</span></li>
+<li class="eff-mod"><span class="eff-name">Pulsed RFA / surgical decompression</span><span class="eff-level">Moderate, refractory cases only</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-postherpetic-neuralgia" data-dom="postherpetic-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#5f9e8f">
+        <span class="cat-pill">Peripheral &amp; Truncal Neuralgias</span>
+        <h2>Postherpetic Neuralgia (PHN)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Dermatomal — thoracic most common overall; ophthalmic division (V1) most common cranial site</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Continuous burning/aching plus superimposed lancinating pain; marked allodynia</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">By definition persists ≥90 days after acute herpes zoster rash onset</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Light touch/clothing contact (severe allodynia is a hallmark)</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Scarring/hypo- or hyperpigmentation in a dermatomal distribution; profound allodynia to light touch; sensory loss or dysesthesia in the same dermatome</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Gabapentin, pregabalin, or a tricyclic antidepressant; topical lidocaine for localized allodynia</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>PHN results from varicella-zoster virus reactivation-induced damage to peripheral sensory nerve and dorsal root ganglion, causing peripheral sensitization (ectopic firing from damaged nociceptors) and central sensitization (deafferentation-related hyperexcitability in the dorsal horn). Risk factors for developing PHN after acute zoster include older age (risk rises sharply after 50-60), greater acute pain severity, and ophthalmic (V1) distribution involvement. Zoster vaccination substantially reduces both the incidence of shingles and subsequent PHN — this is a key prevention/safety counseling point for patients over 50.</p>
+          <h3>What Differentiates It</h3>
+          <p>The history of a prior dermatomal vesicular rash with residual scarring/pigment change in the same distribution is the defining differentiator from other neuralgias — TN, ON, and other entrapment neuralgias lack this antecedent rash history. PHN pain is typically more continuous (burning/aching background) with superimposed lancinating pain, versus the purely paroxysmal quality of TN/ON, and profound mechanical allodynia (pain from light touch of clothing or bedsheets) is especially characteristic and often the most functionally disabling feature. When PHN affects V1, it can mimic ophthalmic TN, but the rash history and residual skin changes clarify the diagnosis.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Dermatomal scarring, hypopigmentation, or hyperpigmentation corresponding to the prior rash is essentially pathognomonic when the history is unclear. Light touch (cotton wisp or brush) elicits pain out of proportion to the stimulus (allodynia) in the affected dermatome; sensory testing may show a mix of hypoesthesia and hyperalgesia in the same area. Ophthalmic exam (V1 PHN) should screen for corneal involvement/keratitis if there was ophthalmic zoster.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Gabapentin (titrated to 1800-3600 mg/day divided) or pregabalin (150-600 mg/day divided), tricyclic antidepressants (nortriptyline/amitriptyline, generally preferred nortriptyline for a better side-effect profile in older adults), and topical lidocaine 5% patch (particularly effective for allodynia-predominant, localized PHN and favored in older adults given minimal systemic absorption/interactions) are all considered first-line, often used in combination.</p>
+<p><strong>Second-line:</strong> Topical capsaicin 8% patch (requires in-office application due to initial burning, but can give months of relief per application), tramadol.</p>
+<p><strong>Third-line:</strong> Other opioids, given modest efficacy and higher risk/burden in an often-elderly population; reserved for refractory cases with careful risk-benefit discussion.</p>
+<p><strong>Prevention:</strong> Recombinant zoster vaccine (Shingrix) markedly reduces the risk of both herpes zoster and subsequent PHN in adults ≥50 and immunocompromised adults ≥19 — proactive vaccination counseling is a key safety/prevention pearl independent of active PHN treatment. Early antiviral therapy (valacyclovir/famciclovir) within 72 hours of acute zoster rash onset reduces the duration/severity of acute pain and may reduce PHN risk, underscoring the importance of early antiviral treatment at the time of shingles diagnosis.</p>
+<p><strong>Interventional (refractory):</strong> Nerve blocks, epidural steroid injections in the acute/subacute phase, and in select refractory cases spinal cord stimulation have supportive evidence, though data is more limited than for the pharmacologic first-line agents.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Gabapentin/pregabalin</span><span class="eff-level">High — first-line, strong RCT evidence</span></li>
+<li class="eff-high"><span class="eff-name">Tricyclic antidepressants (nortriptyline)</span><span class="eff-level">High — first-line, comparable to gabapentinoids</span></li>
+<li class="eff-high"><span class="eff-name">Topical lidocaine 5% patch</span><span class="eff-level">High for localized/allodynia-predominant PHN, excellent safety in elderly</span></li>
+<li class="eff-mod"><span class="eff-name">Topical capsaicin 8% patch</span><span class="eff-level">Moderate-high, second-line, in-office application</span></li>
+<li class="eff-high"><span class="eff-name">Zoster vaccination (prevention)</span><span class="eff-level">High — markedly reduces incident PHN</span></li>
+<li class="eff-mod"><span class="eff-name">Early antiviral therapy (acute zoster)</span><span class="eff-level">Moderate — reduces acute severity/possible PHN risk</span></li>
+<li class="eff-low"><span class="eff-name">Tramadol/opioids</span><span class="eff-level">Low-moderate — third-line given risk/benefit in older adults</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-ilioinguinal-neuralgia" data-dom="ilioinguinal-neuralgia" style="display:none;">
+      <div class="panel-head" style="--accent:#5f9e8f">
+        <span class="cat-pill">Peripheral &amp; Truncal Neuralgias</span>
+        <h2>Ilioinguinal / Iliohypogastric Neuralgia</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Lower abdomen, groin, medial thigh, sometimes scrotum/labia</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Sharp, burning, or aching; often worse with standing/walking, better lying down</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Chronic, often constant with exacerbations</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Standing, hip extension, Valsalva; history of inguinal hernia repair/pelvic/abdominal surgery is classic</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Point tenderness medial to the anterior superior iliac spine; positive Tinel's sign at the site; pain reproduced with resisted hip flexion/trunk extension</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Nerve block (diagnostic/therapeutic) with local anesthetic ± steroid</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Most commonly a post-surgical neuropathy from entrapment or direct injury of the ilioinguinal and/or iliohypogastric nerves (L1, with contribution from T12) during inguinal hernia repair (especially mesh-based), appendectomy, or other lower abdominal/pelvic surgery — nerve entrapment in scar tissue or suture material is a well-described mechanism. Non-surgical causes include direct trauma, pregnancy-related stretch injury, or idiopathic entrapment as the nerve passes through the abdominal wall musculature near the anterior superior iliac spine.</p>
+          <h3>What Differentiates It</h3>
+          <p>The surgical history (inguinal hernia repair, pelvic surgery, Pfannenstiel incision) is the single most important differentiating clue and should always be specifically asked about. Distinguish from lumbar radiculopathy (L1) by the absence of back pain, straight-leg-raise findings, or reflex/motor changes typical of radiculopathy, and by focal point tenderness at a specific abdominal wall location reproducible with palpation/Tinel's sign rather than a dermatomal pattern following a nerve root map with positional lumbar spine provocation. Distinguish from genitofemoral neuralgia (pain more concentrated in the groin/genital region, worse with hip extension specifically) and from meralgia paresthetica (lateral femoral cutaneous nerve — purely sensory, lateral thigh, no motor involvement, classically from tight clothing/obesity/pregnancy rather than surgery).</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Palpation 2-3 cm medial and inferior to the anterior superior iliac spine reproduces pain and paresthesias (Tinel's sign); pain is often worsened by trunk extension or resisted hip flexion (stretches the nerve/abdominal wall) and improved by trunk flexion. Sensory testing may show diminished or altered sensation in the groin/upper medial thigh. A diagnostic nerve block providing significant relief strongly supports the diagnosis and helps localize the specific nerve involved.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line:</strong> Diagnostic and therapeutic nerve block with local anesthetic ± corticosteroid at the point of maximal tenderness — often the first and most useful step both diagnostically and therapeutically; ultrasound guidance improves accuracy of needle placement relative to landmark technique.</p>
+<p><strong>Pharmacologic adjuncts:</strong> Gabapentin or pregabalin, tricyclic or SNRI antidepressants (duloxetine), and topical lidocaine patches over the area of maximal tenderness for background neuropathic pain between/after blocks.</p>
+<p><strong>Refractory (post-surgical):</strong> Pulsed radiofrequency ablation for block responders with recurrent symptoms; surgical neurectomy or mesh revision/removal (if mesh entrapment is suspected) for cases refractory to blocks and RFA, generally after a formal pain-surgery multidisciplinary evaluation given variable surgical outcomes.</p>
+<p><strong>Non-pharmacologic:</strong> Avoidance of tight waistbands/belts over the area; physical therapy for abdominal wall/core mechanics can help in mild or post-surgical scar-related cases, though evidence for chiropractic-specific intervention in ilioinguinal neuralgia is minimal since this is not primarily a spinal pathology.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Diagnostic/therapeutic nerve block</span><span class="eff-level">High — first-line, both diagnostic and therapeutic</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/pregabalin/duloxetine</span><span class="eff-level">Moderate-high adjunct</span></li>
+<li class="eff-mod"><span class="eff-name">Pulsed radiofrequency ablation</span><span class="eff-level">Moderate, for block-responsive refractory cases</span></li>
+<li class="eff-mod"><span class="eff-name">Topical lidocaine</span><span class="eff-level">Moderate, localized adjunct</span></li>
+<li class="eff-mod"><span class="eff-name">Surgical neurectomy/mesh revision</span><span class="eff-level">Moderate-high in confirmed refractory mesh entrapment, variable outcomes</span></li>
+<li class="eff-low"><span class="eff-name">PT for abdominal wall/core mechanics</span><span class="eff-level">Low-moderate adjunct</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-cervical-radiculopathy" data-dom="cervical-radiculopathy" style="display:none;">
+      <div class="panel-head" style="--accent:#4d7ea8">
+        <span class="cat-pill">Spinal &amp; Radicular Pain</span>
+        <h2>Cervical Radiculopathy</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Neck radiating into shoulder/arm/hand in a specific dermatomal (nerve root) pattern</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Sharp, shooting, or burning; often with numbness/tingling and weakness in the root distribution</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Variable; acute disc herniation may improve over weeks, spondylotic disease more chronic</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Neck extension/rotation toward the affected side (Spurling's sign), Valsalva</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Positive Spurling's test; dermatomal sensory loss; myotomal weakness; diminished reflex (biceps=C5/6, brachioradialis=C6, triceps=C7); relief with shoulder abduction (Bakody sign) supports C5/C6</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Short course of oral steroids or NSAIDs + PT; ESI or surgery if refractory/progressive deficit</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Compression or irritation of a cervical nerve root, most often from disc herniation (younger patients, more acute onset) or from spondylotic (degenerative) foraminal narrowing due to uncovertebral joint/facet hypertrophy and disc height loss (older patients, more insidious). C6 and C7 roots are most commonly affected. Inflammatory mediators released from a herniated disc (not just mechanical compression) contribute significantly to radicular pain, which is part of the rationale for corticosteroid treatment (oral or epidural) — steroids reduce the local inflammatory cascade around the compressed/irritated root.</p>
+          <h3>What Differentiates It</h3>
+          <p>The hallmark distinguishing radiculopathy from axial neck pain or cervicogenic headache is a specific dermatomal/myotomal pattern of sensory loss, weakness, or reflex change tracking a single nerve root, plus a positive Spurling's test (neck extension + rotation + axial compression toward the symptomatic side reproduces radicular arm pain) and relief with the shoulder abduction (Bakody) maneuver. This differs from cervical myelopathy, which produces long-tract signs (hyperreflexia, clonus, Hoffmann's sign, gait/balance disturbance, bilateral or diffuse extremity involvement) rather than a single-root pattern, and from peripheral entrapment neuropathies (e.g., carpal tunnel) which follow a peripheral nerve distribution crossing multiple root levels rather than a single dermatome/myotome. MRI is the imaging study of choice to confirm the level and characterize disc herniation versus foraminal stenosis as the cause.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Spurling's test (extension, rotation, and axial load toward the symptomatic side) reproduces radicular symptoms with good specificity though modest sensitivity. Dermatomal sensory testing and myotomal manual muscle testing localize the level (C5: deltoid/biceps, lateral arm; C6: wrist extensors/biceps, thumb/index finger; C7: triceps/wrist flexors, middle finger; C8: finger flexors/intrinsics, ring/small finger). Reflexes: biceps and brachioradialis (C5/C6), triceps (C7). The shoulder abduction relief test (Bakody sign — placing the hand on top of the head reduces radicular pain) supports a cervical radicular source, especially C5/C6.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line (mild-moderate, no progressive deficit):</strong> A short course of oral corticosteroids (e.g., methylprednisolone dose pack or prednisone taper over 5-7 days) can meaningfully reduce acute radicular pain by addressing the inflammatory component, alongside NSAIDs and activity modification; formal physical therapy (cervical traction, McKenzie-type extension exercises, strengthening) has good evidence for functional improvement. Short-term opioids may be used for severe acute pain but are not recommended beyond the acute window given modest efficacy for radicular pain and dependence risk.</p>
+<p><strong>Steroid injections vs. oral steroids — efficacy comparison:</strong> Evidence directly comparing oral corticosteroids to epidural/transforaminal steroid injections is more robust in the lumbar spine, but the same general principles are extrapolated to cervical disease: epidural/selective nerve root steroid injections deliver a much higher local drug concentration directly to the inflamed nerve root and generally produce greater short-term pain and functional improvement than a course of oral steroids, based on comparative studies in radiculopathy; oral steroids are more convenient, lower-risk (no procedural risk), and reasonable for milder presentations or as a bridge/first step, while injections are typically reserved for patients with more significant pain, an inadequate response to oral therapy/NSAIDs/PT, or need for more targeted relief before considering surgery. Neither route reliably alters long-term surgical rates compared to natural history in most studies, but both can meaningfully reduce pain and improve function in the interim.</p>
+<p><strong>Adjunct pharmacologic:</strong> Gabapentin or pregabalin for the neuropathic pain component; muscle relaxants for associated spasm; topical agents (lidocaine patch, topical NSAID, menthol/methyl salicylate preparations like Bengay) have modest evidence as adjuncts for localized neck/shoulder discomfort but do not treat the radicular nerve root pathology itself.</p>
+<p><strong>Refractory/progressive:</strong> Surgical decompression (anterior cervical discectomy and fusion or posterior foraminotomy) for persistent disabling pain despite ~6-12 weeks of conservative care, or urgently for progressive motor deficit or myelopathic signs.</p>
+<p><strong>Manual therapy/chiropractic:</strong> Gentle cervical mobilization and manual therapy can be a reasonable adjunct for mechanical neck pain, but high-velocity cervical manipulation should be used cautiously (or avoided) in confirmed radiculopathy, especially with any red flag for instability, myelopathy, or vertebral artery risk factors.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Epidural/transforaminal steroid injection</span><span class="eff-level">High — greater short-term relief than oral steroids in comparative studies</span></li>
+<li class="eff-mod"><span class="eff-name">Oral corticosteroid short course</span><span class="eff-level">Moderate-high, convenient first step for milder cases</span></li>
+<li class="eff-high"><span class="eff-name">Physical therapy (traction, McKenzie extension)</span><span class="eff-level">High — strong functional evidence</span></li>
+<li class="eff-mod"><span class="eff-name">NSAIDs</span><span class="eff-level">Moderate for pain, no disease-modifying effect</span></li>
+<li class="eff-mod"><span class="eff-name">Gabapentin/pregabalin (neuropathic component)</span><span class="eff-level">Moderate adjunct</span></li>
+<li class="eff-high"><span class="eff-name">Surgical decompression (ACDF/foraminotomy)</span><span class="eff-level">High for refractory/progressive cases</span></li>
+<li class="eff-low"><span class="eff-name">Topical agents (lidocaine, Bengay-type)</span><span class="eff-level">Low-moderate, symptomatic adjunct only</span></li>
+<li class="eff-low"><span class="eff-name">Short-term opioids (severe acute pain)</span><span class="eff-level">Low-moderate, acute bridge only — not for chronic use</span></li>
+<li class="eff-mod"><span class="eff-name">Chiropractic/manual therapy</span><span class="eff-level">Moderate, caution with high-velocity manipulation</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-lumbar-radiculopathy" data-dom="lumbar-radiculopathy" style="display:none;">
+      <div class="panel-head" style="--accent:#4d7ea8">
+        <span class="cat-pill">Spinal &amp; Radicular Pain</span>
+        <h2>Lumbar Radiculopathy (Sciatica)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Low back radiating into buttock/posterior or lateral leg to the foot, in a dermatomal pattern</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Sharp/shooting/burning leg-predominant pain, often worse than back pain itself; numbness/tingling common</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Acute disc herniation may substantially improve within 6-12 weeks; degenerative/foraminal causes more chronic</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Sitting, forward flexion, coughing/sneezing/Valsalva (discogenic); extension can worsen foraminal stenosis</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Positive straight leg raise (L5/S1 most sensitive), crossed SLR (more specific), dermatomal sensory loss, myotomal weakness, diminished reflex (patellar=L4, Achilles=S1)</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">NSAIDs + short functional activity + PT; oral steroids or ESI for significant pain; surgery for progressive deficit or cauda equina</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Most commonly due to lumbar disc herniation (L4-L5 and L5-S1 levels most frequent) compressing and inflaming a traversing nerve root, or from degenerative foraminal/lateral recess stenosis in older patients. As with cervical disease, inflammatory cytokines released from herniated nucleus pulposus material contribute to pain independent of mechanical compression alone, which is again the rationale for corticosteroid therapy. Cauda equina syndrome (saddle anesthesia, bowel/bladder dysfunction, bilateral leg weakness) is a surgical emergency that must always be screened for and differentiated from routine radiculopathy.</p>
+          <h3>What Differentiates It</h3>
+          <p>Radicular leg pain that is equal to or worse than back pain, following a specific dermatomal pattern, with a positive straight leg raise (most sensitive for L5/S1 disc herniation, positive between 30-70 degrees of leg elevation) and especially a positive crossed SLR (raising the asymptomatic leg reproduces contralateral symptomatic leg pain — highly specific for disc herniation) distinguishes radiculopathy from mechanical low back pain or facet-mediated pain (axial, worse with extension/rotation, no leg radiation past the knee typically) and from lumbar spinal stenosis (neurogenic claudication — bilateral, vague leg pain/heaviness brought on by walking/standing and relieved by flexion/sitting, rather than a single dermatomal pattern present at rest). Always screen for cauda equina red flags (saddle anesthesia, new bowel/bladder dysfunction, bilateral leg weakness, or severe/progressive deficit) which mandate emergent MRI and surgical evaluation.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Straight leg raise (SLR) test — passive leg elevation reproducing radicular pain between 30-70 degrees; crossed SLR is less sensitive but more specific for disc herniation. Dermatomal sensory testing and myotomal strength testing localize the level (L4: quadriceps/tibialis anterior, medial leg; L5: extensor hallucis longus/gluteus medius, dorsum of foot/first web space; S1: gastrocnemius/soleus/peroneals, lateral foot/sole). Reflexes: patellar (L4), Achilles (S1). Femoral stretch test (prone knee flexion) evaluates upper lumbar (L2-L4) radiculopathy. Always perform a rectal exam/perianal sensation check and ask about bowel/bladder function if cauda equina is a concern.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>First-line (no red flags):</strong> NSAIDs, activity modification with encouragement to stay reasonably active (rather than strict bed rest, which worsens outcomes), and physical therapy (directional preference/McKenzie exercises, core stabilization) form the foundation; most acute disc-related radiculopathy improves substantially within 6-12 weeks with conservative management alone.</p>
+<p><strong>Steroid injections vs. oral steroids — efficacy comparison:</strong> This is the best-studied comparison in the spine literature. Meta-analyses and RCTs (including comparative studies specifically pitting transforaminal epidural steroid injection against oral corticosteroids) generally show epidural/transforaminal steroid injections produce greater short-term (weeks to ~3 months) pain reduction and functional improvement (VAS, Oswestry Disability Index) than oral corticosteroids for acute lumbar radiculopathy, because the injection delivers steroid directly to the inflamed epidural space/nerve root rather than relying on systemic absorption and distribution. Systematic reviews (e.g., Annals of Internal Medicine meta-analysis) confirm epidural corticosteroid injections provide statistically significant, though often modest and largely short-term (2 weeks to 3 months), improvement in leg pain and function versus placebo/control, without a clear reduction in long-term surgery rates. Oral corticosteroids (e.g., a prednisone taper) have weaker and less consistent evidence of benefit over placebo in some trials, though they remain a reasonable, lower-risk, low-cost initial option, especially when injection access is delayed or unavailable, or for milder presentations. Particulate corticosteroids (triamcinolone, methylprednisolone) versus non-particulate (dexamethasone) in transforaminal ESI appear similarly effective in most comparative trials, though non-particulate steroids are preferred at the cervical level specifically due to a rare but catastrophic risk of embolic infarction if a particulate steroid is inadvertently injected into a radicular artery.</p>
+<p><strong>Adjunct pharmacologic:</strong> Gabapentin/pregabalin for the neuropathic component (modest evidence specifically in sciatica, more robust in other neuropathic pain states); muscle relaxants for associated spasm; short-term opioids only for severe acute pain unresponsive to first-line agents, given weak long-term evidence and dependence risk; topical agents (lidocaine patch, topical NSAID gel, Bengay-type menthol/salicylate rubs) provide modest localized symptomatic relief for adjacent myofascial discomfort but do not address root-level pathology.</p>
+<p><strong>Refractory/progressive/cauda equina:</strong> Surgical discectomy for persistent disabling radicular pain despite 6-12 weeks of conservative care with a corresponding structural lesion on MRI, or emergently for cauda equina syndrome or a rapidly progressive motor deficit.</p>
+<p><strong>Manual therapy/chiropractic:</strong> Spinal manipulation and other manual therapies show modest benefit for nonspecific low back pain and may help some radiculopathy patients as an adjunct, but should be used cautiously (or avoided) with significant neurologic deficit, and manipulation directly at a level of confirmed disc herniation with radiculopathy carries theoretical risk without strong supportive evidence of superiority over standard conservative care.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Epidural/transforaminal steroid injection</span><span class="eff-level">High — best short-term evidence, superior to oral steroids in most comparative trials</span></li>
+<li class="eff-mod"><span class="eff-name">Oral corticosteroid course</span><span class="eff-level">Moderate — reasonable low-risk first step, weaker/less consistent evidence than injection</span></li>
+<li class="eff-high"><span class="eff-name">Physical therapy/activity modification</span><span class="eff-level">High — foundation of care, strong functional evidence</span></li>
+<li class="eff-mod"><span class="eff-name">NSAIDs</span><span class="eff-level">Moderate for pain control</span></li>
+<li class="eff-low"><span class="eff-name">Gabapentin/pregabalin</span><span class="eff-level">Low-moderate specifically for sciatica (mixed trial results)</span></li>
+<li class="eff-high"><span class="eff-name">Surgical discectomy (refractory/progressive)</span><span class="eff-level">High for confirmed structural lesion + persistent disability</span></li>
+<li class="eff-low"><span class="eff-name">Short-term opioids</span><span class="eff-level">Low-moderate, acute severe pain bridge only</span></li>
+<li class="eff-low"><span class="eff-name">Topical agents (lidocaine, Bengay-type)</span><span class="eff-level">Low, symptomatic/myofascial adjunct only</span></li>
+<li class="eff-low"><span class="eff-name">Chiropractic/manual therapy</span><span class="eff-level">Low-moderate, caution with neuro deficit</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-cervical-myelopathy" data-dom="cervical-myelopathy" style="display:none;">
+      <div class="panel-head" style="--accent:#4d7ea8">
+        <span class="cat-pill">Spinal &amp; Radicular Pain</span>
+        <h2>Cervical Spondylotic Myelopathy (CSM)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Neck pain variable/mild; principal findings are in the extremities/gait, not localized pain</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Often more numbness/clumsiness/weakness than pain; may have neck stiffness</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Typically insidious, slowly progressive over months to years (stepwise or steady decline)</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Neck flexion can worsen symptoms (Lhermitte's sign); no reliable pain trigger since pain is not the dominant feature</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Hyperreflexia, clonus, Hoffmann's sign, inverted supinator reflex, Babinski sign, broad-based/spastic gait, hand clumsiness (loss of fine motor control — 'myelopathy hand'), Lhermitte's sign</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Surgical decompression for moderate-severe or progressive disease — this is the one condition on this atlas where surgery, not medication, is the primary treatment</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Chronic spinal cord compression from cervical spondylosis — a combination of disc degeneration/bulging, osteophyte formation, ligamentum flavum hypertrophy/buckling, and facet arthropathy narrowing the central canal — causes direct mechanical cord compression plus secondary ischemic injury (impaired microvascular perfusion of the cord) and chronic inflammatory/demyelinating change within the compressed segment. It is the most common cause of spinal cord dysfunction in adults over 55. Unlike radiculopathy (nerve root), CSM is a spinal cord (upper motor neuron) problem and the clinical picture reflects long-tract dysfunction rather than a single root pattern.</p>
+          <h3>What Differentiates It</h3>
+          <p>The defining differentiator from radiculopathy is the presence of upper motor neuron (long-tract) signs — hyperreflexia, spasticity, clonus, a positive Hoffmann's sign or Babinski sign — plus bilateral or diffuse extremity findings, gait/balance disturbance, and fine-motor hand clumsiness (difficulty with buttons, handwriting, using utensils), often with only mild or no significant neck/arm pain, in contrast to radiculopathy's prominent unilateral dermatomal pain with normal or reduced (not increased) reflexes. Lhermitte's sign (electric-shock sensation down the spine/limbs with neck flexion) supports a cord-level (not root-level) process. CSM must be distinguished from other causes of myelopathy (multiple sclerosis, B12 deficiency/subacute combined degeneration, ALS — which has both upper and lower motor neuron signs without sensory findings, and normal-pressure hydrocephalus for the gait component specifically) — MRI of the cervical spine is essential and typically shows cord compression with or without T2 signal change (cord edema/gliosis) at the compressed level(s).</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Hyperreflexia in the upper and/or lower extremities, clonus (especially ankle), a positive Hoffmann's sign (flicking the middle fingernail causes reflexive thumb/index flexion), an inverted radial/supinator reflex (suggesting a specific cord level), Babinski sign, and a spastic/broad-based or unsteady gait are the core myelopathic findings. Fine motor testing (rapid finger movements, grip-and-release test) often reveals subtle clumsiness before gross weakness is apparent — the 'myelopathy hand.' Lhermitte's sign on neck flexion supports cord involvement. Document findings carefully and serially, since CSM often progresses in a stepwise rather than smoothly linear fashion, and a new or worsening finding is a trigger for expedited surgical referral.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>Primary treatment is surgical, not medical, for moderate-to-severe or progressive myelopathy</strong> — this is the key conceptual distinction from every other condition in this atlas. Anterior (ACDF, corpectomy) or posterior (laminectomy ± fusion, laminoplasty) decompression halts progression and often produces meaningful functional improvement, particularly when performed before severe or long-standing deficits develop; surgical outcomes are generally better with earlier intervention, and the primary goal of surgery is to arrest progression (functional improvement is a secondary, though often also-achieved, benefit).</p>
+<p><strong>Mild, non-progressive disease:</strong> A trial of careful, close-interval clinical observation with serial exams and imaging can be reasonable for genuinely mild, stable myelopathy in a patient who prefers to avoid surgery, alongside cervical collar avoidance of high-risk activities (contact sports, high-velocity cervical manipulation) and physical therapy focused on safe mobility/fall prevention rather than aggressive cervical range-of-motion work.</p>
+<p><strong>What does NOT work:</strong> Oral or epidural corticosteroids, NSAIDs, gabapentin, and other pain-focused pharmacologic or interventional therapies used for radiculopathy do not address the underlying mechanical cord compression and should not be relied upon as primary therapy for myelopathy — they may provide modest symptomatic comfort but do not prevent progression and should never delay appropriate surgical referral in a patient with significant or worsening myelopathic signs.</p>
+<p><strong>Chiropractic/manipulation — important safety point:</strong> High-velocity cervical spinal manipulation is relatively contraindicated in confirmed or suspected cervical myelopathy given the theoretical risk of acute cord injury from manipulating an already stenotic, cord-compromised segment; any patient with myelopathic exam findings should be referred for spine surgery evaluation rather than to a chiropractor for manipulation.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Surgical decompression (ACDF/laminectomy/laminoplasty)</span><span class="eff-level">High — primary treatment, best outcomes with earlier intervention</span></li>
+<li class="eff-mod"><span class="eff-name">Careful observation (select mild, stable cases only)</span><span class="eff-level">Moderate — reasonable only if truly mild/non-progressive</span></li>
+<li class="eff-low"><span class="eff-name">PT (safe mobility/fall prevention focus)</span><span class="eff-level">Low-moderate adjunct, not disease-modifying</span></li>
+<li class="eff-low"><span class="eff-name">Oral/epidural steroids, NSAIDs, gabapentin</span><span class="eff-level">Low/not disease-modifying — symptomatic only, do not treat cord compression</span></li>
+<li class="eff-avoid"><span class="eff-name">Chiropractic manipulation</span><span class="eff-level">Avoid — theoretical risk of cord injury in stenotic segment</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-foraminal-stenosis" data-dom="foraminal-stenosis" style="display:none;">
+      <div class="panel-head" style="--accent:#4d7ea8">
+        <span class="cat-pill">Spinal &amp; Radicular Pain</span>
+        <h2>Foraminal Stenosis (Cervical &amp; Lumbar)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Follows the affected exiting nerve root's dermatome (unilateral, single level typically)</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Radicular — sharp/burning/electric, positional</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Chronic/degenerative, gradually progressive; can have acute flares</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Extension and ipsilateral rotation/lateral bending narrow the foramen further and worsen symptoms (opposite of central canal stenosis, which is worsened by extension too but presents differently — see below); flexion typically opens the foramen and relieves symptoms</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Reproduction of radicular pain with extension/rotation toward the symptomatic side (cervical Spurling's or lumbar equivalent); dermatomal/myotomal findings as in radiculopathy since foraminal stenosis is a structural cause of radiculopathy</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Same conservative-first approach as radiculopathy (PT, NSAIDs, oral steroids); ESI targeted to the stenotic foramen for more significant cases; surgical foraminotomy for refractory/progressive disease</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Foraminal (lateral) stenosis is narrowing of the intervertebral foramen — the passage through which a spinal nerve root exits the canal — most often from a combination of disc height loss, uncovertebral joint hypertrophy (cervical) or facet joint hypertrophy (lumbar), and osteophyte formation encroaching on the foramen. It is essentially a structural/degenerative cause of radiculopathy (as opposed to an acute disc herniation causing radiculopathy) and the two frequently coexist. Unlike central canal stenosis, which compresses the thecal sac/multiple nerve roots or the cord itself, foraminal stenosis characteristically affects a single exiting nerve root unilaterally.</p>
+          <h3>What Differentiates It</h3>
+          <p>Clinically foraminal stenosis is essentially indistinguishable from radiculopathy on history and exam alone (same dermatomal/myotomal pattern, same positional extension-worsening/flexion-relieving pattern) — the distinction is really about the underlying structural cause identified on imaging (foraminal narrowing on MRI/CT versus an acute disc herniation), which matters most for prognosis (spondylotic foraminal stenosis tends to be more chronic/slowly progressive and less likely to spontaneously regress than an acute herniation, which often shrinks over months) and for surgical planning (foraminotomy targets the bony/ligamentous narrowing specifically, whereas a herniation may be addressed with discectomy alone). It is distinguished from central spinal stenosis by the single-root, unilateral pattern versus stenosis's more diffuse, often bilateral, multi-level or claudication-type presentation.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Exam findings mirror radiculopathy at the corresponding level: dermatomal sensory changes, myotomal weakness, and reflex changes, reproduced or worsened by extension and ipsilateral rotation/lateral bending (which further narrows the already-stenotic foramen) and improved with flexion or traction (which opens the foramen). Spurling's test (cervical) or the equivalent lumbar extension-rotation maneuver supports the diagnosis; imaging (MRI, or CT for better bony detail) confirms foraminal narrowing at the corresponding level.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p>Treatment approach mirrors radiculopathy management directly since foraminal stenosis is a structural cause of radiculopathy: conservative care first (activity modification, NSAIDs, PT emphasizing flexion-biased exercises and, for cervical disease, gentle traction which mechanically opens the foramen), oral corticosteroids as a reasonable initial pharmacologic step for significant pain, and transforaminal epidural steroid injection — specifically targeted to the stenotic foramen — for more significant or refractory pain, which again generally outperforms oral steroids for short-term relief per the comparative radiculopathy literature discussed under radiculopathy. Because the underlying pathology is structural/degenerative rather than an acute inflammatory disc herniation, spontaneous resolution is less likely than with an acute herniation, and patients with persistent significant symptoms despite ~6-12 weeks of conservative therapy are reasonable candidates for surgical foraminotomy (cervical or lumbar) to directly decompress the exiting nerve root, generally with good outcomes when the correlating level and side match the clinical picture. Gabapentin/pregabalin, topical agents, and chiropractic/manual therapy carry the same adjunctive, non-curative role and caution points described under radiculopathy.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Targeted transforaminal steroid injection</span><span class="eff-level">High for the stenotic level — often used both diagnostically and therapeutically</span></li>
+<li class="eff-high"><span class="eff-name">Physical therapy (flexion-biased/traction)</span><span class="eff-level">High — mechanically opens the foramen, strong functional evidence</span></li>
+<li class="eff-mod"><span class="eff-name">Oral corticosteroid course</span><span class="eff-level">Moderate, reasonable initial step</span></li>
+<li class="eff-mod"><span class="eff-name">NSAIDs</span><span class="eff-level">Moderate for pain</span></li>
+<li class="eff-high"><span class="eff-name">Surgical foraminotomy (refractory)</span><span class="eff-level">High when the correlating level/side matches symptoms</span></li>
+<li class="eff-low"><span class="eff-name">Gabapentin/pregabalin, topical agents</span><span class="eff-level">Low-moderate adjuncts, same as radiculopathy</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="panel" id="panel-spinal-canal-stenosis" data-dom="spinal-canal-stenosis" style="display:none;">
+      <div class="panel-head" style="--accent:#4d7ea8">
+        <span class="cat-pill">Spinal &amp; Radicular Pain</span>
+        <h2>Central Spinal Canal Stenosis (Cervical &amp; Lumbar)</h2>
+      </div>
+      <div class="quickref">
+        <div class="quickrow"><span class="qk">Location</span><span class="qv">Lumbar: bilateral buttock/thigh/leg pain or heaviness. Cervical central stenosis without cord compromise can be asymptomatic or cause diffuse neck/arm symptoms; with cord compromise, see myelopathy</span></div>
+        <div class="quickrow"><span class="qk">Quality</span><span class="qv">Lumbar — dull, aching, heavy, or crampy 'neurogenic claudication'; cervical — variable, often overlaps with myelopathy if cord is involved</span></div>
+        <div class="quickrow"><span class="qk">Duration</span><span class="qv">Chronic, gradually progressive; classic neurogenic claudication pattern with walking</span></div>
+        <div class="quickrow"><span class="qk">Trigger</span><span class="qv">Lumbar: standing and walking (extension-dependent) worsen symptoms; sitting, leaning forward (shopping cart sign), and flexion relieve them</span></div>
+        <div class="quickrow"><span class="qk">Key exam</span><span class="qv">Wide-based/flexed posture, relief of leg symptoms with lumbar flexion, normal pulses (distinguishing from vascular claudication), symptoms reproduced with extended standing/walking and relieved promptly with sitting/flexion</span></div>
+        <div class="quickrow"><span class="qk">First-line</span><span class="qv">Activity modification (flexion-biased posture/cycling tolerated better than walking), PT, epidural steroid injection for flare management; surgical decompression (laminectomy) for significant, refractory neurogenic claudication</span></div>
+    </div>
+      <div class="content-grid">
+        <div class="content-col">
+          <h3>Pathology</h3>
+          <p>Central canal narrowing most commonly from a combination of ligamentum flavum hypertrophy/buckling, facet joint hypertrophy, disc bulging, and degenerative spondylolisthesis, reducing space for the thecal sac/cauda equina (lumbar) or the spinal cord (cervical). Lumbar stenosis produces the classic 'neurogenic claudication' pattern: extension (standing, walking, especially downhill or on extended lumbar posture) further narrows an already-tight canal and provokes symptoms, while flexion (sitting, leaning on a shopping cart, cycling) opens the canal and relieves them — patients often describe being able to bike for miles but unable to walk one block upright without symptoms. Cervical central stenosis carries the added risk of cord compromise/myelopathy (see that entry) and generally deserves closer monitoring given the cord-injury stakes if it progresses.</p>
+          <h3>What Differentiates It</h3>
+          <p>The single most useful differentiator from vascular (peripheral arterial) claudication is the positional/postural dependence: neurogenic claudication is relieved by flexion/sitting even without stopping walking (e.g., leaning forward on a cart while still moving), whereas vascular claudication is relieved simply by stopping regardless of posture, and vascular claudication classically worsens with uphill walking (increased muscular demand) while neurogenic claudication is often worse walking downhill (increased lumbar extension). Pulses are normal in neurogenic claudication and may be diminished in vascular disease; ankle-brachial index can help clarify equivocal cases. Distinguished from lumbar radiculopathy by its typically bilateral, non-dermatomal, activity/posture-dependent 'heaviness' quality rather than a sharp unilateral dermatomal pain present even at rest, though the two conditions frequently coexist since the same degenerative changes that cause central stenosis often also cause foraminal narrowing. For cervical stenosis, the key differentiator/escalation point is the presence or absence of myelopathic signs (hyperreflexia, clonus, gait change) — central stenosis without cord signs can be managed more conservatively, while any myelopathic finding shifts management toward the surgical myelopathy pathway.</p>
+          <h3>Physical Exam Findings</h3>
+          <p>Observe gait and posture — patients with lumbar stenosis often adopt a flexed, forward-stooped posture and may have a wide-based gait. The 'shopping cart sign' (symptom relief leaning forward on a cart) is a classic historical feature. A treadmill or corridor walking test reproducing bilateral leg symptoms that resolve promptly with sitting/flexion supports the diagnosis. Peripheral pulses should be normal (helps exclude vascular claudication); if diminished, obtain ankle-brachial index. For cervical stenosis, perform a full myelopathic exam (reflexes, Hoffmann's, gait, fine motor) at baseline and at follow-up, since the management pathway diverges significantly if cord signs are present.</p>
+        </div>
+        <div class="content-col">
+          <h3>Treatment</h3>
+          <p><strong>Lumbar stenosis (no red flags/myelopathy concern):</strong> Activity modification favoring flexion-tolerant activities (stationary cycling, walking with a forward-leaning posture or a cart/walker) and physical therapy emphasizing flexion-based exercises and core stabilization are foundational. Epidural steroid injection is commonly used for symptomatic flares and has reasonable evidence for short-term relief of leg symptoms, similar in principle to its use in radiculopathy, though the durability of benefit in pure central stenosis (versus radiculopathy) is more modest and variable across studies. NSAIDs and gabapentin/pregabalin can help with pain, though evidence specifically for neurogenic claudication is limited. For patients with significant, function-limiting neurogenic claudication refractory to ~3-6 months of conservative care, surgical decompression (laminectomy, with or without fusion depending on whether instability/spondylolisthesis coexists) has good evidence for improving walking tolerance and quality of life, generally more effective than continued conservative care alone for this specific symptom (walking-limited neurogenic claudication) at intermediate-term follow-up, though it does not fundamentally reverse degenerative disease.</p>
+<p><strong>Cervical stenosis without myelopathy:</strong> Similar conservative-first approach (PT, activity modification, judicious use of NSAIDs/short oral steroid course/ESI for flares) with close monitoring for any new upper motor neuron signs; avoidance of high-risk activities (contact sports, high-velocity manipulation) given the reduced reserve space around the cord. <strong>Any emergence of myelopathic findings shifts management to the surgical pathway described under cervical myelopathy</strong> rather than continued symptomatic management.</p>
+<p><strong>Chiropractic/manual therapy:</strong> Gentle, low-velocity mobilization and flexion-biased manual therapy may be tolerated and occasionally helpful for lumbar stenosis; high-velocity manipulation, especially cervical, should be avoided or used with significant caution given the reduced canal reserve, analogous to the caution described for myelopathy.</p>
+          <h3>Efficacy Ranking</h3>
+          <ul class='efficacy-list'><li class="eff-high"><span class="eff-name">Surgical decompression (laminectomy ± fusion) — significant refractory lumbar stenosis</span><span class="eff-level">High — generally more effective than prolonged conservative care for function-limiting claudication</span></li>
+<li class="eff-mod"><span class="eff-name">PT (flexion-biased exercise, cycling tolerance)</span><span class="eff-level">Moderate-high, foundational conservative measure</span></li>
+<li class="eff-mod"><span class="eff-name">Epidural steroid injection (symptomatic flares)</span><span class="eff-level">Moderate — reasonable short-term relief, less durable than in radiculopathy</span></li>
+<li class="eff-mod"><span class="eff-name">Activity/posture modification</span><span class="eff-level">Moderate-high, low-risk foundational step</span></li>
+<li class="eff-low"><span class="eff-name">NSAIDs/gabapentin</span><span class="eff-level">Low-moderate, limited claudication-specific evidence</span></li>
+<li class="eff-low"><span class="eff-name">Chiropractic/manual therapy (gentle, low-velocity)</span><span class="eff-level">Low-moderate for lumbar; avoid high-velocity, especially cervical</span></li></ul>
+        </div>
+      </div>
+    </section>
+    
+    <section class="panel" id="panel-steroid-ref" data-dom="steroid-ref" style="display:none;">
+      <div class="panel-head" style="--accent:#b0555f">
+        <span class="cat-pill">Cross-Cutting Treatment Reference</span>
+        <h2>Oral Steroids vs. Steroid Injections — Head-to-Head Efficacy</h2>
+      </div>
+      <div class="content-col single">
+        <p>Across the spine and headache/neuralgia literature, a consistent pattern emerges: <strong>local/injected corticosteroid delivery generally outperforms oral corticosteroids for short-term pain relief</strong> when a discrete, localized site of nerve inflammation can be targeted (epidural space, specific nerve root, occipital nerve, sphenopalatine ganglion). This makes biological sense — injection delivers a much higher local drug concentration directly to the inflamed neural structure, while oral steroids rely on systemic absorption and distribution, exposing the whole body to steroid effect to achieve a comparatively lower concentration at the actual site of pathology.</p>
+<p>Comparative studies in lumbar radiculopathy (transforaminal epidural steroid injection vs. oral corticosteroid course) generally favor the injection for short-term (weeks to ~3 months) VAS pain scores, Oswestry Disability Index improvement, and straight-leg-raise findings, though both approaches show benefit versus no treatment and neither reliably changes long-term surgical rates. The same general principle extrapolates to cervical radiculopathy and foraminal stenosis, and to peripheral/cranial neuralgias where a local block (GON block, supraorbital block, SPG block) is preferred over oral steroids specifically because of this concentration advantage plus the added diagnostic value of a positive block response.</p>
+<p><strong>When oral steroids are the more reasonable first step:</strong> mild-to-moderate presentations where procedural risk/access is a barrier, as a lower-cost/lower-risk bridge before considering injection, or when the pain is more diffuse/multi-level rather than attributable to one discrete target (making a single injection less likely to address the whole problem).</p>
+<p><strong>When injections are preferred:</strong> significant pain not responding adequately to oral steroids/NSAIDs/PT within a reasonable trial period, a well-localized single-level or single-nerve target on imaging/exam, or when the injection itself carries diagnostic value (e.g., occipital neuralgia, where diagnostic block response is part of the formal diagnostic criteria).</p>
+<p><strong>Safety notes:</strong> Particulate corticosteroids (methylprednisolone, triamcinolone) carry a rare but serious risk of embolic spinal cord infarction if inadvertently injected into a radicular artery — this risk is why non-particulate steroids (dexamethasone) are preferred specifically for cervical transforaminal injections. Repeated steroid injections (generally more than 3-4 per year at one site) raise concern for adrenal suppression, hyperglycemia (important in diabetic patients), bone density effects, and local tissue atrophy, and should prompt reassessment of the treatment plan rather than indefinite repetition. Oral steroid courses, even short ones, can cause transient hyperglycemia, mood change, insomnia, and GI upset, and should be used judiciously in diabetic, osteoporotic, or immunocompromised patients.</p>
+      </div>
+    </section>
+    
+    <section class="panel" id="panel-modality-ref" data-dom="modality-ref" style="display:none;">
+      <div class="panel-head" style="--accent:#b0555f">
+        <span class="cat-pill">Cross-Cutting Treatment Reference</span>
+        <h2>Cross-Cutting Modality Efficacy Reference</h2>
+      </div>
+      <div class="content-col single">
+        <table class="modality-table">
+          <thead><tr><th>Modality</th><th>Overall Efficacy</th><th>Notes</th></tr></thead>
+          <tbody><tr><td class='mname'>Epidural/transforaminal/targeted nerve steroid injection</td><td class='mlevel'><span class='badge b-high'>High</span></td><td class='mnote'>Best short-term evidence for localized radicular/neuralgic pain; superior to oral steroids in most comparative trials; procedural risk and diminishing returns with repetition</td></tr><tr><td class='mname'>Oral corticosteroid short course</td><td class='mlevel'><span class='badge b-mod'>Moderate-high</span></td><td class='mnote'>Reasonable first step, lower risk/cost than injection, less concentrated at the target site; watch glucose/mood/sleep even short-term</td></tr><tr><td class='mname'>Physical therapy / directed exercise</td><td class='mlevel'><span class='badge b-high'>High (condition-dependent)</span></td><td class='mnote'>Best-supported single modality for cervicogenic headache, radiculopathy function, and stenosis-related claudication; foundational, low-risk</td></tr><tr><td class='mname'>NSAIDs</td><td class='mlevel'><span class='badge b-mod'>Moderate</span></td><td class='mnote'>Useful adjunct for inflammatory/mechanical pain; limited effect on pure neuropathic/paroxysmal pain (TN, ON); GI/renal/CV risk with chronic use</td></tr><tr><td class='mname'>Opioids</td><td class='mlevel'><span class='badge b-low'>Low-moderate (acute only)</span></td><td class='mnote'>Reasonable only as a short bridge for severe acute pain; weak long-term evidence across nearly every condition in this atlas; dependence/overdose risk limits chronic use</td></tr><tr><td class='mname'>Gabapentin/pregabalin</td><td class='mlevel'><span class='badge b-mod'>Moderate-high</span></td><td class='mnote'>First-line for PHN and MS-associated TN; moderate/mixed evidence in sciatica; useful adjunct across most neuropathic conditions</td></tr><tr><td class='mname'>Tricyclic antidepressants (nortriptyline/amitriptyline)</td><td class='mlevel'><span class='badge b-mod'>Moderate-high</span></td><td class='mnote'>First-line alongside gabapentinoids for PHN; useful adjunct for chronic neuropathic pain generally; anticholinergic burden in older adults (prefer nortriptyline)</td></tr><tr><td class='mname'>Topical lidocaine patch</td><td class='mlevel'><span class='badge b-mod'>Moderate (high for PHN specifically)</span></td><td class='mnote'>Excellent safety profile, minimal systemic absorption/interactions — favored in older/multi-morbid patients; best evidence in PHN, more modest elsewhere</td></tr><tr><td class='mname'>Topical menthol/salicylate rubs (Bengay-type)</td><td class='mlevel'><span class='badge b-low'>Low</span></td><td class='mnote'>Counter-irritant effect provides mild, short-lived symptomatic relief for musculoskeletal/myofascial discomfort; no disease-modifying or neuropathic benefit</td></tr><tr><td class='mname'>Diagnostic/therapeutic peripheral nerve blocks (GON, supraorbital, SPG, ilioinguinal)</td><td class='mlevel'><span class='badge b-high'>High</span></td><td class='mnote'>Often both diagnostic and therapeutic; first-line for most peripheral cranial/truncal neuralgias</td></tr><tr><td class='mname'>Radiofrequency ablation (pulsed or continuous)</td><td class='mlevel'><span class='badge b-mod'>Moderate-high</span></td><td class='mnote'>Durable option for block-responsive refractory neuralgias (occipital, facet-mediated cervicogenic); generally reserved after diagnostic block confirms response</td></tr><tr><td class='mname'>Chiropractic / manual therapy / spinal manipulation</td><td class='mlevel'><span class='badge b-low'>Low-moderate</span></td><td class='mnote'>Best evidence for mechanical/cervicogenic neck pain combined with exercise; caution or avoidance with confirmed radiculopathy (neuro deficit), and contraindicated-caution in myelopathy/significant stenosis given theoretical cord-injury risk with high-velocity manipulation</td></tr><tr><td class='mname'>Surgical decompression/MVD/discectomy</td><td class='mlevel'><span class='badge b-high'>High (specific indications)</span></td><td class='mnote'>Primary treatment for cervical myelopathy; reserved for refractory/progressive radiculopathy and stenosis; MVD offers the most durable relief for classical TN in surgically fit patients</td></tr><tr><td class='mname'>Botulinum toxin-A</td><td class='mlevel'><span class='badge b-mod'>Moderate</span></td><td class='mnote'>FDA-approved for chronic migraine (PREEMPT protocol); useful adjunct for refractory TN and occipital neuralgia</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+<div class="verify-note">Dosing, guideline citations, and efficacy statements reflect the literature as of build time and should be verified against current ASN/AAN/EFNS/NASS/ICHD-3 guidance and institutional protocols before clinical use.</div>
+</main>
+<footer>Original educational content — clinical reference atlas.</footer>
+<script>window.__CONDITIONS__ = [{"id": "trigeminal-neuralgia", "name": "Trigeminal Neuralgia (TN)", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Face \u2014 V2/V3 >> V1; unilateral", "quality": "Electric shock, stabbing, paroxysmal", "duration": "Seconds; volleys over minutes", "trigger": "Light touch, chewing, brushing teeth, wind, talking", "key_exam": "Normal neuro exam (classical TN); refractory trigger zones on face"}, {"id": "occipital-neuralgia", "name": "Occipital Neuralgia (ON)", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Suboccipital region radiating over the vertex; greater > lesser > third occipital nerve distribution", "quality": "Paroxysmal, sharp, stabbing, shooting; may have interictal dull ache/dysesthesia", "duration": "Seconds to minutes, paroxysmal; can also have background dull ache", "trigger": "Neck movement, palpation over C2 (Arnold's point), scalp touch (allodynia)", "key_exam": "Tenderness over the greater occipital nerve at the nuchal ridge; scalp allodynia; POSITIVE diagnostic nerve block is part of ICHD-3 criteria"}, {"id": "occipital-migraine", "name": "Occipital-Predominant Migraine", "cat": "Occipital Migraine & Headache Overlap", "color": "#8a6fb0", "location": "Can start occipitally/nuchal and spread frontally/orbitally, or be holocranial", "quality": "Throbbing/pulsatile, moderate-severe, builds over minutes to hours", "duration": "4-72 hours untreated (ICHD-3 migraine duration criteria)", "trigger": "Typical migraine triggers: stress, sleep change, hormonal, foods, weather; not reliably touch-triggered", "key_exam": "Normal exam; photophobia/phonophobia during attack; nerve palpation NOT reliably tender; NOT abolished by single diagnostic block"}, {"id": "cervical-neuralgia", "name": "Cervical Neuralgia / Cervicogenic Headache", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Unilateral neck/occipital pain referring to frontal/temporal/orbital region", "quality": "Dull, aching, non-throbbing; may have superimposed sharp exacerbations", "duration": "Variable, often fluctuating with neck position/activity; can be prolonged/continuous", "trigger": "Neck movement, sustained posture, pressure over upper cervical facet/muscles", "key_exam": "Restricted cervical ROM, reproducible pain with neck movement or C1-C3 facet palpation; improved with diagnostic cervical facet/nerve block"}, {"id": "glossopharyngeal-neuralgia", "name": "Glossopharyngeal Neuralgia", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Throat, tonsillar fossa, base of tongue, ear (may radiate to angle of jaw)", "quality": "Electric shock/stabbing paroxysms, similar quality to TN", "duration": "Seconds; paroxysmal", "trigger": "Swallowing, coughing, talking, yawning, chewing, cold liquids", "key_exam": "Rare vasovagal syncope/bradycardia/asystole during attacks (cardiac subtype); otherwise normal exam"}, {"id": "sphenopalatine-neuralgia", "name": "Sphenopalatine (Pterygopalatine) Neuralgia", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Deep face, nose, upper jaw, orbit, hard palate \u2014 often described as 'behind the cheekbone/eye'", "quality": "Sharp, boring, or aching paroxysms; may have autonomic features", "duration": "Minutes to hours, can be recurrent throughout the day", "trigger": "Often none identifiable; sometimes sinus congestion or barometric change", "key_exam": "Tenderness deep to the posterior maxilla; ipsilateral lacrimation/rhinorrhea/nasal congestion may accompany attacks"}, {"id": "supraorbital-neuralgia", "name": "Supraorbital / Supratrochlear Neuralgia", "cat": "Cranial & Facial Neuralgias", "color": "#c98a4b", "location": "Forehead, medial eyebrow, scalp above the orbit (V1 distribution)", "quality": "Sharp, aching, or burning; may have background dysesthesia between paroxysms", "duration": "Variable \u2014 can be continuous ache with superimposed paroxysms", "trigger": "Pressure at the supraorbital notch/foramen, forehead touch, sinus congestion", "key_exam": "Point tenderness/Tinel's sign at the supraorbital notch; sensory changes in the forehead/scalp"}, {"id": "postherpetic-neuralgia", "name": "Postherpetic Neuralgia (PHN)", "cat": "Peripheral & Truncal Neuralgias", "color": "#5f9e8f", "location": "Dermatomal \u2014 thoracic most common overall; ophthalmic division (V1) most common cranial site", "quality": "Continuous burning/aching plus superimposed lancinating pain; marked allodynia", "duration": "By definition persists \u226590 days after acute herpes zoster rash onset", "trigger": "Light touch/clothing contact (severe allodynia is a hallmark)", "key_exam": "Scarring/hypo- or hyperpigmentation in a dermatomal distribution; profound allodynia to light touch; sensory loss or dysesthesia in the same dermatome"}, {"id": "ilioinguinal-neuralgia", "name": "Ilioinguinal / Iliohypogastric Neuralgia", "cat": "Peripheral & Truncal Neuralgias", "color": "#5f9e8f", "location": "Lower abdomen, groin, medial thigh, sometimes scrotum/labia", "quality": "Sharp, burning, or aching; often worse with standing/walking, better lying down", "duration": "Chronic, often constant with exacerbations", "trigger": "Standing, hip extension, Valsalva; history of inguinal hernia repair/pelvic/abdominal surgery is classic", "key_exam": "Point tenderness medial to the anterior superior iliac spine; positive Tinel's sign at the site; pain reproduced with resisted hip flexion/trunk extension"}, {"id": "cervical-radiculopathy", "name": "Cervical Radiculopathy", "cat": "Spinal & Radicular Pain", "color": "#4d7ea8", "location": "Neck radiating into shoulder/arm/hand in a specific dermatomal (nerve root) pattern", "quality": "Sharp, shooting, or burning; often with numbness/tingling and weakness in the root distribution", "duration": "Variable; acute disc herniation may improve over weeks, spondylotic disease more chronic", "trigger": "Neck extension/rotation toward the affected side (Spurling's sign), Valsalva", "key_exam": "Positive Spurling's test; dermatomal sensory loss; myotomal weakness; diminished reflex (biceps=C5/6, brachioradialis=C6, triceps=C7); relief with shoulder abduction (Bakody sign) supports C5/C6"}, {"id": "lumbar-radiculopathy", "name": "Lumbar Radiculopathy (Sciatica)", "cat": "Spinal & Radicular Pain", "color": "#4d7ea8", "location": "Low back radiating into buttock/posterior or lateral leg to the foot, in a dermatomal pattern", "quality": "Sharp/shooting/burning leg-predominant pain, often worse than back pain itself; numbness/tingling common", "duration": "Acute disc herniation may substantially improve within 6-12 weeks; degenerative/foraminal causes more chronic", "trigger": "Sitting, forward flexion, coughing/sneezing/Valsalva (discogenic); extension can worsen foraminal stenosis", "key_exam": "Positive straight leg raise (L5/S1 most sensitive), crossed SLR (more specific), dermatomal sensory loss, myotomal weakness, diminished reflex (patellar=L4, Achilles=S1)"}, {"id": "cervical-myelopathy", "name": "Cervical Spondylotic Myelopathy (CSM)", "cat": "Spinal & Radicular Pain", "color": "#4d7ea8", "location": "Neck pain variable/mild; principal findings are in the extremities/gait, not localized pain", "quality": "Often more numbness/clumsiness/weakness than pain; may have neck stiffness", "duration": "Typically insidious, slowly progressive over months to years (stepwise or steady decline)", "trigger": "Neck flexion can worsen symptoms (Lhermitte's sign); no reliable pain trigger since pain is not the dominant feature", "key_exam": "Hyperreflexia, clonus, Hoffmann's sign, inverted supinator reflex, Babinski sign, broad-based/spastic gait, hand clumsiness (loss of fine motor control \u2014 'myelopathy hand'), Lhermitte's sign"}, {"id": "foraminal-stenosis", "name": "Foraminal Stenosis (Cervical & Lumbar)", "cat": "Spinal & Radicular Pain", "color": "#4d7ea8", "location": "Follows the affected exiting nerve root's dermatome (unilateral, single level typically)", "quality": "Radicular \u2014 sharp/burning/electric, positional", "duration": "Chronic/degenerative, gradually progressive; can have acute flares", "trigger": "Extension and ipsilateral rotation/lateral bending narrow the foramen further and worsen symptoms (opposite of central canal stenosis, which is worsened by extension too but presents differently \u2014 see below); flexion typically opens the foramen and relieves symptoms", "key_exam": "Reproduction of radicular pain with extension/rotation toward the symptomatic side (cervical Spurling's or lumbar equivalent); dermatomal/myotomal findings as in radiculopathy since foraminal stenosis is a structural cause of radiculopathy"}, {"id": "spinal-canal-stenosis", "name": "Central Spinal Canal Stenosis (Cervical & Lumbar)", "cat": "Spinal & Radicular Pain", "color": "#4d7ea8", "location": "Lumbar: bilateral buttock/thigh/leg pain or heaviness. Cervical central stenosis without cord compromise can be asymptomatic or cause diffuse neck/arm symptoms; with cord compromise, see myelopathy", "quality": "Lumbar \u2014 dull, aching, heavy, or crampy 'neurogenic claudication'; cervical \u2014 variable, often overlaps with myelopathy if cord is involved", "duration": "Chronic, gradually progressive; classic neurogenic claudication pattern with walking", "trigger": "Lumbar: standing and walking (extension-dependent) worsen symptoms; sitting, leaning forward (shopping cart sign), and flexion relieve them", "key_exam": "Wide-based/flexed posture, relief of leg symptoms with lumbar flexion, normal pulses (distinguishing from vascular claudication), symptoms reproduced with extended standing/walking and relieved promptly with sitting/flexion"}];</script>
+<script>
+(function(){
+  var toggle = document.getElementById('theme-toggle');
+  var root = document.documentElement;
+  var saved = 'dark';
+  root.setAttribute('data-theme', saved);
+  toggle.textContent = 'Light mode';
+  toggle.addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    toggle.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+  });
+
+  var navBtns = document.querySelectorAll('.navbtn');
+  var panels = document.querySelectorAll('.panel');
+  function showPanel(id){
+    panels.forEach(function(p){ p.style.display = (p.getAttribute('data-dom') === id) ? 'block' : 'none'; });
+    navBtns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-target') === id); });
+    window.scrollTo({top: document.querySelector('nav').offsetHeight + 40, behavior:'instant'});
+  }
+  navBtns.forEach(function(b){
+    b.addEventListener('click', function(){ showPanel(b.getAttribute('data-target')); });
+  });
+
+  var DATA = window.__CONDITIONS__;
+  var locSet = new Set(), qualSet = new Set(), catSet = new Set();
+  DATA.forEach(function(d){
+    locSet.add(d.location); qualSet.add(d.quality); catSet.add(d.cat);
+  });
+  function fillSelect(sel, set){
+    Array.from(set).sort().forEach(function(v){
+      var o = document.createElement('option'); o.value = v; o.textContent = v.length > 46 ? v.slice(0,44)+'…' : v;
+      o.title = v;
+      sel.appendChild(o);
+    });
+  }
+  fillSelect(document.getElementById('filter-location'), locSet);
+  fillSelect(document.getElementById('filter-quality'), qualSet);
+  fillSelect(document.getElementById('filter-cat'), catSet);
+
+  var tbody = document.getElementById('diff-tbody');
+  function render(){
+    var locV = document.getElementById('filter-location').value;
+    var qualV = document.getElementById('filter-quality').value;
+    var catV = document.getElementById('filter-cat').value;
+    tbody.innerHTML = '';
+    DATA.filter(function(d){
+      return (!locV || d.location === locV) && (!qualV || d.quality === qualV) && (!catV || d.cat === catV);
+    }).forEach(function(d){
+      var tr = document.createElement('tr');
+      tr.style.borderLeftColor = d.color;
+      tr.innerHTML = '<td>'+d.name+'</td><td>'+d.location+'</td><td>'+d.quality+'</td><td>'+d.duration+'</td><td>'+d.trigger+'</td><td>'+d.key_exam+'</td>';
+      tr.addEventListener('click', function(){ showPanel(d.id); });
+      tbody.appendChild(tr);
+    });
+    if(tbody.children.length === 0){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="6" style="color:var(--text-dim);text-align:center;padding:20px;">No matches — try Reset.</td>';
+      tbody.appendChild(tr);
+    }
+  }
+  ['filter-location','filter-quality','filter-cat'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', render);
+  });
+  document.getElementById('filter-reset').addEventListener('click', function(){
+    document.getElementById('filter-location').value = '';
+    document.getElementById('filter-quality').value = '';
+    document.getElementById('filter-cat').value = '';
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
