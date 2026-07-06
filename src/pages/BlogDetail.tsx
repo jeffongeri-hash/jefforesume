@@ -3516,6 +3516,54 @@ const blogPosts = {
       <p><a href="/embeds/outpatient-dermatology-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "hematology-hematopoiesis-atlas": {
+    title: "Hematopoiesis & Cellular Atlas",
+    category: "HEALTHCARE",
+    date: "July 6, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A hematopoiesis and cellular atlas covering stem cell lineages, erythropoiesis, granulopoiesis, lymphopoiesis, and megakaryopoiesis — with morphology pearls and clinical correlates.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/hematology-hematopoiesis-atlas.html" title="Hematopoiesis & Cellular Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/hematology-hematopoiesis-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "hematology-cbc-coag-labs-atlas": {
+    title: "CBC & Coagulation Labs Interpretation Atlas",
+    category: "HEALTHCARE",
+    date: "July 6, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A step-by-step lab interpretation atlas covering the CBC, differential, coagulation panels, and panic values — with pattern recognition and workup pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/hematology-cbc-coag-labs-atlas.html" title="CBC & Coagulation Labs Interpretation Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/hematology-cbc-coag-labs-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "hematology-coagulation-atlas": {
+    title: "Coagulation, Clotting Disorders & Anticoagulation Atlas",
+    category: "HEALTHCARE",
+    date: "July 6, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>The coagulation cascade, bleeding and clotting disorders, anticoagulant and antiplatelet pharmacology, and reversal strategies — with dosing pearls and bridging protocols.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/hematology-coagulation-atlas.html" title="Coagulation, Clotting Disorders & Anticoagulation Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/hematology-coagulation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "default": {
     title: "Blog Post Not Found",
     category: "GENERAL",
