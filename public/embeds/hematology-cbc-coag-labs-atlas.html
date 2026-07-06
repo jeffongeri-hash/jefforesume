@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBC &amp; Coagulation Labs Interpretation Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #120e0b; --panel: #1a1410; --panel2: #221a14; --ink: #f2ece3; --sub: #b8aca0;
+  --line: #3a2f26; --accent: #c24a4a; --accent2: #c9a24a; --card-radius: 14px;
+  --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+  --panicbg: #3a1414; --panicborder: #e05a5a;
+}
+[data-theme="light"] { --bg: #f5f0e8; --panel: #fffdfa; --panel2: #eee6d8; --ink: #241a12; --sub: #5c4f42; --line: #ddd0bd; --panicbg: #fbe4e4; --panicborder: #c2302f; }
+* { box-sizing: border-box; }
+body { margin:0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height:1.55; transition: background .25s, color .25s; }
+h1,h2,h3,h4 { font-family: var(--serif); font-weight:700; margin:0 0 .4em; }
+.lbl { font-family: var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color: var(--accent2); display:block; margin-bottom:2px; }
+.wrap { max-width:1180px; margin:0 auto; padding:0 24px 80px; }
+header.top { padding:40px 24px 28px; border-bottom:1px solid var(--line); background: radial-gradient(ellipse at top left, rgba(194,74,74,.12), transparent 60%); }
+header.top .inner { max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; }
+header.top h1 { font-size: clamp(26px, 3.6vw, 40px); letter-spacing:-0.01em; }
+header.top p.tag { color: var(--sub); max-width:640px; font-size:15px; }
+.eyebrow { font-family: var(--mono); font-size:11.5px; color: var(--accent); letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; }
+#themeToggle { background: var(--panel2); border:1px solid var(--line); color: var(--ink); border-radius:20px; padding:8px 16px; font-family: var(--mono); font-size:12px; cursor:pointer; }
+nav.tabs { display:flex; gap:6px; flex-wrap:wrap; padding:18px 24px; max-width:1180px; margin:0 auto; border-bottom:1px solid var(--line); position:sticky; top:0; background: var(--bg); z-index:50; }
+nav.tabs button { background:transparent; border:1px solid var(--line); color: var(--sub); padding:9px 16px; border-radius:10px; font-family: var(--sans); font-size:13.5px; font-weight:600; cursor:pointer; transition: all .15s; }
+nav.tabs button:hover { color: var(--ink); border-color: var(--accent); }
+nav.tabs button.active { background: var(--accent); color:#fff; border-color: var(--accent); }
+section.domtab { display:none; padding-top:32px; }
+section.domtab.active { display:block; animation: fadein .3s ease; }
+@keyframes fadein { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
+.section-title { font-size:26px; margin-bottom:6px; }
+.section-sub { color: var(--sub); font-size:14.5px; margin-bottom:28px; max-width:780px; }
+.panel { background: var(--panel); border:1px solid var(--line); border-radius: var(--card-radius); padding:22px 24px; margin-bottom:22px; }
+.callout { background: var(--panel2); border-left:4px solid var(--accent2); border-radius:10px; padding:14px 18px; font-size:13.5px; margin:16px 0; }
+.verify { font-size:12px; color: var(--sub); font-family: var(--mono); margin-top:10px; }
+footer.foot { text-align:center; color: var(--sub); font-size:12.5px; padding:40px 24px; border-top:1px solid var(--line); margin-top:40px; }
+table.dosetable { width:100%; border-collapse:collapse; font-size:12.6px; }
+table.dosetable th { text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent2); padding:8px 8px; border-bottom:2px solid var(--line); }
+table.dosetable td { padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+.drow { margin-bottom:10px; }
+.drow p { font-size:13.3px; margin:2px 0 0; }
+.drow.stat p { color: var(--sub); font-style:italic; }
+
+/* Accordion */
+.acc { border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden; background: var(--panel); }
+.acc-head { width:100%; text-align:left; background: var(--panel2); border:none; padding:14px 18px; display:flex; align-items:center; gap:14px; cursor:pointer; font-family:var(--sans); }
+.acc-name { font-weight:700; font-size:14.5px; color: var(--ink); flex:0 0 220px; }
+.acc-range { font-family: var(--mono); font-size:12px; color: var(--sub); flex:1; }
+.acc-chevron { color: var(--accent2); transition: transform .2s; }
+.acc.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display:none; padding:18px 22px; border-top:1px solid var(--line); }
+.acc.open .acc-body { display:block; }
+
+/* Panic value styling */
+.drow.panic { background: var(--panicbg); border:1.5px solid var(--panicborder); border-radius:10px; padding:12px 16px; }
+.drow.panic .lbl { color: var(--panicborder); }
+.drow.panic p { color: var(--ink); font-weight:500; }
+</style>
+</head>
+<body data-theme="dark">
+<header class="top">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">Hematology Atlas &middot; File 3 of 3</div>
+      <h1>CBC &amp; Coagulation Labs Interpretation Atlas</h1>
+      <p class="tag">Every CBC-with-differential value and coagulation study, click-to-reveal reference cards with critical-value thresholds flagged, and clinical correlation to stroke, ACS, and DIC workups.</p>
+    </div>
+    <button id="themeToggle">&#9788; Light mode</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabnav">
+  <button data-dom="l1" class="active">CBC with Differential</button>
+  <button data-dom="l2">Coagulation Studies</button>
+  <button data-dom="l3">Clinical Correlation</button>
+</nav>
+
+<div class="wrap">
+
+<section class="domtab active" id="l1">
+  <h2 class="section-title">CBC with Differential &mdash; Click a Lab to Expand</h2>
+  <p class="section-sub">Every value in a standard CBC-with-differential: normal range, causes of high/low, critical-value thresholds (flagged in red), and clinical pearls.</p>
+  
+        <div class="acc">
+          <button class="acc-head" data-target="cbc0">
+            <span class="acc-name">Hemoglobin (Hgb)</span>
+            <span class="acc-range">Male 13.5–17.5 g/dL &middot; Female 12.0–15.5 g/dL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc0">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Polycythemia vera, secondary polycythemia (COPD, OSA, high altitude, EPO doping, renal cell carcinoma/other EPO-secreting tumors), dehydration (hemoconcentration, not a true increase in mass).</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Anemia of any cause — iron deficiency, chronic disease, hemolysis, marrow failure, acute blood loss, nutritional (B12/folate).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>Symptomatic anemia or Hgb &lt; 7 g/dL generally triggers transfusion consideration (restrictive threshold per most current RCTs, e.g., TRICC/TRISS); Hgb &lt; 5 g/dL or hemodynamic instability is a critical value requiring urgent transfusion regardless of symptoms in most protocols.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Transfusion thresholds are contextual, not a single hard number — active ACS/cardiac ischemia typically uses a higher threshold (~8 g/dL) than a stable asymptomatic patient (~7 g/dL) per current restrictive-strategy trials.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc1">
+            <span class="acc-name">Hematocrit (Hct)</span>
+            <span class="acc-range">Male 41–53% &middot; Female 36–46%</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc1">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Same causes as elevated Hgb; also a marker of hemoconcentration in acute dehydration/burns.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Parallels Hgb in most anemias; disproportionately low relative to Hgb is not typical (they usually move together, roughly Hct &asymp; 3 &times; Hgb).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>Hct &lt; 21% (roughly parallels Hgb &lt; 7) generally prompts the same transfusion consideration as low Hgb.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Hct is calculated/estimated on modern analyzers (not directly measured) — can be falsely elevated in severe hyperglycemia/hypernatremia-driven cell swelling artifacts on some instruments.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc2">
+            <span class="acc-name">MCV (Mean Corpuscular Volume)</span>
+            <span class="acc-range">80–100 fL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc2">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Macrocytic anemia: B12/folate deficiency, alcohol use, liver disease, hypothyroidism, myelodysplastic syndrome, reticulocytosis (retics are larger), certain medications (hydroxyurea, zidovudine, methotrexate).</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Microcytic anemia: iron deficiency, thalassemia trait/disease, anemia of chronic disease (can also be normocytic), sideroblastic anemia, lead poisoning.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>Not itself a panic value, but extreme MCV (very high with megaloblastic anemia, e.g. &gt;120) should prompt urgent B12/folate workup given risk of concurrent neurologic injury from B12 deficiency.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Mentzer index (MCV &divide; RBC count) &lt;13 favors thalassemia over iron deficiency; &gt;13 favors iron deficiency — quick bedside differentiator before confirmatory testing (ferritin, Hb electrophoresis).</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc3">
+            <span class="acc-name">RDW (Red Cell Distribution Width)</span>
+            <span class="acc-range">11.5–14.5%</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc3">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Reflects anisocytosis (size variation) — classically elevated in iron deficiency (unlike thalassemia trait, where RDW is typically normal despite similarly low MCV), mixed nutritional deficiencies, recent transfusion or hemolysis (new large reticulocytes mixed with old small cells), myelodysplastic syndrome.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Not clinically significant when low/normal — RDW has no meaningful “low” pathology.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No panic threshold.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Elevated RDW in an otherwise normal CBC (before anemia develops) has been associated with increased all-cause and cardiovascular mortality in population studies — an underused general prognostic marker.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc4">
+            <span class="acc-name">Reticulocyte Count / Index</span>
+            <span class="acc-range">0.5–2.5% (absolute count 25,000–75,000/µL); corrected reticulocyte index (RPI) accounts for degree of anemia</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc4">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Appropriate marrow response to hemolysis or acute blood loss; also seen with EPO/ESA therapy, recovery from marrow suppression (chemo, B12/iron repletion response).</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Inappropriately low for the degree of anemia signals a marrow production problem (aplastic anemia, marrow infiltration, pure red cell aplasia, severe nutritional deficiency, renal failure with EPO deficiency) rather than peripheral destruction.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>Not a panic value, but a low retic count in the setting of severe unexplained anemia should prompt urgent marrow evaluation.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>This is the single most useful test for classifying an anemia as production-problem vs. destruction/loss-problem — always corrected for the hematocrit (RPI) since a raw % retic count is misleadingly elevated when the total RBC pool is already low.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc5">
+            <span class="acc-name">Platelet Count</span>
+            <span class="acc-range">150,000–450,000/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc5">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Reactive/secondary thrombocytosis (infection, inflammation, iron deficiency, post-splenectomy, malignancy) is far more common than a primary myeloproliferative process (essential thrombocythemia).</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>ITP, DIC, TTP/HUS, HIT, hypersplenism, marrow infiltration/failure, medication effect, pseudothrombocytopenia (EDTA-induced clumping artifact — always confirm with a smear or citrate tube before acting).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>&lt;10,000–20,000/µL: spontaneous bleeding risk, prophylactic platelet transfusion often considered even without bleeding. &lt;50,000/µL: holds for many procedures/surgery. &gt;1,000,000/µL: paradoxical bleeding risk from acquired von Willebrand syndrome (large vWF multimers consumed) in addition to thrombosis risk — counterintuitive but important.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Always check a peripheral smear before treating an unexpected very low platelet count — EDTA-induced pseudothrombocytopenia (in vitro platelet clumping) is a common, harmless cause of a falsely low automated count.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc6">
+            <span class="acc-name">MPV (Mean Platelet Volume)</span>
+            <span class="acc-range">7.5–11.5 fL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc6">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Suggests increased platelet turnover/younger platelet population — ITP (marrow compensating), some myeloproliferative disorders.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Suggests decreased production — aplastic anemia, chemotherapy effect, some inherited thrombocytopenias (e.g., Wiskott-Aldrich has small platelets, unlike Bernard-Soulier which has large platelets).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No panic threshold.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>MPV can help distinguish a peripheral destructive thrombocytopenia (high MPV, young large platelets being released) from a central production problem (low/normal MPV) — analogous to how retic count works for anemia.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc7">
+            <span class="acc-name">Total WBC Count</span>
+            <span class="acc-range">4,500–11,000/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc7">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Infection (bacterial &gt; viral typically), inflammation, stress/steroid response (demargination), leukemia (especially if markedly elevated with blasts), smoking (chronic mild elevation), post-splenectomy.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Viral infection, marrow suppression (chemo, radiation, marrow failure/infiltration), sepsis (can consume/sequester neutrophils faster than marrow releases them), medication effect, autoimmune (Felty syndrome, SLE), B12/folate deficiency (also affects WBC production).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>&lt;1,000/µL or ANC &lt;500/µL (severe neutropenia) — neutropenic fever is a medical emergency requiring immediate empiric broad-spectrum antibiotics, often within 1 hour. &gt;50,000/µL (leukemoid reaction or leukemia) warrants urgent smear review — hyperviscosity/leukostasis risk climbs sharply above ~100,000/µL, especially with blasts (AML) more than mature cells (CLL).</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>The absolute count (not the percentage) is what drives clinical decisions — always calculate ANC (WBC &times; [%neutrophils + %bands] &divide; 100) rather than reacting to the neutrophil percentage alone.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc8">
+            <span class="acc-name">Neutrophils (ANC)</span>
+            <span class="acc-range">40–75% &middot; ANC 1,500–8,000/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc8">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Bacterial infection, tissue necrosis/inflammation, corticosteroids (demargination, not true production increase), stress response, CML (with basophilia and left shift), smoking.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Viral infection, chemotherapy/radiation nadir, clozapine/other drug-induced agranulocytosis, autoimmune neutropenia, B12/folate deficiency, congenital neutropenia syndromes, benign ethnic neutropenia (common in people of African descent, no increased infection risk).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>ANC &lt;500/µL = severe neutropenia — neutropenic precautions and, if febrile, emergent empiric antibiotics without waiting for cultures. ANC &lt;100/µL = profound neutropenia, highest infection risk.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Always distinguish benign ethnic neutropenia (chronically mild-low ANC, no infection risk, common and often unrecognized) from a true pathologic neutropenia — avoid unnecessary workup/anxiety when it's a patient's normal baseline.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc9">
+            <span class="acc-name">Lymphocytes</span>
+            <span class="acc-range">20–45% &middot; Absolute 1,000–4,800/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc9">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Viral infections (EBV, CMV, pertussis in children can cause striking counts), CLL (in older adults, look for smudge cells on smear), acute stress response (less pronounced than neutrophilia).</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>HIV/AIDS (CD4 count is the clinically tracked subset), corticosteroid use, chemotherapy/radiation, autoimmune disease, acute severe illness/sepsis (lymphopenia is a marker of illness severity), congenital immunodeficiency.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No standard panic threshold, but severe lymphopenia in the context of possible HIV should prompt CD4 count and opportunistic infection risk assessment.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>New unexplained lymphocytosis with smudge cells in a patient &gt;60 should prompt flow cytometry to evaluate for CLL — often an incidental asymptomatic finding.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc10">
+            <span class="acc-name">Monocytes</span>
+            <span class="acc-range">2–10% &middot; Absolute 200–950/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc10">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>Chronic infections (TB, endocarditis), autoimmune/granulomatous disease (sarcoidosis), recovery phase post-neutropenia, chronic myelomonocytic leukemia (CMML) if persistent in an older adult.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Marrow suppression, hairy cell leukemia (classically causes monocytopenia, a distinguishing feature from other leukemias).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No panic threshold.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Persistent absolute monocytosis (&gt;1,000/µL for &ge;3 months) without another explanation in an older adult warrants CMML workup — easy to overlook since monocytes are rarely the focus of CBC review.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc11">
+            <span class="acc-name">Eosinophils</span>
+            <span class="acc-range">0–6% &middot; Absolute 0–500/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc11">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>NAACP mnemonic — Neoplasm, Allergy/Asthma, Addison's disease, Collagen-vascular disease, Parasites. Also drug reactions (DRESS syndrome), hypereosinophilic syndrome.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Acute stress response/Cushing syndrome (cortisol suppresses eosinophils acutely) — rarely clinically significant on its own.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>&gt;1,500/µL (marked eosinophilia) warrants urgent workup, especially with cardiac/pulmonary symptoms — hypereosinophilic syndrome can cause eosinophilic myocarditis/endomyocardial fibrosis (Loeffler endocarditis).</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>DRESS syndrome (Drug Reaction with Eosinophilia and Systemic Symptoms) can be life-threatening — marked eosinophilia plus rash/fever/organ involvement 2–8 weeks after starting a new drug (classically anticonvulsants, allopurinol, sulfonamides) should prompt immediate drug discontinuation.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="cbc12">
+            <span class="acc-name">Basophils</span>
+            <span class="acc-range">0–1% &middot; Absolute 0–200/µL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="cbc12">
+              <div class="drow"><span class="lbl">High &mdash; causes</span><p>CML (classic finding, especially with left-shifted myeloid series), myeloproliferative neoplasms, rarely IgE-mediated hypersensitivity, hypothyroidism.</p></div>
+              <div class="drow"><span class="lbl">Low &mdash; causes</span><p>Acute infection/stress, hyperthyroidism — rarely clinically significant alone.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No panic threshold, but unexplained basophilia should prompt BCR-ABL testing for CML.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Basophilia unexplained by allergy is one of the more specific tip-offs to CML among the differential counts.</p></div></div>
+        </div>
+</section>
+
+<section class="domtab" id="l2">
+  <h2 class="section-title">Coagulation Studies &mdash; Click a Test to Expand</h2>
+  <p class="section-sub">PT/INR, PTT, fibrinogen, D-dimer, thrombin time, and anti-Xa — what each test actually measures and when it drives a clinical decision.</p>
+  
+        <div class="acc">
+          <button class="acc-head" data-target="coag0">
+            <span class="acc-name">PT / INR</span>
+            <span class="acc-range">PT 11–13.5 sec &middot; INR 0.8–1.1 (untreated)</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag0">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>Warfarin therapy, vitamin K deficiency, liver disease/synthetic dysfunction, factor VII deficiency (isolated), DIC, supratherapeutic DOAC levels (variable sensitivity by reagent/drug), massive transfusion (dilutional).</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>Monitors warfarin therapy; component of MELD score in liver disease (not a bleeding-risk marker in that context); part of DIC scoring; part of the alteplase/tPA eligibility screen in acute stroke.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>INR &gt;1.7 is an FDA-label contraindication to IV alteplase in acute ischemic stroke. Markedly elevated INR (&gt;5–10) without bleeding still warrants urgent vitamin K &plusmn; holding warfarin per bleeding-risk protocols; INR with active major bleeding at any level is a critical value requiring immediate reversal.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Factor VII has the shortest half-life (~6h) of the vitamin-K-dependent factors — PT/INR rises first with both warfarin initiation and vitamin K deficiency, before PTT changes.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="coag1">
+            <span class="acc-name">PTT (aPTT)</span>
+            <span class="acc-range">25–35 sec (institution-dependent)</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag1">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>Unfractionated heparin therapy, hemophilia A/B/C, von Willebrand disease (via secondary factor VIII deficiency), lupus anticoagulant (prolongs in vitro, paradoxically prothrombotic in vivo), factor XII deficiency (prolongs PTT but is NOT associated with bleeding — classic teaching point), DIC, liver disease, massive transfusion.</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>Monitors UFH infusion; screens the intrinsic pathway; part of the mixing study workup for an unexplained prolongation.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>PTT &gt;2–3x the therapeutic range (supratherapeutic heparin) raises bleeding risk and should prompt infusion hold/rate reduction per nomogram; markedly prolonged PTT with active bleeding is a critical value.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>A prolonged PTT that does NOT correct on a 1:1 mixing study indicates an inhibitor (factor-specific antibody, or lupus anticoagulant) rather than a simple factor deficiency — changes the entire differential and management pathway.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="coag2">
+            <span class="acc-name">Fibrinogen</span>
+            <span class="acc-range">200–400 mg/dL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag2">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>Acute phase reactant — elevated in inflammation, infection, pregnancy, malignancy; usually not independently actionable when isolated.</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>Low fibrinogen is a core component of the ISTH DIC score; cryoprecipitate is dosed specifically to correct fibrinogen; monitored during thrombolytic therapy (fibrinogen depletion is expected and tracked to gauge systemic lytic effect and bleeding risk).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>&lt;100 mg/dL with active bleeding (or before an invasive procedure) generally triggers cryoprecipitate transfusion; &lt;50 mg/dL is a critical value with substantial hemorrhage risk.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>Fibrinogen is often the last factor to normalize after DIC resolves and among the first to drop during ongoing consumption — trending it serially is more informative than a single value.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="coag3">
+            <span class="acc-name">D-dimer</span>
+            <span class="acc-range">&lt;0.50 &micro;g/mL FEU (assay-dependent; age-adjusted cutoffs increasingly used: age &times; 0.01 for patients &gt;50)</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag3">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>VTE (DVT/PE), DIC, recent surgery/trauma, pregnancy, malignancy, advanced age, infection/inflammation — very sensitive but non-specific.</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>High negative predictive value to rule OUT VTE in low-to-moderate pretest probability patients (Wells score); not useful to rule in VTE given poor specificity; component of ISTH DIC score.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No panic threshold — an elevated D-dimer alone is never a critical value; it is a screening tool that requires clinical correlation and confirmatory imaging when VTE is suspected.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>A D-dimer should generally not be ordered in a patient with high pretest probability for VTE — proceed directly to imaging, since a negative D-dimer doesn't reliably rule out VTE in that population and a positive one adds nothing actionable.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="coag4">
+            <span class="acc-name">Thrombin Time (TT)</span>
+            <span class="acc-range">14–19 sec (assay-dependent)</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag4">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>Heparin contamination/effect (most common cause of an otherwise-unexplained prolonged TT), hypofibrinogenemia/dysfibrinogenemia, direct thrombin inhibitors (dabigatran, argatroban, bivalirudin), FDP/fibrin degradation products (as in DIC).</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>Useful to detect heparin contamination of a sample (e.g., drawn from a heparinized line) and to screen for direct thrombin inhibitor effect when PT/PTT are ambiguous.</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>No standard panic threshold; interpreted alongside the clinical bleeding picture.</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>A prolonged TT that normalizes with a reptilase time (reptilase is not inhibited by heparin) confirms heparin contamination as the cause rather than a true fibrinogen/dysfibrinogenemia problem.</p></div></div>
+        </div>
+
+        <div class="acc">
+          <button class="acc-head" data-target="coag5">
+            <span class="acc-name">Anti-Xa Level</span>
+            <span class="acc-range">Prophylactic LMWH: 0.2–0.5 IU/mL &middot; Therapeutic LMWH: 0.6–1.0 IU/mL (peak, 4h post-dose) &middot; UFH: 0.3–0.7 IU/mL</span>
+            <span class="acc-chevron">&#9662;</span>
+          </button>
+          <div class="acc-body" id="coag5">
+              <div class="drow"><span class="lbl">Elevated / abnormal &mdash; causes</span><p>Overdosing, renal impairment (LMWH accumulation), obesity/dosing weight miscalculation.</p></div>
+              <div class="drow"><span class="lbl">Clinical use</span><p>Preferred monitoring method for UFH in patients with baseline PTT prolongation (e.g., lupus anticoagulant) where PTT is unreliable; used for LMWH monitoring in renal impairment, pregnancy, and extremes of body weight; can also be calibrated to estimate DOAC drug levels in specific labs (specialized assay, not routinely available everywhere).</p></div>
+              <div class="drow panic"><span class="lbl">Critical value / action</span><p>Markedly supratherapeutic levels with active bleeding warrant reversal per agent (protamine partially for LMWH, fully for UFH).</p></div>
+              <div class="drow stat"><span class="lbl">Pearl</span><p>In patients with a baseline-prolonged PTT from lupus anticoagulant, PTT cannot be trusted to monitor heparin — anti-Xa is the necessary alternative monitoring strategy.</p></div></div>
+        </div>
+</section>
+
+<section class="domtab" id="l3">
+  <h2 class="section-title">Clinical Correlation: Stroke, ACS &amp; DIC</h2>
+  <p class="section-sub">How CBC and coagulation studies plug directly into time-critical clinical decisions.</p>
+
+  <div class="panel">
+    <h3>Acute Ischemic Stroke Workup</h3>
+    <div class="drow"><span class="lbl">Platelet count</span><p>Count &lt;100,000/µL is an FDA-label contraindication to IV alteplase — must result before treatment decision in most protocols (though treatment should not be delayed awaiting labs if no reason to suspect thrombocytopenia).</p></div>
+    <div class="drow panic"><span class="lbl">INR</span><p>INR &gt;1.7 (in a patient on warfarin) is an FDA-label contraindication to IV alteplase. Any use of a DOAC (dabigatran, apixaban, rivaroxaban, edoxaban) within the prior 48h (or longer with renal impairment) generally excludes alteplase regardless of standard coag studies, since routine PT/PTT don't reliably reflect DOAC levels.</p></div>
+    <div class="drow"><span class="lbl">Glucose</span><p>Checked immediately — severe hypoglycemia is a stroke mimic and must be corrected/excluded before attributing a focal deficit to ischemia.</p></div>
+    <div class="drow"><span class="lbl">CBC</span><p>Severe anemia can exacerbate ischemic injury via reduced oxygen delivery to penumbra tissue; marked thrombocytosis or polycythemia can itself be a stroke risk factor/etiology to investigate after the acute event.</p></div>
+  </div>
+
+  <div class="panel">
+    <h3>Acute Coronary Syndrome &amp; Hematology-Relevant Labs</h3>
+    <div class="drow"><span class="lbl">CBC/Hgb</span><p>Significant anemia can precipitate demand (type 2) ischemia even without plaque rupture — always check Hgb in ACS presentations, especially in older adults or those with GI symptoms.</p></div>
+    <div class="drow"><span class="lbl">Platelet count</span><p>Baseline count needed before initiating dual antiplatelet therapy/GPIIb-IIIa inhibitors; a falling count after starting heparin should raise concern for HIT (heparin-induced thrombocytopenia) — typically a &gt;50% drop from baseline 5–10 days after exposure.</p></div>
+    <div class="drow"><span class="lbl">PTT / anti-Xa</span><p>Used to titrate UFH infusion in ACS management per institutional nomogram; anti-Xa preferred if baseline PTT is unreliable (e.g., lupus anticoagulant).</p></div>
+  </div>
+
+  <div class="panel">
+    <h3>DIC &mdash; ISTH Scoring System</h3>
+    
+    <table class="dosetable">
+      <thead><tr><th>Parameter</th><th>0 points</th><th>1 point</th><th>2–3 points</th></tr></thead>
+      <tbody><tr><td><strong>Platelet count</strong></td><td>≥100,000/µL = 0</td><td>50,000–99,999/µL = 1</td><td>&lt;50,000/µL = 2</td></tr><tr><td><strong>Fibrin marker (D-dimer/FDP)</strong></td><td>No increase = 0</td><td>Moderate increase = 2</td><td>Strong increase = 3</td></tr><tr><td><strong>PT prolongation</strong></td><td>&lt;3 sec above ULN = 0</td><td>3–6 sec above ULN = 1</td><td>&gt;6 sec above ULN = 2</td></tr><tr><td><strong>Fibrinogen</strong></td><td>≥100 mg/dL = 0</td><td>&lt;100 mg/dL = 1</td><td>—</td></tr></tbody>
+    </table>
+    <p style="font-size:13px; margin-top:10px;">Total score <strong>&ge;5</strong> = compatible with overt DIC. Score 3&ndash;4 = non-overt/early DIC, repeat in 12&ndash;24h. Requires a known DIC-associated underlying disorder (sepsis, trauma, malignancy, obstetric emergency) as a prerequisite for use.</p>
+    <p class="verify">A 2025 ISTH update introduces phase-based classification (pre-DIC, early-phase, overt) and revised D-dimer thresholds — verify against the current ISTH publication before using for formal diagnostic documentation.</p>
+    
+  </div>
+
+  
+    <div class="panel" style="border:2px solid var(--accent2);">
+      <h3>Case: Elevated INR in a Patient on No Medications</h3>
+      <p style="font-size:13.6px; font-style:italic; margin-bottom:14px;">A 45-year-old with no medical history, on no medications, presents for pre-op labs before an elective procedure. INR returns at 1.6 (baseline PT/INR never previously checked). No bleeding, no bruising, no family history of bleeding disorders.</p>
+      <div class="callout">In someone NOT on warfarin or a DOAC, an elevated INR always means something real is disrupting extrinsic/common pathway factor synthesis or activity — it is never an incidental finding to ignore, because there's no medication to blame it on.</div>
+      <h4 style="margin-top:18px; font-size:16px;">Differential</h4>
+      <div class='drow'><span class='lbl'>Vitamin K deficiency</span><p>Poor oral intake, malabsorption (celiac disease, cystic fibrosis, biliary obstruction/cholestasis impairing fat-soluble vitamin absorption), recent broad-spectrum antibiotic use disrupting gut-flora vitamin K synthesis.</p></div><div class='drow'><span class='lbl'>Liver synthetic dysfunction</span><p>Even in an asymptomatic patient — early cirrhosis, undiagnosed hepatitis, fatty liver disease can present with an isolated INR elevation before other liver enzyme abnormalities or symptoms appear.</p></div><div class='drow'><span class='lbl'>Isolated Factor VII deficiency</span><p>Rare hereditary condition; would show isolated PT/INR prolongation with normal PTT since factor VII is unique to the extrinsic pathway.</p></div><div class='drow'><span class='lbl'>Lupus anticoagulant / antiphospholipid antibodies</span><p>More classically prolongs PTT, but some reagent systems and some lupus anticoagulants can affect PT-based assays too — worth considering especially if there's any history of prior clots or pregnancy loss.</p></div><div class='drow'><span class='lbl'>Pre-analytical error</span><p>Under-filled citrate tube (wrong blood-to-anticoagulant ratio artificially prolongs both PT and PTT), sample drawn above an IV line/heparin flush, or a very high hematocrit reducing plasma volume relative to citrate — always consider a repeat draw before an extensive workup if the finding is unexpected and isolated.</p></div>
+      <h4 style="margin-top:14px; font-size:16px;">Workup approach</h4>
+      <p style="font-size:13.4px;">Repeat INR on a fresh, properly-drawn sample first (rule out pre-analytical error — cheapest and fastest step). If confirmed: obtain PTT (isolated PT prolongation narrows the differential toward factor VII deficiency or early vitamin K deficiency; combined PT+PTT prolongation broadens it to liver disease, more advanced vitamin K deficiency, or DIC), liver function panel + synthetic function (albumin), nutritional/malabsorption history, and consider empiric vitamin K trial with recheck in 24–48h (rapid correction supports vitamin K deficiency over liver disease, where correction is slower/incomplete).</p>
+      <div class="callout">This scenario matters clinically because an unexplained elevated INR before a procedure changes bleeding risk and may be the first sign of undiagnosed liver disease or a malabsorptive condition — it should delay elective surgery until characterized, not be dismissed as a lab quirk.</div>
+    </div>
+</section>
+
+</div>
+
+<footer class="foot">CBC &amp; Coagulation Labs Interpretation Atlas &middot; File 3 of 3 &middot; Companion to the Hematopoiesis &amp; Cellular Atlas and the Coagulation, Clotting Disorders &amp; Anticoagulation Atlas.</footer>
+
+<script>
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const body = document.body;
+  function setTheme(t) {
+    body.setAttribute('data-theme', t);
+    btn.innerHTML = t === 'dark' ? '&#9788; Light mode' : '&#9789; Dark mode';
+    localStorage.setItem('hematoAtlas3Theme', t);
+  }
+  setTheme(localStorage.getItem('hematoAtlas3Theme') || 'dark');
+  btn.addEventListener('click', () => setTheme(body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+})();
+
+(function() {
+  const buttons = document.querySelectorAll('nav.tabs button');
+  const sections = document.querySelectorAll('section.domtab');
+  buttons.forEach(b => {
+    b.addEventListener('click', () => {
+      buttons.forEach(x => x.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById(b.dataset.dom).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+})();
+
+(function() {
+  document.querySelectorAll('.acc-head').forEach(h => {
+    h.addEventListener('click', () => {
+      h.parentElement.classList.toggle('open');
+    });
+  });
+})();
+</script>
+</body>
+</html>
