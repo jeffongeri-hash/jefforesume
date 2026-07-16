@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, Route, Routes, Navigate } from "react-router-dom";
+import { NavLink, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,7 +23,7 @@ const NAV = [
 export default function PAVault() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = (typeof window !== "undefined" ? null : null);
+  const location = useLocation();
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
@@ -51,7 +51,7 @@ export default function PAVault() {
             Loading…
           </div>
         ) : !session ? (
-          <RedirectToAuth />
+          <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />
         ) : (
           <div>
             <div className="border-b border-border bg-card">
