@@ -9,6 +9,7 @@ interface ScanResult {
   status: string;
   jobs_found?: number;
   error?: string;
+  url?: string;
 }
 
 const STATUS_FILTERS = ["new", "viewed", "applied", "ignored", "all"] as const;
@@ -106,12 +107,23 @@ export default function VaultDashboard() {
               <li key={i} className="flex items-center gap-2">
                 {r.status === "ok" ? (
                   <CheckCircle2 size={14} className="text-primary shrink-0" />
+                ) : r.status === "manual_review" ? (
+                  <ExternalLink size={14} className="text-muted-foreground shrink-0" />
                 ) : (
                   <XCircle size={14} className="text-destructive shrink-0" />
                 )}
                 <span className="font-medium">{r.source}:</span>
                 {r.status === "ok" ? (
                   <span className="text-muted-foreground">{r.jobs_found} listings found</span>
+                ) : r.status === "manual_review" ? (
+                  <span className="text-muted-foreground">
+                    Manual review needed{r.url ? " · " : ""}
+                    {r.url && (
+                      <a href={r.url} target="_blank" rel="noreferrer" className="text-primary hover:underline">
+                        Open source
+                      </a>
+                    )}
+                  </span>
                 ) : (
                   <span className="text-destructive">{r.error}</span>
                 )}
