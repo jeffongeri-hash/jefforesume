@@ -431,19 +431,20 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
     return { source: source.name, status: "ok", jobs_found: jobs.length };
   } catch (e: any) {
     const message = String(e?.message ?? e);
+    const status = e instanceof ManualReviewError ? "manual_review" : "error";
     await admin.from("pav_scrape_runs").update({ 
       finished_at: new Date().toISOString(), 
-      status: "error", 
+      status, 
       error: message 
     }).eq("id", run!.id);
     
     await admin.from("pav_sources").update({
       last_scraped_at: new Date().toISOString(),
-      last_status: "error",
+      last_status: status,
       last_error: message,
     }).eq("id", source.id);
     
-    return { source: source.name, status: "error", error: message };
+    return { source: source.name, status, error: message, url: source.base_url };
   }
 }
 
