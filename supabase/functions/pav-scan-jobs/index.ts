@@ -44,6 +44,38 @@ function json(body: unknown, status = 200) {
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
+class ManualReviewError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ManualReviewError";
+  }
+}
+
+async function fetchText(url: string, accept = "text/html") {
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": UA,
+      Accept: accept,
+      "Accept-Language": "en-US,en;q=0.9",
+    },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from ${url}`);
+  return await res.text();
+}
+
+function absoluteUrl(href: string | undefined, baseUrl: string) {
+  if (!href) return baseUrl;
+  return href.startsWith("http") ? href : new URL(href, baseUrl).toString();
+}
+
+function cleanText(value: string | undefined | null) {
+  return (value ?? "").replace(/\s+/g, " ").trim();
+}
+
+function blockedSource(source: SourceRow, reason: string): never {
+  throw new ManualReviewError(`${source.name}: ${reason}. Open the source link manually for current listings.`);
+}
+
 async function scrapePhenom(source: SourceRow): Promise<ScrapedJob[]> {
   const {
     api_path = "/api/apply/v2/jobs",
@@ -115,37 +147,48 @@ async function scrapeWorkday(source: SourceRow): Promise<ScrapedJob[]> {
 }
 
 async function scrapeTalentBrew(source: SourceRow): Promise<ScrapedJob[]> {
-  const { query = "" } = source.config;
-  const url = new URL(source.base_url.replace(/\/$/, "") + "/search-jobs/results");
-  url.searchParams.set("k", query);
-  url.searchParams.set("format", "json");
-  
+  const { query = "", location = "", records = 20 } = source.config;
+  const url = new URL(`${source.base_url.replace(/\/$/, "")}/search-jobs/results`);
+  url.searchParams.set("CurrentPage", "1");
+  url.searchParams.set("RecordsPerPage", String(records));
+  url.searchParams.set("SearchResultsModuleName", "Search Results");
+  url.searchParams.set("SearchFiltersModuleName", "Search Filters");
+  url.searchParams.set("SearchType", "5");
+  url.searchParams.set("Keywords", query);
+  url.searchParams.set("Location", location);
+  url.searchParams.set("Distance", "50");
+
   const res = await fetch(url.toString(), {
     headers: { "User-Agent": UA, "Accept": "application/json" },
   });
-  if (!res.ok) throw new Error(`TalentBrew responded ${res.status} for ${source.name}`);
-  
+  if (!res.ok) throw new Error(`${source.name} results endpoint responded ${res.status}`);
+
   const data = await res.json();
   const html = data.results ?? "";
   if (!html) return [];
-  
+
   const $ = load(html);
   const jobs: ScrapedJob[] = [];
-  $("li").each((_, el) => {
-    const card = $(el);
-    const title = card.find("h2").text().trim();
-    const link = card.find("a").attr("href") ?? "";
-    const location = card.find(".job-location").text().trim();
+  $("a[data-job-id]").each((_, el) => {
+    const link = $(el);
+    const card = link.closest("li");
+    const title = cleanText(link.find("h2").first().text() || link.text());
     if (!title) return;
-    
+    const href = link.attr("href") ?? "";
+    const locationText = cleanText(
+      link.find(".job-location, .job-location-list, [class*='location']").first().text() ||
+        card.find(".job-location, .job-location-list, [class*='location']").first().text()
+    );
+    const jobId = link.attr("data-job-id") ?? href;
+
     jobs.push({
-      external_id: link,
+      external_id: String(jobId),
       title,
       organization: source.name,
-      location,
-      url: link.startsWith("http") ? link : new URL(link, source.base_url).toString(),
-      is_per_diem: /per\s*diem|prn/i.test(title),
-      raw: { title, location },
+      location: locationText || undefined,
+      url: absoluteUrl(href, source.base_url),
+      is_per_diem: /per\s*diem|prn|per-diem/i.test(`${title} ${locationText}`),
+      raw: { jobId, locationText },
     });
   });
   return jobs;
@@ -230,6 +273,87 @@ async function scrapeGenericHtml(source: SourceRow): Promise<ScrapedJob[]> {
   return jobs;
 }
 
+async function scrapeCompHealth(source: SourceRow): Promise<ScrapedJob[]> {
+  const html = await fetchText(source.base_url);
+  const $ = load(html);
+  const jobs: ScrapedJob[] = [];
+  $(".job-card-container").each((_, el) => {
+    const card = $(el);
+    const link = card.find('a[href^="/job/"]').first();
+    const title = cleanText(link.find("h4").first().text() || link.text());
+    if (!title) return;
+    const href = link.attr("href") ?? "";
+    const tags = card.find(".job-info-tag").map((__, tag) => cleanText($(tag).text())).get().filter(Boolean);
+    jobs.push({
+      external_id: card.attr("id") ?? href,
+      title,
+      organization: source.name,
+      location: tags.find((tag) => /,/.test(tag) && !/\$|Locum|Posted/i.test(tag)),
+      pay_text: tags.find((tag) => /\$/.test(tag)),
+      posted_text: tags.find((tag) => /^Posted/i.test(tag)),
+      url: absoluteUrl(href, source.base_url),
+      is_per_diem: /per\s*diem|prn/i.test(title),
+      raw: { tags },
+    });
+  });
+  return jobs;
+}
+
+async function scrapeBarton(source: SourceRow): Promise<ScrapedJob[]> {
+  const html = await fetchText(source.base_url);
+  const $ = load(html);
+  const jobs: ScrapedJob[] = [];
+  $("li.specific-job").each((_, el) => {
+    const card = $(el);
+    const link = card.find("h4 a").first();
+    const title = cleanText(link.text());
+    if (!title) return;
+    const providerType = cleanText(card.find(".provider-type a").first().text());
+    const location = cleanText(card.find(".location a").first().text());
+    const specialty = cleanText(card.find(".specialty a").first().text());
+    const href = link.attr("href") ?? "";
+    jobs.push({
+      external_id: href || title,
+      title,
+      organization: source.name,
+      location: location || undefined,
+      url: absoluteUrl(href, source.base_url),
+      is_per_diem: false,
+      raw: { providerType, specialty, description: cleanText(card.find(".description").text()) },
+    });
+  });
+  return jobs;
+}
+
+async function scrapeAya(source: SourceRow): Promise<ScrapedJob[]> {
+  const html = await fetchText(source.base_url);
+  const match = html.match(/var jobsData = (\[.*?\])\s*var /s);
+  if (!match) return [];
+  const list: any[] = JSON.parse(match[1]);
+  const wanted = /physician assistant|\bpa\b/i;
+  return list
+    .filter((job) => wanted.test(`${job.professionText ?? ""} ${job.expertiseText ?? ""} ${job.title ?? ""}`))
+    .map((job) => {
+      const specialty = cleanText(job.expertiseText);
+      const cityState = cleanText([job.city, job.stateAbbrev].filter(Boolean).join(", "));
+      const title = specialty ? `Locum PA - ${specialty}` : "Locum Physician Assistant";
+      return {
+        external_id: String(job.jobID ?? title),
+        title,
+        organization: source.name,
+        location: cityState || undefined,
+        pay_text:
+          job.regularPayLow || job.regularPayHigh
+            ? `$${job.regularPayLow ?? "?"} - $${job.regularPayHigh ?? "?"}/hr`
+            : undefined,
+        posted_text: job.enteredTime,
+        url: `${source.base_url.replace(/\/$/, "")}/?jobId=${job.jobID}`,
+        is_per_diem: false,
+        raw: job,
+      };
+    });
+}
+
 async function runOneSource(admin: any, userId: string, source: SourceRow) {
   const { data: run } = await admin
     .from("pav_scrape_runs")
@@ -247,6 +371,18 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
         break;
       case "talentbrew":
         jobs = await scrapeTalentBrew(source);
+        break;
+      case "comphealth":
+        jobs = await scrapeCompHealth(source);
+        break;
+      case "barton":
+        jobs = await scrapeBarton(source);
+        break;
+      case "aya":
+        jobs = await scrapeAya(source);
+        break;
+      case "manual_review":
+        blockedSource(source, source.config?.reason ?? "this site blocks backend scraping or requires browser-only rendering");
         break;
       case "generic_html":
       case "json_api":
