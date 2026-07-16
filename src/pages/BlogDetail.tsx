@@ -399,6 +399,134 @@ const blogPosts = {
       <p><a href="/embeds/neuralgia-migraine-spine-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "bulletproof-note-atlas": {
+    title: "The Bulletproof Note — HPI, Exam & Disposition for the Deposition",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Charting an ED note that holds up in deposition — HPI structure, exam specificity, MDM, and disposition language that defends the chart.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/bulletproof-note-atlas.html" title="The Bulletproof Note" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/bulletproof-note-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "pediatric-bulletproof-note-atlas": {
+    title: "The Pediatric Bulletproof Note — Deposition-Proof Peds Charting",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Peds-specific charting: weight-based dosing, caregiver history, red flags, and disposition language that survives deposition.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/pediatric-bulletproof-note-atlas.html" title="The Pediatric Bulletproof Note" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/pediatric-bulletproof-note-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ed-charting-medicolegal-atlas": {
+    title: "The Charting Atlas — ED Documentation & Medicolegal Defense",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A medicolegal atlas of ED documentation — language that helped, language that hurt, and the patterns plaintiff attorneys look for.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ed-charting-medicolegal-atlas.html" title="The Charting Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ed-charting-medicolegal-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "surviving-the-deposition-atlas": {
+    title: "Surviving the Deposition — Testifying Consistent With Your Chart",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>How to prepare for and testify in a deposition — chart consistency, phrasing traps, and the mindset that keeps you defensible.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/surviving-the-deposition-atlas.html" title="Surviving the Deposition" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/surviving-the-deposition-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "laboratory-values-atlas": {
+    title: "Laboratory Values Atlas — ED & Hospitalist",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Reference ranges, panic values, and interpretation patterns for the labs ED and hospitalist clinicians order every shift.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/laboratory-values-atlas.html" title="Laboratory Values Atlas" style="width:100%;height:1800px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/laboratory-values-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "analgesics-atlas": {
+    title: "Analgesics Atlas — ED Pharmacology Master Reference",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Opioids, non-opioids, adjuncts, and regional analgesia — dosing, onset, duration, and selection pearls for ED pain control.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/analgesics-atlas.html" title="Analgesics Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/analgesics-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "alternative-analgesics-atlas": {
+    title: "Alternative Analgesics Atlas — Research-Backed Non-Drug Pain Methods",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Non-pharmacologic pain strategies — nerve blocks, TENS, heat/cold, mind-body, and procedural adjuncts with evidence pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/alternative-analgesics-atlas.html" title="Alternative Analgesics Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/alternative-analgesics-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "insulin-dosing-atlas": {
+    title: "Insulin Dosing Atlas — TDD, Weight-Based, Renal & Field Estimation",
+    category: "HEALTHCARE",
+    date: "July 10, 2026",
+    readTime: "18 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Total daily dose, weight-based starts, renal adjustments, correction factors, and bedside field estimation for insulin dosing.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/insulin-dosing-atlas.html" title="Insulin Dosing Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/insulin-dosing-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "sacramento-suburb-guide-3br-housing-commute-budget": {
     title: "Sacramento Suburb Guide: 3BR Housing, Commute & Monthly Budget for Every Orbit",
     category: "HEALTHCARE",
