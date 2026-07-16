@@ -17,6 +17,7 @@ const Podcast = lazy(() => import("./pages/Podcast"));
 const Professional = lazy(() => import("./pages/Professional"));
 const Accolades = lazy(() => import("./pages/Accolades"));
 const Auth = lazy(() => import("./pages/Auth"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="/professional" element={<Professional />} />
                 <Route path="/accolades" element={<Accolades />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
