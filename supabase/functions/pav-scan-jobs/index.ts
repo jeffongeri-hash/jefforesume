@@ -51,16 +51,23 @@ async function scrapePhenom(source: SourceRow): Promise<ScrapedJob[]> {
     query = "",
     location = "",
   } = source.config;
-  const url = new URL(source.base_url + api_path);
+  const url = new URL(source.base_url.replace(/\/$/, "") + api_path);
   url.searchParams.set("domain", domain ?? new URL(source.base_url).hostname);
   if (query) url.searchParams.set("query", query);
   if (location) url.searchParams.set("location", location);
   url.searchParams.set("start", "0");
-  url.searchParams.set("num", "20");
+  url.searchParams.set("num", "30");
+  
   const res = await fetch(url.toString(), {
-    headers: { "User-Agent": UA, Accept: "application/json" },
+    headers: { 
+      "User-Agent": UA, 
+      "Accept": "application/json",
+      "Referer": source.base_url,
+      "X-Requested-With": "XMLHttpRequest"
+    },
   });
-  if (!res.ok) throw new Error(`Phenom API responded ${res.status} for ${source.name}`);
+  if (!res.ok) throw new Error(`Phenom API (${url.toString()}) responded ${res.status} for ${source.name}`);
+  
   const data = await res.json();
   const list: any[] = data.jobs ?? data.data?.jobs ?? [];
   return list.map((j) => ({
@@ -70,7 +77,7 @@ async function scrapePhenom(source: SourceRow): Promise<ScrapedJob[]> {
     location: j.location ?? (Array.isArray(j.locations) ? j.locations.join(", ") : undefined),
     pay_text: j.payRate ?? j.compensation ?? undefined,
     posted_text: j.postedDate ?? j.posted_on ?? undefined,
-    url: j.applyUrl ?? j.url ?? `${source.base_url}/us/en/job/${j.id}`,
+    url: j.applyUrl ?? j.url ?? `${source.base_url.replace(/\/$/, "")}/us/en/job/${j.id}`,
     is_per_diem: /per\s*diem/i.test(`${j.title} ${j.employmentType ?? ""}`),
     raw: j,
   }));
@@ -78,7 +85,7 @@ async function scrapePhenom(source: SourceRow): Promise<ScrapedJob[]> {
 
 async function scrapeWorkday(source: SourceRow): Promise<ScrapedJob[]> {
   const { tenant, site, query = "" } = source.config;
-  const endpoint = `${source.base_url}/wday/cxs/${tenant}/${site}/jobs`;
+  const endpoint = `${source.base_url.replace(/\/$/, "")}/wday/cxs/${tenant}/${site}/jobs`;
   const res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json", "User-Agent": UA },
@@ -91,7 +98,7 @@ async function scrapeWorkday(source: SourceRow): Promise<ScrapedJob[]> {
   });
   if (!res.ok)
     throw new Error(
-      `Workday endpoint responded ${res.status} for ${source.name} (check wdN subdomain / tenant / site slug)`
+      `Workday endpoint responded ${res.status} for ${source.name} (tenant: ${tenant}, site: ${site})`
     );
   const data = await res.json();
   const postings: any[] = data.jobPostings ?? [];
@@ -101,10 +108,47 @@ async function scrapeWorkday(source: SourceRow): Promise<ScrapedJob[]> {
     organization: source.name,
     location: p.locationsText ?? p.location,
     posted_text: p.postedOn,
-    url: `${source.base_url}${p.externalPath ?? ""}`,
-    is_per_diem: /per\s*diem/i.test(p.title ?? ""),
+    url: `${source.base_url.replace(/\/$/, "")}${p.externalPath ?? ""}`,
+    is_per_diem: /per\s*diem|prn/i.test(p.title ?? ""),
     raw: p,
   }));
+}
+
+async function scrapeTalentBrew(source: SourceRow): Promise<ScrapedJob[]> {
+  const { query = "" } = source.config;
+  const url = new URL(source.base_url.replace(/\/$/, "") + "/search-jobs/results");
+  url.searchParams.set("k", query);
+  url.searchParams.set("format", "json");
+  
+  const res = await fetch(url.toString(), {
+    headers: { "User-Agent": UA, "Accept": "application/json" },
+  });
+  if (!res.ok) throw new Error(`TalentBrew responded ${res.status} for ${source.name}`);
+  
+  const data = await res.json();
+  const html = data.results ?? "";
+  if (!html) return [];
+  
+  const $ = load(html);
+  const jobs: ScrapedJob[] = [];
+  $("li").each((_, el) => {
+    const card = $(el);
+    const title = card.find("h2").text().trim();
+    const link = card.find("a").attr("href") ?? "";
+    const location = card.find(".job-location").text().trim();
+    if (!title) return;
+    
+    jobs.push({
+      external_id: link,
+      title,
+      organization: source.name,
+      location,
+      url: link.startsWith("http") ? link : new URL(link, source.base_url).toString(),
+      is_per_diem: /per\s*diem|prn/i.test(title),
+      raw: { title, location },
+    });
+  });
+  return jobs;
 }
 
 async function scrapeGenericHtml(source: SourceRow): Promise<ScrapedJob[]> {
@@ -118,47 +162,69 @@ async function scrapeGenericHtml(source: SourceRow): Promise<ScrapedJob[]> {
     link_selector = "a",
     location_selector,
     pay_selector,
+    posted_selector,
   } = source.config;
+  
   const url = new URL(source.base_url);
   if (query_param && query) url.searchParams.set(query_param, query);
   if (location_param && location) url.searchParams.set(location_param, location);
+  
   const res = await fetch(url.toString(), {
-    headers: { "User-Agent": UA, Accept: "text/html" },
+    headers: { "User-Agent": UA, "Accept": "text/html" },
   });
-  if (!res.ok)
-    throw new Error(
-      `${source.name} responded ${res.status} — page may require JS rendering or has blocked the request`
-    );
+  if (!res.ok) throw new Error(`${source.name} responded ${res.status}`);
+  
   const html = await res.text();
   const $ = load(html);
+  
+  // Try to find JSON-LD first for robustness
+  const jsonLd = $('script[type="application/ld+json"]');
+  if (jsonLd.length > 0) {
+    try {
+      const data = JSON.parse(jsonLd.first().html() || "");
+      const graph = Array.isArray(data) ? data : data["@graph"] ?? [data];
+      const jobListings = graph.filter((item: any) => item["@type"] === "JobPosting");
+      if (jobListings.length > 0) {
+        return jobListings.map((j: any) => ({
+          external_id: j.identifier?.value ?? j.url ?? j.title,
+          title: j.title,
+          organization: j.hiringOrganization?.name ?? source.name,
+          location: j.jobLocation?.address?.addressLocality,
+          pay_text: j.baseSalary?.value?.value ? `${j.baseSalary.value.value} ${j.baseSalary.value.unitText}` : undefined,
+          posted_text: j.datePosted,
+          url: j.url ?? source.base_url,
+          is_per_diem: /per\s*diem|prn/i.test(j.title + (j.employmentType ?? "")),
+          raw: j,
+        }));
+      }
+    } catch (e) {
+      console.warn("Failed to parse JSON-LD", e);
+    }
+  }
+
   const cards = $(job_card_selector);
   if (cards.length === 0) {
-    throw new Error(
-      `${source.name}: 0 job cards matched selector "${job_card_selector}" — markup likely differs or requires JS rendering.`
-    );
+    throw new Error(`${source.name}: 0 cards matched "${job_card_selector}"`);
   }
+  
   const jobs: ScrapedJob[] = [];
   cards.each((_, el) => {
     const card = $(el);
     const title = card.find(title_selector).first().text().trim();
     if (!title) return;
     const hrefRaw = card.find(link_selector).first().attr("href") ?? "";
-    const jobUrl = hrefRaw.startsWith("http")
-      ? hrefRaw
-      : new URL(hrefRaw, source.base_url).toString();
-    const locationText = location_selector
-      ? card.find(location_selector).first().text().trim()
-      : undefined;
-    const payText = pay_selector ? card.find(pay_selector).first().text().trim() : undefined;
+    const jobUrl = hrefRaw.startsWith("http") ? hrefRaw : new URL(hrefRaw, source.base_url).toString();
+    
     jobs.push({
       external_id: jobUrl,
       title,
       organization: source.name,
-      location: locationText,
-      pay_text: payText,
+      location: location_selector ? card.find(location_selector).first().text().trim() : undefined,
+      pay_text: pay_selector ? card.find(pay_selector).first().text().trim() : undefined,
+      posted_text: posted_selector ? card.find(posted_selector).first().text().trim() : undefined,
       url: jobUrl,
       is_per_diem: /per\s*diem|prn/i.test(title),
-      raw: { title, locationText, payText },
+      raw: { title },
     });
   });
   return jobs;
@@ -179,6 +245,9 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
       case "workday":
         jobs = await scrapeWorkday(source);
         break;
+      case "talentbrew":
+        jobs = await scrapeTalentBrew(source);
+        break;
       case "generic_html":
       case "json_api":
         jobs = await scrapeGenericHtml(source);
@@ -186,6 +255,7 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
       default:
         throw new Error(`Unknown platform "${source.platform}"`);
     }
+    
     let newCount = 0;
     for (const j of jobs) {
       const { error } = await admin.from("pav_jobs").upsert(
@@ -208,38 +278,35 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
       );
       if (!error) newCount += 1;
     }
-    await admin
-      .from("pav_scrape_runs")
-      .update({
-        finished_at: new Date().toISOString(),
-        status: "ok",
-        jobs_found: jobs.length,
-        jobs_new: newCount,
-      })
-      .eq("id", run!.id);
-    await admin
-      .from("pav_sources")
-      .update({
-        last_scraped_at: new Date().toISOString(),
-        last_status: "ok",
-        last_error: null,
-      })
-      .eq("id", source.id);
+    
+    await admin.from("pav_scrape_runs").update({
+      finished_at: new Date().toISOString(),
+      status: "ok",
+      jobs_found: jobs.length,
+      jobs_new: newCount,
+    }).eq("id", run!.id);
+    
+    await admin.from("pav_sources").update({
+      last_scraped_at: new Date().toISOString(),
+      last_status: "ok",
+      last_error: null,
+    }).eq("id", source.id);
+    
     return { source: source.name, status: "ok", jobs_found: jobs.length };
   } catch (e: any) {
     const message = String(e?.message ?? e);
-    await admin
-      .from("pav_scrape_runs")
-      .update({ finished_at: new Date().toISOString(), status: "error", error: message })
-      .eq("id", run!.id);
-    await admin
-      .from("pav_sources")
-      .update({
-        last_scraped_at: new Date().toISOString(),
-        last_status: "error",
-        last_error: message,
-      })
-      .eq("id", source.id);
+    await admin.from("pav_scrape_runs").update({ 
+      finished_at: new Date().toISOString(), 
+      status: "error", 
+      error: message 
+    }).eq("id", run!.id);
+    
+    await admin.from("pav_sources").update({
+      last_scraped_at: new Date().toISOString(),
+      last_status: "error",
+      last_error: message,
+    }).eq("id", source.id);
+    
     return { source: source.name, status: "error", error: message };
   }
 }
@@ -252,10 +319,7 @@ Deno.serve(async (req) => {
     const userClient = createClient(SUPABASE_URL, ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
-    const {
-      data: { user },
-      error: userErr,
-    } = await userClient.auth.getUser();
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
     if (userErr || !user) return json({ error: "Not authenticated" }, 401);
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
