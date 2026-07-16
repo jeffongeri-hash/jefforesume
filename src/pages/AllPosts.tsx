@@ -50,6 +50,86 @@ const AllPosts = () => {
       tags: ["Hematology", "Clinical Education"]
     },
     {
+      title: "The Bulletproof Note — HPI, Exam & Disposition for the Deposition",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Charting an ED note that holds up in deposition — HPI structure, exam specificity, MDM, and disposition language that defends the chart.",
+      image: businessPost,
+      slug: "bulletproof-note-atlas",
+      tags: ["Documentation", "Medicolegal", "Clinical Education"]
+    },
+    {
+      title: "The Pediatric Bulletproof Note — Deposition-Proof Peds Charting",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Peds-specific charting: weight-based dosing, caregiver history, red flags, and disposition language that survives deposition.",
+      image: businessPost,
+      slug: "pediatric-bulletproof-note-atlas",
+      tags: ["Pediatrics", "Documentation", "Medicolegal"]
+    },
+    {
+      title: "The Charting Atlas — ED Documentation & Medicolegal Defense",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "A medicolegal atlas of ED documentation — language that helped, language that hurt, and the patterns plaintiff attorneys look for.",
+      image: businessPost,
+      slug: "ed-charting-medicolegal-atlas",
+      tags: ["Documentation", "Medicolegal", "Clinical Education"]
+    },
+    {
+      title: "Surviving the Deposition — Testifying Consistent With Your Chart",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "How to prepare for and testify in a deposition — chart consistency, phrasing traps, and the mindset that keeps you defensible.",
+      image: businessPost,
+      slug: "surviving-the-deposition-atlas",
+      tags: ["Medicolegal", "Deposition", "Clinical Education"]
+    },
+    {
+      title: "Laboratory Values Atlas — ED & Hospitalist",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Reference ranges, panic values, and interpretation patterns for the labs ED and hospitalist clinicians order every shift.",
+      image: businessPost,
+      slug: "laboratory-values-atlas",
+      tags: ["Labs", "Hematology", "Clinical Education"]
+    },
+    {
+      title: "Analgesics Atlas — ED Pharmacology Master Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Opioids, non-opioids, adjuncts, and regional analgesia — dosing, onset, duration, and selection pearls for ED pain control.",
+      image: businessPost,
+      slug: "analgesics-atlas",
+      tags: ["Pain", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "Alternative Analgesics Atlas — Research-Backed Non-Drug Pain Methods",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Non-pharmacologic pain strategies — nerve blocks, TENS, heat/cold, mind-body, and procedural adjuncts with evidence pearls.",
+      image: businessPost,
+      slug: "alternative-analgesics-atlas",
+      tags: ["Pain", "Procedures", "Clinical Education"]
+    },
+    {
+      title: "Insulin Dosing Atlas — TDD, Weight-Based, Renal & Field Estimation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 10, 2026",
+      excerpt: "Total daily dose, weight-based starts, renal adjustments, correction factors, and bedside field estimation for insulin dosing.",
+      image: businessPost,
+      slug: "insulin-dosing-atlas",
+      tags: ["Endocrine", "Pharmacology", "Clinical Education"]
+    },
+    {
       title: "CBC & Coagulation Labs Interpretation Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -523,6 +603,17 @@ const AllPosts = () => {
     "hematology-hematopoiesis-atlas": "Hematology",
     "hematology-cbc-coag-labs-atlas": "Hematology",
     "hematology-coagulation-atlas": "Hematology",
+    "laboratory-values-atlas": "Hematology",
+    // Documentation & Medicolegal → Procedures group
+    "bulletproof-note-atlas": "Procedures",
+    "ed-charting-medicolegal-atlas": "Procedures",
+    "surviving-the-deposition-atlas": "Procedures",
+    "pediatric-bulletproof-note-atlas": "Pediatrics",
+    // Analgesia
+    "analgesics-atlas": "Procedures",
+    "alternative-analgesics-atlas": "Procedures",
+    // Endocrine → grouped with Renal (dosing / metabolic)
+    "insulin-dosing-atlas": "Renal",
   };
 
   const systemOrder = [
