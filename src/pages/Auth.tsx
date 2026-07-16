@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -22,18 +22,16 @@ const Auth = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/admin';
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        navigate('/admin');
-      }
+      if (session?.user) navigate(redirectTo);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        navigate('/admin');
-      }
+      if (session?.user) navigate(redirectTo);
     });
 
     return () => subscription.unsubscribe();
@@ -87,7 +85,7 @@ const Auth = () => {
     if (!validateInputs()) return;
 
     setLoading(true);
-    const redirectUrl = `${window.location.origin}/admin`;
+    const redirectUrl = `${window.location.origin}${redirectTo}`;
 
     const { error } = await supabase.auth.signUp({
       email,
