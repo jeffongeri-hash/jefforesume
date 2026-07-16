@@ -6,7 +6,6 @@ import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LayoutGrid, ShieldCheck, UserRound, Users, Radar, LogOut } from "lucide-react";
-import VaultLogin from "./pa-vault/VaultLogin";
 import VaultDashboard from "./pa-vault/VaultDashboard";
 import VaultCredentials from "./pa-vault/VaultCredentials";
 import VaultProfile from "./pa-vault/VaultProfile";
@@ -24,6 +23,7 @@ const NAV = [
 export default function PAVault() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = (typeof window !== "undefined" ? null : null);
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
@@ -51,7 +51,7 @@ export default function PAVault() {
             Loading…
           </div>
         ) : !session ? (
-          <VaultLogin />
+          <RedirectToAuth />
         ) : (
           <div>
             <div className="border-b border-border bg-card">
