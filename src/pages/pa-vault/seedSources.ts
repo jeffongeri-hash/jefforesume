@@ -59,16 +59,10 @@ export const DEFAULT_SOURCES = [
   {
     name: "ZipRecruiter",
     category: "job_board",
-    platform: "generic_html",
-    base_url: "https://www.ziprecruiter.com/candidate/search",
+    platform: "manual_review",
+    base_url: "https://www.ziprecruiter.com/candidate/search?search=physician%20assistant%20per%20diem&location=Sacramento%2C%20CA",
     config: {
-      query_param: "search",
-      query: "physician assistant per diem",
-      location_param: "location",
-      location: "Sacramento, CA",
-      job_card_selector: ".job_content",
-      title_selector: ".job_title",
-      link_selector: "a",
+      reason: "ZipRecruiter blocks backend scraping with a forbidden response",
     },
   },
   {
