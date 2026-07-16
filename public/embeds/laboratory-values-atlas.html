@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratory Values Atlas — ED &amp; Hospitalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1518; --panel:#152025; --panel2:#1b2a30; --ink:#e8f0ee; --dim:#9fb2ad;
+  --line:#283a40; --acc:#4bd1b0; --acc2:#f4a259; --up:#e8825a; --down:#5aa9e8;
+  --ed:#4bd1b0; --hosp:#c58be0; --warn:#f4c15a; --rad:14px;
+}
+:root.light{
+  --bg:#f3f1ea; --panel:#ffffff; --panel2:#f6f4ee; --ink:#1c2529; --dim:#5c6b6a;
+  --line:#e0dcd0; --acc:#0f9b7d; --acc2:#c46a1e; --up:#c05a2e; --down:#2f6fb0;
+  --ed:#0f9b7d; --hosp:#8a4bb0; --warn:#a6791a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 80px}
+header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topinner{max-width:960px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:Fraunces,serif;font-weight:900;font-size:1.15rem;letter-spacing:-.01em;line-height:1.1}
+.brand small{display:block;font-family:Inter;font-weight:500;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.spacer{flex:1}
+.theme{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:20px;padding:7px 14px;font-size:.8rem;cursor:pointer;font-weight:600}
+.nav{display:flex;gap:10px;width:100%;flex-wrap:wrap}
+select.picker{flex:1;min-width:200px;appearance:none;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:.9rem;font-weight:600;font-family:Inter;cursor:pointer}
+.tabs{display:flex;gap:6px}
+.tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);border-radius:10px;padding:11px 16px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.tab.active{background:var(--acc);color:#062019;border-color:var(--acc)}
+.hero{padding:46px 0 26px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.hero .eyebrow{color:var(--acc2)}
+.hero h1{font-family:Fraunces,serif;font-weight:900;font-size:clamp(2rem,6vw,3.1rem);line-height:1.02;letter-spacing:-.02em;margin:.3em 0 .35em}
+.hero p{color:var(--dim);font-size:1.02rem;max-width:60ch}
+.hero .mono{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--dim);margin-top:22px;letter-spacing:.02em}
+.eyebrow{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--acc)}
+.analyte h2{font-family:Fraunces,serif;font-weight:900;font-size:clamp(1.6rem,4.5vw,2.3rem);letter-spacing:-.015em;line-height:1.05;margin:.25em 0 .2em}
+.tagline{color:var(--acc2);font-size:1.05rem;font-weight:500;font-style:italic;margin:0 0 16px;font-family:Fraunces,serif}
+.refbar{font-family:'JetBrains Mono',monospace;font-size:.82rem;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:10px 14px;margin-bottom:22px;color:var(--ink)}
+.rk{color:var(--acc);font-weight:600;margin-right:8px;text-transform:uppercase;font-size:.68rem;letter-spacing:.1em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--rad);padding:18px 20px;margin-bottom:14px}
+.card h3{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin:0 0 12px;color:var(--dim)}
+.card.up h3{color:var(--up)} .card.down h3{color:var(--down)}
+.card.up{border-top:2px solid var(--up)} .card.down{border-top:2px solid var(--down)}
+ul{margin:0;padding:0;list-style:none}
+ul.pairs li{padding:9px 0;border-bottom:1px solid var(--line);font-size:.93rem}
+ul.pairs li:last-child{border-bottom:none}
+.lead{font-weight:700;color:var(--ink)}
+ul.dotted li{padding:8px 0 8px 20px;position:relative;font-size:.93rem;border-bottom:1px solid var(--line)}
+ul.dotted li:last-child{border-bottom:none}
+ul.dotted li:before{content:"";position:absolute;left:2px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--acc2)}
+.bandtable{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:.8rem}
+.bandtable th{text-align:left;padding:6px 8px;font-family:Inter;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line)}
+.bandtable td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.bandtable .bl{font-family:Inter;font-weight:600;font-size:.8rem}
+.bandtable .lo{color:var(--down)} .bandtable .hi{color:var(--up)} .bandtable .no{color:var(--acc)}
+.bandtable .un{color:var(--dim)}
+.verify{font-size:.74rem;color:var(--warn);margin:12px 0 0;font-style:italic}
+.card.sit{border-left:3px solid var(--acc2)}
+.setting.ed{border-top:2px solid var(--ed)} .setting.ed h3{color:var(--ed)}
+.setting.hosp{border-top:2px solid var(--hosp)} .setting.hosp h3{color:var(--hosp)}
+.setting p{font-size:.93rem;margin:0}
+/* calculators */
+.calcintro{margin-bottom:22px}
+.calcgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.calcgrid{grid-template-columns:1fr}}
+.calc{background:var(--panel);border:1px solid var(--line);border-radius:var(--rad);padding:18px 20px}
+.calc h3{font-family:Fraunces,serif;font-weight:600;font-size:1.05rem;margin:0 0 6px}
+.cb{font-size:.82rem;color:var(--dim);margin:0 0 14px}
+.cfields{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.cf{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.82rem}
+.cf span{color:var(--dim);flex:1}
+.cf input{width:96px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:7px 9px;font-family:'JetBrains Mono',monospace;font-size:.82rem;text-align:right}
+.crun{background:var(--acc);color:#062019;border:none;border-radius:8px;padding:9px 18px;font-weight:700;font-size:.82rem;cursor:pointer}
+.cout{margin-top:12px;padding:12px 14px;background:var(--panel2);border-radius:8px;border-left:3px solid var(--acc2);min-height:20px}
+.cres{display:block;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.92rem;color:var(--acc)}
+.cdet{display:block;font-size:.8rem;color:var(--dim);margin-top:5px}
+.foot{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);font-size:.78rem;color:var(--dim)}
+.foot strong{color:var(--warn)}
+</style></head>
+<body>
+<header class="top">
+  <div class="topinner">
+    <div class="brand">Laboratory Values Atlas<small>Emergency Medicine · Hospitalist</small></div>
+    <div class="spacer"></div>
+    <button class="theme" id="themeBtn">◐ Light</button>
+    <div class="nav">
+      <select class="picker" id="picker">
+        <option value="" disabled selected>Select a laboratory value…</option>
+        <option value="cbc">CBC — Complete Blood Count (with differential)</option><option value="bicarb">BMP/CMP — Bicarbonate (HCO₃⁻ / CO₂ content)</option><option value="bun">BMP/CMP — Blood Urea Nitrogen (BUN)</option><option value="creatinine">BMP/CMP — Creatinine (Cr)</option><option value="glucose">BMP/CMP — Glucose</option><option value="potassium">BMP/CMP — Potassium (K⁺)</option><option value="sodium">BMP/CMP — Sodium (Na⁺)</option><option value="calcium">CMP — Calcium (total) + Ionized</option><option value="lft">CMP — Liver Panel (AST/ALT, Alk Phos, Bilirubin, Albumin)</option><option value="protein">CMP — Total Protein &amp; Albumin/Globulin</option><option value="magnesium">Electrolytes — Magnesium (Mg²⁺)</option><option value="phosphate">Electrolytes — Phosphate (PO₄)</option><option value="ua">UA — Urinalysis (dipstick + microscopy)</option><option value="bohb">Ketones — Beta-Hydroxybutyrate (β-OHB)</option><option value="salicylate">Tox — Salicylate Level</option><option value="ck">Muscle — Creatine Kinase (CK / CPK)</option><option value="bnp">Cardiac — BNP / NT-proBNP</option><option value="troponin">Cardiac — Troponin (high-sensitivity cTn)</option><option value="coags">Coag/Thrombosis — Coagulation Panel (PT/INR, aPTT, Fibrinogen)</option><option value="ddimer">Coag/Thrombosis — D-Dimer</option><option value="ammonia">GI — Ammonia (NH₃)</option><option value="lipase">GI — Lipase</option><option value="tsh">Endocrine — TSH + Free T4 (± T3)</option><option value="abg">ABG — Arterial Blood Gas (ABG / VBG)</option><option value="lactate">Perfusion — Lactic Acid (Lactate)</option><option value="crp">Inflammation — C-Reactive Protein (CRP)</option><option value="esr">Inflammation — Erythrocyte Sedimentation Rate (ESR)</option><option value="pct">Inflammation — Procalcitonin (PCT)</option>
+      </select>
+      <div class="tabs">
+        <button class="tab" data-view="labs">Labs</button>
+        <button class="tab" data-view="calcs">Calculators</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="view-labs">
+    <div class="hero" id="hero">
+      <div class="eyebrow">A reference for mastering the "why"</div>
+      <h1>Read the number as a story, not a value.</h1>
+      <p>Twenty-eight core labs for the ED and the floor — each with graded thresholds, the pathophysiology of why it rises and falls, can't-miss situations, age and population modifiers, and the corrections that keep you from misreading it. Pick a value above to begin.</p>
+      <p class="mono">CBC · BMP/CMP · LFTs · ELECTROLYTES (Mg/PO₄) · UA · β-OHB · SALICYLATE · CK · TROPONIN · BNP · D-DIMER · COAGS · LIPASE · AMMONIA · ABG/VBG · LACTATE · CRP · PCT · TSH/T4 · ESR — 13 calculators in the final tab</p>
+    </div>
+    
+<section class="analyte" id="an-cbc" hidden>
+  <div class="eyebrow">CBC</div>
+  <h2>Complete Blood Count (with differential)</h2>
+  <p class="tagline">Marrow output, oxygen carriage, and the inflammatory census in one draw.</p>
+  <div class="refbar"><span class="rk">Reference</span> See individual components below (WBC, Hgb/Hct, Plt, indices, diff).</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">WBC ↑ (leukocytosis).</span> Demargination/release from marrow: infection, inflammation, steroids, catecholamine stress (seizure, exercise), tissue necrosis, myeloproliferative disease. Left shift (bands) implies bacterial demand-driven granulopoiesis.</li><li><span class="lead">Hgb/Hct ↑ (erythrocytosis).</span> True: polycythemia vera (low EPO), or secondary from chronic hypoxia/OSA/high altitude/EPO-secreting tumor (high EPO). Relative: plasma-volume contraction (dehydration, diuretics) — the RBC mass is normal, the denominator shrank.</li><li><span class="lead">Platelets ↑ (thrombocytosis).</span> Reactive (90%): iron deficiency, infection, inflammation, post-splenectomy, malignancy, bleeding. Clonal: essential thrombocythemia, other MPN.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">WBC ↓ (leukopenia/neutropenia).</span> Decreased production (marrow suppression: chemo, B12/folate, infiltration), increased destruction/margination (sepsis — an ominous sign, viral, autoimmune), sequestration (hypersplenism). ANC &lt;500 = severe neutropenia = emergency.</li><li><span class="lead">Hgb/Hct ↓ (anemia).</span> Categorize by MCV: microcytic (iron def, thalassemia, chronic disease), normocytic (acute blood loss, hemolysis, marrow, early chronic disease), macrocytic (B12/folate, alcohol, hypothyroid, MDS, reticulocytosis).</li><li><span class="lead">Platelets ↓ (thrombocytopenia).</span> Production (marrow), destruction (ITP, TTP/HUS, DIC, HIT, drug), sequestration (splenomegaly), dilution (massive transfusion). &lt;10–20k = spontaneous bleeding risk.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">WBC</td><td class="lo">&lt;4.0</td><td class="no">4.0–11.0</td><td class="hi">&gt;11.0</td><td class="un">×10⁹/L</td></tr><tr><td class="bl">Hgb (M)</td><td class="lo">&lt;13.5</td><td class="no">13.5–17.5</td><td class="hi">&gt;17.5</td><td class="un">g/dL</td></tr><tr><td class="bl">Hgb (F)</td><td class="lo">&lt;12.0</td><td class="no">12.0–15.5</td><td class="hi">&gt;15.5</td><td class="un">g/dL</td></tr><tr><td class="bl">Platelets</td><td class="lo">&lt;150</td><td class="no">150–400</td><td class="hi">&gt;450</td><td class="un">×10⁹/L</td></tr><tr><td class="bl">ANC (severe neutropenia)</td><td class="lo">&lt;0.5</td><td class="no">≥1.5</td><td class="hi">—</td><td class="un">×10⁹/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Leukemoid reaction (WBC &gt;50k, mature cells) vs CML — check LAP score / molecular. Blasts on smear = call heme now.</li><li>Pseudothrombocytopenia: EDTA-induced clumping. Repeat in citrate tube before treating a lonely low platelet count in a well patient.</li><li>Anemia + thrombocytopenia + schistocytes → think MAHA (TTP/HUS, DIC). LDH, haptoglobin, retic, coags, smear immediately.</li><li>Nucleated RBCs / teardrop cells → marrow stress or infiltration; in a sick adult, a poor-prognosis sign.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Neonates/infants.</span> Physiologic polycythemia at birth (Hct up to ~60%), then a physiologic nadir of Hgb ~9–11 g/dL around 2 months. Neonatal WBC runs high (up to ~30k day 1). Don&#x27;t over-call.</li><li><span class="lead">Pediatrics.</span> Lymphocyte predominance is normal until ~4–5 yrs (the &#x27;crossover&#x27;), opposite the adult neutrophil-predominant differential.</li><li><span class="lead">Pregnancy.</span> Dilutional anemia (plasma volume expands more than red cell mass); mild leukocytosis is physiologic and can reach 15k, intrapartum higher — do not reflexively treat.</li><li><span class="lead">Older adults.</span> New anemia is never &#x27;just age.&#x27; Always evaluate — occult GI loss and MDS rise with age. A left shift may be blunted; sepsis can present with a normal or low WBC.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Corrected WBC for nucleated RBCs.</span> Automated counters miscount nRBCs as WBCs. Corrected WBC = uncorrected WBC × 100 / (100 + nRBC per 100 WBC).</li><li><span class="lead">Absolute neutrophil count (ANC).</span> ANC = WBC(×10³) × (%neutrophils + %bands) / 100. Drives febrile-neutropenia decisions (&lt;500, or &lt;1000 and falling).</li><li><span class="lead">Reticulocyte production index.</span> RPI = retic% × (Hct/45) / maturation factor. Separates hypoproliferative from appropriate marrow response in anemia.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>First-pass triage lab. Left shift, bandemia, or neutropenia reframes an undifferentiated febrile patient. Baseline Hgb anchors transfusion thresholds in bleeding.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>A downtrending Hgb near end of life is often expected and not transfused unless symptomatic (dyspnea, angina). Serial CBCs rarely change a comfort-focused plan — order only if the result would change management.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-bicarb" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Bicarbonate (HCO₃⁻ / CO₂ content)</h2>
+  <p class="tagline">The metabolic half of acid-base, read together with the anion gap.</p>
+  <div class="refbar"><span class="rk">Reference</span> 22–28 mmol/L</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Metabolic alkalosis.</span> Chloride-responsive (vomiting/NG loss, diuretics, contraction — urine Cl &lt;20) or chloride-resistant (hyperaldosteronism, severe hypokalemia, Cushing — urine Cl &gt;20). Also compensatory for chronic respiratory acidosis (COPD).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Metabolic acidosis.</span> Split by anion gap. High-gap (MUDPILES/GOLDMARK: lactate, ketones, uremia, toxic alcohols, salicylate). Normal-gap/hyperchloremic (GI bicarb loss — diarrhea; renal — RTA; saline dilution).</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Severe low</td><td class="lo">&lt;10</td><td class="no">22–28</td><td class="hi">&gt;40 severe high</td><td class="un">mmol/L</td></tr><tr><td class="bl">Moderate low</td><td class="lo">10–14</td><td class="no"></td><td class="hi">35–40</td><td class="un">mmol/L</td></tr><tr><td class="bl">Mild low</td><td class="lo">15–21</td><td class="no"></td><td class="hi">29–34</td><td class="un">mmol/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Always compute the anion gap when bicarb is low. A normal bicarb does not exclude a mixed disorder (a coexisting gap acidosis + metabolic alkalosis can leave HCO₃ deceptively normal — the gap reveals it).</li><li>Delta-delta: compare rise in anion gap to fall in bicarb to detect a superimposed non-gap acidosis or metabolic alkalosis.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Pediatrics.</span> Lower baseline bicarb than adults (as low as ~18–22 in young children).</li><li><span class="lead">Chronic respiratory acidosis.</span> Expected renal compensation raises bicarb ~3.5 per 10 mmHg chronic PaCO₂ rise — a &#x27;high&#x27; bicarb in a COPD patient may be appropriate compensation, not primary alkalosis.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Anion gap (see Calculators).</span> AG = Na − (Cl + HCO₃). Normal ~8–12.</li><li><span class="lead">Albumin-corrected gap.</span> Add ~2.5 to the gap for every 1 g/dL albumin below 4. Hypoalbuminemia hides a gap acidosis — critical in the malnourished/critically ill.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The pivot point for the acid-base workup. Low bicarb → compute gap → build the differential → treat the cause.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Reflects the acid-base consequences of the dying process (e.g., lactic acidosis of hypoperfusion). Rarely acted upon; comfort-directed care instead.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-bun" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Blood Urea Nitrogen (BUN)</h2>
+  <p class="tagline">A volume and protein-catabolism signal as much as a renal one.</p>
+  <div class="refbar"><span class="rk">Reference</span> 7–20 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated BUN.</span> Prerenal (volume depletion, low cardiac output — ADH-driven urea reabsorption), renal (GFR loss), postrenal (obstruction). Non-renal drivers: GI bleed (protein load), high-protein diet, catabolism, steroids, tetracyclines.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low BUN.</span> Low protein intake/malnutrition, advanced liver disease (failure of urea synthesis), volume overload/dilution (SIADH), pregnancy.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Low</td><td class="lo">&lt;7</td><td class="no">7–20</td><td class="hi">&gt;20 elevated</td><td class="un">mg/dL</td></tr><tr><td class="bl"></td><td class="lo"></td><td class="no"></td><td class="hi">&gt;50 markedly elevated</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>BUN:Cr ratio &gt;20:1 suggests prerenal azotemia or GI bleed; ~10–15:1 suggests intrinsic renal.</li><li>An isolated BUN rise with normal Cr in an upper-GI-bleed presentation is a supportive clue (digested-blood protein load).</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Older adults.</span> Lower muscle/protein mass and lower baseline GFR make interpretation reliant on the paired creatinine and trend.</li><li><span class="lead">Cirrhosis.</span> Low BUN can falsely reassure — the failing liver undersynthesizes urea despite renal impairment (hepatorenal risk).</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Interpret with creatinine.</span> BUN alone is nonspecific; the BUN:Cr ratio and trend carry the signal.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Best read as part of the prerenal-vs-intrinsic story alongside creatinine, urine studies, and volume exam.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Rising BUN is common in the volume-contracted dying patient; not corrected unless reversal serves comfort.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-creatinine" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Creatinine (Cr)</h2>
+  <p class="tagline">A GFR estimate distorted by muscle mass — context is everything.</p>
+  <div class="refbar"><span class="rk">Reference</span> M 0.7–1.3 mg/dL · F 0.6–1.1 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated creatinine.</span> Reduced GFR: prerenal, intrinsic (ATN, GN, interstitial), or postrenal. Also increased production (rhabdomyolysis) and secretion blockers (cimetidine, trimethoprim raise Cr without a true GFR change).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low creatinine.</span> Low muscle mass — the key teaching point. Cachexia, advanced age, amputees, prolonged ICU stay, malnutrition, some liver disease. A &#x27;normal&#x27; Cr in a frail elder may hide substantial renal impairment.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Below range (low muscle mass — see modifiers)</td><td class="lo">&lt;0.6</td><td class="no">0.6–1.3</td><td class="hi">&gt;1.3 elevated</td><td class="un">mg/dL</td></tr><tr><td class="bl"></td><td class="lo"></td><td class="no"></td><td class="hi">&gt;4.0 markedly elevated</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Rhabdomyolysis raises Cr disproportionately (muscle breakdown releases creatinine precursor); the Cr may overstate true GFR loss early.</li><li>Creatinine lags GFR. In evolving AKI, the Cr is a rear-view mirror — a &#x27;normal&#x27; value hours into an insult can be falsely reassuring.</li><li>Drug clearance: dose renally-cleared and QT-prolonging drugs off an accurate GFR, not the raw Cr.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Low-muscle-mass patients (your teaching point).</span> In the elderly, cachectic, cirrhotic, or amputee patient, creatinine is generated at a lower rate, so a &#x27;normal-looking&#x27; Cr can correspond to a substantially reduced GFR. Estimate GFR (CKD-EPI) and consider cystatin C when muscle mass is atypical, and reduce reliance on Cr for drug dosing.</li><li><span class="lead">Pediatrics.</span> Age/size-dependent norms; use a pediatric estimating equation (e.g., bedside CKiD) — adult cutoffs will misclassify.</li><li><span class="lead">Pregnancy.</span> GFR rises; a &#x27;normal&#x27; adult Cr (e.g., 1.0) may be abnormally high in pregnancy.</li><li><span class="lead">Sex/race.</span> Men run higher than women (muscle mass). Race coefficients have been removed from current CKD-EPI equations.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Estimated GFR.</span> Use CKD-EPI 2021 (race-free). Cockcroft–Gault (uses weight) still appears in drug-dosing references — see Calculators.</li><li><span class="lead">Cystatin C.</span> Muscle-independent filtration marker; preferred when creatinine is unreliable (cachexia, extremes of muscle mass).</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Anchor of the AKI workup and renal drug dosing. Always pair with baseline (trend &gt; snapshot) and muscle-mass context.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Rising creatinine is expected in the actively dying and is not itself treated. Deprescribe renally-cleared agents to the estimated GFR to avoid accumulation and toxicity.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-glucose" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Glucose</h2>
+  <p class="tagline">Hypoglycemia kills faster than hyperglycemia — check it first.</p>
+  <div class="refbar"><span class="rk">Reference</span> Fasting 70–99 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hyperglycemia.</span> Diabetes, stress/counter-regulatory surge (illness, steroids, catecholamines), DKA/HHS. Marked hyperglycemia drives osmotic diuresis and factitious hyponatremia.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hypoglycemia.</span> Insulin/sulfonylurea excess, sepsis, adrenal insufficiency, liver failure, alcohol (impaired gluconeogenesis), insulinoma, malnutrition. In any altered patient, glucose is a reflex check.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Severe hypo</td><td class="lo">&lt;40</td><td class="no">70–99</td><td class="hi">&gt;250 hyperglycemic</td><td class="un">mg/dL</td></tr><tr><td class="bl">Hypo</td><td class="lo">40–69</td><td class="no"></td><td class="hi">&gt;600 HHS range</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>DKA typically glucose &gt;250 with gap acidosis + ketones; euglycemic DKA (SGLT2 inhibitors, pregnancy, starvation) has near-normal glucose — don&#x27;t be falsely reassured.</li><li>HHS: glucose often &gt;600, minimal ketosis, profound hyperosmolarity, older type-2 patients.</li><li>Sulfonylurea/long-acting-insulin hypoglycemia recurs — admit and consider octreotide for sulfonylureas.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Neonates.</span> Hypoglycemia threshold and consequences differ; neonatal hypoglycemia is a distinct emergency with its own cutoffs.</li><li><span class="lead">Elderly on agents.</span> Hypoglycemia unawareness and renal drug accumulation raise risk; sulfonylureas are high-risk in this group.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Corrected sodium.</span> See Sodium — correct Na up for hyperglycemia.</li><li><span class="lead">Effective osmolality.</span> 2×Na + glucose/18 (omit BUN for &#x27;effective&#x27; osm). Drives HHS assessment.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>First reflex in altered mental status, seizure, or focal deficit (hypoglycemia mimics stroke). Point-of-care first, confirm on serum.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Tight glycemic control is abandoned near end of life; the aim is to avoid symptomatic hypo/hyperglycemia. Deprescribe sulfonylureas and simplify insulin.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-potassium" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Potassium (K⁺)</h2>
+  <p class="tagline">The number you never ignore — narrow window, lethal tails.</p>
+  <div class="refbar"><span class="rk">Reference</span> 3.5–5.0 mmol/L</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hyperkalemia.</span> Decreased excretion (AKI/CKD, K-sparing diuretics, ACEi/ARB, aldosterone deficiency), transcellular shift out of cells (acidosis, insulin deficiency, cell lysis — rhabdo, tumor lysis, hemolysis), or increased intake in the setting of impaired excretion.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hypokalemia.</span> GI loss (vomiting, diarrhea), renal loss (diuretics, hyperaldosteronism, hypomagnesemia driving renal K wasting), transcellular shift in (insulin, beta-agonists, alkalosis, refeeding).</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Severe low</td><td class="lo">&lt;2.5</td><td class="no">3.5–5.0</td><td class="hi">&gt;6.5 severe high</td><td class="un">mmol/L</td></tr><tr><td class="bl">Moderate low</td><td class="lo">2.5–2.9</td><td class="no"></td><td class="hi">6.0–6.5</td><td class="un">mmol/L</td></tr><tr><td class="bl">Mild low</td><td class="lo">3.0–3.4</td><td class="no"></td><td class="hi">5.1–5.9</td><td class="un">mmol/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>ECG is the vital sign for K⁺: peaked T waves → PR/QRS widening → sine wave → arrest. Treat the ECG, not just the number.</li><li>Hypomagnesemia makes hypokalemia refractory — you cannot repvlete K without repleting Mg.</li><li>Pseudohyperkalemia: hemolyzed specimen, fist-clenching during draw, marked thrombocytosis/leukocytosis. Confirm before treating a well patient.</li><li>Order in hyperkalemia treatment: stabilize membrane (calcium) → shift (insulin/glucose, albuterol, bicarb if acidotic) → remove (dialysis, diuresis, GI binders).</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Neonates.</span> Higher normal upper limit (up to ~6.0) and specimens hemolyze easily — heel-stick hemolysis is a classic false hyperkalemia.</li><li><span class="lead">CKD/dialysis.</span> Chronic tolerance to higher levels, but still at risk. Missed dialysis + dietary indiscretion is a recurring ED presentation.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">No formal correction.</span> But interpret alongside pH: acidemia shifts K out (0.1 pH drop ≈ ~0.6 mmol/L rise, highly variable). A &#x27;normal&#x27; K in DKA masks a large total-body deficit that unmasks with insulin.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The single most time-critical electrolyte. Any peaked-T or wide-QRS in a dialysis/AKI patient = empiric calcium before the level returns.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Generally not corrected unless causing symptomatic arrhythmia distressing the patient. Deprescribe QT/K-affecting agents as goals shift.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-sodium" hidden>
+  <div class="eyebrow">BMP/CMP</div>
+  <h2>Sodium (Na⁺)</h2>
+  <p class="tagline">A water problem masquerading as a salt number.</p>
+  <div class="refbar"><span class="rk">Reference</span> 135–145 mmol/L</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hypernatremia.</span> Almost always free-water deficit relative to sodium: impaired thirst/access to water (elderly, intubated, infants), renal losses (osmotic diuresis, DI), GI/insensible losses. Rarely salt gain (hypertonic saline, salt ingestion).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hyponatremia.</span> Assess volume + serum/urine osms + urine Na. Hypovolemic (GI/renal loss), euvolemic (SIADH, hypothyroid, adrenal, psychogenic polydipsia, beer potomania), hypervolemic (CHF, cirrhosis, nephrosis). It&#x27;s a water-handling defect, not usually a sodium-deficiency.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Severe low</td><td class="lo">&lt;120</td><td class="no">135–145</td><td class="hi">&gt;160 severe high</td><td class="un">mmol/L</td></tr><tr><td class="bl">Moderate low</td><td class="lo">120–129</td><td class="no"></td><td class="hi">155–160</td><td class="un">mmol/L</td></tr><tr><td class="bl">Mild low</td><td class="lo">130–134</td><td class="no"></td><td class="hi">146–154</td><td class="un">mmol/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Correction rate discipline: raise Na no faster than ~8 mmol/L per 24h in chronic hyponatremia to avoid osmotic demyelination (central pontine myelinolysis).</li><li>Acute symptomatic hyponatremia (seizure, obtundation): 3% saline bolus is appropriate — the risk calculus flips.</li><li>Pseudohyponatremia: severe hyperlipidemia/hyperproteinemia (older assays). True measured osm is normal.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Infants/elderly.</span> Highest hypernatremia risk — cannot independently access water. Elderly also have blunted thirst and concentrating ability.</li><li><span class="lead">Beer potomania / tea-and-toast.</span> Low solute intake limits free-water excretion → dilutional hyponatremia at surprisingly modest fluid intake.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Glucose-corrected sodium.</span> Add ~1.6 mmol/L (some use 2.4) to measured Na for every 100 mg/dL glucose above 100. Hyperglycemia pulls water intravascularly and dilutes Na — the &#x27;true&#x27; Na is higher than measured.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Sodium interpretation is inseparable from volume status and rate-of-change. The number without the timeline is a trap.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Asymptomatic derangements at end of life generally not corrected. Focus on symptomatic relief (e.g., delirium from acute change) rather than the number.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-calcium" hidden>
+  <div class="eyebrow">CMP</div>
+  <h2>Calcium (total) + Ionized</h2>
+  <p class="tagline">Report a total calcium only after you&#x27;ve accounted for albumin.</p>
+  <div class="refbar"><span class="rk">Reference</span> Total 8.5–10.5 mg/dL · Ionized 1.10–1.30 mmol/L</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hypercalcemia.</span> &#x27;CHIMPANZEES&#x27; — most commonly primary hyperparathyroidism (outpatient) and malignancy (inpatient: PTHrP, bony mets, myeloma). Also thiazides, vitamin D toxicity, granulomatous disease, milk-alkali, immobilization.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hypocalcemia.</span> Hypoparathyroidism (post-thyroidectomy), vitamin D deficiency, CKD, hyperphosphatemia (tumor lysis), pancreatitis, hypomagnesemia, massive transfusion (citrate chelation), rhabdo (early).</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Severe low</td><td class="lo">&lt;7.0</td><td class="no">8.5–10.5</td><td class="hi">&gt;14 severe high</td><td class="un">mg/dL</td></tr><tr><td class="bl">Low</td><td class="lo">7.0–8.4</td><td class="no"></td><td class="hi">10.6–13.9 high</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Malignant hypercalcemia: aggressive IV isotonic fluids first, then calcitonin (fast, tachyphylaxis) + bisphosphonate/denosumab (slow, durable).</li><li>Symptomatic hypocalcemia (tetany, Chvostek/Trousseau, QT prolongation, seizure) → IV calcium; check and replace magnesium.</li><li>Citrate toxicity in massive transfusion → ionized hypocalcemia; monitor ionized Ca, not total.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Critically ill / transfusion.</span> Use ionized calcium — total calcium is unreliable when albumin and pH are shifting.</li><li><span class="lead">CKD.</span> Chronic mineral-bone disease alters Ca/PO₄/PTH interplay; interpret as a system.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Albumin-corrected calcium.</span> Corrected Ca = measured Ca + 0.8 × (4.0 − albumin g/dL). Hypoalbuminemia lowers total calcium without lowering the physiologically active ionized fraction — correcting prevents over-treating a pseudo-hypocalcemia. When in doubt, measure ionized Ca.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Always correct for albumin (or get ionized). QT effects make calcium an arrhythmia concern at both extremes.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Hypercalcemia of malignancy is a common, treatable cause of end-of-life delirium, nausea, and constipation — hydration ± calcitonin can meaningfully improve comfort even in a comfort-focused plan.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-lft" hidden>
+  <div class="eyebrow">CMP</div>
+  <h2>Liver Panel (AST/ALT, Alk Phos, Bilirubin, Albumin)</h2>
+  <p class="tagline">Pattern recognition: hepatocellular vs cholestatic, and is the liver still working?</p>
+  <div class="refbar"><span class="rk">Reference</span> AST 10–40 · ALT 7–56 U/L · ALP 44–147 U/L · Total bili 0.1–1.2 mg/dL · Albumin 3.5–5.0 g/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Transaminases (AST/ALT) ↑.</span> Hepatocellular injury. ALT &gt;1000s: ischemic (&#x27;shock liver&#x27;), acetaminophen, viral, autoimmune. AST:ALT &gt;2:1 with modest elevations suggests alcoholic hepatitis.</li><li><span class="lead">Alk phos ↑.</span> Cholestatic pattern — biliary obstruction, infiltration, drugs. Confirm hepatic origin with GGT (also rises in bone disease/pregnancy where GGT is normal).</li><li><span class="lead">Bilirubin ↑.</span> Unconjugated (hemolysis, Gilbert, resorbing hematoma) vs conjugated (obstruction, hepatocellular). Fractionate to interpret.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Albumin ↓.</span> Synthetic failure (chronic liver disease), loss (nephrotic, protein-losing enteropathy), or negative acute-phase response (inflammation). Low albumin also masks a calcium and an anion-gap reading.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">ALT normal</td><td class="lo"></td><td class="no">7–56</td><td class="hi">&gt;1000 massive (ischemic/APAP/viral)</td><td class="un">U/L</td></tr><tr><td class="bl">Albumin low</td><td class="lo">&lt;3.5</td><td class="no">3.5–5.0</td><td class="hi"></td><td class="un">g/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>AST/ALT in the thousands + coagulopathy + encephalopathy = acute liver failure — time-critical, consider NAC and transplant referral.</li><li>Synthetic function is INR + albumin + bilirubin, NOT the transaminases (which measure injury, not function). A normalizing AST/ALT in fulminant failure can mean recovery OR exhaustion of hepatocytes.</li><li>Isolated indirect hyperbilirubinemia in a well patient → Gilbert, reassure.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Pediatrics.</span> ALP is physiologically high during bone growth — a high ALP in a growing child is usually bone, not biliary.</li><li><span class="lead">Pregnancy.</span> ALP rises (placental). New RUQ pain + labs → consider HELLP, acute fatty liver of pregnancy.</li><li><span class="lead">Older adults.</span> Muscle-source AST from injury/rhabdo can confound; correlate with ALT and CK.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">R-factor.</span> (ALT/ULN) ÷ (ALP/ULN). &gt;5 hepatocellular, &lt;2 cholestatic, 2–5 mixed — structures the drug-induced-liver-injury workup.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Pattern first (hepatocellular vs cholestatic), then function (INR/albumin/bili), then the time-critical few (shock liver, APAP, obstruction with cholangitis).</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Jaundice and rising bilirubin are common in end-stage disease; management targets pruritus and comfort, not the numbers.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-protein" hidden>
+  <div class="eyebrow">CMP</div>
+  <h2>Total Protein &amp; Albumin/Globulin</h2>
+  <p class="tagline">Nutrition, synthetic reserve, and a hint of paraproteins — read albumin and the gap separately.</p>
+  <div class="refbar"><span class="rk">Reference</span> Total protein 6.0–8.3 g/dL · Albumin 3.5–5.0 g/dL · Globulin ~2.0–3.5 g/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated total protein / high globulin gap.</span> Increased globulins: chronic inflammation/infection, autoimmune disease, and — the can&#x27;t-miss — a monoclonal gammopathy (multiple myeloma, Waldenström). Also hemoconcentration/dehydration (relative).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low albumin.</span> Synthetic failure (chronic liver disease), loss (nephrotic syndrome, protein-losing enteropathy, burns), dilution, and — very commonly — the negative acute-phase response of acute/chronic inflammation and malnutrition. Low albumin is a robust marker of illness severity and poor prognosis.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Albumin low</td><td class="lo">&lt;3.5</td><td class="no">3.5–5.0</td><td class="hi"></td><td class="un">g/dL</td></tr><tr><td class="bl">Total protein</td><td class="lo">&lt;6.0</td><td class="no">6.0–8.3</td><td class="hi">&gt;8.3 (check globulin gap)</td><td class="un">g/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>A high total protein with a wide albumin–globulin gap (globulin &gt; albumin) in an older patient with bone pain, anemia, renal impairment, or hypercalcemia → work up for multiple myeloma (SPEP/UPEP/free light chains).</li><li>Low albumin distorts other labs: it masks a low total calcium (correct it) and hides an anion-gap acidosis (add ~2.5 to the gap per 1 g/dL albumin below 4).</li><li>Albumin is a strong prognostic marker across surgery, sepsis, heart failure, and cirrhosis — a low value flags physiologic reserve.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Elderly / chronically ill.</span> Low albumin is common and multifactorial (intake, inflammation, liver) — an important, often-overlooked prognostic signal rather than a simple nutrition readout.</li><li><span class="lead">Pregnancy.</span> Dilutional fall in albumin is physiologic.</li><li><span class="lead">Nephrotic syndrome / burns.</span> Large external protein losses drop albumin substantially; expect edema and hypercoagulability (nephrotic).</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Albumin-corrected calcium &amp; anion gap.</span> See Calcium and Bicarbonate — both require albumin correction to avoid misreads.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Albumin is the actionable piece: it re-interprets calcium and the anion gap and flags physiologic reserve. A wide globulin gap prompts a myeloma workup.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Low albumin is expected and prognostically consistent with advanced disease; not corrected. Useful only insofar as it informs prognosis discussions.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-magnesium" hidden>
+  <div class="eyebrow">Electrolytes</div>
+  <h2>Magnesium (Mg²⁺)</h2>
+  <p class="tagline">The forgotten cation — and the reason your potassium won&#x27;t correct.</p>
+  <div class="refbar"><span class="rk">Reference</span> 1.7–2.2 mg/dL (≈0.7–0.9 mmol/L)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hypermagnesemia.</span> Almost always iatrogenic + renal impairment: Mg-containing laxatives/antacids in CKD, or IV Mg (obstetric pre-eclampsia treatment). Progressive loss of DTRs → respiratory depression → cardiac arrest at extreme levels.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hypomagnesemia.</span> GI loss (diarrhea, PPIs — chronic use, malabsorption, alcoholism), renal wasting (loop/thiazide diuretics, aminoglycosides, cisplatin), poor intake, refeeding. Very common and under-recognized in the alcoholic and critically ill.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Low</td><td class="lo">&lt;1.7</td><td class="no">1.7–2.2</td><td class="hi">&gt;2.2 elevated</td><td class="un">mg/dL</td></tr><tr><td class="bl">Severe low</td><td class="lo">&lt;1.0 (symptomatic)</td><td class="no"></td><td class="hi">&gt;4 loss of DTRs / cardiac</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Hypomagnesemia is the reason refractory hypokalemia and hypocalcemia won&#x27;t correct — low Mg promotes renal K wasting and impairs PTH. Replace magnesium FIRST or the K and Ca repletion fails.</li><li>Torsades de pointes: IV magnesium is the treatment regardless of the serum Mg level.</li><li>Serum Mg reflects only ~1% of total body magnesium (mostly intracellular/bone), so a &#x27;normal&#x27; level can coexist with real depletion — replete empirically in the symptomatic or refractory-hypokalemic patient.</li><li>In pre-eclampsia/eclampsia, Mg is therapeutic; monitor DTRs, respiratory rate, and urine output for iatrogenic toxicity, with calcium gluconate as the antidote.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Alcohol use disorder.</span> Chronically depleted (poor intake, renal wasting, GI loss) — a routine repletion target, especially in withdrawal.</li><li><span class="lead">CKD/renal failure.</span> The population at risk for HYPERmagnesemia; avoid Mg-containing OTC products.</li><li><span class="lead">Chronic PPI use.</span> Recognized cause of clinically significant hypomagnesemia.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Check with K and Ca.</span> Interpret and replete as a trio — refractory hypokalemia/hypocalcemia mandates a magnesium check.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The cation to check when potassium or calcium won&#x27;t correct, and the drug for torsades. Serum level underestimates true depletion — treat empirically when the picture fits.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Repleted only for symptomatic relief (e.g., cramps, arrhythmia causing distress). Deprescribe Mg-containing products in renal impairment.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-phosphate" hidden>
+  <div class="eyebrow">Electrolytes</div>
+  <h2>Phosphate (PO₄)</h2>
+  <p class="tagline">Watch it plummet in refeeding and DKA treatment — and skyrocket in tumor lysis.</p>
+  <div class="refbar"><span class="rk">Reference</span> 2.5–4.5 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Hyperphosphatemia.</span> Reduced renal excretion (CKD/AKI — the most common), massive cellular release (tumor lysis syndrome, rhabdomyolysis, hemolysis), acidosis (transcellular shift out), excess intake (phosphate enemas/binders), hypoparathyroidism. Drives hypocalcemia by precipitation.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Hypophosphatemia.</span> Transcellular shift INTO cells (refeeding syndrome, insulin therapy in DKA, respiratory alkalosis), renal wasting (hyperparathyroidism, Fanconi, diuretics), decreased intake/absorption (alcoholism, malnutrition, antacid binders). Severe (&lt;1.0) → muscle weakness, respiratory failure, hemolysis, rhabdo, arrhythmia.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Low</td><td class="lo">&lt;2.5</td><td class="no">2.5–4.5</td><td class="hi">&gt;4.5 elevated</td><td class="un">mg/dL</td></tr><tr><td class="bl">Severe low</td><td class="lo">&lt;1.0 (resp/cardiac)</td><td class="no"></td><td class="hi">tumor lysis / rhabdo / CKD</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Refeeding syndrome (your can&#x27;t-miss): reintroducing carbohydrate in a malnourished/alcoholic/prolonged-NPO patient triggers an insulin surge that drives phosphate (and K, Mg) intracellularly — profound hypophosphatemia can cause respiratory/cardiac failure. Anticipate, monitor, replete, and advance nutrition slowly.</li><li>DKA treatment: insulin drives phosphate into cells; the initial &#x27;normal/high&#x27; phosphate falls during therapy. Routine repletion isn&#x27;t required unless severe or symptomatic — monitor.</li><li>Tumor lysis syndrome: hyperphosphatemia + hyperkalemia + hyperuricemia + hypocalcemia (from Ca-phosphate precipitation) + AKI — an oncologic emergency requiring aggressive hydration ± rasburicase.</li><li>Hyperphosphatemia causes hypocalcemia by precipitation — read Ca and PO₄ together.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Malnourished / alcoholic / prolonged NPO.</span> Highest refeeding-hypophosphatemia risk; check and replete phosphate as nutrition is reintroduced.</li><li><span class="lead">CKD.</span> Chronic hyperphosphatemia drives renal osteodystrophy and vascular calcification; managed with binders and diet.</li><li><span class="lead">Pediatrics.</span> Higher normal phosphate ranges during growth (bone turnover) — don&#x27;t misread against adult cutoffs.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Interpret with calcium, PTH, vitamin D.</span> The mineral-bone axis is a system; phosphate rarely interpreted in isolation in CKD.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The electrolyte that crashes in refeeding and DKA treatment and spikes in tumor lysis/rhabdo. Severe hypophosphatemia is a respiratory-failure risk; read PO₄ with calcium.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not routinely checked or corrected unless symptomatic. Relevant if refeeding is attempted for comfort.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-ua" hidden>
+  <div class="eyebrow">UA</div>
+  <h2>Urinalysis (dipstick + microscopy)</h2>
+  <p class="tagline">A liquid biopsy of the kidney, bladder, and metabolic state — but treat the patient, not the dipstick.</p>
+  <div class="refbar"><span class="rk">Reference</span> Dipstick: negative leuk est/nitrite/blood/protein/glucose/ketones; SG 1.005–1.030; pH 4.5–8.0</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Leukocyte esterase / nitrite +.</span> Pyuria/bacteriuria. Nitrite specific for Enterobacteriaceae (needs dwell time — first-morning best). Positives support UTI in a symptomatic patient.</li><li><span class="lead">Blood +.</span> Hematuria (stones, infection, malignancy, GN, trauma) OR myoglobin (rhabdo — dipstick &#x27;blood&#x27; positive with NO RBCs on micro) OR hemoglobinuria.</li><li><span class="lead">Protein +.</span> Glomerular disease, hypertension, diabetes; transient with fever/exercise. Quantify with spot protein:creatinine ratio.</li><li><span class="lead">Glucose/ketones +.</span> Glucosuria (hyperglycemia beyond renal threshold ~180). Ketonuria (DKA, starvation, alcoholic ketosis).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Specific gravity low/fixed.</span> Low: dilute urine, DI, over-hydration. Fixed ~1.010 (isosthenuria): intrinsic renal disease losing concentrating ability.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Specific gravity</td><td class="lo">1.005–1.030</td><td class="no"></td><td class="hi"></td><td class="un"></td></tr><tr><td class="bl">pH</td><td class="lo">4.5–8.0</td><td class="no"></td><td class="hi"></td><td class="un"></td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Positive dipstick blood + NO RBCs on microscopy = myoglobinuria until proven otherwise → check CK (rhabdo).</li><li>Asymptomatic bacteriuria: DO NOT treat except in pregnancy or before urologic instrumentation. Over-treatment drives resistance and C. diff — the number one antibiotic-stewardship pitfall on the floor.</li><li>Casts localize disease: RBC casts → glomerulonephritis; WBC casts → pyelonephritis/interstitial nephritis; muddy-brown granular casts → ATN.</li><li>A UA sent to &#x27;explain&#x27; delirium in an elder frequently mis-attributes the cause and delays the real workup — anchor to symptoms.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Pregnancy.</span> Asymptomatic bacteriuria IS treated (pyelo and preterm-labor risk). Screen and culture.</li><li><span class="lead">Elderly.</span> High baseline asymptomatic bacteriuria — a positive UA in a nonspecific presentation does not equal a symptomatic UTI. Requires genitourinary symptoms.</li><li><span class="lead">Catheterized patients.</span> Pyuria/bacteriuria is near-universal; culture only with systemic signs (CAUTI criteria).</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Spot protein:creatinine / albumin:creatinine.</span> Converts a dipstick protein into a quantified daily estimate without a 24-hr collection.</li><li><span class="lead">Urine anion gap.</span> (Na + K − Cl); helps distinguish renal from GI causes of a normal-gap metabolic acidosis.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Cheap, fast, high-yield — but the discipline is in NOT over-reading it. Nitrite/LE guide, myoglobin clue, cast patterns localize; asymptomatic bacteriuria is a trap.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Do not screen for or treat asymptomatic bacteriuria. Symptomatic UTI (dysuria, suprapubic pain, distressing delirium) may be treated for comfort per goals.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-bohb" hidden>
+  <div class="eyebrow">Ketones</div>
+  <h2>Beta-Hydroxybutyrate (β-OHB)</h2>
+  <p class="tagline">The dominant ketone in DKA — and the one the urine dipstick misses.</p>
+  <div class="refbar"><span class="rk">Reference</span> &lt;0.6 mmol/L (normal); ≥3.0 mmol/L suggests significant ketoacidosis</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated β-OHB.</span> Diabetic ketoacidosis (insulin deficiency), starvation/fasting ketosis, alcoholic ketoacidosis, euglycemic DKA (SGLT2 inhibitors, pregnancy). Reflects the shift to fatty-acid oxidation.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Normal/low.</span> Adequate insulin and carbohydrate availability.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">&lt;0.6</td><td class="no"></td><td class="hi">≥3.0 ketoacidosis likely</td><td class="un">mmol/L</td></tr><tr><td class="bl">Borderline</td><td class="lo">0.6–1.5</td><td class="no"></td><td class="hi">1.5–3.0 developing</td><td class="un">mmol/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>β-OHB is the key teaching point vs urine ketones: urine nitroprusside detects acetoacetate/acetone but NOT β-OHB. Early/severe DKA is β-OHB-predominant, so urine ketones underestimate severity and may paradoxically INCREASE as β-OHB converts to acetoacetate during treatment — a rising urine ketone can look like worsening when the patient is improving.</li><li>Serum β-OHB ≥3.0 mmol/L supports DKA diagnosis; trend it to gauge resolution (target &lt;1.0 with gap closure) rather than following urine ketones.</li><li>Euglycemic DKA: glucose can be near-normal on SGLT2 inhibitors — order β-OHB when the gap acidosis is unexplained.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Pediatrics.</span> Point-of-care β-OHB is used to guide pediatric DKA management and reduce blood draws.</li><li><span class="lead">Pregnancy.</span> Accelerated starvation ketosis — DKA can occur at lower glucose and after shorter fasting.</li><li><span class="lead">Alcohol use.</span> Alcoholic ketoacidosis is β-OHB-predominant; the nitroprusside urine test badly underestimates it.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Pairs with the anion gap.</span> β-OHB is an unmeasured anion; it is a major driver of the elevated gap in ketoacidosis.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Point-of-care β-OHB shortens DKA diagnosis and monitoring. Trust it over urine ketones for severity and resolution.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Rarely relevant; if a diabetic patient on comfort care becomes symptomatically ketotic, treat proportionate to goals.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-salicylate" hidden>
+  <div class="eyebrow">Tox</div>
+  <h2>Salicylate Level</h2>
+  <p class="tagline">Interpret against time and pH — the number alone lies, especially in chronic toxicity.</p>
+  <div class="refbar"><span class="rk">Reference</span> Therapeutic (anti-inflammatory) ~15–30 mg/dL; toxicity signs begin &gt;30 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated salicylate.</span> Acute or chronic aspirin/methyl-salicylate (oil of wintergreen — extremely concentrated) ingestion. Uncouples oxidative phosphorylation and stimulates the medullary respiratory center → mixed primary respiratory alkalosis + anion-gap metabolic acidosis.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Below toxic.</span> Therapeutic or sub-therapeutic; a single low early level does NOT exclude a rising level (delayed absorption, bezoar).</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Therapeutic</td><td class="lo">15–30</td><td class="no"></td><td class="hi">&gt;30 toxicity possible</td><td class="un">mg/dL</td></tr><tr><td class="bl">Mild tox</td><td class="lo">30–50</td><td class="no"></td><td class="hi">50–90 moderate</td><td class="un">mg/dL</td></tr><tr><td class="bl">Severe</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;90 severe / dialysis range</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Graded severity (verify before relying — correlate with clinical picture and pH): mild ~30–50 mg/dL, moderate ~50–90 mg/dL, severe &gt;90–100 mg/dL. Chronic toxicity produces severe illness at MUCH lower levels — the level under-represents danger in the elderly chronic ingester.</li><li>Serum alkalinization (sodium bicarbonate) is indicated for metabolic acidosis, symptomatic toxicity, or acute levels &gt;30–40 mg/dL rising — it traps ionized salicylate out of the CNS and enhances urinary elimination. Target urine pH 7.5–8.</li><li>Hemodialysis indications (verify against current tox guidance): altered mental status, refractory acidemia, renal failure, pulmonary/cerebral edema, level &gt;90–100 mg/dL acute (or lower in chronic), or clinical deterioration despite alkalinization.</li><li>Avoid intubation if at all possible — apnea collapses the compensatory hyperventilation and can precipitate lethal acidemia. If unavoidable, match the patient&#x27;s high minute ventilation.</li><li>Trend levels (delayed/erratic absorption, bezoar formation) and watch for rebound after an initial fall.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Elderly (chronic toxicity).</span> The classic missed diagnosis: insidious confusion, non-cardiogenic pulmonary edema, and metabolic acidosis with only a modestly elevated level. Mortality is higher than acute toxicity. Have a low threshold to check a level in an undifferentiated acidotic/altered elder.</li><li><span class="lead">Pediatrics.</span> Small ingestions of concentrated methyl salicylate are potentially lethal; topical/teething products are a source.</li><li><span class="lead">Pregnancy.</span> Salicylate crosses the placenta and the fetus is more susceptible — dialysis threshold is lower.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Interpret with ABG/VBG + anion gap + time.</span> A mixed acid-base picture (respiratory alkalosis + gap metabolic acidosis) in an unexplained-acidosis patient should trigger a salicylate level even without a history.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>A can&#x27;t-miss tox diagnosis. The mixed acid-base fingerprint, tinnitus, and unexplained acidosis in an altered patient should prompt a level. Chronic toxicity is under-recognized and lethal.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not typically relevant unless an intentional ingestion complicates end-of-life care; manage per goals and symptoms.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-ck" hidden>
+  <div class="eyebrow">Muscle</div>
+  <h2>Creatine Kinase (CK / CPK)</h2>
+  <p class="tagline">The rhabdomyolysis number — and a compartment-syndrome and statin-myopathy flag.</p>
+  <div class="refbar"><span class="rk">Reference</span> M ~40–200 U/L · F ~30–180 U/L (assay-dependent)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated CK.</span> Skeletal muscle injury: rhabdomyolysis (crush, prolonged immobilization/&#x27;found down&#x27;, seizure, extreme exertion, compartment syndrome, drugs — statins, cocaine, neuroleptic malignant syndrome, serotonin syndrome), myositis, hypothyroid myopathy. Cardiac (CK-MB) and rare macro-CK also raise total CK.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low CK.</span> Low muscle mass, corticosteroids, sometimes early hypothyroid states — rarely clinically actionable.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">40–200</td><td class="no"></td><td class="hi">&gt;1000 significant myonecrosis</td><td class="un">U/L</td></tr><tr><td class="bl">Rhabdo risk</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;5000 AKI risk</td><td class="un">U/L</td></tr><tr><td class="bl">High AKI risk</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;15000–20000</td><td class="un">U/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Rhabdomyolysis + your compartment/&#x27;abd&#x27;/crush teaching point: the found-down or crush patient needs CK, and a rising or markedly elevated CK with a tense, pain-out-of-proportion extremity should trigger evaluation for COMPARTMENT SYNDROME — a limb-threatening surgical emergency where CK is a supporting clue, not a substitute for compartment pressures and clinical exam.</li><li>AKI risk in rhabdo rises with CK; classic teaching flags CK &gt;5,000 U/L as significant risk and very high levels (tens of thousands) as high risk — aggressive IV isotonic fluids to maintain urine output are the mainstay (verify targets against current protocols).</li><li>Dipstick &#x27;blood&#x27; positive with no RBCs on micro = myoglobinuria — pair with CK to confirm rhabdo.</li><li>Watch the rhabdo electrolyte cascade: hyperkalemia (lethal, early), hyperphosphatemia, hypocalcemia (early, from Ca deposition in muscle) then hypercalcemia (late, on recovery), and gap acidosis.</li><li>Statin myopathy spectrum: myalgia with normal CK → myositis with CK rise → rare rhabdo. Stop the statin and evaluate with symptoms + CK.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Race/sex/muscle mass.</span> Baseline CK is higher in individuals with greater muscle mass and, on average, higher in Black patients and in men — a &#x27;high&#x27; CK must be read against the person&#x27;s muscle mass and baseline, not a single population cutoff.</li><li><span class="lead">Post-exertion/IM injection/procedures.</span> Vigorous exercise, IM injections, recent surgery, and even prolonged seizures transiently raise CK — don&#x27;t over-call an asymptomatic bump.</li><li><span class="lead">Elderly &#x27;found down&#x27;.</span> Prolonged immobilization on a hard surface causes pressure rhabdo; check CK and renal function routinely.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">CK-MB / troponin.</span> If cardiac source suspected, troponin is far more specific than CK-MB for myocardial injury.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Order in every &#x27;found down,&#x27; crush, seizure, or suspected-rhabdo patient. Rising CK + tense painful limb = evaluate for compartment syndrome now.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not routinely checked. Relevant only if rhabdomyolysis-related symptoms (pain from a crush injury or immobilization) affect comfort.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-bnp" hidden>
+  <div class="eyebrow">Cardiac</div>
+  <h2>BNP / NT-proBNP</h2>
+  <p class="tagline">A wall-stretch signal that helps sort the dyspneic patient — read against age, renal function, and body habitus.</p>
+  <div class="refbar"><span class="rk">Reference</span> BNP &lt;100 pg/mL makes acute HF unlikely; NT-proBNP age-stratified rule-in (&gt;450/&lt;50y, &gt;900/50–75y, &gt;1800/&gt;75y). Rule-out NT-proBNP &lt;300.</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated BNP/NT-proBNP.</span> Ventricular wall stress from volume/pressure overload: decompensated heart failure (systolic or diastolic), but also PE/pulmonary hypertension (RV strain), renal failure (reduced clearance, esp. NT-proBNP), sepsis, atrial fibrillation, advanced age.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low BNP.</span> Makes acute decompensated HF unlikely as the cause of dyspnea. Falsely low in obesity — a key pitfall (adipose clears/suppresses natriuretic peptides), so a &#x27;normal&#x27; BNP in an obese patient can under-call HF.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">HF unlikely (BNP)</td><td class="lo">&lt;100</td><td class="no"></td><td class="hi">&gt;400 HF likely</td><td class="un">pg/mL</td></tr><tr><td class="bl">NT-proBNP rule-out</td><td class="lo">&lt;300</td><td class="no"></td><td class="hi">&gt;450/900/1800 by age</td><td class="un">pg/mL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Best value is the RULE-OUT in the acutely dyspneic ED patient: a low BNP/NT-proBNP shifts the differential away from heart failure toward pulmonary causes.</li><li>Grey-zone values (BNP 100–400) require clinical correlation — many confounders live here.</li><li>Trend within a patient (their own baseline / &#x27;dry&#x27; weight BNP) is more useful than a single population cutoff for chronic HF management.</li><li>Sacubitril/valsartan (ARNI) raises BNP (it inhibits BNP breakdown) but does NOT raise NT-proBNP — use NT-proBNP to monitor patients on an ARNI.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Obesity.</span> Natriuretic peptides run LOWER; use lower rule-out thresholds and don&#x27;t be falsely reassured.</li><li><span class="lead">Age.</span> Levels rise with age — NT-proBNP rule-in is explicitly age-stratified (&gt;450 / &gt;900 / &gt;1800 by age band).</li><li><span class="lead">Renal impairment.</span> Reduces clearance and raises both (NT-proBNP more so); interpret with eGFR.</li><li><span class="lead">Female sex.</span> Slightly higher baseline than men.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Age-stratified NT-proBNP.</span> Rule-in cutoffs increase with age; a single flat cutoff over-calls the elderly and under-calls the young.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>A rule-out tool for the dyspneic patient more than a rule-in. Obesity lowers it, age/renal disease raise it, and ARNI dissociates BNP from NT-proBNP.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not obtained. Dyspnea from end-stage heart failure is managed with opioids, diuretics for comfort, and positioning per goals — the number does not drive comfort care.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-troponin" hidden>
+  <div class="eyebrow">Cardiac</div>
+  <h2>Troponin (high-sensitivity cTn)</h2>
+  <p class="tagline">A marker of myocardial INJURY, not of the mechanism — the delta and the story make the diagnosis.</p>
+  <div class="refbar"><span class="rk">Reference</span> Assay- and sex-specific 99th-percentile URL (hs-cTnT ~14–22 ng/L; hs-cTnI ~women 16 / men 34 ng/L — use YOUR lab&#x27;s value)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated troponin.</span> Any cardiomyocyte injury. Type 1 MI (plaque rupture/thrombus) vs Type 2 MI (supply-demand mismatch: tachyarrhythmia, hypotension, anemia, hypoxia, sepsis). Non-ischemic injury: myocarditis, heart failure, PE (RV strain), sepsis, contusion, cardioversion, takotsubo. Chronic elevation: CKD, structural heart disease.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Below URL.</span> No detectable myocardial injury at the time of draw — but a single early value does not exclude an evolving MI; serial testing captures the rise.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Below URL</td><td class="lo">&lt; URL</td><td class="no"></td><td class="hi">≥ URL = myocardial injury</td><td class="un">ng/L</td></tr><tr><td class="bl">Dynamic rise/fall</td><td class="lo"></td><td class="no"></td><td class="hi">delta + ischemia = acute MI</td><td class="un"></td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>The diagnosis of acute MI requires a rise AND/OR fall (a dynamic delta) with at least one value above the 99th-percentile URL, PLUS clinical/ECG/imaging evidence of ischemia. A single elevated troponin is myocardial injury, not automatically infarction.</li><li>hs-cTn 0/1-hr and 0/2-hr algorithms (assay-specific — verify your protocol): very low baseline (often below the limit of detection, e.g. hs-cTnI &lt;2–5 ng/L) in a patient &gt;3h from symptom onset can rule OUT; a high baseline or a significant absolute delta rules IN. Serial delta &gt; single snapshot.</li><li>A markedly elevated troponin with a flat (non-dynamic) trend points to a chronic cause (CKD, structural disease) rather than acute MI.</li><li>Renal impairment raises baseline hs-cTn (reduced clearance + comorbid disease) — do NOT dismiss it as &#x27;just renal&#x27;; use the delta and the pretest probability.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Sex.</span> hs-cTn 99th-percentile URLs are sex-specific and higher in men; using a sex-specific threshold reclassifies some women as positive who a single unisex cutoff would miss.</li><li><span class="lead">Older adults / CKD.</span> Higher baseline values; interpret with delta and clinical context to avoid over-calling chronic elevation as ACS.</li><li><span class="lead">Early presenters (&lt;3h).</span> A single value can be falsely reassuring; a second timed sample is essential to catch the rise.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Delta (serial change).</span> The absolute or relative change between timed samples — the core of the rapid rule-in/rule-out algorithms. Values are assay-specific.</li><li><span class="lead">Use with HEART/clinical risk score.</span> Troponin is interpreted inside a pretest-probability framework, never alone.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The delta and the clinical story make the MI diagnosis — not a single number. Know your assay&#x27;s URL and algorithm; a flat elevation in CKD is not an ACS rule-in.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not obtained. Chest pain at end of life is treated symptomatically (opioids, nitrates for comfort) without troponin-driven intervention unless goals include reversible-cause treatment.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-coags" hidden>
+  <div class="eyebrow">Coag/Thrombosis</div>
+  <h2>Coagulation Panel (PT/INR, aPTT, Fibrinogen)</h2>
+  <p class="tagline">Two pathways, one common endpoint — plus the modern reality that the big anticoagulants don&#x27;t move these tests.</p>
+  <div class="refbar"><span class="rk">Reference</span> PT ~11–13.5 s · INR 0.8–1.1 · aPTT ~25–35 s · Fibrinogen ~200–400 mg/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">PT/INR prolonged.</span> Extrinsic/common pathway: warfarin (factor VII first), vitamin K deficiency, liver disease (synthetic failure), DIC, factor VII deficiency, and some direct Xa inhibitors (variable, unreliable).</li><li><span class="lead">aPTT prolonged.</span> Intrinsic/common pathway: heparin, hemophilia A/B, von Willebrand disease, factor deficiencies, lupus anticoagulant (paradoxically prothrombotic in vivo), and direct thrombin inhibitors.</li><li><span class="lead">Both PT and aPTT prolonged.</span> Common-pathway problem: severe liver disease, DIC, vitamin K deficiency (advanced), massive transfusion/dilution, direct thrombin inhibitor, supratherapeutic warfarin + heparin.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Fibrinogen low.</span> Consumption (DIC), massive hemorrhage/dilution, liver failure, thrombolytics. A falling fibrinogen in obstetric hemorrhage/DIC is an early, actionable danger sign.</li><li><span class="lead">Shortened PT/aPTT.</span> Rarely clinically useful; may reflect acute-phase/hypercoagulable states or sampling artifact.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">INR therapeutic (warfarin)</td><td class="lo"></td><td class="no">2.0–3.0</td><td class="hi">&gt;4–5 high bleed risk</td><td class="un"></td></tr><tr><td class="bl">aPTT</td><td class="lo">&lt;25</td><td class="no">25–35</td><td class="hi">&gt;35 prolonged</td><td class="un">s</td></tr><tr><td class="bl">Fibrinogen</td><td class="lo">&lt;150 critical</td><td class="no">200–400</td><td class="hi">&gt;400 acute phase</td><td class="un">mg/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Isolated prolonged aPTT → mixing study: corrects = factor deficiency; fails to correct = inhibitor (lupus anticoagulant, factor inhibitor).</li><li>Warfarin reversal by urgency: vitamin K (slow, durable) + 4-factor PCC (fast, for major/life-threatening bleeding) — FFP only if PCC unavailable.</li><li>DIC picture: prolonged PT/aPTT + low fibrinogen + low platelets + high D-dimer + schistocytes — treat the underlying cause and replace (cryoprecipitate for fibrinogen).</li><li>DOACs and these tests (the modern trap): direct Xa inhibitors (apixaban, rivaroxaban) and dabigatran can leave a NORMAL or only mildly deranged PT/INR/aPTT — a normal coag panel does NOT exclude a therapeutic DOAC effect. Use drug-specific assays (anti-Xa calibrated, dilute thrombin time) when the level matters.</li><li>DOAC reversal (verify current availability/guidance): idarucizumab for dabigatran; andexanet alfa was the labeled Xa-inhibitor reversal agent but was WITHDRAWN from the US market in Dec 2025, leaving 4-factor PCC as the de facto reversal standard for apixaban/rivaroxaban major bleeding. Confirm your institution&#x27;s current protocol.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Liver disease.</span> Reduced synthesis of most factors prolongs PT/INR, but the picture is &#x27;rebalanced&#x27; (pro- and anticoagulant factors both fall) — a high INR in cirrhosis does NOT reliably predict bleeding and shouldn&#x27;t be &#x27;corrected&#x27; prophylactically before procedures based on INR alone.</li><li><span class="lead">Neonates.</span> Physiologically prolonged PT/aPTT (immature, vitamin-K-dependent factors); use age-specific reference ranges.</li><li><span class="lead">Warfarin patients.</span> INR is the monitoring test; target range is indication-specific (usually 2–3).</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Mixing study.</span> Distinguishes factor deficiency (corrects) from inhibitor (doesn&#x27;t) in an unexplained prolonged aPTT.</li><li><span class="lead">Anti-Xa / dilute thrombin time.</span> Drug-specific quantification when standard coags are insensitive to the DOAC in question.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Localize the prolongation (PT vs aPTT vs both), remember DIC and the mixing study, and never trust a normal coag panel to exclude a DOAC effect. Know the current reversal landscape.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not routinely checked. In a bleeding patient on comfort care, management is symptomatic; deprescribe anticoagulants as goals shift and bleeding risk outweighs thrombotic benefit.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-ddimer" hidden>
+  <div class="eyebrow">Coag/Thrombosis</div>
+  <h2>D-Dimer</h2>
+  <p class="tagline">A high-sensitivity rule-OUT — powerful when the pretest probability is low, useless when it&#x27;s high.</p>
+  <div class="refbar"><span class="rk">Reference</span> Conventional &lt;500 ng/mL FEU (or ~&lt;230–250 ng/mL DDU). Age-adjust &gt;50y.</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated D-dimer.</span> Fibrin degradation — VTE (DVT/PE), but also DIC, recent surgery/trauma, malignancy, pregnancy, infection/sepsis, inflammation, advanced age, liver disease. Highly SENSITIVE, poorly SPECIFIC.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low D-dimer.</span> In a LOW/intermediate pretest-probability patient, effectively excludes VTE without imaging. This negative predictive value is the entire clinical point.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Negative (FEU)</td><td class="lo">&lt;500</td><td class="no"></td><td class="hi">&gt;500 (or &gt;age×10) positive</td><td class="un">ng/mL</td></tr><tr><td class="bl">Age-adjusted &gt;50y</td><td class="lo">&lt;age×10</td><td class="no"></td><td class="hi">≥age×10 positive</td><td class="un">ng/mL FEU</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Use only after risk stratification (Wells/Geneva/PERC). A negative D-dimer in a LOW-probability patient rules out PE/DVT; in a HIGH-probability patient, skip the D-dimer and image — a negative result won&#x27;t lower the probability enough.</li><li>Age-adjusted cutoff (&gt;50y): use age × 10 ng/mL FEU instead of a flat 500 (e.g., a 70-year-old&#x27;s cutoff is 700). ACEP/ACP-endorsed; safely reduces unnecessary CTPA in older low/intermediate-risk patients.</li><li>The UNIT TRAP: labs report FEU or DDU, and the age-adjustment formula (age×10) is derived for FEU. 1 DDU ≈ 2 FEU. Know which your lab reports before applying a cutoff — a unit error causes missed or over-called VTE.</li><li>YEARS and PEGeD algorithms use a variable D-dimer threshold (often &lt;1000 ng/mL with no/low criteria) as an alternative to a flat cutoff.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Older adults (&gt;50y).</span> Baseline rises with age; the flat 500 cutoff generates excess false positives — apply age×10.</li><li><span class="lead">Pregnancy.</span> Physiologically rises through gestation; conventional cutoffs lose specificity. Use pregnancy-adapted pathways (e.g., YEARS-based).</li><li><span class="lead">Inpatients / active malignancy / recent surgery.</span> Baseline elevated; D-dimer loses rule-out value and higher thresholds may be needed.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Age-adjusted D-dimer (see Calculators).</span> age × 10 ng/mL FEU for patients &gt;50y with non-high pretest probability.</li><li><span class="lead">Confirm unit (FEU vs DDU).</span> The cutoff and the age formula depend on it.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>A rule-out that only works downstream of risk stratification. Age-adjust over 50, and always confirm FEU vs DDU before trusting a cutoff.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not obtained; suspected VTE at end of life is treated (or not) per goals and comfort, not confirmed via D-dimer/imaging cascades.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-ammonia" hidden>
+  <div class="eyebrow">GI</div>
+  <h2>Ammonia (NH₃)</h2>
+  <p class="tagline">A commonly over-ordered test — hepatic encephalopathy is a CLINICAL diagnosis, and the level neither confirms nor excludes it.</p>
+  <div class="refbar"><span class="rk">Reference</span> ~15–45 µmol/L (assay- and sample-handling-dependent)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated ammonia.</span> Impaired hepatic clearance/urea-cycle bypass: cirrhosis with portosystemic shunting (hepatic encephalopathy), acute liver failure, portosystemic shunts, urea-cycle disorders (peds/inborn errors), valproate toxicity, GI bleeding (protein load), and severe muscle activity/seizures. Preanalytical spuriously-high values are common (tourniquet, delayed/warm transport, hemolysis).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low/normal ammonia.</span> Does not exclude hepatic encephalopathy — a normal ammonia in an encephalopathic cirrhotic does not rule it out.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">15–45</td><td class="no"></td><td class="hi">&gt;100 marked (peds emergency)</td><td class="un">µmol/L</td></tr><tr><td class="bl">Adult elevation</td><td class="lo"></td><td class="no"></td><td class="hi">poor correlation with HE grade</td><td class="un"></td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Hepatic encephalopathy is a CLINICAL diagnosis (asterixis, altered mentation in a patient with liver disease, after excluding other causes). Ammonia level correlates poorly with severity and should NOT be used to diagnose, exclude, or grade HE, nor to titrate lactulose — titrate to stool output and mental status instead.</li><li>Where ammonia IS genuinely useful: unexplained encephalopathy WITHOUT known liver disease (screen for urea-cycle disorder, valproate toxicity, unexpected liver failure), and in pediatric inborn-errors evaluation.</li><li>Preanalytical discipline: draw free-flowing (avoid prolonged tourniquet), place on ice, transport and run immediately — mishandling falsely elevates the result and generates spurious workups.</li><li>Valproate-associated hyperammonemic encephalopathy can occur with therapeutic valproate levels and a normal LFT panel — check ammonia in the encephalopathic patient on valproate.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Neonates/children.</span> Markedly elevated ammonia in a sick neonate/infant is an emergency (urea-cycle disorder, organic acidemia) — this is one of the few settings where the level directly drives urgent management (dialysis, ammonia scavengers).</li><li><span class="lead">Cirrhosis.</span> Chronic elevation is common and does not track with encephalopathy grade — treat the patient, not the number.</li><li><span class="lead">GI bleed in liver disease.</span> Blood protein load raises ammonia and can precipitate encephalopathy.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Sample handling.</span> Not a formula, but the single biggest source of error — ice, no stasis, immediate processing.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Resist the reflex order in known cirrhosis — HE is clinical. Ammonia earns its keep in unexplained encephalopathy without liver disease, valproate, and pediatric inborn errors.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not indicated in end-stage liver disease; hepatic encephalopathy is managed for comfort (lactulose titrated to symptoms) without ammonia levels.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-lipase" hidden>
+  <div class="eyebrow">GI</div>
+  <h2>Lipase</h2>
+  <p class="tagline">The pancreatitis test — a diagnosis of THREE, where the number&#x27;s height doesn&#x27;t grade severity.</p>
+  <div class="refbar"><span class="rk">Reference</span> ~10–60 U/L (assay-dependent); ≥3× upper limit supports acute pancreatitis</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated lipase.</span> Acute pancreatitis (≥3× ULN with compatible pain is diagnostic). Also: pancreatic duct obstruction, bowel ischemia/perforation, renal failure (reduced clearance), DKA, and drugs. More sensitive and specific for pancreatitis than amylase, and stays elevated longer.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low lipase.</span> Chronic pancreatitis with advanced exocrine destruction (loss of acinar tissue). Rarely clinically actionable in the acute setting.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">10–60</td><td class="no"></td><td class="hi">≥3× ULN pancreatitis (with pain)</td><td class="un">U/L</td></tr><tr><td class="bl">Nonspecific</td><td class="lo"></td><td class="no"></td><td class="hi">&lt;3× ULN (renal/ischemia/DKA)</td><td class="un">U/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Diagnosis of acute pancreatitis requires 2 of 3: characteristic epigastric pain radiating to the back, lipase ≥3× ULN, and characteristic imaging. Don&#x27;t diagnose on the number alone, and don&#x27;t need imaging if pain + lipase already meet criteria.</li><li>The magnitude does NOT correlate with severity — a lipase of 3000 is not &#x27;worse&#x27; than 600. Severity is scored clinically/physiologically (SIRS, BUN, hematocrit, organ failure), not by the enzyme level. Trending lipase to follow recovery is low-yield.</li><li>Modest elevations (&lt;3× ULN) are nonspecific: renal failure, bowel ischemia/perforation, DKA — correlate with the clinical picture before anchoring on pancreatitis.</li><li>Lipase does not need to be repeated serially once the diagnosis is made — it doesn&#x27;t guide management.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Renal impairment.</span> Reduced clearance raises baseline lipase; a mild elevation in CKD is often not pancreatitis.</li><li><span class="lead">DKA.</span> Can elevate lipase without true pancreatitis — interpret cautiously in the ketoacidotic patient.</li><li><span class="lead">Pediatrics.</span> Consider trauma (including non-accidental), and structural anomalies as causes of pediatric pancreatitis.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">None.</span> Interpret against the 3× ULN diagnostic threshold and the clinical picture; the absolute value is not corrected or graded.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>≥3× ULN + compatible pain = pancreatitis; the height doesn&#x27;t grade severity, and modest bumps are nonspecific (renal, ischemia, DKA). Score severity clinically.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not obtained. Pancreatitis pain at end of life is managed symptomatically per goals.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-tsh" hidden>
+  <div class="eyebrow">Endocrine</div>
+  <h2>TSH + Free T4 (± T3)</h2>
+  <p class="tagline">The most sensitive first-line thyroid test — but interpret the pair, and beware the sick patient.</p>
+  <div class="refbar"><span class="rk">Reference</span> TSH ~0.4–4.0 mIU/L · Free T4 ~0.8–1.8 ng/dL</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">TSH high.</span> Primary HYPOthyroidism (failing gland, high TSH + low free T4). Subclinical hypothyroidism = high TSH with normal free T4. Also: recovery phase of nonthyroidal illness, poor levothyroxine adherence, and (rarely) TSH-secreting adenoma with high free T4.</li><li><span class="lead">Free T4 high.</span> HYPERthyroidism (with suppressed TSH): Graves, toxic nodule/multinodular goiter, thyroiditis (release phase), excess thyroid hormone. Rare central causes give high T4 with inappropriately normal/high TSH.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">TSH low.</span> Primary HYPERthyroidism (suppressed TSH + high free T4/T3). Subclinical hyperthyroidism = low TSH with normal free T4. Also nonthyroidal illness, steroids/dopamine, and central hypothyroidism (low TSH + low free T4 — the pituitary problem).</li><li><span class="lead">Free T4 low.</span> HYPOthyroidism (primary: high TSH; central: low/normal TSH). Also severe nonthyroidal illness.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">TSH low (hyper)</td><td class="lo">&lt;0.4</td><td class="no">0.4–4.0</td><td class="hi">&gt;4.0 (hypo)</td><td class="un">mIU/L</td></tr><tr><td class="bl">Free T4</td><td class="lo">&lt;0.8 (hypo)</td><td class="no">0.8–1.8</td><td class="hi">&gt;1.8 (hyper)</td><td class="un">ng/dL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Interpret TSH and free T4 as a PAIR: high TSH + low T4 = primary hypothyroid; low TSH + high T4 = primary hyperthyroid; low TSH + low T4 = central hypothyroid (pituitary/hypothalamic — don&#x27;t miss it); high TSH + high T4 = TSH-secreting adenoma or resistance (rare).</li><li>Nonthyroidal illness (&#x27;sick euthyroid&#x27;) — the inpatient trap: acutely ill patients show low T3, then low T4 and variable TSH WITHOUT true thyroid disease. Avoid checking thyroid function in acute illness unless thyroid disease is genuinely suspected, and don&#x27;t treat based on these transient changes — recheck when recovered.</li><li>Myxedema coma (hypothyroid) and thyroid storm (hyperthyroid) are CLINICAL emergencies treated on the clinical picture — don&#x27;t wait for confirmatory labs to act.</li><li>Amiodarone, lithium, checkpoint inhibitors, and steroids all perturb thyroid tests — check a med list before over-interpreting.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Pregnancy.</span> Trimester-specific TSH reference ranges (lower, especially first trimester as hCG stimulates the thyroid); using non-pregnant cutoffs misclassifies. Overt hypothyroidism must be treated for fetal neurodevelopment.</li><li><span class="lead">Older adults.</span> TSH reference range drifts upward with age; a mildly high TSH in an elder may be normal for age — avoid over-treating subclinical hypothyroidism.</li><li><span class="lead">Acutely ill inpatients.</span> Nonthyroidal illness syndrome makes thyroid panels hard to interpret — defer unless truly indicated.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Free T4 (and free T3) reflex.</span> When TSH is abnormal, the free hormones localize and grade the disorder; TSH alone can mislead in central disease and sick-euthyroid.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>TSH + free T4 read as a pair. Beware sick-euthyroid in the acutely ill (defer testing), treat myxedema/storm on clinical grounds, and use pregnancy- and age-appropriate ranges.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not routinely checked. Continue or simplify levothyroxine per goals; new workups are rarely indicated in comfort-focused care.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-abg" hidden>
+  <div class="eyebrow">ABG</div>
+  <h2>Arterial Blood Gas (ABG / VBG)</h2>
+  <p class="tagline">The acid-base and oxygenation truth-teller — read in a fixed sequence every time.</p>
+  <div class="refbar"><span class="rk">Reference</span> pH 7.35–7.45 · PaCO₂ 35–45 mmHg · HCO₃ 22–26 · PaO₂ 80–100 mmHg · SaO₂ &gt;95%</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">pH ↑ alkalemia.</span> Respiratory alkalosis (hyperventilation — pain, anxiety, sepsis, PE, salicylate, high altitude) or metabolic alkalosis (vomiting, diuretics, hyperaldosteronism).</li><li><span class="lead">PaCO₂ ↑.</span> Hypoventilation/respiratory acidosis — COPD, sedation/opioids, neuromuscular weakness, fatigue. A rising CO₂ in a tiring asthmatic is an ominous pre-arrest sign.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">pH ↓ acidemia.</span> Metabolic acidosis (see bicarbonate) or respiratory acidosis (hypoventilation).</li><li><span class="lead">PaO₂ / SaO₂ ↓.</span> Hypoxemia — V/Q mismatch, shunt, hypoventilation, diffusion defect, low inspired O₂. Compute the A–a gradient to localize.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">pH acidemia</td><td class="lo">&lt;7.35</td><td class="no">7.35–7.45</td><td class="hi">&gt;7.45 alkalemia</td><td class="un"></td></tr><tr><td class="bl">PaCO₂</td><td class="lo">&lt;35</td><td class="no">35–45</td><td class="hi">&gt;45</td><td class="un">mmHg</td></tr><tr><td class="bl">PaO₂ hypoxemia</td><td class="lo">&lt;80</td><td class="no">80–100</td><td class="hi"></td><td class="un">mmHg</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Fixed reading sequence: (1) pH — acidemic or alkalemic? (2) primary driver — CO₂ (resp) or HCO₃ (metabolic)? (3) compensation appropriate? (4) if metabolic acidosis, anion gap; (5) delta-delta for mixed disorders.</li><li>Winter&#x27;s formula for a metabolic acidosis: expected PaCO₂ = 1.5×HCO₃ + 8 (±2). Actual &gt; expected = concurrent respiratory acidosis; &lt; expected = concurrent respiratory alkalosis.</li><li>A &#x27;normal&#x27; CO₂ in a severe asthmatic who should be blowing it off signals impending respiratory failure.</li><li>VBG substitutes well for pH and CO₂ trend in many scenarios (add ~0.03–0.05 pH, subtract ~4–5 mmHg CO₂) but does NOT assess oxygenation — use pulse ox/ABG for that.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">COPD (chronic CO₂ retainer).</span> Chronically elevated CO₂ with compensatory high bicarb and near-normal pH is the baseline; treat the delta from THEIR baseline, and target their usual SpO₂ (often 88–92%) to avoid oxygen-induced hypercapnia.</li><li><span class="lead">Pregnancy.</span> Chronic respiratory alkalosis is normal (progesterone-driven); a &#x27;normal&#x27; PaCO₂ of 40 in a pregnant patient may actually be relative hypercapnia.</li><li><span class="lead">High altitude.</span> Lower baseline PaO₂ and a compensated respiratory alkalosis are expected.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">A–a gradient.</span> Calculated (see Calculators); localizes hypoxemia to shunt/V-Q mismatch vs hypoventilation.</li><li><span class="lead">Anion gap + delta-delta + Winter&#x27;s.</span> The metabolic-acidosis follow-through — see Calculators.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>The disciplined stepwise read prevents missed mixed disorders. Trend CO₂ in the tiring respiratory patient — the number that turns &#x27;normal&#x27; is the one that intubates.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Rarely obtained; acid-base derangements of dying are managed with comfort measures, not correction. Avoid painful arterial sticks unless a result would change comfort-directed care.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-lactate" hidden>
+  <div class="eyebrow">Perfusion</div>
+  <h2>Lactic Acid (Lactate)</h2>
+  <p class="tagline">A tissue-perfusion and metabolic-stress marker — clearance predicts survival.</p>
+  <div class="refbar"><span class="rk">Reference</span> 0.5–2.0 mmol/L (venous, resting)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Type A (hypoperfusion).</span> Anaerobic metabolism from inadequate oxygen delivery: septic shock, hypovolemia, cardiogenic/obstructive shock, severe hypoxemia, mesenteric/limb ischemia, severe anemia. The classic sepsis flag.</li><li><span class="lead">Type B (non-hypoperfusion).</span> Impaired clearance or altered metabolism WITHOUT tissue hypoxia: liver failure, malignancy, thiamine deficiency, metformin, alcohol, beta-agonists (albuterol), seizures, catecholamine surge, mitochondrial toxins (cyanide, CO).</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Normal/low.</span> Adequate perfusion and clearance.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">0.5–2.0</td><td class="no"></td><td class="hi">&gt;2.0 elevated</td><td class="un">mmol/L</td></tr><tr><td class="bl">High-risk</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;4.0 shock territory</td><td class="un">mmol/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Sepsis: lactate ≥2 supports occult hypoperfusion; ≥4 mmol/L defines high-risk/septic-shock territory and drives resuscitation bundles. Lactate clearance (or normalization) is a key resuscitation target and outcome predictor.</li><li>Don&#x27;t anchor on &#x27;it&#x27;s just sepsis&#x27; — a very high lactate with a benign abdomen can be mesenteric ischemia (&#x27;pain out of proportion&#x27;). Consider the type-B mimics (albuterol, seizure, metformin) before over-resuscitating a non-hypoperfusion lactate.</li><li>Tourniquet/prolonged draw and struggling can artifactually raise a venous lactate — recheck a surprising isolated value.</li><li>A rising lactate despite resuscitation is a bad-trajectory signal that should prompt source re-evaluation.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Liver failure.</span> Impaired lactate clearance elevates baseline and blunts clearance — interpret trends cautiously.</li><li><span class="lead">Metformin (esp. with AKI).</span> Metformin-associated lactic acidosis — consider in the acidotic diabetic on metformin with renal impairment.</li><li><span class="lead">Post-seizure / heavy albuterol.</span> Transient benign lactate elevation; expect rapid clearance and don&#x27;t mistake for shock.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Contributes to the anion gap.</span> Lactate is a major unmeasured anion in high-gap metabolic acidosis.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>A frontline sepsis and shock biomarker. Serial lactate/clearance guides resuscitation; think beyond sepsis when perfusion looks adequate.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not obtained in comfort-focused care; an elevated lactate is expected in the actively dying and does not prompt resuscitation.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-crp" hidden>
+  <div class="eyebrow">Inflammation</div>
+  <h2>C-Reactive Protein (CRP)</h2>
+  <p class="tagline">A sensitive but non-specific acute-phase reactant — and a genuine decision-driver in pediatrics.</p>
+  <div class="refbar"><span class="rk">Reference</span> &lt;3 mg/L (conventional &#x27;normal&#x27; &lt;10 mg/L; hs-CRP used for cardiovascular risk)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated CRP.</span> Hepatic acute-phase response to IL-6: infection (bacterial &gt; viral, generally), tissue injury/surgery, autoimmune/inflammatory disease, malignancy. Rises within 6–8h, peaks ~48h — faster kinetics than ESR.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low/normal.</span> Absence of significant acute-phase activation; also drops quickly once the stimulus resolves (short half-life ~19h), making it a good response-to-treatment tracker.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal</td><td class="lo">&lt;3</td><td class="no"></td><td class="hi">&gt;10 clinically significant</td><td class="un">mg/L</td></tr><tr><td class="bl">Moderate</td><td class="lo">10–100</td><td class="no"></td><td class="hi">&gt;100 marked (often bacterial/serious)</td><td class="un">mg/L</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>CRP as a driving factor in pediatrics (your teaching point): in the young/febrile child — especially the well-appearing infant or neonatal sepsis evaluation, and in serious bacterial infection risk-stratification — CRP (often alongside procalcitonin) is weighted heavily because history/exam are limited, classic localizing signs are absent, and the consequences of a missed occult bacterial infection are severe. CRP&#x27;s rapid kinetics let you trend the trajectory, and a rising CRP with a compatible picture raises the pre-test probability of serious bacterial infection enough to change disposition (admit, cultures, empiric antibiotics). It is used as part of a rule (with PCT, WBC/ANC, and validated pathways), never as a stand-alone.</li><li>hs-CRP is a distinct assay for cardiovascular risk stratification — not interchangeable with the inflammatory-range CRP.</li><li>CRP is non-specific: a high value confirms inflammation, not its source. Never let a high CRP substitute for source identification, and don&#x27;t withhold treatment for a low CRP if the clinical picture is convincing (early/localized infection can have a normal CRP).</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Neonates/infants.</span> Integrated into neonatal-sepsis and febrile-infant pathways; interpreted with age-specific thresholds and serial values because a single early CRP can be normal in true early infection.</li><li><span class="lead">Pregnancy/postpartum.</span> Baseline mildly elevated; recent delivery/surgery raises it independent of infection.</li><li><span class="lead">Chronic inflammatory disease.</span> Persistently elevated baseline complicates interpretation of a new acute rise; trend from the patient&#x27;s own baseline.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Pair with procalcitonin/ESR.</span> PCT is more specific for systemic bacterial infection; ESR is slower and reflects a longer time-window. Using them together improves discrimination.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>Best as a trend and a pre-test-probability modifier, most decisive in pediatrics and undifferentiated fever. High = inflammation somewhere; it never names the source.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not indicated. Fever and inflammation at end of life are managed symptomatically; a CRP will not change a comfort-focused plan.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-esr" hidden>
+  <div class="eyebrow">Inflammation</div>
+  <h2>Erythrocyte Sedimentation Rate (ESR)</h2>
+  <p class="tagline">A slow, nonspecific inflammation gauge — most useful for a few specific diagnoses and for tracking them.</p>
+  <div class="refbar"><span class="rk">Reference</span> Roughly &lt; (age/2) mm/hr for men; &lt; ((age+10)/2) for women (age-dependent)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated ESR.</span> Rises with fibrinogen/immunoglobulins (acute-phase and chronic inflammation): infection, autoimmune/rheumatic disease, malignancy, tissue injury. Rises and falls SLOWLY (days-weeks) — reflects a longer time-window than CRP. Also elevated by anemia, older age, female sex, pregnancy, and hypergammaglobulinemia INDEPENDENT of inflammation.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low ESR.</span> Polycythemia, extreme leukocytosis, sickle cell disease, hypofibrinogenemia, heart failure, cachexia — conditions that mechanically slow sedimentation. A low ESR can mask underlying inflammation.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Normal (age-dependent)</td><td class="lo">&lt; age/2 (M)</td><td class="no"></td><td class="hi">&gt; age/2 elevated</td><td class="un">mm/hr</td></tr><tr><td class="bl">Markedly high</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;100 (infection/malignancy/autoimmune)</td><td class="un">mm/hr</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Highest-yield uses: giant cell (temporal) arteritis and polymyalgia rheumatica (markedly elevated, often &gt;50; a driver for urgent steroids to prevent blindness), and following disease activity in osteomyelitis, endocarditis, and some rheumatic diseases.</li><li>Very high ESR (&gt;100 mm/hr) narrows the differential: serious infection (osteomyelitis, endocarditis, abscess), malignancy (especially multiple myeloma — check with the total protein/globulin gap), or major autoimmune disease.</li><li>ESR is slow and nonspecific — pair with CRP (faster kinetics). A normal ESR does not exclude acute inflammation (CRP may already be up while ESR lags), and a high ESR names no source.</li><li>Not a screening test for asymptomatic patients — the pretest probability must justify it.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Older adults.</span> ESR rises with age; use an age-adjusted upper limit (Miller: men age/2, women (age+10)/2) to avoid over-calling.</li><li><span class="lead">Female sex / pregnancy.</span> Higher baseline independent of disease.</li><li><span class="lead">Anemia.</span> Falsely elevates ESR (fewer RBCs sediment faster); interpret alongside the hematocrit.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Age-adjusted upper limit.</span> Miller formula (above) prevents mislabeling a physiologically higher elderly ESR as pathologic.</li><li><span class="lead">Pair with CRP.</span> CRP is faster and less confounded; using both improves interpretation.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>A slow, confounded marker best reserved for GCA/PMR and tracking specific chronic infections. Age-adjust the upper limit, pair with CRP, and remember a high value never names its source.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not indicated; will not change a comfort-focused plan.</p></div>
+  </div>
+</section>
+<section class="analyte" id="an-pct" hidden>
+  <div class="eyebrow">Inflammation</div>
+  <h2>Procalcitonin (PCT)</h2>
+  <p class="tagline">The most bacteria-specific of the common inflammatory markers — an antibiotic-stewardship tool, not a rule-out.</p>
+  <div class="refbar"><span class="rk">Reference</span> &lt;0.1 ng/mL healthy; interpretation is threshold-banded (below)</div>
+
+  <div class="grid2">
+    <div class="card up">
+      <h3>▲ Why it rises</h3><ul class="pairs"><li><span class="lead">Elevated PCT.</span> Upregulated by bacterial endotoxin/cytokines (and suppressed by interferon-gamma in viral illness), so it rises preferentially in systemic BACTERIAL infection and sepsis. Also non-infectious: major surgery, burns, trauma, cardiogenic shock, first days post-arrest, medullary thyroid carcinoma.</li></ul>
+    </div>
+    <div class="card down">
+      <h3>▼ Why it falls</h3><ul class="pairs"><li><span class="lead">Low PCT.</span> Low likelihood of systemic bacterial infection — supports withholding/stopping antibiotics in the right context (e.g., stable respiratory infection). Localized infection without systemic response can have a low PCT.</li></ul>
+    </div>
+  </div>
+
+  <div class="card bands">
+    <h3>Graded thresholds</h3>
+    <table class="bandtable">
+      <thead><tr><th></th><th class="lo">Decreased</th><th class="no">Normal</th><th class="hi">Elevated</th><th></th></tr></thead>
+      <tbody><tr><td class="bl">Unlikely</td><td class="lo">&lt;0.25</td><td class="no"></td><td class="hi">&gt;0.25 antibiotics encouraged</td><td class="un">ng/mL</td></tr><tr><td class="bl">Sepsis threshold</td><td class="lo"></td><td class="no"></td><td class="hi">&gt;0.5 sepsis likely</td><td class="un">ng/mL</td></tr><tr><td class="bl">High</td><td class="lo"></td><td class="no"></td><td class="hi">≥2.0 strong systemic bacterial/sepsis</td><td class="un">ng/mL</td></tr></tbody>
+    </table>
+    <p class="verify">Verify before relying: thresholds vary by assay, lab, and clinical context. Correlate with the patient.</p>
+  </div>
+
+  <div class="card sit">
+    <h3>Special situations &amp; can't-miss</h3><ul class="dotted"><li>Threshold bands (respiratory-infection / stewardship context — verify against your local algorithm): &lt;0.25 ng/mL bacterial infection unlikely, antibiotics discouraged; &gt;0.25 increased likelihood, antibiotics encouraged. For sepsis: &lt;0.5 lower likelihood; &gt;0.5 increased likelihood; ≥2.0 ng/mL strongly suggests systemic bacterial infection/sepsis with higher severity.</li><li>Primary evidence-based use is antibiotic STEWARDSHIP — guiding when to START and especially when to STOP antibiotics — and serial trends for de-escalation, not as a stand-alone sepsis rule-out.</li><li>In suspected sepsis, treat unstable patients empirically regardless of PCT — its imperfect sensitivity means a low value never justifies withholding antibiotics from a shocked patient.</li><li>PCT does not respond to viral infections, Mycoplasma/atypicals, or purely localized infection — a normal PCT in viral illness is expected and helps de-escalate.</li></ul>
+  </div>
+
+  <div class="card mod">
+    <h3>Age / sex / population modifiers</h3><ul class="pairs"><li><span class="lead">Renal failure / dialysis.</span> Reduced clearance elevates baseline PCT; use higher thresholds and trends rather than a single cutoff.</li><li><span class="lead">Neutropenia / immunosuppression.</span> PCT is leukocyte-mediated; neutropenia can blunt the response, and data are limited in the immunosuppressed.</li><li><span class="lead">Cancer patients.</span> Specificity falls; a higher cutoff (~1.0 ng/mL) has been proposed for sepsis in active cancer — interpret cautiously.</li><li><span class="lead">Neonates.</span> Physiologic PCT surge in the first ~48h of life requires age-adjusted reference values, distinct from the adult bands.</li></ul>
+  </div>
+
+  <div class="card corr">
+    <h3>Corrections &amp; companion calculations</h3><ul class="pairs"><li><span class="lead">Use as a trend + with clinical picture.</span> Serial PCT falling by ~80% supports antibiotic discontinuation in stewardship protocols; interpret with the whole clinical picture.</li></ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card setting ed"><h3>ED lens</h3><p>More specific for bacterial infection than CRP/WBC and best used to guide starting and stopping antibiotics — but never overrides clinical instability in suspected sepsis.</p></div>
+    <div class="card setting hosp"><h3>Hospitalist / hospice &amp; palliative lens</h3><p>Not indicated; will not alter a comfort-focused plan.</p></div>
+  </div>
+</section>
+  </div>
+
+  <div id="view-calcs" hidden>
+    <div class="hero">
+      <div class="eyebrow">Bedside math</div>
+      <h1>Calculators</h1>
+      <p>The companion calculations referenced throughout the atlas — gap chemistry, oxygenation, renal estimation, and osmolar screening. Formulas are shown so they stay teachable.</p>
+    </div>
+    <div class="calcgrid">
+      
+    <div class="calc" id="calc-anion_gap">
+      <h3>Anion Gap (+ albumin correction)</h3>
+      <p class="cb">AG = Na − (Cl + HCO₃). Normal ~8–12. Corrects for hypoalbuminemia, which otherwise hides a gap acidosis.</p>
+      <div class="cfields"><label class="cf"><span>Sodium (mmol/L)</span>
+          <input type="number" step="any" data-calc="anion_gap" data-field="na" value="140"></label><label class="cf"><span>Chloride (mmol/L)</span>
+          <input type="number" step="any" data-calc="anion_gap" data-field="cl" value="104"></label><label class="cf"><span>Bicarbonate (mmol/L)</span>
+          <input type="number" step="any" data-calc="anion_gap" data-field="hco3" value="24"></label><label class="cf"><span>Albumin (g/dL)</span>
+          <input type="number" step="any" data-calc="anion_gap" data-field="alb" value="4.0"></label></div>
+      <button class="crun" data-run="anion_gap">Calculate</button>
+      <div class="cout" id="out-anion_gap"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-corr_na">
+      <h3>Glucose-Corrected Sodium</h3>
+      <p class="cb">Hyperglycemia pulls water intravascularly and dilutes sodium. Adds 1.6 (or 2.4) per 100 mg/dL glucose above 100.</p>
+      <div class="cfields"><label class="cf"><span>Measured sodium (mmol/L)</span>
+          <input type="number" step="any" data-calc="corr_na" data-field="na" value="130"></label><label class="cf"><span>Glucose (mg/dL)</span>
+          <input type="number" step="any" data-calc="corr_na" data-field="glu" value="600"></label><label class="cf"><span>Correction factor (1.6 or 2.4)</span>
+          <input type="number" step="any" data-calc="corr_na" data-field="factor" value="1.6"></label></div>
+      <button class="crun" data-run="corr_na">Calculate</button>
+      <div class="cout" id="out-corr_na"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-corr_ca">
+      <h3>Albumin-Corrected Calcium</h3>
+      <p class="cb">Low albumin lowers total calcium without lowering the active ionized fraction. Corrected Ca = Ca + 0.8×(4.0 − albumin).</p>
+      <div class="cfields"><label class="cf"><span>Total calcium (mg/dL)</span>
+          <input type="number" step="any" data-calc="corr_ca" data-field="ca" value="7.6"></label><label class="cf"><span>Albumin (g/dL)</span>
+          <input type="number" step="any" data-calc="corr_ca" data-field="alb" value="2.0"></label></div>
+      <button class="crun" data-run="corr_ca">Calculate</button>
+      <div class="cout" id="out-corr_ca"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-aa_grad">
+      <h3>A–a Gradient</h3>
+      <p class="cb">Localizes hypoxemia. A–a = PAO₂ − PaO₂, where PAO₂ = FiO₂×(Patm−47) − PaCO₂/0.8. Normal ≈ (age/4)+4 on room air.</p>
+      <div class="cfields"><label class="cf"><span>FiO₂ (0.21 room air)</span>
+          <input type="number" step="any" data-calc="aa_grad" data-field="fio2" value="0.21"></label><label class="cf"><span>Atmospheric pressure (mmHg)</span>
+          <input type="number" step="any" data-calc="aa_grad" data-field="patm" value="760"></label><label class="cf"><span>PaCO₂ (mmHg)</span>
+          <input type="number" step="any" data-calc="aa_grad" data-field="paco2" value="40"></label><label class="cf"><span>PaO₂ (mmHg)</span>
+          <input type="number" step="any" data-calc="aa_grad" data-field="pao2" value="90"></label><label class="cf"><span>Age (yrs)</span>
+          <input type="number" step="any" data-calc="aa_grad" data-field="age" value="50"></label></div>
+      <button class="crun" data-run="aa_grad">Calculate</button>
+      <div class="cout" id="out-aa_grad"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-winters">
+      <h3>Winter&#x27;s Formula</h3>
+      <p class="cb">Expected respiratory compensation for a metabolic acidosis. Expected PaCO₂ = 1.5×HCO₃ + 8 (±2).</p>
+      <div class="cfields"><label class="cf"><span>Bicarbonate (mmol/L)</span>
+          <input type="number" step="any" data-calc="winters" data-field="hco3" value="12"></label><label class="cf"><span>Measured PaCO₂ (mmHg)</span>
+          <input type="number" step="any" data-calc="winters" data-field="paco2" value="28"></label></div>
+      <button class="crun" data-run="winters">Calculate</button>
+      <div class="cout" id="out-winters"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-delta">
+      <h3>Delta–Delta Ratio</h3>
+      <p class="cb">Detects a mixed disorder hiding behind a gap acidosis. Δgap/Δbicarb = (AG−12)/(24−HCO₃).</p>
+      <div class="cfields"><label class="cf"><span>Sodium</span>
+          <input type="number" step="any" data-calc="delta" data-field="na" value="140"></label><label class="cf"><span>Chloride</span>
+          <input type="number" step="any" data-calc="delta" data-field="cl" value="100"></label><label class="cf"><span>Bicarbonate</span>
+          <input type="number" step="any" data-calc="delta" data-field="hco3" value="8"></label></div>
+      <button class="crun" data-run="delta">Calculate</button>
+      <div class="cout" id="out-delta"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-osm_gap">
+      <h3>Osmolar Gap</h3>
+      <p class="cb">Screens for toxic alcohols. Calc osm = 2×Na + glucose/18 + BUN/2.8. Gap = measured − calculated (normal &lt; 10).</p>
+      <div class="cfields"><label class="cf"><span>Sodium</span>
+          <input type="number" step="any" data-calc="osm_gap" data-field="na" value="140"></label><label class="cf"><span>Glucose (mg/dL)</span>
+          <input type="number" step="any" data-calc="osm_gap" data-field="glu" value="90"></label><label class="cf"><span>BUN (mg/dL)</span>
+          <input type="number" step="any" data-calc="osm_gap" data-field="bun" value="14"></label><label class="cf"><span>Ethanol (mg/dL, 0 if none)</span>
+          <input type="number" step="any" data-calc="osm_gap" data-field="etoh" value="0"></label><label class="cf"><span>Measured osmolality (mOsm/kg)</span>
+          <input type="number" step="any" data-calc="osm_gap" data-field="measured" value="290"></label></div>
+      <button class="crun" data-run="osm_gap">Calculate</button>
+      <div class="cout" id="out-osm_gap"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-ckd_epi">
+      <h3>eGFR (CKD-EPI 2021, race-free)</h3>
+      <p class="cb">Estimates GFR from creatinine. Especially important when muscle mass is atypical — a &#x27;normal&#x27; Cr can hide low GFR.</p>
+      <div class="cfields"><label class="cf"><span>Creatinine (mg/dL)</span>
+          <input type="number" step="any" data-calc="ckd_epi" data-field="cr" value="1.0"></label><label class="cf"><span>Age (yrs)</span>
+          <input type="number" step="any" data-calc="ckd_epi" data-field="age" value="65"></label><label class="cf"><span>Female? (1 = yes, 0 = no)</span>
+          <input type="number" step="any" data-calc="ckd_epi" data-field="female" value="0"></label></div>
+      <button class="crun" data-run="ckd_epi">Calculate</button>
+      <div class="cout" id="out-ckd_epi"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-cockcroft">
+      <h3>Creatinine Clearance (Cockcroft–Gault)</h3>
+      <p class="cb">Weight-based CrCl still used in many drug-dosing references. CrCl = (140−age)×wt×(0.85 if female)/(72×Cr).</p>
+      <div class="cfields"><label class="cf"><span>Age (yrs)</span>
+          <input type="number" step="any" data-calc="cockcroft" data-field="age" value="70"></label><label class="cf"><span>Weight (kg)</span>
+          <input type="number" step="any" data-calc="cockcroft" data-field="wt" value="70"></label><label class="cf"><span>Creatinine (mg/dL)</span>
+          <input type="number" step="any" data-calc="cockcroft" data-field="cr" value="1.0"></label><label class="cf"><span>Female? (1 = yes, 0 = no)</span>
+          <input type="number" step="any" data-calc="cockcroft" data-field="female" value="0"></label></div>
+      <button class="crun" data-run="cockcroft">Calculate</button>
+      <div class="cout" id="out-cockcroft"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-eff_osm">
+      <h3>Effective Osmolality (HHS)</h3>
+      <p class="cb">Effective osm = 2×Na + glucose/18 (BUN omitted, as urea crosses membranes freely). Drives HHS assessment.</p>
+      <div class="cfields"><label class="cf"><span>Sodium (mmol/L)</span>
+          <input type="number" step="any" data-calc="eff_osm" data-field="na" value="150"></label><label class="cf"><span>Glucose (mg/dL)</span>
+          <input type="number" step="any" data-calc="eff_osm" data-field="glu" value="900"></label></div>
+      <button class="crun" data-run="eff_osm">Calculate</button>
+      <div class="cout" id="out-eff_osm"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-anc">
+      <h3>Absolute Neutrophil Count</h3>
+      <p class="cb">ANC = WBC × (%neutrophils + %bands)/100. Drives febrile-neutropenia decisions (&lt;500 severe).</p>
+      <div class="cfields"><label class="cf"><span>WBC (×10⁹/L)</span>
+          <input type="number" step="any" data-calc="anc" data-field="wbc" value="3.0"></label><label class="cf"><span>Neutrophils (%)</span>
+          <input type="number" step="any" data-calc="anc" data-field="neut" value="40"></label><label class="cf"><span>Bands (%)</span>
+          <input type="number" step="any" data-calc="anc" data-field="bands" value="5"></label></div>
+      <button class="crun" data-run="anc">Calculate</button>
+      <div class="cout" id="out-anc"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-bun_cr">
+      <h3>BUN:Creatinine Ratio</h3>
+      <p class="cb">&gt;20:1 suggests prerenal azotemia or GI bleed; 10–15:1 suggests intrinsic renal.</p>
+      <div class="cfields"><label class="cf"><span>BUN (mg/dL)</span>
+          <input type="number" step="any" data-calc="bun_cr" data-field="bun" value="40"></label><label class="cf"><span>Creatinine (mg/dL)</span>
+          <input type="number" step="any" data-calc="bun_cr" data-field="cr" value="1.2"></label></div>
+      <button class="crun" data-run="bun_cr">Calculate</button>
+      <div class="cout" id="out-bun_cr"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-vbg_abg">
+      <h3>VBG ↔ ABG Estimate</h3>
+      <p class="cb">Estimates arterial values from a venous gas (or vice-versa). Venous pH runs ~0.03–0.04 lower and venous PCO₂ ~4–5 mmHg higher than arterial. Does NOT estimate oxygenation — use pulse ox/ABG for PaO₂.</p>
+      <div class="cfields"><label class="cf"><span>Venous pH</span>
+          <input type="number" step="any" data-calc="vbg_abg" data-field="php" value="7.32"></label><label class="cf"><span>Venous PCO₂ (mmHg)</span>
+          <input type="number" step="any" data-calc="vbg_abg" data-field="pco2" value="50"></label><label class="cf"><span>1 = VBG→ABG, 0 = ABG→VBG</span>
+          <input type="number" step="any" data-calc="vbg_abg" data-field="dir" value="1"></label></div>
+      <button class="crun" data-run="vbg_abg">Calculate</button>
+      <div class="cout" id="out-vbg_abg"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    <div class="calc" id="calc-aadd">
+      <h3>Age-Adjusted D-Dimer</h3>
+      <p class="cb">For patients &gt;50y with LOW/intermediate pretest probability. Cutoff = age × 10 ng/mL FEU (not for DDU assays). Confirm your lab reports FEU before using.</p>
+      <div class="cfields"><label class="cf"><span>Age (yrs)</span>
+          <input type="number" step="any" data-calc="aadd" data-field="age" value="72"></label><label class="cf"><span>Measured D-dimer (ng/mL FEU)</span>
+          <input type="number" step="any" data-calc="aadd" data-field="dd" value="620"></label></div>
+      <button class="crun" data-run="aadd">Calculate</button>
+      <div class="cout" id="out-aadd"><span class="cres">—</span><span class="cdet"></span></div>
+    </div>
+    </div>
+    <div class="foot">
+      <strong>Verify before relying.</strong> Every threshold, dialysis/treatment cutoff, drug-dosing estimate, and decision rule here is a teaching reference, not a substitute for the current guideline, your local assay's reference interval, or clinical judgment. Correlate all values with the patient in front of you.
+    </div>
+  </div>
+</div>
+
+<script>
+const REG = {"anion_gap": {"fields": ["na", "cl", "hco3", "alb"], "js": "\n            const ag = v.na - (v.cl + v.hco3);\n            const corr = ag + 2.5*(4.0 - v.alb);\n            const flag = corr > 12 ? 'ELEVATED gap \u2014 build MUDPILES/GOLDMARK differential' : 'Within normal range';\n            return {result: `AG ${ag.toFixed(1)} \u00b7 corrected ${corr.toFixed(1)}`, detail: flag};\n        "}, "corr_na": {"fields": ["na", "glu", "factor"], "js": "\n            const corr = v.na + v.factor*((v.glu - 100)/100);\n            return {result: `Corrected Na ${corr.toFixed(1)} mmol/L`, detail: `Measured ${v.na} understates true sodium by ${(corr-v.na).toFixed(1)}`};\n        "}, "corr_ca": {"fields": ["ca", "alb"], "js": "\n            const corr = v.ca + 0.8*(4.0 - v.alb);\n            const flag = corr < 8.5 ? 'Still low \u2014 true hypocalcemia' : (corr > 10.5 ? 'Elevated' : 'Normalizes after correction');\n            return {result: `Corrected Ca ${corr.toFixed(2)} mg/dL`, detail: flag + ' \u00b7 confirm with ionized Ca if critically ill'};\n        "}, "aa_grad": {"fields": ["fio2", "patm", "paco2", "pao2", "age"], "js": "\n            const PAO2 = v.fio2*(v.patm - 47) - v.paco2/0.8;\n            const grad = PAO2 - v.pao2;\n            const expected = v.age/4 + 4;\n            const flag = grad > expected ? 'WIDENED \u2014 shunt / V-Q mismatch / diffusion defect' : 'Normal \u2014 consider hypoventilation or low FiO\u2082 as cause of hypoxemia';\n            return {result: `A\u2013a gradient ${grad.toFixed(1)} mmHg (expected \u2264 ${expected.toFixed(1)})`, detail: flag};\n        "}, "winters": {"fields": ["hco3", "paco2"], "js": "\n            const exp = 1.5*v.hco3 + 8;\n            let flag;\n            if (v.paco2 > exp+2) flag='Measured CO\u2082 HIGHER than expected \u2192 concurrent respiratory acidosis';\n            else if (v.paco2 < exp-2) flag='Measured CO\u2082 LOWER than expected \u2192 concurrent respiratory alkalosis';\n            else flag='Appropriate respiratory compensation';\n            return {result: `Expected PaCO\u2082 ${(exp-2).toFixed(0)}\u2013${(exp+2).toFixed(0)} mmHg`, detail: flag};\n        "}, "delta": {"fields": ["na", "cl", "hco3"], "js": "\n            const ag = v.na - (v.cl + v.hco3);\n            const dd = (ag - 12)/(24 - v.hco3);\n            let flag;\n            if (dd < 0.4) flag='<0.4 \u2192 concurrent normal-gap (hyperchloremic) acidosis';\n            else if (dd < 1) flag='0.4\u20131 \u2192 mixed high-gap and normal-gap acidosis';\n            else if (dd <= 2) flag='1\u20132 \u2192 pure high anion-gap metabolic acidosis';\n            else flag='>2 \u2192 concurrent metabolic alkalosis or chronic respiratory acidosis';\n            return {result: `\u0394/\u0394 ratio ${dd.toFixed(2)} (AG ${ag.toFixed(0)})`, detail: flag};\n        "}, "osm_gap": {"fields": ["na", "glu", "bun", "etoh", "measured"], "js": "\n            const calc = 2*v.na + v.glu/18 + v.bun/2.8 + v.etoh/3.7;\n            const gap = v.measured - calc;\n            const flag = gap > 10 ? 'ELEVATED \u2014 consider toxic alcohol (methanol, ethylene glycol) or other unmeasured osmoles' : 'Normal';\n            return {result: `Osmolar gap ${gap.toFixed(1)} (calc osm ${calc.toFixed(0)})`, detail: flag + ' \u00b7 a normal gap does NOT exclude late toxic-alcohol ingestion'};\n        "}, "ckd_epi": {"fields": ["cr", "age", "female"], "js": "\n            const k = v.female ? 0.7 : 0.9;\n            const a = v.female ? -0.241 : -0.302;\n            const scr_k = v.cr/k;\n            const egfr = 142 * Math.pow(Math.min(scr_k,1), a) * Math.pow(Math.max(scr_k,1), -1.200) * Math.pow(0.9938, v.age) * (v.female?1.012:1);\n            let stage;\n            if (egfr>=90) stage='G1 (normal/high)';\n            else if (egfr>=60) stage='G2 (mildly decreased)';\n            else if (egfr>=45) stage='G3a';\n            else if (egfr>=30) stage='G3b';\n            else if (egfr>=15) stage='G4 (severely decreased)';\n            else stage='G5 (kidney failure)';\n            return {result: `eGFR ${egfr.toFixed(0)} mL/min/1.73m\u00b2`, detail: stage + ' \u00b7 dose renally-cleared drugs to this, not raw Cr'};\n        "}, "cockcroft": {"fields": ["age", "wt", "cr", "female"], "js": "\n            let crcl = ((140 - v.age)*v.wt)/(72*v.cr);\n            if (v.female) crcl *= 0.85;\n            return {result: `CrCl ${crcl.toFixed(0)} mL/min`, detail: 'Uses actual body weight; consider adjusted weight in obesity \u00b7 verify against the drug reference in use'};\n        "}, "eff_osm": {"fields": ["na", "glu"], "js": "\n            const eosm = 2*v.na + v.glu/18;\n            const flag = eosm > 320 ? 'ELEVATED \u2014 consistent with HHS-range hyperosmolarity' : 'Below classic HHS threshold';\n            return {result: `Effective osm ${eosm.toFixed(0)} mOsm/kg`, detail: flag};\n        "}, "anc": {"fields": ["wbc", "neut", "bands"], "js": "\n            const anc = v.wbc*1000*(v.neut + v.bands)/100;\n            let flag;\n            if (anc < 500) flag='SEVERE neutropenia \u2014 febrile = emergency, empiric antibiotics';\n            else if (anc < 1000) flag='Moderate neutropenia \u2014 high risk if falling';\n            else if (anc < 1500) flag='Mild neutropenia';\n            else flag='Normal';\n            return {result: `ANC ${anc.toFixed(0)} cells/\u00b5L`, detail: flag};\n        "}, "bun_cr": {"fields": ["bun", "cr"], "js": "\n            const r = v.bun/v.cr;\n            let flag;\n            if (r > 20) flag='>20:1 \u2192 prerenal (volume depletion / low output) or GI bleed';\n            else if (r >= 10) flag='10\u201320:1 \u2192 indeterminate / normal range';\n            else flag='<10:1 \u2192 intrinsic renal or low urea state (liver, malnutrition)';\n            return {result: `Ratio ${r.toFixed(1)} : 1`, detail: flag};\n        "}, "vbg_abg": {"fields": ["php", "pco2", "dir"], "js": "\n        const s = v.dir ? 1 : -1;\n        const aph = v.php + s*0.035;\n        const apco2 = v.pco2 - s*4.5;\n        const label = v.dir ? \"Estimated ARTERIAL\" : \"Estimated VENOUS\";\n        return {result: `${label}: pH ~${aph.toFixed(2)} \u00b7 PCO\u2082 ~${apco2.toFixed(0)} mmHg`, detail: \"Estimate only \u2014 poor agreement in shock/severe derangement; oxygenation NOT assessed by a VBG. Verify with ABG when precision matters.\"};\n    "}, "aadd": {"fields": ["age", "dd"], "js": "\n        const cut = v.age > 50 ? v.age*10 : 500;\n        const pos = v.dd >= cut;\n        const flag = pos ? \"AT/ABOVE cutoff \u2192 cannot exclude VTE \u2192 imaging per pathway\" : \"BELOW age-adjusted cutoff \u2192 VTE excluded IF pretest probability is low/intermediate\";\n        return {result: `Cutoff ${cut} ng/mL FEU \u00b7 result ${pos?\"POSITIVE\":\"NEGATIVE\"}`, detail: flag + \" \u00b7 FEU assays only; verify units.\"};\n    "}};
+
+// theme
+const root=document.documentElement, tb=document.getElementById('themeBtn');
+tb.onclick=()=>{root.classList.toggle('light');tb.textContent=root.classList.contains('light')?'◑ Dark':'◐ Light';};
+
+// view switch
+const vLabs=document.getElementById('view-labs'), vCalcs=document.getElementById('view-calcs');
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const v=t.dataset.view;
+  vLabs.hidden = v!=='labs'; vCalcs.hidden = v!=='calcs';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+document.querySelector('.tab[data-view="labs"]').classList.add('active');
+
+// analyte picker
+const hero=document.getElementById('hero');
+const picker=document.getElementById('picker');
+picker.onchange=()=>{
+  document.querySelectorAll('.analyte').forEach(s=>s.hidden=true);
+  hero.hidden=true;
+  const el=document.getElementById('an-'+picker.value);
+  if(el){el.hidden=false; el.scrollIntoView({behavior:'smooth',block:'start'});}
+};
+
+// calculators
+document.querySelectorAll('.crun').forEach(btn=>btn.onclick=()=>{
+  const id=btn.dataset.run, spec=REG[id];
+  const v={};
+  document.querySelectorAll(`input[data-calc="${id}"]`).forEach(inp=>{
+    v[inp.dataset.field]=parseFloat(inp.value);
+  });
+  let res;
+  try{ res=(new Function('v', spec.js))(v); }
+  catch(e){ res={result:'Check inputs', detail:String(e)}; }
+  const out=document.getElementById('out-'+id);
+  out.querySelector('.cres').textContent=res.result;
+  out.querySelector('.cdet').textContent=res.detail||'';
+});
+</script>
+</body></html>

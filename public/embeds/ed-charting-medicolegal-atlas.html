@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Charting Atlas — ED Documentation &amp; Medicolegal Defense</title>
+<style>
+:root{
+  --bg:#0f1216; --bg2:#161b22; --panel:#1a2029; --panel2:#20272f;
+  --ink:#e8edf2; --ink-soft:#aeb9c4; --ink-faint:#78838f;
+  --line:#2a333d; --line-soft:#222a33;
+  --accent:#c8983f;          /* legal-ledger gold */
+  --accent-soft:#e0b866;
+  --harm:#d7524a;            /* documentation that hurt */
+  --harm-bg:rgba(215,82,74,.09);
+  --help:#4a9d8e;            /* documentation that helped */
+  --help-bg:rgba(74,157,142,.10);
+  --caution:#d98b3f;
+  --caution-bg:rgba(217,139,63,.10);
+  --neutral:#5b7a9d;
+  --neutral-bg:rgba(91,122,157,.10);
+  --shadow:0 1px 0 rgba(255,255,255,.02),0 12px 40px rgba(0,0,0,.45);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+}
+html[data-theme="light"]{
+  --bg:#f3efe6; --bg2:#ebe5d8; --panel:#fdfbf6; --panel2:#f6f1e7;
+  --ink:#23282e; --ink-soft:#4a545e; --ink-faint:#7a828c;
+  --line:#ddd4c2; --line-soft:#e6ddcd;
+  --accent:#9a6f1e; --accent-soft:#7d5a15;
+  --harm:#b23b34; --harm-bg:rgba(178,59,52,.07);
+  --help:#2f7266; --help-bg:rgba(47,114,102,.08);
+  --caution:#b06a1c; --caution-bg:rgba(176,106,28,.09);
+  --neutral:#3d5a7a; --neutral-bg:rgba(61,90,122,.08);
+  --shadow:0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(120,100,60,.14);
+}
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans);
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+  font-size:15px;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,152,63,.06), transparent 60%);
+  min-height:100vh;
+}
+::selection{background:var(--accent);color:#fff}
+
+/* ---------- Header ---------- */
+header.masthead{
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--bg2),var(--bg));
+  padding:34px 24px 26px;
+  position:relative;
+}
+.masthead-inner{max-width:1160px;margin:0 auto}
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--accent-soft); font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"§";font-size:15px;color:var(--accent)}
+h1.title{
+  font-family:var(--serif); font-weight:600; font-size:clamp(30px,5vw,52px);
+  line-height:1.02; letter-spacing:-.02em; margin:12px 0 6px;
+}
+h1.title em{font-style:italic;color:var(--accent-soft);font-weight:500}
+.subtitle{color:var(--ink-soft);font-size:16px;max-width:660px;font-weight:400}
+.masthead-meta{
+  margin-top:18px; display:flex; flex-wrap:wrap; gap:8px 20px;
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-faint);
+  letter-spacing:.04em;
+}
+.masthead-meta span{display:flex;align-items:center;gap:6px}
+.masthead-meta b{color:var(--ink-soft);font-weight:500}
+.theme-btn{
+  position:absolute; top:24px; right:24px;
+  background:var(--panel); border:1px solid var(--line); color:var(--ink-soft);
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+  padding:8px 13px; border-radius:8px; cursor:pointer; transition:.2s;
+  text-transform:uppercase;
+}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent-soft)}
+
+/* ---------- Nav ---------- */
+nav.domtabs{
+  position:sticky; top:0; z-index:40;
+  background:color-mix(in srgb,var(--bg) 92%,transparent);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.domtabs-inner{
+  max-width:1160px;margin:0 auto;padding:10px 16px;position:relative;
+}
+/* Trigger button: shows current domain */
+.dom-trigger{
+  width:100%;display:flex;align-items:center;gap:12px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:13px 16px;color:var(--ink);font-family:var(--sans);
+  font-size:15px;font-weight:600;text-align:left;transition:border-color .15s;
+}
+.dom-trigger:hover{border-color:var(--accent)}
+.dom-trigger .dt-num{
+  font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+  border:1px solid var(--line);border-radius:6px;padding:3px 8px;flex-shrink:0;
+}
+.dom-trigger .dt-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dom-trigger .dt-caret{
+  font-family:var(--mono);font-size:13px;color:var(--ink-faint);transition:transform .25s;flex-shrink:0;
+}
+nav.domtabs.open .dom-trigger{border-color:var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+nav.domtabs.open .dom-trigger .dt-caret{transform:rotate(180deg)}
+/* Dropdown panel holding the .domtab buttons */
+.domtabs-menu{
+  display:none;position:absolute;left:16px;right:16px;top:calc(100% - 11px);
+  background:var(--panel);border:1px solid var(--accent);border-top:none;
+  border-radius:0 0 11px 11px;box-shadow:var(--shadow);
+  z-index:50;max-height:70vh;overflow-y:auto;
+}
+nav.domtabs.open .domtabs-menu{display:block}
+.domtab{
+  display:flex;align-items:center;gap:11px;width:100%;
+  background:none;border:none;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);cursor:pointer;
+  font-family:var(--sans);font-size:14.5px;font-weight:500;
+  padding:14px 16px; text-align:left; transition:background .12s,color .12s;
+}
+.domtab:last-child{border-bottom:none}
+.domtab .tnum{
+  font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;
+  border:1px solid var(--line);border-radius:6px;padding:2px 7px;flex-shrink:0;opacity:1;
+}
+.domtab:hover{background:var(--panel2);color:var(--ink)}
+.domtab.active{color:var(--ink);background:var(--panel2)}
+.domtab.active .tnum{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ---------- Layout ---------- */
+main{max-width:1160px;margin:0 auto;padding:38px 24px 90px}
+.dom{display:none;animation:fade .35s ease}
+.dom.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.dom-head{margin-bottom:30px;max-width:760px}
+.dom-kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-soft);font-weight:500;margin-bottom:10px;
+}
+.dom-head h2{
+  font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.4vw,34px);
+  letter-spacing:-.015em;line-height:1.1;margin-bottom:12px;
+}
+.dom-head p{color:var(--ink-soft);font-size:15.5px}
+
+section.block{margin-bottom:34px}
+.block-title{
+  font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line);
+  display:flex;align-items:baseline;gap:11px;
+}
+.block-title .bt-num{
+  font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;
+  border:1px solid var(--line);border-radius:6px;padding:2px 7px;
+}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:13px;
+  padding:22px 24px;box-shadow:var(--shadow);margin-bottom:16px;
+}
+.card h4{font-family:var(--serif);font-weight:600;font-size:17px;margin-bottom:9px;letter-spacing:-.01em}
+.card p{color:var(--ink-soft);font-size:14.5px;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.card ul{list-style:none;margin:8px 0}
+.card li{
+  color:var(--ink-soft);font-size:14px;padding:5px 0 5px 22px;position:relative;
+}
+.card li::before{content:"";position:absolute;left:4px;top:12px;width:6px;height:6px;
+  border-radius:1px;background:var(--accent);transform:rotate(45deg)}
+.card strong{color:var(--ink);font-weight:600}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- Stat tiles ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin:6px 0 22px}
+.stat{
+  background:var(--panel2);border:1px solid var(--line);border-radius:11px;
+  padding:17px 16px;position:relative;overflow:hidden;
+}
+.stat::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.stat .num{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--accent-soft);line-height:1;letter-spacing:-.02em}
+.stat .lbl{font-size:12.5px;color:var(--ink-soft);margin-top:7px;line-height:1.4}
+.stat .src{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);margin-top:8px;letter-spacing:.03em}
+
+/* ---------- Case cards ---------- */
+.case{
+  border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:18px;
+  background:var(--panel);box-shadow:var(--shadow);
+}
+.case-head{
+  padding:16px 22px;display:flex;align-items:center;gap:14px;cursor:pointer;
+  border-left:4px solid var(--neutral);transition:background .15s;
+}
+.case-head:hover{background:var(--panel2)}
+.case.harm .case-head{border-left-color:var(--harm)}
+.case.help .case-head{border-left-color:var(--help)}
+.case-tag{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;padding:4px 9px;border-radius:20px;white-space:nowrap;
+  border:1px solid transparent;
+}
+.case.harm .case-tag{background:var(--harm-bg);color:var(--harm);border-color:var(--harm)}
+.case.help .case-tag{background:var(--help-bg);color:var(--help);border-color:var(--help)}
+.case-title{flex:1;min-width:0}
+.case-title .ct-name{font-family:var(--serif);font-weight:600;font-size:16.5px;letter-spacing:-.01em}
+.case-title .ct-sub{font-size:12.5px;color:var(--ink-faint);font-family:var(--mono);margin-top:3px;letter-spacing:.02em}
+.case-chev{color:var(--ink-faint);font-size:13px;transition:transform .25s;font-family:var(--mono)}
+.case.open .case-chev{transform:rotate(90deg)}
+.case-body{
+  max-height:0;overflow:hidden;transition:max-height .4s ease;
+  border-top:0 solid var(--line);
+}
+.case.open .case-body{max-height:2400px;border-top:1px solid var(--line)}
+.case-inner{padding:20px 22px 22px}
+.case-row{margin-bottom:15px}
+.case-row:last-child{margin-bottom:0}
+.case-row .cr-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-soft);font-weight:600;margin-bottom:5px;
+}
+.case-row .cr-text{color:var(--ink-soft);font-size:14.5px}
+.case-row .cr-text b{color:var(--ink);font-weight:600}
+.lesson{
+  background:var(--panel2);border-radius:9px;padding:13px 16px;margin-top:6px;
+  border-left:3px solid var(--accent);
+}
+.lesson .cr-label{color:var(--accent)}
+
+/* ---------- Language lexicon ---------- */
+.lex{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+@media(max-width:720px){.lex{grid-template-columns:1fr}}
+.lex-col{padding:0}
+.lex-col.harm{background:var(--harm-bg)}
+.lex-col.help{background:var(--help-bg)}
+.lex-hd{
+  padding:12px 18px;font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;
+}
+.lex-col.harm .lex-hd{color:var(--harm)}
+.lex-col.help .lex-hd{color:var(--help)}
+.lex-col.harm{border-right:1px solid var(--line)}
+@media(max-width:720px){.lex-col.harm{border-right:none;border-bottom:1px solid var(--line)}}
+.lex-item{padding:13px 18px;border-bottom:1px solid var(--line-soft);font-size:14px}
+.lex-item:last-child{border-bottom:none}
+.lex-item .quote{color:var(--ink);font-style:italic;font-family:var(--serif);font-size:14.5px}
+.lex-item .why{color:var(--ink-faint);font-size:12.5px;margin-top:5px}
+
+/* ---------- Callouts ---------- */
+.callout{
+  border-radius:11px;padding:16px 20px;margin:16px 0;border:1px solid;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.callout .co-icon{font-family:var(--mono);font-weight:700;font-size:15px;flex-shrink:0;margin-top:1px;width:18px;text-align:center}
+.callout .co-body{font-size:14px}
+.callout .co-body b{font-weight:600}
+.callout.warn{background:var(--harm-bg);border-color:var(--harm)}
+.callout.warn .co-icon,.callout.warn .co-body b{color:var(--harm)}
+.callout.warn .co-body{color:var(--ink-soft)}
+.callout.tip{background:var(--help-bg);border-color:var(--help)}
+.callout.tip .co-icon,.callout.tip .co-body b{color:var(--help)}
+.callout.tip .co-body{color:var(--ink-soft)}
+.callout.note{background:var(--neutral-bg);border-color:var(--neutral)}
+.callout.note .co-icon,.callout.note .co-body b{color:var(--neutral)}
+.callout.note .co-body{color:var(--ink-soft)}
+.callout.verify{background:var(--caution-bg);border-color:var(--caution)}
+.callout.verify .co-icon,.callout.verify .co-body b{color:var(--caution)}
+.callout.verify .co-body{color:var(--ink-soft)}
+
+/* ---------- Chart specimen ---------- */
+.specimen{
+  font-family:var(--mono);font-size:12.5px;line-height:1.7;
+  background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;color:var(--ink-soft);margin:12px 0;white-space:pre-wrap;
+  position:relative;
+}
+.specimen .sp-tag{
+  position:absolute;top:-9px;left:14px;background:var(--accent);color:#fff;
+  font-size:9px;font-weight:600;letter-spacing:.1em;padding:2px 8px;border-radius:4px;
+  text-transform:uppercase;
+}
+.specimen b{color:var(--accent-soft);font-weight:600}
+.specimen .strike{color:var(--harm);text-decoration:line-through}
+
+/* ---------- Checklist ---------- */
+.checklist{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 4px;margin-bottom:16px}
+.check{display:flex;gap:13px;padding:11px 18px;border-bottom:1px solid var(--line-soft);align-items:flex-start}
+.check:last-child{border-bottom:none}
+.check .cbox{
+  width:19px;height:19px;border:1.5px solid var(--accent);border-radius:5px;flex-shrink:0;
+  margin-top:1px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:transparent;
+}
+.check .cbox.on{background:var(--accent);color:#fff}
+.check .ctext{font-size:14px;color:var(--ink-soft)}
+.check .ctext b{color:var(--ink);font-weight:600}
+
+/* state tables */
+.statebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.state-pill{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;
+  padding:6px 13px;border-radius:20px;border:1px solid var(--accent);
+  color:var(--accent-soft);background:var(--panel);
+}
+table.reg{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 4px;
+  border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table.reg th{
+  background:var(--panel2);text-align:left;padding:11px 14px;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-soft);
+  font-weight:600;border-bottom:1px solid var(--line);
+}
+table.reg td{padding:11px 14px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);vertical-align:top}
+table.reg tr:last-child td{border-bottom:none}
+table.reg td b{color:var(--ink)}
+
+.pearl-list{counter-reset:pearl}
+.pearl{
+  display:flex;gap:15px;padding:14px 0;border-bottom:1px solid var(--line-soft);
+}
+.pearl:last-child{border-bottom:none}
+.pearl::before{
+  counter-increment:pearl;content:counter(pearl,decimal-leading-zero);
+  font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+  flex-shrink:0;padding-top:2px;
+}
+.pearl .p-text{font-size:14.5px;color:var(--ink-soft)}
+.pearl .p-text b{color:var(--ink);font-weight:600}
+
+footer.foot{
+  border-top:1px solid var(--line);margin-top:40px;padding:26px 24px;
+  max-width:1160px;margin-left:auto;margin-right:auto;
+}
+.foot-inner{font-size:12.5px;color:var(--ink-faint);font-family:var(--mono);line-height:1.7;letter-spacing:.02em}
+.foot-inner b{color:var(--ink-soft);font-weight:500}
+
+.tref{font-family:var(--mono);font-size:11px;color:var(--accent);vertical-align:super;font-weight:600;cursor:help}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <button class="theme-btn" id="themeBtn">◐ Light</button>
+  <div class="masthead-inner">
+    <div class="eyebrow">Emergency Medicine · Medicolegal Reference</div>
+    <h1 class="title">The Charting Atlas</h1>
+    <p class="subtitle">How emergency-department documentation defends you &mdash; or convicts you. Real litigated cases, the language that decides them, and the record behind the record.</p>
+    <div class="masthead-meta">
+      <span><b>Scope:</b> US general law · IA / CA / IN callouts</span>
+      <span><b>Domains:</b> Cases · AMA/Refusal · Language · EHR audit trails · Personal notes</span>
+      <span><b>Standard:</b> Board-review depth</span>
+    </div>
+  </div>
+</header>
+
+<nav class="domtabs" id="domNav">
+  <div class="domtabs-inner">
+    <button class="dom-trigger" id="domTrigger" aria-expanded="false">
+      <span class="dt-num" id="dtNum">01</span>
+      <span class="dt-label" id="dtLabel">Foundations</span>
+      <span class="dt-caret">▾</span>
+    </button>
+    <div class="domtabs-menu" id="domMenu">
+    <button class="domtab active" data-dom="dom-found"><span class="tnum">01</span>Foundations</button>
+    <button class="domtab" data-dom="dom-cases"><span class="tnum">02</span>Case Files</button>
+    <button class="domtab" data-dom="dom-verdict"><span class="tnum">03</span>Anatomy of a Verdict</button>
+    <button class="domtab" data-dom="dom-ama"><span class="tnum">04</span>AMA &amp; Refusal</button>
+    <button class="domtab" data-dom="dom-lang"><span class="tnum">05</span>Language Lexicon</button>
+    <button class="domtab" data-dom="dom-defer"><span class="tnum">06</span>Deferring the Workup</button>
+    <button class="domtab" data-dom="dom-audit"><span class="tnum">07</span>EHR Audit Trails</button>
+    <button class="domtab" data-dom="dom-notes"><span class="tnum">08</span>Texts &amp; Personal Notes</button>
+    <button class="domtab" data-dom="dom-state"><span class="tnum">09</span>State Callouts</button>
+    <button class="domtab" data-dom="dom-check"><span class="tnum">10</span>Checklists</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 01 FOUNDATIONS ============ -->
+<section class="dom active" id="dom-found">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 01</div>
+    <h2>Why the chart is the case</h2>
+    <p>In emergency medicine the record is not a byproduct of care &mdash; it is frequently the entire evidentiary universe a jury will ever see. The patient you saw for eight minutes at 3 a.m. is reconstructed, years later, almost entirely from what you typed.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">~75%</div><div class="lbl">of emergency physicians are named in a malpractice suit at least once in their career</div><div class="src">West J Emerg Med closed-claims analysis 2001&ndash;15</div></div>
+    <div class="stat"><div class="num">~20%</div><div class="lbl">of EP malpractice suits involve documentation as a contributing factor</div><div class="src">Charting Practices case series, PMC9183775</div></div>
+    <div class="stat"><div class="num">16.7 mo</div><div class="lbl">average time to resolution of an EM malpractice claim</div><div class="src">Closed-claims analysis 2001&ndash;15</div></div>
+    <div class="stat"><div class="num">$816,909</div><div class="lbl">average indemnity when a jury returns a plaintiff verdict &mdash; highest of any resolution type</div><div class="src">Closed-claims analysis 2001&ndash;15</div></div>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The four elements &mdash; and where the chart lives</div>
+    <div class="card">
+      <p>Every negligence claim requires the plaintiff to prove <strong>four elements</strong>, all four, by a preponderance of the evidence (&ldquo;more likely than not&rdquo;). Your documentation touches every one of them.</p>
+      <ul>
+        <li><strong>Duty</strong> &mdash; a provider&ndash;patient relationship existed. In the ED this attaches the moment you begin to evaluate or treat. The chart establishes when your duty began (and, in an AMA, arguably when it ended).</li>
+        <li><strong>Breach</strong> &mdash; you fell below the standard of care: what a reasonably prudent EM provider would do in the same circumstances. Proven almost always through expert testimony reading <em>your note</em> against Tintinalli's, Rosen's, and ACEP guidelines.</li>
+        <li><strong>Causation</strong> &mdash; the breach directly caused the harm. A well-documented differential and reassessment can sever the causal chain; a bare note lets the plaintiff's expert fill the silence.</li>
+        <li><strong>Damages</strong> &mdash; actual injury. Highest payouts track catastrophic outcomes: death, brain injury, amputation, loss of sight, paralysis.</li>
+      </ul>
+    </div>
+    <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>The asymmetry that should govern your charting:</b> most claims never reach a jury &mdash; roughly two-thirds of ED closed claims are dropped, withdrawn, or dismissed, and defendants win the large majority of trials. But plaintiff attorneys decide whether to <i>take</i> a case largely on the quality of the record. Strong contemporaneous documentation is the single most effective deterrent to a suit ever being filed.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>The three failure modes of a note</div>
+    <div class="grid3">
+      <div class="card">
+        <h4>Missing documentation</h4>
+        <p>The dominant category &mdash; roughly <strong>70%</strong> of documentation-related claims. The absent reassessment, the undocumented callback, the pertinent negative never charted. In court, <em>&ldquo;not charted&rdquo;</em> is argued as <em>&ldquo;not done.&rdquo;</em></p>
+      </div>
+      <div class="card">
+        <h4>Inaccurate content</h4>
+        <p>About <strong>22%</strong>. Copy-paste carrying a prior shift's exam, a template auto-populating a normal exam you never performed, or a note that conflicts with the nurse's. Internal contradiction is a plaintiff's gift.</p>
+      </div>
+      <div class="card">
+        <h4>Poor mechanics</h4>
+        <p>About <strong>18%</strong>. Illegible or garbled entries, out-of-order events, and &mdash; most dangerous in the EHR era &mdash; delays in documentation that the audit trail exposes.</p>
+      </div>
+    </div>
+    <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Verify before you rely:</b> percentages are drawn from published EM documentation case series (Westlaw-sourced) and closed-claims registries. Categories overlap, so figures sum to &gt;100%. Use them to prioritize habits, not as litigation predictions.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>The governing maxim &mdash; and its limits</div>
+    <div class="card">
+      <p><em>&ldquo;If it wasn't documented, it wasn't done.&rdquo;</em> is the reflex every provider learns. It is directionally true and legally powerful &mdash; but understand precisely how it cuts.</p>
+      <ul>
+        <li>It is a <strong>rebuttable inference</strong>, not a rule of law. You may testify that you performed something you failed to chart, but you are now asking a jury to trust your memory of one patient among thousands, years later, against a contemporaneous silent record. That is a losing posture.</li>
+        <li>The inverse is more dangerous: <strong>&ldquo;if it was documented, it happened&rdquo;</strong> &mdash; so a templated or copy-pasted normal exam you did <em>not</em> perform becomes affirmative false evidence you must defend under oath.</li>
+        <li>The maxim rewards <strong>contemporaneous</strong> documentation specifically. A late note proving you &ldquo;did&rdquo; something is only as good as the audit trail underneath it (see Domain 05).</li>
+      </ul>
+    </div>
+  </section>
+</section>
+
+<!-- ============ 02 CASE FILES ============ -->
+<section class="dom" id="dom-cases">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 02</div>
+    <h2>Case files</h2>
+    <p>Documentation that hurt providers, and documentation that saved them. Anchor cases are real and litigated; composites are teaching vignettes built from recurring fact-patterns. Tap any file to open it.</p>
+  </div>
+
+  <div class="statebar">
+    <span class="state-pill" style="border-color:var(--harm);color:var(--harm)">▮ Documentation Hurt</span>
+    <span class="state-pill" style="border-color:var(--help);color:var(--help)">▮ Documentation Helped</span>
+    <span class="state-pill" style="border-color:var(--neutral);color:var(--neutral)">▮ Real / Anchor Case</span>
+  </div>
+
+  <!-- CASE 1 -->
+  <div class="case harm">
+    <div class="case-head">
+      <span class="case-tag">Hurt</span>
+      <div class="case-title"><div class="ct-name">The backdated code note</div><div class="ct-sub">COMPOSITE · post-op death · audit-trail spoliation</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">An inpatient decompensated and coded overnight. The written chart looked clean: nursing flowsheets showed <b>stable vitals all shift</b> until a sudden arrest, with narrative notes describing appropriate monitoring.</div></div>
+      <div class="case-row"><div class="cr-label">What the record said vs. what happened</div><div class="cr-text">The EHR <b>audit trail</b> told a different story: shift notes were authored <b>after the patient had already died</b> and backdated; pre-arrest flowsheet vitals were revised but appeared in the legal record with no indication of alteration. None of the vitals in the critical window had been recorded in real time.</div></div>
+      <div class="case-row"><div class="cr-label">Legal consequence</div><div class="cr-text">Once the audit trail surfaced, the case shifted from a defensible clinical-judgment dispute to a <b>spoliation and credibility</b> case. In many jurisdictions, evidence of record alteration can reverse the evidentiary burden, void malpractice coverage, and (where punitive-damage caps exist) lift those caps.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Late documentation is legitimate and necessary &mdash; but it must be <b>labeled as an addendum, timestamped honestly, and never overwrite the original</b>. The cover-up, not the care, is what converts a survivable claim into a catastrophic one.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 2 -->
+  <div class="case harm">
+    <div class="case-head">
+      <span class="case-tag">Hurt</span>
+      <div class="case-title"><div class="ct-name">The intoxicated head-injury walkout</div><div class="ct-sub">REAL fact-pattern · AMA capacity · settlement paid</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A 24-year-old with a head injury and a <b>blood-alcohol concentration above the legal limit</b> refused the physician's request to stay for observation. The ED physician judged the patient lucid enough to give informed consent and let him leave.</div></div>
+      <div class="case-row"><div class="cr-label">Course</div><div class="cr-text">The patient sustained cognitive impairment from a <b>skull fracture</b>. In litigation, the malpractice insurer's concern was not the clinical call itself but that the patient had been permitted to leave <b>while measurably impaired</b>, undermining any documented claim of intact capacity.</div></div>
+      <div class="case-row"><div class="cr-label">Outcome</div><div class="cr-text">The case <b>settled</b> for an undisclosed sum.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Capacity is <b>task-specific and dynamic</b>. A signature on an AMA form from an intoxicated patient is weak evidence. Where impairment is present, document the <b>specific capacity assessment</b> (or its return with sobriety) &mdash; and recognize that a documented elevated BAC in the same chart can directly contradict your capacity attestation.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 3 -->
+  <div class="case harm">
+    <div class="case-head">
+      <span class="case-tag">Hurt</span>
+      <div class="case-title"><div class="ct-name">The incomplete AMA warning</div><div class="ct-sub">REAL · NJ · miscarriage → ruptured appendix</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A patient with abdominal pain, vomiting, and diarrhea after a miscarriage wanted to go home to her family. She was asked to sign out AMA <b>because of the recent miscarriage</b> and did so.</div></div>
+      <div class="case-row"><div class="cr-label">The documentation gap</div><div class="cr-text">She was <b>not told</b> that she had an <b>elevated white count and a fever</b> suggesting a possible persistent infection. The AMA discussion had covered miscarriage-related risks only.</div></div>
+      <div class="case-row"><div class="cr-label">Course &amp; ruling</div><div class="cr-text">At home she suffered a <b>ruptured appendix with peritonitis</b>. The court permitted her to sue: the AMA/assumption-of-risk defense covered only the risks actually disclosed. A <b>separate, undisclosed infectious process</b> was outside the scope of her informed refusal.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Informed refusal is only as broad as the <b>specific risks you disclose and document</b>. Generic &ldquo;risks including death were reviewed&rdquo; does not cover a distinct diagnosis you knew about and failed to name. Disclose each pertinent abnormal finding by name.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 4 -->
+  <div class="case harm">
+    <div class="case-head">
+      <span class="case-tag">Hurt</span>
+      <div class="case-title"><div class="ct-name">The chest pain who waited</div><div class="ct-sub">REAL · MA · aortic dissection · $1.5M settlement</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Timeline (as documented)</div><div class="cr-text">Arrival 4:30 PM. Triage note 4:36 PM: pain radiating from mid-abdomen to chest, <b>10/10, &ldquo;the worst&rdquo;</b>, onset ~noon with shortness of breath. Triage assessment: <b>stable, not life-threatening, can wait.</b> Roomed 5:15 PM (BP 135/45, <b>pulse pressure 90</b>). First seen by a resident ~1 hr 20 min after arrival.</div></div>
+      <div class="case-row"><div class="cr-label">How the chart was used</div><div class="cr-text">The documented <b>widened pulse pressure</b> and <b>family history of dissection</b>, timestamped in the record, became the plaintiff's roadmap: the very data proving the diagnosis was recognizable was sitting in the chart while the patient waited. At 7:20 PM he arrested; CT confirmed a <b>Type A dissection</b>.</div></div>
+      <div class="case-row"><div class="cr-label">Outcome</div><div class="cr-text">Settled. The timestamps established the delay with precision the defense could not soften.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Timestamps are neutral until an outcome makes them evidence. When a red-flag vital (wide pulse pressure, abnormal vitals discharged without recheck) is in the record, the chart must also show that <b>someone saw it and acted</b> &mdash; a documented reassessment, escalation, or reasoning for why it was benign.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 5 -->
+  <div class="case harm">
+    <div class="case-head">
+      <span class="case-tag">Hurt</span>
+      <div class="case-title"><div class="ct-name">The curbside that became a duty</div><div class="ct-sub">REAL · aortic dissection · consultant liability</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A 66-year-old man with chest pain had a CXR the EP read as &ldquo;within normal limits.&rdquo; The radiologist's read: <b>&ldquo;top-normal heart with tortuous aorta.&rdquo;</b> Admitted as chest pain / rule-out MI; died that evening of aortic dissection with tamponade.</div></div>
+      <div class="case-row"><div class="cr-label">The documentation issue</div><div class="cr-text">The discrepancy between the EP's interpretation and the radiologist's language sat unreconciled in the chart. When the phone conversations and affirmative acts of the consultant were reconstructed, the record determined <b>who owed a duty</b> &mdash; a curbside becomes a physician&ndash;patient relationship once a consultant takes an &ldquo;affirmative act&rdquo; toward the patient.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">When your read and a specialist's read <b>diverge in the record</b>, reconcile it explicitly. And document consultant conversations factually (who, when, what was recommended) &mdash; the note defines the boundary of each provider's legal duty.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 6 - HELP -->
+  <div class="case help">
+    <div class="case-head">
+      <span class="case-tag">Helped</span>
+      <div class="case-title"><div class="ct-name">The properly executed AMA</div><div class="ct-sub">COMPOSITE · pattern from Levy/Mareiniss doctrine</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A patient with chest pain declined admission for a rule-out. The EP could not persuade him to stay.</div></div>
+      <div class="case-row"><div class="cr-label">What the chart captured</div><div class="cr-text">A documented <b>capacity assessment</b> (patient could state and repeat back the risks); <b>specific risks named</b> &mdash; myocardial infarction, arrhythmia, death; benefits of admission explained; the EP's active attempts to persuade; a witnessed discussion; medications, prescriptions, follow-up, and an <b>explicit invitation to return at any time.</b></div></div>
+      <div class="case-row"><div class="cr-label">Legal effect</div><div class="cr-text">Under the doctrine articulated by Levy &amp; Mareiniss, a properly documented AMA can confer real protection: some courts hold it <b>terminates the duty to treat</b>, it supplies an <b>assumption-of-risk</b> affirmative defense, and it is durable <b>evidence of informed refusal</b> &mdash; contingent on governing state law.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">The form is nearly worthless; the <b>documented process</b> is the protection. Capacity + specific risk disclosure + persuasion attempts + harm-reduction discharge, all charted, is what a defense is built on.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 7 - HELP -->
+  <div class="case help">
+    <div class="case-head">
+      <span class="case-tag">Helped</span>
+      <div class="case-title"><div class="ct-name">The documented differential</div><div class="ct-sub">COMPOSITE · missed dx alleged · reasoning preserved</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A young patient with headache was discharged with a benign diagnosis and later returned with a serious intracranial process. Suit alleged failure to consider the dangerous diagnosis.</div></div>
+      <div class="case-row"><div class="cr-label">What saved the provider</div><div class="cr-text">The note documented an <b>explicit differential</b> including the cannot-miss diagnoses, the <b>pertinent negatives</b> that lowered their probability, the reasoning for deferring imaging, <b>specific return precautions</b>, and a documented shared understanding with the patient.</div></div>
+      <div class="case-row"><div class="cr-label">Legal effect</div><div class="cr-text">The record demonstrated the provider <b>actively considered and reasonably excluded</b> the diagnosis with the information available. Standard of care is judged on the reasonableness of the process at the time &mdash; not on the retrospectively known outcome. The documented reasoning defeated the &ldquo;never even thought of it&rdquo; theory.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Charting your <b>clinical reasoning and differential</b> &mdash; including why you excluded the dangerous diagnosis &mdash; is the most underused defensive tool in EM. It converts a bad outcome into evidence of good process.</div></div>
+    </div></div>
+  </div>
+
+  <!-- CASE 8 - HELP -->
+  <div class="case help">
+    <div class="case-head">
+      <span class="case-tag">Helped</span>
+      <div class="case-title"><div class="ct-name">The documented callback attempts</div><div class="ct-sub">COMPOSITE · critical result after discharge</div></div>
+      <span class="case-chev">▸</span>
+    </div>
+    <div class="case-body"><div class="case-inner">
+      <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A culture or radiology over-read returned <b>after the patient was discharged</b>, changing management (e.g., a positive culture, an incidental finding on a formal CT read).</div></div>
+      <div class="case-row"><div class="cr-label">What the chart captured</div><div class="cr-text">Multiple <b>timestamped attempts</b> to reach the patient by phone, a documented message to the listed contact, notification of the PCP, and a certified-letter note when calls failed &mdash; each attempt logged with date and time.</div></div>
+      <div class="case-row"><div class="cr-label">Legal effect</div><div class="cr-text">The EP retains ultimate responsibility for closing the loop on results they ordered. When contact fails, <b>thoroughly documented reasonable attempts</b> discharge that duty. The record showed a diligent, good-faith system rather than an abandoned result.</div></div>
+      <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Follow up every pending study you order. If you can't reach the patient, <b>document every attempt</b> &mdash; the diligence, timestamped, is the defense.</div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 03 ANATOMY OF A VERDICT ============ -->
+<section class="dom" id="dom-verdict">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 03</div>
+    <h2>Anatomy of a plaintiff verdict</h2>
+    <p>The counterintuitive truth first: the injury is rarely what drives the lawsuit. Only <strong>1&ndash;2%</strong> of negligent adverse events ever become claims, and physicians overestimate their own litigation risk by roughly threefold. A plaintiff win is almost always a <strong>two-layer failure</strong> &mdash; a clinical/charting deficiency that supplies the legal cause of action, sitting on top of a human-factors failure that supplied the motivation to sue at all.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">7.6&times;</div><div class="lbl">higher odds of a <b>plaintiff verdict</b> when failure-to-diagnose is alleged (OR 7.60) vs. baseline</div><div class="src">Westlaw cardiology MPL analysis, PMC6760876</div></div>
+    <div class="stat"><div class="num">56%</div><div class="lbl">of ED cases allege a <b>missed or delayed diagnosis</b> &mdash; the dominant mechanism</div><div class="src">CRICO/Candello database</div></div>
+    <div class="stat"><div class="num">~73%</div><div class="lbl">of EM cases involve a misstep in the <b>patient-assessment</b> process</div><div class="src">Harvard RMF / CRICO</div></div>
+    <div class="stat"><div class="num">$3.2M</div><div class="lbl">mean award when NP/PA cases end in a <b>finding of negligence</b> (vs. $1.6M settled)</div><div class="src">Ann Emerg Med NP/PA Westlaw series</div></div>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The two-layer model</div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Layer 1 &mdash; the legal cause of action</h4>
+        <p>A clinical + charting deficiency the plaintiff's expert can point to. This is <strong>necessary</strong> for a case to survive, but rarely <strong>sufficient</strong> to make a patient sue. Its recurring shape:</p>
+        <ul>
+          <li>A cannot-miss diagnosis in a <strong>slowly-evolving, undramatic presentation</strong> (back pain, headache, abdominal pain).</li>
+          <li>A <strong>narrow assessment</strong> &mdash; premature closure on a benign diagnosis.</li>
+          <li>A record that contains the <strong>red flag but no documented reasoning or reassessment</strong>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Layer 2 &mdash; the motivation to sue</h4>
+        <p>A communication/relationship failure. This is what turns a bad outcome into a filed lawsuit. As the research bluntly puts it: patients are harmed by shoddy care <em>and something else happens to them</em>. The recurring emotional drivers:</p>
+        <ul>
+          <li><strong>Feeling abandoned</strong> &mdash; the single most common relationship complaint in plaintiff depositions.</li>
+          <li><strong>Feeling dismissed / unheard</strong> &mdash; &ldquo;rushed appointment, didn't explain, didn't feel respected.&rdquo;</li>
+          <li><strong>Anger at the handling</strong> &mdash; no disclosure, no empathy, no apology after the event.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>The mechanism, stated plainly:</b> the landmark JAMA communication work found the strongest predictor of whether a patient with a bad outcome sues is <b>not</b> the quality of care &mdash; it is how the clinician talked with them. Communication breakdown is <b>more predictive of litigation than the injury experienced.</b> Remove either layer and the case usually isn't filed, doesn't survive, or settles small.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>PA &amp; NP verdicts &mdash; the definitive dataset</div>
+    <div class="card">
+      <p>A 2023 <em>Annals of Emergency Medicine</em> review pulled every NP/PA malpractice case in Westlaw's Jury Verdicts &amp; Settlements database from 1985&ndash;2020: 144 cases across 32 states (California and Massachusetts led with 22 each). It is the clearest map of how PA-involved cases actually resolve.</p>
+      <table class="reg">
+        <thead><tr><th>Allegation category</th><th>Cases</th><th>Share</th></tr></thead>
+        <tbody>
+          <tr><td><b>Failure to diagnose</b></td><td>92</td><td>~64%</td></tr>
+          <tr><td>Procedural errors</td><td>17</td><td>~12%</td></tr>
+          <tr><td>Failure to treat</td><td>16</td><td>~11%</td></tr>
+          <tr><td>Medication / test error</td><td>11</td><td>~8%</td></tr>
+          <tr><td>Communication errors</td><td>6</td><td>~4%</td></tr>
+          <tr><td>Post-op mgmt / failure to supervise</td><td>2</td><td>~1%</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px">Outcomes: 54 no-liability, 40 settled, <strong>37 findings of negligence</strong>, 13 unknown. The financial asymmetry is the headline: a <strong>finding of negligence averaged $3,216,538</strong> vs. <strong>$1,607,716</strong> for settlements. Patient outcomes skewed catastrophic &mdash; 61 permanent disability, 55 death. Median time to resolve: <strong>5 years</strong>.</p>
+    </div>
+    <div class="callout warn"><span class="co-icon">!</span><div class="co-body"><b>The through-line for PAs:</b> failure to diagnose isn't just the most <i>common</i> allegation against PAs &mdash; it's the one most associated with actually <i>losing</i> (OR 7.60 for a plaintiff verdict). Your defensive energy belongs disproportionately on documenting the diagnostic reasoning for cannot-miss conditions.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>Named PA case files</div>
+    <div class="statebar">
+      <span class="state-pill" style="border-color:var(--harm);color:var(--harm)">▮ PA Found Liable</span>
+      <span class="state-pill" style="border-color:var(--help);color:var(--help)">▮ PA Cleared</span>
+    </div>
+
+    <!-- PA CASE 1: Sciatica/abscess -->
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">The sciatica that was an abscess</div><div class="ct-sub">REAL · PA · $3M verdict · premature closure</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A 49-year-old woman in an <b>understaffed, overwhelmed ED</b> with severe lower back pain &mdash; &ldquo;excruciating&rdquo; and &ldquo;it just keeps getting worse.&rdquo; The PA suspected a nerve issue and ordered a CT.</div></div>
+        <div class="case-row"><div class="cr-label">The charting failures</div><div class="cr-text">The CT was read as normal &mdash; but the <b>imaging request never specified the patient's complaints or symptom history</b>, so the radiologist didn't know what to look for. The PA diagnosed sciatica and discharged with a referral. No documented reasoning reconciling the <b>escalating, atypical</b> pain with the benign diagnosis.</div></div>
+        <div class="case-row"><div class="cr-label">Course &amp; outcome</div><div class="cr-text">Five days later she returned with a <b>perirectal abscess</b> that ultimately required <b>8 surgeries</b>, leaving permanent damage. A retained expert confirmed multiple errors. <b>$3M verdict.</b></div></div>
+        <div class="lesson"><div class="cr-label">The three lessons</div><div class="cr-text"><b>(1)</b> Don't settle on a common diagnosis until life-threatening ones are actively ruled out. <b>(2)</b> Investigate divergent symptoms &mdash; escalating pain didn't fit sciatica. <b>(3)</b> Give the radiologist <b>precise clinical context</b>; a vague imaging order is a documented breach.</div></div>
+      </div></div>
+    </div>
+
+    <!-- PA CASE 2: Meningitis/flu -->
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">The &ldquo;flu&rdquo; that was bacterial meningitis</div><div class="ct-sub">REAL · Dudley · PA · $27M verdict (2022)</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">Presentation &amp; the anchoring error</div><div class="cr-text">Mr. Dudley was diagnosed with the flu by the PA in charge &mdash; <b>despite testing negative for flu</b> &mdash; and sent home with Tamiflu and pain relievers. The negative test that should have reopened the differential was overridden by the anchored diagnosis.</div></div>
+        <div class="case-row"><div class="cr-label">Course</div><div class="cr-text">He returned days later, correctly diagnosed with <b>bacterial meningitis</b> and admitted to the ICU. Induced coma, multiple strokes, permanent <b>hearing loss, nerve damage, and brain damage.</b></div></div>
+        <div class="case-row"><div class="cr-label">Outcome</div><div class="cr-text"><b>$27M award</b> &mdash; including $12M future loss of mind/body, $10M future pain and suffering.</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">A <b>negative confirmatory test is a differential-reopening event</b>, not a footnote. Charting &ldquo;flu&rdquo; over a negative flu test with no documented reasoning is the definitional premature-closure fingerprint.</div></div>
+      </div></div>
+    </div>
+
+    <!-- PA CASE 3: Compartment syndrome -->
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">The compartment syndrome &ldquo;shin splints&rdquo;</div><div class="ct-sub">REAL · Thapa · PA 20% / MD 40% · $7M+ · charting</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A 17-year-old presented after indoor soccer with post-exertional mid-shin pain and mild swelling, worse with walking. Non-traumatic compartment syndrome in a healthy patient is genuinely rare; muscle strain / shin splints was a defensible initial read.</div></div>
+        <div class="case-row"><div class="cr-label">Why the chart lost a defensible case</div><div class="cr-text">The PA's note affirmatively stated the patient had <b>&ldquo;no evidence of compartment syndrome&rdquo;</b> &mdash; but <b>pain and swelling <em>are</em> evidence</b> of it. That single line converted a reasonable diagnosis into an indefensible one. The court noted <b>better documentation would likely have made the case easier to defend</b>: had the note recorded normal sensory/motor/circulatory exams and precisely described the swelling, outpatient follow-up could have been defended.</div></div>
+        <div class="case-row"><div class="cr-label">Outcome &amp; the supervision angle</div><div class="cr-text">$7M total: <b>20% PA, 40% supervising physician</b> (who never saw the patient). The MD was faulted for signing off on a chart with concerning findings without calling the patient back &mdash; supervision is &ldquo;more than signing a pile of charts.&rdquo; The defense also argued the patient's <b>refusal to return</b> when symptoms worsened contributed.</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Never chart a <b>conclusory negative</b> that your own documented findings contradict. Write the objective exam (&ldquo;sensory/motor/pulses intact; 2 cm non-tense swelling mid-shin&rdquo;) and let it support the diagnosis &mdash; don't editorialize away findings that are present.</div></div>
+      </div></div>
+    </div>
+
+    <!-- PA CASE 4: Buckelew - CLEARED -->
+    <div class="case help">
+      <div class="case-head">
+        <span class="case-tag">Cleared</span>
+        <div class="case-title"><div class="ct-name">The PA who was exonerated &mdash; Buckelew</div><div class="ct-sub">REAL · $75M verdict · PA cleared · MD 60% for record alteration</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">The case</div><div class="cr-text">A 32-year-old collapsed during a chiropractic neck adjustment and arrived at a primary stroke center. Imaging suggested a <b>brainstem stroke / vertebral artery dissection</b>, but the diagnosis wasn't made until the next day &mdash; past the thrombectomy window. He was left with <b>locked-in syndrome.</b> <b>$75M verdict</b> ($29M medical, $46M non-economic), affirmed on appeal in 2025.</div></div>
+        <div class="case-row"><div class="cr-label">Why the ER physician lost &mdash; 60% fault</div><div class="cr-text">Dr. Womack allegedly <b>failed to tell the consulting neurologist about the chiropractic adjustment</b> (a known stroke risk), failed to communicate the CTA and LP results, and &mdash; decisively &mdash; <b>later altered the medical records</b> to indicate he'd conveyed information he hadn't. The appellate court found the jury could conclude <b>gross negligence</b> partly on his <b>failure to accurately document</b> and the alteration.</div></div>
+        <div class="case-row"><div class="cr-label">Why the PA (Christopher Nickum) was cleared</div><div class="cr-text">The ICU PA, the neurologist, and the nursing staff were all <b>found not liable.</b> The fault concentrated on the two providers whose <b>documentation and communication</b> failed &mdash; the ER physician (miscommunication + record alteration) and the radiologist (missed the occlusion, 40%). The PA's care and charting didn't expose him.</div></div>
+        <div class="lesson"><div class="cr-label">Two lessons at once</div><div class="cr-text"><b>(1)</b> Being on a catastrophic-outcome case does <b>not</b> mean you'll be found liable &mdash; fault follows the specific documented breach, not proximity to the harm. <b>(2)</b> The physician's <b>record alteration</b> is what elevated ordinary negligence toward <b>gross</b> negligence. Altering the chart didn't hide the failure; it became the centerpiece of it.</div></div>
+      </div></div>
+    </div>
+
+    <!-- PA CASE 5: student supervision cleared -->
+    <div class="case help">
+      <div class="case-head">
+        <span class="case-tag">Cleared</span>
+        <div class="case-title"><div class="ct-name">The PA &amp; the headache &mdash; Carrillo</div><div class="ct-sub">REAL · CA · cocci meningitis · defense verdict</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A minor presented with intermittent headaches and a &ldquo;hot forehead&rdquo; for 2&ndash;3 days, taking ibuprofen. <b>No nausea, vomiting, or vision problems</b>; ENT/neck exam normal. A licensed PA and a PA student evaluated her. She later deteriorated catastrophically &mdash; <b>coccidioidal meningitis</b>, strokes, functionally quadriplegic.</div></div>
+        <div class="case-row"><div class="cr-label">Outcome</div><div class="cr-text">A jury found <b>none of the defendants negligent</b> in the diagnosis or treatment. Because the PA was not negligent, the supervising physician could not be held <b>vicariously liable</b>, and the appellate court affirmed.</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">A devastating outcome from a genuinely occult presentation is <b>defensible when the documented exam and pertinent negatives</b> show a reasonable evaluation for the symptoms present. The charted normal exam and absence of meningeal red flags <b>at the time of the visit</b> carried the defense.</div></div>
+      </div></div>
+    </div>
+  </section>
+
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">D</span>Supervising-physician &amp; vicarious liability</div>
+    <div class="card">
+      <p>When a PA is sued, the supervising or collaborating physician &mdash; and the employer &mdash; is very often named too. This matters to you in two directions: it shapes how your charting is scrutinized, and it means <strong>your note is also your supervising physician's exposure.</strong> The doctrine has a critical nuance the case law makes clear:</p>
+      <ul>
+        <li><strong>Two distinct liability theories.</strong> Courts generally assign liability for the PA's clinical <em>actions</em> to the PA, but assign liability to the physician and employer for their <strong>own inaction</strong> &mdash; failure to meet the statutory oversight requirements (review, co-signature, availability, ratio limits).</li>
+        <li><strong>Vicarious liability / respondeat superior.</strong> Even a physician who <em>never saw the patient</em> can be liable simply as employer. In the compartment-syndrome case, the supervising MD drew the <strong>larger</strong> share (40% vs. the PA's 20%) precisely for signing off on a chart with concerning findings without acting &mdash; supervision is &ldquo;more than signing a pile of charts.&rdquo;</li>
+        <li><strong>The Shajan example:</strong> a New York jury held the physician <strong>40% liable in a $7M ED judgment</strong> over a PA's care &mdash; nontraumatic leg pain diagnosed as muscle strain and discharged without physician evaluation.</li>
+        <li><strong>But it isn't automatic.</strong> In <em>Zeh v. Maso</em>, the Georgia Court of Appeals held a supervising physician is <strong>not</strong> automatically liable for a PA's negligence &mdash; and where the PA's care is found non-negligent (Carrillo), vicarious liability <strong>collapses with it.</strong></li>
+      </ul>
+    </div>
+    <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>Your three states, three regimes:</b> PA practice is now governed by <b>collaboration/practice agreements</b> rather than rigid direct supervision in many jurisdictions, and the specifics differ across Iowa, California, and Indiana &mdash; ratio limits, co-signature rules, and experience-hour thresholds all vary. The employer's vicarious liability generally survives regardless of how much independence the agreement grants. <b>Know your current collaboration agreement's documented scope</b>; practicing outside it is itself a chartable breach.</div></div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>Practical charting takeaway:</b> when you discuss a case with your supervising or collaborating physician, <b>document it factually</b> &mdash; who, when, what was recommended. It protects you (shows appropriate escalation) and it accurately bounds each provider's duty. A co-signature with no evidence of actual review protects no one; a documented real conversation protects both of you.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">E</span>Systemic, credentialing &amp; fraud failures</div>
+    <div class="card">
+      <p>A distinct verdict category sits above individual clinical error: cases where the <strong>system</strong> failed &mdash; negligent credentialing, understaffing, unlicensed or unqualified providers, or outright fraud. These produce the largest awards because juries reach for <strong>punitive damages</strong>, which are designed to punish conduct rather than compensate injury and which frequently escape the damages caps that limit ordinary negligence.</p>
+    </div>
+
+    <!-- NuMale case -->
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">The $412M record &mdash; NuMale (Sanchez)</div><div class="ct-sub">REAL · PA · fraud + absent supervision + record falsification</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">Presentation</div><div class="cr-text">A 66-year-old widower sought treatment for <b>fatigue and weight loss</b> and testosterone therapy. He left his sexual-health history blank and said he was not sexually active. The PA nonetheless diagnosed <b>erectile dysfunction</b>, sold an injection plan, and told him inaction would cause irreversible harm only their medicine could fix.</div></div>
+        <div class="case-row"><div class="cr-label">The cascade of failures</div><div class="cr-text"><b>No informed consent</b> for the ED treatment. An <b>excessive dose at inappropriate concentration.</b> A <b>non-medical salesperson</b> trained patients to self-inject. When priapism set in for <b>60+ hours</b>, the PA had to <b>phone the supervising physician &mdash; who was running another clinic in Beverly Hills</b> &mdash; to ask what to do, then told the patient to <b>drive himself to the ER</b> mid-crisis.</div></div>
+        <div class="case-row"><div class="cr-label">The aggravating charting fact</div><div class="cr-text">After learning of a <b>Board complaint</b>, the PA <b>falsified the record</b> &mdash; adding an untrue claim that the patient had previously failed Viagra, to retroactively justify the ED diagnosis. This is record alteration in its most damning form: knowing, self-serving, post-hoc.</div></div>
+        <div class="case-row"><div class="cr-label">Outcome</div><div class="cr-text"><b>$412,005,149</b> &mdash; the largest med-mal verdict in US history &mdash; of which <b>$375M was punitive.</b> The jury found the conduct willful, wanton, and reckless. (Actual recovery ~$96.5M after the corporation's bankruptcy.) The PA entered an Agreed Order and no longer practices.</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Three atlas threads converge here: <b>absent supervision</b> (a &ldquo;collaborating&rdquo; physician two states away), <b>no informed consent</b>, and <b>record falsification after learning of a complaint.</b> The falsification is what unlocked the nine-figure punitive award &mdash; the cover-up, again, dwarfing the underlying act.</div></div>
+      </div></div>
+    </div>
+
+    <div class="callout warn"><span class="co-icon">!</span><div class="co-body"><b>Why these dominate the largest-verdict lists:</b> the record itself becomes the proof of systemic intent. Four evidentiary pillars converge in these cases &mdash; a documented standard-of-care breach, causation established through the <b>timeline in the record</b>, quantified damages via life-care plans, and <b>time-stamped medical records</b> proving what was and wasn't done. When the records also show falsification or an unqualified provider, compensatory negligence escalates into punitive territory.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">F</span>The charting fingerprints of a plaintiff win</div>
+    <div class="card">
+      <p>Across the losing cases, the same documentation patterns recur. Read these as a diagnostic checklist for your own notes &mdash; if a chart has these fingerprints, it is a chart that loses:</p>
+    </div>
+    <div class="pearl-list">
+      <div class="pearl"><div class="p-text"><b>The red flag is in the record, but no one acted on it.</b> Wide pulse pressure, escalating pain, an abnormal vital &mdash; documented, then unaddressed. The data proving the diagnosis was catchable sits in your own note.</div></div>
+      <div class="pearl"><div class="p-text"><b>Premature closure with no documented reasoning.</b> A benign label (sciatica, flu, shin splints) applied over atypical or contradictory findings, with no charted differential explaining why the dangerous diagnosis was excluded.</div></div>
+      <div class="pearl"><div class="p-text"><b>A conclusory negative your own findings contradict.</b> &ldquo;No evidence of compartment syndrome&rdquo; when pain and swelling &mdash; both evidence &mdash; are charted two lines up.</div></div>
+      <div class="pearl"><div class="p-text"><b>A communication failure baked into the documentation.</b> Consult ordered without clinical context; results not conveyed; history excluded from the specialist. In the $75M and $3M cases alike, the breach <em>was</em> the communication, and the chart recorded it.</div></div>
+      <div class="pearl"><div class="p-text"><b>A negative confirmatory test overridden without comment.</b> Charting the anchored diagnosis <em>through</em> a result that should have reopened the differential.</div></div>
+      <div class="pearl"><div class="p-text"><b>Record alteration after the outcome.</b> The single most aggravating fingerprint &mdash; it converts negligence toward <b>gross</b> negligence and destroys credibility (see Domain 06).</div></div>
+    </div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>The dual-defense insight:</b> the same habits defend <b>both</b> layers. A documented differential defends Layer 1 <i>and</i> signals to the patient you took them seriously. A timestamped reassessment closes the causation gap <i>and</i> counters the abandonment feeling. The &ldquo;one more phone call&rdquo; discharges your duty <i>and</i> is the gesture plaintiff attorneys repeatedly say would have kept their client from ever calling them.</div></div>
+  </section>
+</section>
+
+<!-- ============ 03 AMA & REFUSAL ============ -->
+<section class="dom" id="dom-ama">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 04</div>
+    <h2>AMA &amp; informed refusal</h2>
+    <p>Roughly 1&ndash;2% of ED discharges are AMA &mdash; up to ~500,000 per year in the US &mdash; and this population carries markedly higher morbidity, readmission, and mortality. It is one of the highest medicolegal-risk moments in emergency medicine, and the exposure is decided almost entirely by documentation.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">20&ndash;60%</div><div class="lbl">of AMA charts document a capacity assessment &mdash; the single most important element</div><div class="src">Systematic review, PMC9628312</div></div>
+    <div class="stat"><div class="num">~22%</div><div class="lbl">of AMA discharges properly document capacity in some series &mdash; a critical medicolegal gap</div><div class="src">Documentation proficiency studies</div></div>
+    <div class="stat"><div class="num">4%</div><div class="lbl">of charts contained exhaustive AMA documentation in one study; no single chart met all standards</div><div class="src">PMC9628312</div></div>
+    <div class="stat"><div class="num">20&ndash;40%↑</div><div class="lbl">higher 30-day readmission among AMA discharges vs. standard discharge</div><div class="src">KAMMCO 2025 review</div></div>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The form is not the defense</div>
+    <div class="callout warn"><span class="co-icon">✕</span><div class="co-body"><b>A signature on an AMA form, by itself, is not informed consent and confers no reliable immunity.</b> Blanket liability waivers on AMA forms are widely held <b>void as against public policy</b>. The issue a court examines is never &ldquo;did they sign&rdquo; &mdash; it is <b>whether the patient gave informed refusal with capacity</b>, which lives in your narrative, not the form.</div></div>
+    <div class="card">
+      <p>What a properly documented AMA actually buys you, where state law permits (<span class="tref">1</span> <em>Levy &amp; Mareiniss, J Emerg Med 2012</em>):</p>
+      <ul>
+        <li><strong>Termination of duty</strong> &mdash; some courts hold a proper AMA discharge ends the physician's ongoing duty to treat.</li>
+        <li><strong>Assumption of risk</strong> &mdash; an affirmative defense in certain jurisdictions: the patient knowingly accepted the specific hazard.</li>
+        <li><strong>Evidence of informed refusal</strong> &mdash; contemporaneous proof that rebuts a negligent-discharge allegation.</li>
+      </ul>
+      <p><em>Battenfeld v. Gregory</em> is the classic reminder: disclosure of risks is required for informed consent, and AMA protections do not attach in its absence.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Capacity &mdash; the four-part assessment</div>
+    <div class="card">
+      <p>Capacity is a <strong>clinical determination</strong> you make (competence is a legal state a court decides). It is <strong>decision-specific and dynamic</strong> &mdash; a patient may have capacity to refuse a blood draw but not to leave with a head bleed, and capacity may return as intoxication clears. Document all four functional abilities:</p>
+      <ul>
+        <li><strong>Understanding</strong> &mdash; the patient can restate their condition and the proposed care in their own words.</li>
+        <li><strong>Appreciation</strong> &mdash; they apply it to themselves (&ldquo;I could die if this is a heart attack&rdquo;), not just recite it abstractly.</li>
+        <li><strong>Reasoning</strong> &mdash; they can manipulate the information to explain <em>why</em> they are choosing to leave.</li>
+        <li><strong>Expressing a choice</strong> &mdash; a stable, communicated decision.</li>
+      </ul>
+    </div>
+    <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>All patients are presumed to have capacity.</b> The burden is on you to document impairment if it exists. Where intoxication or medication impairs capacity and the patient is high-risk, involuntary hold for evaluation may be the only defensible path &mdash; and the impairment and your response must be charted.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>The eight documented elements of a defensible AMA</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Capacity</b> &mdash; explicit statement the patient has decision-making capacity, with the functional evidence supporting it.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Presentation &amp; workup status</b> &mdash; signs/symptoms, extent and <b>limits</b> of the evaluation, and any pending or incomplete diagnostics.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Specific risks of leaving</b> &mdash; named by diagnosis and consequence (&ldquo;possible appendicitis &rarr; rupture, sepsis, death&rdquo;), phrased &ldquo;including but not limited to.&rdquo;</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Benefits of staying</b> &mdash; monitoring, testing, treatment that admission/observation would provide.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Patient understanding</b> &mdash; that they stated the risks back and had the opportunity to ask questions.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Attempts to keep them</b> &mdash; what you did to address their reason for leaving (pain, wait time, obligations).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Harm-reduction discharge</b> &mdash; prescriptions, follow-up, referrals, and treatment to the extent they'll accept. Never withhold care as leverage &mdash; that risks an abandonment claim.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Return invitation + witness</b> &mdash; explicit &ldquo;may return at any time,&rdquo; witnessed by staff/family; if they refuse to sign, document the refusal and that risks were read aloud.</div></div>
+    </div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>EMTALA overlay:</b> for any patient refusing care, the ED must offer the exam/treatment, inform of risks and benefits, document that discussion, and make reasonable attempts to obtain a written informed refusal. A properly documented AMA satisfies both EMTALA and the malpractice-defense purpose simultaneously.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">D</span>The &ldquo;risks and benefits were reviewed&rdquo; trap</div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Why bare boilerplate fails</h4>
+        <p>If your only note is &ldquo;risks and benefits reviewed,&rdquo; then at deposition years later &mdash; unable to recall the specific patient &mdash; you cannot prove you named the risk that materialized. The plaintiff testifies dizziness was never mentioned; you have nothing to rebut it (the classic &ldquo;left, got dizzy, fell, broke a femur&rdquo; scenario).</p>
+      </div>
+      <div class="card">
+        <h4>The defensible construction</h4>
+        <p>Name the major specific risks, then anchor with <strong>&ldquo;including but not limited to.&rdquo;</strong> This locks you into the essential points on the record while preserving room to testify that other foreseeable risks were also discussed. Most injuries from untreated conditions occur in expected, nameable ways.</p>
+      </div>
+    </div>
+    <div class="specimen"><span class="sp-tag">Model AMA note</span>Patient is alert, oriented ×4, with <b>intact decision-making capacity</b>: able to state their diagnosis, articulate the risks of leaving, and explain their reasoning. No evidence of intoxication or impairment.
+
+I recommended admission for <b>[condition]</b>. Patient elects to leave against medical advice.
+
+Risks of leaving were discussed in detail, <b>including but not limited to</b>: worsening illness, <b>[named specific risks: e.g., myocardial infarction, arrhythmia, stroke, sepsis]</b>, permanent disability, and <b>death</b>. Benefits of staying (monitoring, diagnostic testing, treatment) explained. Patient <b>verbalized understanding</b> and had the opportunity to ask questions.
+
+I attempted to address the patient's stated reason for leaving <b>[reason + what I offered]</b>. Patient still elects to leave.
+
+Treated to the extent patient would allow. Prescriptions and follow-up with <b>[Dr. / clinic]</b> provided. Patient instructed they may <b>return at any time for any reason</b>. Discussion witnessed by RN <b>[name]</b>. AMA form <b>[signed / refused &mdash; risks read aloud]</b>.</div>
+  </section>
+</section>
+
+<!-- ============ 04 LANGUAGE LEXICON ============ -->
+<section class="dom" id="dom-lang">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 05</div>
+    <h2>The language lexicon</h2>
+    <p>The same clinical fact can be charted in a way that defends you or one that hands the plaintiff a theme. The governing rule is simple: <strong>document observations, not conclusions; behaviors, not characterizations.</strong> A jury believes what you saw; they distrust what you decided about the patient as a person.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>Objective vs. judgmental &mdash; side by side</div>
+
+    <div class="lex">
+      <div class="lex-col harm"><div class="lex-hd">✕ Charts against you</div>
+        <div class="lex-item"><div class="quote">&ldquo;Patient appears intoxicated / drunk.&rdquo;</div><div class="why">A conclusion. Many conditions mimic it (hypoglycemia, stroke, head injury, sepsis). If missed, this line proves you anchored.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Patient is drug-seeking / frequent flyer.&rdquo;</div><div class="why">Characterizes the person, not the presentation. Reads to a jury as bias and shows up in the audit-trail narrative.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Patient is a poor historian.&rdquo;</div><div class="why">Blames the patient; ambiguous. Say what specifically could not be obtained and why.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Non-compliant / refuses to cooperate.&rdquo;</div><div class="why">Adversarial framing. Describe the specific declined item and your response.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Patient is difficult / hysterical / dramatic.&rdquo;</div><div class="why">Pure characterization. Emotionally-laden language is a documented plaintiff theme.</div></div>
+      </div>
+      <div class="lex-col help"><div class="lex-hd">✓ Charts for you</div>
+        <div class="lex-item"><div class="quote">&ldquo;Slurred speech, unsteady gait, odor of alcohol; BAC pending.&rdquo;</div><div class="why">Observable findings a jury can picture. Lets you show you kept a differential open.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Requests specific opioid by name; prior visits for same complaint per record.&rdquo;</div><div class="why">Factual, sourced, non-pejorative. Same information, no bias signal.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Unable to provide onset/duration; patient somnolent &mdash; history from EMS.&rdquo;</div><div class="why">Explains the limitation and your workaround.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Declined IV placement after risks explained; oral hydration offered and accepted.&rdquo;</div><div class="why">Shows informed refusal + continued good-faith care.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Crying, tremulous, respiratory rate 24; reports 10/10 pain.&rdquo;</div><div class="why">Objective signs replace the character judgment entirely.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Documenting other providers &mdash; the &ldquo;chart wars&rdquo; rule</div>
+    <div class="callout warn"><span class="co-icon">✕</span><div class="co-body"><b>Never use the medical record to fight a colleague or consultant.</b> &ldquo;Chart wars&rdquo; hand the plaintiff a divided defense and a narrative of dysfunction. If a consultant hasn't responded or you disagree with a plan, chart the fact neutrally &mdash; not the grievance.</div></div>
+    <div class="lex">
+      <div class="lex-col harm"><div class="lex-hd">✕ Don't chart</div>
+        <div class="lex-item"><div class="quote">&ldquo;Cardiology refuses to come see the patient despite obvious STEMI.&rdquo;</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Disagree with surgery's plan; this is negligent.&rdquo;</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Nursing failed to report the vitals.&rdquo;</div></div>
+      </div>
+      <div class="lex-col help"><div class="lex-hd">✓ Do chart</div>
+        <div class="lex-item"><div class="quote">&ldquo;At time of this note, Dr. X has not returned the page placed at 02:14.&rdquo;</div><div class="why">Timestamped fact establishes your diligence without accusation.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Discussed with surgery; their recommendation is X. My clinical concern is Y; will re-examine and reassess in 1h.&rdquo;</div><div class="why">Preserves your reasoning professionally.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Repeat vitals obtained at 03:05 (see flowsheet); patient reassessed.&rdquo;</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>Positive documentation habits that read as competence</div>
+    <div class="pearl-list">
+      <div class="pearl"><div class="p-text"><b>Chart pertinent negatives, not just positives.</b> &ldquo;Denies SOB, syncope, leg swelling, recent travel/immobilization&rdquo; on a chest-pain patient proves you evaluated PE and ACS. A negative you didn't chart is read as a question you never asked.</div></div>
+      <div class="pearl"><div class="p-text"><b>Document your differential and why cannot-miss diagnoses are lower probability.</b> This is the single strongest defensive habit &mdash; it shows the reasoning process the standard of care is judged on.</div></div>
+      <div class="pearl"><div class="p-text"><b>Chart reassessments with times.</b> A discharged abnormal vital <em>without</em> a documented recheck is a plaintiff magnet; a timestamped normalized recheck closes it.</div></div>
+      <div class="pearl"><div class="p-text"><b>Give specific, written return precautions</b> tied to the actual differential (&ldquo;return for worsening headache, vomiting, vision change, weakness&rdquo;), not generic &ldquo;return if worse.&rdquo;</div></div>
+      <div class="pearl"><div class="p-text"><b>Reconcile discrepancies out loud in the note.</b> If your read and radiology's differ, or your exam and the nurse's differ, address it &mdash; an unexplained internal contradiction is worse than either version alone.</div></div>
+      <div class="pearl"><div class="p-text"><b>Attribute history sources.</b> &ldquo;Per EMS,&rdquo; &ldquo;per family,&rdquo; &ldquo;patient reports&rdquo; &mdash; so a later discrepancy is attributable, not your error.</div></div>
+      <div class="pearl"><div class="p-text"><b>Use the interval note for prolonged stays.</b> A patient boarding 8 hours needs documented reassessment; silence over a long stay is indefensible if they deteriorated.</div></div>
+    </div>
+  </section>
+</section>
+
+<!-- ============ 06 DEFERRING THE WORKUP ============ -->
+<section class="dom" id="dom-defer">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 06</div>
+    <h2>Deferring the workup</h2>
+    <p>How to document <strong>why you did not order</strong> the lab or the scan &mdash; and rule out the cannot-miss diagnosis on the record. The paradox of the negative decision: ordering a test is self-documenting, but <em>not</em> ordering one leaves a silence a plaintiff fills with &ldquo;never considered it.&rdquo; A defensible non-test decision is an <strong>affirmative, reasoned, documented act</strong>, not an omission.</p>
+  </div>
+
+  <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>The core principle:</b> the standard of care never required you to test <i>everyone</i> &mdash; it requires that you <b>considered the dangerous diagnosis and reasonably excluded it.</b> A chart showing you used a validated rule, weighed the risks, and reasoned to a low pretest probability is defensible even if the rare outcome later occurs. A chart that is simply <i>silent</i> on the diagnosis is not. Document the decision so it reads as deliberate &mdash; making clear you <b>did not forget</b> the test; you considered it and chose against it.</div></div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The anatomy of a defensible &ldquo;no-test&rdquo; note</div>
+    <div class="card">
+      <p>Six components convert a non-test decision from an omission into a documented clinical judgment. Chart as many as apply:</p>
+      <ul>
+        <li><strong>Name the diagnosis you considered.</strong> &ldquo;Considered SAH / PE / ACS / appendicitis&rdquo; &mdash; putting the cannot-miss diagnosis <em>in</em> the record is what proves you didn't miss it.</li>
+        <li><strong>Cite the validated decision rule</strong> and the patient's result. &ldquo;PERC negative,&rdquo; &ldquo;Canadian CT Head Rule: no criteria met,&rdquo; &ldquo;HEART score 2 &mdash; low risk.&rdquo; A named, validated instrument is the strongest anchor available.</li>
+        <li><strong>List the pertinent negatives</strong> that lowered the probability &mdash; the specific absent red flags.</li>
+        <li><strong>State the risk&ndash;benefit reasoning</strong>, including the harms of testing (radiation, false positives, incidentalomas, contrast). This proves active weighing, not neglect.</li>
+        <li><strong>Document shared decision-making</strong> where appropriate &mdash; that you discussed the option, the patient's preference, and the agreement.</li>
+        <li><strong>Give the safety net</strong> &mdash; specific return precautions and follow-up. This is both clinically and legally the load-bearing element.</li>
+      </ul>
+    </div>
+    <div class="specimen"><span class="sp-tag">Model no-imaging note</span><b>Cannot-miss considered:</b> Pulmonary embolism.
+<b>Reasoning:</b> Pleuritic chest pain, low pretest probability by gestalt. <b>PERC applied and negative</b> (age &lt;50, HR &lt;100, SpO2 &ge;95%, no hemoptysis, no estrogen, no prior DVT/PE, no unilateral leg swelling, no recent surgery/trauma). Wells low. Per validated criteria, probability of PE is &lt;2% &mdash; below the threshold at which CTPA benefit exceeds its harms (radiation, contrast, ~42% false-positive rate in low-risk patients per PIOPED II).
+<b>Decision:</b> CT pulmonary angiography <b>deferred</b> as not indicated by validated risk stratification. Risks/benefits of testing vs. not testing discussed with patient, who is in agreement.
+<b>Safety net:</b> Return immediately for worsening dyspnea, chest pain, hemoptysis, syncope, or leg swelling. Follow-up with PCP in 1&ndash;2 days.</div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>The validated decision rules that justify NOT testing</div>
+    <div class="card">
+      <p>These are <strong>high-sensitivity</strong> instruments &mdash; designed to be near-perfect at <em>ruling out</em> serious pathology, which is exactly the medicolegal function you need. Citing the rule by name, with the patient's result, is the single most powerful line in a no-test note. Note the framing: rules <strong>assist and do not replace</strong> clinical judgment &mdash; meeting a rule's low-risk criteria does not <em>forbid</em> testing, and clinical gestalt overriding a rule toward <em>more</em> workup is always defensible.</p>
+      <table class="reg">
+        <thead><tr><th>Diagnosis to exclude</th><th>Rule</th><th>Sensitivity</th><th>What a &ldquo;negative&rdquo; supports</th></tr></thead>
+        <tbody>
+          <tr><td><b>Pulmonary embolism</b></td><td>PERC (+ Wells / gestalt)</td><td>~97&ndash;100% in low-risk</td><td>PERC-negative in a low-pretest-probability patient: <b>no D-dimer or CT needed</b> (~99% NPV).</td></tr>
+          <tr><td><b>PE (next tier)</b></td><td>Wells + D-dimer (age-adjusted)</td><td>High NPV</td><td>Low/moderate Wells + negative D-dimer excludes PE without CTPA.</td></tr>
+          <tr><td><b>ACS / chest pain</b></td><td>HEART score</td><td>~98&ndash;99% (MACE)</td><td>HEART 0&ndash;3 + negative troponin: low 30-day MACE, supports discharge.</td></tr>
+          <tr><td><b>Intracranial injury (adult)</b></td><td>Canadian CT Head Rule</td><td>~99&ndash;100%</td><td>No criteria met: CT safely avoided in minor head injury (GCS 13&ndash;15).</td></tr>
+          <tr><td><b>Intracranial injury (peds)</b></td><td>PECARN</td><td>~99&ndash;100% (ciTBI)</td><td>No criteria: &lt;0.02&ndash;0.05% ciTBI risk &mdash; CT avoided. Unidirectional rule.</td></tr>
+          <tr><td><b>C-spine injury</b></td><td>Canadian C-Spine / NEXUS</td><td>~99&ndash;100% / 83&ndash;100%</td><td>Low-risk criteria met: cervical imaging not required.</td></tr>
+          <tr><td><b>Ankle / knee fracture</b></td><td>Ottawa Ankle / Knee Rules</td><td>~98&ndash;99%</td><td>Negative: X-ray not required.</td></tr>
+          <tr><td><b>Subarachnoid hemorrhage</b></td><td>Ottawa SAH Rule</td><td>~100% (validated)</td><td>Rule-negative in acute non-traumatic headache: lowers need for CT/LP (high sensitivity, low specificity &mdash; use as rule-out).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Verify before relying:</b> sensitivities are drawn from validation-study ranges and vary by population and endpoint. Each rule has <b>inclusion criteria and exclusion caveats</b> (e.g., PERC only applies when gestalt is already low-risk; SAH rule has low specificity). Applying a rule <b>outside its validated population</b> is itself indefensible. Confirm the current rule version and its exclusions before citing it in a chart.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>The evidence that documented reasoning defends you</div>
+    <div class="stats">
+      <div class="stat"><div class="num">42%</div><div class="lbl">false-positive rate of CT in <b>low-risk</b> PE patients (PIOPED II) &mdash; the harm that justifies deferring</div><div class="src">AAFP / PIOPED II</div></div>
+      <div class="stat"><div class="num">&lt;0.02%</div><div class="lbl">ciTBI risk in PECARN-negative children &mdash; the basis for safely avoiding CT</div><div class="src">PECARN, n=42,412</div></div>
+      <div class="stat"><div class="num">99%</div><div class="lbl">clinical probability of no PE when all 8 PERC criteria are absent</div><div class="src">Kline et al., validated</div></div>
+      <div class="stat"><div class="num">2.8M</div><div class="lbl">annual ED visits for head trauma &mdash; why validated rules, not reflex CT, are the standard</div><div class="src">NUEM / CDC</div></div>
+    </div>
+    <div class="card">
+      <p>The defense value of documenting <em>why</em> a test was deferred is directly evidenced. When a provider records the risk&ndash;benefit reasoning &mdash; that the long-term radiation risk was judged greater than the risk of missed pathology &mdash; it makes clear to anyone reviewing the chart later that the provider <strong>did not forget</strong> to order the CT; the provider was carefully considering it. And the human-factors payoff is real: without a documented discussion at the first visit, families may assume a scan wasn't ordered because the clinician <strong>didn't take the complaint seriously, didn't care, or rushed the visit</strong> &mdash; the exact perceptions that (per Domain 03) drive people to sue after a bad outcome. Documenting the shared reasoning defends both the clinical and the relationship layer at once.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">D</span>Rule-out language &mdash; the lexicon</div>
+    <p style="color:var(--ink-soft);font-size:14.5px;margin-bottom:14px">The wording of a rule-out carries legal weight. Avoid absolute or conclusory phrasing your data can't support; avoid vague reassurance that proves nothing.</p>
+    <div class="lex">
+      <div class="lex-col harm"><div class="lex-hd">✕ Weak or dangerous phrasing</div>
+        <div class="lex-item"><div class="quote">&ldquo;PE ruled out.&rdquo;</div><div class="why">Absolute. No clinical test is 100%; a bad outcome makes this line a proven overstatement. Say how you excluded it and to what probability.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;No acute distress, patient reassured.&rdquo;</div><div class="why">Vague and conclusory. Proves nothing about the dangerous diagnosis you were supposed to consider.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;CT not indicated.&rdquo; <i>(alone)</i></div><div class="why">A bare conclusion with no reasoning. Reads as a decision with no process behind it.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Low suspicion for badness.&rdquo;</div><div class="why">Not a clinical rationale. No named diagnosis, no criteria, no reasoning.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Will likely be fine.&rdquo;</div><div class="why">Prediction, not documentation. Nothing defensible in it.</div></div>
+      </div>
+      <div class="lex-col help"><div class="lex-hd">✓ Defensible phrasing</div>
+        <div class="lex-item"><div class="quote">&ldquo;PE considered; PERC-negative, low pretest probability &mdash; risk &lt;2%. CTPA deferred as not indicated by validated criteria.&rdquo;</div><div class="why">Names the dx, the rule, the number, and the decision.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Considered SAH; thunderclap features absent, neuro exam intact, Ottawa SAH criteria negative.&rdquo;</div><div class="why">Shows the cannot-miss dx was actively evaluated and reasoned out.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;CT deferred: no Canadian CT Head Rule criteria met; radiation risk judged to exceed low probability of ICH.&rdquo;</div><div class="why">Rule + explicit risk&ndash;benefit weighing.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;HEART score 2 (low risk); single troponin negative &mdash; 30-day MACE risk low, safe for discharge with follow-up.&rdquo;</div><div class="why">Quantified, validated, actionable.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Discussed imaging option and rationale for deferral with patient; agrees with plan and understands return precautions.&rdquo;</div><div class="why">Captures shared decision-making + safety net.</div></div>
+      </div>
+    </div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>The rule-out formula:</b> <i>[named cannot-miss diagnosis]</i> + <i>[how excluded: validated rule / pertinent negatives / test result]</i> + <i>[probability or risk statement]</i> + <i>[decision + who agreed]</i> + <i>[safety net]</i>. Every rule-out that follows this shape is defensible; every one that skips the named diagnosis or the reasoning is exposed.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">E</span>Shared decision-making &mdash; the co-owned deferral</div>
+    <div class="card">
+      <p>For genuinely equipoise decisions &mdash; low-risk chest pain, minor head injury in a child, low-probability PE &mdash; <strong>shared decision-making (SDM)</strong> is both good care and strong documentation. It converts a unilateral judgment into a co-owned one, which is far harder to attack and directly counters the &ldquo;rushed / didn't care&rdquo; narrative.</p>
+      <ul>
+        <li><strong>Present the option</strong> &mdash; that a test exists, what it would and wouldn't tell you, and its harms.</li>
+        <li><strong>Convey the risk numerically</strong> where you can (&ldquo;less than a 2% chance,&rdquo; &ldquo;under 1 in 100&rdquo;).</li>
+        <li><strong>Elicit and record the patient's preference</strong> and any values driving it.</li>
+        <li><strong>Document the agreement</strong> and the safety net you both settled on.</li>
+      </ul>
+      <p>Standardized SDM tools exist for exactly these scenarios and, when charted, provide collective protection. Institutional care pathways do the same &mdash; following a documented protocol shifts variability into defensible, standardized care.</p>
+    </div>
+    <div class="specimen"><span class="sp-tag">Model SDM note — low-risk chest pain</span><b>Cannot-miss considered:</b> ACS. HEART score 3 (low risk); troponin negative ×1.
+<b>Shared decision-making:</b> Discussed with patient that 30-day risk of major cardiac event is low (&lt;2%) and that further testing (serial troponins, stress testing, admission) carries low additional yield with costs and false-positive risk. Explained option of observation vs. discharge with expedited outpatient follow-up. Patient <b>understands the small residual risk</b>, prefers discharge, and is able to return readily.
+<b>Plan:</b> Discharge. Cardiology/PCP follow-up within 72 hours arranged.
+<b>Safety net:</b> Return immediately for recurrent/worsening chest pain, dyspnea, diaphoresis, syncope. Patient verbalized understanding.</div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">F</span>Case law &amp; precedent</div>
+    <div class="statebar">
+      <span class="state-pill" style="border-color:var(--harm);color:var(--harm)">▮ No-Test Hurt</span>
+      <span class="state-pill" style="border-color:var(--help);color:var(--help)">▮ Reasoning Helped</span>
+    </div>
+
+    <div class="case help">
+      <div class="case-head">
+        <span class="case-tag">Helped</span>
+        <div class="case-title"><div class="ct-name">The documented decision rule defense</div><div class="ct-sub">DOCTRINE · CDRs as standard-of-care evidence</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">The legal principle</div><div class="cr-text">Validated clinical decision rules function in court as <b>evidence of the standard of care.</b> A provider who documents having applied a named, peer-reviewed, validated rule (Canadian CT Head, PERC, HEART, PECARN, Ottawa) &mdash; and reached a low-risk result &mdash; can demonstrate that a <b>reasonably prudent clinician</b> following the evidence would have made the same decision.</div></div>
+        <div class="case-row"><div class="cr-label">Why it works</div><div class="cr-text">The expert-witness battle turns on what a reasonable provider would do. A validated CDR is a <b>published, quantified answer</b> to that question. It reframes the deferral from &ldquo;this provider gambled&rdquo; to &ldquo;this provider followed the evidence base&rdquo; &mdash; and shifts scrutiny onto whether the rule was <b>correctly applied to an eligible patient.</b></div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Cite the rule <b>by name</b>, record the patient's actual result against each criterion, and confirm the patient was <b>within the rule's validated population.</b> A correctly applied, documented CDR is among the strongest defenses available for a non-test decision.</div></div>
+      </div></div>
+    </div>
+
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">The silent chart &mdash; minor head injury</div><div class="ct-sub">PATTERN · CT malpractice case-law review (1972&ndash;2014)</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">The pattern</div><div class="cr-text">A formal review of malpractice cases (1972&ndash;2014) involving clinicians who did <b>not</b> order CT in mild head trauma found the recurring liability driver was not the decision itself &mdash; validated rules support not scanning &mdash; but a chart that <b>failed to document the reasoning.</b> When the delayed intracranial bleed surfaced, the silent record could not show the diagnosis was ever considered.</div></div>
+        <div class="case-row"><div class="cr-label">The contrast</div><div class="cr-text">Simulation research built on that review showed that presenting clinicians with the decision rule <b>and</b> the malpractice findings changed imaging behavior &mdash; underscoring that the defensible path is not &ldquo;always scan&rdquo; but &ldquo;apply the validated rule <b>and document it.</b>&rdquo;</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">The lawsuit-losing chart in a deferred-imaging case is the <b>silent</b> one &mdash; no named diagnosis, no rule, no reasoning. The identical clinical decision, <b>documented with the rule and rationale</b>, is defensible.</div></div>
+      </div></div>
+    </div>
+
+    <div class="case harm">
+      <div class="case-head">
+        <span class="case-tag">Hurt</span>
+        <div class="case-title"><div class="ct-name">Premature closure without reasoning</div><div class="ct-sub">CROSS-REF · the Dudley &amp; sciatica patterns</div></div>
+        <span class="case-chev">▸</span>
+      </div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-row"><div class="cr-label">The link to Domain 03</div><div class="cr-text">The PA cases already in this atlas &mdash; the <b>&ldquo;flu&rdquo; charted over a negative flu test</b> ($27M) and the <b>sciatica charted over escalating atypical pain</b> ($3M) &mdash; are at root <b>deferred-workup failures.</b> In each, further testing was not pursued and the chart contained <b>no documented reasoning</b> reconciling the benign label with the contradictory data.</div></div>
+        <div class="case-row"><div class="cr-label">What defensible deferral would have looked like</div><div class="cr-text">Had those charts named the cannot-miss diagnosis (meningitis; abscess), documented the pertinent negatives that lowered its probability, and given specific return precautions, the same clinical decision would have been <b>far more defensible</b> &mdash; even with the same outcome.</div></div>
+        <div class="lesson"><div class="cr-label">Lesson</div><div class="cr-text">Deferring a test is defensible; deferring a test <b>silently, over contradictory data</b> is the fingerprint of a losing chart. The reasoning is the difference.</div></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">G</span>Quick reference &mdash; when you defer, chart these</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Named the cannot-miss diagnosis</b> you considered (put it in the record).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Cited the validated rule</b> by name + the patient's result against its criteria.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Confirmed the patient was in the rule's validated population</b> (no disqualifying exclusion).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Listed the pertinent negatives</b> that lowered the probability.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Stated the risk&ndash;benefit reasoning</b>, including the harms of testing &mdash; so it reads as deliberate, not forgotten.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Documented shared decision-making</b> and the patient's agreement where the decision is equipoise.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Avoided absolute language</b> (&ldquo;ruled out&rdquo;) &mdash; used probability/risk framing instead.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Gave a specific safety net</b> &mdash; return precautions tied to the diagnosis + follow-up.</div></div>
+    </div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>One-line synthesis:</b> a deferred test is defensible when the chart proves you <b>considered the dangerous diagnosis, applied the evidence, weighed the harms, shared the decision, and built a safety net.</b> Make the negative decision look exactly like what it was &mdash; a judgment, not an oversight.</div></div>
+  </section>
+</section>
+
+<!-- ============ 05 EHR AUDIT TRAILS ============ -->
+<section class="dom" id="dom-audit">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 07</div>
+    <h2>The record behind the record</h2>
+    <p>Every EHR keeps a metadata layer you never see: an <strong>audit trail</strong> logging when each record was accessed, how long you spent on a page or image, when notes were created, edited, signed, or deleted &mdash; in some systems every keystroke. It is fully discoverable, and increasingly the first thing a plaintiff's attorney requests.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>What the audit trail exposes</div>
+    <div class="card">
+      <ul>
+        <li><strong>Timing of documentation</strong> &mdash; a note &ldquo;written at 14:00&rdquo; but authored at 22:00 after a bad outcome is exposed instantly. Contemporaneity becomes provable or disprovable.</li>
+        <li><strong>Edits and version history</strong> &mdash; prior versions of a note, what changed, and when. Revisions made <em>after</em> an adverse event are radioactive.</li>
+        <li><strong>Whether you actually opened what you charted reviewing</strong> &mdash; if your note says you reviewed the prior ECG or old records but the log shows you never opened them, your credibility collapses.</li>
+        <li><strong>Time-on-page</strong> &mdash; attorneys reconstruct whether you plausibly reviewed an image or result in the seconds the log shows.</li>
+        <li><strong>Deletions</strong> &mdash; anything removed is logged even when it disappears from the visible chart.</li>
+      </ul>
+    </div>
+    <div class="callout warn"><span class="co-icon">!</span><div class="co-body"><b>The modern plaintiff tactic:</b> rather than attack the care, attack the <b>character</b> of the provider by reconstructing a narrative from audit metadata &mdash; late notes, edits, unopened results. Many providers have never heard of the audit trail until they're confronted with it in deposition, when it is too late to explain.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Alteration &mdash; the one unrecoverable mistake</div>
+    <div class="callout warn"><span class="co-icon">✕</span><div class="co-body"><b>Altering a record after the fact is the single most destructive thing a provider can do.</b> The consequences stack:</div></div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Legal &amp; licensure</h4>
+        <ul>
+          <li>Many states can <strong>revoke licensure</strong> for record alteration.</li>
+          <li>In some courts alteration <strong>reverses the burden of proof</strong> &mdash; you must now prove you <em>didn't</em> harm the patient.</li>
+          <li>Where punitive damages are capped by tort reform, <strong>those caps often don't apply</strong> to record alteration.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Coverage &amp; credibility</h4>
+        <ul>
+          <li>Some malpractice insurers <strong>will not cover</strong> a claim involving altered records &mdash; leaving you personally exposed to the entire verdict.</li>
+          <li>It converts a defensible standard-of-care dispute into a <strong>spoliation and fraud</strong> case.</li>
+          <li>It can trigger <strong>False Claims Act</strong> exposure if it touches billing.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>The right way to add or correct &mdash; the addendum</div>
+    <div class="card">
+      <p>Late and corrected entries are legitimate and often necessary. The rule is <strong>transparency</strong>:</p>
+      <ul>
+        <li><strong>Label it an addendum</strong> and let the system timestamp it honestly at the true time of writing.</li>
+        <li><strong>Never delete or overwrite</strong> the original content &mdash; the original must remain visible; the addendum adds to it.</li>
+        <li><strong>State the reason</strong> for the correction or addition plainly.</li>
+        <li>Write it as if the audit trail is already in evidence &mdash; because it will be.</li>
+      </ul>
+    </div>
+    <div class="specimen"><span class="sp-tag">Model addendum</span><b>ADDENDUM &mdash; [auto-timestamp: 07/11/2026 22:40]</b>
+
+Adding for completeness: at the time of the ED encounter earlier today, I also discussed <b>[X]</b> with the patient / reviewed <b>[Y]</b>. This addendum is made now because <b>[reason]</b>. The original note is unchanged.
+
+&mdash; [Signature]</div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>Behavioral takeaways:</b> chart contemporaneously whenever possible; if you say you reviewed something, actually open it; keep your visible note and the invisible metadata telling the <b>same story</b>. The audit trail is only a threat when the two diverge.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">D</span>Copy-paste &amp; cloned notes</div>
+    <div class="card">
+      <p>The second-most-common documentation failure category grew directly out of the EHR. Copy-forward and templates create three specific liabilities:</p>
+      <ul>
+        <li><strong>Carried-forward errors</strong> &mdash; a prior shift's exam or an outdated assessment propagates as if current, and now appears in <em>your</em> signed note as your finding.</li>
+        <li><strong>Auto-populated exams you didn't do</strong> &mdash; a template's default &ldquo;normal neuro exam&rdquo; on a patient you never fully examined is affirmative false evidence you must defend.</li>
+        <li><strong>Internal contradiction</strong> &mdash; cloned text conflicts with the nurse's note or your own HPI. Discrepancy is what plaintiff experts hunt for.</li>
+      </ul>
+      <p>Edit every templated field to reflect the <strong>actual patient in front of you.</strong> A note that says more than you did is more dangerous than one that says less.</p>
+    </div>
+  </section>
+</section>
+
+<!-- ============ 06 TEXTS & PERSONAL NOTES ============ -->
+<section class="dom" id="dom-notes">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 08</div>
+    <h2>Texts, personal notes &amp; the shadow record</h2>
+    <p>Discovery reaches far beyond the official chart. Text messages, personal &ldquo;memory&rdquo; notes, emails, and Slack/Teams messages about a patient can all be pulled into litigation. Assume anything you write about a patient anywhere is potentially discoverable.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>What can be discovered</div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Generally discoverable</h4>
+        <ul>
+          <li><strong>Text messages</strong> about patient care &mdash; provider-to-provider clinical texts, consult texts, and messages describing the patient or the encounter.</li>
+          <li><strong>Emails &amp; institutional chat</strong> (Teams, Slack, Epic Secure Chat) referencing the patient or event.</li>
+          <li><strong>Personal notes</strong> you keep about a case &mdash; even a private log written &ldquo;for yourself&rdquo; &mdash; if they relate to the care and aren't protected.</li>
+          <li><strong>Incident/event reports</strong> in some jurisdictions, though many are protected (see below).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Often protected (varies by state)</h4>
+        <ul>
+          <li><strong>Peer-review / quality-assurance</strong> materials &mdash; most states shield these by statute, but the privilege is narrow and easily waived if the material is shared outside the protected process.</li>
+          <li><strong>Attorney&ndash;client communications</strong> &mdash; genuine communications with counsel after a claim.</li>
+          <li><strong>Work product</strong> prepared in anticipation of litigation.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout warn"><span class="co-icon">!</span><div class="co-body"><b>The dangerous instinct:</b> after a bad outcome, texting a colleague &ldquo;I think I missed this&rdquo; or keeping a private note second-guessing yourself. These are <b>candid admissions</b>, discoverable, and devastating &mdash; they are not protected simply because they were private or informal.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Operating rules for the shadow record</div>
+    <div class="pearl-list">
+      <div class="pearl"><div class="p-text"><b>Keep clinical communication in the clinical record.</b> If it's about patient care, it belongs in the chart &mdash; not in a personal text thread where it lives without context and outside the medicolegal record.</div></div>
+      <div class="pearl"><div class="p-text"><b>Never text a self-critical or speculative admission about a case.</b> &ldquo;I should have ordered the CT&rdquo; in a text is an exhibit. Concerns about your own care go to <b>risk management or counsel</b>, through protected channels.</div></div>
+      <div class="pearl"><div class="p-text"><b>Assume screenshots survive forever.</b> Deletion doesn't help &mdash; it can itself become spoliation, and the recipient's copy remains.</div></div>
+      <div class="pearl"><div class="p-text"><b>Route quality concerns through the formal peer-review process</b> so the statutory privilege can attach. Don't launder a QA concern into a casual email, which strips the protection.</div></div>
+      <div class="pearl"><div class="p-text"><b>If you keep personal case logs for learning</b>, de-identify them and keep them free of self-incriminating commentary. A log of &ldquo;interesting cases&rdquo; with a line of self-blame is discoverable and quotable.</div></div>
+      <div class="pearl"><div class="p-text"><b>After an adverse event, preserve &mdash; don't purge.</b> Once litigation is reasonably foreseeable, a duty to preserve attaches; destroying texts, notes, or data is spoliation with its own severe penalties.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">C</span>Apology &amp; disclosure &mdash; know your state's shield</div>
+    <div class="card">
+      <p>Many states have <strong>apology laws</strong> that make a provider's expression of sympathy inadmissible &mdash; but the scope varies sharply. Some protect only sympathy (&ldquo;I'm so sorry this happened&rdquo;); others also protect statements of fault. Never assume a fault admission is protected. Compassionate disclosure done through your institution's risk-management pathway is safer than an unstructured personal apology.</p>
+    </div>
+    <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Verify locally:</b> apology-law scope, peer-review privilege breadth, and text-message discovery standards are all state-specific and evolving. Confirm current Iowa, California, and Indiana provisions with your institution's risk-management or legal counsel before relying on any of them.</div></div>
+  </section>
+</section>
+
+<!-- ============ 07 STATE CALLOUTS ============ -->
+<section class="dom" id="dom-state">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 09</div>
+    <h2>State callouts &mdash; IA · CA · IN</h2>
+    <p>Malpractice is state-law-driven. Below are the axes that most affect ED documentation strategy across your three states. Treat these as orientation, not legal advice &mdash; statutes and case law shift, and figures below must be verified against current law.</p>
+  </div>
+
+  <div class="statebar">
+    <span class="state-pill">Iowa</span>
+    <span class="state-pill">California</span>
+    <span class="state-pill">Indiana</span>
+  </div>
+
+  <table class="reg">
+    <thead><tr><th>Axis</th><th>Iowa</th><th>California</th><th>Indiana</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Damages cap</b></td>
+        <td>Non-economic caps have been contested and revised; Iowa enacted a cap on non-economic damages that has faced legal challenge. <b>Verify current status.</b></td>
+        <td>MICRA cap on non-economic damages was long <b>$250k</b>; a 2022 reform (effective 2023) <b>raised and indexed it upward annually.</b> Verify current figure.</td>
+        <td>Indiana has a <b>total damages cap</b> under its Medical Malpractice Act, with a Patient's Compensation Fund covering amounts above the provider's liability. <b>Verify current cap.</b></td>
+      </tr>
+      <tr>
+        <td><b>Expert / affidavit gate</b></td>
+        <td>Requires a <b>certificate of merit</b> affidavit early in litigation.</td>
+        <td>No pre-suit merit affidavit, but strict expert requirements at trial.</td>
+        <td>Most claims must first go through a <b>medical review panel</b> before suit &mdash; a distinctive Indiana gate that heavily weights the documented record.</td>
+      </tr>
+      <tr>
+        <td><b>Statute of limitations</b></td>
+        <td>Generally <b>2 years</b> from discovery, with an outer repose limit.</td>
+        <td>Generally <b>1 year</b> from discovery or <b>3 years</b> from injury, whichever first (adult).</td>
+        <td>Generally <b>2 years</b> occurrence-based, with constitutional carve-outs for undiscoverable injury.</td>
+      </tr>
+      <tr>
+        <td><b>Documentation implication</b></td>
+        <td>The merit affidavit means your contemporaneous record is scrutinized <b>before</b> a case proceeds &mdash; strong notes deter filing.</td>
+        <td>A raised MICRA cap increases plaintiff incentive; expect <b>more scrutiny of the record</b>, not less.</td>
+        <td>The review panel reads your chart as the primary evidence <b>first</b> &mdash; documentation quality disproportionately drives the panel's opinion.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout note"><span class="co-icon">i</span><div class="co-body"><b>Common thread across all three:</b> each state has a procedural gate (merit affidavit or review panel) or a damages structure where <b>your contemporaneous documentation is the first and most heavily weighted evidence.</b> The defensive-charting habits in this atlas apply identically; only the numbers and procedural mechanics differ.</div></div>
+
+  <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Do not rely on the figures above without verification.</b> Damages caps (especially California's post-2022 indexed MICRA cap and Indiana's periodically-raised total cap), statutes of limitation, and panel/affidavit requirements change through legislation and court decisions. Confirm current Iowa, California, and Indiana provisions with your malpractice carrier or institutional counsel.</div></div>
+</section>
+
+<!-- ============ 08 CHECKLISTS ============ -->
+<section class="dom" id="dom-check">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 10</div>
+    <h2>Bedside checklists</h2>
+    <p>Tap to check off. These distill the atlas into shift-usable habits.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">1</span>Every ED note</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext">Chief complaint in the patient's words + <b>attributed history source</b>.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Pertinent negatives</b> for the cannot-miss diagnoses on your differential.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Documented <b>differential + clinical reasoning</b>, including why dangerous dx were excluded.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Abnormal vitals have a <b>timestamped reassessment</b> before discharge.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Every field you copy-forwarded or templated was <b>edited to this patient</b>.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Objective observations, not characterizations &mdash; no &ldquo;intoxicated,&rdquo; &ldquo;drug-seeking,&rdquo; &ldquo;difficult.&rdquo;</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Specific</b> return precautions tied to the differential.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">You actually <b>opened</b> every result/prior record your note says you reviewed.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">2</span>Before anyone leaves AMA</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Capacity</b> documented with functional evidence (understands, appreciates, reasons, chooses).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">No untreated <b>impairment</b> (intoxication, hypoxia, hypoglycemia) undermining that capacity.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Specific named risks</b> + &ldquo;including but not limited to&rdquo; + death where applicable.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Every <b>known abnormal finding</b> disclosed by name (remember the appendix case).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Attempts to keep the patient + your response to their stated reason.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Harm-reduction discharge</b>: meds, scripts, follow-up, treatment to the extent accepted.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Witnessed; return-anytime invitation; refusal-to-sign documented if applicable.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">3</span>After a bad outcome</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Do not alter</b> the original record. Ever.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Any addition is a <b>labeled, honestly-timestamped addendum</b> that leaves the original intact.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>No self-critical texts, emails, or personal notes</b> about the case.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Route concerns through <b>risk management / peer review / counsel</b> &mdash; protected channels.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Preserve</b> everything &mdash; do not delete texts, notes, or data (spoliation risk).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Any disclosure/apology goes through the institutional pathway; know your state's apology-law scope.</div></div>
+    </div>
+  </section>
+
+  <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>The one-line synthesis:</b> chart contemporaneously, chart observations not conclusions, chart your reasoning, and make sure the visible note and the invisible audit trail tell exactly the same story. Everything else in this atlas is a corollary of those four habits.</div></div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <b>THE CHARTING ATLAS</b> · ED Documentation &amp; Medicolegal Defense · Board-review reference for clinician-educators.<br>
+    Anchor cases are real and litigated: Buckelew v. Womack ($75M, GA, aff'd 2025); Sanchez v. NuMale ($412M, NM, 2024); Dudley PA meningitis ($27M, 2022); Thapa/St. Cloud compartment syndrome ($7M+); Shajan v. South Nassau ($7M, NY); Zeh v. Maso (GA, supervision); Carrillo v. Flores (CA defense verdict); the $3M PA sciatica/abscess verdict; WJEM/PMC closed-claims literature; Lubin &amp; Meyer MA dissection case; Levy &amp; Mareiniss AMA doctrine; Battenfeld v. Gregory. Composites are teaching vignettes built from published recurring fact-patterns.<br>
+    <b>Not legal advice.</b> Standards of care, statutes, damages caps, apology laws, and privilege rules are jurisdiction-specific and change over time. Verify all doses, thresholds, statutory figures, and state provisions (esp. IA/CA/IN caps &amp; procedural gates) with current sources and institutional counsel before relying on them.<br>
+    Sources grounded via: West J Emerg Med closed-claims (2001&ndash;15) · Ann Emerg Med NP/PA Westlaw series (1985&ndash;2020, n=144) · Evaluating liability in the supervising physician/PA/employer relationship (PubMed 34699451) · CDR validation studies (PERC/Kline; PECARN; Canadian CT Head; HEART; Ottawa) · CT-ordering malpractice case-law review 1972&ndash;2014 (BMC Med Inform Decis Mak, PMC5848437) · Choosing Wisely EM · CRICO/Candello &amp; Harvard RMF EM data · Westlaw cardiology MPL analysis (PMC6760876, OR 7.60) · JAMA physician-communication study (Levinson 1997) · Charting Practices case series (PMC9183775) · AMA systematic review (PMC9628312) · J Emerg Med (Levy/Mareiniss 2012) · SAEM/CDEM documentation curriculum · EHR audit-trail litigation literature. <b>Reviewed against sources current to July 2026.</b>
+  </div>
+</footer>
+
+<script>
+/* theme toggle */
+(function(){
+  const btn=document.getElementById('themeBtn');
+  const root=document.documentElement;
+  btn.addEventListener('click',()=>{
+    const cur=root.getAttribute('data-theme');
+    const next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    btn.textContent=next==='dark'?'◐ Light':'◑ Dark';
+  });
+})();
+/* domain dropdown nav */
+(function(){
+  const tabs=document.querySelectorAll('.domtab');
+  const doms=document.querySelectorAll('.dom');
+  const nav=document.getElementById('domNav');
+  const trigger=document.getElementById('domTrigger');
+  const dtNum=document.getElementById('dtNum');
+  const dtLabel=document.getElementById('dtLabel');
+
+  function closeMenu(){nav.classList.remove('open');trigger.setAttribute('aria-expanded','false');}
+  function openMenu(){nav.classList.add('open');trigger.setAttribute('aria-expanded','true');}
+
+  trigger.addEventListener('click',e=>{
+    e.stopPropagation();
+    nav.classList.contains('open')?closeMenu():openMenu();
+  });
+
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    doms.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.dom).classList.add('active');
+    // update trigger to show current domain
+    const num=t.querySelector('.tnum').textContent.trim();
+    const label=t.textContent.replace(num,'').trim();
+    dtNum.textContent=num;
+    dtLabel.textContent=label;
+    closeMenu();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+
+  // close when tapping outside
+  document.addEventListener('click',e=>{
+    if(nav.classList.contains('open') && !nav.contains(e.target)) closeMenu();
+  });
+})();
+/* case accordions */
+(function(){
+  document.querySelectorAll('.case-head').forEach(h=>{
+    h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
+  });
+})();
+/* checklist */
+(function(){
+  document.querySelectorAll('.cbox').forEach(b=>{
+    b.addEventListener('click',()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'✓':'';});
+  });
+})();
+</script>
+</body>
+</html>
