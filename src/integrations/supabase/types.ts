@@ -95,6 +95,307 @@ export type Database = {
         }
         Relationships: []
       }
+      pav_credential_files: {
+        Row: {
+          category: string
+          expires_on: string | null
+          file_name: string
+          id: string
+          label: string
+          mime_type: string | null
+          storage_path: string
+          uploaded_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          expires_on?: string | null
+          file_name: string
+          id?: string
+          label: string
+          mime_type?: string | null
+          storage_path: string
+          uploaded_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          expires_on?: string | null
+          file_name?: string
+          id?: string
+          label?: string
+          mime_type?: string | null
+          storage_path?: string
+          uploaded_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pav_jobs: {
+        Row: {
+          external_id: string | null
+          first_seen_at: string
+          id: string
+          is_local: boolean | null
+          is_per_diem: boolean | null
+          last_seen_at: string
+          location: string | null
+          notes: string | null
+          organization: string | null
+          pay_text: string | null
+          posted_text: string | null
+          raw: Json | null
+          source_id: string | null
+          source_name: string
+          status: string
+          title: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          external_id?: string | null
+          first_seen_at?: string
+          id?: string
+          is_local?: boolean | null
+          is_per_diem?: boolean | null
+          last_seen_at?: string
+          location?: string | null
+          notes?: string | null
+          organization?: string | null
+          pay_text?: string | null
+          posted_text?: string | null
+          raw?: Json | null
+          source_id?: string | null
+          source_name: string
+          status?: string
+          title: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          external_id?: string | null
+          first_seen_at?: string
+          id?: string
+          is_local?: boolean | null
+          is_per_diem?: boolean | null
+          last_seen_at?: string
+          location?: string | null
+          notes?: string | null
+          organization?: string | null
+          pay_text?: string | null
+          posted_text?: string | null
+          raw?: Json | null
+          source_id?: string | null
+          source_name?: string
+          status?: string
+          title?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pav_jobs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "pav_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pav_profile: {
+        Row: {
+          acls_expiry: string | null
+          bls_expiry: string | null
+          credentials_suffix: string | null
+          dea_number: string | null
+          email: string | null
+          full_name: string | null
+          mailing_address: string | null
+          malpractice_carrier: string | null
+          malpractice_policy_number: string | null
+          npi_number: string | null
+          phone: string | null
+          specialty: string | null
+          state_license_number: string | null
+          state_license_state: string | null
+          updated_at: string
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          acls_expiry?: string | null
+          bls_expiry?: string | null
+          credentials_suffix?: string | null
+          dea_number?: string | null
+          email?: string | null
+          full_name?: string | null
+          mailing_address?: string | null
+          malpractice_carrier?: string | null
+          malpractice_policy_number?: string | null
+          npi_number?: string | null
+          phone?: string | null
+          specialty?: string | null
+          state_license_number?: string | null
+          state_license_state?: string | null
+          updated_at?: string
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          acls_expiry?: string | null
+          bls_expiry?: string | null
+          credentials_suffix?: string | null
+          dea_number?: string | null
+          email?: string | null
+          full_name?: string | null
+          mailing_address?: string | null
+          malpractice_carrier?: string | null
+          malpractice_policy_number?: string | null
+          npi_number?: string | null
+          phone?: string | null
+          specialty?: string | null
+          state_license_number?: string | null
+          state_license_state?: string | null
+          updated_at?: string
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      pav_references: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          organization: string | null
+          phone: string | null
+          relationship: string | null
+          share_token: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          relationship?: string | null
+          share_token?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          organization?: string | null
+          phone?: string | null
+          relationship?: string | null
+          share_token?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pav_scrape_runs: {
+        Row: {
+          error: string | null
+          finished_at: string | null
+          id: string
+          jobs_found: number | null
+          jobs_new: number | null
+          source_id: string | null
+          source_name: string
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          jobs_found?: number | null
+          jobs_new?: number | null
+          source_id?: string | null
+          source_name: string
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          jobs_found?: number | null
+          jobs_new?: number | null
+          source_id?: string | null
+          source_name?: string
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pav_scrape_runs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "pav_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pav_sources: {
+        Row: {
+          active: boolean
+          base_url: string
+          category: string
+          config: Json
+          created_at: string
+          id: string
+          last_error: string | null
+          last_scraped_at: string | null
+          last_status: string | null
+          name: string
+          platform: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          base_url: string
+          category: string
+          config?: Json
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_scraped_at?: string | null
+          last_status?: string | null
+          name: string
+          platform: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          base_url?: string
+          category?: string
+          config?: Json
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_scraped_at?: string | null
+          last_status?: string | null
+          name?: string
+          platform?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       schwab_tokens: {
         Row: {
           access_token: string
