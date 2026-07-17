@@ -240,6 +240,46 @@ const AllPosts = () => {
       tags: ["Electrolytes", "Transfusion", "Clinical Education"]
     },
     {
+      title: "MSK Physical Exam Atlas — ROM, Strength, Special Tests, Palpation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 17, 2026",
+      excerpt: "A regional MSK physical exam atlas — range of motion, strength grading, special tests, and palpation landmarks from shoulder to foot.",
+      image: businessPost,
+      slug: "msk-physical-exam-atlas",
+      tags: ["MSK", "Physical Exam", "Clinical Education"]
+    },
+    {
+      title: "Extremity Pain Differential Diagnosis Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 17, 2026",
+      excerpt: "A region-by-region differential diagnosis atlas for extremity pain — mechanism, exam findings, imaging, and can't-miss diagnoses.",
+      image: businessPost,
+      slug: "extremity-ddx-atlas",
+      tags: ["MSK", "Differential Diagnosis", "Clinical Education"]
+    },
+    {
+      title: "Tib-Fib / Lower Extremity Fracture Disposition Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 17, 2026",
+      excerpt: "Disposition, splinting, ortho consultation, and weight-bearing status for tib-fib and lower extremity fractures — with reduction and admission criteria.",
+      image: businessPost,
+      slug: "fracture-disposition-atlas",
+      tags: ["MSK", "Fractures", "Clinical Education"]
+    },
+    {
+      title: "Cardiac Enzymes, Labs & Diagnostics Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 17, 2026",
+      excerpt: "Troponin kinetics, BNP, D-dimer, cardiac markers, and diagnostic workups — with interpretation pearls and rule-in/rule-out thresholds.",
+      image: businessPost,
+      slug: "cardiac-labs-atlas",
+      tags: ["Cardiology", "Labs", "Clinical Education"]
+    },
+    {
       title: "MSK Neuromuscular Atlas — Innervation, Action & Movement Pathways",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -599,6 +639,11 @@ const AllPosts = () => {
     "antimicrobial-atlas": "Infectious Disease",
     // MSK
     "msk-neuromuscular-atlas": "Musculoskeletal",
+    "msk-physical-exam-atlas": "Musculoskeletal",
+    "extremity-ddx-atlas": "Musculoskeletal",
+    "fracture-disposition-atlas": "Musculoskeletal",
+    // Cardiology (add)
+    "cardiac-labs-atlas": "Cardiology",
     // Hematology
     "hematology-hematopoiesis-atlas": "Hematology",
     "hematology-cbc-coag-labs-atlas": "Hematology",
