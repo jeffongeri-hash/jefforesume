@@ -65,3 +65,15 @@ export interface ProfileData {
   bls_expiry: string;
   acls_expiry: string;
 }
+
+export interface LicenseEntry {
+  id: string;
+  kind: string;
+  name: string;
+  number: string | null;
+  issuer: string | null;
+  state: string | null;
+  issue_date: string | null;
+  expiration_date: string | null;
+  notes: string | null;
+}
