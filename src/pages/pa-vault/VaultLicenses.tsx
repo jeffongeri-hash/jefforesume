@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { BadgeCheck, Plus, Trash2, Save, X, Pencil, AlertTriangle } from "lucide-react";
+import {
+  BadgeCheck,
+  Plus,
+  Trash2,
+  Save,
+  X,
+  Pencil,
+  AlertTriangle,
+  Link2,
+  Copy,
+  Check,
+  RefreshCw,
+} from "lucide-react";
 import type { LicenseEntry } from "./types";
 
 const KINDS = ["license", "certification", "registration", "dea", "npi", "other"] as const;
@@ -27,6 +39,8 @@ function daysUntil(date: string | null) {
 export default function VaultLicenses({ userId }: { userId: string }) {
   const [rows, setRows] = useState<LicenseEntry[]>([]);
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [shareToken, setShareToken] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   async function load() {
     const { data } = await supabase
@@ -36,9 +50,58 @@ export default function VaultLicenses({ userId }: { userId: string }) {
     if (data) setRows(data as unknown as LicenseEntry[]);
   }
 
+  async function loadShareToken() {
+    const { data } = await supabase
+      .from("pav_share_links" as any)
+      .select("token")
+      .eq("kind", "licenses")
+      .maybeSingle();
+    setShareToken((data as any)?.token ?? null);
+  }
+
   useEffect(() => {
     load();
+    loadShareToken();
   }, []);
+
+  function genToken() {
+    const bytes = new Uint8Array(24);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  async function createOrRotate() {
+    const token = genToken();
+    await supabase
+      .from("pav_share_links" as any)
+      .upsert(
+        { user_id: userId, kind: "licenses", token },
+        { onConflict: "user_id,kind" },
+      );
+    setShareToken(token);
+    // Save to this device so the hidden /my-licenses link "just works"
+    localStorage.setItem("pav_license_share_token", token);
+  }
+
+  async function revoke() {
+    if (!confirm("Revoke the share link? Anyone using it will lose access.")) return;
+    await supabase
+      .from("pav_share_links" as any)
+      .delete()
+      .eq("kind", "licenses");
+    setShareToken(null);
+    localStorage.removeItem("pav_license_share_token");
+  }
+
+  async function copyLink() {
+    if (!shareToken) return;
+    const url = `${window.location.origin}/my-licenses#${shareToken}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   async function save() {
     if (!draft || !draft.name.trim()) return;
@@ -86,6 +149,55 @@ export default function VaultLicenses({ userId }: { userId: string }) {
             className="flex items-center gap-1.5 bg-primary text-primary-foreground text-sm px-3 py-2 rounded-md hover:opacity-90 transition-opacity"
           >
             <Plus size={15} /> Add entry
+          </button>
+        )}
+      </div>
+
+      {/* Secret share link */}
+      <div className="border border-border bg-card rounded-md p-4 mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Link2 size={16} className="text-primary" />
+          <p className="text-sm font-medium">Secret share link</p>
+        </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Anyone with the full link can view (read-only) your licenses without signing in.
+          Bookmark it privately. Rotate anytime to invalidate the old link.
+        </p>
+        {shareToken ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-xs bg-muted rounded px-2 py-1.5 truncate font-mono">
+                {window.location.origin}/my-licenses#{shareToken}
+              </code>
+              <button
+                onClick={copyLink}
+                className="flex items-center gap-1 text-xs px-2.5 py-1.5 border border-border rounded-md hover:border-primary hover:text-primary"
+              >
+                {copied ? <Check size={13} /> : <Copy size={13} />}
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={createOrRotate}
+                className="flex items-center gap-1 text-xs px-2.5 py-1.5 border border-border rounded-md hover:border-primary hover:text-primary"
+              >
+                <RefreshCw size={13} /> Rotate
+              </button>
+              <button
+                onClick={revoke}
+                className="flex items-center gap-1 text-xs px-2.5 py-1.5 border border-border rounded-md hover:border-destructive hover:text-destructive"
+              >
+                <Trash2 size={13} /> Revoke
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={createOrRotate}
+            className="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-border rounded-md hover:border-primary hover:text-primary"
+          >
+            <Link2 size={13} /> Generate link
           </button>
         )}
       </div>
