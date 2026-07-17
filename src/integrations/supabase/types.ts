@@ -202,6 +202,51 @@ export type Database = {
           },
         ]
       }
+      pav_licenses: {
+        Row: {
+          created_at: string
+          expiration_date: string | null
+          id: string
+          issue_date: string | null
+          issuer: string | null
+          kind: string
+          name: string
+          notes: string | null
+          number: string | null
+          state: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expiration_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuer?: string | null
+          kind?: string
+          name: string
+          notes?: string | null
+          number?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expiration_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuer?: string | null
+          kind?: string
+          name?: string
+          notes?: string | null
+          number?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pav_profile: {
         Row: {
           acls_expiry: string | null
