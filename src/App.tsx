@@ -35,6 +35,7 @@ const PaycheckAnalyzer = lazy(() => import("./pages/PaycheckAnalyzer"));
 const SacramentoHealthcareHub = lazy(() => import("./pages/SacramentoHealthcareHub"));
 const CoveredCallMaster = lazy(() => import("./pages/CoveredCallMaster"));
 const PAVault = lazy(() => import("./pages/PAVault"));
+const PublicLicenses = lazy(() => import("./pages/PublicLicenses"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -75,6 +76,7 @@ const App = () => (
                 <Route path="/sacramento-healthcare" element={<SacramentoHealthcareHub />} />
                 <Route path="/covered-call-master" element={<CoveredCallMaster />} />
                 <Route path="/pa-vault/*" element={<PAVault />} />
+                <Route path="/my-licenses" element={<PublicLicenses />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
