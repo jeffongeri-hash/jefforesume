@@ -396,6 +396,33 @@ export type Database = {
           },
         ]
       }
+      pav_share_links: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pav_sources: {
         Row: {
           active: boolean
