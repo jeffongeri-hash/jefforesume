@@ -391,7 +391,17 @@ async function runOneSource(admin: any, userId: string, source: SourceRow) {
       default:
         throw new Error(`Unknown platform "${source.platform}"`);
     }
-    
+
+    // Filter to physician assistant / APP-relevant roles only.
+    const PA_RE = /physician\s*assistant|\bPA-?C\b|\bAPP\b|advanced\s*practice\s*(provider|practitioner)|\bAPP\s*Openings\b/i;
+    const EXCLUDE_RE = /\b(dentist|dental|nurse|RN\b|LPN|LVN|MSW|social\s*worker|medical\s*assistant|\bMA\b|technician|tech\b|technologist|sonographer|therapist|dietitian|pathologist(?!\s*assistant)|radiolog(y|ist)|physician(?!\s*assistant)|MD\b|DO\b|pharmacis|scribe|coordinator|receptionist|scheduler|clerk|housekeep|phlebotom|paramedic|EMT)\b/i;
+    jobs = jobs.filter((j) => {
+      const t = `${j.title} ${j.raw?.providerType ?? ""} ${j.raw?.specialty ?? ""}`;
+      if (PA_RE.test(t)) return true;
+      if (EXCLUDE_RE.test(t)) return false;
+      return false;
+    });
+
     let newCount = 0;
     for (const j of jobs) {
       const { error } = await admin.from("pav_jobs").upsert(
