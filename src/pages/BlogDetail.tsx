@@ -3532,6 +3532,70 @@ const blogPosts = {
       <p><a href="/embeds/msk-neuromuscular-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "msk-physical-exam-atlas": {
+    title: "MSK Physical Exam Atlas — ROM, Strength, Special Tests, Palpation",
+    category: "HEALTHCARE",
+    date: "July 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A regional MSK physical exam atlas covering range of motion, strength grading, special tests, and palpation landmarks from shoulder to foot.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/msk-physical-exam-atlas.html" title="MSK Physical Exam Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/msk-physical-exam-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "extremity-ddx-atlas": {
+    title: "Extremity Pain Differential Diagnosis Atlas",
+    category: "HEALTHCARE",
+    date: "July 17, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A region-by-region differential diagnosis atlas for extremity pain — mechanism, exam findings, imaging, and can't-miss diagnoses.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/extremity-ddx-atlas.html" title="Extremity Pain Differential Diagnosis Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/extremity-ddx-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "fracture-disposition-atlas": {
+    title: "Tib-Fib / Lower Extremity Fracture Disposition Atlas",
+    category: "HEALTHCARE",
+    date: "July 17, 2026",
+    readTime: "12 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Disposition, splinting, orthopedic consultation, and weight-bearing status for tib-fib and lower extremity fractures — with reduction and admission criteria.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/fracture-disposition-atlas.html" title="Fracture Disposition Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/fracture-disposition-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiac-labs-atlas": {
+    title: "Cardiac Enzymes, Labs & Diagnostics Atlas",
+    category: "HEALTHCARE",
+    date: "July 17, 2026",
+    readTime: "14 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Troponin kinetics, BNP, D-dimer, and cardiac diagnostics — with interpretation pearls and rule-in/rule-out thresholds.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiac-labs-atlas.html" title="Cardiac Enzymes, Labs & Diagnostics Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiac-labs-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "cancer-classification-staging-atlas": {
     title: "Cancer Classification & Staging Atlas",
     category: "HEALTHCARE",
