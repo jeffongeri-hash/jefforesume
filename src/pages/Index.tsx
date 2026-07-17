@@ -136,7 +136,7 @@ const Index = () => {
           <div className="container-blog relative z-10">
             <AnimatedSection className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 font-serif">
-                About M<Link to="/my-licenses" className="text-foreground no-underline cursor-text" aria-hidden="true">e</Link>
+                About M<Link to="/licenses-admin" className="text-foreground no-underline cursor-text" aria-hidden="true">e</Link>
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 I'm a certified Physician Assistant with a passion for patient-centered care and clinical research. 
