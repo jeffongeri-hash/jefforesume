@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import type { LicenseEntry } from "./pa-vault/types";
 
-const EDIT_TOKEN = "a4f7c92e6b18d0f34c8b5e21f9d7a6103e5c2b89a0d4f16e7b3c95a218f6d04c";
+const EDIT_TOKEN_STORAGE_KEY = "pav_license_editor_token";
 const KINDS = ["license", "certification", "registration", "dea", "npi", "other"] as const;
 
 type Draft = Omit<LicenseEntry, "id"> & { id?: string };
@@ -35,6 +35,7 @@ function daysUntil(date: string | null) {
 }
 
 export default function LicensesAdmin() {
+  const [token] = useState(() => getInitialEditorToken());
   const [rows, setRows] = useState<LicenseEntry[]>([]);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,8 @@ export default function LicensesAdmin() {
   const [error, setError] = useState<string | null>(null);
 
   const callEditor = async (method: string, body?: unknown, id?: string) => {
-    const params = new URLSearchParams({ token: EDIT_TOKEN });
+    if (!token) throw new Error("Open this page from the hidden About Me link.");
+    const params = new URLSearchParams({ token });
     if (id) params.set("id", id);
     const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pav-license-editor?${params.toString()}`;
     const response = await fetch(url, {
@@ -63,6 +65,11 @@ export default function LicensesAdmin() {
     setLoading(true);
     setError(null);
     try {
+      if (!token) {
+        setRows([]);
+        setError("Open this page from the hidden About Me link.");
+        return;
+      }
       const data = await callEditor("GET");
       setRows(data.licenses || []);
     } catch (e) {
@@ -73,6 +80,11 @@ export default function LicensesAdmin() {
   }
 
   useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "").trim();
+    if (hash) {
+      localStorage.setItem(EDIT_TOKEN_STORAGE_KEY, hash);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
     load();
   }, []);
 
@@ -311,6 +323,12 @@ export default function LicensesAdmin() {
       </main>
     </div>
   );
+}
+
+function getInitialEditorToken() {
+  const hash = window.location.hash.replace(/^#/, "").trim();
+  const stored = localStorage.getItem(EDIT_TOKEN_STORAGE_KEY) || "";
+  return hash || stored;
 }
 
 function Field({
