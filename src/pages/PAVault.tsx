@@ -5,16 +5,18 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { LayoutGrid, ShieldCheck, UserRound, Users, Radar, LogOut } from "lucide-react";
+import { LayoutGrid, ShieldCheck, UserRound, Users, Radar, LogOut, BadgeCheck } from "lucide-react";
 import VaultDashboard from "./pa-vault/VaultDashboard";
 import VaultCredentials from "./pa-vault/VaultCredentials";
 import VaultProfile from "./pa-vault/VaultProfile";
 import VaultReferences from "./pa-vault/VaultReferences";
 import VaultSources from "./pa-vault/VaultSources";
+import VaultLicenses from "./pa-vault/VaultLicenses";
 
 const NAV = [
   { to: "/pa-vault", end: true, label: "Job Feed", icon: LayoutGrid },
   { to: "/pa-vault/credentials", label: "Credential Vault", icon: ShieldCheck },
+  { to: "/pa-vault/licenses", label: "Licenses", icon: BadgeCheck },
   { to: "/pa-vault/profile", label: "Profile / Auto-fill", icon: UserRound },
   { to: "/pa-vault/references", label: "References", icon: Users },
   { to: "/pa-vault/sources", label: "Sources", icon: Radar },
@@ -96,6 +98,10 @@ export default function PAVault() {
                 <Route
                   path="credentials"
                   element={<VaultCredentials userId={session.user.id} />}
+                />
+                <Route
+                  path="licenses"
+                  element={<VaultLicenses userId={session.user.id} />}
                 />
                 <Route path="profile" element={<VaultProfile userId={session.user.id} />} />
                 <Route
