@@ -280,14 +280,14 @@ const AllPosts = () => {
       tags: ["Cardiology", "Labs", "Clinical Education"]
     },
     {
-      title: "GI Atlas — Abdominal Pain Differential Diagnosis",
+      title: "GI Atlas — Differential, Pharmacology & IBD Reference",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
       date: "July 21, 2026",
-      excerpt: "Region-by-region abdominal pain differential — RUQ, LUQ, epigastric, RLQ, LLQ, diffuse, pelvic, and flank — with red flags, workup, and disposition pearls.",
+      excerpt: "Abdominal pain differential by region, pharmacology pearls, and IBD reference — plus red flags, workup, and disposition guidance.",
       image: businessPost,
       slug: "gi-atlas",
-      tags: ["Gastroenterology", "Differential Diagnosis", "Clinical Education"]
+      tags: ["Gastroenterology", "Differential Diagnosis", "Pharmacology", "IBD", "Clinical Education"]
     },
     {
       title: "Dermatology ER Atlas — Rash Differential Algorithm",

@@ -400,7 +400,7 @@ const blogPosts = {
     `
   },
   "gi-atlas": {
-    title: "GI Atlas — Abdominal Pain Differential Diagnosis",
+    title: "GI Atlas — Differential, Pharmacology & IBD Reference",
     category: "HEALTHCARE",
     date: "July 21, 2026",
     readTime: "20 min read",
@@ -408,9 +408,9 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: businessPost,
     content: `
-      <p>Region-by-region abdominal pain differential — RUQ, LUQ, epigastric, RLQ, LLQ, diffuse, pelvic, and flank — with red flags, workup, and disposition pearls.</p>
+      <p>Abdominal pain differential by region, pharmacology pearls, and IBD reference — plus red flags, workup, and disposition guidance.</p>
       <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
-        <iframe src="/embeds/gi-atlas.html" title="GI Atlas — Abdominal Pain Differential Diagnosis" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+        <iframe src="/embeds/gi-atlas.html" title="GI Atlas — Differential, Pharmacology & IBD Reference" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
       </div>
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
