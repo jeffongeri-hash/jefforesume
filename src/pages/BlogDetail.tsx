@@ -399,6 +399,54 @@ const blogPosts = {
       <p><a href="/embeds/neuralgia-migraine-spine-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "gi-atlas": {
+    title: "GI Atlas — Abdominal Pain Differential Diagnosis",
+    category: "HEALTHCARE",
+    date: "July 21, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Region-by-region abdominal pain differential — RUQ, LUQ, epigastric, RLQ, LLQ, diffuse, pelvic, and flank — with red flags, workup, and disposition pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas.html" title="GI Atlas — Abdominal Pain Differential Diagnosis" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "derm-er-rash-atlas": {
+    title: "Dermatology ER Atlas — Rash Differential Algorithm",
+    category: "HEALTHCARE",
+    date: "July 21, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A rash differential algorithm by distribution and morphology — face, trunk, extremities, palms/soles, mucosal, generalized — with can't-miss ED dermatologic emergencies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/derm-er-rash-atlas.html" title="Dermatology ER Atlas — Rash Differential Algorithm" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/derm-er-rash-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ent-atlas": {
+    title: "ENT Atlas — Ear, Nose, Throat & Ocular Reference",
+    category: "HEALTHCARE",
+    date: "July 21, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A structured ENT and ocular reference — otologic, nasal, oropharyngeal, and eye complaints with exam findings, workup, and disposition pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ent-atlas.html" title="ENT Atlas — Ear, Nose, Throat & Ocular Reference" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ent-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "bulletproof-note-atlas": {
     title: "The Bulletproof Note — HPI, Exam & Disposition for the Deposition",
     category: "HEALTHCARE",

@@ -280,6 +280,36 @@ const AllPosts = () => {
       tags: ["Cardiology", "Labs", "Clinical Education"]
     },
     {
+      title: "GI Atlas — Abdominal Pain Differential Diagnosis",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 21, 2026",
+      excerpt: "Region-by-region abdominal pain differential — RUQ, LUQ, epigastric, RLQ, LLQ, diffuse, pelvic, and flank — with red flags, workup, and disposition pearls.",
+      image: businessPost,
+      slug: "gi-atlas",
+      tags: ["Gastroenterology", "Differential Diagnosis", "Clinical Education"]
+    },
+    {
+      title: "Dermatology ER Atlas — Rash Differential Algorithm",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 21, 2026",
+      excerpt: "A rash differential algorithm by distribution and morphology — face, trunk, extremities, palms/soles, mucosal, generalized — with can't-miss ED dermatologic emergencies.",
+      image: businessPost,
+      slug: "derm-er-rash-atlas",
+      tags: ["Dermatology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "ENT Atlas — Ear, Nose, Throat & Ocular Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 21, 2026",
+      excerpt: "A structured ENT and ocular reference — otologic, nasal, oropharyngeal, and eye complaints with exam findings, workup, and disposition pearls.",
+      image: businessPost,
+      slug: "ent-atlas",
+      tags: ["ENT", "Ocular", "Clinical Education"]
+    },
+    {
       title: "MSK Neuromuscular Atlas — Innervation, Action & Movement Pathways",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -659,17 +689,25 @@ const AllPosts = () => {
     "alternative-analgesics-atlas": "Procedures",
     // Endocrine → grouped with Renal (dosing / metabolic)
     "insulin-dosing-atlas": "Renal",
+    // Gastroenterology
+    "gi-atlas": "Gastroenterology",
+    // ENT
+    "ent-atlas": "ENT",
+    // Dermatology (add)
+    "derm-er-rash-atlas": "Dermatology",
   };
 
   const systemOrder = [
     "Cardiology",
     "Pulmonary & Critical Care",
     "Renal",
+    "Gastroenterology",
     "Hematology",
     "Neurology",
     "Infectious Disease",
     "Oncology",
     "Dermatology",
+    "ENT",
     "OB/GYN",
     "Pediatrics",
     "Psychiatry",
