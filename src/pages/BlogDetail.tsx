@@ -415,6 +415,22 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "gi-physical-exam-atlas": {
+    title: "GI Physical Exam Atlas — Abdominal & Rectal Exam Reference",
+    category: "HEALTHCARE",
+    date: "July 23, 2026",
+    readTime: "15 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Expert-level abdominal and rectal exam reference — inspection, palpation, special signs, hernia exam, and documentation pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-physical-exam-atlas.html" title="GI Physical Exam Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-physical-exam-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "derm-er-rash-atlas": {
     title: "Dermatology ER Atlas — Rash Differential Algorithm",
     category: "HEALTHCARE",

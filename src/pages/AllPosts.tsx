@@ -290,6 +290,16 @@ const AllPosts = () => {
       tags: ["Gastroenterology", "Differential Diagnosis", "Pharmacology", "IBD", "Clinical Education"]
     },
     {
+      title: "GI Physical Exam Atlas — Abdominal & Rectal Exam Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 23, 2026",
+      excerpt: "Expert-level abdominal and rectal exam reference — inspection, palpation, special signs, hernia exam, and documentation pearls.",
+      image: businessPost,
+      slug: "gi-physical-exam-atlas",
+      tags: ["Gastroenterology", "Physical Exam", "Clinical Education"]
+    },
+    {
       title: "Dermatology ER Atlas — Rash Differential Algorithm",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -691,6 +701,7 @@ const AllPosts = () => {
     "insulin-dosing-atlas": "Renal",
     // Gastroenterology
     "gi-atlas": "Gastroenterology",
+    "gi-physical-exam-atlas": "Gastroenterology",
     // ENT
     "ent-atlas": "ENT",
     // Dermatology (add)
