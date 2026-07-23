@@ -1,4 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Download } from 'lucide-react';
+import { downloadPostPdf, extractEmbedUrl } from '@/lib/downloadPostPdf';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -3966,6 +3969,15 @@ const popularPosts = [
 const BlogDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts[slug as keyof typeof blogPosts] || blogPosts.default;
+  const [searchParams] = useSearchParams();
+  const embedUrl = extractEmbedUrl((post as { content?: string }).content);
+
+  useEffect(() => {
+    if (searchParams.get('download') === '1') {
+      const t = setTimeout(() => downloadPostPdf(embedUrl, post.title), 600);
+      return () => clearTimeout(t);
+    }
+  }, [searchParams, embedUrl, post.title]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -3998,12 +4010,22 @@ const BlogDetail = () => {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 max-w-4xl">
                 {post.title}
               </h1>
-              <div className="flex items-center gap-4 text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
                 <span>{post.author}</span>
                 <span>•</span>
                 <span>{post.date}</span>
                 <span>•</span>
                 <span>{post.readTime}</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => downloadPostPdf(embedUrl, post.title)}
+                  className="ml-auto print:hidden"
+                  aria-label={`Download ${post.title} as PDF`}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download PDF
+                </Button>
               </div>
             </div>
           </div>

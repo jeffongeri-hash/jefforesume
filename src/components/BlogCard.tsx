@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { Download } from 'lucide-react';
+import { downloadPostPdf } from '@/lib/downloadPostPdf';
 
 interface BlogCardProps {
   title: string;
@@ -22,7 +24,21 @@ const BlogCard = ({
   const articleUrl = href === '#' ? `/blog/${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}` : href;
   
   return (
-    <article className="blog-card group cursor-pointer transition-all duration-300 hover:shadow-lg border border-transparent hover:border-black">
+    <article className="blog-card group cursor-pointer transition-all duration-300 hover:shadow-lg border border-transparent hover:border-black relative">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          // Navigate to the post with auto-download flag so the embed can be
+          // opened same-origin and printed to PDF.
+          window.location.href = `${articleUrl}?download=1`;
+        }}
+        className="absolute top-2 right-2 z-10 p-2 rounded-full bg-background/90 hover:bg-background border border-border shadow-sm opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary"
+        aria-label={`Download ${title} as PDF`}
+      >
+        <Download className="h-4 w-4" />
+      </button>
       <Link to={articleUrl} className="block focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" aria-label={`Read article: ${title}`}>
         {/* Image */}
         <div className={`relative overflow-hidden ${isSmall ? 'aspect-[3/2]' : 'aspect-[4/3]'}`}>
