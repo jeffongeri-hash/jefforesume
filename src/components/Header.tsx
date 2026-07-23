@@ -105,7 +105,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
+          <nav className="hidden xl:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -121,7 +121,7 @@ const Header = () => {
           </nav>
 
           {/* Social Links & Search */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden xl:flex items-center space-x-3">
             {socialLinks.map(({ icon: Icon, href, label }) => (
               <Button 
                 key={label} 
@@ -155,7 +155,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         <div
           className={cn(
-            "lg:hidden overflow-hidden transition-[max-height,opacity] duration-500 ease-out",
+            "xl:hidden overflow-hidden transition-[max-height,opacity] duration-500 ease-out",
             isMenuOpen ? "max-h-[85vh] opacity-100" : "max-h-0 opacity-0"
           )}
         >
