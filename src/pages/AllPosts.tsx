@@ -330,6 +330,76 @@ const AllPosts = () => {
       tags: ["ENT", "Ocular", "Differential Diagnosis", "Clinical Education"]
     },
     {
+      title: "Ocular Atlas Vol. 1 — Vision & Globe-Threatening Emergencies",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Central retinal artery occlusion, acute angle closure, endophthalmitis, and other sight-threatening emergencies — recognition and time-critical management.",
+      image: businessPost,
+      slug: "ocular-atlas-vol1",
+      tags: ["Ophthalmology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 2 — Ocular Trauma",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Open globe, hyphema, orbital fractures, chemical burns, and foreign bodies — exam sequence, imaging, and disposition.",
+      image: businessPost,
+      slug: "ocular-atlas-vol2",
+      tags: ["Ophthalmology", "Trauma", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 3a — Infectious & Inflammatory Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Keratitis, uveitis, scleritis, conjunctivitis, and inflammatory eye disease — pathogens, treatment, and referral thresholds.",
+      image: businessPost,
+      slug: "ocular-atlas-vol3a",
+      tags: ["Ophthalmology", "Infectious Disease", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 3b — Orbital/Adnexal Infections & Outpatient Red Eye",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Preseptal vs orbital cellulitis, dacryocystitis, hordeolum/chalazion, and the outpatient red eye workup.",
+      image: businessPost,
+      slug: "ocular-atlas-vol3b",
+      tags: ["Ophthalmology", "Infectious Disease", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 4 — Neuro-Ophthalmology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Cranial nerve palsies, optic neuropathies, papilledema, visual field defects, and pupillary abnormalities.",
+      image: businessPost,
+      slug: "ocular-atlas-vol4",
+      tags: ["Ophthalmology", "Neurology", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 5 — Exam Technique, Procedures & Pharmacology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Slit lamp and fluorescein technique, tonometry, lateral canthotomy, foreign body removal, and ophthalmic drug reference.",
+      image: businessPost,
+      slug: "ocular-atlas-vol5",
+      tags: ["Ophthalmology", "Procedures", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 6 — Pediatric & Special Populations",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Neonatal conjunctivitis, leukocoria, amblyopia/strabismus, pediatric trauma, and eye findings in pregnancy and immunocompromise.",
+      image: businessPost,
+      slug: "ocular-atlas-vol6",
+      tags: ["Ophthalmology", "Pediatrics", "Clinical Education"]
+    },
+    {
       title: "GI Atlas — Differential, Pharmacology & IBD Reference",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -758,7 +828,15 @@ const AllPosts = () => {
     "gi-atlas-vol6": "Gastroenterology",
     // ENT
     "ent-atlas": "ENT",
-    "ocular-differential-atlas-vol2b": "ENT",
+    // Ophthalmology
+    "ocular-differential-atlas-vol2b": "Ophthalmology",
+    "ocular-atlas-vol1": "Ophthalmology",
+    "ocular-atlas-vol2": "Ophthalmology",
+    "ocular-atlas-vol3a": "Ophthalmology",
+    "ocular-atlas-vol3b": "Ophthalmology",
+    "ocular-atlas-vol4": "Ophthalmology",
+    "ocular-atlas-vol5": "Ophthalmology",
+    "ocular-atlas-vol6": "Ophthalmology",
     // Dermatology (add)
     "derm-er-rash-atlas": "Dermatology",
   };
@@ -774,6 +852,7 @@ const AllPosts = () => {
     "Oncology",
     "Dermatology",
     "ENT",
+    "Ophthalmology",
     "OB/GYN",
     "Pediatrics",
     "Psychiatry",
