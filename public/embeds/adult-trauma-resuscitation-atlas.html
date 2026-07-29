@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adult Trauma &amp; Resuscitation Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f0e; --bg2:#121715; --card:#161d1b; --card2:#1b2320;
+  --text:#e9efec; --text2:#aab8b3; --line:#26302c;
+  --accent:#3ea67a; --accent2:#5fb98f; --warn:#e0a63e; --danger:#e2564f;
+  --info:#4a9fd8; --purple:#9a7de0; --gold:#d4af6a;
+  --code-bg:#0e1513;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+[data-theme="light"]{
+  --bg:#f7f5ef; --bg2:#efece3; --card:#ffffff; --card2:#f3f1e9;
+  --text:#1c211f; --text2:#4d5854; --line:#dcd8cc;
+  --accent:#1f7a54; --accent2:#2f9268; --warn:#a9720f; --danger:#b8342c;
+  --info:#1f6fa3; --purple:#6b4fb0; --gold:#8a6a26;
+  --code-bg:#eeeadd;
+  --shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  line-height:1.55; -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif; font-weight:600; letter-spacing:-.01em; margin:0 0 .4em;}
+code, .mono, .value, .dose{font-family:'JetBrains Mono',monospace;}
+
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:linear-gradient(180deg,var(--bg2) 0%, rgba(18,23,21,.92) 100%);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(8px);
+  padding:14px 18px;
+}
+[data-theme="light"] header.top{background:linear-gradient(180deg,var(--bg2) 0%, rgba(239,236,227,.92) 100%);}
+.top-row{display:flex; align-items:center; justify-content:space-between; gap:12px; max-width:1100px; margin:0 auto;}
+.brand{display:flex; flex-direction:column; gap:2px;}
+.brand h1{font-size:1.15rem; margin:0;}
+.brand .sub{font-size:.72rem; color:var(--text2); text-transform:uppercase; letter-spacing:.08em;}
+
+.controls{display:flex; align-items:center; gap:10px;}
+select#domSelect{
+  background:var(--card); color:var(--text); border:1px solid var(--line);
+  border-radius:10px; padding:9px 12px; font-size:.9rem; font-family:'Inter',sans-serif;
+  min-width:190px; max-width:56vw;
+}
+button#themeToggle{
+  background:var(--card); color:var(--text); border:1px solid var(--line);
+  border-radius:10px; padding:9px 12px; cursor:pointer; font-size:.85rem;
+}
+button#themeToggle:hover{border-color:var(--accent);}
+
+main{max-width:1100px; margin:0 auto; padding:18px 16px 80px;}
+.domain{display:none;}
+.domain.active{display:block; animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+.domain-head{margin:6px 0 18px;}
+.domain-head h2{font-size:1.5rem;}
+.domain-head p{color:var(--text2); margin:0; font-size:.95rem;}
+
+.section{margin:28px 0;}
+.section-title{
+  display:flex; align-items:center; gap:10px; margin-bottom:12px;
+}
+.section-title h3{font-size:1.1rem; margin:0; color:var(--text);}
+.section-title .tag{
+  font-size:.68rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 8px; border-radius:20px; border:1px solid var(--line); color:var(--text2);
+}
+
+.grid{display:grid; grid-template-columns:1fr; gap:14px;}
+@media(min-width:720px){.grid.cols-2{grid-template-columns:1fr 1fr;}}
+
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:16px 18px; box-shadow:var(--shadow);
+}
+.card.accent-a{border-left:4px solid var(--accent);}
+.card.accent-b{border-left:4px solid var(--info);}
+.card.accent-c{border-left:4px solid var(--warn);}
+.card.accent-d{border-left:4px solid var(--danger);}
+.card.accent-e{border-left:4px solid var(--purple);}
+.card.accent-f{border-left:4px solid var(--gold);}
+
+.card h4{font-size:1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+.card p{margin:.35em 0; font-size:.92rem;}
+.card ul{margin:.4em 0; padding-left:1.2em;}
+.card li{margin:.3em 0; font-size:.92rem;}
+.card .small{font-size:.8rem; color:var(--text2);}
+
+.pill{
+  display:inline-block; padding:2px 9px; border-radius:20px; font-size:.72rem;
+  background:var(--code-bg); color:var(--text2); margin:2px 4px 2px 0; font-family:'JetBrains Mono',monospace;
+}
+.pill.hot{background:rgba(226,86,79,.15); color:var(--danger);}
+.pill.go{background:rgba(62,166,122,.15); color:var(--accent2);}
+.pill.caution{background:rgba(224,166,62,.15); color:var(--warn);}
+
+table.dtable{width:100%; border-collapse:collapse; font-size:.86rem; margin:8px 0;}
+table.dtable th, table.dtable td{border:1px solid var(--line); padding:7px 9px; text-align:left;}
+table.dtable th{background:var(--card2); font-weight:600; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em; color:var(--text2);}
+table.dtable td.num{font-family:'JetBrains Mono',monospace;}
+
+.algo{border:1px dashed var(--line); border-radius:12px; padding:14px 16px; background:var(--card2);}
+.algo ol{margin:0; padding-left:1.3em;}
+.algo li{margin:.5em 0;}
+.algo li strong{color:var(--accent2);}
+
+.callout{
+  border-radius:12px; padding:12px 16px; font-size:.88rem; margin:10px 0;
+  border:1px solid var(--line); background:var(--card2);
+}
+.callout.danger{border-color:rgba(226,86,79,.4); background:rgba(226,86,79,.08);}
+.callout.warn{border-color:rgba(224,166,62,.4); background:rgba(224,166,62,.08);}
+.callout.info{border-color:rgba(74,159,216,.4); background:rgba(74,159,216,.08);}
+.callout.controversy{border-color:rgba(154,125,224,.4); background:rgba(154,125,224,.08);}
+.callout strong{display:block; margin-bottom:4px;}
+
+.svgwrap{background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center;}
+.svgwrap svg{max-width:100%; height:auto;}
+.svgwrap .cap{font-size:.75rem; color:var(--text2); margin-top:6px;}
+
+.pmid{font-size:.72rem; color:var(--text2); font-family:'JetBrains Mono',monospace; margin-top:6px;}
+.verify{font-size:.74rem; color:var(--warn); margin-top:4px;}
+
+footer.atlasfoot{
+  max-width:1100px; margin:20px auto 60px; padding:16px; color:var(--text2);
+  font-size:.78rem; border-top:1px solid var(--line); text-align:center;
+}
+
+@media(max-width:640px){
+  .brand h1{font-size:1rem;}
+  select#domSelect{min-width:150px; font-size:.82rem;}
+  main{padding:14px 12px 70px;}
+}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <div class="brand">
+      <h1>Adult Trauma &amp; Resuscitation Atlas</h1>
+      <div class="sub">Clinician-Educator Reference &middot; ATLS + BLS Integration</div>
+    </div>
+    <div class="controls">
+      <select id="domSelect" aria-label="Select domain">
+        <option value="d1">1. Primary Survey &amp; Shock</option>
+        <option value="d2">2. Airway &amp; Chest Trauma</option>
+        <option value="d3">3. TCA &amp; Damage Control Resuscitation</option>
+        <option value="d4">4. BLS/ACLS in Trauma</option>
+        <option value="d5">5. Head, Spine, Abdomen &amp; Pelvis</option>
+      </select>
+      <button id="themeToggle" type="button">&#9789; Dark</button>
+    </div>
+  </div>
+</header>
+<main>
+
+<div class="domain" data-dom="d1">
+  <div class="domain-head">
+    <h2>1 &middot; Primary Survey, Shock Classification &amp; Hemorrhage Control</h2>
+    <p>ABCDE, catastrophic hemorrhage-first variants, shock staging, and the hierarchy of bleeding control.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>The Primary Survey</h3><span class="tag">ATLS 10th ed.</span></div>
+    <div class="grid cols-2">
+      <div class="card accent-a">
+        <h4>Standard ABCDE</h4>
+        <div class="algo"><ol>
+          <li><strong>A</strong> &mdash; Airway with C-spine protection. Look, listen, jaw thrust, suction, adjuncts.</li>
+          <li><strong>B</strong> &mdash; Breathing &amp; ventilation. Expose the chest; treat tension pneumothorax, open pneumothorax, flail chest immediately when found.</li>
+          <li><strong>C</strong> &mdash; Circulation with hemorrhage control. External bleeding controlled by direct pressure/tourniquet <em>before</em> IV access; identify occult sources (chest, abdomen, pelvis, long bones, floor).</li>
+          <li><strong>D</strong> &mdash; Disability. GCS, pupils, gross motor/sensory, glucose.</li>
+          <li><strong>E</strong> &mdash; Exposure/Environment. Fully undress, log roll, prevent hypothermia &mdash; a warm patient clots.</li>
+        </ol></div>
+        <p class="small">Treat life threats the instant they're found &mdash; do not wait to finish the sequence.</p>
+      </div>
+      <div class="card accent-d">
+        <h4>&lt;C&gt;ABCDE / MARCH (catastrophic hemorrhage first)</h4>
+        <p>Military-derived TCCC framework, increasingly adopted civilian-side for penetrating trauma and mass casualty:</p>
+        <div class="algo"><ol>
+          <li><strong>&lt;C&gt; / M</strong> &mdash; Massive hemorrhage: tourniquet or direct pressure on compressible external bleeding <em>before</em> airway.</li>
+          <li><strong>A</strong> &mdash; Airway (with C-spine)</li>
+          <li><strong>R</strong> &mdash; Respiration (needle/finger decompression, seal open chest wounds)</li>
+          <li><strong>C</strong> &mdash; Circulation (remaining hemorrhage control, IV/IO access, TXA)</li>
+          <li><strong>H</strong> &mdash; Hypothermia/Head injury</li>
+        </ol></div>
+        <div class="callout warn"><strong>When to use which</strong>An exsanguinating extremity wound with an obvious tourniquet-amenable source justifies hemorrhage-first sequencing even in civilian EDs; a patient with a compromised airway and no visible catastrophic bleeding still gets airway first.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Hemorrhagic Shock Classification</h3><span class="tag">Board-testable</span></div>
+    <div class="card accent-b">
+      <table class="dtable">
+        <tr><th>Parameter</th><th>Class I</th><th>Class II</th><th>Class III</th><th>Class IV</th></tr>
+        <tr><td>Blood loss</td><td class="num">&lt;15% (&lt;750mL)</td><td class="num">15&ndash;30% (750&ndash;1500mL)</td><td class="num">30&ndash;40% (1500&ndash;2000mL)</td><td class="num">&gt;40% (&gt;2000mL)</td></tr>
+        <tr><td>Heart rate</td><td class="num">&lt;100</td><td class="num">100&ndash;120</td><td class="num">120&ndash;140</td><td class="num">&gt;140</td></tr>
+        <tr><td>Blood pressure</td><td class="num">Normal</td><td class="num">Normal</td><td class="num">Decreased</td><td class="num">Decreased</td></tr>
+        <tr><td>Pulse pressure</td><td class="num">Normal/&uarr;</td><td class="num">Narrowed</td><td class="num">Narrowed</td><td class="num">Narrowed</td></tr>
+        <tr><td>Resp. rate</td><td class="num">14&ndash;20</td><td class="num">20&ndash;24</td><td class="num">24&ndash;35</td><td class="num">&gt;35</td></tr>
+        <tr><td>Mental status</td><td>Mildly anxious</td><td>Anxious</td><td>Anxious/confused</td><td>Confused/lethargic</td></tr>
+        <tr><td>Initial fluid</td><td>Crystalloid</td><td>Crystalloid</td><td>Blood products</td><td>Massive transfusion protocol</td></tr>
+      </table>
+      <p class="pmid">ATLS 10th ed. classification; 70kg reference patient (~5L total blood volume).</p>
+      <div class="callout controversy">
+        <strong>Known limitation &mdash; teach this alongside the table, not instead of it</strong>
+        Multiple validation studies (including a >140,000-patient German trauma registry analysis) found most real patients don't fit neatly into one class &mdash; vital signs are individually poor predictors of blood loss, and only a small minority of major trauma patients land cleanly in Class III/IV by these criteria before deteriorating. The 10th edition added base deficit and need for blood products to the matrix for this reason. Teach the classification as a conceptual anchor for the physiology of compensated &rarr; decompensated shock, not as a rigid diagnostic tool &mdash; trend the patient's response to resuscitation and lactate/base deficit clearance over any single vital sign snapshot.
+        <p class="pmid">PMID 39911462; Mutschler et al., Injury 2013 (DGU TraumaRegister analysis)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Hemorrhage Control Hierarchy</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-d">
+        <h4>External / compressible hemorrhage</h4>
+        <ul>
+          <li><strong>Direct pressure</strong> &mdash; first line, sustained, two-handed if needed.</li>
+          <li><strong>Tourniquet</strong> &mdash; for exsanguinating extremity hemorrhage; place proximal to the wound, 2&ndash;3 inches above (not directly over a joint), tighten until bleeding and distal pulse stop. Document time of application &mdash; this travels with the patient.</li>
+          <li><strong>Wound packing + pressure</strong> &mdash; for junctional or proximal wounds a tourniquet can't reach (groin, axilla, neck base). Hemostatic gauze (kaolin- or chitosan-based) packed directly into the wound tract with sustained 3-minute pressure.</li>
+          <li><strong>Junctional tourniquets</strong> (e.g., abdominal aortic/junctional devices) for true junctional zones when packing fails.</li>
+        </ul>
+        <div class="callout danger"><strong>Tourniquet myth check</strong>Prolonged civilian tourniquet time (&lt;2h) is not associated with the limb-loss rates historically feared from anecdote &mdash; under-resuscitation and delayed hemorrhage control kill far more often than tourniquet time. Don't loosen a working tourniquet to "check" unless directed by a surgeon accepting the patient.</div>
+      </div>
+      <div class="card accent-c">
+        <h4>Non-compressible / occult hemorrhage</h4>
+        <ul>
+          <li><strong>Pelvic binder</strong> &mdash; place at the greater trochanters (not iliac crests) for suspected pelvic ring injury with hemodynamic instability. See diagram in Domain 5.</li>
+          <li><strong>REBOA</strong> (resuscitative endovascular balloon occlusion of the aorta) &mdash; Zone I (supraceliac) for abdominal/pelvic hemorrhage, Zone III (infrarenal) for pelvic/junctional &mdash; a bridge to surgical/IR control, not definitive therapy.</li>
+          <li><strong>Damage control laparotomy/thoracotomy</strong> &mdash; definitive source control for cavitary hemorrhage; the ED's job is to buy time and correct physiology, not chase a normal INR before transfer to the OR.</li>
+        </ul>
+        <p class="small">The four places a trauma patient exsanguinates internally: chest, abdomen, pelvis/retroperitoneum, and long bones (femur can sequester 1&ndash;1.5L closed).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Secondary Survey &amp; Damage Control Resuscitation Principles</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-e">
+        <h4>Secondary survey &amp; AMPLE</h4>
+        <p>Head-to-toe exam, log roll, reassess vitals &mdash; only after the primary survey life threats are addressed and resuscitation is underway.</p>
+        <ul>
+          <li><strong>A</strong>llergies</li>
+          <li><strong>M</strong>edications (anticoagulants change your entire hemorrhage calculus)</li>
+          <li><strong>P</strong>ast illness/pregnancy</li>
+          <li><strong>L</strong>ast meal</li>
+          <li><strong>E</strong>vents/environment of injury</li>
+        </ul>
+      </div>
+      <div class="card accent-a">
+        <h4>Damage control resuscitation (DCR)</h4>
+        <ul>
+          <li><strong>Permissive hypotension</strong> &mdash; target SBP ~80&ndash;90 mmHg (MAP ~50&ndash;60) in penetrating trauma without TBI until hemorrhage is controlled; avoid "normalizing" pressure with crystalloid, which raises hydrostatic pressure on unclotted vessels and dilutes clotting factors. Not used in TBI (needs adequate CPP) or in the field for the frail/elderly.</li>
+          <li><strong>Balanced blood product resuscitation</strong> (1:1:1 PRBC:FFP:platelets or whole blood) over crystalloid &mdash; detailed in Domain 3.</li>
+          <li><strong>Minimize crystalloid</strong> &mdash; each liter of NS given pre-hospital/early ED has been associated with worsening coagulopathy in large trauma cohorts.</li>
+          <li><strong>Correct the lethal triad early</strong>: hypothermia (warm fluids/blankets, avoid exposure), acidosis (perfusion, not bicarb), coagulopathy (blood products, calcium, TXA).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Verify before relying</strong>
+    Specific numeric thresholds (permissive hypotension targets, tourniquet documentation practices, institutional MTP activation criteria) vary by trauma system and institutional protocol &mdash; confirm against your center's current protocol before teaching as an absolute.
+  </div>
+</div>
+
+
+<div class="domain" data-dom="d2">
+  <div class="domain-head">
+    <h2>2 &middot; Airway &amp; Chest Trauma + Procedures</h2>
+    <p>Trauma airway decision-making, surgical airway, thoracic decompression, and resuscitative thoracotomy criteria.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Trauma Airway &amp; RSI</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-a">
+        <h4>Recognizing the difficult/failing trauma airway</h4>
+        <ul>
+          <li>Expanding neck hematoma, direct laryngeal/tracheal injury, facial fractures distorting anatomy, oral/airway hemorrhage, burns with inhalational injury (soot, singed vibrissae, hoarseness).</li>
+          <li>Reduced physiologic reserve: hypovolemic patients desaturate fast and tolerate apnea poorly &mdash; preoxygenate maximally, have push-dose pressors ready.</li>
+        </ul>
+        <div class="callout danger"><strong>Peri-intubation arrest</strong>The commonest trauma RSI complication isn't a failed tube &mdash; it's peri-intubation cardiovascular collapse in an under-resuscitated, hypovolemic patient from the combined effects of positive-pressure ventilation (&darr; preload) and induction-agent vasodilation. Resuscitate before you push drugs when you have the luxury of time.</div>
+      </div>
+      <div class="card accent-b">
+        <h4>RSI agents &mdash; trauma-specific considerations</h4>
+        <table class="dtable">
+          <tr><th>Agent</th><th>Dose</th><th>Trauma notes</th></tr>
+          <tr><td>Ketamine</td><td class="dose">1&ndash;2 mg/kg IV</td><td>Preferred induction agent in hemorrhagic shock &mdash; sympathomimetic, preserves airway reflexes/BP better than propofol/etomidate in the hypovolemic patient.</td></tr>
+          <tr><td>Etomidate</td><td class="dose">0.3 mg/kg IV</td><td>Hemodynamically neutral; adrenal suppression is a real but generally not clinically decisive concern for a single dose in the acute trauma bay.</td></tr>
+          <tr><td>Rocuronium</td><td class="dose">1.2 mg/kg IV</td><td>Preferred over succinylcholine when hyperkalemia risk exists (crush injury, burns &gt;24h old, prolonged immobility) or when a longer paralysis window is acceptable.</td></tr>
+          <tr><td>Succinylcholine</td><td class="dose">1.5 mg/kg IV</td><td>Avoid in burns &gt;24h, crush/denervation injury, or known hyperkalemia &mdash; risk of exaggerated K+ release.</td></tr>
+        </table>
+        <p class="verify">Verify institutional RSI dosing and contraindication protocols before relying on these as absolutes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Surgical Airway</h3><span class="tag">Procedure</span></div>
+    <div class="grid cols-2">
+      <div class="card accent-d">
+        <h4>Cricothyroidotomy</h4>
+        <p>Indicated in "can't intubate, can't oxygenate" &mdash; typically massive facial/airway trauma or laryngeal disruption where orotracheal intubation and BVM both fail.</p>
+        <div class="algo"><ol>
+          <li>Palpate the laryngeal prominence, slide inferiorly to the first soft depression &mdash; the cricothyroid membrane.</li>
+          <li>Vertical skin incision, horizontal stab through the membrane.</li>
+          <li>Insert bougie or hook, dilate, pass a 6.0 cuffed ET or trach tube.</li>
+          <li>Confirm with EtCO2 and bilateral breath sounds.</li>
+        </ol></div>
+        <p class="small">Surgical cricothyroidotomy is generally preferred over needle cricothyroidotomy in adults for a definitive airway; needle cric with jet ventilation is a temporizing bridge, not a durable airway.</p>
+      </div>
+      <div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480">
+<rect x="0" y="0" width="400" height="480" fill="#f4efe3"/>
+
+    <path d="M120,40 C170,45 210,80 220,140 L225,250 C225,300 210,340 180,360
+             L140,360 C110,340 95,300 95,250 L92,150 C95,90 100,55 120,40 Z"
+          fill="none" stroke="#1f2a27" stroke-width="3"/>
+    <!-- chin line -->
+    <path d="M150,42 Q185,50 210,80" fill="none" stroke="#5b6b64" stroke-width="1.5"/>
+    <!-- thyroid cartilage (laryngeal prominence) -->
+    <path d="M150,150 L185,175 L150,205 Z" fill="none" stroke="#2f7a5c" stroke-width="2.5"/>
+    <text x="205" y="180" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">thyroid cartilage</text>
+    <!-- cricothyroid membrane -->
+    <rect x="148" y="205" width="40" height="14" fill="#b5502f" opacity="0.55" stroke="#b5502f" stroke-width="1.5"/>
+    <text x="230" y="216" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="600" fill="#b5502f" text-anchor="start">cricothyroid membrane</text>
+    <!-- cricoid cartilage -->
+    <path d="M146,219 Q168,236 190,219" fill="none" stroke="#2f7a5c" stroke-width="2.5"/>
+    <text x="232" y="236" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">cricoid cartilage</text>
+    <!-- trachea -->
+    <path d="M150,236 L150,340 M186,236 L186,340" stroke="#5b6b64" stroke-width="1.3" opacity="0.6"/>
+    <text x="168" y="355" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">trachea</text>
+    <!-- sternal notch -->
+    <text x="168" y="372" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">↓ to sternal notch</text>
+    
+    <rect x="20" y="400" width="360" height="60" rx="8" fill="none" stroke="#5b6b64" stroke-width="1"/>
+    <text x="35" y="420" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">Landmark: palpate laryngeal prominence → slide finger</text>
+    <text x="35" y="436" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">caudad to the first soft depression = cricothyroid</text>
+    <text x="35" y="452" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">membrane. Site for surgical/needle cricothyroidotomy.</text>
+    
+</svg>
+        <p class="cap">Cricothyroid membrane landmarks (gross external anatomy)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Tension Pneumothorax &amp; Needle Decompression</h3><span class="tag">Live controversy</span></div>
+    <div class="grid cols-2">
+      <div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 550" width="400" height="550">
+<rect x="0" y="0" width="400" height="550" fill="#f4efe3"/>
+
+    <path d="M150,60 C90,70 70,160 80,260 C88,330 110,400 150,430 L250,430
+             C290,400 312,330 320,260 C330,160 310,70 250,60
+             C230,40 170,40 150,60 Z" fill="none" stroke="#1f2a27" stroke-width="3"/>
+    <!-- clavicles -->
+    <path d="M110,72 Q150,55 190,68" fill="none" stroke="#5b6b64" stroke-width="2.5"/>
+    <path d="M210,68 Q250,55 290,72" fill="none" stroke="#5b6b64" stroke-width="2.5"/>
+    <!-- sternum -->
+    <line x1="200" y1="90" x2="200" y2="330" stroke="#5b6b64" stroke-width="2" stroke-dasharray="2,5"/>
+    <!-- ribs (schematic) -->
+    <path d="M110,95 Q200,110 290,95" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,123 Q200,138 290,123" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,151 Q200,166 290,151" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,179 Q200,194 290,179" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,207 Q200,222 290,207" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,235 Q200,250 290,235" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,263 Q200,278 290,263" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,291 Q200,306 290,291" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/><path d="M110,319 Q200,334 290,319" fill="none" stroke="#5b6b64" stroke-width="1.3" opacity="0.55"/>
+    <!-- nipple line -->
+    <line x1="80" y1="230" x2="320" y2="230" stroke="#a9822f" stroke-width="1.3" stroke-dasharray="4,4"/>
+    <text x="335" y="234" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">nipple line (~4th-5th ICS)</text>
+    <!-- midclavicular line marker (right side, patient's left on image) -->
+    <line x1="150" y1="70" x2="150" y2="420" stroke="#2f7a5c" stroke-width="1" stroke-dasharray="3,4" opacity="0.6"/>
+    <!-- Site A: 2nd ICS MCL -->
+    <circle cx="150" cy="122" r="9" fill="#b5502f" opacity="0.9"/>
+    <line x1="159" y1="122" x2="210" y2="95" stroke="#b5502f" stroke-width="1.5"/>
+    <text x="215" y="92" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#b5502f" text-anchor="start">A</text>
+    <!-- Site B: 4th/5th ICS AAL -->
+    <circle cx="94" cy="232" r="9" fill="#2f7a5c" opacity="0.9"/>
+    <line x1="94" y1="241" x2="60" y2="290" stroke="#2f7a5c" stroke-width="1.5"/>
+    <text x="58" y="305" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#2f7a5c" text-anchor="middle">B</text>
+    <!-- anterior axillary line -->
+    <line x1="94" y1="90" x2="94" y2="420" stroke="#2f7a5c" stroke-width="1" stroke-dasharray="3,4" opacity="0.5"/>
+    <text x="94" y="445" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">ant. axillary line</text>
+    <text x="150" y="445" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">midclavicular line</text>
+    
+    <rect x="20" y="470" width="360" height="66" rx="8" fill="none" stroke="#5b6b64" stroke-width="1"/>
+    <text x="35" y="490" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#b5502f" text-anchor="start">A</text>
+    <text x="50" y="490" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">2nd ICS, midclavicular line - traditional site</text>
+    <text x="35" y="512" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#2f7a5c" text-anchor="start">B</text>
+    <text x="50" y="512" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">4th/5th ICS, anterior axillary line - ATLS 10th ed. preferred</text>
+    <text x="35" y="530" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">Needle length matters more than exact site -- confirm chest wall thickness</text>
+    
+</svg>
+        <p class="cap">Site A (2nd ICS-MCL, traditional) vs Site B (4th/5th ICS-AAL, ATLS 10th ed.)</p>
+      </div>
+      <div class="card accent-c">
+        <h4>Diagnosis</h4>
+        <ul>
+          <li>Clinical diagnosis in the crashing patient: hypotension, absent/decreased unilateral breath sounds, tracheal deviation (late, unreliable sign), distended neck veins, hyperresonance, hypoxia, rising peak pressures if ventilated.</li>
+          <li>Don't wait for imaging in the peri-arrest patient &mdash; needle/finger decompress on exam findings.</li>
+        </ul>
+        <div class="callout controversy">
+          <strong>Where the evidence actually stands</strong>
+          ATLS 10th edition moved the preferred site from the 2nd ICS-midclavicular line to the 4th/5th ICS-anterior axillary line, based on CT/cadaveric data showing thinner chest wall there in many patients. But a 2025 meta-analysis of &gt;8,000 patients found needle <em>length</em> was the dominant driver of failure (each added cm of needle length reduced failure by ~7.8%), not site alone &mdash; and injury risk to adjacent structures was actually higher at the lateral sites in some series. In obese patients specifically, the 2nd ICS-MCL can have a <em>thinner</em> chest wall than the lateral sites. European Trauma Course guidelines still favor the 2nd ICS-MCL. <strong>Practical takeaway for teaching:</strong> know your institution's equipment (standard angiocatheter is often too short for either site in larger patients), and don't present either site as unambiguously superior &mdash; it's an active debate, not settled science.
+          <p class="pmid">ATLS 10th ed.; 2025 meta-analysis (ResearchGate preprint); PMID 26488319</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Other Immediate Chest Threats</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-a">
+        <h4>Open pneumothorax</h4>
+        <p>"Sucking chest wound" &mdash; apply a vented (three-sided) occlusive dressing to prevent tension physiology from a fully sealed dressing; definitive management is tube thoracostomy (placed remote from the wound) plus wound closure.</p>
+      </div>
+      <div class="card accent-a">
+        <h4>Flail chest</h4>
+        <p>&ge;3 contiguous ribs fractured in &ge;2 places &rarr; paradoxical chest wall motion. The pulmonary contusion underneath the flail segment, not the flail motion itself, drives most of the morbidity. Priorities: analgesia (regional blocks reduce splinting/pneumonia risk), pulmonary toilet, judicious fluids (contused lung is fluid-sensitive), consider surgical rib fixation in selected patients.</p>
+      </div>
+      <div class="card accent-a">
+        <h4>Massive hemothorax</h4>
+        <p>&ge;1500mL immediate output or &ge;200mL/hr for 2&ndash;4h via chest tube &rarr; operative/IR intervention, not just more tubes. Autotransfusion devices can be used where available.</p>
+      </div>
+      <div class="card accent-a">
+        <h4>Cardiac tamponade</h4>
+        <p>Beck's triad (hypotension, JVD, muffled heart sounds) is insensitive &mdash; subxiphoid FAST view is the fastest reliable bedside tool. Pericardiocentesis is temporizing; definitive management is thoracotomy/sternotomy for pericardial drainage and source control, especially in penetrating trauma.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Tube Thoracostomy &amp; the Triangle of Safety</h3></div>
+    <div class="grid cols-2">
+      <div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 570" width="400" height="570">
+<rect x="0" y="0" width="400" height="570" fill="#f4efe3"/>
+
+    <path d="M90,50 C60,90 55,200 70,320 C80,390 110,440 150,450 L260,450
+             C300,430 320,360 320,280 C322,180 300,90 260,55
+             C230,30 130,30 90,50 Z" fill="none" stroke="#1f2a27" stroke-width="3"/>
+    <!-- axilla -->
+    <ellipse cx="150" cy="90" rx="22" ry="16" fill="none" stroke="#5b6b64" stroke-width="1.5" opacity="0.6"/>
+    <text x="150" y="68" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">axilla</text>
+    <!-- nipple line -->
+    <line x1="70" y1="235" x2="322" y2="235" stroke="#a9822f" stroke-width="1.3" stroke-dasharray="4,4"/>
+    <text x="340" y="240" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">nipple line (5th ICS)</text>
+    <!-- lat dorsi (posterior border) -->
+    <path d="M270,90 C300,160 305,260 280,360" fill="none" stroke="#2f7a5c" stroke-width="2.5"/>
+    <text x="320" y="300" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">lat. dorsi</text>
+    <!-- pec major (anterior border) -->
+    <path d="M130,110 C110,180 108,260 130,340" fill="none" stroke="#2f7a5c" stroke-width="2.5"/>
+    <text x="85" y="300" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="end">pec. major</text>
+    <!-- triangle of safety shaded -->
+    <path d="M130,235 L280,235 L270,120 Z" fill="#b5502f" opacity="0.28" stroke="#b5502f" stroke-width="2"/>
+    <text x="200" y="195" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#b5502f" text-anchor="middle">Triangle of Safety</text>
+    <!-- insertion point -->
+    <circle cx="200" cy="215" r="8" fill="#b5502f"/>
+    
+    <rect x="20" y="470" width="360" height="86" rx="8" fill="none" stroke="#5b6b64" stroke-width="1"/>
+    <text x="35" y="490" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">Borders: lateral edge of pectoralis major (ant.),</text>
+    <text x="35" y="506" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">lateral edge of latissimus dorsi (post.), a horizontal</text>
+    <text x="35" y="522" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">line at the nipple/5th ICS level (inf.), base of axilla</text>
+    <text x="35" y="538" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">(sup.). Insert just above the rib to avoid the NV bundle.</text>
+    
+</svg>
+        <p class="cap">Triangle of safety: pec major (ant.), lat dorsi (post.), 5th ICS/nipple line (inf.)</p>
+      </div>
+      <div class="card accent-b">
+        <h4>Technique pearls</h4>
+        <ul>
+          <li>Insert just above the rib margin (neurovascular bundle runs along the inferior rib edge).</li>
+          <li><strong>Finger thoracostomy</strong> (blunt digital exploration through the incision before tube placement) confirms pleural entry and is itself therapeutic in the peri-arrest patient &mdash; part of the TCA priority stack (Domain 3) precisely because it treats tension physiology and tamponade-adjacent pathology in one motion.</li>
+          <li>Confirm placement: fogging in the tube, respirophasic swing, chest X-ray, resolution of exam findings.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Resuscitative Thoracotomy</h3><span class="tag">EAST vs WTA</span></div>
+    <div class="card accent-d">
+      <table class="dtable">
+        <tr><th>Scenario</th><th>EAST (2015 PMG)</th><th>WTA</th></tr>
+        <tr><td>Penetrating thoracic, pulseless + signs of life</td><td>Strong recommendation for RT</td><td>&lt;15 min CPR</td></tr>
+        <tr><td>Penetrating thoracic, pulseless, no signs of life</td><td>Conditional</td><td>&lt;15 min CPR</td></tr>
+        <tr><td>Penetrating extrathoracic, pulseless &plusmn; SOL</td><td>Conditional</td><td>Neck/extremity: &lt;5 min CPR</td></tr>
+        <tr><td>Blunt trauma, pulseless + signs of life</td><td>Conditional</td><td>&lt;10 min CPR</td></tr>
+        <tr><td>Blunt trauma, no signs of life</td><td>Not recommended</td><td>Not recommended</td></tr>
+      </table>
+      <p><strong>Signs of life:</strong> pupillary response, spontaneous ventilation, carotid pulse, measurable BP, extremity movement, organized cardiac electrical activity.</p>
+      <div class="callout info">
+        <strong>Survival numbers to know</strong>
+        Penetrating thoracic injury with signs of life on ED arrival: survival ~35% in some series &mdash; the single best-performing indication. Penetrating without signs of life: ~2.9% survival. Blunt trauma with signs of life: ~4.6% survival, and neurologically intact survival is rare (~2.4% of that already-small group). Blunt trauma thoracotomy after prolonged CPR approaches futility &mdash; the "4 E's" (expertise, equipment, environment, elapsed time, generally &lt;10min) from the European Resuscitation Council are a useful gut-check before committing.
+        <p class="pmid">EAST 2015 Practice Management Guideline; PMID from EAST/WTA comparative series (PMC11026983)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="domain" data-dom="d3">
+  <div class="domain-head">
+    <h2>3 &middot; Traumatic Cardiac Arrest &amp; Damage Control Resuscitation</h2>
+    <p>Why TCA is not medical arrest, the epinephrine controversy, whole blood, and the current joint position statement.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>The Tank / Pipes / Pump Framework</h3></div>
+    <div class="card accent-a">
+      <p>Medical arrest is overwhelmingly a <strong>pump</strong> problem (VF/VT, ~70&ndash;80%). Traumatic arrest is overwhelmingly an <strong>empty tank or blocked pipes</strong> problem &mdash; the heart itself is rarely primarily diseased.</p>
+      <table class="dtable">
+        <tr><th>Traumatic arrest etiology</th><th>Approx. frequency</th></tr>
+        <tr><td>Hemorrhage (empty tank)</td><td class="num">~48%</td></tr>
+        <tr><td>Tension pneumothorax (blocked pipes)</td><td class="num">~13%</td></tr>
+        <tr><td>Cardiac tamponade (blocked pipes)</td><td class="num">~13%</td></tr>
+        <tr><td>Hypoxia, TBI, rare primary cardiac causes</td><td class="num">remainder</td></tr>
+      </table>
+      <p class="small">This is why the TCA algorithm inverts standard ACLS priorities: hemorrhage control and decompression come before compressions and epinephrine, because compressing an empty tank moves no volume.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>The TCA Priority Stack</h3><span class="tag">Sequenced algorithm</span></div>
+    <div class="algo">
+      <ol>
+        <li><strong>Hemorrhage control</strong> &mdash; tourniquets, wound packing, surgical control.</li>
+        <li><strong>Bilateral finger thoracostomies</strong> if chest trauma is suspected &mdash; treats tension pneumothorax and tamponade-adjacent pathology simultaneously.</li>
+        <li><strong>Whole blood</strong> (low-titer O whole blood preferred) or 1:1:1 PRBC:FFP:platelets + calcium &mdash; blood restores oxygen-carrying capacity and clotting factors; compressions do not.</li>
+        <li><strong>EFAST</strong> &mdash; tamponade? free fluid? cardiac standstill? Views in &lt;10 seconds; never delay hemorrhage control or thoracostomy to get them.</li>
+        <li><strong>Airway/ventilation.</strong></li>
+        <li><strong>Compressions</strong> &mdash; secondary priority; far more effective once volume is restored (compressing an empty ventricle moves nothing).</li>
+        <li><strong>TXA</strong> 1g IV if &lt;3h from injury.</li>
+        <li><strong>Resuscitative thoracotomy</strong> if penetrating mechanism and &lt;15 minutes from loss of vitals (see Domain 2 for full EAST/WTA criteria).</li>
+        <li><strong>Epinephrine</strong> &mdash; do NOT give routinely, and never before other life-saving interventions.</li>
+        <li><strong>Defibrillation</strong> &mdash; only if VF/pulseless VT is the rhythm; think commotio cordis.</li>
+      </ol>
+      <p class="pmid">Consolidated from PMID 40068140, 31077754, 31317856 and the 2025 NAEMSP/ACS-COT/ACEP joint statement.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>The Epinephrine Controversy</h3><span class="tag">Verified against primary sources</span></div>
+    <div class="grid cols-2">
+      <div class="card accent-d">
+        <h4>Against routine epi</h4>
+        <p>Witt et al., <em>Prehospital Emergency Care</em>, Feb 2025 (multicenter, 7 Level I/II centers, 2011&ndash;2017) &mdash; ~1,960 patients with prehospital TCA.</p>
+        <ul>
+          <li><strong>Blunt trauma:</strong> 3% survival with epi vs. 16% without (p&lt;0.001).</li>
+          <li><strong>Penetrating:</strong> no significant difference (4% vs. 6%, p=0.19).</li>
+          <li>Adjusted: epi associated with 67% lower survival overall, 80% lower in blunt trauma specifically (no significant difference in penetrating).</li>
+        </ul>
+        <p class="verify">Note for teaching: the overall/blunt-specific numbers are easy to conflate &mdash; the "3% vs 16%" figure is the blunt-trauma subgroup, not the whole cohort. Cite the subgroup you mean.</p>
+      </div>
+      <div class="card accent-a">
+        <h4>For epi (or at least, "it's complicated")</h4>
+        <p>Contrasting registry data (e.g., Korean and Japanese nationwide OHCA registries) have found prehospital epinephrine associated with <strong>increased prehospital ROSC</strong> even when overall survival benefit is unclear or absent &mdash; consistent across several TCA cohorts internationally.</p>
+        <p class="small">Reconciling this: epi reliably raises perfusion pressure enough to generate ROSC, but in an empty, injured circulatory system that hasn't had its volume or obstruction addressed, that pressure may do more harm than good (afterload against unrepaired vasculature, arrhythmogenic risk, diverting attention from definitive hemorrhage control).</p>
+        <p class="verify">I could not independently verify the specific "22,105-patient Korean registry, aOR 1.38/3.63" citation referenced in some derivative slide decks &mdash; confirm that exact citation before using it in course materials.</p>
+      </div>
+    </div>
+    <div class="callout info">
+      <strong>The governing statement (verified, current as of this writing)</strong>
+      NAEMSP, ACS-COT, and ACEP's 2025 joint position statement on prehospital management of traumatic out-of-hospital circulatory arrest (Annals of Emergency Medicine, March 2025): epinephrine should not be routinely used, and if used, should not be administered before other life-saving interventions. This is the single most citable, current source for teaching this topic.
+      <p class="pmid">PMID 39984237; Annals of Emergency Medicine 85(3):e25-e39</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>EFAST Timing &amp; the POCUS Trap</h3></div>
+    <div class="card accent-c">
+      <p>POCUS during arrest is associated with longer compression pauses, longer overall resuscitations, and more downstream interventions &mdash; without a proven outcome benefit. The 2025 joint statement is explicit: cardiac monitoring and POCUS should occur <em>after</em> indicated life-saving interventions, not before or during them.</p>
+      <ul>
+        <li><strong>Do:</strong> subxiphoid view for tamponade (if positive, moves you toward thoracotomy); confirm cardiac standstill for prognostication after LSIs; keep views under 10 seconds; revisit after ROSC/LSIs are complete.</li>
+        <li><strong>Don't:</strong> delay thoracostomy or blood administration to scan; pause compressions &gt;10 seconds for the probe.</li>
+      </ul>
+      <p class="pmid">PMID 40068140; 2025 NAEMSP/ACS-COT/ACEP joint statement.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Whole Blood, Massive Transfusion &amp; Calcium</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-d">
+        <h4>Why not crystalloid</h4>
+        <p>Normal saline in a bleeding patient: no oxygen-carrying capacity, dilutes remaining clotting factors and platelets, is room temperature (worsens hypothermia), and its own chemistry (pH ~5.5, 154 mEq/L chloride) drives hyperchloremic acidosis. All three accelerate the lethal triad: hypothermia, acidosis, coagulopathy.</p>
+        <p><strong>Whole blood or 1:1:1 fixes the tank <em>and</em> its contents</strong> &mdash; crystalloid only fills the tank with the wrong material.</p>
+      </div>
+      <div class="card accent-a">
+        <h4>Calcium repletion</h4>
+        <p>Citrate anticoagulant in stored blood products chelates ionized calcium &rarr; decreased myocardial contractility &rarr; decreased cardiac output &mdash; the opposite of the goal in a resuscitation.</p>
+        <ul>
+          <li>Empiric: 1g CaCl<sub>2</sub> (or ~3g calcium gluconate) per ~2 units of blood product transfused.</li>
+          <li>Ideally guided by iSTAT/point-of-care ionized calcium, targeting &gt;1.0&ndash;1.2 mmol/L.</li>
+          <li>CaCl<sub>2</sub> delivers ~3x the elemental calcium of an equal volume of calcium gluconate and is preferred through central/large-bore access in active resuscitation.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout controversy">
+      <strong>Whole blood: strong trend, evolving RCT evidence</strong>
+      Civilian low-titer O whole blood (LTOWB) programs have expanded rapidly, extrapolating from military experience and a growing body of retrospective/observational civilian data associating whole blood with improved 24-hour and in-hospital survival compared with component therapy. Prospective RCT data in civilian trauma is still maturing relative to the strength of the retrospective signal &mdash; teach whole blood as the current best-practice direction with strong observational support, not yet as an unambiguous, fully RCT-proven mortality benefit in every population.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>TXA</h3></div>
+    <div class="card accent-b">
+      <p><strong>1g IV over 10 minutes, within 3 hours of injury</strong>, followed by a 1g infusion over 8 hours in the original CRASH-2 protocol.</p>
+      <ul>
+        <li>Benefit is time-critical: CRASH-2 and subsequent analyses show mortality benefit shrinks and may reverse toward harm the later it's given past the 3-hour window &mdash; this is not a "give it whenever you remember" drug.</li>
+        <li>Reduces death from bleeding without a significant increase in thrombotic events in the trial population.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>The Exception: Commotio Cordis</h3><span class="tag">Verified</span></div>
+    <div class="card accent-e">
+      <p>Blunt, low-energy chest impact during the vulnerable T-wave upstroke (a ~20&ndash;40ms window) &rarr; primary VF. Classic mechanisms: baseball, hockey puck, lacrosse ball, other direct precordial impact (e.g., the Damar Hamlin case).</p>
+      <p>Unlike typical TCA, the tank is full and the pipes are open &mdash; this is genuinely a pump problem, so it gets <strong>standard ACLS</strong>: CPR, early defibrillation, epinephrine per protocol.</p>
+      <div class="callout info">
+        <strong>Verified survival data</strong>
+        US Commotio Cordis Registry data show survival has climbed from ~10% (1970&ndash;1993) to ~34% (1994&ndash;2012) to <strong>58%</strong> in the most recent cohort (2006&ndash;2012 data), driven almost entirely by time-to-resuscitation and time-to-defibrillation &mdash; 40% survival when CPR starts &lt;3 minutes vs. 5% when delayed beyond 3 minutes. AED-treated cases show a similarly large survival advantage over non-AED cases in registry data.
+        <p class="pmid">PMID 37495440 (Heart Rhythm 2013, Maron et al.); AHA newsroom statement 2023</p>
+      </div>
+      <p><strong>Clinical rule:</strong> trauma patient + VF on the monitor + a mechanism consistent with a precordial blow &rarr; think commotio cordis &rarr; defibrillate, don't withhold shock because "it's a trauma patient."</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="domain" data-dom="d4">
+  <div class="domain-head">
+    <h2>4 &middot; Adult BLS/ACLS Integration in Trauma</h2>
+    <p>Where standard resuscitation science still applies to a trauma patient, and where it doesn't.</p>
+  </div>
+
+  <div class="callout warn">
+    <strong>2025 AHA Guidelines note</strong>
+    The AHA released a comprehensive update to the CPR/ECC guidelines on October 22, 2025 &mdash; the first full update since 2020. Core adult CPR quality targets are unchanged from 2020, but a few things moved: the four previously separate Chains of Survival (adult/pediatric, in-hospital/out-of-hospital) have been consolidated into a single unified 6-link chain, mechanical CPR devices are no longer recommended for routine use, and chest compression fraction is now a required reported metric on course rosters. Verify current specifics against the published 2025 Circulation guideline documents before teaching, since implementation details continue to roll out.
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>High-Quality CPR Metrics (Adult)</h3></div>
+    <div class="card accent-a">
+      <table class="dtable">
+        <tr><th>Parameter</th><th>Target</th></tr>
+        <tr><td>Rate</td><td class="num">100&ndash;120/min</td></tr>
+        <tr><td>Depth</td><td class="num">2&ndash;2.4 in (5&ndash;6 cm) &mdash; avoid exceeding 2.4 in</td></tr>
+        <tr><td>Recoil</td><td>Full chest recoil between compressions; avoid leaning</td></tr>
+        <tr><td>Compression fraction</td><td class="num">Maximize; minimize pauses to &lt;10 sec</td></tr>
+        <tr><td>Ventilation (advanced airway in place)</td><td class="num">~1 breath every 6 sec (~10/min); avoid hyperventilation</td></tr>
+      </table>
+      <p class="small">Depth &gt;2.4in is associated with increased injury without added benefit &mdash; this is a genuine ceiling, not just a floor of "at least 2 inches."</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>When Standard ACLS Applies vs. When It Doesn't</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-a">
+        <h4>Standard ACLS/BLS applies</h4>
+        <ul>
+          <li>Etiology of arrest is unclear or clearly medical (no signs of life-threatening trauma) &mdash; the 2025 joint statement explicitly says treat as medical arrest with standard BLS/ACLS in this scenario.</li>
+          <li>Commotio cordis (Domain 3) &mdash; genuine primary VF, gets CPR + early defibrillation + epi per protocol.</li>
+          <li>Hypothermic arrest &mdash; prolonged/modified resuscitation, "not dead until warm and dead," limited defibrillation attempts below certain core temperatures pending rewarming.</li>
+          <li>Electrocution/lightning injury &mdash; can cause primary VF or asystole from the electrical insult itself; treat per standard ACLS in addition to trauma survey for associated injuries (falls, burns).</li>
+        </ul>
+      </div>
+      <div class="card accent-d">
+        <h4>Standard ACLS is modified/de-prioritized</h4>
+        <ul>
+          <li>Confirmed traumatic mechanism with likely hemorrhagic/obstructive etiology &mdash; TCA priority stack (Domain 3) takes over: hemorrhage control, thoracostomy, blood products before compressions/epi.</li>
+          <li>Compressions are explicitly secondary in hypovolemic TCA &mdash; they move negligible volume against an empty ventricle until preload is restored.</li>
+          <li>Epinephrine should not be given routinely or before other LSIs in TCA (Domain 3).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Special Circumstances</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-e">
+        <h4>Pregnancy</h4>
+        <ul>
+          <li>Manual left uterine displacement (LUD) or left lateral tilt during compressions once the uterus is palpable above the umbilicus (roughly &ge;20 weeks) to relieve aortocaval compression.</li>
+          <li>Perimortem cesarean delivery (resuscitative hysterotomy) considered at ~4 minutes of maternal arrest without ROSC if the fundus is at/above the umbilicus &mdash; goal delivery by ~5 minutes; benefits both maternal (relieves aortocaval compression, improves venous return/CPR efficacy) and fetal outcomes.</li>
+          <li>All standard trauma priorities (hemorrhage control, airway, chest decompression) still apply and are not deferred for the pregnancy itself.</li>
+        </ul>
+      </div>
+      <div class="card accent-b">
+        <h4>Opioid-associated arrest</h4>
+        <ul>
+          <li>If clearly respiratory-drive in origin (not yet full arrest), naloxone plus ventilatory support; once in cardiac arrest, standard high-quality CPR/ACLS take priority over naloxone administration.</li>
+          <li>Trauma patients with concomitant intoxication are common &mdash; don't let a presumed overdose distract from a full trauma survey, and vice versa.</li>
+        </ul>
+      </div>
+      <div class="card accent-c">
+        <h4>Hypothermia</h4>
+        <ul>
+          <li>Severely hypothermic myocardium may be refractory to defibrillation and pharmacologic therapy &mdash; many protocols limit defibrillation attempts and hold further epinephrine doses until core temp rises above a threshold, then resume standard dosing intervals.</li>
+          <li>Aggressive rewarming (active external/internal, ECMO where available) alongside continued CPR; "no one is dead until warm and dead" reflects real cases of intact neurologic survival after prolonged hypothermic arrest.</li>
+        </ul>
+      </div>
+      <div class="card accent-f">
+        <h4>Commotio cordis (cross-reference)</h4>
+        <p>Full detail in Domain 3 &mdash; the single most important "exception that proves the rule" for trauma providers: a trauma-mechanism arrest that is nonetheless a genuine primary dysrhythmia and should not be managed with the hemorrhage-first TCA algorithm.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="domain" data-dom="d5">
+  <div class="domain-head">
+    <h2>5 &middot; Head, Spine, Abdominal &amp; Pelvic Trauma</h2>
+    <p>TBI management, C-spine clearance decision rules, FAST, and pelvic hemorrhage control.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Traumatic Brain Injury</h3></div>
+    <div class="grid cols-2">
+      <div class="card accent-a">
+        <h4>Assessment</h4>
+        <table class="dtable">
+          <tr><th>GCS</th><th>Severity</th></tr>
+          <tr><td class="num">13&ndash;15</td><td>Mild</td></tr>
+          <tr><td class="num">9&ndash;12</td><td>Moderate</td></tr>
+          <tr><td class="num">&le;8</td><td>Severe &mdash; secure the airway</td></tr>
+        </table>
+        <p><strong>Signs of herniation:</strong> unilateral (or bilateral) blown pupil, decorticate/decerebrate posturing, Cushing's triad (hypertension, bradycardia, irregular respirations), rapidly falling GCS.</p>
+      </div>
+      <div class="card accent-d">
+        <h4>Management priorities</h4>
+        <ul>
+          <li>Avoid hypotension and hypoxia &mdash; both independently worsen secondary brain injury; a single episode of SBP &lt;90 is associated with increased mortality in TBI.</li>
+          <li>Maintain adequate cerebral perfusion pressure &mdash; permissive hypotension strategies used elsewhere in trauma are <em>not</em> applied when significant TBI is present.</li>
+          <li>Elevate head of bed ~30&deg; if C-spine cleared/stabilized and no contraindication.</li>
+          <li>Avoid routine prophylactic hyperventilation &mdash; reserve brief hyperventilation (target PaCO2 ~30&ndash;35) as a temporizing bridge specifically for acute herniation, not baseline management.</li>
+          <li><strong>Hyperosmolar therapy for suspected herniation/elevated ICP:</strong> mannitol 0.25&ndash;1 g/kg IV bolus, or hypertonic saline (e.g., 3% NS bolus, dosed per protocol) &mdash; choice often depends on volume status (hypertonic saline favored if hypotensive, since mannitol is an osmotic diuretic).</li>
+          <li>Reverse anticoagulation urgently in TBI on blood thinners &mdash; this is one of the highest-yield, most time-sensitive interventions in geriatric trauma.</li>
+        </ul>
+        <p class="verify">Verify specific hyperosmolar dosing and ICP-monitoring thresholds against current Brain Trauma Foundation guidelines and institutional neurosurgical protocol.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>C-Spine Clearance</h3><span class="tag">Decision rules</span></div>
+    <div class="grid cols-2">
+      <div class="card accent-b">
+        <h4>NEXUS criteria (all 5 must be met to clear clinically)</h4>
+        <ul>
+          <li>No posterior midline cervical tenderness</li>
+          <li>No focal neurologic deficit</li>
+          <li>Normal alertness</li>
+          <li>No intoxication</li>
+          <li>No distracting injury</li>
+        </ul>
+      </div>
+      <div class="card accent-b">
+        <h4>Canadian C-Spine Rule</h4>
+        <p>Generally more sensitive in appropriately selected populations; sequentially assesses high-risk factors mandating imaging (age &ge;65, dangerous mechanism, paresthesias in extremities), then low-risk factors permitting safe range-of-motion assessment (simple rear-end MVC, sitting position in ED, ambulatory at any time, delayed onset of neck pain, absence of midline tenderness), then active range of motion (able to rotate neck 45&deg; left and right).</p>
+        <p class="small">Not intended for GCS &lt;15, unstable vitals, age &lt;16, acute paralysis, known vertebral disease, or prior C-spine surgery.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Abdominal Trauma &amp; EFAST</h3></div>
+    <div class="grid cols-2">
+      <div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 610" width="400" height="610">
+<rect x="0" y="0" width="400" height="610" fill="#f4efe3"/>
+
+    <path d="M140,40 C90,55 70,150 78,260 C84,340 100,420 140,460 L260,460
+             C300,420 316,340 322,260 C330,150 310,55 260,40
+             C240,20 160,20 140,40 Z" fill="none" stroke="#1f2a27" stroke-width="3"/>
+    <line x1="200" y1="60" x2="200" y2="450" stroke="#5b6b64" stroke-width="1" stroke-dasharray="2,5" opacity="0.5"/>
+    <!-- 1. Subxiphoid / pericardial -->
+    <ellipse cx="200" cy="150" rx="26" ry="18" fill="#b5502f" opacity="0.5" stroke="#b5502f" stroke-width="1.5"/>
+    <text x="200" y="155" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">1</text>
+    <!-- 2. RUQ Morison's pouch -->
+    <ellipse cx="120" cy="235" rx="26" ry="18" fill="#2f7a5c" opacity="0.5" stroke="#2f7a5c" stroke-width="1.5"/>
+    <text x="120" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">2</text>
+    <!-- 3. LUQ splenorenal -->
+    <ellipse cx="280" cy="235" rx="26" ry="18" fill="#2f7a5c" opacity="0.5" stroke="#2f7a5c" stroke-width="1.5"/>
+    <text x="280" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">3</text>
+    <!-- 4. Suprapubic/pelvic -->
+    <ellipse cx="200" cy="360" rx="26" ry="18" fill="#a9822f" opacity="0.55" stroke="#a9822f" stroke-width="1.5"/>
+    <text x="200" y="365" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">4</text>
+    <!-- lung/thorax markers -->
+    <circle cx="130" cy="90" r="7" fill="none" stroke="#1f2a27" stroke-width="1.5"/>
+    <text x="130" y="75" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">± thoracic</text>
+    <circle cx="270" cy="90" r="7" fill="none" stroke="#1f2a27" stroke-width="1.5"/>
+    <text x="270" y="75" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">± thoracic</text>
+    
+    <rect x="20" y="490" width="360" height="96" rx="8" fill="none" stroke="#5b6b64" stroke-width="1"/>
+    <text x="35" y="508" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">1  Subxiphoid (pericardial) -- effusion / tamponade</text>
+    <text x="35" y="526" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">2  RUQ (hepatorenal / Morison's pouch)</text>
+    <text x="35" y="544" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">3  LUQ (splenorenal)</text>
+    <text x="35" y="562" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">4  Suprapubic / pelvic (retrovesical pouch)</text>
+    <text x="35" y="578" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">Extended: bilateral thoracic windows for pneumothorax</text>
+    
+</svg>
+        <p class="cap">Four core EFAST windows: subxiphoid, RUQ, LUQ, suprapubic (extended: bilateral thoracic)</p>
+      </div>
+      <div class="card accent-c">
+        <h4>Clinical correlation</h4>
+        <ul>
+          <li>FAST specificity for free fluid is high (often quoted &gt;99% in some series), but sensitivity is imperfect &mdash; a negative FAST does not exclude intra-abdominal injury, especially retroperitoneal or hollow viscus injury.</li>
+          <li><strong>Seatbelt sign</strong> (abdominal wall ecchymosis in a belt pattern) is an independent marker for increased risk of hollow viscus and mesenteric injury even with an initially benign exam/negative FAST &mdash; keep a lower threshold for serial exams/CT.</li>
+          <li>Hemodynamically unstable patient + positive FAST &rarr; goes to the OR, not the CT scanner.</li>
+          <li>Hemodynamically stable patient with concerning mechanism/exam &rarr; CT abdomen/pelvis with IV contrast remains the diagnostic standard even with a negative FAST.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h3>Pelvic Trauma</h3></div>
+    <div class="grid cols-2">
+      <div class="svgwrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 445" width="400" height="445">
+<rect x="0" y="0" width="400" height="445" fill="#f4efe3"/>
+
+    <path d="M110,50 L290,50 L300,140 C300,200 270,240 200,240
+             C130,240 100,200 100,140 Z" fill="none" stroke="#1f2a27" stroke-width="3"/>
+    <path d="M150,240 L140,340" stroke="#1f2a27" stroke-width="3" fill="none"/>
+    <path d="M250,240 L260,340" stroke="#1f2a27" stroke-width="3" fill="none"/>
+    <circle cx="150" cy="245" r="10" fill="none" stroke="#5b6b64" stroke-width="2"/>
+    <circle cx="250" cy="245" r="10" fill="none" stroke="#5b6b64" stroke-width="2"/>
+    <text x="150" y="265" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">greater trochanter</text>
+    <text x="250" y="265" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">greater trochanter</text>
+    <!-- binder band -->
+    <rect x="85" y="215" width="230" height="30" rx="10" fill="#b5502f" opacity="0.45" stroke="#b5502f" stroke-width="2"/>
+    <text x="200" y="234" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">BINDER</text>
+    <!-- symphysis marker -->
+    <line x1="200" y1="200" x2="200" y2="230" stroke="#2f7a5c" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="200" y="195" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="middle">symphysis pubis</text>
+    
+    <rect x="20" y="360" width="360" height="70" rx="8" fill="none" stroke="#5b6b64" stroke-width="1"/>
+    <text x="35" y="380" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">Level the binder over the greater trochanters, not</text>
+    <text x="35" y="396" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">the iliac crests -- closes the pelvic ring at the widest</text>
+    <text x="35" y="412" font-family="Inter, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b6b64" text-anchor="start">point of instability and reduces the pelvic volume.</text>
+    
+</svg>
+        <p class="cap">Pelvic binder placement at the greater trochanters, not the iliac crests</p>
+      </div>
+      <div class="card accent-d">
+        <h4>Why the binder position matters</h4>
+        <ul>
+          <li>A binder placed too high (over the iliac crests, the intuitive "belt" position) fails to close an open-book pelvic ring effectively &mdash; the greater trochanter level is where circumferential compression actually reduces pelvic volume and re-approximates the fracture.</li>
+          <li>Pelvic hemorrhage is frequently from the presacral venous plexus rather than a single arterial source &mdash; reducing pelvic volume itself is therapeutic, independent of any single vessel.</li>
+          <li>Unstable pelvic fracture with continued hemodynamic instability despite binder + transfusion &rarr; angioembolization (if arterial blush on CT) and/or REBOA Zone III as a bridge, with definitive orthopedic/surgical fixation to follow.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="atlasfoot">
+  Clinician-educator reference. Verify all dosing, thresholds, and guideline citations against current institutional protocol and primary literature before clinical or instructional use. Not a substitute for ATLS/BLS/ACLS course certification materials.
+</footer>
+<script>
+(function(){
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = window.localStorage ? null : null; } catch(e){ stored = null; }
+  // No localStorage usage per artifact rules; default to dark, in-memory only.
+  var current = 'dark';
+  function applyTheme(t){
+    current = t;
+    root.setAttribute('data-theme', t);
+    var btn = document.getElementById('themeToggle');
+    if(btn){ btn.textContent = t === 'dark' ? '☾ Dark' : '☀ Light'; }
+  }
+  window.addEventListener('DOMContentLoaded', function(){
+    applyTheme('dark');
+    var btn = document.getElementById('themeToggle');
+    if(btn){
+      btn.addEventListener('click', function(){
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+    }
+    var sel = document.getElementById('domSelect');
+    if(sel){
+      sel.addEventListener('change', function(){
+        showDomain(sel.value);
+      });
+      showDomain(sel.value);
+    }
+  });
+  function showDomain(id){
+    var doms = document.querySelectorAll('.domain');
+    doms.forEach(function(d){
+      d.classList.toggle('active', d.getAttribute('data-dom') === id);
+    });
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+})();
+
+</script>
+</body>
+</html>

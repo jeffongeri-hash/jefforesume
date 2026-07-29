@@ -280,6 +280,56 @@ const AllPosts = () => {
       tags: ["Cardiology", "Labs", "Clinical Education"]
     },
     {
+      title: "Cardiology Atlas Vol. 1a — Vascular & Ischemic Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Hypertension, lipids, coronary artery disease, and peripheral arterial disease — risk stratification, pharmacology, and management pathways.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol1a",
+      tags: ["Cardiology", "Vascular", "Ischemia", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Atlas Vol. 1b — Heart Failure & Structural/Inflammatory Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "HFrEF/HFpEF, cardiomyopathies, valvular disease, pericarditis, endocarditis, and pulmonary hypertension — diagnosis and treatment.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol1b",
+      tags: ["Cardiology", "Heart Failure", "Valvular Disease", "Clinical Education"]
+    },
+    {
+      title: "Adult Trauma & Resuscitation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Primary and secondary survey, massive transfusion, shock states, and damage-control resuscitation — with dosing and disposition pearls.",
+      image: businessPost,
+      slug: "adult-trauma-resuscitation-atlas",
+      tags: ["Trauma", "Critical Care", "Resuscitation", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "IBD clinical management, colorectal cancer screening, tumor markers and staging, viral hepatitis, and pediatric GI emergencies.",
+      image: businessPost,
+      slug: "gi-atlas-vol6",
+      tags: ["Gastroenterology", "IBD", "Oncology", "Hepatitis", "Clinical Education"]
+    },
+    {
+      title: "Ocular Atlas Vol. 2b — Massive Differential Diagnosis Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Eye complaints by chief complaint — red eye, vision loss, diplopia, anisocoria, ptosis, proptosis, and pediatric presentations.",
+      image: businessPost,
+      slug: "ocular-differential-atlas-vol2b",
+      tags: ["ENT", "Ocular", "Differential Diagnosis", "Clinical Education"]
+    },
+    {
       title: "GI Atlas — Differential, Pharmacology & IBD Reference",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -684,6 +734,9 @@ const AllPosts = () => {
     "fracture-disposition-atlas": "Musculoskeletal",
     // Cardiology (add)
     "cardiac-labs-atlas": "Cardiology",
+    "cardiology-atlas-vol1a": "Cardiology",
+    "cardiology-atlas-vol1b": "Cardiology",
+    "adult-trauma-resuscitation-atlas": "Pulmonary & Critical Care",
     // Hematology
     "hematology-hematopoiesis-atlas": "Hematology",
     "hematology-cbc-coag-labs-atlas": "Hematology",
@@ -702,8 +755,10 @@ const AllPosts = () => {
     // Gastroenterology
     "gi-atlas": "Gastroenterology",
     "gi-physical-exam-atlas": "Gastroenterology",
+    "gi-atlas-vol6": "Gastroenterology",
     // ENT
     "ent-atlas": "ENT",
+    "ocular-differential-atlas-vol2b": "ENT",
     // Dermatology (add)
     "derm-er-rash-atlas": "Dermatology",
   };
