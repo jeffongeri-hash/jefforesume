@@ -390,6 +390,86 @@ const AllPosts = () => {
       tags: ["Gastroenterology", "Symptoms", "Clinical Education"]
     },
     {
+      title: "Endocrine Atlas Vol. 1 — Classic Axes",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "HPA, HPT, HPG and pancreatic axes — hormone cascades, feedback loops, and clinical correlates.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol1",
+      tags: ["Endocrinology", "Physiology", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 2 — Adipokine, GI & Neuroendocrine Hormones",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Leptin, ghrelin, incretins, RAAS, catecholamines, EPO, posterior pituitary, GH/IGF-1, and melatonin.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol2",
+      tags: ["Endocrinology", "Physiology", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 3a — Corticosteroid Pharmacology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Steroid potency and equivalency, routes and PK, adrenal suppression, and taper protocols.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol3a",
+      tags: ["Endocrinology", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 3b — Testosterone & Estrogen HRT",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Testosterone and estrogen replacement — formulations, dosing, monitoring, and risk counseling.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol3b",
+      tags: ["Endocrinology", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 3c — Labs & Monitoring Reference",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Endocrine lab panels, dynamic testing, reference ranges, and monitoring intervals.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol3c",
+      tags: ["Endocrinology", "Labs", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 4 — Endocrine Emergencies",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "DKA, HHS, myxedema coma, thyroid storm, adrenal crisis, and severe electrolyte derangements.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol4",
+      tags: ["Endocrinology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 5 — Special Topics & Diagnostic Pitfalls",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Assay interference, sick euthyroid, incidentalomas, and the classic endocrine diagnostic traps.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol5",
+      tags: ["Endocrinology", "Diagnostics", "Clinical Education"]
+    },
+    {
+      title: "Endocrine Atlas Vol. 6 — Interaction Matrix & Clinical Scenarios",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Cross-axis hormone interactions, drug-endocrine interference, and integrated clinical scenarios.",
+      image: businessPost,
+      slug: "endocrine-atlas-vol6",
+      tags: ["Endocrinology", "Clinical Education"]
+    },
+    {
       title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -902,6 +982,15 @@ const AllPosts = () => {
     "alternative-analgesics-atlas": "Procedures",
     // Endocrine → grouped with Renal (dosing / metabolic)
     "insulin-dosing-atlas": "Renal",
+    // Endocrinology
+    "endocrine-atlas-vol1": "Endocrinology",
+    "endocrine-atlas-vol2": "Endocrinology",
+    "endocrine-atlas-vol3a": "Endocrinology",
+    "endocrine-atlas-vol3b": "Endocrinology",
+    "endocrine-atlas-vol3c": "Endocrinology",
+    "endocrine-atlas-vol4": "Endocrinology",
+    "endocrine-atlas-vol5": "Endocrinology",
+    "endocrine-atlas-vol6": "Endocrinology",
     // Gastroenterology
     "gi-atlas": "Gastroenterology",
     "gi-physical-exam-atlas": "Gastroenterology",
@@ -934,6 +1023,7 @@ const AllPosts = () => {
     "Pulmonary & Critical Care",
     "Renal",
     "Gastroenterology",
+    "Endocrinology",
     "Hematology",
     "Neurology",
     "Infectious Disease",
