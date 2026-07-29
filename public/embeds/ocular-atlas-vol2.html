@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocular Atlas Vol 2 — Ocular Trauma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --ocular: #8e7dd1;
+  --ocular-soft: rgba(142,125,209,.13);
+
+  /* Per-chief-complaint accent family (within ocular palette range) */
+  --c-red: #d4685f;        /* red eye */
+  --c-red-soft: rgba(212,104,95,.13);
+  --c-vision: #6ea8d8;     /* vision loss (painless/painful/gradual) */
+  --c-vision-soft: rgba(110,168,216,.13);
+  --c-diplopia: #d9b64e;   /* diplopia */
+  --c-diplopia-soft: rgba(217,182,78,.13);
+  --c-photo: #e0a458;      /* photophobia / flashes-floaters */
+  --c-photo-soft: rgba(224,164,88,.13);
+  --c-pupil: #9d7cd8;      /* anisocoria / pupil */
+  --c-pupil-soft: rgba(157,124,216,.13);
+  --c-lid: #5fb488;        /* ptosis / lid / periorbital */
+  --c-lid-soft: rgba(95,180,136,.14);
+  --c-orbit: #c77dc2;      /* proptosis / orbital mass */
+  --c-orbit-soft: rgba(199,125,194,.13);
+  --c-surface: #7fb0a3;    /* cornea / chemosis / FB / itch / tearing */
+  --c-surface-soft: rgba(127,176,163,.13);
+  --c-peds: #e08e8e;       /* pediatric / neonatal */
+  --c-peds-soft: rgba(224,142,142,.13);
+  --c-misc: #a9a9d1;       /* nystagmus / CL / post-procedural */
+  --c-misc-soft: rgba(169,169,209,.13);
+
+  --accent: var(--ocular);
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.65;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.brand{
+  font-family:var(--font-display); font-size:1.15rem; font-weight:600;
+  display:flex; align-items:baseline; gap:8px; white-space:nowrap;
+}
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; min-width:200px;}
+.navtrigger{
+  display:flex; align-items:center; gap:8px;
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  padding:9px 16px; border-radius:999px; font-family:var(--font-body); font-size:.85rem;
+  cursor:pointer; font-weight:500;
+}
+.navtrigger:hover{ border-color:var(--accent); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  width:min(720px, 92vw); max-height:70vh; overflow-y:auto;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:10px; display:none; z-index:200;
+  grid-template-columns: repeat(2, 1fr); gap:4px;
+}
+.navmenu.open{ display:grid; }
+.navmenu a{
+  display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:8px;
+  text-decoration:none; color:var(--ink-dim); font-size:.85rem; font-weight:500;
+}
+.navmenu a:hover{ background:var(--bg-elev-2); color:var(--ink); }
+.navmenu a .dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.navmenu .anat-toggle{
+  grid-column: 1 / -1; text-align:center; padding:8px; margin-top:4px; border-top:1px solid var(--line-soft);
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); cursor:pointer;
+}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:980px; margin:0 auto; padding:28px 20px 100px; }
+.hero{ padding:20px 0 32px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.hero h1{ font-size:1.9rem; }
+.hero p{ color:var(--ink-dim); font-size:1rem; max-width:640px; }
+.hero .stats{ display:flex; gap:20px; margin-top:16px; flex-wrap:wrap; }
+.hero .stat{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
+.hero .stat b{ display:block; font-family:var(--font-display); font-size:1.4rem; color:var(--accent); font-weight:600; text-transform:none; letter-spacing:0; }
+
+/* ---------- Complaint section ---------- */
+.complaint{ margin-bottom:56px; scroll-margin-top:90px; }
+.complaint-head{
+  display:flex; align-items:center; gap:14px; margin-bottom:6px; padding-bottom:14px;
+  border-bottom:2px solid var(--cc, var(--accent));
+}
+.complaint-head .icon-badge{
+  width:44px; height:44px; border-radius:10px; background:var(--cc-soft, var(--ocular-soft));
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.3rem;
+}
+.complaint-head h2{ font-size:1.5rem; margin:0; color: var(--cc, var(--accent)); }
+.complaint-sub{ color:var(--ink-dim); font-size:.92rem; margin:10px 0 22px; }
+.anat-tag{
+  display:inline-block; font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--ink-faint); background:var(--bg-elev-2); border:1px solid var(--line-soft);
+  padding:3px 9px; border-radius:6px; margin:2px 4px 2px 0;
+}
+
+/* ---------- Condition card ---------- */
+.cond-card{
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  margin-bottom:18px; overflow:hidden;
+}
+.cond-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:16px 20px; cursor:pointer; user-select:none;
+}
+.cond-header:hover{ background:var(--bg-elev-2); }
+.cond-title{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.cond-title h3{ font-size:1.08rem; margin:0; }
+.urgency-pill{
+  font-family:var(--font-mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 9px; border-radius:999px; font-weight:600; white-space:nowrap;
+}
+.urgency-critical{ background:var(--danger-soft); color:var(--danger); }
+.urgency-urgent{ background:var(--warn-soft); color:var(--warn); }
+.urgency-routine{ background:var(--good-soft); color:var(--good); }
+.chevron{ transition:transform .2s ease; color:var(--ink-faint); flex-shrink:0; }
+.cond-card.open .chevron{ transform:rotate(180deg); }
+
+.cond-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.cond-card.open .cond-body{ max-height:none; }
+.cond-body-inner{ padding:0 20px 22px; }
+
+.quickref-table{ width:100%; border-collapse:collapse; margin:14px 0 18px; font-size:.88rem; }
+.quickref-table th{
+  text-align:left; font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-faint); padding:6px 10px; border-bottom:1px solid var(--line);
+}
+.quickref-table td{ padding:9px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top; color:var(--ink-dim); }
+.quickref-table tr:last-child td{ border-bottom:none; }
+.quickref-table td.label-cell{ color:var(--ink); font-weight:600; white-space:nowrap; }
+
+.prose-block{ margin:16px 0; }
+.prose-block h4{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-faint); margin-bottom:8px;
+}
+.prose-block p{ color:var(--ink-dim); font-size:.93rem; margin-bottom:.7em; }
+
+.hallmark-box{
+  background:var(--cc-soft, var(--ocular-soft)); border-left:3px solid var(--cc, var(--accent));
+  border-radius:6px; padding:12px 16px; margin:14px 0;
+}
+.hallmark-box .hb-label{
+  font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--cc, var(--accent)); margin-bottom:5px; font-weight:700;
+}
+.hallmark-box p{ margin:0; font-size:.92rem; color:var(--ink); }
+
+.diagram-callout{
+  background:var(--bg-elev-2); border:1px solid var(--line); border-radius:8px;
+  padding:14px; margin:14px 0; text-align:center;
+}
+.diagram-callout svg{ max-width:100%; height:auto; }
+.diagram-caption{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); margin-top:8px; }
+
+.pearl{
+  display:flex; gap:10px; align-items:flex-start; background:var(--warn-soft);
+  border-radius:8px; padding:10px 14px; margin:12px 0; font-size:.88rem; color:var(--ink);
+}
+.pearl .pearl-icon{ flex-shrink:0; }
+
+/* ---------- Filter bar ---------- */
+.filterbar{
+  display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; padding:14px;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+}
+.filterbar input{
+  flex:1; min-width:180px; background:var(--bg-elev-2); border:1px solid var(--line); color:var(--ink);
+  padding:9px 14px; border-radius:8px; font-family:var(--font-body); font-size:.88rem;
+}
+.filter-chip{
+  font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev-2);
+  color:var(--ink-dim); cursor:pointer; white-space:nowrap;
+}
+.filter-chip.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+/* ---------- Anatomic index ---------- */
+.anat-index{ display:none; }
+.anat-index.active{ display:block; }
+.anat-group{ margin-bottom:30px; }
+.anat-group h3{ font-size:1.1rem; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:8px; }
+.anat-links{ display:flex; flex-wrap:wrap; gap:8px; }
+.anat-links a{
+  font-size:.82rem; color:var(--ink-dim); text-decoration:none; background:var(--bg-elev);
+  border:1px solid var(--line); padding:6px 12px; border-radius:8px;
+}
+.anat-links a:hover{ border-color:var(--accent); color:var(--ink); }
+
+.view-toggle{ display:flex; gap:8px; margin-bottom:24px; }
+.view-toggle button{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:8px 16px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.view-toggle button.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+.hidden{ display:none !important; }
+
+@media (max-width:640px){
+  .hero h1{ font-size:1.5rem; }
+  .navmenu{ grid-template-columns:1fr; width:94vw; }
+  .quickref-table{ font-size:.8rem; }
+  .cond-title h3{ font-size:1rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
+
+.v1-overview{ color:var(--ink-dim); font-size:1rem; margin-bottom:22px; max-width:720px; }
+.icon-badge-lg{ width:52px; height:52px; border-radius:12px; background:var(--cc-soft); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
+.v1-head{ display:flex; align-items:center; gap:16px; margin-bottom:8px; padding-bottom:16px; border-bottom:2px solid var(--cc); }
+.v1-head h2{ color:var(--cc); font-size:1.6rem; margin:0; }
+.vol1-condition{ margin-bottom:64px; scroll-margin-top:90px; }
+.v1-tabs{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.v1-tab{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:9px 15px; border-radius:8px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.v1-tab.active{ background:var(--cc); color:#12161c; border-color:var(--cc); font-weight:600; }
+.v1-panel{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+.v1-panel.hidden{ display:none; }
+.v1-panel p{ color:var(--ink-dim); font-size:.94rem; margin-bottom:12px; }
+.workup-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+.workup-col h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.workup-col ul{ margin:0; padding-left:18px; color:var(--ink-dim); font-size:.88rem; }
+.workup-col li{ margin-bottom:8px; }
+.algo-list{ display:flex; flex-direction:column; gap:16px; }
+.algo-step{ display:flex; gap:14px; }
+.algo-num{
+  width:28px; height:28px; border-radius:50%; background:var(--cc); color:#12161c; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:var(--font-mono); font-size:.85rem;
+}
+.algo-title{ font-weight:600; color:var(--ink); margin-bottom:4px; font-size:.95rem; }
+.algo-detail{ color:var(--ink-dim); font-size:.88rem; margin-bottom:6px !important; }
+.algo-timing{ font-family:var(--font-mono); font-size:.68rem; color:var(--warn); }
+.procedure-box{ margin-top:24px; padding:18px; background:var(--bg-elev-2); border-radius:10px; border:1px solid var(--line); }
+.procedure-title{ font-weight:600; color:var(--cc); margin-bottom:10px; }
+.procedure-steps{ color:var(--ink-dim); font-size:.88rem; padding-left:20px; margin-bottom:14px; }
+.procedure-steps li{ margin-bottom:6px; }
+.contra-box{ background:var(--danger-soft); border-radius:8px; padding:12px 16px; font-size:.85rem; color:var(--ink); }
+.contra-box ul{ margin:6px 0 0; padding-left:18px; }
+.drug-table th{ text-align:left; }
+.pearl-list, .complication-list, .evidence-list{ margin-bottom:18px; }
+.pearl-list h5, .complication-list h5, .evidence-list h5{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px;
+}
+.pearl-list ul, .complication-list ul, .evidence-list ul{ padding-left:18px; color:var(--ink-dim); font-size:.9rem; }
+.pearl-list li, .complication-list li, .evidence-list li{ margin-bottom:8px; }
+.fundus-box{ margin-top:6px; }
+.fundus-box h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.fundus-box p{ color:var(--ink-dim); font-size:.9rem; }
+
+/* Tools section */
+.tools-section{ margin-top:70px; padding-top:30px; border-top:2px solid var(--line); }
+.tool-card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-bottom:28px; }
+.tool-card h3{ color:var(--accent); margin-bottom:6px; }
+.tool-sub{ color:var(--ink-faint); font-size:.85rem; margin-bottom:20px; }
+.tool-row{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px; align-items:center; }
+.tool-row label{ font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:4px; }
+.tool-row select, .tool-row input{
+  background:var(--bg-elev-2); border:1px solid var(--line); color:var(--ink); padding:8px 12px; border-radius:8px; font-family:var(--font-body); font-size:.88rem;
+}
+.tool-btn{
+  background:var(--accent); color:#12161c; border:none; padding:9px 18px; border-radius:8px; font-weight:600; cursor:pointer; font-size:.85rem;
+}
+.tool-btn.secondary{ background:var(--bg-elev-2); color:var(--ink-dim); border:1px solid var(--line); }
+.result-box{ margin-top:16px; padding:16px; border-radius:8px; background:var(--bg-elev-2); border-left:3px solid var(--accent); }
+.result-box.danger{ border-left-color:var(--danger); background:var(--danger-soft); }
+.result-box.warn{ border-left-color:var(--warn); background:var(--warn-soft); }
+.result-box.good{ border-left-color:var(--good); background:var(--good-soft); }
+.result-title{ font-family:var(--font-mono); font-size:.85rem; font-weight:700; margin-bottom:6px; }
+.check-item{ display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border-radius:8px; background:var(--bg-elev-2); margin-bottom:8px; cursor:pointer; }
+.check-item input{ margin-top:3px; }
+.check-item.critical{ border-left:3px solid var(--danger); }
+.iop-log-row{ display:flex; gap:8px; margin-top:16px; }
+.ph-entry{ display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-elev-2); border-radius:6px; margin-bottom:6px; font-family:var(--font-mono); font-size:.82rem; }
+.ph-entry.stable{ border-left:3px solid var(--good); }
+.ph-entry.unstable{ border-left:3px solid var(--warn); }
+
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="brand">Ocular Atlas <span class="sub">Vol 2 &middot; Ocular Trauma</span></div>
+  <div class="navwrap">
+    <button class="navtrigger" onclick="document.getElementById('navmenu').classList.toggle('open')">
+      &#9776; Jump to section
+    </button>
+    <div class="navmenu" id="navmenu">
+      <a href="#hyphema"><span class="dot" style="background:var(--c-red)"></span>Hyphema</a><a href="#orbital-fracture"><span class="dot" style="background:var(--c-orbit)"></span>Blowout / Orbital Fractures</a><a href="#corneal-foreign-body"><span class="dot" style="background:var(--c-surface)"></span>Corneal / Intraocular Foreign Body</a><a href="#corneal-abrasion"><span class="dot" style="background:var(--c-surface)"></span>Corneal Abrasion</a><a href="#traumatic-iritis"><span class="dot" style="background:var(--c-pupil)"></span>Traumatic Iritis</a><a href="#lid-laceration"><span class="dot" style="background:var(--c-lid)"></span>Lid Lacerations (Including Canalicular Injury)</a><a href="#commotio-retinae"><span class="dot" style="background:var(--c-vision)"></span>Commotio Retinae (Berlin's Edema)</a><a href="#tools"><span class="dot" style="background:var(--accent)"></span>Interactive Tools</a>
+    </div>
+  </div>
+  <button class="themetoggle" onclick="toggleTheme()" id="themebtn">&#9789;</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Ocular Trauma</h1>
+    <p>Full management deep-dive for the seven core traumatic ocular emergencies: workup, treatment algorithm, drug dosing, procedural steps, disposition, risk factors, and fundoscopic findings.</p>
+    <div class="stats">
+      <div class="stat">Conditions<b>7</b></div>
+      <div class="stat">Interactive tools<b>2</b></div>
+      <div class="stat">Depth<b>Full deep-dive</b></div>
+    </div>
+  </div>
+
+  
+<section class="vol1-condition" id="hyphema" style="--cc:var(--c-red);--cc-soft:var(--c-red-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Hyphema</h2>
+  </div>
+  <p class="v1-overview">The grade you assign on day one matters less than what you do about rebleed risk over the next five days &mdash; that window, not the initial exam, is where most of the bad outcomes happen.</p>
+
+  <div class="v1-tabs" data-group="hyphema">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('hyphema','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('hyphema','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('hyphema','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('hyphema','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('hyphema','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('hyphema','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('hyphema','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="hyphema" data-panel="path">
+    <p>Blunt trauma compresses the globe anteroposteriorly while expanding it equatorially, shearing the small vessels of the iris root, ciliary body face, and anterior chamber angle. Blood layers in the anterior chamber under gravity. The original clot begins to lyse/retract around day 2&ndash;5, which is precisely when the highest risk of secondary (re-bleed) hemorrhage occurs &mdash; and a rebleed carries meaningfully worse prognosis than the original bleed, both because more blood is now present and because the fragile healing vessels are disrupted again.</p><p>Sickle cell hemoglobinopathy (disease OR trait) is the single most important host factor that changes management: sickled red blood cells clog the trabecular meshwork more readily than normal cells, so even modest IOP elevations that would be tolerated in another patient can cause optic nerve ischemia and central retinal artery occlusion at pressures that seem unremarkable on paper.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Blunt trauma: sports (ball sports, racquet sports), altercations/assault, airbag deployment, BB/pellet gun injuries</li><li>Sickle cell disease or sickle cell TRAIT (not just disease) &mdash; a critical and frequently under-recognized risk factor, particularly in patients of African descent, though trait status can occur in any ancestry and should not be assumed absent based on appearance</li><li>Anticoagulant or antiplatelet medication use, or an underlying bleeding diathesis (hemophilia, von Willebrand disease)</li><li>Intraocular surgery (postoperative hyphema) or neovascularization from chronic ischemic retinal disease (spontaneous/non-traumatic hyphema)</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Often difficult or impossible to visualize acutely if the hyphema is large, since blood in the anterior chamber blocks the view to the posterior segment. Once enough clearing has occurred (or via B-scan ultrasound if needed sooner), specifically look for other traumatic findings that commonly co-occur: commotio retinae, retinal tears/detachment, vitreous hemorrhage, and choroidal rupture &mdash; a hyphema is a marker of significant blunt force and should prompt a search for these associated injuries once view allows.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Precise mechanism and force of injury; time since injury.</li><li>Ask specifically about sickle cell disease or trait, and anticoagulant/antiplatelet medication use or known bleeding disorders &mdash; this changes the entire management plan.</li><li>Ancestry/ethnicity should prompt consideration of sickle cell screening but should never be used to assume trait status is absent; screen based on clinical suspicion and shared decision-making, not appearance alone.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, pupil exam (check for an associated traumatic mydriasis/iridodialysis), and grade the hyphema by estimated percentage of anterior chamber volume filled with layered blood (Grade I: <1/3, Grade II: 1/3&ndash;1/2, Grade III: >1/2, Grade IV: total/'eight-ball').</li><li>Tonometry &mdash; document the exact IOP.</li><li>Full slit lamp exam for associated findings: corneal blood staining (blood pigment infiltrating the cornea, generally only with prolonged total hyphema), lens subluxation, iridodialysis.</li><li>Defer gonioscopy and dilated fundus exam until after the acute high-rebleed-risk window (roughly the first 4&ndash;5 days) unless urgently needed, since the additional manipulation carries theoretical rebleed risk.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>Sickle cell prep/hemoglobin electrophoresis in patients where sickle hemoglobinopathy is a reasonable consideration &mdash; many ophthalmologists recommend this be considered broadly given how much it changes management, rather than restricted narrowly by presumed ancestry.</li><li>CT orbit if the mechanism or exam raises concern for an associated orbital fracture or open globe.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Shield and restrict activity</div>
+            <p class="algo-detail">Rigid eye shield (not a pressure patch), strict limitation of physical activity, head of bed elevated approximately 30 degrees to allow blood to layer inferiorly and away from the visual axis, and no reading (accommodation has been thought to stress already-injured vessels).</p>
+            <div class="algo-timing">&#9200; Immediately</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Control pain and nausea without platelet-affecting agents</div>
+            <p class="algo-detail">Use acetaminophen-based analgesia; specifically AVOID aspirin and NSAIDs, which impair platelet function and can worsen bleeding/rebleed risk. Treat nausea proactively, since vomiting raises IOP and can precipitate rebleeding.</p>
+            <div class="algo-timing">&#9200; Immediately</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Cycloplege for comfort</div>
+            <p class="algo-detail">A cycloplegic (e.g., cyclopentolate or homatropine) reduces ciliary spasm and photophobia-related discomfort.</p>
+            <div class="algo-timing">&#9200; Same visit</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Manage IOP if elevated, avoiding sickle-cell-unsafe agents</div>
+            <p class="algo-detail">Topical beta-blockers and alpha-agonists are generally safe. AVOID carbonic anhydrase inhibitors (acetazolamide, dorzolamide) in sickle cell disease or trait, since the resulting increase in aqueous humor acidity promotes further red blood cell sickling. Avoid hyperosmotics as first-line given limited evidence of benefit and volume-shift risk; reserve for refractory elevated IOP per ophthalmology guidance.</p>
+            <div class="algo-timing">&#9200; As needed, ongoing</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Do NOT routinely use antifibrinolytics</div>
+            <p class="algo-detail">Systemic or topical aminocaproic acid/tranexamic acid was historically used to reduce rebleed risk, but trial evidence has not shown a reduction in rebleeding rates or a faster time to resolution, and current guidance no longer routinely recommends them even in higher-risk patients (sickle cell, bleeding disorders). Reserve for selected high-risk cases per ophthalmology judgment rather than using by default.</p>
+            <div class="algo-timing">&#9200; N/A &mdash; a default-avoid, not a default-give</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Risk-stratify for admission vs. outpatient management</div>
+            <p class="algo-detail">Consider admission/close monitoring for: Grade III&ndash;IV hyphema, known sickle cell disease/trait, bleeding disorders, uncontrolled IOP, poor follow-up reliability or unsafe social situation, or inability to comply with activity restriction (notably young children). Otherwise, reliable patients with Grade I&ndash;II hyphema and normal IOP can often be managed as outpatients with daily ophthalmology follow-up through the highest-risk window.</p>
+            <div class="algo-timing">&#9200; At disposition decision</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Daily follow-up through the high-risk window</div>
+            <p class="algo-detail">Whether inpatient or outpatient, visual acuity, IOP, and hyphema size should be reassessed daily for at least the first 4&ndash;5 days, since this is the window in which secondary hemorrhage most often occurs.</p>
+            <div class="algo-timing">&#9200; Days 1&ndash;5 post-injury</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">8</div>
+          <div class="algo-content">
+            <div class="algo-title">Escalate to surgical evacuation if criteria are met</div>
+            <p class="algo-detail">Indications include: IOP &ge;50 mmHg for more than 5 days (or &ge;25 mmHg for more than 24 hours specifically in sickle cell disease/trait, given the lower ischemic threshold), early corneal blood staining, persistent large/total hyphema without adequate clearing, or continued active bleeding.</p>
+            <div class="algo-timing">&#9200; As criteria are met, typically after the initial 4-day trial of medical management</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Anterior Chamber Washout (performed by ophthalmology)</div>
+      <ol class="procedure-steps"><li>Reserved for eyes meeting surgical criteria: uncontrolled IOP despite maximal medical therapy, early corneal blood staining, or a persistent large/total hyphema.</li><li>Performed in the OR; the anterior chamber is irrigated to remove clot/blood, sometimes with additional maneuvers depending on findings (e.g., addressing an underlying cause of ongoing bleeding).</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>This is an ophthalmology-performed procedure; the ED's role is recognizing the indication and arranging timely surgical evaluation, not performing the washout.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Acetaminophen</td><td>Standard dosing</td><td>PO</td><td>Preferred analgesic; avoid aspirin/NSAIDs due to platelet effects</td></tr><tr><td class="label-cell">Cyclopentolate 1% or homatropine 5%</td><td>1 drop BID&ndash;TID</td><td>Topical</td><td>Cycloplegia for comfort</td></tr><tr><td class="label-cell">Timolol 0.5%</td><td>1 drop BID</td><td>Topical</td><td>First-line IOP-lowering agent, safe in sickle cell disease/trait</td></tr><tr><td class="label-cell">Brimonidine 0.1&ndash;0.2%</td><td>1 drop BID&ndash;TID</td><td>Topical</td><td>Additional IOP-lowering if needed; avoid in infants (not relevant to adult ED but worth noting)</td></tr><tr><td class="label-cell">Acetazolamide (AVOID in sickle cell disease/trait)</td><td>N/A for sickle patients</td><td>N/A</td><td>Contraindicated in sickle cell disease/trait &mdash; increases aqueous acidity, promotes sickling; safe to use in patients without sickle hemoglobinopathy if needed</td></tr><tr><td class="label-cell">Prednisolone acetate 1% (selected cases)</td><td>QID, per ophthalmology</td><td>Topical</td><td>For associated traumatic iritis/significant inflammation, ophthalmology-directed</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Admit or arrange daily close outpatient follow-up for Grade III&ndash;IV hyphema, known sickle hemoglobinopathy, bleeding disorders, uncontrolled IOP, or unreliable follow-up/activity restriction compliance (young children especially).</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer if ophthalmology follow-up cannot be arranged within the required daily-monitoring window during the high-risk period.</td></tr><tr><td class="label-cell">Follow-up</td><td>Daily visual acuity, IOP, and hyphema-size checks for at least the first 4&ndash;5 days; gonioscopy and dilated fundus exam deferred until this window has passed unless urgently indicated.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Secondary (re-bleed) hemorrhage, occurring in a meaningful minority of cases (reported around 30% in some series) and generally worsening prognosis</li><li>Elevated IOP / secondary glaucoma, especially in sickle hemoglobinopathy where even modest pressure elevations can cause optic nerve or central retinal artery ischemia</li><li>Corneal blood staining (uncommon, but more likely with prolonged total/Grade IV hyphema)</li><li>Angle recession glaucoma presenting months to years later, a distinct long-term entity from the acute IOP elevation</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="hyphema" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Ask about sickle cell trait, not just sickle cell disease &mdash; trait status alone has been shown to meaningfully increase the risk of secondary hemorrhage and pressure-related complications.</li><li>Antifibrinolytics have fallen out of routine use after trial evidence failed to show reduced rebleeding or faster resolution &mdash; don't reach for aminocaproic acid/tranexamic acid by default even in a 'high-risk-looking' hyphema.</li><li>Uncontrolled IOP thresholds differ by patient: &ge;50 mmHg for 5+ days in general, but only &ge;25 mmHg for 24+ hours is considered uncontrolled in sickle cell disease/trait &mdash; document which threshold applies to a given patient.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>A 2001 comprehensive review and subsequent controlled trials of antifibrinolytic therapy for traumatic hyphema failed to demonstrate reduced rebleeding rates or faster time to resolution, leading current guidance (StatPearls, EyeWiki) to no longer routinely recommend these agents even in higher-risk patients.</li><li>A pediatric cohort study found secondary hemorrhage in 14% of African-American children with traumatic hyphema versus 0% in white children in that series, but when sickle-cell-trait-positive children were excluded from the African-American group, the remaining sickle-trait-negative children (both groups combined) had no secondary hemorrhages &mdash; supporting sickle trait, not race per se, as the operative risk factor.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="orbital-fracture" style="--cc:var(--c-orbit);--cc-soft:var(--c-orbit-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129704;</div>
+    <h2>Blowout / Orbital Fractures</h2>
+  </div>
+  <p class="v1-overview">The pediatric 'white-eyed' variant is the one that gets missed: a nearly normal-looking eye with a surgical emergency underneath, because the bone is springy enough in children to trap muscle without leaving the bruising that would otherwise tip you off.</p>
+
+  <div class="v1-tabs" data-group="orbital-fracture">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('orbital-fracture','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('orbital-fracture','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('orbital-fracture','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('orbital-fracture','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('orbital-fracture','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('orbital-fracture','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('orbital-fracture','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="orbital-fracture" data-panel="path">
+    <p>Blunt force to the globe or orbital rim transmits pressure to the thinnest bony walls of the orbit (floor, over the maxillary sinus, and medial wall, over the ethmoid sinuses), causing them to fracture outward ('blow out'). Orbital soft tissue &mdash; fat, and sometimes the inferior or medial rectus muscle itself &mdash; can herniate into the adjacent sinus and become entrapped in the fracture line.</p><p>In children and adolescents, the orbital bone is more elastic and prone to a 'trapdoor' or 'greenstick' pattern: the bone flexes open, tissue herniates through, and the bone springs back to its original position, trapping the herniated tissue in a linear fracture that may be subtle or even invisible on some imaging cuts. Because there's often minimal associated soft tissue injury, external bruising/swelling can be minimal or absent &mdash; the 'white-eyed blowout fracture' (WEBOF) &mdash; which is exactly what makes it dangerous: the eye looks reassuring while a muscle is ischemic underneath.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Blunt facial trauma: sports (ball-to-orbit impact from baseballs, tennis balls, hockey pucks &mdash; objects roughly the diameter of the orbital rim transmit force efficiently into the orbit), altercations/assault, falls, motor vehicle collisions</li><li>Pediatric and adolescent age specifically for the white-eyed/trapdoor variant, due to greater bone elasticity</li><li>Male sex predominance in most trauma series</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not typically abnormal from the fracture itself; perform a dilated fundus exam to evaluate for a co-occurring globe injury (the same blunt force can cause commotio retinae, hyphema, or retinal detachment) rather than expecting fracture-specific fundus findings. Extraocular movement restriction and pain, not fundus findings, are the key exam findings driving fracture-related management decisions.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism and exact object/force involved (helps gauge likelihood of fracture vs. simple contusion).</li><li>In pediatric patients: specifically ask about and examine for nausea, vomiting, bradycardia-associated symptoms, and pain with eye movement &mdash; these can be misattributed to head injury/increased ICP when they actually reflect oculocardiac reflex from muscle entrapment.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, pupil exam, IOP (to help exclude a coexisting orbital compartment syndrome).</li><li>Extraocular movements: specifically test upgaze (inferior rectus entrapment, orbital floor fracture) and lateral gaze (medial rectus entrapment, medial wall fracture); note whether restriction is due to mechanical entrapment (sudden hard stop) versus simple pain-limited movement.</li><li>Infraorbital nerve distribution sensation (cheek, upper lip, upper teeth) &mdash; hypoesthesia suggests infraorbital canal involvement.</li><li>Enophthalmos or globe malposition (may not be apparent acutely due to swelling; more reliable on delayed exam).</li><li>Palpate for step-off deformity, and check for orbital/subcutaneous emphysema (crepitus) &mdash; instruct the patient NOT to blow their nose, since this can force air/sinus contents into the orbit and worsen emphysema or theoretically propagate infection.</li><li>In children, explicitly look for the white-eyed picture: minimal bruising/swelling despite significant motility restriction and nausea/vomiting &mdash; this combination should raise, not lower, your index of suspicion.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>CT orbit/facial bones, thin cuts, with coronal reconstructions &mdash; the study of choice to identify fracture location, size, and whether orbital contents (fat and/or muscle) are herniated or entrapped.</li><li>Forced duction testing (typically performed by ophthalmology) can confirm mechanical entrapment when the exam is ambiguous, though a positive clinical/motility exam plus imaging is often sufficient to proceed.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Assess for and manage any coexisting sight-threatening injury first</div>
+            <p class="algo-detail">Orbital fractures can coexist with globe rupture, traumatic optic neuropathy, or orbital compartment syndrome &mdash; rule these out (or manage them emergently) before focusing on the fracture itself.</p>
+            <div class="algo-timing">&#9200; Immediately</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Recognize the pediatric white-eyed pattern specifically</div>
+            <p class="algo-detail">Nausea, vomiting, bradycardia, pain/restriction with vertical gaze, and a deceptively unremarkable external exam in a child or adolescent should prompt urgent orbital CT and ophthalmology consultation &mdash; do not let a benign-appearing external exam lower suspicion, and do not misattribute these symptoms to head injury/increased ICP without an eye-specific exam.</p>
+            <div class="algo-timing">&#9200; On recognition</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain CT and determine entrapment status</div>
+            <p class="algo-detail">CT with coronal cuts identifies fracture size/location and whether orbital fat and/or extraocular muscle is herniated/entrapped versus simply prolapsed without true entrapment.</p>
+            <div class="algo-timing">&#9200; Promptly on presentation</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Emergent surgical referral for entrapment/oculocardiac reflex</div>
+            <p class="algo-detail">True muscle entrapment (especially with a positive oculocardiac reflex, persistent diplopia, or a positive forced duction test) is a surgical emergency in children &mdash; published series recommend surgical release within 24&ndash;48 hours, with some data suggesting even better outcomes when performed within 24 hours. The younger the child, the more urgent the timeline, given faster onset of ischemic muscle damage and fibrosis.</p>
+            <div class="algo-timing">&#9200; Within 24&ndash;48 hours if entrapment confirmed (sooner is better, especially in younger children)</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Conservative management if no entrapment</div>
+            <p class="algo-detail">For fractures without entrapment and without significant enophthalmos, diplopia, or large fracture size: ice packs, head of bed elevation, oral antibiotics (sinus communication risk), avoidance of nose blowing/Valsalva, and short-course oral steroids in some protocols to reduce edema. Ophthalmology/oculoplastics follow-up within days, not emergently.</p>
+            <div class="algo-timing">&#9200; Ongoing, days to weeks</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Identify other delayed surgical indications</div>
+            <p class="algo-detail">Even without acute entrapment, surgery may be indicated for: enophthalmos greater than 2mm, large fracture (>50% of orbital floor), persistent symptomatic diplopia, or no improvement after several weeks of conservative management.</p>
+            <div class="algo-timing">&#9200; Assessed over the following 1&ndash;2 weeks</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Oral antibiotics (e.g., amoxicillin-clavulanate)</td><td>Standard weight-based/adult dosing, 7&ndash;10 days</td><td>PO</td><td>Given the fracture communicates with a paranasal sinus, prophylaxis against sinus-to-orbit bacterial spread is commonly practiced though evidence quality is variable</td></tr><tr><td class="label-cell">Oral corticosteroids (selected protocols)</td><td>Short tapering course per local protocol</td><td>PO</td><td>Used by some to reduce orbital edema/inflammation; practice varies by institution and surgeon preference</td></tr><tr><td class="label-cell">Oxymetazoline nasal spray</td><td>Per product labeling, short-term only</td><td>Intranasal</td><td>Decongestant, sometimes used adjunctively; avoid prolonged use (rebound congestion)</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Emergent OR (within 24&ndash;48h, sooner in younger children) for confirmed entrapment, oculocardiac reflex, or positive forced duction test. Otherwise, outpatient management with scheduled ophthalmology/oculoplastics/ENT-facial trauma follow-up.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for oculoplastics/craniofacial surgical capability if entrapment is identified and not available locally &mdash; this should be treated with the same urgency as any other surgical emergency, not routed as a routine referral.</td></tr><tr><td class="label-cell">Follow-up</td><td>Non-entrapment fractures: ophthalmology/oculoplastics follow-up within about a week to reassess for delayed enophthalmos or persistent diplopia. Entrapment cases: surgical follow-up per the operating surgeon's protocol.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Persistent diplopia/strabismus from muscle ischemia, fibrosis, or scarring if entrapment is not released promptly</li><li>Enophthalmos (posterior globe displacement) from bony volume expansion, often more apparent once acute swelling resolves</li><li>Infraorbital nerve hypoesthesia (may be transient or persistent)</li><li>Orbital cellulitis (uncommon, related to sinus communication)</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-fracture" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>A 'white-eyed' appearance in a child with eye pain, nausea, and restricted upgaze is not reassuring &mdash; it's the classic presentation of the highest-urgency variant of this injury, and it is frequently misdiagnosed as a head injury or gastroenteritis before someone finally examines the eye movements directly.</li><li>Instruct every orbital fracture patient not to blow their nose &mdash; this simple instruction prevents iatrogenic worsening of orbital emphysema.</li><li>The timing literature increasingly favors within-24-hours repair for confirmed pediatric entrapment where feasible, rather than the traditionally quoted 24&ndash;48 hour window, given better reported outcomes with earlier release.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Multiple case series and reviews (Yew et al. 2015; multiple pediatric case reports 2019&ndash;2022) document white-eyed blowout fractures being repeatedly misdiagnosed as head injury/increased ICP due to nausea, vomiting, and lethargy overlapping with both presentations &mdash; a dedicated ocular motility exam is what distinguishes them.</li><li>Comparative surgical timing data (Gerbino et al.) found better outcomes with repair under 24 hours from injury compared to the more commonly cited 48-hour window, particularly in pediatric trapdoor fractures.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="corneal-foreign-body" style="--cc:var(--c-surface);--cc-soft:var(--c-surface-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128269;</div>
+    <h2>Corneal / Intraocular Foreign Body</h2>
+  </div>
+  <p class="v1-overview">The rust ring you're tempted to chase all the way clean at 2am can usually wait until tomorrow &mdash; the tissue softens overnight, making complete removal easier and lower-risk for the ophthalmologist the next day than for you tonight.</p>
+
+  <div class="v1-tabs" data-group="corneal-foreign-body">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('corneal-foreign-body','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('corneal-foreign-body','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('corneal-foreign-body','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('corneal-foreign-body','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('corneal-foreign-body','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('corneal-foreign-body','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('corneal-foreign-body','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="corneal-foreign-body" data-panel="path">
+    <p>A superficial corneal foreign body (metal, wood, glass, insect parts, vegetable matter) lodges in the corneal epithelium or anterior stroma, most often from grinding, hammering, or wind-blown debris. Metallic foreign bodies, particularly iron/steel, begin oxidizing within hours, depositing a brownish-orange rust ring in the surrounding stroma that itself becomes a source of ongoing irritation and delayed healing even after the primary object is removed.</p><p>The critical branch point is distinguishing a superficial/corneal foreign body from a penetrating injury with an intraocular foreign body (IOFB) &mdash; the historical mechanism (high-velocity metal-on-metal, such as hammering a metal object or grinding) should raise suspicion for IOFB even when the entry wound is subtle, since a small, self-sealing corneal entry can easily be overlooked on routine exam.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Occupational exposure without eye protection: grinding, hammering metal-on-metal, woodworking, lawn care/weed-trimming, welding (arc/UV keratitis risk as well)</li><li>Recreational/DIY activities involving metal-on-metal contact or power tools</li><li>Wind/debris exposure (motorcycling, cycling, farming) for organic/particulate foreign bodies</li><li>Contact lens wear as a compounding factor for infection risk if a foreign body or resulting abrasion is present</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not relevant for a truly superficial corneal foreign body with an intact globe. If any history suggests a possible penetrating mechanism (metal-on-metal, explosion, high-velocity projectile), fundus exam should be deferred in favor of urgent CT orbit and ophthalmology evaluation to exclude an intraocular foreign body and open globe, rather than attempting a dilated exam that could miss a subtle posterior entry site.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Specific mechanism: what was being done (grinding, hammering, weed-trimming, etc.), what material, and whether any high-velocity component was involved (metal-on-metal strikes classically generate small, fast metallic fragments capable of penetrating the globe with a deceptively small/subtle entry wound).</li><li>Use of eye protection at the time of injury.</li><li>Timing (rust ring formation is time-dependent, generally becoming visible after several hours if the object is metallic and left in place).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, external inspection, and slit lamp exam under magnification to localize the foreign body and assess depth.</li><li>Fluorescein staining to delineate any associated epithelial defect once foreign body location is known (remove any visible foreign body before staining if it would obscure the view).</li><li>Explicitly screen for signs suggesting a penetrating injury/IOFB before proceeding with routine removal: hyphema, irregular or peaked pupil, positive Seidel sign, shallow or asymmetric anterior chamber, decreased vision out of proportion to what a superficial foreign body would cause.</li><li>Double-evert the upper lid to check for a sub-tarsal foreign body if vertical linear corneal abrasions ('ice-rink sign') are seen, since these are classically caused by a foreign body trapped under the upper lid dragging across the cornea with each blink.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>CT orbit (thin cuts) if any suspicion of a penetrating mechanism or IOFB &mdash; do not rely on exam alone to exclude this given how subtle entry wounds can be.</li><li>Avoid MRI if a metallic IOFB is possible (magnetic field risk) until ferromagnetic status is clarified.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Rule out penetrating injury/IOFB before proceeding with removal</div>
+            <p class="algo-detail">If mechanism or exam findings raise any suspicion for a penetrating injury (see exam red flags above), stop and manage as an open globe: shield, no further manipulation, CT orbit, emergent ophthalmology consultation.</p>
+            <div class="algo-timing">&#9200; Before any FB removal attempt</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Instill topical anesthetic</div>
+            <p class="algo-detail">Facilitates comfortable examination and removal; not to be dispensed for home use.</p>
+            <div class="algo-timing">&#9200; Before removal</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Remove superficial foreign body</div>
+            <p class="algo-detail">Use a sterile needle, spud, or cotton-tip applicator under slit lamp magnification for superficial/loosely adherent material; very superficial debris can sometimes simply be irrigated or wiped away. Approach tangentially, anchoring your hand against the patient's cheek/face to minimize risk if the patient moves.</p>
+            <div class="algo-timing">&#9200; Same visit</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Decide on rust ring management</div>
+            <p class="algo-detail">A rust ring does NOT need to be fully removed in the ED if the patient can be seen by ophthalmology within about 24 hours &mdash; the surrounding tissue softens overnight, making removal easier and lower-risk the next day. If ophthalmology follow-up isn't readily available, gentle partial removal with a low-speed rotary burr (e.g., Alger brush) under magnification is reasonable, but avoid aggressive removal that risks deeper stromal scarring.</p>
+            <div class="algo-timing">&#9200; Same visit or deferred ~24h to ophthalmology</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Post-removal antibiotic prophylaxis</div>
+            <p class="algo-detail">Broad-spectrum topical antibiotic (fluoroquinolone preferred) at least QID until re-epithelialization; ensure Pseudomonas coverage specifically for contact lens wearers or organic/vegetative foreign bodies.</p>
+            <div class="algo-timing">&#9200; Starting same visit, continue until healed</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Cycloplegic and comfort measures as needed</div>
+            <p class="algo-detail">Short-acting cycloplegic (cyclopentolate/homatropine) for significant photophobia/ciliary spasm; avoid pressure patching, particularly with contact-lens-related or organic foreign bodies given increased infection risk with patching.</p>
+            <div class="algo-timing">&#9200; Same visit</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Arrange follow-up</div>
+            <p class="algo-detail">Reevaluate within the first week (sooner, ~24h, if rust ring was left in place or if the defect is large/deep) to confirm re-epithelialization and screen for infection.</p>
+            <div class="algo-timing">&#9200; 24h&ndash;1 week depending on findings</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Corneal Foreign Body and Rust Ring Removal</div>
+      <ol class="procedure-steps"><li>Confirm no signs of penetrating injury before proceeding (see exam red flags).</li><li>Instill topical anesthetic; position the patient at the slit lamp with head stabilized.</li><li>Using a 25&ndash;27 gauge needle or commercial spud, approach the foreign body tangentially (parallel to the corneal surface, not perpendicular) with your hand braced against the patient's cheek/face for stability.</li><li>Gently lift or flick the foreign body free; avoid excessive digging, which risks deeper stromal injury.</li><li>If a rust ring remains and same/next-day ophthalmology follow-up is available, it is reasonable to leave it and let it soften overnight rather than aggressively pursuing complete removal acutely.</li><li>If removal is pursued, a low-speed rotary burr (Alger brush) can be used gently under magnification; stop once the majority of rust is cleared rather than chasing every last fleck, which increases scarring risk.</li><li>Reassess the epithelial defect size/depth and perform a final Seidel test if the defect is deep, to exclude an unrecognized full-thickness injury.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>Suspected penetrating injury/IOFB &mdash; do not attempt removal; manage as open globe instead.</li><li>Foreign body appears to extend deep to Bowman's layer or centrally through the visual axis &mdash; refer to ophthalmology rather than risking perforation or central scarring.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Proparacaine/tetracaine</td><td>1&ndash;2 drops as needed</td><td>Topical</td><td>For exam/removal only, never dispensed for home use</td></tr><tr><td class="label-cell">Ofloxacin 0.3% or moxifloxacin 0.5%</td><td>1&ndash;2 drops QID, 3&ndash;7 days</td><td>Topical</td><td>Broad-spectrum prophylaxis; ensure Pseudomonas coverage for contact lens wearers/organic FB</td></tr><tr><td class="label-cell">Erythromycin ointment</td><td>Apply QID</td><td>Topical</td><td>Alternative for simple, low-risk superficial FB without contact lens use</td></tr><tr><td class="label-cell">Cyclopentolate 1%</td><td>1 drop BID</td><td>Topical</td><td>For comfort if significant photophobia/ciliary spasm</td></tr><tr><td class="label-cell">Topical antifungal (natamycin, voriconazole) &mdash; selected cases</td><td>Per ophthalmology</td><td>Topical</td><td>Consider if vegetative/organic matter injury with signs of infection, given fungal keratitis risk</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis for a true superficial corneal foreign body; any suspicion of IOFB/open globe converts this to an open globe disposition (OR, IV antibiotics, admission).</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for ophthalmology capability if IOFB is suspected/confirmed and not available locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>24 hours if a rust ring was left in place or the defect is large/deep; otherwise within the first week to confirm healing.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Infectious keratitis if antibiotic prophylaxis is inadequate or a contact-lens-associated Pseudomonas risk is missed</li><li>Corneal scarring, worse with deeper foreign bodies or aggressive/over-zealous rust ring removal</li><li>Missed IOFB with delayed presentation of endophthalmitis or siderosis (iron deposition toxicity) if a penetrating injury was not recognized initially</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-foreign-body" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>A rust ring does not need to be fully chased out in the middle of the night &mdash; leaving a same/next-day ophthalmology follow-up plan is entirely reasonable and often produces a better cosmetic/scarring outcome than an aggressive ED removal attempt.</li><li>Vertical linear ('ice-rink') corneal abrasions are the classic tell for a retained foreign body hiding under the upper lid &mdash; always double-evert the lid when you see this pattern.</li><li>A history of hammering metal-on-metal deserves a specifically higher index of suspicion for IOFB regardless of how benign the visible corneal surface looks, since these fragments are small, fast, and can leave a nearly imperceptible entry wound.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Clinical/laboratory comparisons of manual (needle) versus burr rust ring removal show more complete and even removal with the burr, though an animal model noted a tendency toward deeper scarring with burr use, reinforcing a 'remove enough, not everything' approach acutely.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="corneal-abrasion" style="--cc:var(--c-surface);--cc-soft:var(--c-surface-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128064;</div>
+    <h2>Corneal Abrasion</h2>
+  </div>
+  <p class="v1-overview">The patching habit many of us learned in training has been walked back by the evidence &mdash; patches don't speed healing or reduce pain, and they may raise infection risk, particularly in exactly the populations (contact lens wearers, organic material) where it matters most.</p>
+
+  <div class="v1-tabs" data-group="corneal-abrasion">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('corneal-abrasion','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('corneal-abrasion','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('corneal-abrasion','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('corneal-abrasion','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('corneal-abrasion','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('corneal-abrasion','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('corneal-abrasion','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="corneal-abrasion" data-panel="path">
+    <p>A defect in the corneal epithelium from direct trauma (fingernail, tree branch, paper edge, contact lens insertion/removal, foreign body) exposes the underlying basement membrane and superficial stroma, producing significant pain disproportionate to the injury's small size due to the cornea's dense sensory innervation. Uncomplicated epithelial defects covering less than about 60% of the corneal surface typically heal within 1&ndash;4 days; larger or deeper defects can take up to a week.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Contact lens wear (both the mechanical trauma of insertion/removal and, more importantly, the substantially elevated risk of Pseudomonas superinfection if an abrasion occurs while lenses are worn)</li><li>Foreign body exposure (see Corneal Foreign Body entry) &mdash; abrasion frequently co-occurs</li><li>Occupational/recreational trauma: fingernail scratches (common in caregivers of infants/young children), tree branches, paper cuts, sports</li><li>Recurrent corneal erosion syndrome as a distinct but related entity in patients with a history of prior abrasion, particularly at the same location, presenting with pain on waking</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not relevant to an isolated corneal abrasion with an intact globe; fundus exam is only pursued if the mechanism raises concern for a co-occurring globe injury (e.g., a foreign-body-associated abrasion where penetrating injury hasn't been excluded).</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism specifically, since it changes management: contact lens-associated (Pseudomonas risk), organic/vegetative material (fungal risk), fingernail/blunt (lowest infection risk), or foreign-body-associated (see that entry).</li><li>Contact lens wear status and lens type/hygiene practices if relevant.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity before and after fluorescein instillation (documents baseline and confirms improvement with treatment at follow-up).</li><li>Fluorescein staining under cobalt blue light: a corneal abrasion stains as a well-demarcated area of uptake; a dendritic branching pattern instead suggests HSV keratitis, which changes management entirely (steroids are contraindicated).</li><li>Double-evert the upper lid, especially with vertical linear staining patterns, to exclude a retained sub-tarsal foreign body.</li><li>Assess pupil, anterior chamber, and IOP to exclude a coexisting traumatic iritis or more significant injury.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>None required for an isolated, uncomplicated abrasion; this is a clinical, fluorescein-based diagnosis.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm the diagnosis and exclude mimics/complications first</div>
+            <p class="algo-detail">Rule out a dendritic pattern (HSV keratitis), a retained foreign body (evert the lid), and any sign of infection (infiltrate, significant anterior chamber reaction) before treating as a simple abrasion.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Do not pressure patch</div>
+            <p class="algo-detail">Current evidence does not support pressure patching for corneal abrasions &mdash; it does not speed healing or reduce pain, and may increase infection risk, particularly for contact-lens-related or organic-material abrasions. Avoid patching as a default; it is rarely, if ever, indicated.</p>
+            <div class="algo-timing">&#9200; At time of treatment decision</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Start prophylactic topical antibiotics</div>
+            <p class="algo-detail">Broad-spectrum topical antibiotic (fluoroquinolone preferred, e.g., ofloxacin or moxifloxacin) QID until re-epithelialized. For contact lens wearers or any organic/vegetative mechanism, ensure Pseudomonas coverage specifically and advise discontinuing contact lens wear until fully healed and cleared by follow-up.</p>
+            <div class="algo-timing">&#9200; Same visit, continue until healed</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Cycloplegic for larger/more symptomatic abrasions</div>
+            <p class="algo-detail">A short-acting cycloplegic (cyclopentolate) can reduce ciliary spasm-related pain for larger defects; not necessary for small, minimally symptomatic abrasions.</p>
+            <div class="algo-timing">&#9200; Same visit if indicated</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Pain control without dispensing topical anesthetic</div>
+            <p class="algo-detail">Oral analgesia (acetaminophen, NSAIDs if no contraindication) for comfort. Do NOT dispense topical anesthetic drops for home/repeated use &mdash; repeated use delays healing and can mask a worsening infection, and has been associated with severe complications including corneal melting with chronic misuse.</p>
+            <div class="algo-timing">&#9200; Same visit and discharge instructions</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Consider a bandage contact lens for select larger defects</div>
+            <p class="algo-detail">Can improve comfort and reduce lid-related shear on the healing epithelium for larger defects, but use cautiously (or avoid) in contact-lens-associated or organic-material abrasions given the theoretical infection risk of leaving a lens-like surface in place; this decision is often best deferred to ophthalmology follow-up rather than initiated in the ED.</p>
+            <div class="algo-timing">&#9200; Selected cases only</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Arrange follow-up matched to risk</div>
+            <p class="algo-detail">Low-risk, small abrasions: follow up only if not improving in 24&ndash;48 hours. Contact-lens-associated, large, or foreign-body-associated abrasions: follow-up within 24&ndash;48 hours to confirm healing and exclude evolving infection.</p>
+            <div class="algo-timing">&#9200; 24&ndash;48 hours for higher-risk abrasions</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Ofloxacin 0.3% or moxifloxacin 0.5%</td><td>1&ndash;2 drops QID until healed</td><td>Topical</td><td>Preferred for contact-lens-associated/organic-material abrasions given Pseudomonas coverage</td></tr><tr><td class="label-cell">Erythromycin ointment</td><td>Apply QID</td><td>Topical</td><td>Reasonable alternative for low-risk, non-contact-lens abrasions</td></tr><tr><td class="label-cell">Cyclopentolate 1%</td><td>1 drop, may repeat once</td><td>Topical</td><td>For larger/more symptomatic abrasions, comfort only</td></tr><tr><td class="label-cell">Acetaminophen / NSAIDs (oral)</td><td>Standard dosing</td><td>PO</td><td>For pain control; do not substitute topical anesthetic for home use</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not applicable &mdash; outpatient management in essentially all cases.</td></tr><tr><td class="label-cell">Transfer</td><td>Not applicable unless a complicating factor (infiltrate, suspected globe injury) is identified.</td></tr><tr><td class="label-cell">Follow-up</td><td>24&ndash;48 hours for contact-lens-associated, large, or foreign-body-associated abrasions; otherwise return precautions with follow-up only if not improving or if pain/redness worsens.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Infectious keratitis/corneal ulcer, particularly with missed contact-lens-associated Pseudomonas risk or inappropriate patching</li><li>Recurrent corneal erosion syndrome (recurrent breakdown at the healed site, classically causing pain on waking, months to years later)</li><li>Delayed healing or masked worsening infection from unsupervised topical anesthetic misuse</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="corneal-abrasion" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Pressure patching has fallen out of favor &mdash; current evidence shows no benefit in healing time or pain, with a theoretical increase in infection risk, especially avoided in contact-lens-related or organic-material abrasions.</li><li>Never dispense topical anesthetic drops for home use, no matter how much a patient requests it for pain control &mdash; repeated unsupervised use delays healing and has been linked to serious complications including corneal melt.</li><li>A dendritic staining pattern is not a 'more severe' corneal abrasion &mdash; it's a different diagnosis (HSV keratitis) with a treatment (antivirals, no steroids) that diverges sharply from simple abrasion management.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Multiple trials and current Merck Manual/emergency medicine guidance no longer support eye patching for corneal abrasions, noting patches do not reduce pain or speed healing and may elevate infection risk, particularly avoided for contact-lens-related or contaminated (soil/vegetation) abrasions.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="traumatic-iritis" style="--cc:var(--c-pupil);--cc-soft:var(--c-pupil-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Traumatic Iritis</h2>
+  </div>
+  <p class="v1-overview">The management overlaps heavily with infectious/inflammatory anterior uveitis, but the trigger is mechanical, not immune or infectious &mdash; which means the real job is confirming there isn't a bigger injury (hyphema, angle recession, lens subluxation) hiding underneath the same blunt mechanism.</p>
+
+  <div class="v1-tabs" data-group="traumatic-iritis">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('traumatic-iritis','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('traumatic-iritis','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('traumatic-iritis','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('traumatic-iritis','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('traumatic-iritis','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('traumatic-iritis','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('traumatic-iritis','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="traumatic-iritis" data-panel="path">
+    <p>Blunt force to the globe causes direct mechanical irritation and inflammation of the iris and ciliary body, producing the same anterior chamber cell-and-flare picture seen in infectious/autoimmune anterior uveitis, but from a mechanical rather than immune trigger. Ciliary muscle spasm drives the deep, aching pain and photophobia; ciliary body trauma can also transiently affect aqueous production, causing IOP to be either lower (ciliary shutdown) or higher (trabecular meshwork debris/angle injury) than baseline depending on the specific structures affected.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Blunt ocular trauma of essentially any mechanism sufficient to cause a contusion injury (sports, assault, projectile, motor vehicle)</li><li>Frequently co-occurs with hyphema, angle recession, traumatic mydriasis/miosis, and lens subluxation from the same blunt force &mdash; its presence should prompt a careful search for these associated injuries rather than being treated as an isolated diagnosis</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not typically abnormal from the iritis itself; as with hyphema, the presence of traumatic iritis should prompt a dilated fundus exam once view allows to specifically exclude commotio retinae, retinal tears/detachment, and vitreous hemorrhage from the same blunt mechanism.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism and timing of blunt trauma; associated symptoms of deep aching pain, photophobia, and blurred vision.</li><li>Screen for symptoms suggesting a co-occurring more serious injury: any history of a 'shower of floaters,' a curtain/shadow in vision (detachment), or visibly red/pooled blood in the anterior chamber (hyphema).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, pupil exam (traumatic mydriasis/miosis or an irregular pupil from sphincter tears is common and distinct from the pupillary findings of infectious uveitis).</li><li>Slit lamp exam for cell and flare in the anterior chamber, perilimbal flush, and consensual photophobia (pain in the traumatized eye when light is shone in the opposite eye).</li><li>IOP measurement &mdash; can be low (ciliary body shutdown) or elevated (angle/trabecular meshwork injury or debris); document which pattern is present.</li><li>Careful search for hyphema (even trace/microhyphema), lens subluxation (iridodonesis, asymmetric anterior chamber depth), and gonioscopy for angle recession once safe to perform (typically deferred if hyphema is also present, per that entry's timing).</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>None required specifically for iritis; imaging is directed at excluding associated injuries (orbital fracture, globe rupture) suggested by the mechanism or exam.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm the diagnosis and exclude associated injury</div>
+            <p class="algo-detail">Full slit lamp exam to document cell/flare, rule out hyphema, assess pupil and lens position, and check IOP before treating as isolated iritis.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Cycloplege for pain relief and to prevent synechiae</div>
+            <p class="algo-detail">A cycloplegic (cyclopentolate or homatropine, sometimes a longer-acting agent like atropine for more severe cases per ophthalmology preference) relieves ciliary spasm pain and reduces the risk of the iris adhering to the lens (posterior synechiae) during the inflammatory period.</p>
+            <div class="algo-timing">&#9200; Same visit, continued through the inflammatory course</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Topical corticosteroid to control inflammation</div>
+            <p class="algo-detail">Prednisolone acetate 1%, dosed frequently initially (e.g., every 1&ndash;4 hours depending on severity) and tapered over 1&ndash;2 weeks as inflammation resolves. As with any topical steroid use in the eye, confirm there is no dendritic/HSV keratitis or other infectious process present first.</p>
+            <div class="algo-timing">&#9200; Starting same visit, tapered over 1&ndash;2 weeks</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Monitor and treat IOP as needed</div>
+            <p class="algo-detail">If IOP is elevated (trabecular meshwork injury/debris), manage with topical beta-blockers/alpha-agonists as needed; if IOP is low from ciliary shutdown, this generally resolves as inflammation improves and doesn't require specific treatment beyond treating the underlying iritis.</p>
+            <div class="algo-timing">&#9200; Ongoing, reassessed at follow-up</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Arrange ophthalmology follow-up</div>
+            <p class="algo-detail">Close follow-up (days, not weeks) to confirm the inflammation is responding to therapy, appropriately taper steroids, and perform gonioscopy for angle recession once any coexisting hyphema has cleared the high-rebleed-risk window.</p>
+            <div class="algo-timing">&#9200; Within several days, then per response</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Cyclopentolate 1% or homatropine 5%</td><td>1 drop BID&ndash;TID</td><td>Topical</td><td>First-line cycloplegic for comfort and synechiae prevention</td></tr><tr><td class="label-cell">Prednisolone acetate 1%</td><td>Q1&ndash;4h initially, tapered over 1&ndash;2 weeks</td><td>Topical</td><td>Confirm no dendritic/infectious keratitis before starting; taper per ophthalmology guidance rather than stopping abruptly</td></tr><tr><td class="label-cell">Timolol 0.5% (if IOP elevated)</td><td>1 drop BID</td><td>Topical</td><td>For secondary IOP elevation from trabecular meshwork injury/debris</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis in isolation; admission decisions are driven by any co-occurring injury (significant hyphema, open globe, orbital fracture with entrapment) rather than the iritis itself.</td></tr><tr><td class="label-cell">Transfer</td><td>Not typically required unless a co-occurring injury needs a higher level of ophthalmologic/surgical care.</td></tr><tr><td class="label-cell">Follow-up</td><td>Ophthalmology follow-up within several days to confirm response and manage steroid taper; gonioscopy for angle recession once safe (after any hyphema's high-risk window has passed).</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Posterior synechiae (iris-lens adhesions) if cycloplegia is inadequate during the inflammatory period</li><li>Secondary glaucoma, either acutely (trabecular debris/inflammation) or as delayed angle-recession glaucoma presenting months to years later</li><li>Missed coexisting injury (hyphema, lens subluxation, retinal injury) if the iritis is treated as an isolated finding without a complete trauma-directed exam</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="traumatic-iritis" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Traumatic iritis is rarely the only injury from a blunt mechanism significant enough to cause it &mdash; use its presence as a prompt to specifically search for hyphema, lens subluxation, and posterior segment injury rather than treating it in isolation.</li><li>IOP can go either direction (low from ciliary shutdown, high from angle/trabecular injury) &mdash; don't assume a single expected direction and be sure to actually measure it.</li><li>Angle recession from the same blunt mechanism can cause glaucoma that presents years later &mdash; this is why gonioscopy and long-term follow-up awareness matter even after the acute iritis resolves uneventfully.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Management principles mirror general anterior uveitis care (cycloplegia + topical steroid), adapted from ophthalmology consensus guidance for traumatic anterior segment inflammation rather than a dedicated large RCT specific to traumatic iritis.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="lid-laceration" style="--cc:var(--c-lid);--cc-soft:var(--c-lid-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129657;</div>
+    <h2>Lid Lacerations (Including Canalicular Injury)</h2>
+  </div>
+  <p class="v1-overview">The lacerations that look the most 'fixable' at bedside are sometimes exactly the ones that shouldn't be closed there &mdash; any hint of lid margin, canalicular, or levator involvement changes this from a laceration repair into an oculoplastics case.</p>
+
+  <div class="v1-tabs" data-group="lid-laceration">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('lid-laceration','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('lid-laceration','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('lid-laceration','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('lid-laceration','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('lid-laceration','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('lid-laceration','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('lid-laceration','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="lid-laceration" data-panel="path">
+    <p>Eyelid lacerations are best thought of in three tiers of increasing complexity: (1) skin-only lacerations without margin or deep structure involvement, generally suitable for standard ED/primary repair; (2) lacerations involving the lid margin, levator/superior rectus complex, orbital septum (with visible fat prolapse signaling septum penetration), or canthal tendons, which need oculoplastics/ophthalmology repair; and (3) lacerations involving the lacrimal drainage system (canaliculi), concentrated at the medial canthus because that region lacks the tarsal plate's structural support and is where the eyelid's attachment to the medial canthal tendon and lacrimal bone can avulse under shearing forces.</p><p>Dog bites are a classically overrepresented mechanism for canalicular lacerations specifically, because the blunt shearing/traction forces of a bite concentrate at exactly this structurally vulnerable medial attachment point. Canalicular lacerations are present in a meaningful minority of all eyelid lacerations from ocular trauma broadly.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Dog bites (classic and disproportionate cause of canalicular/medial canthal injury specifically)</li><li>Sharp trauma (knife, glass) for direct lid margin/canalicular lacerations</li><li>Blunt trauma with shearing/traction mechanism (falls, assault) for indirect canalicular avulsion injuries</li><li>Any periorbital laceration close to the medial canthus, regardless of how trivial it appears, given the disproportionate rate of occult canalicular involvement in this location</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not applicable to the laceration itself; a dilated or at least careful posterior exam should still be pursued once globe injury has been excluded, since the same mechanism (particularly blunt/shearing trauma) can cause a co-occurring globe or orbital injury.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism (sharp vs. blunt/shearing, dog bite specifically), time since injury, tetanus status, and last oral intake if surgical repair may be needed.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Resist the urge to focus immediately on the obvious laceration &mdash; perform a complete ophthalmic exam first, avoiding any pressure on the underlying globe until an open globe injury has been definitively excluded.</li><li>Assess for lid margin involvement: notching, step-off, or misalignment of the gray line/meibomian gland orifices.</li><li>Assess for levator/superior rectus involvement: new ptosis or restricted upgaze.</li><li>Look specifically for visible orbital fat in the wound, which signals septum penetration and an orbital-communicating injury.</li><li>Any laceration near the medial canthus, however trivial-appearing, should raise suspicion for canalicular involvement: look for laxity, rounding, or pouting of the punctum, and perform lacrimal probing and irrigation to confirm patency and identify the location of any canalicular transection.</li><li>Assess canthal tendon integrity: sudden-onset ectropion, rounding, or displacement of the canthal angle suggests canthal tendon avulsion.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>CT orbit if there's any suspicion of a co-occurring orbital fracture, retained foreign body, or globe injury given the mechanism.</li><li>Consider toxicology/alcohol screening in select patients if general anesthesia for repair is anticipated.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Complete ophthalmic exam first, laceration repair second</div>
+            <p class="algo-detail">Rule out globe injury before focusing on the visible laceration; avoid any pressure on the globe during this assessment.</p>
+            <div class="algo-timing">&#9200; Before any repair planning</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Triage by laceration complexity</div>
+            <p class="algo-detail">Skin-only, non-marginal lacerations without septum/fat involvement can generally be repaired by the treating ED clinician. Any lid margin, canalicular/nasolacrimal, levator/superior rectus, canthal tendon involvement, visible orbital fat, or extensive tissue loss (more than about one-third of the lid) should be referred to ophthalmology/oculoplastics rather than repaired primarily in the ED.</p>
+            <div class="algo-timing">&#9200; At initial assessment</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Tetanus prophylaxis and analgesia</div>
+            <p class="algo-detail">Update tetanus status per standard wound protocols; provide topical and/or local anesthesia for exam and any repair performed.</p>
+            <div class="algo-timing">&#9200; Early in the encounter</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Protect the globe during any repair</div>
+            <p class="algo-detail">Place a protective scleral shell/shield over the globe if repair (even simple) is being performed nearby, to prevent inadvertent injury during suturing.</p>
+            <div class="algo-timing">&#9200; Before beginning repair</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">For complex/marginal/canalicular lacerations: arrange timely oculoplastics repair</div>
+            <p class="algo-detail">Canalicular lacerations are optimally repaired within about 24&ndash;48 hours to restore normal lacrimal drainage physiology and minimize chronic epiphora risk, though evidence suggests acceptable outcomes can still be achieved with repair delayed up to about a week in appropriately selected, confined injuries. Repair involves identifying both cut ends of the canaliculus, canalicular reapproximation over a stent (mono- or bicanalicular), and anatomic restoration of lid margin position.</p>
+            <div class="algo-timing">&#9200; Ideally within 24&ndash;48 hours</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Simple non-marginal skin laceration repair technique (if performing primarily)</div>
+            <p class="algo-detail">Reapproximate skin edges with fine (6-0) sutures, everting the wound edges, taking small (~1mm) bites spaced 2&ndash;3mm apart; avoid over-tightening given the thin, delicate eyelid skin.</p>
+            <div class="algo-timing">&#9200; Same visit, for appropriate low-complexity lacerations only</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Recognizing Canalicular Involvement (bedside assessment before oculoplastics repair)</div>
+      <ol class="procedure-steps"><li>Inspect the medial canthal region carefully for laxity, rounding, or pouting of the punctum, even with an apparently minor-looking laceration nearby.</li><li>Perform lacrimal probing and irrigation: instill saline through the uninvolved (or less-involved) punctum and observe for free flow versus reflux, which helps localize an obstruction/transection.</li><li>Document findings clearly and involve oculoplastics/ophthalmology promptly &mdash; definitive canalicular repair (identifying both cut ends, stent placement, canalicular anastomosis) is a specialized procedure not typically performed by the general ED clinician.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>None specific &mdash; the bedside assessment itself is safe; the contraindication is attempting definitive canalicular repair without appropriate specialized training/equipment rather than referring.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Tetanus toxoid &plusmn; TIG</td><td>Per standard tetanus-prone wound protocol</td><td>IM</td><td>Especially relevant given the frequency of animal bite mechanisms</td></tr><tr><td class="label-cell">Lidocaine 2% with epinephrine</td><td>Local infiltration, minimal volume needed</td><td>Local</td><td>For anesthesia during exam/repair</td></tr><tr><td class="label-cell">Oxymetazoline-soaked nasal packing (if canalicular/nasolacrimal involvement)</td><td>Applied intranasally per procedure</td><td>Intranasal</td><td>Used adjunctively during canalicular repair to reduce bleeding/improve visualization</td></tr><tr><td class="label-cell">Prophylactic oral antibiotics (dog bite mechanism)</td><td>Amoxicillin-clavulanate, standard dosing</td><td>PO</td><td>Given elevated infection risk with bite wounds specifically</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Simple non-marginal lacerations: outpatient repair and follow-up. Marginal, canalicular, levator, or canthal tendon involvement: same-day or next-day oculoplastics/ophthalmology repair, often requiring OR/procedural sedation given the precision required.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer if oculoplastics/ophthalmology repair capability for complex lid injuries is not available locally, particularly for canalicular lacerations given the time-sensitivity of optimal repair.</td></tr><tr><td class="label-cell">Follow-up</td><td>Canalicular repairs: per the operating oculoplastics surgeon's protocol, generally with stent removal weeks later. Simple lacerations: routine wound check in about a week.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Chronic epiphora (excessive tearing) from unrecognized or inadequately repaired canalicular injury</li><li>Lid margin notching, ectropion, or ptosis from unrecognized margin/levator injury repaired without appropriate technique</li><li>Need for later conjunctivodacryocystorhinostomy (a more involved secondary procedure) if canalicular injury is missed initially and presents later with symptomatic obstruction</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="lid-laceration" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Any laceration near the medial canthus deserves specific canalicular assessment (probing/irrigation), even if it looks trivial &mdash; this is one of the most commonly under-recognized injuries in ED lid laceration management.</li><li>Visible orbital fat in a lid wound means the orbital septum has been violated &mdash; this converts a 'simple' laceration into one needing oculoplastics involvement, since it signals a deeper injury than the skin appearance suggests.</li><li>Don't let the dramatic appearance of a facial/lid laceration distract from the complete ophthalmic exam &mdash; confirm the globe itself is intact before focusing on the visible wound.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>A retrospective study of 334 patients with canalicular lacerations found no statistically significant difference in outcomes between repair before versus after 48 hours, suggesting repair within about 6 days is reasonable for confined injuries, though the traditional and still-common recommendation remains within 24&ndash;48 hours where feasible.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="commotio-retinae" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Commotio Retinae (Berlin's Edema)</h2>
+  </div>
+  <p class="v1-overview">The best thing you can do for this diagnosis is correctly recognize that it needs no specific treatment of its own &mdash; and then make sure you've actually excluded the other, less benign injuries that share the same blunt mechanism and can masquerade alongside it.</p>
+
+  <div class="v1-tabs" data-group="commotio-retinae">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('commotio-retinae','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('commotio-retinae','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('commotio-retinae','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('commotio-retinae','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('commotio-retinae','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('commotio-retinae','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('commotio-retinae','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="commotio-retinae" data-panel="path">
+    <p>Blunt trauma displaces and compresses the globe, generating a shockwave that transmits posteriorly and mechanically disrupts the photoreceptor outer segments and retinal pigment epithelium, most classically at a site distant from the direct impact (contrecoup) though it can also occur at the impact site (coup). Despite the traditional name 'edema,' modern imaging (OCT) has shown the retinal whitening is due to disruption/disorganization of the photoreceptor outer segments and RPE rather than true extracellular fluid accumulation.</p><p>The condition is common, present in an estimated 30% (with some series reporting up to 90%) of eyes with significant blunt trauma, and is usually self-limited, resolving over roughly 3&ndash;4 weeks. Prognosis correlates with location and severity: extramacular involvement carries an excellent prognosis (roughly 95% achieving 20/30 or better), while macular involvement is more variable (roughly 74% achieving 20/30 or better, with the remainder experiencing some persistent visual deficit).</p>
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>High-impact sports, particularly ball sports (the object's size relative to the orbit matters &mdash; a ball roughly the diameter of the orbital rim transmits force efficiently into the globe)</li><li>Assault/violence</li><li>Motor vehicle collisions and other blunt facial/orbital trauma</li><li>Young male predominance in most reported series, reflecting the epidemiology of blunt ocular trauma generally</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>The defining finding: an area of retinal whitening/opacification, classically described as a grayish-white discoloration, at the site of trauma (coup) or a distant site such as the macula (contrecoup). Retinal blood vessels remain visible through the whitened area, distinguishing it from more severe ischemic whitening. When the macula is involved (Berlin's edema proper), a contrasting cherry-red-appearing fovea can be seen against the surrounding whitened retina, similar in appearance to (but mechanistically distinct from) the cherry-red spot of CRAO. Look specifically for associated findings from the same blunt mechanism: choroidal rupture (a crescentic yellow-white subretinal streak, usually concentric to the disc), retinal hemorrhage, or signs of a retinal tear/detachment.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism and timing of blunt trauma; note associated symptoms (blurred vision, central scotoma if macula involved).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity (can range from normal to significantly reduced depending on whether/how much the macula is involved).</li><li>Dilated fundus exam is essential, both to make the diagnosis (retinal whitening with preserved visible vessels) and, critically, to exclude the more visually threatening injuries that share the same blunt mechanism: retinal tear/detachment, choroidal rupture, vitreous hemorrhage, and traumatic optic neuropathy.</li><li>Full trauma-directed exam for coexisting hyphema, traumatic iritis, angle recession, and lens subluxation given the shared blunt mechanism.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>Optical coherence tomography (OCT), when available (typically via ophthalmology), can characterize the extent of photoreceptor/RPE disruption and has been used to help prognosticate visual outcome based on how many outer retinal layers are affected &mdash; more extensive disruption correlates with worse visual recovery.</li><li>B-scan ultrasound if a dense vitreous hemorrhage precludes direct fundus visualization, to exclude a coexisting retinal detachment.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm the diagnosis on dilated exam</div>
+            <p class="algo-detail">Retinal whitening/opacification with preserved visible retinal vessels, at the site of impact or a contrecoup location (commonly the macula).</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Actively exclude co-occurring, less benign injuries</div>
+            <p class="algo-detail">This is the actual clinical task, since commotio retinae itself needs no specific treatment: perform a complete dilated exam specifically looking for retinal tears/detachment, choroidal rupture, vitreous hemorrhage, and traumatic optic neuropathy, and complete a full anterior segment exam for hyphema/iritis/lens subluxation from the same mechanism.</p>
+            <div class="algo-timing">&#9200; Same visit, dilated exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Reassure and set expectations</div>
+            <p class="algo-detail">Explain that commotio retinae itself is a self-limited finding, typically resolving over about 3&ndash;4 weeks without specific treatment; the final visual outcome depends primarily on whether the macula was involved and how severely, not on any medication given in the ED.</p>
+            <div class="algo-timing">&#9200; At time of diagnosis</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Ophthalmology follow-up</div>
+            <p class="algo-detail">Arrange follow-up to monitor resolution and specifically to watch for the known potential complications: retinal detachment, choroidal neovascularization, or cystoid macular edema at a delayed timepoint, particularly with more severe or macula-involving cases.</p>
+            <div class="algo-timing">&#9200; Within the following 1&ndash;2 weeks, sooner if any red-flag symptom develops</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">None specific to commotio retinae itself</td><td>&mdash;</td><td>&mdash;</td><td>Management is observational; treat any co-occurring diagnosis (hyphema, iritis) per that entry's protocol. Topical NSAIDs have been used anecdotally in case reports without established evidence of benefit.</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis in isolation; disposition is driven entirely by any co-occurring injury identified on the same trauma-directed exam.</td></tr><tr><td class="label-cell">Transfer</td><td>Not typically required unless a co-occurring injury needs surgical capability not available locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>Ophthalmology follow-up within 1&ndash;2 weeks to confirm expected resolution and screen for delayed complications (detachment, macular edema), sooner if new floaters, a visual field defect, or worsening vision develop.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Retinal detachment from an associated (and sometimes initially occult) retinal tear</li><li>Choroidal rupture with subsequent risk of choroidal neovascularization, sometimes presenting weeks to months later</li><li>Cystoid macular edema in late/chronic cases, which can cause further macular damage beyond the initial injury</li><li>Permanent visual field defect or reduced acuity when the macula is significantly involved</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="commotio-retinae" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>The correct action for isolated commotio retinae is largely to do nothing specific for it &mdash; the value you add is a thorough exam that excludes the injuries that actually do need intervention (detachment, choroidal rupture with neovascularization risk, hyphema).</li><li>The retained visibility of retinal blood vessels through the whitened area is what distinguishes this from more severe ischemic retinal whitening (e.g., CRAO) on exam &mdash; don't conflate the two just because both can show a 'cherry-red'-appearing fovea.</li><li>Set expectations clearly: extramacular involvement has an excellent prognosis, but macular involvement has a meaningfully less certain outcome, with roughly one in four patients retaining some permanent visual deficit even though the acute finding itself resolves.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>OCT-based studies (Mansour et al. and subsequent work) established that the retinal whitening reflects photoreceptor outer segment and RPE disruption rather than true extracellular edema, despite the enduring 'Berlin's edema' name, and that the degree of photoreceptor layer disruption on OCT correlates with final visual outcome.</li></ul></div>
+  </div>
+</section>
+
+  
+<section class="tools-section" id="tools">
+  <div class="hero" style="border-bottom:none;padding-bottom:10px;">
+    <h1 style="font-size:1.5rem;">Interactive Tools</h1>
+    <p>Bedside grading and risk-stratification tools for the two trauma conditions where the interactive format adds the most value.</p>
+  </div>
+
+  <div class="tool-card">
+    <h3>&#129706; Hyphema Grading &amp; Rebleed-Risk / Surgical-Threshold Tool</h3>
+    <p class="tool-sub">Grades hyphema severity, flags rebleed-risk factors, and applies the correct IOP surgical threshold based on sickle cell status. Also logs daily IOP checks through the high-risk window.</p>
+
+    <div class="tool-row">
+      <div>
+        <label>Anterior chamber blood (%)</label>
+        <input type="number" id="hyphemaPct" min="0" max="100" style="width:100px;">
+      </div>
+      <div>
+        <label>Sickle cell disease or trait?</label>
+        <select id="sickleStatus">
+          <option value="no">No / not suspected</option>
+          <option value="yes">Yes (disease or trait)</option>
+          <option value="unknown">Unknown &mdash; not yet screened</option>
+        </select>
+      </div>
+      <div>
+        <label>On anticoagulant/antiplatelet?</label>
+        <select id="anticoagStatus">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+      <button class="tool-btn" onclick="gradeHyphema()">Grade &amp; Assess Risk</button>
+    </div>
+    <div id="hyphemaResult"></div>
+
+    <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--line);">
+      <h4 style="font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;">Daily IOP Log (highest rebleed risk: days 2&ndash;5)</h4>
+      <div class="iop-log-row">
+        <input type="number" id="hyphemaIOP" placeholder="IOP (mmHg)" style="width:140px;">
+        <input type="number" id="hyphemaDay" placeholder="Day # post-injury" style="width:160px;">
+        <button class="tool-btn" onclick="logHyphemaIOP()">Log Reading</button>
+        <button class="tool-btn secondary" onclick="resetHyphema()">Reset</button>
+      </div>
+      <div id="hyphemaIOPLog"></div>
+    </div>
+  </div>
+
+  <div class="tool-card">
+    <h3>&#129704; Orbital Fracture Entrapment Checklist</h3>
+    <p class="tool-sub">Checks for the pediatric "white-eyed blowout" pattern and oculocardiac reflex &mdash; a surgical emergency that is easily mistaken for head injury. Check any findings present.</p>
+    <div id="entrapmentChecklist"></div>
+    <div id="entrapmentResult"></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const cur = html.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themebtn').innerHTML = next === 'dark' ? '&#9789;' : '&#9788;';
+}
+function showTab(group, tab, btn) {
+  document.querySelectorAll('.v1-tabs[data-group="' + group + '"] .v1-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.v1-panel[data-group="' + group + '"]').forEach(p => p.classList.add('hidden'));
+  document.querySelector('.v1-panel[data-group="' + group + '"][data-panel="' + tab + '"]').classList.remove('hidden');
+}
+
+// ---- Hyphema grading tool ----
+function gradeHyphema() {
+  const pct = parseFloat(document.getElementById('hyphemaPct').value) || 0;
+  const sickle = document.getElementById('sickleStatus').value;
+  const anticoag = document.getElementById('anticoagStatus').value;
+  let grade;
+  if (pct === 0) { grade = "Grade 0 (microhyphema)"; }
+  else if (pct < 33) { grade = "Grade I"; }
+  else if (pct <= 50) { grade = "Grade II"; }
+  else if (pct < 100) { grade = "Grade III"; }
+  else { grade = "Grade IV (total / 8-ball)"; }
+
+  let riskFactors = [];
+  if (sickle === "yes") riskFactors.push("Sickle cell disease/trait: lower IOP threshold for surgical intervention (&ge;25 mmHg for >24h, not 50 mmHg) and AVOID acetazolamide/other carbonic anhydrase inhibitors");
+  if (sickle === "unknown") riskFactors.push("Sickle status unknown: consider hemoglobin electrophoresis / sickle prep given how much this changes IOP management thresholds and drug choice");
+  if (anticoag === "yes") riskFactors.push("Anticoagulant/antiplatelet use: elevated rebleed risk, consider admission for close monitoring and reversal discussion");
+  if (pct > 33) riskFactors.push("Grade II or higher: consider admission or very close outpatient monitoring given higher rebleed and IOP-elevation risk");
+
+  let cls = "result-box";
+  if (sickle === "yes" || pct >= 50) cls += " warn";
+  if (pct >= 90) cls += " danger";
+
+  const iopNote = sickle === "yes"
+    ? "Surgical threshold: IOP &ge;25 mmHg for more than 24 hours (lower threshold due to sickling risk at even modest elevations)."
+    : "Surgical threshold: IOP &ge;50 mmHg for more than 5 days (standard, non-sickle threshold).";
+
+  document.getElementById('hyphemaResult').innerHTML = `
+    <div class="${cls}">
+      <div class="result-title">${grade} &mdash; ${pct}% anterior chamber fill</div>
+      <p style="margin:6px 0;color:var(--ink-dim);font-size:.88rem;">${iopNote}</p>
+      ${riskFactors.length ? '<ul style="margin:10px 0 0;padding-left:18px;color:var(--ink-dim);font-size:.86rem;">' + riskFactors.map(r => `<li style="margin-bottom:6px;">${r}</li>`).join('') + '</ul>' : '<p style="margin:6px 0 0;color:var(--good);font-size:.86rem;">No additional high-risk factors flagged.</p>'}
+    </div>`;
+}
+
+let hyphemaIOPReadings = [];
+function logHyphemaIOP() {
+  const iop = parseFloat(document.getElementById('hyphemaIOP').value);
+  const day = document.getElementById('hyphemaDay').value;
+  if (isNaN(iop) || !day) return;
+  hyphemaIOPReadings.push({iop, day});
+  renderHyphemaLog();
+  document.getElementById('hyphemaIOP').value = '';
+  document.getElementById('hyphemaDay').value = '';
+}
+function resetHyphema() {
+  hyphemaIOPReadings = [];
+  renderHyphemaLog();
+}
+function renderHyphemaLog() {
+  const log = document.getElementById('hyphemaIOPLog');
+  log.innerHTML = hyphemaIOPReadings.map((r) => {
+    const highRiskDay = parseInt(r.day) >= 2 && parseInt(r.day) <= 5;
+    return `<div class="ph-entry ${r.iop <= 21 ? 'stable' : 'unstable'}">
+      <span>Day ${r.day}${highRiskDay ? ' (high rebleed-risk window)' : ''}</span>
+      <span>IOP: ${r.iop} mmHg</span>
+    </div>`;
+  }).join('');
+}
+
+// ---- Orbital fracture entrapment checklist ----
+const entrapmentItems = [
+  {id: 'nausea', label: 'Nausea and/or vomiting following trauma', critical: true},
+  {id: 'bradycardia', label: 'Bradycardia or syncope with attempted eye movement (oculocardiac reflex)', critical: true},
+  {id: 'restricted', label: 'Restricted upgaze (floor fracture) or restricted lateral gaze (medial wall fracture)', critical: true},
+  {id: 'painmovement', label: 'Significant pain specifically with eye movement', critical: false},
+  {id: 'whiteeye', label: 'Minimal external bruising/swelling despite significant symptoms ("white-eyed" appearance)', critical: true},
+  {id: 'pediatric', label: 'Pediatric or adolescent patient', critical: false},
+  {id: 'forcedduction', label: 'Positive forced duction test (if performed)', critical: true},
+  {id: 'diplopia', label: 'Persistent diplopia', critical: false},
+];
+function renderEntrapmentChecklist() {
+  const div = document.getElementById('entrapmentChecklist');
+  div.innerHTML = entrapmentItems.map(item =>
+    `<label class="check-item ${item.critical ? 'critical' : ''}">
+      <input type="checkbox" onchange="assessEntrapment()" data-id="${item.id}">
+      <span>${item.label}</span>
+    </label>`
+  ).join('');
+}
+function assessEntrapment() {
+  const checked = Array.from(document.querySelectorAll('#entrapmentChecklist input:checked'));
+  const criticalChecked = checked.filter(cb => {
+    const item = entrapmentItems.find(i => i.id === cb.dataset.id);
+    return item && item.critical;
+  });
+  const resultDiv = document.getElementById('entrapmentResult');
+  if (checked.length === 0) {
+    resultDiv.innerHTML = '';
+    return;
+  }
+  if (criticalChecked.length >= 2) {
+    resultDiv.innerHTML = `<div class="result-box danger">
+      <div class="result-title">&#9888; High suspicion for entrapment / oculocardiac reflex</div>
+      <p style="margin:0;color:var(--ink-dim);font-size:.88rem;">This pattern is easily misdiagnosed as head injury/increased ICP. Obtain orbital CT with coronal cuts and emergent ophthalmology/oculoplastics consultation. If confirmed, this is a surgical emergency &mdash; published series support release within 24&ndash;48 hours, with better outcomes reported under 24 hours, especially in younger children.</p>
+    </div>`;
+  } else if (criticalChecked.length === 1 || checked.length >= 2) {
+    resultDiv.innerHTML = `<div class="result-box warn">
+      <div class="result-title">Moderate suspicion &mdash; obtain imaging and ophthalmology input</div>
+      <p style="margin:0;color:var(--ink-dim);font-size:.88rem;">Findings warrant orbital CT and ophthalmology evaluation to assess for entrapment, even without the full classic pattern.</p>
+    </div>`;
+  } else {
+    resultDiv.innerHTML = `<div class="result-box">
+      <div class="result-title">Low suspicion based on current findings</div>
+      <p style="margin:0;color:var(--ink-dim);font-size:.88rem;">Continue standard orbital fracture workup; reassess if additional findings develop.</p>
+    </div>`;
+  }
+}
+renderEntrapmentChecklist();
+
+</script>
+</body>
+</html>

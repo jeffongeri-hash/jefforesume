@@ -466,6 +466,118 @@ const blogPosts = {
       <p><a href="/embeds/ent-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "ocular-atlas-vol1": {
+    title: "Ocular Atlas Vol. 1 — Vision & Globe-Threatening Emergencies",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Central retinal artery occlusion, acute angle closure, endophthalmitis, and other sight-threatening emergencies — recognition and time-critical management.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol1.html" title="Ocular Atlas Vol. 1 — Vision & Globe-Threatening Emergencies" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol2": {
+    title: "Ocular Atlas Vol. 2 — Ocular Trauma",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Open globe, hyphema, orbital fractures, chemical burns, and foreign bodies — exam sequence, imaging, and disposition.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol2.html" title="Ocular Atlas Vol. 2 — Ocular Trauma" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol3a": {
+    title: "Ocular Atlas Vol. 3a — Infectious & Inflammatory Disease",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Keratitis, uveitis, scleritis, conjunctivitis, and inflammatory eye disease — pathogens, treatment, and referral thresholds.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol3a.html" title="Ocular Atlas Vol. 3a — Infectious & Inflammatory Disease" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol3a.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol3b": {
+    title: "Ocular Atlas Vol. 3b — Orbital/Adnexal Infections & Outpatient Red Eye",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Preseptal vs orbital cellulitis, dacryocystitis, hordeolum/chalazion, and the outpatient red eye workup.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol3b.html" title="Ocular Atlas Vol. 3b — Orbital/Adnexal Infections & Outpatient Red Eye" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol3b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol4": {
+    title: "Ocular Atlas Vol. 4 — Neuro-Ophthalmology",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Cranial nerve palsies, optic neuropathies, papilledema, visual field defects, and pupillary abnormalities.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol4.html" title="Ocular Atlas Vol. 4 — Neuro-Ophthalmology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol5": {
+    title: "Ocular Atlas Vol. 5 — Exam Technique, Procedures & Pharmacology",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Slit lamp and fluorescein technique, tonometry, lateral canthotomy, foreign body removal, and ophthalmic drug reference.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol5.html" title="Ocular Atlas Vol. 5 — Exam Technique, Procedures & Pharmacology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "ocular-atlas-vol6": {
+    title: "Ocular Atlas Vol. 6 — Pediatric & Special Populations",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Neonatal conjunctivitis, leukocoria, amblyopia/strabismus, pediatric trauma, and eye findings in pregnancy and immunocompromise.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-atlas-vol6.html" title="Ocular Atlas Vol. 6 — Pediatric & Special Populations" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "ocular-differential-atlas-vol2b": {
     title: "Ocular Atlas Vol. 2b — Massive Differential Diagnosis Reference",
     category: "HEALTHCARE",

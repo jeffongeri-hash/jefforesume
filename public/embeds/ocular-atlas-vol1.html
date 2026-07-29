@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocular Atlas Vol 1 — Vision &amp; Globe-Threatening Emergencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --ocular: #8e7dd1;
+  --ocular-soft: rgba(142,125,209,.13);
+
+  /* Per-chief-complaint accent family (within ocular palette range) */
+  --c-red: #d4685f;        /* red eye */
+  --c-red-soft: rgba(212,104,95,.13);
+  --c-vision: #6ea8d8;     /* vision loss (painless/painful/gradual) */
+  --c-vision-soft: rgba(110,168,216,.13);
+  --c-diplopia: #d9b64e;   /* diplopia */
+  --c-diplopia-soft: rgba(217,182,78,.13);
+  --c-photo: #e0a458;      /* photophobia / flashes-floaters */
+  --c-photo-soft: rgba(224,164,88,.13);
+  --c-pupil: #9d7cd8;      /* anisocoria / pupil */
+  --c-pupil-soft: rgba(157,124,216,.13);
+  --c-lid: #5fb488;        /* ptosis / lid / periorbital */
+  --c-lid-soft: rgba(95,180,136,.14);
+  --c-orbit: #c77dc2;      /* proptosis / orbital mass */
+  --c-orbit-soft: rgba(199,125,194,.13);
+  --c-surface: #7fb0a3;    /* cornea / chemosis / FB / itch / tearing */
+  --c-surface-soft: rgba(127,176,163,.13);
+  --c-peds: #e08e8e;       /* pediatric / neonatal */
+  --c-peds-soft: rgba(224,142,142,.13);
+  --c-misc: #a9a9d1;       /* nystagmus / CL / post-procedural */
+  --c-misc-soft: rgba(169,169,209,.13);
+
+  --accent: var(--ocular);
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.65;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.brand{
+  font-family:var(--font-display); font-size:1.15rem; font-weight:600;
+  display:flex; align-items:baseline; gap:8px; white-space:nowrap;
+}
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; min-width:200px;}
+.navtrigger{
+  display:flex; align-items:center; gap:8px;
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  padding:9px 16px; border-radius:999px; font-family:var(--font-body); font-size:.85rem;
+  cursor:pointer; font-weight:500;
+}
+.navtrigger:hover{ border-color:var(--accent); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  width:min(720px, 92vw); max-height:70vh; overflow-y:auto;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:10px; display:none; z-index:200;
+  grid-template-columns: repeat(2, 1fr); gap:4px;
+}
+.navmenu.open{ display:grid; }
+.navmenu a{
+  display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:8px;
+  text-decoration:none; color:var(--ink-dim); font-size:.85rem; font-weight:500;
+}
+.navmenu a:hover{ background:var(--bg-elev-2); color:var(--ink); }
+.navmenu a .dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.navmenu .anat-toggle{
+  grid-column: 1 / -1; text-align:center; padding:8px; margin-top:4px; border-top:1px solid var(--line-soft);
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); cursor:pointer;
+}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:980px; margin:0 auto; padding:28px 20px 100px; }
+.hero{ padding:20px 0 32px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.hero h1{ font-size:1.9rem; }
+.hero p{ color:var(--ink-dim); font-size:1rem; max-width:640px; }
+.hero .stats{ display:flex; gap:20px; margin-top:16px; flex-wrap:wrap; }
+.hero .stat{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
+.hero .stat b{ display:block; font-family:var(--font-display); font-size:1.4rem; color:var(--accent); font-weight:600; text-transform:none; letter-spacing:0; }
+
+/* ---------- Complaint section ---------- */
+.complaint{ margin-bottom:56px; scroll-margin-top:90px; }
+.complaint-head{
+  display:flex; align-items:center; gap:14px; margin-bottom:6px; padding-bottom:14px;
+  border-bottom:2px solid var(--cc, var(--accent));
+}
+.complaint-head .icon-badge{
+  width:44px; height:44px; border-radius:10px; background:var(--cc-soft, var(--ocular-soft));
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.3rem;
+}
+.complaint-head h2{ font-size:1.5rem; margin:0; color: var(--cc, var(--accent)); }
+.complaint-sub{ color:var(--ink-dim); font-size:.92rem; margin:10px 0 22px; }
+.anat-tag{
+  display:inline-block; font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--ink-faint); background:var(--bg-elev-2); border:1px solid var(--line-soft);
+  padding:3px 9px; border-radius:6px; margin:2px 4px 2px 0;
+}
+
+/* ---------- Condition card ---------- */
+.cond-card{
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  margin-bottom:18px; overflow:hidden;
+}
+.cond-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:16px 20px; cursor:pointer; user-select:none;
+}
+.cond-header:hover{ background:var(--bg-elev-2); }
+.cond-title{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.cond-title h3{ font-size:1.08rem; margin:0; }
+.urgency-pill{
+  font-family:var(--font-mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 9px; border-radius:999px; font-weight:600; white-space:nowrap;
+}
+.urgency-critical{ background:var(--danger-soft); color:var(--danger); }
+.urgency-urgent{ background:var(--warn-soft); color:var(--warn); }
+.urgency-routine{ background:var(--good-soft); color:var(--good); }
+.chevron{ transition:transform .2s ease; color:var(--ink-faint); flex-shrink:0; }
+.cond-card.open .chevron{ transform:rotate(180deg); }
+
+.cond-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.cond-card.open .cond-body{ max-height:none; }
+.cond-body-inner{ padding:0 20px 22px; }
+
+.quickref-table{ width:100%; border-collapse:collapse; margin:14px 0 18px; font-size:.88rem; }
+.quickref-table th{
+  text-align:left; font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-faint); padding:6px 10px; border-bottom:1px solid var(--line);
+}
+.quickref-table td{ padding:9px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top; color:var(--ink-dim); }
+.quickref-table tr:last-child td{ border-bottom:none; }
+.quickref-table td.label-cell{ color:var(--ink); font-weight:600; white-space:nowrap; }
+
+.prose-block{ margin:16px 0; }
+.prose-block h4{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-faint); margin-bottom:8px;
+}
+.prose-block p{ color:var(--ink-dim); font-size:.93rem; margin-bottom:.7em; }
+
+.hallmark-box{
+  background:var(--cc-soft, var(--ocular-soft)); border-left:3px solid var(--cc, var(--accent));
+  border-radius:6px; padding:12px 16px; margin:14px 0;
+}
+.hallmark-box .hb-label{
+  font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--cc, var(--accent)); margin-bottom:5px; font-weight:700;
+}
+.hallmark-box p{ margin:0; font-size:.92rem; color:var(--ink); }
+
+.diagram-callout{
+  background:var(--bg-elev-2); border:1px solid var(--line); border-radius:8px;
+  padding:14px; margin:14px 0; text-align:center;
+}
+.diagram-callout svg{ max-width:100%; height:auto; }
+.diagram-caption{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); margin-top:8px; }
+
+.pearl{
+  display:flex; gap:10px; align-items:flex-start; background:var(--warn-soft);
+  border-radius:8px; padding:10px 14px; margin:12px 0; font-size:.88rem; color:var(--ink);
+}
+.pearl .pearl-icon{ flex-shrink:0; }
+
+/* ---------- Filter bar ---------- */
+.filterbar{
+  display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; padding:14px;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+}
+.filterbar input{
+  flex:1; min-width:180px; background:var(--bg-elev-2); border:1px solid var(--line); color:var(--ink);
+  padding:9px 14px; border-radius:8px; font-family:var(--font-body); font-size:.88rem;
+}
+.filter-chip{
+  font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev-2);
+  color:var(--ink-dim); cursor:pointer; white-space:nowrap;
+}
+.filter-chip.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+/* ---------- Anatomic index ---------- */
+.anat-index{ display:none; }
+.anat-index.active{ display:block; }
+.anat-group{ margin-bottom:30px; }
+.anat-group h3{ font-size:1.1rem; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:8px; }
+.anat-links{ display:flex; flex-wrap:wrap; gap:8px; }
+.anat-links a{
+  font-size:.82rem; color:var(--ink-dim); text-decoration:none; background:var(--bg-elev);
+  border:1px solid var(--line); padding:6px 12px; border-radius:8px;
+}
+.anat-links a:hover{ border-color:var(--accent); color:var(--ink); }
+
+.view-toggle{ display:flex; gap:8px; margin-bottom:24px; }
+.view-toggle button{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:8px 16px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.view-toggle button.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+.hidden{ display:none !important; }
+
+@media (max-width:640px){
+  .hero h1{ font-size:1.5rem; }
+  .navmenu{ grid-template-columns:1fr; width:94vw; }
+  .quickref-table{ font-size:.8rem; }
+  .cond-title h3{ font-size:1rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
+
+.v1-overview{ color:var(--ink-dim); font-size:1rem; margin-bottom:22px; max-width:720px; }
+.icon-badge-lg{ width:52px; height:52px; border-radius:12px; background:var(--cc-soft); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
+.v1-head{ display:flex; align-items:center; gap:16px; margin-bottom:8px; padding-bottom:16px; border-bottom:2px solid var(--cc); }
+.v1-head h2{ color:var(--cc); font-size:1.6rem; margin:0; }
+.vol1-condition{ margin-bottom:64px; scroll-margin-top:90px; }
+.v1-tabs{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.v1-tab{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:9px 15px; border-radius:8px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.v1-tab.active{ background:var(--cc); color:#12161c; border-color:var(--cc); font-weight:600; }
+.v1-panel{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+.v1-panel.hidden{ display:none; }
+.v1-panel p{ color:var(--ink-dim); font-size:.94rem; margin-bottom:12px; }
+.workup-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+.workup-col h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.workup-col ul{ margin:0; padding-left:18px; color:var(--ink-dim); font-size:.88rem; }
+.workup-col li{ margin-bottom:8px; }
+.algo-list{ display:flex; flex-direction:column; gap:16px; }
+.algo-step{ display:flex; gap:14px; }
+.algo-num{
+  width:28px; height:28px; border-radius:50%; background:var(--cc); color:#12161c; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:var(--font-mono); font-size:.85rem;
+}
+.algo-title{ font-weight:600; color:var(--ink); margin-bottom:4px; font-size:.95rem; }
+.algo-detail{ color:var(--ink-dim); font-size:.88rem; margin-bottom:6px !important; }
+.algo-timing{ font-family:var(--font-mono); font-size:.68rem; color:var(--warn); }
+.procedure-box{ margin-top:24px; padding:18px; background:var(--bg-elev-2); border-radius:10px; border:1px solid var(--line); }
+.procedure-title{ font-weight:600; color:var(--cc); margin-bottom:10px; }
+.procedure-steps{ color:var(--ink-dim); font-size:.88rem; padding-left:20px; margin-bottom:14px; }
+.procedure-steps li{ margin-bottom:6px; }
+.contra-box{ background:var(--danger-soft); border-radius:8px; padding:12px 16px; font-size:.85rem; color:var(--ink); }
+.contra-box ul{ margin:6px 0 0; padding-left:18px; }
+.drug-table th{ text-align:left; }
+.fundus-box{ margin-top:6px; }
+.fundus-box h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.fundus-box p{ color:var(--ink-dim); font-size:.9rem; }
+.pearl-list, .complication-list, .evidence-list{ margin-bottom:18px; }
+.pearl-list h5, .complication-list h5, .evidence-list h5{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px;
+}
+.pearl-list ul, .complication-list ul, .evidence-list ul{ padding-left:18px; color:var(--ink-dim); font-size:.9rem; }
+.pearl-list li, .complication-list li, .evidence-list li{ margin-bottom:8px; }
+
+/* Tools section */
+.tools-section{ margin-top:70px; padding-top:30px; border-top:2px solid var(--line); }
+.tool-card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-bottom:28px; }
+.tool-card h3{ color:var(--accent); margin-bottom:6px; }
+.tool-sub{ color:var(--ink-faint); font-size:.85rem; margin-bottom:20px; }
+.tool-row{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px; align-items:center; }
+.tool-row label{ font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:4px; }
+.tool-row select, .tool-row input{
+  background:var(--bg-elev-2); border:1px solid var(--line); color:var(--ink); padding:8px 12px; border-radius:8px; font-family:var(--font-body); font-size:.88rem;
+}
+.tool-btn{
+  background:var(--accent); color:#12161c; border:none; padding:9px 18px; border-radius:8px; font-weight:600; cursor:pointer; font-size:.85rem;
+}
+.tool-btn.secondary{ background:var(--bg-elev-2); color:var(--ink-dim); border:1px solid var(--line); }
+.ph-log{ margin-top:14px; }
+.ph-entry{ display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-elev-2); border-radius:6px; margin-bottom:6px; font-family:var(--font-mono); font-size:.82rem; }
+.ph-entry.stable{ border-left:3px solid var(--good); }
+.ph-entry.unstable{ border-left:3px solid var(--warn); }
+.endpoint-banner{ padding:14px; border-radius:8px; margin-top:14px; font-weight:600; text-align:center; }
+.endpoint-banner.reached{ background:var(--good-soft); color:var(--good); }
+.endpoint-banner.pending{ background:var(--warn-soft); color:var(--warn); }
+.grade-result{ margin-top:16px; padding:16px; border-radius:8px; background:var(--bg-elev-2); border-left:3px solid var(--accent); }
+.grade-result .grade-title{ font-family:var(--font-mono); font-size:.9rem; font-weight:700; color:var(--accent); margin-bottom:6px; }
+
+.seq-step{ display:flex; align-items:center; gap:14px; padding:14px; border-radius:8px; background:var(--bg-elev-2); margin-bottom:10px; opacity:0.55; transition:opacity .2s; }
+.seq-step.given{ opacity:1; border-left:3px solid var(--good); }
+.seq-num{ width:26px; height:26px; border-radius:50%; background:var(--line); color:var(--ink-dim); display:flex; align-items:center; justify-content:center; font-size:.8rem; font-family:var(--font-mono); flex-shrink:0; }
+.seq-step.given .seq-num{ background:var(--good); color:#12161c; }
+.seq-info{ flex:1; }
+.seq-drug{ font-weight:600; font-size:.9rem; }
+.seq-dose{ color:var(--ink-faint); font-size:.78rem; font-family:var(--font-mono); }
+.seq-time{ font-family:var(--font-mono); font-size:.78rem; color:var(--ink-faint); min-width:70px; text-align:right; }
+.iop-log-row{ display:flex; gap:8px; margin-top:16px; }
+.iop-log-list{ margin-top:10px; }
+
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="brand">Ocular Atlas <span class="sub">Vol 1 &middot; Vision &amp; Globe-Threatening Emergencies</span></div>
+  <div class="navwrap">
+    <button class="navtrigger" onclick="document.getElementById('navmenu').classList.toggle('open')">
+      &#9776; Jump to section
+    </button>
+    <div class="navmenu" id="navmenu">
+      <a href="#chemical-burn"><span class="dot" style="background:var(--c-surface)"></span>Ocular Chemical Burns</a><a href="#open-globe"><span class="dot" style="background:var(--c-orbit)"></span>Open Globe Injury / Globe Rupture</a><a href="#crao-crvo"><span class="dot" style="background:var(--c-vision)"></span>CRAO / CRVO</a><a href="#retinal-detachment"><span class="dot" style="background:var(--c-vision)"></span>Retinal Detachment</a><a href="#aacg"><span class="dot" style="background:var(--c-red)"></span>Acute Angle-Closure Glaucoma</a><a href="#orbital-compartment-syndrome"><span class="dot" style="background:var(--c-orbit)"></span>Orbital Compartment Syndrome / Retrobulbar Hemorrhage</a><a href="#endophthalmitis"><span class="dot" style="background:var(--c-red)"></span>Endophthalmitis</a><a href="#tools"><span class="dot" style="background:var(--accent)"></span>Interactive Tools</a>
+    </div>
+  </div>
+  <button class="themetoggle" onclick="toggleTheme()" id="themebtn">&#9789;</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Vision &amp; Globe-Threatening Emergencies</h1>
+    <p>Full management deep-dive: workup, treatment algorithm, drug dosing, procedural steps, and disposition for each of the seven core sight- and globe-threatening emergencies.</p>
+    <div class="stats">
+      <div class="stat">Conditions<b>7</b></div>
+      <div class="stat">Interactive tools<b>2</b></div>
+      <div class="stat">Depth<b>Full deep-dive</b></div>
+    </div>
+  </div>
+
+  
+<section class="vol1-condition" id="chemical-burn" style="--cc:var(--c-surface);--cc-soft:var(--c-surface-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129514;</div>
+    <h2>Ocular Chemical Burns</h2>
+  </div>
+  <p class="v1-overview">The only ocular emergency where treatment must begin before you've made a diagnosis, before history is complete, and often before the patient is fully triaged. Irrigation is the intervention; everything else is secondary until pH is normalized.</p>
+
+  <div class="v1-tabs" data-group="chemical-burn">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('chemical-burn','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('chemical-burn','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('chemical-burn','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('chemical-burn','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('chemical-burn','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('chemical-burn','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('chemical-burn','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="chemical-burn" data-panel="path">
+    <p>Alkali agents (lime, cement, ammonia, drain cleaner) cause saponification of cell membrane fatty acids, allowing progressive penetration through the cornea into the anterior chamber &mdash; alkali burns are generally more destructive than acid burns of equivalent exposure because acids cause protein coagulation that tends to form a barrier limiting further penetration (the exception being hydrofluoric acid, which penetrates similarly to alkali due to the small, highly diffusible fluoride ion).</p><p>Limbal stem cell damage is the single biggest long-term prognostic factor: the limbus houses the stem cells that regenerate corneal epithelium, and ischemia here (visible as a chalky-white, vessel-free limbus rather than injected conjunctiva) predicts corneal scarring, persistent epithelial defects, and neovascularization weeks to months later &mdash; the acute pain and injection you see is not what determines long-term visual prognosis.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Occupational exposure: construction/masonry (lime, wet cement), industrial cleaning and manufacturing (strong acids/alkalis, ammonia), agriculture (anhydrous ammonia fertilizer)</li><li>Household chemical exposure: drain cleaners (typically strong alkali), pool chemicals, oven cleaners</li><li>Assault-related exposure (increasingly recognized cause, particularly with acids in some regions)</li><li>Lack of eye protection during exposure-risk tasks</li><li>Airbag deployment (alkaline dust/particulate release)</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not the primary exam focus &mdash; chemical burns are an anterior-segment disease. The fundus is frequently entirely obscured by corneal edema/opacification in Grade III&ndash;IV burns, and the inability to obtain any fundus view is itself a marker of severity worth documenting. True posterior segment injury from a chemical burn alone is rare; if fundus details are visible, they are typically normal unless a separate globe injury coexists.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Exact agent name/product if available (read the label or ask for it to be brought in) &mdash; pH and concentration matter enormously for expected severity.</li><li>Time of exposure and any pre-hospital irrigation already performed.</li><li>Mechanism: splash, spray, or high-pressure injection (industrial settings can drive agent posteriorly beyond what surface irrigation reaches).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Litmus/pH paper on the conjunctival surface BEFORE and serially DURING irrigation.</li><li>Visual acuity once pain control allows.</li><li>Slit lamp: corneal clarity/haze, extent of limbal ischemia in clock hours (this is the key prognostic exam finding), conjunctival injection vs. blanching, anterior chamber reaction.</li><li>Lid eversion and fornix sweep to remove any retained particulate (lime/cement particles continue releasing alkali if left in place).</li><li>IOP once irrigation is complete &mdash; alkali burns can cause immediate or delayed IOP elevation.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>None required for diagnosis &mdash; this is a clinical/pH-driven diagnosis. Imaging only if a coexisting globe or orbital injury is suspected from the mechanism.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Irrigate immediately</div>
+            <p class="algo-detail">Begin copious irrigation with whatever isotonic/sterile fluid is available (normal saline or LR preferred; plain water is acceptable if nothing else is on hand) before completing history or exam. Use a Morgan lens, IV tubing directed across the globe, or manual lid retraction with a speculum/Desmarres retractor. Instill topical anesthetic first to improve tolerance and cooperation.</p>
+            <div class="algo-timing">&#9200; Before anything else &mdash; do not wait for triage, registration, or a complete history</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Evert lids and sweep fornices</div>
+            <p class="algo-detail">Double-evert the upper lid and sweep both fornices with a moistened cotton-tip applicator to remove retained particulate matter (common with lime/cement). If the causative agent contained calcium oxide, soak the swab in 1% EDTA to help chelate residual calcium.</p>
+            <div class="algo-timing">&#9200; Once initial irrigation has reduced pain enough to tolerate lid eversion</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Check pH serially, continue irrigating to endpoint</div>
+            <p class="algo-detail">Recheck conjunctival pH every 5&ndash;10 minutes during ongoing irrigation. Continue until pH is neutral (~7.0&ndash;7.5) and remains stable on a repeat check roughly 20&ndash;30 minutes after stopping irrigation &mdash; a single normal reading immediately after stopping the stream is not sufficient, since sequestered agent in the fornices can leach back out.</p>
+            <div class="algo-timing">&#9200; Ongoing until stable neutral pH confirmed twice, 20&ndash;30 min apart</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Grade severity once pH is stable</div>
+            <p class="algo-detail">Perform slit lamp exam to grade via Roper-Hall (or Dua's more granular clock-hour system): assess corneal clarity and, most importantly, the extent of limbal ischemia in clock hours. This grade drives prognosis discussion and follow-up urgency.</p>
+            <div class="algo-timing">&#9200; After irrigation endpoint reached</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Start adjunctive medical therapy</div>
+            <p class="algo-detail">Cycloplegic for ciliary spasm/comfort, topical antibiotic prophylaxis, topical steroid for significant inflammation (use cautiously and in coordination with ophthalmology in more severe grades, since steroids can impair stromal healing if overused), and consider oral vitamin C / topical ascorbate and topical citrate in more severe (grade III&ndash;IV) burns to support collagen synthesis and reduce ulceration risk per some ophthalmology protocols.</p>
+            <div class="algo-timing">&#9200; After grading, same visit</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">IOP management if elevated</div>
+            <p class="algo-detail">Treat elevated IOP with topical beta-blocker and/or oral acetazolamide as needed; alkali burns can cause an immediate or delayed pressure rise from angle and trabecular meshwork damage.</p>
+            <div class="algo-timing">&#9200; As soon as identified</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Arrange ophthalmology follow-up matched to severity</div>
+            <p class="algo-detail">Mild (Grade I&ndash;II, minimal/no limbal ischemia): next-day or 24&ndash;48h follow-up is often reasonable. Severe (Grade III&ndash;IV, significant limbal ischemia): same-day ophthalmology evaluation, since these carry real risk of progressive melt, symblepharon, and poor visual outcome and may need earlier surgical intervention (amniotic membrane, tenoplasty).</p>
+            <div class="algo-timing">&#9200; Before discharge</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Copious Irrigation Technique (Morgan Lens)</div>
+      <ol class="procedure-steps"><li>Instill topical anesthetic drops.</li><li>Connect Morgan lens to IV tubing running isotonic saline or LR, primed to remove air.</li><li>Ask the patient to look down; insert the lens under the upper lid first, then ask them to look up and retract the lower lid to seat the lens over the globe.</li><li>Start flow at a comfortable rate (roughly 100&ndash;500 mL over the first several minutes, titrating to comfort and pH response); typical total volumes for a significant alkali exposure often run into the multiple liters before pH normalizes.</li><li>Check pH by touching litmus paper to the inferior fornix without stopping flow if possible, or briefly pausing.</li><li>Remove by having the patient look up, then slide the lens out from under the lower lid.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>Suspected globe rupture or perforation &mdash; delay Morgan lens use and any irrigation device that contacts the globe until ophthalmology has assessed; manual irrigation with IV tubing directed at the eye from a distance is preferred if chemical exposure plus suspected open globe both apply.</li><li>Deep corneal injury or suspected foreign body &mdash; a scleral/Morgan lens can worsen the injury.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Topical proparacaine/tetracaine</td><td>1&ndash;2 drops as needed</td><td>Topical</td><td>Use liberally before irrigation and lid eversion to improve tolerance; not for take-home use</td></tr><tr><td class="label-cell">1% EDTA (on cotton swab)</td><td>As needed for fornix sweep</td><td>Topical, applied via swab</td><td>Specifically for calcium oxide (lime) exposures to chelate residual calcium</td></tr><tr><td class="label-cell">Cyclopentolate 1% or homatropine 5%</td><td>1 drop BID&ndash;TID</td><td>Topical</td><td>Cycloplegia for ciliary spasm/comfort; avoid phenylephrine (vasoconstrictor, theoretical concern for limbal ischemia)</td></tr><tr><td class="label-cell">Erythromycin or moxifloxacin ointment/drops</td><td>QID</td><td>Topical</td><td>Prophylactic antibiotic coverage while epithelium is compromised</td></tr><tr><td class="label-cell">Prednisolone acetate 1%</td><td>Q1&ndash;2H while severe, taper per ophtho</td><td>Topical</td><td>For significant inflammation; use cautiously in coordination with ophthalmology in Grade III&ndash;IV burns given melt risk with prolonged use</td></tr><tr><td class="label-cell">Timolol 0.5%</td><td>1 drop BID</td><td>Topical</td><td>For elevated IOP post-burn</td></tr><tr><td class="label-cell">Acetazolamide</td><td>500 mg PO once, then 250 mg q6h</td><td>PO/IV</td><td>For elevated IOP not controlled with topical therapy alone</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Grade III&ndash;IV (significant limbal ischemia, corneal opacification) warrants same-day ophthalmology evaluation and close early follow-up; true admission is uncommon but urgent surgical intervention (amniotic membrane transplant, tenoplasty) may be needed within days if healing stalls.</td></tr><tr><td class="label-cell">Transfer</td><td>Consider transfer if no ophthalmology coverage is available for a Grade III&ndash;IV burn or any burn with a positive Seidel sign or suspected globe involvement.</td></tr><tr><td class="label-cell">Follow-up</td><td>Grade I&ndash;II: 24&ndash;48 hour ophthalmology follow-up. Grade III&ndash;IV: same-day or next-day, with close serial follow-up over the first 1&ndash;2 weeks given ongoing risk of epithelial breakdown and melt.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Persistent epithelial defect and delayed healing</li><li>Symblepharon (adhesion between palpebral and bulbar conjunctiva)</li><li>Corneal neovascularization and scarring</li><li>Secondary glaucoma from angle/trabecular damage</li><li>Corneal melt/perforation in severe limbal stem cell deficiency</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="chemical-burn" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>The pH endpoint, not a fixed volume or fixed time, defines when irrigation is complete &mdash; some significant alkali exposures require several liters and 30+ minutes of irrigation.</li><li>Limbal ischemia (chalky white, avascular limbus), not conjunctival redness, is the finding that predicts poor outcome &mdash; a dramatically red eye with an intact, vascularized limbus often has a better prognosis than a quiet-looking eye with pale, ischemic limbal segments.</li><li>Don't let severity grading delay irrigation &mdash; irrigate first with whatever is available, grade after pH is controlled.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Roper-Hall (1965) established the original 4-grade classification based on corneal haze and limbal ischemia extent; Dua's classification (2001) refined this into a more granular clock-hour-based system with better prognostic discrimination for severe injuries.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="open-globe" style="--cc:var(--c-orbit);--cc-soft:var(--c-orbit-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Open Globe Injury / Globe Rupture</h2>
+  </div>
+  <p class="v1-overview">The ED's job is almost entirely protective: stop anything that raises IOP, get systemic antibiotics and tetanus prophylaxis on board, and get the patient to the OR without ever pressing on the eye. The temptation to complete a thorough eye exam is exactly what needs to be resisted here.</p>
+
+  <div class="v1-tabs" data-group="open-globe">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('open-globe','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('open-globe','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('open-globe','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('open-globe','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('open-globe','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('open-globe','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('open-globe','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="open-globe" data-panel="path">
+    <p>A full-thickness defect in the corneoscleral eyewall, from blunt trauma (an inside-out rupture, typically at the thinnest points: the limbus, under rectus muscle insertions, or the posterior globe) or a sharp/penetrating mechanism (a laceration, following the path of the object). Once the wall is breached, ordinary IOP-raising maneuvers &mdash; coughing, straining, vomiting, direct pressure from an exam or tonometry &mdash; risk extruding intraocular contents (iris, vitreous, retina) through the defect, converting a repairable injury into a globe that cannot be salvaged.</p><p>Post-traumatic endophthalmitis is the dominant infectious threat, particularly with organic contamination (soil, plant matter) or a retained intraocular foreign body; the historic protocol of 48 hours of IV antibiotics plus prompt surgical closure has been shown to keep post-traumatic endophthalmitis rates low.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>High-risk occupations: metalworking, hammering metal-on-metal (classic mechanism for high-velocity intraocular foreign bodies), construction, lawn care/landscaping (projectile debris)</li><li>Sports without eye protection (racquet sports, paintball, BB/pellet guns)</li><li>Assault and motor vehicle collisions</li><li>Prior ocular surgery &mdash; previous corneal/scleral incisions (cataract surgery, LASIK, prior trauma repair) create a structurally weaker wound site that can rupture with relatively minor subsequent blunt force</li><li>Young male predominance in most trauma registries, reflecting occupational and recreational exposure patterns</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Fundus exam is explicitly deferred/avoided in the ED if open globe is suspected, since even indirect ophthalmoscopy pressure can risk content extrusion &mdash; this is a case where NOT looking is the correct action. When the fundus is eventually visualized (intraoperatively or once the wound is secured), findings may include vitreous hemorrhage, choroidal or retinal prolapse through the wound, disorganized globe architecture, or a retinal detachment involving the injury tract.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism: blunt vs. sharp, any possibility of a retained foreign body (metal-on-metal work, explosion, projectile), timing of injury and last oral intake (relevant for OR planning).</li><li>Tetanus immunization status.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity if it can be obtained without manipulating the globe.</li><li>External inspection only: peaked/teardrop pupil, visible uveal or vitreous prolapse, flattened anterior chamber, obvious scleral/corneal laceration, 360-degree subconjunctival hemorrhage (should raise suspicion for occult rupture underneath).</li><li>Seidel test (fluorescein strip touched near, not on, the suspected wound, viewed under cobalt blue light) if a small self-sealing leak is suspected and can be tested without pressure &mdash; a positive test (dark aqueous streaming through the fluorescein) confirms a full-thickness leak.</li><li>EXPLICITLY DO NOT: perform tonometry, forcefully retract lids, apply any pressure to the globe, or perform a scleral depression/detailed fundus exam if rupture is suspected.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>CT orbit, thin cuts, non-contrast &mdash; mandatory before any MRI consideration. Identifies intraocular foreign body, orbital wall involvement, and globe contour abnormality.</li><li>No MRI if any possibility of a metallic intraocular foreign body (magnetic field risk).</li><li>B-scan ultrasound is generally AVOIDED in suspected open globe (direct pressure risk) unless performed very gently by an experienced operator with minimal contact.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Shield, don't patch</div>
+            <p class="algo-detail">Place a rigid shield (Fox shield, or improvised from the bottom of a paper cup) taped over the bony orbital rim, not resting on the globe. Never patch &mdash; a soft patch can transmit pressure directly onto the injury.</p>
+            <div class="algo-timing">&#9200; Immediately on recognition/suspicion</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Stop anything that raises IOP</div>
+            <p class="algo-detail">No tonometry, no forceful lid retraction, no topical drops instilled under pressure, no Valsalva. Elevate the head of bed 30 degrees. Keep the patient calm and still.</p>
+            <div class="algo-timing">&#9200; Immediately, maintained throughout ED course</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Aggressive antiemetic prophylaxis</div>
+            <p class="algo-detail">Vomiting is a major Valsalva/IOP-spike risk in a painful, frightened patient. Treat proactively rather than waiting for nausea to develop.</p>
+            <div class="algo-timing">&#9200; On arrival</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Analgesia and sedation as needed</div>
+            <p class="algo-detail">Adequate pain control reduces straining/agitation that can raise IOP. Choose agents that don't independently raise IOP or complicate airway planning if intubation for OR is anticipated.</p>
+            <div class="algo-timing">&#9200; As needed, on arrival</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Tetanus prophylaxis</div>
+            <p class="algo-detail">Open globe injuries are tetanus-prone wounds; update per standard tetanus-prone wound guidelines if status is unclear or out of date.</p>
+            <div class="algo-timing">&#9200; On arrival, before or concurrent with antibiotics</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Start systemic antibiotics</div>
+            <p class="algo-detail">Begin IV antibiotics targeting the organisms most implicated in post-traumatic endophthalmitis (Bacillus species and gram-negatives in addition to typical gram-positives). Continue for at least 48 hours; some protocols extend 7&ndash;10 days depending on contamination and repair complexity.</p>
+            <div class="algo-timing">&#9200; As soon as diagnosis is suspected, before OR</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">NPO and OR coordination</div>
+            <p class="algo-detail">Keep NPO in anticipation of surgical repair. Urgent (same-day, ideally within 24 hours) primary surgical closure is the goal &mdash; earlier is generally better, and delay increases infection risk.</p>
+            <div class="algo-timing">&#9200; Ongoing until OR</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">8</div>
+          <div class="algo-content">
+            <div class="algo-title">Emergent ophthalmology consultation</div>
+            <p class="algo-detail">This is a same-day surgical emergency; consult immediately on suspicion, don't wait for imaging confirmation if the exam is convincing.</p>
+            <div class="algo-timing">&#9200; Immediately</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Fox Shield Placement</div>
+      <ol class="procedure-steps"><li>Select a rigid perforated shield sized to rest on the bony orbital rim (brow, cheek, nasal bridge) without touching the lids or globe.</li><li>If no commercial shield is available, the bottom third of a paper or Styrofoam cup, trimmed and taped, works as an improvised substitute.</li><li>Tape securely to the surrounding bones, checking that no part of the shield contacts the eyelids or globe directly.</li><li>Reassess fit periodically; do not remove to 'check on' the eye outside of a controlled exam by the treating team.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>None &mdash; shield placement is universally appropriate whenever open globe is suspected; the only technique error is allowing the shield to rest on the globe/lids rather than the bony rim.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Ondansetron</td><td>0.15 mg/kg IV, up to 12 mg (or standard 4&ndash;8 mg adult dosing)</td><td>IV</td><td>High-dose antiemetic prophylaxis to prevent Valsalva-induced content extrusion</td></tr><tr><td class="label-cell">Morphine</td><td>0.1 mg/kg IV, up to 10 mg, titrated</td><td>IV</td><td>Analgesia; titrate to comfort while monitoring for hypotension/respiratory depression</td></tr><tr><td class="label-cell">Lorazepam</td><td>0.05 mg/kg IV, up to 2 mg</td><td>IV</td><td>For anxiolysis if needed to keep an agitated patient still</td></tr><tr><td class="label-cell">Vancomycin</td><td>1 g IV q12h (adjust for renal function)</td><td>IV</td><td>Gram-positive coverage including Bacillus species</td></tr><tr><td class="label-cell">Ceftazidime</td><td>1 g IV q8h</td><td>IV</td><td>Gram-negative coverage; substitute levofloxacin 500 mg PO/IV daily if penicillin/cephalosporin allergy</td></tr><tr><td class="label-cell">Tetanus toxoid &plusmn; TIG</td><td>Per standard tetanus-prone wound protocol</td><td>IM</td><td>Based on immunization history and wound characteristics</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>All confirmed or strongly suspected open globe injuries go to the OR &mdash; primary repair ideally within 24 hours, sooner where feasible. This is an admission, not a discharge-with-follow-up diagnosis.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer emergently to a facility with ophthalmology/oculoplastics surgical capability if not available on site &mdash; shield, antiemetics, antibiotics, and tetanus prophylaxis should all be initiated before transfer.</td></tr><tr><td class="label-cell">Follow-up</td><td>Not applicable pre-repair; post-operative follow-up is directed entirely by the operating ophthalmologist.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Post-traumatic endophthalmitis (higher risk with organic contamination or retained IOFB)</li><li>Sympathetic ophthalmia (rare, delayed autoimmune inflammation of the uninjured fellow eye, can occur weeks to years later)</li><li>Traumatic cataract, retinal detachment, phthisis bulbi (globe atrophy) in severe/delayed cases</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="open-globe" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>A 360-degree subconjunctival hemorrhage or a deep/asymmetric anterior chamber on the injured side should raise suspicion for an occult scleral rupture hidden beneath the conjunctiva, even without an obvious visible wound.</li><li>Resist the urge to complete a 'thorough' eye exam once open globe is suspected &mdash; the marginal diagnostic information from further exam is rarely worth the risk of extruding contents.</li><li>The IV antibiotic protocol (vancomycin + ceftazidime, or fluoroquinolone alternative) reduces post-traumatic endophthalmitis rates substantially in published series &mdash; this is one of the highest-yield, lowest-risk interventions available in the ED for this diagnosis.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>AAO preoperative management guidance supports at least 48 hours of IV antibiotic therapy following open globe injury as standard practice, with published series showing post-traumatic endophthalmitis rates reduced to under 1% with prompt antibiotics and surgical closure.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="crao-crvo" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129505;</div>
+    <h2>CRAO / CRVO</h2>
+  </div>
+  <p class="v1-overview">CRAO management has genuinely evolved into a stroke-pathway problem &mdash; the highest-yield ED action is often activating the same acute stroke protocol you would for a hemispheric event, not reaching for the historic bag of 'conservative' bedside maneuvers that the evidence no longer supports.</p>
+
+  <div class="v1-tabs" data-group="crao-crvo">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('crao-crvo','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('crao-crvo','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('crao-crvo','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('crao-crvo','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('crao-crvo','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('crao-crvo','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('crao-crvo','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="crao-crvo" data-panel="path">
+    <p>CRAO: embolic or thrombotic occlusion of the central retinal artery causes inner retinal ischemia; ganglion cell death becomes irreversible at roughly 240 minutes, mirroring cerebral ischemic timelines. Without treatment, fewer than 20% of patients (some series report closer to 17%) regain functional vision. The condition also functions as a sentinel vascular event: peak risk of subsequent stroke or cardiovascular event clusters in the first 7 days.</p><p>CRVO: thrombosis of the central retinal vein at the lamina cribrosa causes venous congestion, hemorrhage, and macular edema. Ischemic (severe) CRVO carries a real risk of neovascular glaucoma developing around 60&ndash;90 days post-event ('90-day glaucoma') and needs scheduled early follow-up, not an open-ended return-if-worse instruction.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>CRAO: carotid atherosclerosis (most common embolic source), atrial fibrillation and other cardioembolic sources, giant cell arteritis (critical to screen for in patients over 50), hypercoagulable states, hyperviscosity syndromes (polycythemia, sickle cell disease), oral contraceptive use in younger patients, cocaine use, prior amaurosis fugax episodes</li><li>CRVO: hypertension (the dominant risk factor), diabetes mellitus, hyperlipidemia, open-angle glaucoma/elevated IOP (a specific and often underappreciated risk factor for CRVO), hypercoagulable/hyperviscosity states, older age</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>CRAO: diffuse retinal whitening/opacification from inner retinal ischemic edema with a contrasting cherry-red spot at the fovea (thin retina overlying intact choroidal circulation); attenuated, thread-like arterioles with segmentation or 'box-carring' of the blood column in more severe cases; an embolus (Hollenhorst plaque &mdash; refractile cholesterol embolus, or a duller platelet-fibrin or calcific embolus) may occasionally be visible at an arteriolar bifurcation. The disc can look normal acutely and becomes pale/atrophic only after weeks. CRVO: diffuse hemorrhages in all four quadrants ('blood and thunder' fundus), dilated and tortuous retinal veins, optic disc edema, cotton-wool spots (more prominent in the ischemic subtype), and macular edema.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Precise time of vision loss onset &mdash; this single data point determines whether thrombolysis is even on the table for CRAO.</li><li>Vascular risk factors: atrial fibrillation, carotid disease, prior TIA/stroke, hypercoagulable states.</li><li>Screen for GCA symptoms in any patient over 50 (jaw claudication, scalp tenderness, headache) &mdash; this changes the entire management pathway.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, pupil exam for RAPD.</li><li>Dilated fundus exam: CRAO shows retinal whitening/edema with a cherry-red foveal spot (may be absent or subtle in the first hours in a minority of cases); CRVO shows diffuse four-quadrant hemorrhages ('blood and thunder'), venous tortuosity, disc edema.</li><li>IOP measurement (relevant both diagnostically and because IOP-lowering is part of the traditional CRAO treatment discussion).</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>STAT ESR, CRP, platelets, CBC in any patient over 50 to screen for GCA &mdash; do not skip this even when the picture looks like straightforward embolic CRAO.</li><li>CRAO: activate acute stroke workup &mdash; CT/CTA head and neck or MRI/MRA, carotid duplex, echocardiogram, ECG/telemetry, exactly as for any TIA/stroke, since the source workup is identical.</li><li>CRVO: blood pressure, glucose/HbA1c, and consider hyperviscosity/hypercoagulability workup for younger or atypical patients; fluorescein angiography (ophthalmology) to formally grade ischemic vs. non-ischemic.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm time of onset immediately</div>
+            <p class="algo-detail">Establish the exact last-known-well time for vision loss the same way you would for a stroke code &mdash; this is the single piece of information that determines eligibility for time-window-dependent therapy.</p>
+            <div class="algo-timing">&#9200; First minutes</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Activate the stroke pathway for CRAO</div>
+            <p class="algo-detail">Where institutional pathways exist, CRAO should be routed through the acute stroke/telestroke system rather than waiting on ophthalmology availability, since ophthalmologic evaluation is frequently not available within the treatment window and more than half of patients nationally present after the window has already closed. Confirm your institution's current door-to-needle expectations and whether IV thrombolysis (alteplase/tenecteplase) is offered locally for CRAO per current protocol.</p>
+            <div class="algo-timing">&#9200; Within the 4.5-hour window from onset if pursuing thrombolysis</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Screen out GCA before assuming embolic cause</div>
+            <p class="algo-detail">Send ESR/CRP/platelets immediately in any patient over 50; if clinical suspicion for GCA is present (jaw claudication, scalp tenderness, headache), start empiric high-dose corticosteroids without waiting for confirmatory testing &mdash; this changes the entire treatment pathway from a stroke-style workup to urgent steroid therapy.</p>
+            <div class="algo-timing">&#9200; Immediately, in parallel with stroke workup</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Consider traditional IOP-lowering/conservative measures with realistic expectations</div>
+            <p class="algo-detail">Ocular massage, anterior chamber paracentesis, and topical/systemic IOP-lowering agents (timolol, acetazolamide) are still offered in some centers, but current evidence review has NOT shown these conservative measures to be superior to no treatment, and outcomes in some studies were worse with aggressive massage/paracentesis. This should be discussed with ophthalmology as an adjunct at most, not oversold as an evidence-based primary treatment.</p>
+            <div class="algo-timing">&#9200; Adjunctive, alongside definitive workup, not a substitute for the stroke pathway</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Admit for secondary prevention workup</div>
+            <p class="algo-detail">Regardless of whether acute reperfusion therapy is pursued, CRAO warrants admission (or expedited outpatient stroke-clinic pathway per local protocol) for the same embolic-source workup as any TIA, given the peak risk of subsequent cerebrovascular/cardiovascular events in the first week.</p>
+            <div class="algo-timing">&#9200; Same encounter</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">CRVO: risk-stratify and schedule early follow-up</div>
+            <p class="algo-detail">Non-ischemic CRVO can often be managed with outpatient ophthalmology follow-up within days; ischemic (more severe) CRVO needs closer follow-up given neovascular glaucoma risk around the 90-day mark. Anti-VEGF therapy for macular edema is an outpatient ophthalmology decision, not an ED intervention.</p>
+            <div class="algo-timing">&#9200; Before discharge, ensure follow-up is scheduled rather than left to patient-initiated return</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Anterior Chamber Paracentesis (adjunctive, per ophthalmology/local protocol)</div>
+      <ol class="procedure-steps"><li>Performed by an experienced provider, typically ophthalmology, using a 27&ndash;30 gauge needle at the limbus under topical anesthesia.</li><li>Withdraw approximately 0.1&ndash;0.2 mL of aqueous humor to acutely lower IOP.</li><li>Avoid ocular massage immediately following paracentesis.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>Evidence review has found this offers no consistent visual acuity benefit regardless of the interval between symptom onset and treatment &mdash; frame this to patients and to ophthalmology colleagues as a low-yield adjunct rather than a proven therapy.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Alteplase (tPA) or tenecteplase</td><td>Per local acute stroke protocol (e.g., alteplase 0.9 mg/kg IV, tenecteplase 0.25 mg/kg IV per some published CRAO pathways)</td><td>IV</td><td>Time-window dependent (~4.5h in most protocols); institution-specific eligibility criteria apply exactly as for ischemic stroke</td></tr><tr><td class="label-cell">Acetazolamide</td><td>500 mg IV or PO once</td><td>IV/PO</td><td>Traditional IOP-lowering adjunct; evidence for benefit in CRAO specifically is weak per recent reviews</td></tr><tr><td class="label-cell">Mannitol</td><td>1.5&ndash;2 g/kg IV over 30&ndash;60 min</td><td>IV</td><td>Traditional adjunct for IOP lowering; same evidence caveat as above</td></tr><tr><td class="label-cell">Timolol 0.5%</td><td>1 drop</td><td>Topical</td><td>Adjunctive IOP-lowering</td></tr><tr><td class="label-cell">High-dose methylprednisolone (if GCA suspected)</td><td>250 mg IV q6h for 3&ndash;5 days, then transition to oral prednisone 1 mg/kg/day</td><td>IV then PO</td><td>Start empirically on clinical suspicion of GCA, do not wait for ESR/CRP or biopsy results</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>CRAO: admit (or expedited stroke-clinic pathway) for embolic source workup, same as TIA/stroke. Ischemic CRVO: urgent ophthalmology follow-up, admission not typically required unless another indication exists.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer to a stroke-capable/telestroke-linked center if thrombolysis is being considered and not available locally, within the treatment window.</td></tr><tr><td class="label-cell">Follow-up</td><td>CRVO: early ophthalmology follow-up (days, not weeks) given neovascular glaucoma risk at the 60&ndash;90 day mark; ensure the appointment is booked before discharge.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>CRAO: permanent vision loss (majority of untreated cases), subsequent stroke/MI in the following days-to-weeks</li><li>CRVO: neovascular glaucoma (particularly ischemic subtype), macular edema, vitreous hemorrhage from retinal neovascularization</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="crao-crvo" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Document exact time of onset as precisely as you would for a stroke code &mdash; this single data point drives eligibility decisions and is exactly what a chart review will scrutinize later.</li><li>A newer evidence review found that traditional 'conservative' CRAO treatments (ocular massage, paracentesis, carbogen, paper-bag breathing) have not demonstrated superiority over no treatment and were associated with worse outcomes in some studies &mdash; don't oversell these to patients as established therapy.</li><li>GCA screening (ESR/CRP/platelets) belongs in the initial CRAO workup for every patient over 50, not as an afterthought if the 'usual' embolic workup comes back negative.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>AHA/ASA-aligned protocols increasingly treat CRAO within an acute stroke framework given the shared 4.5-hour ischemic tissue viability window; individual participant-level meta-analysis has shown meaningfully higher rates of visual improvement with IV tPA given within 4.5 hours compared to later administration.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="retinal-detachment" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Retinal Detachment</h2>
+  </div>
+  <p class="v1-overview">The single question that reorganizes the entire urgency conversation is whether central vision (the macula) is still attached &mdash; get that answer from the patient over the phone before they even arrive, and it tells you how fast this needs to move.</p>
+
+  <div class="v1-tabs" data-group="retinal-detachment">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('retinal-detachment','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('retinal-detachment','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('retinal-detachment','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('retinal-detachment','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('retinal-detachment','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('retinal-detachment','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('retinal-detachment','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="retinal-detachment" data-panel="path">
+    <p>A retinal break, typically from vitreous traction during acute posterior vitreous detachment (PVD), allows liquefied vitreous to dissect the neurosensory retina away from the underlying retinal pigment epithelium. Roughly 10&ndash;15% of patients presenting with acute symptomatic PVD (new flashes/floaters without yet having a frank detachment) are found to have a retinal tear on dilated exam, which is why new PVD symptoms warrant dilated exam within 24 hours even before detachment is confirmed.</p><p>Macular status is the dominant prognostic variable. A superotemporal retinal break/detachment has the highest anatomic surgical success rate but also the highest risk of progressing to macula-off if not addressed promptly, since detachment tends to spread inferiorly ('recruiting' additional inferior breaks) over time.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>High myopia (longer axial length predisposes to peripheral retinal thinning/lattice degeneration and earlier, more extensive posterior vitreous detachment)</li><li>Lattice degeneration and other peripheral retinal thinning</li><li>Prior retinal detachment in the fellow eye (meaningfully elevated risk of fellow-eye involvement, generally cited in the range of roughly 10&ndash;15%)</li><li>Recent cataract surgery, especially with intraoperative vitreous loss/complication (highest risk in the first year post-surgery)</li><li>Blunt or penetrating ocular trauma</li><li>Family history of retinal detachment</li><li>Connective tissue disorders associated with vitreoretinal pathology (Marfan syndrome, Stickler syndrome)</li><li>Aphakia or prior intraocular surgery generally</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>An elevated, undulating, out-of-focus retinal surface that moves with eye movement (unlike a flat, in-focus attached retina); the retinal break itself may be visible as a horseshoe tear, round hole, or dialysis, often at the vitreous base. Pigmented cells in the anterior vitreous ('tobacco dust' or a positive Shafer sign) is a highly specific finding for an underlying retinal break even when the break itself isn't directly visualized. Chronic detachments may show a demarcation line where detached and attached retina meet.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Specifically ask: is central vision still clear, or is there a shadow/curtain over the middle of vision? This single question approximates macula-on vs. macula-off status before any exam.</li><li>Timeline of flashes/floaters preceding the field defect, and whether the field cut is progressing.</li><li>Risk factors: high myopia, prior retinal detachment (fellow eye or same eye), recent cataract surgery, family history, trauma.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, formal confrontation visual fields.</li><li>Dilated fundus exam (or urgent ophthalmology exam if not comfortable performing/interpreting) &mdash; look for an elevated, undulating, out-of-focus retinal surface; note macular involvement specifically.</li><li>RAPD if extensive detachment.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>B-scan ocular ultrasound if the fundus view is obscured (vitreous hemorrhage, dense cataract) &mdash; look for a mobile, hyperechoic membrane that remains tethered at the optic disc, distinguishing it from a posterior vitreous detachment membrane (which is thinner and doesn't insert at the disc).</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Triage by macular status first</div>
+            <p class="algo-detail">Macula-on (central vision still intact): this is the more time-urgent scenario for surgical repair, since outcomes are best when repaired within roughly 24 hours of presentation and worsen once the detachment progresses to involve the macula. Macula-off (central vision already lost): still needs urgent repair, but the extreme same-day time pressure is somewhat lower since the highest-value window (before macular involvement) has already passed; current evidence suggests repair within about 3 days of symptom onset preserves the best visual outcomes for macula-off detachments, with outcomes declining once repair is delayed beyond about a week.</p>
+            <div class="algo-timing">&#9200; Immediately on presentation, drives the urgency of ophthalmology contact</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Positioning guidance while awaiting surgery</div>
+            <p class="algo-detail">Advise the patient to keep their head positioned so that any detached/threatened area is dependent (gravity-assisted) &mdash; e.g., if a superior break/detachment is present, keep the head upright/forward-facing as much as possible to reduce further fluid tracking under the retina toward the macula; specific positioning should be directed by the examining ophthalmologist based on break location.</p>
+            <div class="algo-timing">&#9200; From diagnosis until surgical repair</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Restrict activity</div>
+            <p class="algo-detail">Advise against strenuous activity, heavy lifting, and Valsalva-type maneuvers pending repair, to minimize further vitreous traction.</p>
+            <div class="algo-timing">&#9200; From diagnosis until repair</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Same-day ophthalmology contact for macula-on or recent macula-off</div>
+            <p class="algo-detail">Superotemporal macula-on detachments, in particular, should be treated as the most urgent category given both high surgical success rates and high risk of progression to macula-off if delayed. Recent (within 1&ndash;3 days) macula-off detachments are next in priority.</p>
+            <div class="algo-timing">&#9200; Same day</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Coordinate surgical approach discussion with ophthalmology</div>
+            <p class="algo-detail">Options include pneumatic retinopexy (in-office, for select cases meeting criteria such as a single break or breaks confined to a narrow superior arc &mdash; per criteria used in the PIVOT trial), scleral buckle, or pars plana vitrectomy; this decision belongs entirely to the retina surgeon based on break location/number, media clarity, and lens status, not to the ED.</p>
+            <div class="algo-timing">&#9200; At ophthalmology evaluation</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">None specific to ED management</td><td>&mdash;</td><td>&mdash;</td><td>Retinal detachment management is positional and surgical, not pharmacologic in the ED setting; treat pain/nausea symptomatically only</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an ED admission in the vast majority of cases &mdash; this is an urgent outpatient surgical referral, but the referral itself needs to happen same-day for macula-on or recent macula-off presentations.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer or expedite same-day ophthalmology/retina specialist evaluation if not available locally, particularly for macula-on or recent macula-off cases.</td></tr><tr><td class="label-cell">Follow-up</td><td>Macula-on: ophthalmology same day. Recent macula-off (within 1&ndash;3 days of symptom onset): same or next day. Longer-standing macula-off: urgent but somewhat less minute-to-minute time pressure, still generally within days.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Progression from macula-on to macula-off if repair is delayed</li><li>Proliferative vitreoretinopathy (scar tissue formation) reducing surgical success with delayed or recurrent detachment</li><li>Persistent visual field defect or reduced acuity even after anatomically successful repair, especially with macula-off detachments of longer duration</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="retinal-detachment" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>"Is your central vision still clear, or is there a shadow over the middle?" is the single most useful triage question you can ask before the patient even arrives &mdash; it approximates macula status and tells you how fast this needs to move.</li><li>New flashes and floaters without a definitive detachment yet still deserve a dilated exam within 24 hours; roughly 10&ndash;15% of these patients are found to have an actual retinal tear.</li><li>Recent literature has softened the rigid '24 hours for macula-on, ASAP for macula-off' rule into a more nuanced picture where recent (1&ndash;3 day) macula-off detachments may benefit from similarly urgent prioritization as macula-on cases &mdash; frame urgency by macular status AND duration together, not by macular status alone.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>PIVOT trial: pneumatic retinopexy vs. vitrectomy for detachments with breaks confined to a single clock hour above the 8&ndash;4 o'clock meridian showed better visual acuity outcomes, less vertical metamorphopsia, and fewer complications with pneumatic retinopexy in eligible patients.</li><li>Multiple recent meta-analyses/registry studies (Sothivannan et al. 2022; Japan-RD Registry 2023) support repair within ~24h for macula-on and within ~2&ndash;3 days for macula-off as the thresholds associated with the best visual acuity outcomes.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="aacg" style="--cc:var(--c-red);--cc-soft:var(--c-red-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Acute Angle-Closure Glaucoma</h2>
+  </div>
+  <p class="v1-overview">One of the few ocular emergencies with a genuinely well-worked-out stepwise medical protocol you can run yourself while ophthalmology mobilizes for definitive laser iridotomy &mdash; the interactive sequencer below mirrors the order most guidelines converge on.</p>
+
+  <div class="v1-tabs" data-group="aacg">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('aacg','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('aacg','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('aacg','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('aacg','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('aacg','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('aacg','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('aacg','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="aacg" data-panel="path">
+    <p>Pupillary block in an anatomically predisposed (narrow-angle) eye causes acute obstruction of aqueous outflow through the trabecular meshwork. IOP can rise into the 40&ndash;80 mmHg range within hours, causing corneal edema, iris sphincter ischemia (the fixed, mid-dilated pupil), and direct optic nerve damage if not broken quickly.</p><p>Above roughly 40&ndash;50 mmHg, the iris sphincter itself becomes ischemic and unresponsive to miotics &mdash; this is why pilocarpine is sequenced after other agents have already begun lowering pressure, not used as first-line monotherapy.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Hyperopia/shorter axial length (crowds the anterior chamber, predisposing to a narrow angle)</li><li>Older age &mdash; the crystalline lens continues to thicken and grow anteriorly throughout life, progressively narrowing the angle</li><li>Female sex (anatomically shallower anterior chambers on average)</li><li>Asian and Inuit ethnicity (higher population prevalence of narrow angles); lower risk in European and African-descent populations</li><li>Family history of angle-closure glaucoma</li><li>Pharmacologic precipitants: anticholinergics, antihistamines, decongestants/sympathomimetics, scopolamine patches, and dilating exam drops</li><li>Dim-light environments (movie theaters) that physiologically dilate the pupil into the mid-dilated, high-risk position</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Frequently not assessable acutely due to corneal edema obscuring the view. Once visualized (often only after IOP-lowering therapy improves corneal clarity), the optic disc is typically normal-appearing in a first acute attack, since the damage is more mechanical/ischemic to the nerve than an acute structural change visible on exam. Recurrent or chronic angle-closure episodes progressively show glaucomatous cupping (increased cup-to-disc ratio, rim thinning/notching) indistinguishable in appearance from primary open-angle glaucoma damage. Rarely, transient optic disc swelling has been reported shortly after abrupt IOP normalization (e.g., following laser iridotomy).</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Recent pupillary dilation (exam, movie theater, dim room), new anticholinergic/antihistamine/decongestant use, or a scopolamine patch &mdash; classic precipitants.</li><li>Prior episodes of intermittent blurring with halos (subacute angle closure) suggesting a chronically narrow angle.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, pupil exam (mid-dilated, sluggish/fixed), slit lamp for corneal edema and shallow anterior chamber.</li><li>Tonometry &mdash; document the exact IOP, not just 'elevated'.</li><li>Gonioscopy if available/comfortable; if the cornea is too edematous for a view, treat empirically based on the clinical picture and re-attempt gonioscopy once the cornea clears.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>None required for diagnosis &mdash; this is a clinical + tonometric diagnosis. Basic metabolic panel and renal function if planning mannitol or repeated acetazolamide dosing.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">1. Topical beta-blocker</div>
+            <p class="algo-detail">Timolol 0.5%, one drop in the affected eye. Reduces aqueous production.</p>
+            <div class="algo-timing">&#9200; Immediately; may repeat once at 15&ndash;30 min per some protocols</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">2. Topical alpha-agonist</div>
+            <p class="algo-detail">Apraclonidine 0.5% or brimonidine 0.1&ndash;0.2%, one drop, roughly 1&ndash;15 minutes after the beta-blocker depending on protocol. Reduces aqueous production and increases uveoscleral outflow.</p>
+            <div class="algo-timing">&#9200; Shortly after step 1, may repeat q15min x2-3 doses total per some protocols</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">3. Systemic carbonic anhydrase inhibitor</div>
+            <p class="algo-detail">Acetazolamide 500 mg PO (or IV/IM if the patient is too nauseated for PO), then 250 mg q6h. This is often given essentially concurrently with the topical agents rather than strictly after them.</p>
+            <div class="algo-timing">&#9200; As soon as available, in parallel with topical agents</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">4. Reassess IOP at 30&ndash;60 minutes</div>
+            <p class="algo-detail">Recheck pressure. If inadequately controlled, proceed to an osmotic agent.</p>
+            <div class="algo-timing">&#9200; 30&ndash;60 min after initial topical/oral therapy</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">5. Osmotic agent if IOP remains elevated</div>
+            <p class="algo-detail">IV mannitol 1&ndash;2 g/kg over 30&ndash;60 minutes (confirm no cardiac/renal contraindication first), or oral glycerol 1 mL/kg diluted with an equal volume of cold water if the patient can tolerate PO and is not diabetic (glycerol is metabolized to glucose), or oral isosorbide 100 g (220 mL of a 45% solution, not isosorbide dinitrate) as an alternative.</p>
+            <div class="algo-timing">&#9200; If IOP not adequately reduced after 1&ndash;2 hours of first-line therapy</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">6. Pilocarpine once IOP is falling</div>
+            <p class="algo-detail">Pilocarpine 1&ndash;2% (some protocols use 2&ndash;4%), one drop, generally most effective once IOP has already started coming down from the above measures (pilocarpine is often ineffective at IOP >40&ndash;50 mmHg because the ischemic iris sphincter won't respond) &mdash; a single drop roughly 3 hours after initial acetazolamide/timolol therapy has been shown sufficient in some protocols. Also instill one drop of pilocarpine in the FELLOW eye prophylactically, since it is at risk of the same anatomic process.</p>
+            <div class="algo-timing">&#9200; Once IOP begins responding to steps 1&ndash;5, often ~1&ndash;3 hours in</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">7. Definitive treatment: laser peripheral iridotomy</div>
+            <p class="algo-detail">LPI is the definitive treatment, creating an alternate aqueous outflow pathway and breaking the pupillary block permanently. Performed by ophthalmology once the cornea is clear enough for an adequate view (may require a day or two of medical therapy first if the cornea is very edematous). Prophylactic LPI in the fellow eye is standard given shared anatomic risk.</p>
+            <div class="algo-timing">&#9200; As soon as ophthalmology can perform it, often within 24&ndash;48h</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Timolol 0.5%</td><td>1 drop, affected eye only</td><td>Topical</td><td>Avoid in asthma/COPD/bradycardia/decompensated heart failure due to systemic beta-blockade risk from ocular absorption</td></tr><tr><td class="label-cell">Apraclonidine 0.5% / Brimonidine 0.1&ndash;0.2%</td><td>1 drop, may repeat q15min x2&ndash;3 doses</td><td>Topical</td><td>Avoid brimonidine in infants/young children (CNS depression risk) &mdash; not relevant for adult ED but worth remembering</td></tr><tr><td class="label-cell">Acetazolamide</td><td>500 mg once, then 250 mg q6h</td><td>PO (IV/IM if nauseated)</td><td>Sulfonamide-derivative; caution in sulfa allergy, renal impairment, sickle cell disease</td></tr><tr><td class="label-cell">Mannitol</td><td>1&ndash;2 g/kg IV over 30&ndash;60 min</td><td>IV</td><td>Confirm adequate cardiac/renal status first; osmotic diuresis can precipitate volume shifts</td></tr><tr><td class="label-cell">Oral glycerol</td><td>1 mL/kg diluted 1:1 with cold water</td><td>PO</td><td>Avoid in diabetics (metabolized to glucose)</td></tr><tr><td class="label-cell">Pilocarpine 1&ndash;2%</td><td>1 drop affected eye + 1 drop fellow eye (prophylactic)</td><td>Topical</td><td>Often ineffective at IOP >40&ndash;50 mmHg due to ischemic iris sphincter; sequence after pressure has started to fall</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Many centers admit for continued IOP-lowering therapy and monitoring until the cornea clears enough for LPI, particularly if IOP is not responding promptly to first-line therapy; walk-in/clinic-diagnosed cases with a good initial response to topical therapy plus oral acetazolamide may sometimes be managed with very close outpatient follow-up per ophthalmology preference.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for ophthalmology capability (including LPI) if not available locally &mdash; initiate the full medical stepwise protocol first, do not delay treatment for transfer logistics.</td></tr><tr><td class="label-cell">Follow-up</td><td>Ophthalmology follow-up within 1&ndash;2 days for LPI once cornea allows adequate view; fellow eye should also be evaluated for prophylactic LPI given shared anatomic risk.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Permanent optic nerve damage/vision loss if attack is prolonged or recurrent</li><li>Chronic angle-closure glaucoma from repeated or unresolved episodes</li><li>Iris atrophy, glaukomflecken (anterior lens capsule opacities) as sequelae of the acute ischemic episode</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="aacg" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Document the exact numeric IOP at each recheck &mdash; this is what shows the medication sequence is actually working, not just 'patient improved.'</li><li>Avoid pilocarpine as a first move; it is frequently ineffective at very high IOP and can theoretically worsen matters in non-pupillary-block mechanisms of angle closure by increasing pupillary block via ciliary muscle contraction pulling the lens-iris diaphragm forward.</li><li>Always evaluate and consider prophylactic treatment for the asymptomatic fellow eye &mdash; it shares the same anatomic risk and can develop an attack later, sometimes precipitated by treatments (dilating drops) given for the first eye.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>The stepwise medication sequence (beta-blocker &rarr; alpha-agonist &rarr; carbonic anhydrase inhibitor &rarr; osmotic agent &rarr; pilocarpine once pressure is falling) reflects convergent guidance across Merck Manual, Medscape/emedicine, and emergency medicine references (CorePendium, EMCrit-affiliated resources) rather than a single randomized trial &mdash; there is no large RCT establishing one canonical order, but this sequence is the field consensus.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="orbital-compartment-syndrome" style="--cc:var(--c-orbit);--cc-soft:var(--c-orbit-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#9888;</div>
+    <h2>Orbital Compartment Syndrome / Retrobulbar Hemorrhage</h2>
+  </div>
+  <p class="v1-overview">This is the one ocular diagnosis where the emergency clinician performs the definitive treatment themselves, at bedside, with instruments already on the suture cart &mdash; and the literature is explicit that outcomes are best within roughly 60&ndash;120 minutes of onset.</p>
+
+  <div class="v1-tabs" data-group="orbital-compartment-syndrome">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('orbital-compartment-syndrome','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('orbital-compartment-syndrome','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('orbital-compartment-syndrome','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('orbital-compartment-syndrome','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('orbital-compartment-syndrome','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('orbital-compartment-syndrome','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('orbital-compartment-syndrome','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="orbital-compartment-syndrome" data-panel="path">
+    <p>The bony orbit is a fixed-volume compartment (roughly 30 mL). Blood or edema accumulating within it &mdash; classically from blunt trauma, but also reported after orbital/eyelid surgery, blepharoplasty, prolonged prone positioning, and even post-CPR without trauma &mdash; has nowhere to expand. Rising intraorbital pressure compresses the globe (raising IOP) and directly compromises optic nerve perfusion.</p><p>Blindness rates in reported series of untreated or delayed retrobulbar hemorrhage run 44&ndash;52%; successful decompression is time-sensitive, with the best outcomes reported when performed within about 60&ndash;120 minutes of symptom onset.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Blunt facial/orbital trauma (dominant cause)</li><li>Anticoagulant or antiplatelet therapy, or an underlying bleeding diathesis</li><li>Recent orbital, eyelid, or sinus surgery (including blepharoplasty)</li><li>Retrobulbar or peribulbar anesthetic injection</li><li>Orbital vascular anomalies (orbital varix, arteriovenous malformation)</li><li>Prolonged prone positioning (e.g., spinal surgery) or vigorous Valsalva-generating events, including reported cases after CPR without antecedent trauma</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Often difficult to obtain a clear view acutely given lid swelling and patient discomfort, but the exam should not be delayed for this reason. In severe/prolonged compartment syndrome with significant ischemia, findings can mirror CRAO: pale, edematous retina, possible cherry-red spot, retinal venous congestion, and optic disc edema or pallor. Choroidal folds may be visible from direct posterior globe compression. Any of these fundus findings alongside proptosis and elevated IOP reinforces the urgency of decompression rather than changing the management plan.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Mechanism: blunt trauma, recent orbital/eyelid surgery or injection, or any scenario with prolonged prone positioning or a Valsalva-heavy event (including post-arrest).</li><li>Timing of symptom onset &mdash; drives urgency of intervention.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Proptosis, tense/resistant globe on gentle palpation, restricted extraocular movements (ophthalmoplegia), decreased visual acuity, RAPD.</li><li>Tonometry &mdash; IOP is often >40 mmHg, sometimes 50&ndash;70+.</li><li>Explicitly check for signs of open globe (irregular pupil, positive Seidel, hyphema, shallow chamber) BEFORE proceeding to canthotomy, since open globe is the primary contraindication.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>CT orbit can confirm retrobulbar hematoma, but this is a clinical diagnosis &mdash; treatment should not be delayed for imaging when the exam is diagnostic and the patient is deteriorating.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Recognize immediately</div>
+            <p class="algo-detail">Proptosis + tense globe + decreased vision + RAPD + elevated IOP in the setting of trauma or a recent orbital procedure is the diagnostic picture. Treat as a clinical diagnosis; do not wait for CT if these findings are present and vision is threatened.</p>
+            <div class="algo-timing">&#9200; On recognition</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Exclude open globe first</div>
+            <p class="algo-detail">Rapidly check for a positive Seidel sign, irregular/peaked pupil, hyphema, or a shallow anterior chamber. Open globe is the primary contraindication to canthotomy &mdash; if suspected, involve ophthalmology urgently instead and manage as an open globe injury.</p>
+            <div class="algo-timing">&#9200; Before proceeding to canthotomy</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Perform bedside lateral canthotomy and inferior cantholysis</div>
+            <p class="algo-detail">Do not wait for ophthalmology to arrive or for CT confirmation if the clinical picture is clear and vision is at risk &mdash; this procedure is designed to be performed by the emergency clinician using instruments from a standard laceration tray. See procedure panel for steps.</p>
+            <div class="algo-timing">&#9200; As soon as diagnosis is made, ideally within 60&ndash;120 minutes of symptom onset</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Recheck IOP and vision immediately after</div>
+            <p class="algo-detail">A drop in IOP toward normal and subjective/objective visual improvement confirms both the diagnosis and the adequacy of decompression. If IOP remains elevated, consider extending cantholysis (superior crus) or adjunctive medical IOP-lowering therapy.</p>
+            <div class="algo-timing">&#9200; Immediately post-procedure</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Adjunctive medical IOP-lowering if needed</div>
+            <p class="algo-detail">Topical timolol and IV acetazolamide/mannitol can be used as adjuncts if IOP remains elevated after canthotomy, though they do not substitute for mechanical decompression and should not be used INSTEAD of canthotomy when the clinical picture is clear (glaucoma drops do not directly relieve orbital compartment pressure).</p>
+            <div class="algo-timing">&#9200; As needed, alongside or after canthotomy</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Emergent ophthalmology/oculoplastics consultation</div>
+            <p class="algo-detail">For further management, possible orbital septum release, and definitive follow-up care.</p>
+            <div class="algo-timing">&#9200; As soon as possible, in parallel with or immediately after the procedure</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Lateral Canthotomy and Inferior Cantholysis</div>
+      <ol class="procedure-steps"><li>Confirm indication: acute vision loss and/or RAPD in the setting of proptosis and IOP >40 mmHg with a clinical picture consistent with retrobulbar hemorrhage/orbital compartment syndrome.</li><li>Confirm no suspected open globe (positive Seidel, irregular pupil, hyphema, shallow AC) &mdash; this is the key contraindication.</li><li>Infiltrate the lateral canthus with local anesthetic.</li><li>Clamp the lateral canthus horizontally for 60&ndash;90 seconds with a hemostat to crush tissue and reduce bleeding (optional but commonly done).</li><li>Incise the lateral canthal skin fold (canthotomy) with scissors, from the canthus outward toward the orbital rim, roughly 1&ndash;2 cm.</li><li>Identify and cut the inferior crus of the lateral canthal tendon (cantholysis) &mdash; grasp the lower lid and pull it away from the globe, then cut the tendon fibers you feel tethering it, typically by directing scissors inferiorly and cutting downward/laterally until the lower lid moves freely away from the globe.</li><li>Reassess IOP and vision. If inadequate improvement, the superior crus of the lateral canthal tendon can also be released for additional decompression.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>Suspected open globe injury &mdash; the only major contraindication.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Local anesthetic (lidocaine with epinephrine)</td><td>Small volume, infiltrated at the lateral canthus</td><td>Local infiltration</td><td>For canthotomy/cantholysis procedural anesthesia; epinephrine also provides some local hemostasis</td></tr><tr><td class="label-cell">Timolol 0.5%, Acetazolamide IV/PO</td><td>As per AACG dosing above</td><td>Topical / IV / PO</td><td>Adjunctive only &mdash; do not substitute for mechanical decompression</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Admit for ongoing monitoring and ophthalmology/oculoplastics follow-up; further surgical intervention (formal orbital decompression/septum release) may be pursued if bedside canthotomy does not adequately relieve pressure.</td></tr><tr><td class="label-cell">Transfer</td><td>If ophthalmology/oculoplastics is not available, perform the bedside canthotomy first (this is within emergency medicine scope of practice and time-critical), then arrange transfer for further management.</td></tr><tr><td class="label-cell">Follow-up</td><td>Inpatient ophthalmology/oculoplastics follow-up; the canthotomy site itself typically does not require formal repair and can heal by secondary intention or be repaired later by oculoplastics.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Permanent vision loss if decompression is delayed</li><li>Recurrent hemorrhage</li><li>Canthal deformity (generally addressed electively by oculoplastics later, not an acute concern)</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="orbital-compartment-syndrome" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>This procedure should be performed by the emergency clinician at bedside using standard laceration-tray instruments &mdash; do not wait for ophthalmology to arrive or for CT confirmation when the clinical picture is diagnostic and vision is threatened.</li><li>The only real contraindication is suspected open globe &mdash; check for this specifically and quickly before proceeding.</li><li>Document pre- and post-procedure IOP and visual acuity/light perception explicitly; this is the objective evidence that the diagnosis was correct and the intervention worked.</li><li>This diagnosis has been reported without antecedent trauma (post-CPR, prolonged prone positioning) &mdash; keep it on the differential for unexplained unilateral proptosis and vision loss even without a clear traumatic mechanism.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Published case series report best outcomes when lateral canthotomy/cantholysis is performed within roughly 60&ndash;120 minutes of symptom onset, with reported blindness rates of 44&ndash;52% in untreated or significantly delayed cases.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="endophthalmitis" style="--cc:var(--c-red);--cc-soft:var(--c-red-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129514;</div>
+    <h2>Endophthalmitis</h2>
+  </div>
+  <p class="v1-overview">The EVS-era protocol (intravitreal antibiotics &plusmn; vitrectomy based on presenting vision) still anchors modern practice, even though the specific gram-negative agent has shifted from amikacin to ceftazidime for safety reasons since the original trial.</p>
+
+  <div class="v1-tabs" data-group="endophthalmitis">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('endophthalmitis','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('endophthalmitis','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('endophthalmitis','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('endophthalmitis','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('endophthalmitis','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('endophthalmitis','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('endophthalmitis','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="endophthalmitis" data-panel="path">
+    <p>Intraocular infection, most often introduced via recent intraocular surgery (cataract surgery is the leading cause), intravitreal injection (e.g., anti-VEGF agents), penetrating trauma, or endogenous hematogenous seeding in immunosuppressed/bacteremic patients. In the original Endophthalmitis Vitrectomy Study cohort, coagulase-negative staphylococci accounted for roughly 70% of isolates in post-cataract-surgery cases.</p><p>Rapid destruction of retinal architecture from both organism toxins and the host inflammatory response makes time-to-intravitreal-antibiotic administration the dominant modifiable factor in visual outcome.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Recent intraocular surgery &mdash; cataract surgery is the leading cause overall, with highest risk in the first 1&ndash;2 weeks post-operatively</li><li>Intravitreal injections (anti-VEGF agents for macular degeneration/diabetic retinopathy), an increasingly common exposure as injection volumes have risen</li><li>Penetrating ocular trauma, especially with organic contamination (soil, plant matter) or a retained intraocular foreign body</li><li>Immunosuppression, poorly controlled diabetes, or other risk factors for endogenous (hematogenous) seeding</li><li>Bacteremia or fungemia, indwelling central lines, and injection drug use as sources for endogenous endophthalmitis</li><li>Filtering blebs from prior glaucoma surgery (a lifelong low but persistent risk for late-onset bleb-associated endophthalmitis)</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Vitreous haze/opacification is the hallmark finding, often severe enough to cause partial or complete loss of the red reflex and obscure direct visualization of retinal detail. When some view is possible, look for retinal periphlebitis (vasculitis), scattered retinal hemorrhages, and &mdash; particularly in endogenous fungal (Candida) endophthalmitis &mdash; discrete fluffy white chorioretinal infiltrates classically described as 'string of pearls' or a 'headlight in the fog' appearance from vitreous haze surrounding a whitish lesion.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Any intraocular surgery, injection, or penetrating trauma in the preceding days to weeks &mdash; ask specifically, since patients may not volunteer a recent 'routine' cataract surgery or anti-VEGF injection unprompted.</li><li>Immunosuppression, indwelling lines, or recent bacteremia/fungemia history for suspected endogenous endophthalmitis.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity (drives vitrectomy decision per EVS criteria).</li><li>Slit lamp: hypopyon, marked anterior chamber cell/flare, conjunctival injection, lid edema.</li><li>Fundus exam/red reflex: vitreous haze or loss of red reflex signals posterior segment involvement.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>B-scan ultrasound if the view is too hazy for direct fundus exam, to assess vitreous involvement and exclude retinal detachment.</li><li>Vitreous and/or aqueous tap for Gram stain and culture &mdash; performed by ophthalmology at the time of intravitreal antibiotic injection, ideally before antibiotics are given.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Recognize and involve ophthalmology same-day, emergently</div>
+            <p class="algo-detail">Any red, painful eye with decreased vision in the days-to-weeks following intraocular surgery or injection is endophthalmitis until an ophthalmologist says otherwise. This is not a routine post-op check.</p>
+            <div class="algo-timing">&#9200; Immediately on suspicion</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Vitreous/aqueous tap and intravitreal antibiotics</div>
+            <p class="algo-detail">Ophthalmology performs a vitreous tap for culture, then injects intravitreal vancomycin and ceftazidime empirically (the modern standard, having replaced amikacin from the original EVS due to amikacin's retinal toxicity concerns). This is typically done at bedside/in a minor procedure setting, not necessarily the OR.</p>
+            <div class="algo-timing">&#9200; As soon as the diagnosis is made, before waiting on culture results</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Determine vitrectomy vs. tap-and-inject based on presenting vision</div>
+            <p class="algo-detail">Per EVS-derived criteria: patients presenting with vision of hand-motion or better generally do just as well with tap-and-inject alone as with immediate vitrectomy. Patients presenting with light-perception-only vision benefit from immediate pars plana vitrectomy. This single visual acuity threshold remains the key triage variable even decades after the original study.</p>
+            <div class="algo-timing">&#9200; At time of ophthalmology evaluation</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Systemic antibiotics are generally NOT beneficial for typical post-operative endophthalmitis</div>
+            <p class="algo-detail">The original EVS found no difference in visual outcome or media clarity with or without systemic antibiotics (amikacin/ceftazidime) for typical post-cataract-surgery endophthalmitis &mdash; intravitreal therapy is what matters. This does not apply to post-traumatic or endogenous endophthalmitis, where systemic therapy is still indicated to treat the underlying source.</p>
+            <div class="algo-timing">&#9200; Ongoing management decision</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Reassess at 24&ndash;48 hours</div>
+            <p class="algo-detail">Re-tap and reinject if the eye is doing poorly (per EVS protocol, retap/reinject was performed at 36&ndash;60 hours for eyes not responding).</p>
+            <div class="algo-timing">&#9200; 36&ndash;60 hours if inadequate response</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Vitreous Tap and Intravitreal Injection (performed by ophthalmology)</div>
+      <ol class="procedure-steps"><li>Performed under topical/local anesthesia, typically at bedside or in a minor procedure room.</li><li>A needle is introduced through the pars plana to aspirate a small vitreous sample for Gram stain/culture.</li><li>Intravitreal antibiotics (vancomycin + ceftazidime, standard doses above) are then injected through the same or a separate pars plana entry site.</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>This is an ophthalmology-performed procedure, not one within typical ED scope; the ED's role is rapid recognition and same-day ophthalmology activation, not performing the tap/injection itself.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Intravitreal vancomycin</td><td>1.0 mg in 0.1 mL</td><td>Intravitreal injection (ophthalmology)</td><td>Empiric gram-positive coverage; covers coagulase-negative staph, the dominant post-cataract-surgery organism</td></tr><tr><td class="label-cell">Intravitreal ceftazidime</td><td>2.25 mg in 0.1 mL</td><td>Intravitreal injection (ophthalmology)</td><td>Empiric gram-negative coverage; has replaced amikacin from the original EVS protocol due to amikacin's retinal toxicity</td></tr><tr><td class="label-cell">Intravitreal dexamethasone (adjunctive, variable practice)</td><td>0.4 mg in 0.1 mL</td><td>Intravitreal injection (ophthalmology)</td><td>Use varies by surgeon/case; not universally given</td></tr><tr><td class="label-cell">Topical fortified antibiotics (post-tap/inject)</td><td>E.g., fortified vancomycin, fortified tobramycin, or moxifloxacin, hourly initially</td><td>Topical</td><td>Adjunctive surface coverage, ophthalmology-directed</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Same-day ophthalmology procedure (tap/inject &plusmn; vitrectomy); admission decisions depend on the individual case and whether vitrectomy is pursued, but this is never a 'discharge and follow up next week' diagnosis.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer emergently if same-day vitreoretinal capability is not available locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>Close ophthalmology follow-up over the following 24&ndash;72 hours to assess response and determine need for repeat tap/injection.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Permanent vision loss, phthisis bulbi in severe/delayed cases</li><li>Recurrent infection requiring repeat intravitreal therapy or vitrectomy</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="endophthalmitis" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Ask specifically about recent cataract surgery, intravitreal injections (increasingly common with anti-VEGF therapy for macular degeneration/diabetic retinopathy), or any ocular procedure &mdash; patients frequently don't think to mention a 'routine' recent eye procedure unless asked directly.</li><li>Presenting visual acuity (hand-motion-or-better vs. light-perception-only), not the causative organism, is the variable that determines whether immediate vitrectomy adds benefit &mdash; this EVS finding has held up for decades.</li><li>Systemic antibiotics don't change outcomes for typical post-operative endophthalmitis; don't let starting IV antibiotics in the ED create a false sense that definitive treatment has begun &mdash; intravitreal therapy is what matters and it needs ophthalmology.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Endophthalmitis Vitrectomy Study (EVS, 1995): established the hand-motion-or-better vs. light-perception-only visual acuity threshold for vitrectomy benefit, and showed no visual benefit from systemic antibiotics when intravitreal antibiotics are given, for acute post-cataract-surgery endophthalmitis. Intravitreal ceftazidime has since replaced amikacin in most practices due to retinal toxicity concerns with amikacin, though this substitution came after the original EVS publication.</li></ul></div>
+  </div>
+</section>
+
+  
+<section class="tools-section" id="tools">
+  <div class="hero" style="border-bottom:none;padding-bottom:10px;">
+    <h1 style="font-size:1.5rem;">Interactive Tools</h1>
+    <p>Bedside trackers for the two conditions in this volume with genuinely stepwise, time-sensitive protocols.</p>
+  </div>
+
+  <div class="tool-card">
+    <h3>&#129514; Chemical Burn: Irrigation pH Tracker &amp; Severity Grading</h3>
+    <p class="tool-sub">Log serial pH checks during irrigation; confirms endpoint once neutral pH is stable on two checks. Also grades severity via Roper-Hall once irrigation is complete.</p>
+
+    <div class="tool-row">
+      <div>
+        <label>Log a pH reading</label>
+        <input type="number" id="phInput" step="0.1" placeholder="e.g. 7.2" style="width:100px;">
+      </div>
+      <button class="tool-btn" onclick="logPH()">Log Reading</button>
+      <button class="tool-btn secondary" onclick="resetPH()">Reset</button>
+    </div>
+    <div id="phLog" class="ph-log"></div>
+    <div id="phEndpoint"></div>
+
+    <div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--line);">
+      <h4 style="font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;">Roper-Hall Severity Grading</h4>
+      <div class="tool-row">
+        <div>
+          <label>Limbal ischemia (clock hours, 0-12)</label>
+          <input type="number" id="limbalHours" min="0" max="12" style="width:100px;">
+        </div>
+        <div>
+          <label>Corneal clarity</label>
+          <select id="cornealClarity">
+            <option value="clear">Clear, epithelial damage only</option>
+            <option value="hazy">Hazy, iris details visible</option>
+            <option value="veryhazy">Very hazy, iris details obscured</option>
+            <option value="opaque">Opaque, iris/pupil not visible</option>
+          </select>
+        </div>
+        <button class="tool-btn" onclick="gradeBurn()">Grade Severity</button>
+      </div>
+      <div id="gradeResult"></div>
+    </div>
+  </div>
+
+  <div class="tool-card">
+    <h3>&#128065; Acute Angle-Closure Glaucoma: Stepwise Medication Sequencer</h3>
+    <p class="tool-sub">Mark each agent as given to track your own timeline in real time. Dosing shown inline for quick reference.</p>
+    <div id="seqList"></div>
+    <div class="iop-log-row">
+      <input type="number" id="iopInput" placeholder="IOP reading (mmHg)" style="width:180px;">
+      <button class="tool-btn" onclick="logIOP()">Log IOP Check</button>
+      <button class="tool-btn secondary" onclick="resetSequencer()">Reset All</button>
+    </div>
+    <div id="iopLog" class="iop-log-list"></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const cur = html.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themebtn').innerHTML = next === 'dark' ? '&#9789;' : '&#9788;';
+}
+function showTab(group, tab, btn) {
+  document.querySelectorAll(`.v1-tab[data-group="${group}"]`) ? null : null;
+  document.querySelectorAll('.v1-tabs[data-group="' + group + '"] .v1-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.v1-panel[data-group="' + group + '"]').forEach(p => p.classList.add('hidden'));
+  document.querySelector('.v1-panel[data-group="' + group + '"][data-panel="' + tab + '"]').classList.remove('hidden');
+}
+
+// ---- Chemical burn pH tracker ----
+let phReadings = [];
+let startTime = null;
+function logPH() {
+  const val = parseFloat(document.getElementById('phInput').value);
+  if (isNaN(val)) return;
+  if (startTime === null) startTime = Date.now();
+  const elapsed = Math.round((Date.now() - startTime) / 1000 / 60);
+  const stable = val >= 7.0 && val <= 7.5;
+  phReadings.push({val, elapsed, stable});
+  renderPHLog();
+  document.getElementById('phInput').value = '';
+}
+function resetPH() {
+  phReadings = [];
+  startTime = null;
+  renderPHLog();
+}
+function renderPHLog() {
+  const log = document.getElementById('phLog');
+  log.innerHTML = phReadings.map((r, i) =>
+    `<div class="ph-entry ${r.stable ? 'stable' : 'unstable'}">
+      <span>Reading ${i+1}: pH ${r.val.toFixed(1)}</span>
+      <span>+${r.elapsed} min ${r.stable ? '&#10003; in range' : '&#8212; keep irrigating'}</span>
+    </div>`
+  ).join('');
+  const endpointDiv = document.getElementById('phEndpoint');
+  const lastTwoStable = phReadings.length >= 2 &&
+    phReadings[phReadings.length-1].stable && phReadings[phReadings.length-2].stable;
+  if (lastTwoStable) {
+    endpointDiv.innerHTML = '<div class="endpoint-banner reached">&#10003; Endpoint reached: two consecutive stable readings (7.0&ndash;7.5). Irrigation can stop; proceed to grading.</div>';
+  } else if (phReadings.length > 0) {
+    endpointDiv.innerHTML = '<div class="endpoint-banner pending">Continue irrigation &mdash; need two consecutive stable (7.0&ndash;7.5) readings, ideally 5&ndash;10 min apart, before stopping.</div>';
+  } else {
+    endpointDiv.innerHTML = '';
+  }
+}
+
+function gradeBurn() {
+  const hours = parseFloat(document.getElementById('limbalHours').value) || 0;
+  const clarity = document.getElementById('cornealClarity').value;
+  const pct = (hours / 12) * 100;
+  let grade, prognosis;
+  const clarityScore = {clear: 1, hazy: 2, veryhazy: 3, opaque: 4}[clarity];
+  if (pct === 0 && clarityScore <= 1) {
+    grade = "Grade I"; prognosis = "Excellent prognosis. Corneal epithelial damage only, no limbal ischemia.";
+  } else if (pct <= 33 && clarityScore <= 2) {
+    grade = "Grade II"; prognosis = "Good prognosis. Corneal haze with iris details still visible; limbal ischemia under 1/3 of circumference.";
+  } else if (pct <= 50 && clarityScore <= 3) {
+    grade = "Grade III"; prognosis = "Guarded prognosis. Total epithelial loss, stromal haze obscuring iris detail; 1/3 to 1/2 limbal ischemia.";
+  } else {
+    grade = "Grade IV"; prognosis = "Poor prognosis. Opaque cornea, iris/pupil obscured; over 1/2 (often over 50%) limbal ischemia &mdash; historically associated with poor visual outcomes regardless of treatment intensity.";
+  }
+  document.getElementById('gradeResult').innerHTML =
+    `<div class="grade-result"><div class="grade-title">Roper-Hall ${grade}</div><p style="margin:0;color:var(--ink-dim);font-size:.88rem;">${prognosis} (${hours} clock-hours limbal involvement &asymp; ${pct.toFixed(0)}% of limbal circumference)</p></div>`;
+}
+
+// ---- AACG medication sequencer ----
+const seqSteps = [
+  {drug: "Timolol 0.5%", dose: "1 drop, affected eye"},
+  {drug: "Apraclonidine 0.5% / Brimonidine 0.1-0.2%", dose: "1 drop, affected eye"},
+  {drug: "Acetazolamide", dose: "500mg PO/IV/IM"},
+  {drug: "Reassess IOP (30-60 min)", dose: "Tonometry check"},
+  {drug: "Mannitol (if IOP still elevated)", dose: "1-2 g/kg IV over 30-60 min"},
+  {drug: "Pilocarpine 1-2%", dose: "1 drop affected eye + 1 drop fellow eye"},
+  {drug: "Laser peripheral iridotomy", dose: "Definitive tx - ophthalmology"},
+];
+let seqGivenTimes = {};
+let seqStartTime = null;
+function renderSequencer() {
+  const list = document.getElementById('seqList');
+  list.innerHTML = seqSteps.map((s, i) => {
+    const given = seqGivenTimes[i] !== undefined;
+    const timeStr = given ? `+${seqGivenTimes[i]} min` : '&mdash;';
+    return `<div class="seq-step ${given ? 'given' : ''}" onclick="markGiven(${i})">
+      <div class="seq-num">${given ? '&#10003;' : i+1}</div>
+      <div class="seq-info">
+        <div class="seq-drug">${s.drug}</div>
+        <div class="seq-dose">${s.dose}</div>
+      </div>
+      <div class="seq-time">${timeStr}</div>
+    </div>`;
+  }).join('');
+}
+function markGiven(i) {
+  if (seqStartTime === null) seqStartTime = Date.now();
+  if (seqGivenTimes[i] !== undefined) {
+    delete seqGivenTimes[i];
+  } else {
+    seqGivenTimes[i] = Math.round((Date.now() - seqStartTime) / 1000 / 60);
+  }
+  renderSequencer();
+}
+function resetSequencer() {
+  seqGivenTimes = {};
+  seqStartTime = null;
+  iopReadings = [];
+  renderSequencer();
+  renderIOPLog();
+}
+let iopReadings = [];
+function logIOP() {
+  const val = parseFloat(document.getElementById('iopInput').value);
+  if (isNaN(val)) return;
+  if (seqStartTime === null) seqStartTime = Date.now();
+  const elapsed = Math.round((Date.now() - seqStartTime) / 1000 / 60);
+  iopReadings.push({val, elapsed});
+  renderIOPLog();
+  document.getElementById('iopInput').value = '';
+}
+function renderIOPLog() {
+  const log = document.getElementById('iopLog');
+  log.innerHTML = iopReadings.map((r, i) =>
+    `<div class="ph-entry ${r.val <= 21 ? 'stable' : 'unstable'}">
+      <span>IOP check ${i+1}: ${r.val} mmHg</span>
+      <span>+${r.elapsed} min</span>
+    </div>`
+  ).join('');
+}
+renderSequencer();
+
+</script>
+</body>
+</html>

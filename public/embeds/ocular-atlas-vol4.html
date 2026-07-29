@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocular Atlas Vol 4 — Neuro-Ophthalmology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --ocular: #8e7dd1;
+  --ocular-soft: rgba(142,125,209,.13);
+
+  /* Per-chief-complaint accent family (within ocular palette range) */
+  --c-red: #d4685f;        /* red eye */
+  --c-red-soft: rgba(212,104,95,.13);
+  --c-vision: #6ea8d8;     /* vision loss (painless/painful/gradual) */
+  --c-vision-soft: rgba(110,168,216,.13);
+  --c-diplopia: #d9b64e;   /* diplopia */
+  --c-diplopia-soft: rgba(217,182,78,.13);
+  --c-photo: #e0a458;      /* photophobia / flashes-floaters */
+  --c-photo-soft: rgba(224,164,88,.13);
+  --c-pupil: #9d7cd8;      /* anisocoria / pupil */
+  --c-pupil-soft: rgba(157,124,216,.13);
+  --c-lid: #5fb488;        /* ptosis / lid / periorbital */
+  --c-lid-soft: rgba(95,180,136,.14);
+  --c-orbit: #c77dc2;      /* proptosis / orbital mass */
+  --c-orbit-soft: rgba(199,125,194,.13);
+  --c-surface: #7fb0a3;    /* cornea / chemosis / FB / itch / tearing */
+  --c-surface-soft: rgba(127,176,163,.13);
+  --c-peds: #e08e8e;       /* pediatric / neonatal */
+  --c-peds-soft: rgba(224,142,142,.13);
+  --c-misc: #a9a9d1;       /* nystagmus / CL / post-procedural */
+  --c-misc-soft: rgba(169,169,209,.13);
+
+  --accent: var(--ocular);
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.65;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.brand{
+  font-family:var(--font-display); font-size:1.15rem; font-weight:600;
+  display:flex; align-items:baseline; gap:8px; white-space:nowrap;
+}
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; min-width:200px;}
+.navtrigger{
+  display:flex; align-items:center; gap:8px;
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  padding:9px 16px; border-radius:999px; font-family:var(--font-body); font-size:.85rem;
+  cursor:pointer; font-weight:500;
+}
+.navtrigger:hover{ border-color:var(--accent); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  width:min(720px, 92vw); max-height:70vh; overflow-y:auto;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:10px; display:none; z-index:200;
+  grid-template-columns: repeat(2, 1fr); gap:4px;
+}
+.navmenu.open{ display:grid; }
+.navmenu a{
+  display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:8px;
+  text-decoration:none; color:var(--ink-dim); font-size:.85rem; font-weight:500;
+}
+.navmenu a:hover{ background:var(--bg-elev-2); color:var(--ink); }
+.navmenu a .dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.navmenu .anat-toggle{
+  grid-column: 1 / -1; text-align:center; padding:8px; margin-top:4px; border-top:1px solid var(--line-soft);
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); cursor:pointer;
+}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:980px; margin:0 auto; padding:28px 20px 100px; }
+.hero{ padding:20px 0 32px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.hero h1{ font-size:1.9rem; }
+.hero p{ color:var(--ink-dim); font-size:1rem; max-width:640px; }
+.hero .stats{ display:flex; gap:20px; margin-top:16px; flex-wrap:wrap; }
+.hero .stat{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
+.hero .stat b{ display:block; font-family:var(--font-display); font-size:1.4rem; color:var(--accent); font-weight:600; text-transform:none; letter-spacing:0; }
+
+/* ---------- Complaint section ---------- */
+.complaint{ margin-bottom:56px; scroll-margin-top:90px; }
+.complaint-head{
+  display:flex; align-items:center; gap:14px; margin-bottom:6px; padding-bottom:14px;
+  border-bottom:2px solid var(--cc, var(--accent));
+}
+.complaint-head .icon-badge{
+  width:44px; height:44px; border-radius:10px; background:var(--cc-soft, var(--ocular-soft));
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.3rem;
+}
+.complaint-head h2{ font-size:1.5rem; margin:0; color: var(--cc, var(--accent)); }
+.complaint-sub{ color:var(--ink-dim); font-size:.92rem; margin:10px 0 22px; }
+.anat-tag{
+  display:inline-block; font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--ink-faint); background:var(--bg-elev-2); border:1px solid var(--line-soft);
+  padding:3px 9px; border-radius:6px; margin:2px 4px 2px 0;
+}
+
+/* ---------- Condition card ---------- */
+.cond-card{
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  margin-bottom:18px; overflow:hidden;
+}
+.cond-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:16px 20px; cursor:pointer; user-select:none;
+}
+.cond-header:hover{ background:var(--bg-elev-2); }
+.cond-title{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.cond-title h3{ font-size:1.08rem; margin:0; }
+.urgency-pill{
+  font-family:var(--font-mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 9px; border-radius:999px; font-weight:600; white-space:nowrap;
+}
+.urgency-critical{ background:var(--danger-soft); color:var(--danger); }
+.urgency-urgent{ background:var(--warn-soft); color:var(--warn); }
+.urgency-routine{ background:var(--good-soft); color:var(--good); }
+.chevron{ transition:transform .2s ease; color:var(--ink-faint); flex-shrink:0; }
+.cond-card.open .chevron{ transform:rotate(180deg); }
+
+.cond-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.cond-card.open .cond-body{ max-height:none; }
+.cond-body-inner{ padding:0 20px 22px; }
+
+.quickref-table{ width:100%; border-collapse:collapse; margin:14px 0 18px; font-size:.88rem; }
+.quickref-table th{
+  text-align:left; font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--ink-faint); padding:6px 10px; border-bottom:1px solid var(--line);
+}
+.quickref-table td{ padding:9px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top; color:var(--ink-dim); }
+.quickref-table tr:last-child td{ border-bottom:none; }
+.quickref-table td.label-cell{ color:var(--ink); font-weight:600; white-space:nowrap; }
+
+.prose-block{ margin:16px 0; }
+.prose-block h4{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-faint); margin-bottom:8px;
+}
+.prose-block p{ color:var(--ink-dim); font-size:.93rem; margin-bottom:.7em; }
+
+.hallmark-box{
+  background:var(--cc-soft, var(--ocular-soft)); border-left:3px solid var(--cc, var(--accent));
+  border-radius:6px; padding:12px 16px; margin:14px 0;
+}
+.hallmark-box .hb-label{
+  font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--cc, var(--accent)); margin-bottom:5px; font-weight:700;
+}
+.hallmark-box p{ margin:0; font-size:.92rem; color:var(--ink); }
+
+.diagram-callout{
+  background:var(--bg-elev-2); border:1px solid var(--line); border-radius:8px;
+  padding:14px; margin:14px 0; text-align:center;
+}
+.diagram-callout svg{ max-width:100%; height:auto; }
+.diagram-caption{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); margin-top:8px; }
+
+.pearl{
+  display:flex; gap:10px; align-items:flex-start; background:var(--warn-soft);
+  border-radius:8px; padding:10px 14px; margin:12px 0; font-size:.88rem; color:var(--ink);
+}
+.pearl .pearl-icon{ flex-shrink:0; }
+
+/* ---------- Filter bar ---------- */
+.filterbar{
+  display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; padding:14px;
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+}
+.filterbar input{
+  flex:1; min-width:180px; background:var(--bg-elev-2); border:1px solid var(--line); color:var(--ink);
+  padding:9px 14px; border-radius:8px; font-family:var(--font-body); font-size:.88rem;
+}
+.filter-chip{
+  font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev-2);
+  color:var(--ink-dim); cursor:pointer; white-space:nowrap;
+}
+.filter-chip.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+/* ---------- Anatomic index ---------- */
+.anat-index{ display:none; }
+.anat-index.active{ display:block; }
+.anat-group{ margin-bottom:30px; }
+.anat-group h3{ font-size:1.1rem; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:8px; }
+.anat-links{ display:flex; flex-wrap:wrap; gap:8px; }
+.anat-links a{
+  font-size:.82rem; color:var(--ink-dim); text-decoration:none; background:var(--bg-elev);
+  border:1px solid var(--line); padding:6px 12px; border-radius:8px;
+}
+.anat-links a:hover{ border-color:var(--accent); color:var(--ink); }
+
+.view-toggle{ display:flex; gap:8px; margin-bottom:24px; }
+.view-toggle button{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:8px 16px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.view-toggle button.active{ background:var(--accent); color:#12161c; border-color:var(--accent); }
+
+.hidden{ display:none !important; }
+
+@media (max-width:640px){
+  .hero h1{ font-size:1.5rem; }
+  .navmenu{ grid-template-columns:1fr; width:94vw; }
+  .quickref-table{ font-size:.8rem; }
+  .cond-title h3{ font-size:1rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
+
+.v1-overview{ color:var(--ink-dim); font-size:1rem; margin-bottom:22px; max-width:720px; }
+.icon-badge-lg{ width:52px; height:52px; border-radius:12px; background:var(--cc-soft); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
+.v1-head{ display:flex; align-items:center; gap:16px; margin-bottom:8px; padding-bottom:16px; border-bottom:2px solid var(--cc); }
+.v1-head h2{ color:var(--cc); font-size:1.6rem; margin:0; }
+.vol1-condition{ margin-bottom:64px; scroll-margin-top:90px; }
+.v1-tabs{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.v1-tab{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+  padding:9px 15px; border-radius:8px; border:1px solid var(--line); background:var(--bg-elev);
+  color:var(--ink-dim); cursor:pointer;
+}
+.v1-tab.active{ background:var(--cc); color:#12161c; border-color:var(--cc); font-weight:600; }
+.v1-panel{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+.v1-panel.hidden{ display:none; }
+.v1-panel p{ color:var(--ink-dim); font-size:.94rem; margin-bottom:12px; }
+.workup-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+.workup-col h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.workup-col ul{ margin:0; padding-left:18px; color:var(--ink-dim); font-size:.88rem; }
+.workup-col li{ margin-bottom:8px; }
+.algo-list{ display:flex; flex-direction:column; gap:16px; }
+.algo-step{ display:flex; gap:14px; }
+.algo-num{
+  width:28px; height:28px; border-radius:50%; background:var(--cc); color:#12161c; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:var(--font-mono); font-size:.85rem;
+}
+.algo-title{ font-weight:600; color:var(--ink); margin-bottom:4px; font-size:.95rem; }
+.algo-detail{ color:var(--ink-dim); font-size:.88rem; margin-bottom:6px !important; }
+.algo-timing{ font-family:var(--font-mono); font-size:.68rem; color:var(--warn); }
+.procedure-box{ margin-top:24px; padding:18px; background:var(--bg-elev-2); border-radius:10px; border:1px solid var(--line); }
+.procedure-title{ font-weight:600; color:var(--cc); margin-bottom:10px; }
+.procedure-steps{ color:var(--ink-dim); font-size:.88rem; padding-left:20px; margin-bottom:14px; }
+.procedure-steps li{ margin-bottom:6px; }
+.contra-box{ background:var(--danger-soft); border-radius:8px; padding:12px 16px; font-size:.85rem; color:var(--ink); }
+.contra-box ul{ margin:6px 0 0; padding-left:18px; }
+.drug-table th{ text-align:left; }
+.pearl-list, .complication-list, .evidence-list{ margin-bottom:18px; }
+.pearl-list h5, .complication-list h5, .evidence-list h5{
+  font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px;
+}
+.pearl-list ul, .complication-list ul, .evidence-list ul{ padding-left:18px; color:var(--ink-dim); font-size:.9rem; }
+.pearl-list li, .complication-list li, .evidence-list li{ margin-bottom:8px; }
+.fundus-box{ margin-top:6px; }
+.fundus-box h5{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--cc); margin-bottom:10px; }
+.fundus-box p{ color:var(--ink-dim); font-size:.9rem; }
+
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="brand">Ocular Atlas <span class="sub">Vol 4 &middot; Neuro-Ophthalmology</span></div>
+  <div class="navwrap">
+    <button class="navtrigger" onclick="document.getElementById('navmenu').classList.toggle('open')">
+      &#9776; Jump to section
+    </button>
+    <div class="navmenu" id="navmenu">
+      <a href="#optic-neuritis-vol4"><span class="dot" style="background:var(--c-vision)"></span>Optic Neuritis</a><a href="#gca-aion-vol4"><span class="dot" style="background:var(--c-vision)"></span>GCA / Arteritic Ischemic Optic Neuropathy</a><a href="#papilledema"><span class="dot" style="background:var(--c-vision)"></span>Papilledema</a><a href="#cn3-palsy"><span class="dot" style="background:var(--c-pupil)"></span>CN III (Oculomotor) Palsy</a><a href="#cn4-palsy"><span class="dot" style="background:var(--c-pupil)"></span>CN IV (Trochlear) Palsy</a><a href="#cn6-palsy"><span class="dot" style="background:var(--c-pupil)"></span>CN VI (Abducens) Palsy</a><a href="#horner-syndrome"><span class="dot" style="background:var(--c-pupil)"></span>Horner Syndrome</a>
+    </div>
+  </div>
+  <button class="themetoggle" onclick="toggleTheme()" id="themebtn">&#9789;</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Neuro-Ophthalmology</h1>
+    <p>Full management deep-dive for the seven core neuro-ophthalmic conditions. RAPD interpretation is folded into the Optic Neuritis entry; the sudden vision loss differential framework is folded into the GCA/Arteritic AION entry.</p>
+    <div class="stats">
+      <div class="stat">Conditions<b>7</b></div>
+      <div class="stat">Depth<b>Full deep-dive</b></div>
+      <div class="stat">Format<b>Static reference</b></div>
+    </div>
+  </div>
+
+  
+<section class="vol1-condition" id="optic-neuritis-vol4" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129504;</div>
+    <h2>Optic Neuritis</h2>
+  </div>
+  <p class="v1-overview">This is the textbook diagnosis for teaching the relative afferent pupillary defect &mdash; and the RAPD grading scale you use here is a skill that transfers directly to every other afferent visual pathway diagnosis in this atlas.</p>
+
+  <div class="v1-tabs" data-group="optic-neuritis-vol4">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('optic-neuritis-vol4','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('optic-neuritis-vol4','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('optic-neuritis-vol4','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('optic-neuritis-vol4','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('optic-neuritis-vol4','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('optic-neuritis-vol4','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('optic-neuritis-vol4','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="optic-neuritis-vol4" data-panel="path">
+    <p>Demyelinating inflammation of the optic nerve, the most common cause of unilateral painful vision loss in the US and the initial presentation of multiple sclerosis in roughly one in five patients who go on to develop MS. Pain, especially with eye movement, is present in the large majority of patients and classically precedes or accompanies vision loss by a few days, typically resolving within a week even as visual loss continues to evolve over the following days. The fundus exam is frequently entirely normal (retrobulbar neuritis, inflammation posterior to the disc) in roughly two-thirds of cases; disc swelling (papillitis) is seen in the remaining minority.</p><p>**RAPD interpretation (Marcus Gunn pupil):** A relative afferent pupillary defect reflects asymmetric input to the pretectal light-reflex pathway between the two eyes and is one of the single most useful bedside signs in all of neuro-ophthalmology, since it is an objective, examiner-independent finding of asymmetric optic nerve or severe retinal disease that can't be feigned or mistaken for a media opacity (a dense cataract does NOT cause an RAPD). It is tested with the swinging flashlight test: alternately illuminate each pupil for 2-3 seconds, swinging the light back and forth, and watch the response as light moves to the affected eye. A relative defect causes the affected pupil to paradoxically DILATE (rather than remaining constricted or constricting further) when light swings onto it, because the consensual input from the healthier eye had been maintaining more constriction than the affected eye's own direct input can sustain.</p><p>RAPD is commonly graded on a 1+ to 4+ (sometimes reported in log units via neutral density filters) scale of severity, though for most bedside clinical purposes simply documenting presence, absence, and a rough severity impression (mild/moderate/marked) is sufficient. Causes span the entire spectrum of unilateral or markedly asymmetric optic nerve or severe retinal disease: optic neuritis, ischemic optic neuropathy (arteritic or non-arteritic), compressive optic neuropathy (tumor), traumatic optic neuropathy, and severe/extensive retinal disease (large retinal detachment, CRAO, severe ischemic CRVO) &mdash; but critically, NOT a dense cataract, an uncorrected refractive error, or a purely efferent pupillary problem (e.g., isolated CN III palsy affecting pupil constriction) with a normal optic nerve/retina, since RAPD specifically isolates the afferent (sensory input) limb of the pathway.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Multiple sclerosis (established or subsequently diagnosed) is the dominant association; optic neuritis is the presenting feature of MS in a substantial minority of eventual MS patients</li><li>Female sex and age 20-45 are the classic epidemiologic profile for typical demyelinating optic neuritis</li><li>Other demyelinating/inflammatory conditions increasingly recognized as distinct entities with different management/prognosis: neuromyelitis optica spectrum disorder (NMOSD) and MOG-antibody-associated disease (MOGAD), both of which can mimic typical optic neuritis but carry different recurrence risk, treatment, and visual prognosis</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Normal in roughly two-thirds of cases (retrobulbar neuritis); disc edema/hyperemia (papillitis) in the remaining minority. A normal-appearing disc does NOT exclude the diagnosis in an appropriate clinical context (pain with eye movement, RAPD, reduced color vision) and should not be used to argue against it.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Pain characteristics (present in the large majority, classically worse with eye movement, typically resolves within about a week), timeline of vision loss (hours to days, stabilizing over 1-2 weeks).</li><li>Prior neurologic symptoms suggestive of demyelinating disease (sensory changes, weakness, bladder symptoms, prior episodes) relevant to MS risk stratification.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity, color vision (dyschromatopsia is often disproportionately affected relative to acuity and is a sensitive sign), and formal visual field assessment if available.</li><li>Swinging flashlight test for RAPD (see pathophysiology section above for full technique and interpretation) &mdash; expected to be present given the disease is typically unilateral or markedly asymmetric.</li><li>Dilated fundus exam; document whether papillitis or a normal (retrobulbar) appearance is present.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>MRI brain and orbits with gadolinium is the key test &mdash; both confirms the diagnosis (enhancement of the optic nerve) and is the single strongest predictor of subsequent MS conversion risk based on brain lesion burden.</li><li>Consider NMOSD (aquaporin-4 antibody) and MOGAD (MOG antibody) serologic testing for atypical features: bilateral simultaneous involvement, severe/poor recovery, lack of pain, prominent disc edema, or a more fulminant course, since these carry different management and recurrence implications than typical demyelinating optic neuritis.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm the diagnosis and grade the RAPD</div>
+            <p class="algo-detail">Document pain characteristics, visual acuity, color vision, and RAPD grade/severity at the initial visit as a baseline for tracking treatment response and recovery.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain MRI brain and orbits with gadolinium</div>
+            <p class="algo-detail">Confirms the diagnosis and, critically, stratifies MS conversion risk based on brain lesion burden &mdash; this conversation belongs in the ED-to-neurology handoff rather than being deferred entirely to outpatient follow-up.</p>
+            <div class="algo-timing">&#9200; Urgently, ideally before or very soon after starting any treatment</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Consider IV corticosteroids for faster visual recovery</div>
+            <p class="algo-detail">IV methylprednisolone speeds the rate of visual recovery compared to no treatment or oral corticosteroids alone (per the Optic Neuritis Treatment Trial, ONTT), but does NOT change the ultimate visual outcome at 6 months to 1 year, nor does it alter long-term MS conversion risk. Set this expectation explicitly with patients considering treatment.</p>
+            <div class="algo-timing">&#9200; Started early in the course if pursued, per ONTT protocol (typically IV methylprednisolone followed by an oral taper)</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Do not use oral corticosteroids alone at conventional doses</div>
+            <p class="algo-detail">ONTT notably found that oral prednisone alone at standard (low) doses was associated with an INCREASED rate of recurrent optic neuritis compared to placebo &mdash; this is a specific, counterintuitive trial finding that should actively steer management away from oral-only conventional-dose steroid treatment.</p>
+            <div class="algo-timing">&#9200; N/A &mdash; a default-avoid based on ONTT findings</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Refer to neurology for MS risk discussion and potential disease-modifying therapy</div>
+            <p class="algo-detail">Based on MRI lesion burden and clinical presentation, neurology can discuss MS conversion risk and, where appropriate, disease-modifying therapy to reduce future relapse risk; this is a longitudinal relationship, not a single ED/ophthalmology visit.</p>
+            <div class="algo-timing">&#9200; Following MRI results</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Reconsider the diagnosis if recovery doesn't begin within about 5 weeks</div>
+            <p class="algo-detail">Typical demyelinating optic neuritis begins spontaneous improvement within about 3 weeks in the large majority of patients; failure to show any improvement by roughly 5 weeks should prompt reconsideration of alternative diagnoses (compressive lesion, NMOSD, MOGAD, sarcoid, infectious causes) rather than continued observation.</p>
+            <div class="algo-timing">&#9200; Reassessed at the 5-week mark if recovery hasn't begun</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Methylprednisolone</td><td>1 g IV daily for 3 days, often followed by an oral prednisone taper (per ONTT protocol)</td><td>IV then PO taper</td><td>Speeds visual recovery rate; does not change final visual outcome or MS conversion risk</td></tr><tr><td class="label-cell">Oral prednisone at standard/low dose ALONE (avoid)</td><td>N/A as standalone therapy</td><td>PO</td><td>ONTT found this approach associated with increased recurrence risk compared to placebo; should not be used as monotherapy at conventional doses</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis in the vast majority of cases; outpatient management with close ophthalmology/neurology coordination is standard.</td></tr><tr><td class="label-cell">Transfer</td><td>Not typically required unless MRI or neurology/ophthalmology capability is unavailable locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>Close follow-up during the acute course to confirm expected recovery trajectory; ongoing neurology follow-up for MS risk stratification and monitoring based on MRI findings.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Multiple sclerosis, in patients with a higher baseline MRI lesion burden</li><li>Residual visual deficits (reduced color vision, contrast sensitivity, or mild acuity loss) even after 'full' recovery in a meaningful minority</li><li>Recurrent optic neuritis, in the same or fellow eye</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="optic-neuritis-vol4" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Reduced color vision (dyschromatopsia) is often disproportionately affected relative to visual acuity and is a sensitive, easily-tested sign worth checking specifically rather than relying on acuity alone.</li><li>A normal-appearing fundus does not argue against the diagnosis &mdash; two-thirds of cases are retrobulbar with no visible disc changes.</li><li>The RAPD technique and grading learned here (swinging flashlight test) transfers directly to evaluating GCA/arteritic AION, CRAO, traumatic optic neuropathy, and any other asymmetric afferent visual pathway disease covered elsewhere in this atlas.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>The Optic Neuritis Treatment Trial (ONTT) established that IV methylprednisolone speeds visual recovery without changing final visual outcome, that oral prednisone alone at conventional doses was associated with increased recurrence risk versus placebo, and that MRI lesion burden at presentation is the strongest predictor of subsequent MS conversion, with substantially higher conversion risk with one or more brain lesions versus none.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="gca-aion-vol4" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#129504;</div>
+    <h2>GCA / Arteritic Ischemic Optic Neuropathy</h2>
+  </div>
+  <p class="v1-overview">This is the one diagnosis on the entire sudden-vision-loss differential where treatment starts before any test result comes back &mdash; the framework below is built specifically to help you separate it from its mimics under time pressure.</p>
+
+  <div class="v1-tabs" data-group="gca-aion-vol4">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('gca-aion-vol4','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('gca-aion-vol4','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('gca-aion-vol4','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('gca-aion-vol4','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('gca-aion-vol4','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('gca-aion-vol4','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('gca-aion-vol4','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="gca-aion-vol4" data-panel="path">
+    <p>Giant cell arteritis is a large/medium-vessel vasculitis, typically in patients over 50, that can occlude the posterior ciliary arteries supplying the optic nerve head, causing sudden, severe, often profound monocular vision loss with a pale, swollen disc. Unlike the non-arteritic form (NAION), this is frequently but not always accompanied by systemic symptoms (new headache, jaw claudication, scalp tenderness, polymyalgia rheumatica) &mdash; isolated ocular presentations without systemic symptoms occur and are a recognized diagnostic blind spot even in academic centers.</p><p>**Sudden vision loss differential framework:** Four bedside variables reliably sort the major causes of sudden vision loss into distinct diagnostic buckets: (1) painful vs. painless, (2) presence/absence and grade of an RAPD, (3) fundus appearance, and (4) monocular vs. binocular. Painless + monocular + RAPD + cherry-red spot on a pale retina &rarr; CRAO. Painless + monocular + RAPD + pale swollen disc + age over 50 with systemic symptoms &rarr; arteritic AION (GCA) until excluded. Painless + monocular + RAPD + hyperemic swollen disc + no systemic symptoms &rarr; non-arteritic AION. Painful + monocular + RAPD + normal or swollen disc + younger patient &rarr; optic neuritis. Painless + monocular + NO RAPD + normal fundus &rarr; consider a media opacity or non-organic cause, or a very mild/patchy retinal process. Painless + BINOCULAR + entirely normal pupil and fundus exam &rarr; cortical/occipital process (bilateral PCA territory stroke, PRES) &mdash; the mismatch between severe bilateral vision loss and a normal eye exam IS the finding, prompting emergent brain imaging rather than an eye-focused workup.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Age over 50 (average age at diagnosis is typically in the 70s), with incidence rising further with each subsequent decade</li><li>Female sex and Northern European ancestry are both associated with higher incidence</li><li>Polymyalgia rheumatica (a substantial proportion of GCA patients have concurrent or preceding PMR symptoms)</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>A pale, swollen (edematous) optic disc, often with associated flame hemorrhages at the disc margin; distinguished from the hyperemic (rather than pale) disc swelling more typical of non-arteritic AION. RAPD is present given the typically severe, asymmetric nature of vision loss. In advanced/delayed presentations, the disc may progress to pallor/atrophy over subsequent weeks.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Directed questioning for jaw claudication (pain with chewing that improves with rest), scalp tenderness (pain brushing hair), new/different headache, and PMR symptoms (proximal muscle stiffness/aching, worse in the morning) &mdash; patients rarely volunteer these unless asked directly.</li><li>Any preceding episodes of transient monocular vision loss (amaurosis fugax), which can precede permanent vision loss in GCA.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Visual acuity (often profoundly reduced, counting fingers or worse), RAPD, and dilated fundus exam for the pale swollen disc appearance described above.</li><li>Temporal artery palpation for tenderness or decreased/absent pulse (present in some but not all cases; a normal temporal artery exam does not exclude GCA).</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>STAT ESR, CRP, platelets, and CBC in every patient over 50 with acute vision loss, regardless of how confidently the presentation looks like non-arteritic AION or CRAO &mdash; occult/isolated ocular GCA without systemic symptoms is a documented blind spot. Concordant elevation of ESR and CRP yields high sensitivity for a positive temporal artery biopsy; thrombocytosis further supports the diagnosis.</li><li>Temporal artery biopsy or temporal artery ultrasound (looking for the 'halo sign') for definitive confirmation &mdash; but treatment should never be delayed for these results if clinical suspicion is present.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Apply the sudden vision loss differential framework immediately</div>
+            <p class="algo-detail">Use the painful/painless, RAPD, fundus appearance, and monocular/binocular framework (see pathophysiology section) to rapidly narrow the differential and specifically flag any patient over 50 with painless monocular vision loss and a swollen disc as a GCA rule-out, regardless of how the rest of the picture looks.</p>
+            <div class="algo-timing">&#9200; Within the first minutes of evaluation</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Send STAT inflammatory markers on every patient over 50 with acute vision loss</div>
+            <p class="algo-detail">ESR, CRP, platelets, and CBC should be reflexively ordered in this population as part of the initial vision-loss workup, not as a secondary thought if the 'usual' embolic/ischemic workup is unrevealing.</p>
+            <div class="algo-timing">&#9200; Immediately, in parallel with other vision-loss workup</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Start high-dose corticosteroids on clinical suspicion alone</div>
+            <p class="algo-detail">Do not wait for ESR/CRP results, and do not wait for biopsy confirmation &mdash; begin treatment as soon as GCA is a reasonable clinical consideration, since the fellow eye can become involved within days if treatment is delayed, and bilateral vision loss from a missed diagnosis is the scenario every subsequent review will focus on.</p>
+            <div class="algo-timing">&#9200; Immediately on clinical suspicion, before any confirmatory test results</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Arrange temporal artery biopsy without delaying treatment</div>
+            <p class="algo-detail">Biopsy (or temporal artery ultrasound where available and validated locally) should be arranged promptly, ideally within 1-2 weeks of starting steroids, since biopsy sensitivity decreases the longer treatment has been running, but treatment itself should never be held pending this test.</p>
+            <div class="algo-timing">&#9200; Within 1-2 weeks of steroid initiation, without delaying the steroids themselves</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Continue and taper corticosteroids per rheumatology guidance</div>
+            <p class="algo-detail">Long-term steroid management (often many months, sometimes 1-2+ years) with a slow taper guided by symptoms and inflammatory markers, in coordination with rheumatology given the systemic disease and long-term steroid-related morbidity considerations.</p>
+            <div class="algo-timing">&#9200; Long-term, rheumatology-coordinated</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Screen the fellow eye and counsel on urgency of new symptoms</div>
+            <p class="algo-detail">Educate the patient explicitly that any new visual symptoms in the fellow eye, or recurrence of jaw claudication/headache/scalp tenderness, warrants immediate re-evaluation, since fellow-eye involvement is the feared complication of delayed or inadequately treated disease.</p>
+            <div class="algo-timing">&#9200; At diagnosis and throughout treatment</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Methylprednisolone</td><td>250 mg IV q6h for 3-5 days for vision loss/threat</td><td>IV</td><td>Started empirically on clinical suspicion; do not wait for ESR/CRP or biopsy</td></tr><tr><td class="label-cell">Prednisone</td><td>1 mg/kg/day PO, transitioned from IV pulse therapy, then slow taper over many months per rheumatology</td><td>PO</td><td>Long-term maintenance and taper, guided by symptoms and inflammatory markers</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Vision loss or threat from GCA generally warrants admission for IV pulse steroid therapy and urgent ophthalmology/rheumatology coordination; PMR-only presentations without visual involvement may sometimes be managed as outpatients with prompt oral steroid initiation per rheumatology preference.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for ophthalmology/rheumatology and temporal artery biopsy capability if not available locally; do not delay steroid initiation for transfer logistics.</td></tr><tr><td class="label-cell">Follow-up</td><td>Close ophthalmology follow-up for visual monitoring; long-term rheumatology follow-up for steroid taper and disease monitoring, often over 1-2+ years.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Bilateral vision loss if the fellow eye becomes involved before treatment is adequately established</li><li>Long-term corticosteroid-related morbidity (osteoporosis, diabetes, infection risk, cataracts) given the often prolonged treatment course</li><li>Large vessel complications of GCA itself: aortic aneurysm/dissection risk with long-standing disease, relevant to long-term surveillance</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="gca-aion-vol4" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Every patient over 50 with acute vision loss gets ESR/CRP/platelets sent as part of the initial workup, regardless of how confidently the presentation looks like 'routine' NAION or CRAO &mdash; isolated ocular GCA without systemic symptoms is a real and documented blind spot.</li><li>Treat first, biopsy second &mdash; this is one of the only diagnoses in ophthalmology where empiric treatment on clinical suspicion, before any confirmatory test, is the correct standard of care given the stakes of delay.</li><li>A normal temporal artery exam (no tenderness, normal pulse) does not exclude GCA &mdash; don't let a reassuring vessel exam talk you out of treating when the rest of the picture fits.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Concordant ESR and CRP elevation yields high sensitivity for temporal artery biopsy positivity in GCA, and thrombocytosis further supports the diagnosis, though a meaningful minority of biopsy-proven cases have been reported with normal inflammatory markers, meaning a normal ESR/CRP does not fully exclude the diagnosis when clinical suspicion remains high.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="papilledema" style="--cc:var(--c-vision);--cc-soft:var(--c-vision-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Papilledema</h2>
+  </div>
+  <p class="v1-overview">The term is a diagnosis of exclusion in disguise: 'papilledema' specifically means disc swelling from raised intracranial pressure, and the entire workup exists to prove that before treating it as such.</p>
+
+  <div class="v1-tabs" data-group="papilledema">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('papilledema','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('papilledema','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('papilledema','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('papilledema','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('papilledema','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('papilledema','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('papilledema','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="papilledema" data-panel="path">
+    <p>Papilledema refers specifically to optic disc swelling caused by raised intracranial pressure (as distinct from the more general term 'disc edema,' which can have many other causes) &mdash; axoplasmic flow stasis within optic nerve fibers, driven by transmitted CSF pressure along the optic nerve sheath, causes the nerve fibers themselves to swell. It is typically bilateral, though can be asymmetric. Idiopathic intracranial hypertension (IIH, formerly pseudotumor cerebri) is a common cause, particularly in young obese women, but papilledema always requires excluding a structural or vascular cause of elevated ICP (mass lesion, venous sinus thrombosis) before an idiopathic label is applied.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>For IIH specifically: female sex (dominant demographic, historically cited around 90% of patients), obesity, and recent significant weight gain</li><li>Medications associated with elevated ICP/pseudotumor-like presentations: tetracyclines (including doxycycline/minocycline), vitamin A/retinoids, growth hormone, and others</li><li>For secondary causes of elevated ICP generally: any intracranial mass lesion, cerebral venous sinus thrombosis (particularly relevant in hypercoagulable states, pregnancy, or with a hormonal contraceptive history), and hydrocephalus</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Bilateral (though possibly asymmetric) optic disc edema, graded by the modified Frisén scale (0-5): swelling classically begins in the nasal and superior/inferior sectors (grade 1) before spreading to the temporal sector (grade 2), with higher grades showing progressively more disc elevation, blurred margins, and eventual obscuration of major vessels at the disc margin. Peripapillary hemorrhages and cotton-wool spots can accompany more severe grades. Optic atrophy and pallor can develop with chronic, longstanding, or inadequately treated papilledema, signaling optic nerve damage.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Headache pattern (often worse lying down or with Valsalva), pulsatile tinnitus, transient visual obscurations (brief, seconds-long graying/blacking of vision, often positional), and diplopia (from a CN VI palsy as a false localizing sign of elevated ICP, see that entry).</li><li>Medication history (tetracyclines, vitamin A/retinoids, growth hormone), recent significant weight gain, and menstrual/hormonal history relevant to IIH risk.</li><li>Symptoms suggesting an alternative secondary cause: focal neurologic deficits, recent infection, hypercoagulable risk factors, or pregnancy (relevant to venous sinus thrombosis risk).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Dilated fundus exam with Frisén grading; visual acuity is often preserved until relatively late, so a normal acuity does NOT exclude significant papilledema or a need for urgent workup.</li><li>Formal visual field testing (peripheral field loss, particularly enlarged blind spot, is often present even when central acuity is preserved) and optical coherence tomography (OCT) where available to quantify disc swelling objectively.</li><li>Full neurologic exam, specifically screening for a CN VI palsy (false localizing sign) and any focal deficit that would suggest a structural lesion rather than IIH.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>MRI brain (with MRV) is mandatory BEFORE lumbar puncture, to exclude a mass lesion (which would make LP dangerous) and cerebral venous sinus thrombosis specifically.</li><li>Lumbar puncture in the lateral decubitus position, with accurate opening pressure measurement (patient's legs should be extended, not flexed, to avoid falsely elevated readings), plus CSF studies (cell count, protein, glucose, cytology/infectious studies as clinically indicated) to exclude infectious/neoplastic/inflammatory causes of elevated ICP.</li><li>The modified Dandy criteria for IIH require: papilledema, normal neurologic exam except for cranial neuropathies directly attributable to elevated ICP (i.e., CN VI palsy), normal neuroimaging with no alternative explanation for elevated ICP, and an elevated CSF opening pressure with otherwise normal CSF composition.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Grade the papilledema and assess vision</div>
+            <p class="algo-detail">Dilated fundus exam with Frisén grading, visual acuity, and formal visual field testing as the baseline against which future treatment response and disease progression will be measured.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain MRI brain with MRV before any lumbar puncture</div>
+            <p class="algo-detail">This sequencing is essential: MRI/MRV excludes a mass lesion (making LP unsafe) and venous sinus thrombosis (a treatable secondary cause requiring anticoagulation rather than standard IIH management) before proceeding to LP.</p>
+            <div class="algo-timing">&#9200; Before LP, urgently</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Perform lumbar puncture with accurate opening pressure measurement</div>
+            <p class="algo-detail">Lateral decubitus position with legs extended (not flexed, which falsely elevates readings); opening pressure of 20-25 cm H2O is considered a borderline/gray zone, and papilledema misclassification in this range is a recognized source of diagnostic error.</p>
+            <div class="algo-timing">&#9200; After MRI/MRV has excluded a mass lesion or sinus thrombosis</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm IIH via modified Dandy criteria if secondary causes are excluded</div>
+            <p class="algo-detail">Papilledema, a normal neurologic exam (except attributable CN VI palsy), unrevealing neuroimaging, and elevated opening pressure with normal CSF composition together support the IIH diagnosis.</p>
+            <div class="algo-timing">&#9200; Once secondary causes have been excluded</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Start acetazolamide and recommend weight loss for confirmed IIH</div>
+            <p class="algo-detail">Acetazolamide, titrated based on symptom response and tolerability, is first-line medical therapy; the IIH Treatment Trial (IIHTT) demonstrated meaningfully greater improvement in visual field, papilledema grade (on fundus photography), and quality of life measures with acetazolamide plus a weight-management program compared to weight-management/lifestyle modification with placebo. A modest 5-10% body weight reduction is specifically associated with meaningful clinical improvement.</p>
+            <div class="algo-timing">&#9200; At diagnosis, titrated over subsequent visits based on response and tolerability</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Reserve surgical intervention for vision-threatening or medically refractory disease</div>
+            <p class="algo-detail">Optic nerve sheath fenestration (ONSF) or CSF shunting (ventriculoperitoneal or lumboperitoneal) is considered for progressive vision loss despite maximal medical therapy, or for very severe presentations at initial diagnosis; venous sinus stenting is an evolving option specifically for patients with a demonstrated significant venous sinus stenosis contributing to the elevated pressure.</p>
+            <div class="algo-timing">&#9200; For medically refractory disease or urgent vision-threatening presentations</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Treat any identified secondary cause directly</div>
+            <p class="algo-detail">Venous sinus thrombosis requires anticoagulation (per standard VTE/thrombosis management) rather than standard IIH therapy alone; a mass lesion requires its own dedicated management pathway.</p>
+            <div class="algo-timing">&#9200; As soon as a secondary cause is identified</div>
+          </div>
+        </div></div>
+    
+    <div class="procedure-box">
+      <div class="procedure-title">&#128295; Procedure: Lumbar Puncture for Opening Pressure Measurement</div>
+      <ol class="procedure-steps"><li>Confirm MRI (with MRV) has already excluded a mass lesion and venous sinus thrombosis before proceeding.</li><li>Position the patient in the lateral decubitus position with legs extended (not flexed to the chest), since flexed positioning falsely elevates the measured opening pressure.</li><li>Measure opening pressure with a manometer before any CSF is withdrawn for studies.</li><li>Send CSF for cell count, protein, glucose, and any additional studies indicated by the clinical picture (infectious, cytology).</li></ol>
+      <div class="contra-box"><strong>Contraindications:</strong><ul><li>Any mass lesion or condition causing a risk of herniation with CSF removal &mdash; this is precisely why MRI must precede LP in this workup.</li></ul></div>
+    </div>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Acetazolamide</td><td>Titrated, commonly starting around 500mg-1g/day divided doses and increased based on tolerability/response, sometimes up to 4g/day in the IIHTT protocol</td><td>PO</td><td>First-line for confirmed IIH; monitor for paresthesias, GI upset, and (rarely) more significant metabolic effects with higher doses</td></tr><tr><td class="label-cell">Topiramate (alternative/adjunct)</td><td>Titrated per neurology/ophthalmology protocol</td><td>PO</td><td>Alternative agent, also carries an appetite-suppressant/weight-loss side effect that can be beneficial in this population</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Severe/vision-threatening papilledema, or secondary causes requiring urgent treatment (venous sinus thrombosis, mass lesion), warrant admission; milder, confirmed IIH without significant visual threat can often be managed as an outpatient with close follow-up.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for neurology/neurosurgery/ophthalmology capability (including OCT, formal visual fields, and surgical options) if not available locally, particularly for vision-threatening or medically refractory disease.</td></tr><tr><td class="label-cell">Follow-up</td><td>Close ophthalmology follow-up with serial visual field testing, OCT, and Frisén grading to track treatment response; this is the primary means of monitoring for silent vision-threatening progression, since patients may not subjectively notice peripheral field loss until it's advanced.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Permanent vision loss from optic atrophy if papilledema is severe, prolonged, or inadequately treated &mdash; the feared complication that drives close visual monitoring</li><li>Enlarged blind spot and peripheral visual field constriction, often present before central acuity is affected</li><li>Chronic headache and reduced quality of life even after papilledema itself is controlled</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="papilledema" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Visual acuity is a poor early warning sign for papilledema-related vision loss &mdash; it's often preserved until relatively late, which is exactly why serial visual fields and OCT (not just an acuity check) are the actual monitoring tools that matter.</li><li>The 20-25 cm H2O opening pressure range is a genuine diagnostic gray zone, and papilledema misclassification in this range is a recognized, specific source of diagnostic error &mdash; don't over-anchor on a single borderline number without the full clinical picture.</li><li>MRI/MRV must come before LP, not just as a general safety precaution but specifically because venous sinus thrombosis (identifiable on MRV) is a distinct, treatable secondary cause that changes management entirely (anticoagulation, not acetazolamide).</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>The Idiopathic Intracranial Hypertension Treatment Trial (IIHTT) demonstrated that acetazolamide combined with a weight-management program produced significantly greater improvement in visual field function and papilledema grade (measured on fundus photography, showing roughly double the improvement compared to placebo) than weight management with placebo alone, establishing the current evidence base for acetazolamide as first-line medical therapy.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="cn3-palsy" style="--cc:var(--c-pupil);--cc-soft:var(--c-pupil-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128064;</div>
+    <h2>CN III (Oculomotor) Palsy</h2>
+  </div>
+  <p class="v1-overview">The classic 'rule of the pupil' still organizes the initial approach, but current data show it's imperfect enough in both directions that pupil status alone shouldn't be the final word on whether to image.</p>
+
+  <div class="v1-tabs" data-group="cn3-palsy">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('cn3-palsy','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('cn3-palsy','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('cn3-palsy','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('cn3-palsy','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('cn3-palsy','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('cn3-palsy','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('cn3-palsy','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="cn3-palsy" data-panel="path">
+    <p>The oculomotor nerve supplies the superior, inferior, and medial rectus muscles, the inferior oblique, and the levator palpebrae superioris, plus parasympathetic fibers to the pupillary sphincter and ciliary muscle. A complete palsy produces the classic 'down and out' eye position (from unopposed lateral rectus and superior oblique action), ptosis, and variable pupillary involvement. The parasympathetic pupillary fibers run superficially on the dorsomedial surface of the nerve, supplied by pial vessels, making them disproportionately vulnerable to external compression (aneurysm, tumor) but relatively protected from the internal microvascular ischemia (vasa vasorum territory) that affects the deeper somatic motor fibers &mdash; this is the anatomic basis of the classic 'rule of the pupil,' though it is not absolute: prospective data show ischemic lesions can involve the pupil in up to roughly 20% of cases, and early compressive lesions can spare it.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Microvascular/ischemic: hypertension, diabetes, atherosclerotic disease, age over 50 &mdash; the classic 'vasculopathic' risk profile</li><li>Compressive: posterior communicating artery (PCom) aneurysm is the classic and most feared compressive cause, along with other intracranial aneurysms, tumors, and rarely uncal herniation</li><li>Giant cell arteritis should be considered in patients over 50, alongside the standard vasculopathic risk factor assessment</li><li>Trauma, and (rarely) inflammatory or infectious causes</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not directly affected by an isolated CN III palsy itself, since the disease affects the nerve, not the retina or optic nerve head. Fundus exam remains relevant as part of a complete neuro-ophthalmic exam to exclude a coexisting or alternative process (e.g., papilledema suggesting elevated ICP as a unifying explanation in a complex presentation).</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Onset (sudden onset and severe pain favor aneurysmal compression, though pain is a poor discriminator overall since it occurs in both ischemic and aneurysmal etiologies and does not reliably predict the underlying pathology), and vasculopathic risk factor history (diabetes, hypertension).</li><li>Age (under 50 substantially lowers the likelihood of microvascular ischemic etiology and raises relative concern for aneurysm even without pupil involvement).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Document the completeness of the palsy (complete vs. partial/incomplete, since a partial palsy that spares some muscles can still represent early evolving aneurysmal compression even with a normal pupil).</li><li>Careful pupil exam: compare size and reactivity between the two eyes; note that even 'pupil-sparing' by strict definition can include up to roughly 2mm of anisocoria in some microvascular cases, so precise measurement matters more than a binary 'normal/abnormal' impression.</li><li>Assess for other neurologic signs suggesting a more complex/central process (additional cranial neuropathies, long tract signs) that would push toward urgent MRI regardless of pupil status.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>Emergent CT and CT angiography (or MRI/MRA) of the brain to exclude a compressive aneurysm in ANY patient with a pupil-involving third nerve palsy &mdash; this is a time-critical medical emergency, not a routine outpatient referral.</li><li>Current practice increasingly recommends neuroimaging (MRI with gadolinium, ideally with dedicated thin-cut sequences) for essentially ALL patients with a new third nerve palsy regardless of pupillary status, given prospective data showing up to 16.5% of 'presumed microvascular' (pupil-sparing, vasculopathic-risk-factor-positive, over-50) palsies actually harbor a non-ischemic cause (midbrain infarct, tumor, inflammation) on subsequent workup.</li><li>ESR/CRP in patients over 50 to screen for GCA as a contributing/alternative diagnosis.</li><li>For patients under 50 with an isolated, non-pupil-involving palsy, imaging or intracranial angiography is still indicated given the lower baseline likelihood of microvascular disease in this age group.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Treat any pupil-involving third nerve palsy as an emergency</div>
+            <p class="algo-detail">Emergent CT/CTA (or MRI/MRA) to exclude a compressive aneurysm; this should happen the same day/immediately, not on an outpatient timeline, given the risk of aneurysmal rupture/subarachnoid hemorrhage.</p>
+            <div class="algo-timing">&#9200; Immediately, same-day emergent imaging</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Image essentially all new third nerve palsies given the imperfect 'rule of the pupil'</div>
+            <p class="algo-detail">Current recommendations favor MRI with gadolinium (thin-cut sequences through the course of the nerve where available) for most new presentations, even those that appear classically pupil-sparing and vasculopathic in an older patient, given the meaningful rate of missed non-ischemic pathology in this 'presumed microvascular' population.</p>
+            <div class="algo-timing">&#9200; At or shortly after initial presentation, even for apparently lower-risk presentations</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Pay special attention to partial/incomplete palsies</div>
+            <p class="algo-detail">A partial palsy sparing some muscles, even with a normal pupil, deserves particular attention since this pattern is more likely to represent early evolving aneurysmal compression that simply hasn't yet involved the pupillary fibers; close interval re-examination (watching specifically for delayed pupil involvement, which can lag by 5-7 days) is warranted if imaging is initially unrevealing.</p>
+            <div class="algo-timing">&#9200; At initial presentation and on close interval follow-up</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Screen for GCA in patients over 50</div>
+            <p class="algo-detail">Send ESR/CRP given giant cell arteritis is a recognized, potentially treatable cause/contributor in this age group.</p>
+            <div class="algo-timing">&#9200; Same visit, in patients over 50</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Manage confirmed microvascular ischemic palsy with risk factor optimization and observation</div>
+            <p class="algo-detail">Once aneurysm and other structural causes are excluded, optimize vasculopathic risk factors (blood pressure, glucose control) and observe; the majority of microvascular CN III palsies resolve spontaneously over roughly 3 months.</p>
+            <div class="algo-timing">&#9200; Ongoing over the expected 3-month recovery window</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Re-image if there is no improvement or evidence of aberrant regeneration</div>
+            <p class="algo-detail">Failure to improve over 6-8 weeks, or the development of aberrant regeneration (a sign more typical of compressive or traumatic, not ischemic, injury), should prompt repeat/expanded imaging to reconsider a structural cause.</p>
+            <div class="algo-timing">&#9200; At 6-8 weeks if no improvement, or sooner if aberrant regeneration develops</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">None specific to the palsy itself</td><td>&mdash;</td><td>&mdash;</td><td>Management for microvascular disease centers on risk factor optimization (antihypertensives, glycemic control per the patient's underlying conditions), not a disease-specific pharmacologic therapy; compressive causes are managed surgically/per the underlying lesion</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Any pupil-involving palsy with a confirmed or strongly suspected aneurysm requires emergent neurosurgical evaluation and likely admission; confirmed microvascular ischemic palsies are managed as outpatients with risk factor optimization.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer emergently for neurosurgical/neurointerventional capability if a compressive aneurysm is identified and not available locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>Close interval follow-up (days to a couple of weeks) for any presumed microvascular palsy to watch for delayed pupil involvement or lack of expected improvement; routine follow-up through the expected ~3-month recovery course otherwise.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Subarachnoid hemorrhage/aneurysm rupture if a compressive lesion is missed and left untreated</li><li>Aberrant regeneration (misdirected nerve fiber regrowth causing unusual co-contraction patterns, e.g., lid elevation with attempted downgaze) &mdash; more typical of compressive or traumatic injury than true ischemic palsy, and its presence should prompt reconsideration of the ischemic diagnosis</li><li>Persistent diplopia/strabismus requiring later strabismus surgery in a minority of cases that don't fully resolve</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn3-palsy" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>The 'rule of the pupil' is a useful organizing framework, not an absolute rule &mdash; up to 20% of ischemic palsies can show some pupil involvement, and early aneurysmal compression can spare the pupil entirely, sometimes not manifesting pupil involvement until 5-7 days later.</li><li>A partial/incomplete palsy with a normal pupil is not necessarily reassuring &mdash; this pattern is specifically associated with early, evolving aneurysmal compression and deserves close follow-up or low-threshold imaging.</li><li>Prospective data showing up to 16.5% of 'presumed microvascular' palsies harbor non-ischemic pathology has genuinely shifted practice toward imaging essentially all new third nerve palsies, not just the pupil-involving ones.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Prospective studies have found that up to 16.5% of patients with clinically 'presumed microvascular' (pupil-sparing, vasculopathic risk factors, age over 50) third nerve palsies actually harbored non-ischemic pathology (midbrain infarcts, tumors, inflammation) on subsequent workup, supporting broader neuroimaging recommendations regardless of pupillary status.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="cn4-palsy" style="--cc:var(--c-pupil);--cc-soft:var(--c-pupil-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128064;</div>
+    <h2>CN IV (Trochlear) Palsy</h2>
+  </div>
+  <p class="v1-overview">The most common cause of vertical/torsional diplopia in adults, localized with a three-step bedside test that most clinicians remember imperfectly &mdash; here's the version that actually holds up.</p>
+
+  <div class="v1-tabs" data-group="cn4-palsy">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('cn4-palsy','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('cn4-palsy','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('cn4-palsy','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('cn4-palsy','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('cn4-palsy','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('cn4-palsy','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('cn4-palsy','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="cn4-palsy" data-panel="path">
+    <p>The trochlear nerve is anatomically unique: it is the only cranial nerve to exit the dorsal (back) surface of the brainstem, and the only one that decussates (crosses to the opposite side) before reaching its target muscle. It supplies a single muscle, the superior oblique, whose primary actions are intorsion (inward rotation) and, secondarily, depression of the eye (particularly in adduction). Its long, thin intracranial course makes it disproportionately vulnerable to closed head trauma even at a distance from the nerve itself, which is why trauma is a leading cause of acquired (non-congenital) trochlear palsy.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Congenital trochlear nerve absence/hypoplasia (a surprisingly common cause of what presents as "acquired" palsy in adulthood, often decompensating and becoming symptomatic later in life after years of subclinical compensation; imaging studies have found trochlear nerve absence in a majority of patients with congenital superior oblique palsy)</li><li>Head trauma, even relatively minor or at a distance from the nerve itself, given its long intracranial course and dorsal exit point</li><li>Microvascular ischemic risk factors (diabetes, hypertension, atherosclerosis) for acquired ischemic palsy in older patients</li><li>Rarely: tumor, aneurysm (extremely rare for this nerve specifically), demyelinating disease, myasthenia gravis, GCA, and other inflammatory/autoimmune conditions</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Excyclotorsion of the affected eye may be visible on fundus exam as an abnormally low position of the fovea relative to the optic disc (loss of the normal intorsion provided by an intact superior oblique) &mdash; a useful confirmatory sign when the diagnosis is otherwise uncertain, though not routinely required if the three-step test is clearly positive.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Vertical, torsional, or oblique diplopia, characteristically worse on downward gaze (e.g., reading, walking down stairs) and gaze away from the affected side.</li><li>Any preceding head trauma, however minor.</li><li>A compensatory head tilt is a classic associated finding, typically away from the affected side in the majority of cases (though a paradoxical ipsilateral tilt occurs in a minority, particularly in congenital cases where the tilt reflects the patient's individual strategy for managing diplopia rather than a fixed rule).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>The Parks-Bielschowsky-Helveston three-step test: (1) identify which eye is hypertropic (higher) in primary gaze; (2) determine whether the hypertropia worsens in gaze to the right or left; (3) determine whether the hypertropia worsens with head tilt to the right or left shoulder (the Bielschowsky head tilt test specifically). A trochlear palsy shows worsening hypertropia on head tilt TOWARD the affected side and gaze AWAY from the affected side.</li><li>Assess for a compensatory head tilt in the patient's resting posture, and examine old photographs (driver's license, family photos) where available &mdash; a longstanding head tilt visible in old photos strongly supports a congenital rather than acquired etiology, which meaningfully changes the urgency of further workup.</li><li>Full neurologic exam to exclude other cranial neuropathies suggesting a more complex central process.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>MRI brain is warranted for new acquired palsies, particularly to assess the brainstem/nerve course and exclude tumor or demyelinating disease, though the yield is lower than for CN III given the rarity of aneurysmal compression of this specific nerve.</li><li>ESR/CRP in patients over 50 to screen for GCA as a contributing cause.</li><li>Old photographs or a clear history of lifelong intermittent symptoms can obviate the need for extensive new workup if a congenital etiology is strongly supported.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Perform and correctly interpret the three-step test</div>
+            <p class="algo-detail">This remains the reliable bedside method for localizing which superior oblique (or, by exclusion, which other vertically-acting muscle) is responsible for the hypertropia; note that the direction of resting head tilt itself is a less reliable localizing sign than the formal three-step test, since head tilt direction reflects individual diplopia-management strategy and doesn't always point contralateral to the affected nerve as classically taught.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Look for evidence of a longstanding congenital process</div>
+            <p class="algo-detail">Old photographs showing a similar head tilt, or a history of turning the head this way since childhood, strongly support congenital trochlear nerve absence/hypoplasia that has decompensated in adulthood, which is managed differently (often with prism glasses or elective strabismus surgery on a non-urgent timeline) than a new acquired palsy.</p>
+            <div class="algo-timing">&#9200; At initial history-taking</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain MRI for new acquired palsies without a clear congenital/traumatic explanation</div>
+            <p class="algo-detail">Particularly relevant to exclude tumor or demyelinating disease; the threshold for imaging is somewhat lower in younger patients or those without clear trauma or vasculopathic risk factors.</p>
+            <div class="algo-timing">&#9200; For new, unexplained acquired palsies</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Screen for GCA in patients over 50</div>
+            <p class="algo-detail">Send ESR/CRP given the recognized association, alongside standard vasculopathic risk factor assessment.</p>
+            <div class="algo-timing">&#9200; Same visit, in patients over 50</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Manage symptomatically while awaiting spontaneous resolution (microvascular cases)</div>
+            <p class="algo-detail">Options include occlusion of one eye (patching) for symptomatic diplopia relief, or prism glasses to fuse the images, while awaiting the expected spontaneous resolution over weeks to a few months typical of microvascular ischemic palsies.</p>
+            <div class="algo-timing">&#9200; Ongoing during the expected recovery window</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Consider strabismus surgery for persistent or congenital/decompensated palsies</div>
+            <p class="algo-detail">For palsies that don't resolve (more typical of congenital/traumatic causes) or cause persistent bothersome diplopia/head tilt, strabismus surgery (e.g., inferior oblique myectomy or other muscle procedures) is a reasonable elective option, with meaningfully better long-term motor and head-tilt outcomes reported when a trochlear nerve is still anatomically present versus congenitally absent.</p>
+            <div class="algo-timing">&#9200; Elective, for persistent/non-resolving symptomatic cases</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">None specific to the palsy itself</td><td>&mdash;</td><td>&mdash;</td><td>Management is observational, prism/occlusion-based, or surgical rather than pharmacologic; treat any underlying identified cause (GCA, demyelinating disease) per its own protocol</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis in isolation; strabismus surgery, when pursued, is elective outpatient surgery.</td></tr><tr><td class="label-cell">Transfer</td><td>Not typically required unless neuroimaging or ophthalmology/strabismus surgical capability is unavailable locally for a diagnostically uncertain or persistent case.</td></tr><tr><td class="label-cell">Follow-up</td><td>Routine ophthalmology follow-up through the expected recovery window (weeks to a few months for acquired ischemic palsy); ongoing follow-up for symptomatic management (prism, patching) or surgical planning in persistent/congenital cases.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Persistent diplopia and head tilt if the palsy doesn't resolve and isn't adequately managed</li><li>Missed underlying cause (tumor, demyelinating disease, GCA) if a new acquired palsy is assumed congenital or microvascular without adequate workup</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn4-palsy" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>This is the most common cause of acquired vertical diplopia in adults, and old photographs are a genuinely useful, low-cost diagnostic tool for distinguishing a decompensated congenital process from a new acquired one.</li><li>The direction of resting head tilt is a less reliable localizing sign than commonly taught &mdash; rely on the formal three-step test rather than assuming the tilt direction alone tells you which side is affected.</li><li>This nerve's long, thin intracranial course and dorsal brainstem exit point make it disproportionately vulnerable to head trauma even when the trauma seems relatively minor or remote from the nerve's location.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>High-resolution MRI studies have found trochlear nerve absence in a majority (roughly 73% in one series) of patients with congenital superior oblique palsy, supporting congenital nerve agenesis/hypoplasia as a common underlying mechanism rather than assuming all such cases represent a subtle muscle-only abnormality.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="cn6-palsy" style="--cc:var(--c-pupil);--cc-soft:var(--c-pupil-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128064;</div>
+    <h2>CN VI (Abducens) Palsy</h2>
+  </div>
+  <p class="v1-overview">This is the classic 'false localizing sign' of neurology &mdash; a nerve palsy that can mean nothing more than generically elevated intracranial pressure anywhere in the skull, not a lesion actually located along the nerve's course.</p>
+
+  <div class="v1-tabs" data-group="cn6-palsy">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('cn6-palsy','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('cn6-palsy','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('cn6-palsy','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('cn6-palsy','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('cn6-palsy','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('cn6-palsy','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('cn6-palsy','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="cn6-palsy" data-panel="path">
+    <p>The abducens nerve supplies a single muscle, the lateral rectus, responsible for abducting the eye. It has the longest intracranial course of any cranial nerve, traveling from its pontine origin along the clivus and through Dorello's canal before entering the cavernous sinus &mdash; this long course, particularly the segment tightly tethered against the clivus, makes it exquisitely vulnerable to stretch injury from any process that causes diffuse elevation of intracranial pressure or downward brainstem displacement, REGARDLESS of where the actual causative lesion is located. This is the basis for CN VI palsy being the classic 'false localizing sign': its presence doesn't localize disease to the nerve's actual anatomic path, but rather can simply reflect generically raised ICP from a lesion located anywhere in the cranium.</p>
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>Elevated intracranial pressure from any cause (papilledema/IIH, mass lesion, hydrocephalus) as the classic 'false localizing' mechanism</li><li>Microvascular ischemic risk factors (diabetes, hypertension, atherosclerosis) for isolated ischemic palsy in older patients, analogous to microvascular CN III and CN IV palsy</li><li>Trauma, particularly skull base fractures</li><li>GCA in patients over 50</li><li>In children specifically: pontine glioma and other posterior fossa tumors are important considerations for a new CN VI palsy and warrant a lower threshold for imaging</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not directly affected by the CN VI palsy itself, but fundus exam is essential as part of the same visit to look for papilledema, since elevated ICP is a leading mechanism for this specific nerve palsy (see pathophysiology above) &mdash; finding papilledema alongside a CN VI palsy supports elevated ICP as the underlying explanation and should prompt the same urgent workup as papilledema presenting alone.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Binocular horizontal diplopia (images side by side, not vertically displaced), characteristically worse looking toward the affected side and at distance rather than near.</li><li>Headache, pulsatile tinnitus, or transient visual obscurations suggesting coexisting elevated ICP.</li><li>Trauma history, and in children, developmental/growth concerns or other symptoms suggesting a posterior fossa tumor.</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Confirm isolated lateral rectus weakness (impaired abduction of the affected eye) without other cranial nerve or motor findings, which would suggest a more isolated, peripheral nerve process rather than a diffuse or brainstem process.</li><li>Full fundus exam specifically for papilledema.</li><li>Complete cranial nerve and neurologic exam to detect any additional deficits suggesting a brainstem, cavernous sinus, or skull base process rather than an isolated microvascular mononeuropathy.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>MRI brain (with attention to the brainstem, clivus, and cavernous sinus) is generally warranted for new isolated CN VI palsy, particularly in patients without clear vasculopathic risk factors, in children, or with any additional neurologic findings.</li><li>Consider the same papilledema/elevated ICP workup (MRI/MRV, lumbar puncture with opening pressure) if papilledema or other ICP-elevation symptoms are present alongside the palsy.</li><li>ESR/CRP in patients over 50 to screen for GCA.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Assess for papilledema and other elevated-ICP symptoms at the same visit</div>
+            <p class="algo-detail">Given this nerve's role as a false localizing sign of generically elevated ICP, a full fundus exam and directed history for headache/tinnitus/transient visual obscurations should accompany the motility exam.</p>
+            <div class="algo-timing">&#9200; At initial exam</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain MRI brain for new isolated palsies, especially in children or those without vasculopathic risk factors</div>
+            <p class="algo-detail">Particularly important in children given the association with posterior fossa tumors (e.g., pontine glioma), and in adults without a clear vasculopathic risk profile, where the differential extends well beyond simple microvascular ischemia.</p>
+            <div class="algo-timing">&#9200; Promptly for new presentations, especially in lower-pretest-probability-for-ischemia populations</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Screen for GCA in patients over 50</div>
+            <p class="algo-detail">Send ESR/CRP alongside standard vasculopathic risk factor assessment.</p>
+            <div class="algo-timing">&#9200; Same visit, in patients over 50</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Investigate and treat any identified elevated ICP source</div>
+            <p class="algo-detail">If papilledema or other signs of elevated ICP are present, pursue the full papilledema workup and treatment pathway (see that entry) rather than treating the CN VI palsy as an isolated finding.</p>
+            <div class="algo-timing">&#9200; As soon as elevated ICP is suspected</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Manage isolated microvascular ischemic palsy symptomatically and observe</div>
+            <p class="algo-detail">Patching/occlusion or prism correction for symptomatic diplopia relief while awaiting the expected spontaneous resolution over weeks to a few months, analogous to microvascular CN III and CN IV palsy management.</p>
+            <div class="algo-timing">&#9200; Ongoing through the expected recovery window</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Re-image and broaden workup if no improvement occurs</div>
+            <p class="algo-detail">Failure to improve over the expected several-month window should prompt reconsideration of alternative causes and repeat/expanded imaging.</p>
+            <div class="algo-timing">&#9200; If no improvement within several months</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">None specific to the palsy itself</td><td>&mdash;</td><td>&mdash;</td><td>Management is observational, prism/occlusion-based, or directed at any identified underlying cause (elevated ICP management, GCA treatment) rather than a disease-specific pharmacologic therapy for the palsy itself</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Not an admission diagnosis in isolation; admission decisions are driven by any identified underlying cause (elevated ICP requiring urgent management, tumor, etc.) rather than the palsy itself.</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer for neuroimaging/neurosurgical capability if not available locally and an underlying structural or ICP-related cause is suspected.</td></tr><tr><td class="label-cell">Follow-up</td><td>Routine ophthalmology/neurology follow-up through the expected recovery window for presumed microvascular cases; dedicated follow-up per the underlying cause's own protocol when one is identified.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Persistent diplopia if the palsy doesn't resolve</li><li>Missed underlying cause (tumor, elevated ICP source, GCA) if assumed to be simple microvascular disease without adequate workup, particularly consequential in children given the tumor association</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="cn6-palsy" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>This nerve's status as the classic 'false localizing sign' is a genuinely important teaching point: its palsy can mean nothing more specific than 'intracranial pressure is elevated somewhere,' not that a lesion is actually sitting along its anatomic course.</li><li>A new isolated CN VI palsy in a child deserves a meaningfully lower threshold for MRI than the analogous presentation in an older adult with vasculopathic risk factors, given the pontine glioma association.</li><li>Always complete a fundus exam for papilledema in the same visit as diagnosing a new CN VI palsy &mdash; the two findings together point toward a unifying elevated-ICP explanation that changes the whole workup.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>This nerve's exceptionally long intracranial course and fixed tethering point at Dorello's canal/the clivus is the anatomically accepted mechanism underlying its well-established role as neurology's classic false localizing sign for diffusely elevated intracranial pressure.</li></ul></div>
+  </div>
+</section>
+<section class="vol1-condition" id="horner-syndrome" style="--cc:var(--c-pupil);--cc-soft:var(--c-pupil-soft);">
+  <div class="v1-head">
+    <div class="icon-badge-lg">&#128065;</div>
+    <h2>Horner Syndrome</h2>
+  </div>
+  <p class="v1-overview">An acute, painful Horner syndrome after minor neck trauma is carotid dissection until neuroimaging says otherwise &mdash; a diagnosis where the eye finding is often the first clue to a life-threatening vascular process elsewhere.</p>
+
+  <div class="v1-tabs" data-group="horner-syndrome">
+    <button class="v1-tab active" data-tab="path" onclick="showTab('horner-syndrome','path',this)">Pathophysiology</button>
+    <button class="v1-tab" data-tab="riskfundus" onclick="showTab('horner-syndrome','riskfundus',this)">Risk Factors &amp; Fundus</button>
+    <button class="v1-tab" data-tab="workup" onclick="showTab('horner-syndrome','workup',this)">Workup</button>
+    <button class="v1-tab" data-tab="algo" onclick="showTab('horner-syndrome','algo',this)">Treatment Algorithm</button>
+    <button class="v1-tab" data-tab="drugs" onclick="showTab('horner-syndrome','drugs',this)">Drug Dosing</button>
+    <button class="v1-tab" data-tab="disp" onclick="showTab('horner-syndrome','disp',this)">Disposition</button>
+    <button class="v1-tab" data-tab="pearls" onclick="showTab('horner-syndrome','pearls',this)">Pearls &amp; Evidence</button>
+  </div>
+
+  <div class="v1-panel" data-group="horner-syndrome" data-panel="path">
+    <p>Horner syndrome results from interruption of the three-neuron oculosympathetic pathway at any point along its course, producing the classic triad of ptosis (mild, from loss of Müller's muscle tone), miosis (from unopposed parasympathetic pupillary constriction), and anhidrosis (facial, variable depending on lesion location). The pathway's three orders are anatomically and clinically distinct: first-order neurons run from the hypothalamus through the brainstem and cervical spinal cord (lesions here are classically central, e.g., lateral medullary/Wallenberg syndrome); second-order neurons exit the spinal cord and travel over the lung apex before reaching the superior cervical ganglion (lesions here classically involve Pancoast tumor or iatrogenic injury, e.g., chest tube or neck surgery); third-order neurons travel from the superior cervical ganglion along the internal carotid artery through the cavernous sinus to the eye (lesions here classically involve carotid dissection, aneurysm, or cavernous sinus pathology).</p>
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="riskfundus">
+    <div class="pearl-list"><h5>Risk Factors</h5><ul><li>For third-order (postganglionic) Horner: carotid artery dissection (can follow relatively minor trauma or occur spontaneously, particularly with connective tissue disease such as Ehlers-Danlos or Marfan syndrome, or longstanding hypertension), carotid aneurysm, and cavernous sinus pathology</li><li>For second-order Horner: apical lung lesions (Pancoast tumor), and iatrogenic causes including chest tube placement, neck surgery, and central line placement (particularly internal jugular catheterization)</li><li>For first-order Horner: brainstem stroke (classically lateral medullary/Wallenberg syndrome), multiple sclerosis, and other central lesions along the hypothalamospinal pathway</li><li>Neuroblastoma is an important consideration in the pediatric population, where Horner syndrome can be an early presenting sign</li></ul></div>
+    <div class="fundus-box"><h5>Fundoscopic Findings</h5><p>Not applicable; Horner syndrome affects the pupil and lid via the sympathetic pathway and does not produce fundus findings itself, though a full exam remains appropriate to exclude a coexisting unrelated process.</p></div>
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="workup">
+    <div class="workup-grid"><div class="workup-col"><h5>History</h5><ul><li>Pain specifically: acute Horner syndrome WITH pain (headache, neck or facial pain) should be treated as carotid dissection until proven otherwise, particularly following even minor recent neck trauma (including chiropractic manipulation) or in patients with connective tissue disease risk factors.</li><li>Associated symptoms suggesting a specific localization: ipsilateral shoulder/arm pain or hand weakness (apex of lung, brachial plexus, second-order lesion), or other brainstem symptoms (first-order lesion).</li><li>Tobacco use history (relevant to lung apex lesion risk).</li><li>In children: any history suggesting neuroblastoma should be pursued (abdominal mass, systemic symptoms).</li></ul></div><div class="workup-col"><h5>Exam</h5><ul><li>Confirm the triad: mild ptosis (typically 1-2mm, less than the more complete ptosis of a CN III palsy), miosis (worse in dim light, since the affected pupil fails to dilate normally), and assess for facial anhidrosis (its presence/absence and distribution can itself provide localizing information, since second- and third-order lesions affect different facial sweating distributions after the sympathetic fibers diverge along the external vs. internal carotid arteries).</li><li>"Upside-down ptosis": a subtle elevation of the lower lid can accompany the upper lid ptosis, from loss of sympathetic tone to the analogous smooth muscle of the lower lid.</li><li>Distinguish from physiologic anisocoria (common, benign pupil size difference without ptosis or other findings) using pharmacologic testing when the diagnosis is uncertain on exam alone.</li></ul></div><div class="workup-col"><h5>Imaging/Labs</h5><ul><li>Pharmacologic confirmation: topical apraclonidine 0.5-1% is now the preferred test of choice given practicality (cocaine is difficult to obtain) &mdash; instilled in both eyes, a POSITIVE test shows the Horner pupil dilating (denervation supersensitivity to the alpha-1 agonist effect) while the normal pupil shows little change or even mild constriction, producing a 'reversal' of the anisocoria. Cocaine testing (where available) instead shows the normal pupil dilating while the Horner pupil fails to dilate (anisocoria of 0.8mm or more considered diagnostic).</li><li>Hydroxyamphetamine can further localize a confirmed Horner to pre- vs. post-ganglionic (third-order) location, though it is used less often in current practice and, if cocaine was used first, requires waiting at least 72 hours before testing given pharmacologic interference.</li><li>Except in true emergencies, pharmacologic localization should ideally precede neuroimaging in adults to help direct which region to image; however, in an ACUTE, PAINFUL presentation with concern for carotid dissection, do not delay neuroimaging (CT angiography or MR angiography of the head/neck) for pharmacologic testing &mdash; imaging takes priority given the time-sensitive, life-threatening nature of dissection.</li><li>MRI/MRA or CTA of the head and neck, with attention to the carotid artery course, is preferred over ultrasound when carotid dissection is a possibility, given superior sensitivity for this diagnosis.</li></ul></div></div>
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="algo">
+    <div class="algo-list">
+        <div class="algo-step">
+          <div class="algo-num">1</div>
+          <div class="algo-content">
+            <div class="algo-title">Confirm the diagnosis pharmacologically if not clinically obvious</div>
+            <p class="algo-detail">Apraclonidine testing (preferred, practical, current test of choice) or cocaine testing (traditional, less readily available) to confirm true Horner syndrome and distinguish it from physiologic anisocoria.</p>
+            <div class="algo-timing">&#9200; At initial evaluation if diagnosis is uncertain on exam alone</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">2</div>
+          <div class="algo-content">
+            <div class="algo-title">Triage urgency based on pain and acuity</div>
+            <p class="algo-detail">Acute, painful Horner syndrome, especially with a history of even minor recent neck trauma or in a patient with connective tissue disease risk factors, should be treated as carotid dissection until neuroimaging says otherwise &mdash; this is the single highest-stakes branch point in the entire work-up.</p>
+            <div class="algo-timing">&#9200; Immediately upon recognizing acute + painful presentation</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">3</div>
+          <div class="algo-content">
+            <div class="algo-title">Obtain emergent CTA or MRA of the head and neck for acute painful presentations</div>
+            <p class="algo-detail">Do not delay this imaging for pharmacologic localization testing (hydroxyamphetamine) in this scenario; the dissection workup takes priority given the time-sensitive stroke risk associated with untreated dissection.</p>
+            <div class="algo-timing">&#9200; Emergently, without delay for other testing</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">4</div>
+          <div class="algo-content">
+            <div class="algo-title">Use hydroxyamphetamine localization testing selectively in non-emergent presentations</div>
+            <p class="algo-detail">For chronic, painless, or otherwise non-urgent presentations where the underlying cause isn't already apparent, hydroxyamphetamine can help localize to a pre- vs. post-ganglionic lesion and guide more targeted imaging (chest imaging for suspected second-order lesion vs. neck/head imaging for third-order).</p>
+            <div class="algo-timing">&#9200; In non-emergent cases, ideally before neuroimaging, guiding which region to prioritize</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">5</div>
+          <div class="algo-content">
+            <div class="algo-title">Direct imaging based on likely anatomic localization</div>
+            <p class="algo-detail">Suspected first-order: brain/brainstem MRI. Suspected second-order: chest imaging (CT chest to evaluate for apical lung/Pancoast lesion) and/or neck imaging. Suspected third-order: neck/head CTA or MRA focusing on the carotid artery and cavernous sinus.</p>
+            <div class="algo-timing">&#9200; Guided by localization, pursued promptly</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">6</div>
+          <div class="algo-content">
+            <div class="algo-title">Treat the underlying identified cause directly</div>
+            <p class="algo-detail">Carotid dissection: anticoagulation/antiplatelet therapy and vascular surgery involvement per current stroke-prevention protocols. Pancoast tumor: oncology/thoracic surgery referral. Neuroblastoma (pediatric): oncology referral.</p>
+            <div class="algo-timing">&#9200; As soon as the underlying cause is identified</div>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num">7</div>
+          <div class="algo-content">
+            <div class="algo-title">Address residual ptosis if desired for cosmetic reasons</div>
+            <p class="algo-detail">Topical apraclonidine can be used intermittently off-label to transiently correct the ptosis for cosmetic purposes in patients bothered by the residual asymmetry once any underlying serious cause has been addressed or excluded; surgical ptosis repair is rarely pursued but an option for persistent, bothersome cases.</p>
+            <div class="algo-timing">&#9200; After the underlying workup is complete, purely for symptomatic/cosmetic purposes</div>
+          </div>
+        </div></div>
+    
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="drugs">
+    <table class="quickref-table drug-table"><thead><tr><th>Drug</th><th>Dose</th><th>Route</th><th>Notes</th></tr></thead><tbody><tr><td class="label-cell">Apraclonidine 0.5-1%</td><td>1 drop each eye for testing; may be used intermittently off-label for cosmetic ptosis correction afterward</td><td>Topical</td><td>Current preferred pharmacologic test; use caution/avoid in infants given CNS/respiratory depression risk in pediatric Horner workup</td></tr><tr><td class="label-cell">Cocaine 2-10% (where available)</td><td>1-2 drops each eye for testing</td><td>Topical</td><td>Traditional test, less practically available currently; requires 72h washout before subsequent hydroxyamphetamine testing</td></tr><tr><td class="label-cell">Hydroxyamphetamine 1%</td><td>1 drop each eye for localization testing</td><td>Topical</td><td>For pre- vs. post-ganglionic localization in non-emergent cases; false-negative risk in the first week after an acute injury</td></tr></tbody></table>
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="disp">
+    <table class="quickref-table"><tbody><tr><td class="label-cell">Admit/OR</td><td>Confirmed or strongly suspected carotid dissection warrants admission for anticoagulation/antiplatelet initiation and vascular surgery/neurology co-management; other causes are managed per their own underlying disposition pathway (oncology for Pancoast tumor/neuroblastoma, etc.).</td></tr><tr><td class="label-cell">Transfer</td><td>Transfer emergently for CTA/MRA and vascular/neurology capability if acute painful Horner syndrome is present and dissection workup isn't available locally.</td></tr><tr><td class="label-cell">Follow-up</td><td>Directed by the underlying identified cause; routine ophthalmology follow-up for isolated, benign, fully-worked-up cases without an ongoing systemic issue.</td></tr></tbody></table>
+    <div class="complication-list"><h5>Complications to Anticipate</h5><ul><li>Stroke from untreated/undertreated carotid dissection &mdash; the primary driver of urgency in the acute painful presentation</li><li>Missed malignancy (Pancoast tumor, neuroblastoma) if the syndrome is assumed benign/idiopathic without adequate anatomic workup</li><li>Persistent cosmetic ptosis/anisocoria, generally mild and often not requiring intervention beyond patient reassurance or optional apraclonidine/surgical correction</li></ul></div>
+  </div>
+  <div class="v1-panel hidden" data-group="horner-syndrome" data-panel="pearls">
+    <div class="pearl-list"><h5>Clinical Pearls</h5><ul><li>Pain is the single most important historical clue driving urgency &mdash; an acute, painful Horner syndrome after even minor neck trauma should trigger an emergent dissection workup, not a routine outpatient referral.</li><li>The apraclonidine test produces a genuinely elegant finding once you know to look for it: a 'reversal of anisocoria,' where the previously smaller (Horner) pupil becomes the larger one after the drop, since it's supersensitive to the weak agonist while the normal pupil barely responds.</li><li>Don't delay CTA/MRA for hydroxyamphetamine localization testing in an acute, painful presentation &mdash; the stroke-prevention clock matters more than precise pre-/post-ganglionic localization in that scenario.</li></ul></div>
+    <div class="evidence-list"><h5>Evidence Notes</h5><ul><li>Case literature and clinical consensus (StatPearls, EyeWiki, and multiple case series) consistently support apraclonidine as the current pharmacologic test of choice for Horner syndrome given practicality, with cocaine testing reserved for settings where apraclonidine testing is unavailable or inconclusive; false-negative apraclonidine results and reduced hydroxyamphetamine sensitivity in the first week after acute injury are both recognized limitations of pharmacologic testing in the acute setting.</li></ul></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const cur = html.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themebtn').innerHTML = next === 'dark' ? '&#9789;' : '&#9788;';
+}
+function showTab(group, tab, btn) {
+  document.querySelectorAll('.v1-tabs[data-group="' + group + '"] .v1-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.v1-panel[data-group="' + group + '"]').forEach(p => p.classList.add('hidden'));
+  document.querySelector('.v1-panel[data-group="' + group + '"][data-panel="' + tab + '"]').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
