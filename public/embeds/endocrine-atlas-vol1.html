@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Endocrine Atlas · Volume 1 — Classic Axes</title>
+<style>
+/* ============================================================
+   ENDOCRINE ATLAS — VOLUME 1: CLASSIC AXES
+   Design system: Fraunces (display) / Inter (body) / JetBrains Mono (data)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Light theme */
+  --bg: #FAF9F6;
+  --bg-elevated: #FFFFFF;
+  --bg-inset: #F1EFEA;
+  --text-primary: #1C1A17;
+  --text-secondary: #423D37;
+  --text-tertiary: #6B6559;
+  --border: #E3DFD6;
+  --border-strong: #C9C2B4;
+  --shadow-color: 30 25 15;
+
+  /* Axis accent colors — each gland/axis gets its own identity */
+  --hpa: #B8783E;      /* cortisol — adrenal clay/amber */
+  --hpa-bg: #FBF1E6;
+  --hpt: #2C7A72;      /* thyroid — teal */
+  --hpt-bg: #E9F5F3;
+  --hpg-m: #3B5A8A;    /* male HPG — steel blue */
+  --hpg-m-bg: #EAF0F8;
+  --hpg-f: #A13D64;    /* female HPG — deep rose */
+  --hpg-f-bg: #FBEBF1;
+  --panc: #4A7C3C;     /* pancreatic — green */
+  --panc-bg: #EEF5EA;
+  --calc: #6B4E9C;     /* calcium/bone — violet */
+  --calc-bg: #F1EBF7;
+  --core: #8A6D1D;     /* foundational principles — gold */
+  --core-bg: #F8F1DE;
+
+  --accent: #B8783E;
+  --accent-bg: #FBF1E6;
+
+  --danger: #A13D3D;
+  --danger-bg: #FBEBEA;
+  --info: #2C5F8A;
+  --info-bg: #EAF1F8;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #171512;
+  --bg-elevated: #211E1A;
+  --bg-inset: #1C1916;
+  --text-primary: #F2EFE9;
+  --text-secondary: #D8D2C7;
+  --text-tertiary: #A39D8F;
+  --border: #33302A;
+  --border-strong: #45413A;
+  --shadow-color: 0 0 0;
+
+  --hpa: #E0A867;
+  --hpa-bg: #2B2015;
+  --hpt: #5FBBB0;
+  --hpt-bg: #16292A;
+  --hpg-m: #7FA0D4;
+  --hpg-m-bg: #182333;
+  --hpg-f: #D687A3;
+  --hpg-f-bg: #2C1B22;
+  --panc: #8CBE7A;
+  --panc-bg: #1B2818;
+  --calc: #A98FD1;
+  --calc-bg: #241C33;
+  --core: #D6B95C;
+  --core-bg: #2B2412;
+
+  --danger: #D98787;
+  --danger-bg: #2E1D1C;
+  --info: #7FAAD4;
+  --info-bg: #182430;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-size: 17px;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-select {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 9px 32px 9px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2355504A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  color: var(--text-primary);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  max-width: 62vw;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.domain {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.domain.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.domain-hero {
+  padding: 32px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.domain-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.domain-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+
+.domain-sub {
+  font-size: 15.5px;
+  color: var(--text-secondary);
+  max-width: 640px;
+}
+
+/* ---------- Section blocks ---------- */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.section-title .tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  vertical-align: middle;
+}
+
+.subsection-title {
+  font-family: var(--font-display);
+  font-size: 17.5px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+  color: var(--text-primary);
+}
+
+p { margin: 0 0 12px; color: var(--text-secondary); }
+strong { color: var(--text-primary); font-weight: 650; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.card-accent {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-bg);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 15.5px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ---------- Pathway chain (visual synthesis pathway) ---------- */
+.pathway {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 12px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.pw-node {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pw-node.final {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.pw-arrow {
+  color: var(--text-tertiary);
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+.pw-enzyme {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+/* ---------- Data tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 15px;
+}
+th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border-strong);
+}
+td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+td strong, th strong { color: var(--text-primary); }
+.mono { font-family: var(--font-mono); font-size: 14px; }
+
+/* ---------- Alert / verify boxes ---------- */
+.alert {
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 15px;
+  border-left: 4px solid;
+}
+.alert-verify {
+  background: var(--info-bg);
+  border-color: var(--info);
+  color: var(--text-secondary);
+}
+.alert-danger {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+.alert-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  font-size: 14.5px;
+}
+
+/* ---------- Genetic disease cards ---------- */
+.gene-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--bg-elevated);
+}
+.gene-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.gene-name {
+  font-weight: 700;
+  font-size: 15.5px;
+}
+.gene-locus {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  background: var(--bg-inset);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+.gene-inheritance {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------- Function chips ---------- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 10px 0;
+}
+.chip {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 20px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+/* ---------- Feedback loop badges ---------- */
+.loop-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin: 2px 4px 2px 0;
+}
+.loop-neg { background: var(--info-bg); color: var(--info); }
+.loop-pos { background: var(--danger-bg); color: var(--danger); }
+
+/* ---------- Diagram frame ---------- */
+.diagram-frame {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  margin: 16px 0;
+  text-align: center;
+}
+.diagram-frame img, .diagram-frame svg {
+  max-width: 100%;
+  height: auto;
+}
+.diagram-caption {
+  font-size: 13.5px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  font-family: var(--font-mono);
+}
+
+/* ---------- Hormone quick-ref summary card ---------- */
+.hquick {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.hquick-item {
+  background: var(--bg-inset);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.hquick-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 3px;
+}
+.hquick-val {
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+/* ---------- Nested lists ---------- */
+ul.plain, ol.plain { margin: 8px 0 14px; padding-left: 20px; }
+ul.plain li, ol.plain li { margin-bottom: 6px; color: var(--text-secondary); }
+
+/* ---------- Divider label ---------- */
+.divider-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.divider-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  text-align: center;
+  padding: 30px 20px 60px;
+  font-size: 13.5px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .site-header, .theme-toggle { display: none; }
+  .domain { display: block !important; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-eyebrow">Clinical Reference Atlas</div>
+    <div class="brand-title">Endocrine Atlas — Vol. 1</div>
+  </div>
+  <div class="header-controls">
+    <select id="domainNav" class="nav-select" aria-label="Navigate sections">
+      <option value="overview">◆ Foundational Principles</option>
+<option value="hpa">◆ HPA Axis — Cortisol</option>
+<option value="hpt">◆ HPT Axis — Thyroid</option>
+<option value="hpg-m">◆ HPG Axis — Male / Testosterone</option>
+<option value="hpg-f">◆ HPG Axis — Female / Estrogen</option>
+<option value="panc">◆ Pancreatic — Insulin/Glucagon</option>
+<option value="calc">◆ Calcium-Phosphate-Bone</option>
+    </select>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">☾</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="overview" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--core)">Foundations · Signaling Biology</div>
+    <h1 class="domain-title">Principles of Endocrine Signaling</h1>
+    <p class="domain-sub">The shared logic underneath every axis in this atlas: how hormones are classed, how they reach a receptor, how that receptor converts a signal into a cell response, and how the whole system holds itself in check.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">01</span>Modes of Chemical Signaling</h2>
+    <p>Not everything a gland releases is "endocrine" in the strict sense. The distinction matters clinically — it's why a paracrine factor can have massive local effects with an undetectable serum level.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Endocrine</div>
+        <p style="margin:0">Secreted into blood, acts on distant target cells with the appropriate receptor. Classic hormones: insulin, cortisol, T4, PTH.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Paracrine</div>
+        <p style="margin:0">Diffuses locally to act on neighboring cells without entering systemic circulation. Example: somatostatin from islet delta cells suppressing adjacent alpha/beta cells; testicular testosterone acting on adjacent Sertoli cells at concentrations ~100x serum level.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Autocrine</div>
+        <p style="margin:0">Cell secretes a factor that acts on itself via its own surface receptors. Common in growth factor signaling and some cytokine loops (e.g., IL-2 on activated T cells — not endocrine per se but illustrates the principle used by IGF-1 in some tissues).</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Intracrine</div>
+        <p style="margin:0">Hormone acts inside the same cell that produced it, without ever leaving the cell. Relevant to peripheral androgen synthesis — some tissues (prostate, skin) convert DHEA to potent androgens intracellularly, contributing to local androgenicity not reflected in serum testosterone.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">02</span>The Three Structural Classes of Hormones</h2>
+    <p>Structure dictates everything downstream: where the hormone is made, how it's stored, how it travels in blood, what kind of receptor it needs, and how fast it acts and clears. This is the single most useful framework for predicting a new hormone's behavior before you've memorized it.</p>
+
+    <table>
+      <tr><th>Property</th><th>Peptide / Protein</th><th>Steroid</th><th>Amine (Catecholamine)</th><th>Amine (Thyroid)</th></tr>
+      <tr><td><strong>Precursor</strong></td><td class="mono">Amino acids → prohormone</td><td class="mono">Cholesterol</td><td class="mono">Tyrosine</td><td class="mono">Tyrosine + iodine</td></tr>
+      <tr><td><strong>Storage</strong></td><td>Presynthesized, packaged in secretory granules — ready for rapid release</td><td>Not stored in bulk; synthesized on demand from cholesterol pools (rate-limited by StAR)</td><td>Stored in chromaffin granules</td><td>Stored extracellularly in thyroglobulin colloid — unique among all hormones</td></tr>
+      <tr><td><strong>Solubility</strong></td><td>Water-soluble</td><td>Lipid-soluble</td><td>Water-soluble</td><td>Lipid-soluble</td></tr>
+      <tr><td><strong>Plasma transport</strong></td><td>Free, dissolved</td><td>Bound to carrier globulins (CBG, SHBG) + albumin</td><td>Free, dissolved</td><td>Bound to TBG, transthyretin, albumin (&gt;99% bound)</td></tr>
+      <tr><td><strong>Receptor location</strong></td><td>Cell surface</td><td>Intracellular / nuclear</td><td>Cell surface (GPCR)</td><td>Nuclear (unusual for an amine)</td></tr>
+      <tr><td><strong>Onset / half-life</strong></td><td>Fast onset (seconds–min), short half-life (min)</td><td>Slow onset (hours), long half-life (hours–days)</td><td>Seconds, half-life ~1–3 min</td><td>Slow onset (days), long half-life (T4 ~7 days)</td></tr>
+      <tr><td><strong>Examples</strong></td><td>Insulin, glucagon, PTH, LH/FSH/TSH, ACTH, GH, ADH, oxytocin</td><td>Cortisol, aldosterone, testosterone, estradiol, progesterone, vitamin D</td><td>Epinephrine, norepinephrine, dopamine</td><td>T4, T3</td></tr>
+    </table>
+
+    <div class="alert alert-verify">
+      <div class="alert-title">High-yield distinction</div>
+      Thyroid hormone is structurally an amine (tyrosine-derived) but functions like a steroid — lipid-soluble, protein-bound in circulation, nuclear receptor, slow onset. It's the one amine that breaks the "amine = fast + surface receptor" pattern.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">03</span>Receptor Mechanisms</h2>
+
+    <div class="subsection-title">G-Protein Coupled Receptors (GPCRs)</div>
+    <p>Seven-transmembrane receptors coupled to heterotrimeric G-proteins. The G-protein subtype determines the second messenger — this is the mechanistic reason drugs and toxins that hit one pathway (cholera toxin locking Gs "on", pertussis toxin locking Gi "off") produce predictable syndromes.</p>
+    <table>
+      <tr><th>G-protein</th><th>Effector</th><th>Second messenger</th><th>Hormone examples</th></tr>
+      <tr><td class="mono"><strong>Gs</strong></td><td>Adenylyl cyclase ↑</td><td>cAMP ↑ → PKA</td><td>ACTH, TSH, LH, FSH, glucagon, CRH, PTH, ADH (V2)</td></tr>
+      <tr><td class="mono"><strong>Gi</strong></td><td>Adenylyl cyclase ↓</td><td>cAMP ↓</td><td>Somatostatin, dopamine (D2), α2-adrenergic</td></tr>
+      <tr><td class="mono"><strong>Gq</strong></td><td>Phospholipase C ↑</td><td>IP3/DAG ↑ → Ca²⁺, PKC</td><td>GnRH, TRH, ADH (V1), α1-adrenergic, angiotensin II (AT1)</td></tr>
+    </table>
+
+    <div class="subsection-title">Receptor Tyrosine Kinases (RTKs)</div>
+    <p>Ligand binding causes receptor dimerization and cross-autophosphorylation of intracellular tyrosine residues, creating docking sites for signaling proteins. Two major downstream arms:</p>
+    <ul class="plain">
+      <li><strong>PI3K/Akt arm</strong> — drives the metabolic effects: GLUT4 vesicle translocation, glycogen synthase activation, lipogenesis. Dominant arm for insulin's metabolic actions.</li>
+      <li><strong>Ras/MAPK (ERK) arm</strong> — drives mitogenic/growth effects: gene transcription, cell proliferation. Dominant arm for IGF-1 and for insulin's growth-promoting (rather than metabolic) actions.</li>
+    </ul>
+    <p>Hormones using this mechanism: <strong>insulin, IGF-1</strong>. Growth hormone uses a related but distinct mechanism — a cytokine receptor (no intrinsic kinase activity) paired with associated <strong>JAK2</strong>, activating <strong>STAT5</strong>, which drives hepatic IGF-1 transcription.</p>
+
+    <div class="subsection-title">Nuclear / Intracellular Hormone Receptors</div>
+    <p>Lipophilic hormones (steroids, thyroid hormone, vitamin D) cross the plasma membrane directly. Receptor location differs by hormone class and matters for kinetics:</p>
+    <ul class="plain">
+      <li><strong>Cytoplasmic receptors</strong> (glucocorticoid, mineralocorticoid receptors) — held inactive by heat-shock protein (HSP90) chaperone complexes in the cytoplasm; hormone binding releases HSP90, exposes a nuclear localization signal, and the complex translocates to the nucleus.</li>
+      <li><strong>Nuclear-resident receptors</strong> (thyroid hormone receptor, vitamin D receptor, retinoid receptors) — already bound to DNA response elements even in the unliganded state, often as a repressor complex with corepressors; hormone binding swaps corepressors for coactivators.</li>
+    </ul>
+    <p>Both converge on binding a <strong>hormone response element (HRE)</strong> — a specific DNA sequence — as a receptor dimer (homodimer for steroid receptors; heterodimer with RXR for thyroid hormone receptor and vitamin D receptor), recruiting coactivator/corepressor complexes that remodel chromatin and alter transcription. This is why steroid and thyroid hormone effects take hours, not seconds: they require new protein synthesis.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">04</span>Feedback Architecture</h2>
+    <p>Every axis in this atlas is a variation on the same control loop: hypothalamus → pituitary → peripheral gland → peripheral hormone, with feedback acting at one or more levels.</p>
+    <div class="chip-row">
+      <span class="loop-badge loop-neg">● NEGATIVE — long loop</span>
+      <span class="loop-badge loop-neg">● NEGATIVE — short loop</span>
+      <span class="loop-badge loop-neg">● NEGATIVE — ultra-short loop</span>
+      <span class="loop-badge loop-pos">● POSITIVE</span>
+    </div>
+    <table>
+      <tr><th>Loop</th><th>Path</th><th>Example</th></tr>
+      <tr><td><strong>Long-loop negative</strong></td><td>Peripheral hormone → hypothalamus + pituitary</td><td>Cortisol suppresses CRH and ACTH; T4/T3 suppress TRH and TSH; testosterone/estradiol suppress GnRH and LH/FSH</td></tr>
+      <tr><td><strong>Short-loop negative</strong></td><td>Pituitary hormone → hypothalamus</td><td>ACTH feeds back to suppress CRH release independent of cortisol</td></tr>
+      <tr><td><strong>Ultra-short-loop negative</strong></td><td>Hormone suppresses its own further release from the same cell</td><td>GnRH inhibits its own further hypothalamic secretion</td></tr>
+      <tr><td><strong>Positive feedback</strong></td><td>Rising hormone amplifies further release — inherently unstable, self-limited by a separate mechanism</td><td>Estradiol positive feedback triggering the mid-cycle LH surge (only occurs once a sustained high-estradiol threshold is met — see Female HPG); oxytocin during labor (Ferguson reflex); suckling-induced prolactin/oxytocin release</td></tr>
+    </table>
+    <p>A subtlety worth internalizing: the <strong>same hormone can produce both loop types depending on context</strong> — estradiol is the textbook example, exerting negative feedback on GnRH/LH throughout most of the cycle but flipping to positive feedback once a critical estradiol threshold is sustained for ~48 hours late in the follicular phase.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">05</span>Transport, Binding Proteins, and the Free Hormone Hypothesis</h2>
+    <p>Lipophilic hormones can't travel free in aqueous plasma in clinically useful quantities — they're overwhelmingly protein-bound. Only the unbound (free) fraction is biologically active and available to enter cells; the bound fraction acts as a circulating reservoir that buffers against rapid swings and extends half-life.</p>
+    <table>
+      <tr><th>Binding protein</th><th>Binds</th><th>Clinical relevance of altered levels</th></tr>
+      <tr><td class="mono"><strong>SHBG</strong><br>(sex hormone-binding globulin)</td><td>Testosterone, DHT, estradiol (with different affinities — SHBG binds DHT &gt; testosterone &gt; estradiol)</td><td>↑ by estrogen, thyroid hormone, liver disease, aging → lowers free testosterone. ↓ by insulin, obesity, androgens, hypothyroidism → raises free testosterone. Central to PCOS: hyperinsulinemia suppresses hepatic SHBG synthesis, raising free (bioactive) androgen despite normal total testosterone.</td></tr>
+      <tr><td class="mono"><strong>CBG</strong><br>(corticosteroid-binding globulin / transcortin)</td><td>Cortisol (primary), progesterone</td><td>↑ in pregnancy and with oral estrogen (raises total cortisol without true hypercortisolism — free cortisol stays normal). ↓ in cirrhosis, nephrotic syndrome, sepsis (can make total cortisol misleadingly low in critical illness).</td></tr>
+      <tr><td class="mono"><strong>TBG</strong><br>(thyroxine-binding globulin)</td><td>T4 (primary), T3</td><td>↑ in pregnancy/estrogen therapy (raises total T4, free T4/TSH stay normal — a classic pitfall of ordering total instead of free T4). ↓ with androgens, glucocorticoids, severe illness, nephrotic syndrome (urinary loss).</td></tr>
+      <tr><td class="mono"><strong>Albumin / transthyretin</strong></td><td>Low-affinity, high-capacity backup binding for T4, T3, cortisol</td><td>Familial dysalbuminemic hyperthyroxinemia — an albumin variant with abnormally high T4 affinity, causing spuriously elevated total T4 with normal free T4 and normal TSH.</td></tr>
+    </table>
+    <div class="alert alert-verify">
+      <div class="alert-title">Clinical takeaway</div>
+      Whenever a binding protein concentration shifts (pregnancy, oral estrogen, liver disease, nephrotic syndrome, critical illness), <strong>total</strong> hormone levels move even though the patient is physiologically euhormonal. Free hormone assays (free T4, free testosterone, calculated free cortisol) — or an understanding of which direction the binding protein moved — are what keep you from chasing a lab abnormality that isn't real.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--core-bg);color:var(--core)">06</span>Clearance and Secretory Patterns</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Metabolic clearance</div>
+        <p style="margin:0">Peptide hormones: primarily renal filtration and proteolysis (kidney handles a large share of insulin, PTH, GH clearance — renal failure prolongs their half-lives). Steroid/thyroid hormones: hepatic Phase I (hydroxylation, e.g., cytochrome P450) and Phase II (glucuronidation, sulfation) conjugation, biliary/urinary excretion, with some enterohepatic recirculation (relevant to estrogen).</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Secretory patterns</div>
+        <p style="margin:0"><strong>Pulsatile</strong> — GnRH, LH, GH, cortisol (pulses superimposed on circadian rhythm). Pulse <em>frequency</em>, not just amount, carries information — GnRH pulse frequency determines LH vs FSH predominance. <strong>Circadian</strong> — cortisol (peak ~0600–0800, nadir ~midnight), TSH (mild nocturnal peak). Continuous non-pulsatile GnRH agonist exposure paradoxically <em>suppresses</em> LH/FSH by downregulating pituitary GnRH receptors — the basis for GnRH agonist therapy in prostate cancer and central precocious puberty.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-verify">
+    <div class="alert-title">Verify before relying</div>
+    Reference ranges, half-life values, and receptor-subtype assignments above reflect standard physiology teaching (Guyton, Williams Textbook of Endocrinology–level consensus) and are stable core science, not shifting guideline content — but always confirm assay-specific reference ranges against your own lab before applying to a patient.
+  </div>
+</section>
+
+
+<section id="hpa" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hpa)">Axis 1 · Hypothalamic-Pituitary-Adrenal</div>
+    <h1 class="domain-title">HPA Axis — Cortisol &amp; the Adrenal Cortex</h1>
+    <p class="domain-sub">CRH → ACTH → cortisol, the three adrenal cortex zones, the full steroidogenic cascade, and the genetic enzyme defects that map directly onto it.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Axis</span>The Core Loop</h2>
+    <div class="pathway">
+      <div class="pw-node">Hypothalamus<br><span style="font-weight:400;font-size:11px">(paraventricular nucleus)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CRH (41-aa)</span></div>
+      <div class="pw-node">Anterior Pituitary<br><span style="font-weight:400;font-size:11px">(corticotrophs)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">ACTH (39-aa)</span></div>
+      <div class="pw-node">Adrenal Cortex<br><span style="font-weight:400;font-size:11px">(zona fasciculata)</span></div>
+      <div class="pw-arrow">→</div>
+      <div class="pw-node final">Cortisol</div>
+    </div>
+    <p><strong>CRH</strong> is co-secreted with <strong>arginine vasopressin (AVP)</strong> from parvocellular PVN neurons — AVP synergizes with CRH at the corticotroph (via V1b/V3 receptors, Gq) to potentiate ACTH release, which is why AVP is used diagnostically (CRH stimulation testing) and why chronic stress recruits AVP as a secondary drive when CRH receptors downregulate.</p>
+    <p><strong>ACTH</strong> is a cleavage product of a much larger precursor, <strong>pro-opiomelanocortin (POMC)</strong>, made in corticotrophs. POMC processing by prohormone convertases yields several co-secreted peptides from the same molecule:</p>
+    <div class="chip-row">
+      <span class="chip">ACTH (1–39)</span>
+      <span class="chip">β-lipotropin</span>
+      <span class="chip">β-endorphin</span>
+      <span class="chip">α-MSH (from ACTH cleavage — explains hyperpigmentation in primary adrenal insufficiency)</span>
+    </div>
+    <div class="alert alert-verify">
+      <div class="alert-title">Mechanism worth knowing cold</div>
+      In <strong>primary adrenal insufficiency (Addison's)</strong>, loss of cortisol negative feedback drives POMC transcription up dramatically → excess ACTH <em>and</em> excess α-MSH → hyperpigmentation, especially at pressure points, palmar creases, and mucosa. In <strong>secondary</strong> adrenal insufficiency (pituitary/hypothalamic failure), ACTH is low, so this hyperpigmentation does not occur — a genuinely useful bedside discriminator.
+    </div>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="430" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#8A5A2C" font-family="Fraunces, serif">HPA Axis Feedback Architecture</text>
+<defs>
+      <marker id="arrow-hpa.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8A5A2C"/>
+      </marker>
+      <marker id="fbarrow-hpa.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#A13D3D"/>
+      </marker>
+    </defs>
+<rect x="20" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#8A5A2C" stroke-width="1.75"/>
+<text x="95.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Hypothalamus</text>
+<text x="95.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#2A2A26">(PVN)</text>
+<rect x="275" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#8A5A2C" stroke-width="1.75"/>
+<text x="350.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Ant. Pituitary</text>
+<text x="350.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#2A2A26">(corticotroph)</text>
+<rect x="530" y="55" width="190" height="66" rx="10" fill="#B8783E" stroke="#8A5A2C" stroke-width="1.75"/>
+<text x="625.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">Adrenal Cortex</text>
+<text x="625.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#FFFFFF">(z. fasciculata)</text>
+<line x1="170" y1="88.0" x2="269" y2="88.0" stroke="#8A5A2C" stroke-width="2" marker-end="url(#arrow-hpa.svg)"/>
+<text x="222.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#8A5A2C">CRH</text>
+<line x1="425" y1="88.0" x2="524" y2="88.0" stroke="#8A5A2C" stroke-width="2" marker-end="url(#arrow-hpa.svg)"/>
+<text x="477.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#8A5A2C">ACTH</text>
+<path d="M 350.0 121 C 350.0 166, 95.0 166, 95.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpa.svg)"/>
+<rect x="163.85" y="170" width="117.3" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="222.5" y="181" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">ACTH ⊣ CRH — short loop</text>
+<path d="M 639.0 121 C 639.0 226, 336.0 226, 336.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpa.svg)"/>
+<rect x="449.25" y="230" width="76.5" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="487.5" y="241" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">cortisol ⊣ ACTH</text>
+<path d="M 653.0 121 C 653.0 286, 67.0 286, 67.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpa.svg)"/>
+<rect x="293.7" y="290" width="132.6" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="360.0" y="301" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">cortisol ⊣ CRH — long loop</text>
+</svg>
+<div class="diagram-caption">Fig. 1 — HPA axis: forward drive (solid) and negative feedback (dashed) loops</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Zones</span>Three Functional Zones of the Adrenal Cortex</h2>
+    <table>
+      <tr><th>Zone</th><th>Product</th><th>Primary trophic driver</th><th>Rate-limiting enzyme</th></tr>
+      <tr><td><strong>Zona glomerulosa</strong><br><span style="color:var(--text-tertiary);font-size:12px">outermost</span></td><td>Aldosterone</td><td>Angiotensin II, K⁺ (ACTH only acute/permissive — see RAAS in Vol. 2)</td><td class="mono">CYP11B2 (aldosterone synthase)</td></tr>
+      <tr><td><strong>Zona fasciculata</strong><br><span style="color:var(--text-tertiary);font-size:12px">middle, largest</span></td><td>Cortisol</td><td>ACTH</td><td class="mono">CYP11B1 (11β-hydroxylase)</td></tr>
+      <tr><td><strong>Zona reticularis</strong><br><span style="color:var(--text-tertiary);font-size:12px">innermost</span></td><td>DHEA, DHEA-S, androstenedione (adrenal androgens)</td><td>ACTH (and adrenarche-specific maturation signals, incompletely understood)</td><td class="mono">CYP17A1 (17,20-lyase activity)</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-tertiary)">Mnemonic: "GFR — the deeper you go, the sweeter it gets" (Glomerulosa–Fasciculata–Reticularis / salt–sugar–sex).</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Synthesis</span>Steroidogenesis — the Full Cascade</h2>
+    <p>Every adrenal and gonadal steroid hormone in this atlas branches off <strong>one shared pathway</strong> starting from cholesterol. Learning this cascade once pays off across the HPA axis and both HPG axes — the only thing that differs by tissue is <em>which enzymes are expressed</em>, which determines which branch dominates.</p>
+
+    <div class="pathway">
+      <div class="pw-node">Cholesterol</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">StAR protein<br>(rate-limiting,<br>mitochondrial import)</span></div>
+      <div class="pw-node">Pregnenolone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP11A1<br>(cholesterol side-chain<br>cleavage)</span></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-tertiary);margin-top:-8px">CYP11A1 is the actual enzyme converting cholesterol → pregnenolone; StAR is the rate-limiting <em>transport</em> step that gets cholesterol into the mitochondrion where CYP11A1 lives.</p>
+
+    <div class="pathway">
+      <div class="pw-node">Pregnenolone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP17A1<br>(17α-hydroxylase)</span></div>
+      <div class="pw-node">17-OH-Pregnenolone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">3β-HSD2</span></div>
+      <div class="pw-node">17-OH-Progesterone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP21A2<br>(21-hydroxylase)</span></div>
+      <div class="pw-node">11-Deoxycortisol</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP11B1<br>(11β-hydroxylase)</span></div>
+      <div class="pw-node final">Cortisol</div>
+    </div>
+
+    <div class="pathway">
+      <div class="pw-node">Pregnenolone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">3β-HSD2</span></div>
+      <div class="pw-node">Progesterone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP21A2</span></div>
+      <div class="pw-node">11-Deoxycorticosterone (DOC)</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP11B2<br>(aldo synthase,<br>glomerulosa only)</span></div>
+      <div class="pw-node final">Aldosterone</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-tertiary);margin-top:-8px">Note the branch point: pregnenolone can go the 17α-hydroxylase route (→ cortisol/androgens, fasciculata/reticularis) or skip it entirely (→ mineralocorticoid pathway, glomerulosa — which is exactly why glomerulosa cells don't express CYP17A1 and therefore cannot make cortisol or androgens).</p>
+
+    <div class="pathway">
+      <div class="pw-node">17-OH-Pregnenolone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP17A1<br>(17,20-lyase activity)</span></div>
+      <div class="pw-node">DHEA</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">3β-HSD2</span></div>
+      <div class="pw-node final">Androstenedione</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-tertiary);margin-top:-8px">Adrenal androgen branch (zona reticularis) — androstenedione then feeds into the gonadal pathways covered in the HPG sections as the shared precursor to testosterone and, via aromatase, estrogens.</p>
+
+    <div class="alert alert-verify">
+      <div class="alert-title">Why this single pathway explains so much pathology</div>
+      Every classic congenital adrenal hyperplasia (CAH) syndrome is a block at one named enzyme in this cascade. Knowing the pathway lets you predict the biochemistry of a CAH variant you've never memorized: whatever accumulates <em>proximal</em> to the block goes up, whatever is downstream goes down, and the clinical picture follows directly from which downstream hormones (cortisol, aldosterone, androgens) are deficient or excessive.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Genetics</span>Genetic Disease Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">21-Hydroxylase Deficiency (Classic CAH)</span>
+        <span class="gene-locus">CYP21A2 · 6p21</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive · &gt;95% of all CAH</div>
+      <p style="margin:8px 0 0">Block converting 17-OH-progesterone → 11-deoxycortisol. Cortisol and (in the severe form) aldosterone deficient; 17-OHP and adrenal androgens accumulate and are shunted toward androstenedione/testosterone. Loss of cortisol feedback → chronically elevated ACTH → adrenal hyperplasia (the eponym) and further androgen drive.</p>
+      <table style="margin-top:10px">
+        <tr><th>Subtype</th><th>Enzyme activity</th><th>Presentation</th></tr>
+        <tr><td><strong>Salt-wasting</strong> (~75% of classic)</td><td>&lt;1%</td><td>Aldosterone deficient → life-threatening neonatal salt-wasting crisis (hyponatremia, hyperkalemia, hypotension) days 1–2 of life; virilized female genitalia in utero</td></tr>
+        <tr><td><strong>Simple virilizing</strong> (~25% of classic)</td><td>1–2%</td><td>Enough aldosterone to avoid crisis; prenatal virilization in females, early virilization/growth acceleration in males</td></tr>
+        <tr><td><strong>Nonclassic</strong> (~1:200 in some populations)</td><td>20–60%</td><td>Postnatal-onset hyperandrogenism — precocious pubarche, hirsutism, acne, oligomenorrhea; a key differential for PCOS</td></tr>
+      </table>
+      <div class="alert alert-verify" style="margin-top:10px">
+        <div class="alert-title">Diagnostic thresholds — verify against your lab's assay</div>
+        Nonclassic CAH: baseline early-morning 17-OHP <span class="mono">&lt;2 ng/mL</span> makes it unlikely; <span class="mono">2–10 ng/mL</span> warrants a 250 mcg cosyntropin (ACTH) stimulation test; a stimulated (60-min) 17-OHP <span class="mono">&gt;10 ng/mL</span>, and more classically <span class="mono">&gt;15 ng/mL</span>, establishes the diagnosis. LC-MS/MS-based assays (increasingly standard) may run slightly lower than older immunoassay-derived cutoffs — confirm with your lab.
+      </div>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">11β-Hydroxylase Deficiency</span>
+        <span class="gene-locus">CYP11B1 · 8q24</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive · ~5–8% of CAH</div>
+      <p style="margin:8px 0 0">Block converting 11-deoxycortisol → cortisol <em>and</em> DOC → corticosterone. 11-deoxycorticosterone (DOC) accumulates — DOC has significant intrinsic mineralocorticoid activity, so unlike 21-hydroxylase deficiency, this variant causes <strong>hypertension and hypokalemia</strong> (from DOC-driven mineralocorticoid excess) rather than salt-wasting, alongside virilization from shunted androgen precursors.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">3β-HSD2 Deficiency</span>
+        <span class="gene-locus">HSD3B2 · 1p12</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive · Rare</div>
+      <p style="margin:8px 0 0">Blocks the Δ5→Δ4 conversion needed at multiple branch points (pregnenolone→progesterone, 17-OH-pregnenolone→17-OH-progesterone, DHEA→androstenedione). Both cortisol and aldosterone are deficient; because the block is <em>before</em> the potent androgen branch, males can be under-virilized (ambiguous genitalia) while females may be mildly virilized from accumulated DHEA (a weak androgen) — the reverse pattern from 21-hydroxylase deficiency.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">StAR Deficiency (Lipoid CAH)</span>
+        <span class="gene-locus">STAR · 8p11</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive · Very rare, most severe form</div>
+      <p style="margin:8px 0 0">Blocks cholesterol transport into the mitochondrion — the step <em>before</em> CYP11A1. Essentially no steroid hormones can be made by either adrenal or gonad. Cholesterol accumulates and becomes cytotoxic to steroidogenic cells over time, worsening the defect. Presents with severe salt-wasting adrenal crisis in infancy and, in genetic males, female-appearing external genitalia (absent fetal testosterone).</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Breakdown</span>Cortisol Inactivation — the 11β-HSD Shuttle</h2>
+    <p>Cortisol and its inactive keto-metabolite cortisone are interconverted by two tissue-specific isoenzymes running in opposite directions — this local, pre-receptor regulation is as clinically important as circulating cortisol level itself.</p>
+    <table>
+      <tr><th>Enzyme</th><th>Reaction</th><th>Location</th><th>Clinical relevance</th></tr>
+      <tr><td class="mono"><strong>11β-HSD1</strong></td><td>Cortisone → Cortisol (activates)</td><td>Liver, adipose, CNS</td><td>Local cortisol amplification in fat and liver is implicated in visceral obesity/metabolic syndrome; a past drug-development target</td></tr>
+      <tr><td class="mono"><strong>11β-HSD2</strong></td><td>Cortisol → Cortisone (inactivates)</td><td>Kidney (distal nephron), placenta, colon</td><td>Protects the mineralocorticoid receptor — which binds cortisol and aldosterone with equal affinity — from being swamped by the much higher circulating cortisol concentration</td></tr>
+    </table>
+    <div class="alert alert-danger">
+      <div class="alert-title">Apparent Mineralocorticoid Excess</div>
+      <strong>Glycyrrhizic acid (licorice, some chewing tobaccos)</strong> and the rare genetic <strong>11β-HSD2 deficiency</strong> both inhibit 11β-HSD2. Cortisol then floods the mineralocorticoid receptor unopposed → hypertension, hypokalemia, metabolic alkalosis, with <em>suppressed</em> renin and aldosterone (distinguishing it from primary hyperaldosteronism, where aldosterone is high). Always ask about licorice/chewing tobacco use in a hypokalemic hypertensive patient with a suppressed renin-aldosterone panel.
+    </div>
+    <p>Beyond the 11β-HSD shuttle, cortisol is ultimately cleared by hepatic reduction (5α/5β-reductase, 3α-HSD) to tetrahydrocortisol/tetrahydrocortisone, conjugated by glucuronidation, and excreted in urine — the basis of 24-hour urine free cortisol and urinary steroid profiling.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Function</span>What Cortisol Actually Does</h2>
+    <div class="hquick">
+      <div class="hquick-item"><div class="hquick-label">Glucose</div><div class="hquick-val">↑ gluconeogenesis, ↓ peripheral glucose uptake (insulin antagonist)</div></div>
+      <div class="hquick-item"><div class="hquick-label">Protein</div><div class="hquick-val">Net catabolic — muscle/skin/bone protein breakdown for gluconeogenic substrate</div></div>
+      <div class="hquick-item"><div class="hquick-label">Fat</div><div class="hquick-val">Permissive lipolysis + central fat redistribution with chronic excess</div></div>
+      <div class="hquick-item"><div class="hquick-label">Immune</div><div class="hquick-val">Anti-inflammatory, immunosuppressive — inhibits phospholipase A2, cytokine transcription, lymphocyte proliferation</div></div>
+      <div class="hquick-item"><div class="hquick-label">Vascular</div><div class="hquick-val">Permissive for catecholamine pressor effect — upregulates α1-receptors</div></div>
+      <div class="hquick-item"><div class="hquick-label">Bone</div><div class="hquick-val">Inhibits osteoblasts, increases osteoclast activity with chronic excess → osteoporosis</div></div>
+    </div>
+    <p><strong>Insulin cross-talk</strong> (a preview of the full interaction matrix in Volume 3): cortisol is a counter-regulatory hormone — it antagonizes insulin's peripheral action, raising insulin requirements and promoting hyperglycemia. This is why glucocorticoid therapy so reliably worsens glycemic control in diabetic patients and can unmask latent diabetes ("steroid-induced diabetes").</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpa-bg);color:var(--hpa)">Rhythm</span>Circadian Pattern &amp; Feedback</h2>
+    <p>Cortisol secretion is pulsatile and layered on a strong circadian rhythm driven by the suprachiasmatic nucleus: peak ~0600–0800, nadir ~midnight. This is why a single random cortisol is hard to interpret and why dynamic testing (dexamethasone suppression, ACTH stimulation) exists.</p>
+    <div class="chip-row">
+      <span class="loop-badge loop-neg">● Long-loop: cortisol ⊣ CRH + ACTH</span>
+      <span class="loop-badge loop-neg">● Short-loop: ACTH ⊣ CRH</span>
+    </div>
+  </div>
+</section>
+
+
+<section id="hpt" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hpt)">Axis 2 · Hypothalamic-Pituitary-Thyroid</div>
+    <h1 class="domain-title">HPT Axis — Thyroid Hormone</h1>
+    <p class="domain-sub">TRH → TSH → T4/T3, the follicular cell synthesis machinery, peripheral deiodinase activation/inactivation, and the genetic defects mapped onto each step.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Axis</span>The Core Loop</h2>
+    <div class="pathway">
+      <div class="pw-node">Hypothalamus</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">TRH (tripeptide)</span></div>
+      <div class="pw-node">Anterior Pituitary<br><span style="font-weight:400;font-size:11px">(thyrotrophs)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">TSH<br>(α/β glycoprotein)</span></div>
+      <div class="pw-node">Thyroid Follicular Cell</div>
+      <div class="pw-arrow">→</div>
+      <div class="pw-node final">T4 (93%) + T3 (7%)</div>
+    </div>
+    <p><strong>TSH</strong> is a heterodimeric glycoprotein sharing its <strong>α-subunit</strong> with LH, FSH, and hCG — only the β-subunit confers receptor specificity. This shared subunit is why, in rare TSH-secreting pituitary adenomas or severe primary hypothyroidism, extreme TRH drive can cross-stimulate the structurally related gonadotropin machinery, and why hCG (structurally closest to TSH) has weak intrinsic thyrotropic activity — relevant to gestational transient thyrotoxicosis and hyperemesis gravidarum, where very high hCG mildly stimulates the TSH receptor.</p>
+    <p><strong>Somatostatin and dopamine</strong> both tonically inhibit TSH release — relevant when interpreting a low TSH in a critically ill patient on dopamine infusion or octreotide, independent of true thyroid status.</p>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="430" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1D5951" font-family="Fraunces, serif">HPT Axis Feedback Architecture</text>
+<defs>
+      <marker id="arrow-hpt.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#1D5951"/>
+      </marker>
+      <marker id="fbarrow-hpt.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#A13D3D"/>
+      </marker>
+    </defs>
+<rect x="20" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#1D5951" stroke-width="1.75"/>
+<text x="95.0" y="93.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Hypothalamus</text>
+<rect x="275" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#1D5951" stroke-width="1.75"/>
+<text x="350.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Ant. Pituitary</text>
+<text x="350.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#2A2A26">(thyrotroph)</text>
+<rect x="530" y="55" width="190" height="66" rx="10" fill="#2C7A72" stroke="#1D5951" stroke-width="1.75"/>
+<text x="625.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">Thyroid</text>
+<text x="625.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#FFFFFF">(follicular cell)</text>
+<line x1="170" y1="88.0" x2="269" y2="88.0" stroke="#1D5951" stroke-width="2" marker-end="url(#arrow-hpt.svg)"/>
+<text x="222.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1D5951">TRH</text>
+<line x1="425" y1="88.0" x2="524" y2="88.0" stroke="#1D5951" stroke-width="2" marker-end="url(#arrow-hpt.svg)"/>
+<text x="477.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#1D5951">TSH</text>
+<path d="M 350.0 121 C 350.0 166, 95.0 166, 95.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpt.svg)"/>
+<rect x="151.10000000000002" y="170" width="142.79999999999998" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="222.5" y="181" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">somatostatin, dopamine ⊣ TSH</text>
+<path d="M 639.0 121 C 639.0 226, 336.0 226, 336.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpt.svg)"/>
+<rect x="459.45" y="230" width="56.099999999999994" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="487.5" y="241" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">T4/T3 ⊣ TSH</text>
+<path d="M 653.0 121 C 653.0 286, 67.0 286, 67.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpt.svg)"/>
+<rect x="301.35" y="290" width="117.3" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="360.0" y="301" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">T4/T3 ⊣ TRH — long loop</text>
+</svg>
+<div class="diagram-caption">Fig. 2 — HPT axis: forward drive (solid) and negative feedback (dashed) loops</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Synthesis</span>Follicular Cell Machinery — Step by Step</h2>
+    <p>Thyroid hormone synthesis is unique in the endocrine system: it's the only hormone stored in bulk <em>extracellularly</em>, in the follicular colloid, bound to a massive glycoprotein scaffold (thyroglobulin) — giving the thyroid a built-in 2–3 month hormone reserve.</p>
+    <ol class="plain">
+      <li><strong>Iodide trapping</strong> — the follicular cell basolateral membrane <strong>sodium-iodide symporter (NIS)</strong> actively concentrates iodide 20–40x above plasma. This is the step blocked by perchlorate and exploited diagnostically/therapeutically by radioactive iodine uptake and ablation.</li>
+      <li><strong>Oxidation &amp; organification</strong> — <strong>thyroid peroxidase (TPO)</strong>, at the apical membrane, oxidizes iodide and attaches it to tyrosine residues on thyroglobulin, forming <strong>monoiodotyrosine (MIT)</strong> and <strong>diiodotyrosine (DIT)</strong>. TPO is the target of Hashimoto's autoantibodies and the site of action of thionamide antithyroid drugs (methimazole, PTU).</li>
+      <li><strong>Coupling</strong> — TPO also catalyzes coupling of iodotyrosines: <strong>DIT + DIT → T4</strong>; <strong>MIT + DIT → T3</strong>. This explains the ~13:1 T4:T3 secretion ratio — coupling favors T4 formation.</li>
+      <li><strong>Storage</strong> — iodinated thyroglobulin is stored extracellularly in the follicular colloid.</li>
+      <li><strong>Endocytosis &amp; proteolysis</strong> — TSH-stimulated pinocytosis retrieves colloid, lysosomal proteases cleave thyroglobulin, releasing free T4 and T3 into the bloodstream. MIT/DIT released in the process are recycled by <strong>dehalogenase (DEHAL1)</strong> to conserve iodide — a deficiency of this enzyme causes iodide wasting and goitrous hypothyroidism.</li>
+    </ol>
+
+    <div class="alert alert-danger">
+      <div class="alert-title">Wolff-Chaikoff Effect &amp; Escape</div>
+      A large acute iodide load transiently and completely shuts down organification (protective autoregulation, preventing hormone overproduction) — the <strong>Wolff-Chaikoff effect</strong>. Normal thyroids "escape" this block within ~10–14 days by downregulating NIS. Patients with underlying autoimmune thyroid disease (Hashimoto's) or prior partial thyroidectomy often <strong>fail to escape</strong>, developing iodine-induced hypothyroidism — relevant after iodinated contrast administration or amiodarone initiation. Amiodarone can also cause iodine-induced <em>thyrotoxicosis</em> (type I: iodine-induced excess synthesis in an abnormal gland; type II: destructive thyroiditis releasing preformed hormone) — the two require opposite management and are distinguished largely on clinical grounds and thyroidal blood flow on Doppler ultrasound.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Activation</span>Peripheral Conversion — the Deiodinase System</h2>
+    <p>T4 is essentially a circulating <strong>prohormone</strong>. Tissue-level control over T3 availability — the true active hormone — happens locally, via three deiodinase enzymes that add or remove iodine atoms from specific ring positions.</p>
+    <table>
+      <tr><th>Enzyme</th><th>Reaction</th><th>Tissue</th><th>Role</th></tr>
+      <tr><td class="mono"><strong>D1</strong></td><td>T4 → T3 (outer ring) <em>and</em> clears reverse-T3</td><td>Liver, kidney, thyroid</td><td>Major source of circulating T3; main route of rT3 clearance — suppressed in illness, contributing to low-T3 states</td></tr>
+      <tr><td class="mono"><strong>D2</strong></td><td>T4 → T3 (outer ring), locally</td><td>Pituitary, CNS, brown fat, skeletal muscle, thyroid</td><td>Intracellular T3 generation independent of plasma T3 — lets the pituitary "sense" local T3 for TSH feedback even when peripheral D1 activity is suppressed</td></tr>
+      <tr><td class="mono"><strong>D3</strong></td><td>T4 → reverse T3 (inner ring, inactivating) <em>and</em> T3 → T2 (inactivating)</td><td>Placenta, fetal tissues, CNS, skin, high in illness</td><td>The body's "off switch" — protects the fetus from excess maternal thyroid hormone; markedly upregulated in critical illness (non-thyroidal illness syndrome / "euthyroid sick syndrome")</td></tr>
+    </table>
+    <div class="alert alert-verify">
+      <div class="alert-title">Non-thyroidal illness syndrome</div>
+      In acute severe illness, D1 activity falls and D3 activity rises — T4 is preferentially shunted to inactive reverse-T3 instead of active T3. Result: low T3, low-to-normal T4, normal or low TSH, and a <em>high</em> reverse-T3 — a physiologic adaptive response, not true hypothyroidism, and treating it with thyroid hormone replacement has not shown benefit in critical illness.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Transport</span>Plasma Binding</h2>
+    <p>&gt;99% of circulating T4 and T3 is protein-bound (mostly <strong>TBG</strong>, plus transthyretin and albumin) — only the free fraction is active. T4's much higher binding affinity gives it a long half-life (~7 days) versus T3 (~1 day), which is why levothyroxine can be dosed once daily and why a missed dose or two rarely causes symptomatic swings.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Genetics</span>Genetic &amp; Autoimmune Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Hashimoto's Thyroiditis</span>
+        <span class="gene-locus">Anti-TPO, anti-Tg antibodies</span>
+      </div>
+      <div class="gene-inheritance">Polygenic autoimmune · Female predominant</div>
+      <p style="margin:8px 0 0">Lymphocytic infiltration and autoantibody-mediated destruction of follicular cells, targeting TPO (the organification enzyme) and thyroglobulin. Progressive hypothyroidism; anti-TPO positivity is present in the large majority of cases and predates overt hypothyroidism, useful for early identification of subclinical disease at risk of progression.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Graves' Disease</span>
+        <span class="gene-locus">TSH-receptor stimulating antibody (TRAb/TSI)</span>
+      </div>
+      <div class="gene-inheritance">Polygenic autoimmune · Female predominant</div>
+      <p style="margin:8px 0 0">An IgG autoantibody binds and constitutively activates the TSH receptor (Gs-coupled) — mimicking TSH without feedback control. Drives hyperthyroidism, diffuse goiter, and (via a separate autoimmune process against orbital fibroblasts sharing TSH-receptor expression) Graves' ophthalmopathy.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Pendred Syndrome</span>
+        <span class="gene-locus">SLC26A4 (pendrin) · 7q22</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive</div>
+      <p style="margin:8px 0 0">Pendrin transports iodide across the apical membrane into the follicular lumen — loss of function causes an organification defect (mild-to-moderate goitrous hypothyroidism, positive perchlorate discharge test) plus sensorineural hearing loss, since pendrin is also expressed in the inner ear.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Resistance to Thyroid Hormone (RTHβ)</span>
+        <span class="gene-locus">THRB · 3p24</span>
+      </div>
+      <div class="gene-inheritance">Autosomal dominant</div>
+      <p style="margin:8px 0 0">Mutant thyroid hormone receptor-β has reduced T3 affinity, blunting negative feedback at the pituitary. Result: elevated free T4/T3 with an inappropriately <em>normal or high</em> TSH (not suppressed) — a pattern that can be mistaken for a TSH-secreting pituitary adenoma. Peripheral tissues respond variably depending on local receptor-β dependence, so patients are often clinically euthyroid despite the biochemical picture.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Breakdown</span>Hepatic Clearance</h2>
+    <p>Beyond deiodination, thyroid hormone is inactivated by hepatic glucuronidation and sulfation, with biliary excretion and some enterohepatic recirculation. Drugs that induce hepatic glucuronidation (phenytoin, rifampin, carbamazepine) accelerate T4 clearance and can increase levothyroxine dosing requirements.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpt-bg);color:var(--hpt)">Function</span>What Thyroid Hormone Actually Does</h2>
+    <div class="hquick">
+      <div class="hquick-item"><div class="hquick-label">Metabolic rate</div><div class="hquick-val">↑ basal metabolic rate, ↑ O2 consumption, thermogenesis (↑ Na⁺/K⁺-ATPase expression)</div></div>
+      <div class="hquick-item"><div class="hquick-label">Cardiac</div><div class="hquick-val">↑ β1-receptor expression → chronotropy + inotropy; ↑ cardiac output</div></div>
+      <div class="hquick-item"><div class="hquick-label">CNS development</div>
+      <div class="hquick-val">Essential in utero and first 2–3 years — deficiency causes irreversible intellectual disability (congenital hypothyroidism/cretinism) if untreated</div></div>
+      <div class="hquick-item"><div class="hquick-label">Bone</div><div class="hquick-val">Permissive for GH/IGF-1 action on linear growth; excess accelerates bone turnover and can cause osteoporosis</div></div>
+      <div class="hquick-item"><div class="hquick-label">Lipid</div><div class="hquick-val">Upregulates LDL receptor expression — hypothyroidism raises LDL, a reversible cause of dyslipidemia</div></div>
+    </div>
+    <p>Thyroid hormone is strongly <strong>permissive</strong> for catecholamine action — it upregulates β-adrenergic receptor density and post-receptor signaling, which is why hyperthyroid symptoms (tachycardia, tremor, anxiety) overlap so heavily with sympathetic excess, and why β-blockers are first-line symptomatic therapy in thyroid storm even before definitive thyroid-directed treatment takes effect.</p>
+  </div>
+</section>
+
+
+<section id="hpg-m" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hpg-m)">Axis 3 · Hypothalamic-Pituitary-Gonadal (Male)</div>
+    <h1 class="domain-title">HPG Axis — Male / Testosterone</h1>
+    <p class="domain-sub">GnRH pulsatility, the Leydig/Sertoli two-compartment testis, testosterone's two potent metabolites (DHT and estradiol), and why exogenous androgen shuts the whole axis down.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Axis</span>The Core Loop</h2>
+    <div class="pathway">
+      <div class="pw-node">Hypothalamus</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">GnRH<br>(pulsatile, decapeptide)</span></div>
+      <div class="pw-node">Anterior Pituitary<br><span style="font-weight:400;font-size:11px">(gonadotrophs)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">LH + FSH</span></div>
+      <div class="pw-node">Testis</div>
+      <div class="pw-arrow">→</div>
+      <div class="pw-node final">Testosterone</div>
+    </div>
+    <p><strong>GnRH pulse frequency</strong> is itself a signal: fast pulses (~every 60–90 min) favor LH synthesis/release; slower pulses favor FSH. <strong>Continuous</strong> (non-pulsatile) GnRH receptor exposure — whether from a long-acting agonist or a disease process — paradoxically <em>desensitizes</em> pituitary GnRH receptors and shuts LH/FSH down. This is the pharmacologic basis of GnRH agonists (leuprolide) for prostate cancer and central precocious puberty: an initial "flare" of gonadotropin release, followed within 2–3 weeks by profound suppression.</p>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="390" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#28406B" font-family="Fraunces, serif">Male HPG Axis Feedback Architecture</text>
+<defs>
+      <marker id="arrow-hpg_m.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#28406B"/>
+      </marker>
+      <marker id="fbarrow-hpg_m.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#A13D3D"/>
+      </marker>
+    </defs>
+<rect x="20" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#28406B" stroke-width="1.75"/>
+<text x="95.0" y="93.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Hypothalamus</text>
+<rect x="275" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#28406B" stroke-width="1.75"/>
+<text x="350.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Ant. Pituitary</text>
+<text x="350.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#2A2A26">(gonadotroph)</text>
+<rect x="530" y="55" width="190" height="66" rx="10" fill="#3B5A8A" stroke="#28406B" stroke-width="1.75"/>
+<text x="625.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">Testis</text>
+<text x="625.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#FFFFFF">Leydig + Sertoli</text>
+<line x1="170" y1="88.0" x2="269" y2="88.0" stroke="#28406B" stroke-width="2" marker-end="url(#arrow-hpg_m.svg)"/>
+<text x="222.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#28406B">GnRH</text>
+<line x1="425" y1="88.0" x2="524" y2="88.0" stroke="#28406B" stroke-width="2" marker-end="url(#arrow-hpg_m.svg)"/>
+<text x="477.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#28406B">LH / FSH</text>
+<path d="M 625.0 121 C 625.0 181, 350.0 181, 350.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpg_m.svg)"/>
+<rect x="413.55" y="185" width="147.89999999999998" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="487.5" y="196" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">T/E2 ⊣ LH  ·  inhibin B ⊣ FSH</text>
+<path d="M 639.0 121 C 639.0 251, 81.0 251, 81.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpg_m.svg)"/>
+<rect x="280.95" y="255" width="158.1" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="360.0" y="266" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">testosterone / estradiol ⊣ GnRH</text>
+</svg>
+<div class="diagram-caption">Fig. 3 — Male HPG axis: dual-arm feedback via testosterone/estradiol and inhibin B</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Compartments</span>Leydig &amp; Sertoli Cells — Two Separate Jobs</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--hpg-m)">Leydig cells <span style="font-weight:400;color:var(--text-tertiary);font-size:12px">(interstitial)</span></div>
+        <p style="margin:0"><strong>LH target.</strong> Full steroidogenic machinery (StAR, CYP11A1, CYP17A1, 3β-HSD, 17β-HSD3) → testosterone via the Δ5 pathway (dominant in testis): cholesterol → pregnenolone → 17-OH-pregnenolone → DHEA → androstenedione → testosterone.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--hpg-m)">Sertoli cells <span style="font-weight:400;color:var(--text-tertiary);font-size:12px">(within seminiferous tubules)</span></div>
+        <p style="margin:0"><strong>FSH target.</strong> No steroidogenesis of their own — instead: nurse spermatogenesis, make <strong>androgen-binding protein (ABP)</strong> to concentrate testosterone locally (intratubular testosterone ~50–100x serum level, required for spermatogenesis), secrete <strong>inhibin B</strong> (selective FSH suppression) and, in fetal life, <strong>anti-Müllerian hormone (AMH)</strong> (regresses Müllerian ducts).</p>
+      </div>
+    </div>
+    <p>This two-compartment design is why isolated FSH deficiency impairs fertility (spermatogenesis) with preserved libido/virilization (Leydig-driven testosterone intact), while isolated LH deficiency does the reverse.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Synthesis</span>Testosterone's Two Potent Downstream Metabolites</h2>
+    <p>Testosterone itself is often a prohormone at the tissue level — two peripheral conversions generate the metabolites actually responsible for much of androgen physiology.</p>
+
+    <div class="pathway">
+      <div class="pw-node">Testosterone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">5α-reductase<br>(type 2: genital skin,<br>prostate)</span></div>
+      <div class="pw-node final">DHT<br><span style="font-weight:400;font-size:10px">~3x receptor affinity</span></div>
+    </div>
+    <p style="font-size:13px;margin-top:-6px">DHT drives external genital virilization in utero, prostate growth, male-pattern hair — the target of finasteride/dutasteride (BPH, androgenic alopecia).</p>
+
+    <div class="pathway">
+      <div class="pw-node">Testosterone</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">Aromatase (CYP19A1)<br>(adipose, Sertoli cells,<br>brain, bone)</span></div>
+      <div class="pw-node final">Estradiol</div>
+    </div>
+    <p style="font-size:13px;margin-top:-6px">Yes — men make meaningful estradiol from testosterone, and it's essential: estradiol (not testosterone) is the primary driver of epiphyseal closure and bone mineral density maintenance in males. This is why aromatase-deficient men have tall stature, unfused epiphyses, and low bone density despite normal-to-high testosterone.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Transport</span>SHBG Binding</h2>
+    <p>~44% of circulating testosterone is SHBG-bound, ~50% albumin-bound (loosely, considered part of the "bioavailable" fraction), and only ~2% is free. SHBG binds DHT &gt; testosterone &gt; estradiol in affinity. See the Foundational Principles section for the full SHBG regulation table — it's identical machinery shared with the female axis.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Feedback</span>Negative Feedback — Two Independent Arms</h2>
+    <div class="chip-row">
+      <span class="loop-badge loop-neg">● Testosterone / estradiol ⊣ GnRH + LH</span>
+      <span class="loop-badge loop-neg">● Inhibin B ⊣ FSH (selectively)</span>
+    </div>
+    <p>This dual-arm design means LH and FSH can be suppressed independently: testosterone (and its aromatized estradiol) provides the dominant negative feedback on LH, while Sertoli-derived inhibin B independently and selectively suppresses FSH — which is exactly why a man with impaired spermatogenesis but intact Leydig function can show a selectively elevated FSH with normal LH and normal testosterone.</p>
+
+    <div class="card-accent" style="margin-top:16px">
+      <div class="card-title">Exogenous testosterone / anabolic steroid use</div>
+      <p style="margin:0">Exogenous androgen (testosterone replacement, anabolic-androgenic steroids) suppresses hypothalamic GnRH and pituitary LH/FSH through the same long-loop negative feedback as endogenous testosterone — the axis cannot distinguish the source. Consequences: (1) <strong>endogenous testosterone production collapses</strong> (Leydig cells go quiescent from LH withdrawal — this is why men on TRT often have low intratesticular but normal-to-high serum testosterone), and (2) <strong>spermatogenesis is suppressed</strong> independently via FSH withdrawal and loss of the very high intratesticular testosterone concentration Sertoli cells require locally (serum-level testosterone from injection does not reconstitute the ~50–100x intratesticular gradient). This is the physiologic basis for exogenous-androgen-induced hypogonadotropic hypogonadism and infertility, and for using hCG (LH-receptor agonist) or selective agents rather than testosterone itself when fertility preservation matters. A deeper dive into androgen effects on insulin sensitivity and metabolic parameters is covered in the Volume 3 interaction matrix and clinical scenario cards.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-m-bg);color:var(--hpg-m)">Genetics</span>Genetic Disease Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Klinefelter Syndrome</span>
+        <span class="gene-locus">47,XXY</span>
+      </div>
+      <div class="gene-inheritance">Chromosomal · ~1:600 male births</div>
+      <p style="margin:8px 0 0">Seminiferous tubule dysgenesis and progressive Leydig cell dysfunction. Classic labs: <strong>low testosterone with elevated LH and FSH</strong> (primary hypogonadism) — small firm testes, gynecomastia (from a relatively increased estradiol:testosterone ratio), infertility, tall stature.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Kallmann Syndrome</span>
+        <span class="gene-locus">ANOS1 (KAL1, X-linked) or FGFR1/others (AD)</span>
+      </div>
+      <div class="gene-inheritance">X-linked or autosomal · Variable</div>
+      <p style="margin:8px 0 0">Failed embryonic migration of GnRH neurons (which originate in the olfactory placode and migrate alongside olfactory neurons). Result: <strong>isolated GnRH deficiency + anosmia/hyposmia</strong> — hypogonadotropic hypogonadism (low testosterone, low/inappropriately normal LH/FSH) with an intact sense-of-smell defect as the diagnostic clue.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Androgen Insensitivity Syndrome (AIS)</span>
+        <span class="gene-locus">AR · Xq12</span>
+      </div>
+      <div class="gene-inheritance">X-linked recessive</div>
+      <p style="margin:8px 0 0">Androgen receptor unable to transduce testosterone/DHT signal despite normal (often elevated, due to lost feedback efficiency) hormone levels. <strong>Complete AIS</strong>: 46,XY individual with a female external phenotype, blind vaginal pouch, absent uterus (AMH still worked — Müllerian regression occurred), undescended testes. <strong>Partial AIS</strong>: ambiguous genitalia spectrum. A key teaching point: labs show normal-to-high testosterone and LH — the defect is receptor-level, not synthetic.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">5α-Reductase Type 2 Deficiency</span>
+        <span class="gene-locus">SRD5A2 · 2p23</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive</div>
+      <p style="margin:8px 0 0">Testosterone made normally, but conversion to DHT is impaired. 46,XY individuals are born with ambiguous or female-appearing external genitalia (DHT-dependent) but have normal internal male structures (testosterone-dependent, Wolffian-duct derived) and functioning testes. At puberty, the testosterone surge can drive partial virilization even without DHT — the basis of the "guevedoces" (Dominican Republic) phenomenon, where some raised-female children develop male secondary sexual characteristics at puberty.</p>
+    </div>
+  </div>
+</section>
+
+
+<section id="hpg-f" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hpg-f)">Axis 4 · Hypothalamic-Pituitary-Gonadal (Female)</div>
+    <h1 class="domain-title">HPG Axis — Female / Estrogen &amp; Progesterone</h1>
+    <p class="domain-sub">The two-cell, two-gonadotropin theory of ovarian steroidogenesis, the mid-cycle LH surge as the one place negative feedback flips positive, corpus luteum progesterone, and estrogen's three forms.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Axis</span>The Core Loop</h2>
+    <div class="pathway">
+      <div class="pw-node">Hypothalamus</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">GnRH<br>(pulsatile)</span></div>
+      <div class="pw-node">Anterior Pituitary</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">LH + FSH</span></div>
+      <div class="pw-node">Ovary</div>
+      <div class="pw-arrow">→</div>
+      <div class="pw-node final">Estradiol + Progesterone</div>
+    </div>
+    <p>As in the male axis, GnRH pulse frequency shapes LH:FSH ratios — but in the female axis this frequency itself changes across the cycle (faster in follicular phase, slower in luteal phase under progesterone's influence), which is part of what drives the cycle's phase structure.</p>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 390" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="390" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#7A2D4C" font-family="Fraunces, serif">Female HPG Axis Feedback Architecture</text>
+<defs>
+      <marker id="arrow-hpg_f.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#7A2D4C"/>
+      </marker>
+      <marker id="fbarrow-hpg_f.svg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#A13D3D"/>
+      </marker>
+    </defs>
+<rect x="20" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#7A2D4C" stroke-width="1.75"/>
+<text x="95.0" y="93.0" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Hypothalamus</text>
+<rect x="275" y="55" width="150" height="66" rx="10" fill="#FFFFFF" stroke="#7A2D4C" stroke-width="1.75"/>
+<text x="350.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2A2A26">Ant. Pituitary</text>
+<text x="350.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#2A2A26">(gonadotroph)</text>
+<rect x="530" y="55" width="190" height="66" rx="10" fill="#A13D64" stroke="#7A2D4C" stroke-width="1.75"/>
+<text x="625.0" y="85.5" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">Ovary</text>
+<text x="625.0" y="100.5" text-anchor="middle" font-size="9.5" font-weight="400" fill="#FFFFFF">theca + granulosa</text>
+<line x1="170" y1="88.0" x2="269" y2="88.0" stroke="#7A2D4C" stroke-width="2" marker-end="url(#arrow-hpg_f.svg)"/>
+<text x="222.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#7A2D4C">GnRH</text>
+<line x1="425" y1="88.0" x2="524" y2="88.0" stroke="#7A2D4C" stroke-width="2" marker-end="url(#arrow-hpg_f.svg)"/>
+<text x="477.5" y="78.0" text-anchor="middle" font-size="10" font-weight="700" fill="#7A2D4C">LH / FSH</text>
+<path d="M 625.0 121 C 625.0 181, 350.0 181, 350.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpg_f.svg)"/>
+<rect x="441.6" y="185" width="91.8" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="487.5" y="196" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">E2 / P4 ⊣ LH / FSH</text>
+<path d="M 639.0 121 C 639.0 251, 81.0 251, 81.0 121" fill="none" stroke="#A13D3D" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#fbarrow-hpg_f.svg)"/>
+<rect x="255.45" y="255" width="209.1" height="15" fill="#FBF8F1" opacity="0.9"/>
+<text x="360.0" y="266" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A13D3D">E2/P4 ⊣ GnRH (± late-follicular positive)</text>
+</svg>
+<div class="diagram-caption">Fig. 4 — Female HPG axis: feedback direction depends on estradiol level and duration</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Synthesis</span>The Two-Cell, Two-Gonadotropin Theory</h2>
+    <p>Ovarian estradiol synthesis requires cooperation between two follicular cell types, each responding to a different gonadotropin — neither cell alone can complete the pathway.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--hpg-f)">Theca cells <span style="font-weight:400;color:var(--text-tertiary);font-size:12px">(LH target)</span></div>
+        <p style="margin:0">Full steroidogenic enzyme complement (StAR, CYP11A1, CYP17A1, 3β-HSD) but <strong>no aromatase</strong>. LH drives cholesterol → androstenedione (and some testosterone), which then diffuses across the basement membrane to granulosa cells.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--hpg-f)">Granulosa cells <span style="font-weight:400;color:var(--text-tertiary);font-size:12px">(FSH target)</span></div>
+        <p style="margin:0">Express <strong>aromatase (CYP19A1)</strong>, FSH-induced, but lack CYP17A1 — cannot make androgens from scratch. They take theca-derived androstenedione and aromatize it to <strong>estrone</strong>, then 17β-HSD converts it to <strong>estradiol</strong>.</p>
+      </div>
+    </div>
+    <div class="pathway" style="margin-top:14px">
+      <div class="pw-node">Theca: Cholesterol</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">LH-driven<br>steroidogenesis</span></div>
+      <div class="pw-node">Androstenedione</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">diffuses to<br>granulosa cell</span></div>
+      <div class="pw-node">Granulosa: aromatase<br>(FSH-induced)</div>
+      <div class="pw-arrow">→</div>
+      <div class="pw-node final">Estradiol</div>
+    </div>
+    <div class="alert alert-verify">
+      <div class="alert-title">Why this matters clinically</div>
+      This division of labor is exactly why <strong>PCOS</strong> biochemistry makes sense: chronically elevated LH (relative to FSH) over-drives theca androgen production, while relatively lower FSH limits granulosa aromatization capacity to convert it all to estrogen — net result is androgen excess. Insulin independently amplifies theca androgen synthesis and suppresses hepatic SHBG, both of which raise free/bioactive androgen further. The full PCOS mechanism and management framework is developed as a dedicated scenario card in Volume 3.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">The Switch</span>Where Negative Feedback Flips to Positive</h2>
+    <p>Estradiol is the single clearest example of context-dependent feedback direction in the entire endocrine system.</p>
+    <table>
+      <tr><th>Estradiol level</th><th>Feedback direction</th><th>Result</th></tr>
+      <tr><td>Low-to-moderate, early-mid follicular phase</td><td><span class="loop-badge loop-neg">NEGATIVE</span></td><td>Suppresses GnRH pulse amplitude and pituitary LH/FSH sensitivity — keeps the cycle from firing early</td></tr>
+      <tr><td>High and <strong>sustained ≥48 hours</strong>, late follicular phase (dominant follicle, typically &gt;200 pg/mL)</td><td><span class="loop-badge loop-pos">POSITIVE</span></td><td>Triggers the <strong>LH surge</strong> → ovulation ~36 hours later</td></tr>
+      <tr><td>Post-ovulation, luteal phase (with progesterone)</td><td><span class="loop-badge loop-neg">NEGATIVE</span></td><td>Combined estradiol + progesterone suppress GnRH pulse frequency — prevents new follicular recruitment during the luteal phase</td></tr>
+    </table>
+    <p>The threshold-and-duration requirement (high enough, for long enough) is a safety mechanism — it's why exogenous estrogen given briefly or at moderate doses (early combined oral contraceptives, for instance) doesn't trigger a surge, while it's also the physiologic vulnerability that ovulation-induction protocols exploit deliberately.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Luteal Phase</span>Corpus Luteum &amp; Progesterone</h2>
+    <p>After ovulation, the ruptured follicle's granulosa and theca cells luteinize under LH support, gaining full CYP11A1/3β-HSD steroidogenic capacity but relatively limited CYP17A1 activity — so the corpus luteum's dominant secretory product is <strong>progesterone</strong>, not androgen or estrogen (though it makes meaningful estradiol too). Without fertilization, the corpus luteum regresses (luteolysis) at ~14 days independent of cycle length, progesterone falls, and withdrawal triggers menses. With fertilization, <strong>hCG</strong> (structurally LH-like, binds the same LH/hCG receptor) rescues the corpus luteum and sustains progesterone production until the placenta takes over at ~8–10 weeks.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Three Estrogens</span>Estrone, Estradiol, Estriol</h2>
+    <table>
+      <tr><th>Form</th><th>Potency</th><th>Dominant source</th><th>Life stage</th></tr>
+      <tr><td class="mono"><strong>Estradiol (E2)</strong></td><td>Most potent</td><td>Ovarian granulosa cell aromatization</td><td>Reproductive years — the dominant circulating estrogen premenopause</td></tr>
+      <tr><td class="mono"><strong>Estrone (E1)</strong></td><td>~1/3 the potency of E2</td><td>Peripheral aromatization of adrenal/ovarian androstenedione, mainly in adipose tissue</td><td>Becomes the dominant estrogen after menopause — the physiologic basis for obesity increasing postmenopausal estrogen exposure (and endometrial/breast cancer risk)</td></tr>
+      <tr><td class="mono"><strong>Estriol (E3)</strong></td><td>Weakest</td><td>Placental aromatization of fetal adrenal DHEA-S (a unique fetal-placental unit pathway — fetal adrenal makes the precursor, placenta aromatizes it)</td><td>Pregnancy — used historically as part of quad-screen aneuploidy risk assessment</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Breakdown</span>Hepatic Metabolism &amp; the 2-OH/16α-OH Fork</h2>
+    <p>Estrogens are conjugated hepatically (glucuronidation, sulfation) with meaningful <strong>enterohepatic recirculation</strong> — gut bacterial β-glucuronidase can deconjugate excreted estrogen, allowing reabsorption (relevant to why broad-spectrum antibiotics can occasionally reduce oral contraceptive reliability, though the magnitude of this effect is debated and rifampin remains the antibiotic with the best-established interaction via CYP induction rather than this route).</p>
+    <p>A separate hepatic hydroxylation fork has drawn research interest for cancer-risk implications: <strong>2-hydroxylation</strong> (via CYP1A1/1A2) produces relatively weak, less proliferative metabolites, while <strong>16α-hydroxylation</strong> produces 16α-hydroxyestrone, a metabolite with stronger estrogenic/proliferative activity. This ratio is influenced by diet, exercise, and genetics and has been studied as a modifiable breast cancer risk marker, though it isn't yet standard clinical practice to measure it.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hpg-f-bg);color:var(--hpg-f)">Genetics</span>Genetic Disease Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Turner Syndrome</span>
+        <span class="gene-locus">45,X (or mosaic)</span>
+      </div>
+      <div class="gene-inheritance">Chromosomal · ~1:2,500 female births</div>
+      <p style="margin:8px 0 0">Accelerated germ cell atresia leads to streak gonads and estrogen deficiency. Classic labs: <strong>low estradiol with markedly elevated LH/FSH</strong> (primary ovarian insufficiency/hypergonadotropic hypogonadism), short stature, and a range of somatic features (webbed neck, coarctation, horseshoe kidney).</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Aromatase (CYP19A1) Deficiency</span>
+        <span class="gene-locus">CYP19A1 · 15q21</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive · Very rare</div>
+      <p style="margin:8px 0 0">Cannot convert androgens to estrogens. In a female fetus, unconverted androgens virilize external genitalia and cause maternal virilization during pregnancy (fetal androgens cross to mother, unable to be aromatized by the deficient placenta either). Postnatally: primary amenorrhea, absent breast development, elevated gonadotropins, hyperandrogenism, and — because estrogen (not androgen) closes growth plates in both sexes — tall stature with delayed bone age and osteoporosis if untreated.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Aromatase Excess Syndrome</span>
+        <span class="gene-locus">CYP19A1 gain-of-function (gene fusion/rearrangement) · 15q21</span>
+      </div>
+      <div class="gene-inheritance">Autosomal dominant · Rare (few dozen kindreds reported)</div>
+      <p style="margin:8px 0 0">The mirror image of aromatase deficiency: chromosomal rearrangements fuse CYP19A1 to a neighboring gene's promoter, causing extraglandular overexpression of aromatase (fat, skin, bone). In affected males: pre/peripubertal gynecomastia (often the presenting feature), advanced bone age, short adult stature from early epiphyseal fusion, and mild hypogonadotropic hypogonadism from estrogen-driven feedback suppression of LH/FSH. In affected females: macromastia, precocious isosexual puberty, irregular menses. Diagnosis requires CYP19A1 molecular analysis; aromatase inhibitors are used therapeutically.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Polycystic Ovary Syndrome (PCOS)</span>
+        <span class="gene-locus">Polygenic — not a single-gene disorder</span>
+      </div>
+      <div class="gene-inheritance">Complex trait · ~6–13% of reproductive-age women</div>
+      <p style="margin:8px 0 0">Not a classic Mendelian disorder, but included here because its physiology maps directly onto the two-cell theory above: elevated LH:FSH ratio, theca-cell androgen overproduction, insulin-mediated SHBG suppression, and impaired granulosa aromatization capacity relative to androgen substrate load. Full diagnostic criteria (Rotterdam), differential (including nonclassic CAH — see HPA section), and management are developed as a Volume 3 clinical scenario card.</p>
+    </div>
+  </div>
+</section>
+
+
+<section id="panc" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--panc)">Axis 5 · Pancreatic Islets</div>
+    <h1 class="domain-title">Glucose Regulation — Insulin, Glucagon &amp; Islet Partners</h1>
+    <p class="domain-sub">This is a paracrine-dominated axis rather than a classic hypothalamic-pituitary loop — four islet cell types cross-regulate each other locally within the same micro-organ.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Architecture</span>The Islet as a Paracrine Unit</h2>
+    <table>
+      <tr><th>Cell type</th><th>% of islet</th><th>Product</th><th>Position</th></tr>
+      <tr><td><strong>Beta (β)</strong></td><td>~65–80%</td><td>Insulin, amylin (co-secreted, ~1:100 molar ratio), C-peptide</td><td>Central/core</td></tr>
+      <tr><td><strong>Alpha (α)</strong></td><td>~15–20%</td><td>Glucagon</td><td>Peripheral mantle</td></tr>
+      <tr><td><strong>Delta (δ)</strong></td><td>~3–10%</td><td>Somatostatin</td><td>Interspersed</td></tr>
+      <tr><td><strong>PP (F) cells</strong></td><td>&lt;5%</td><td>Pancreatic polypeptide (suppresses appetite, pancreatic exocrine secretion)</td><td>Mostly in the pancreatic head/uncinate</td></tr>
+    </table>
+    <p>Blood flows core-to-mantle within the islet, meaning insulin bathes alpha and delta cells at high local concentration before reaching systemic circulation — a paracrine architecture, not just a cluster of independent endocrine cells.</p>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="380" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#325C27" font-family="Fraunces, serif">Islet of Langerhans — Paracrine Cross-Talk</text>
+<circle cx="380.0" cy="210.0" r="110" fill="#FFFFFF" stroke="#325C27" stroke-width="1.5" stroke-dasharray="4,3"/>
+<text x="380.0" y="86.0" text-anchor="middle" font-size="10.5" fill="#325C27" font-weight="700">mantle ↔ core blood flow</text>
+<circle cx="380.0" cy="210.0" r="46" fill="#4A7C3C" opacity="0.92"/>
+<text x="380.0" y="207.0" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">Beta (β)</text>
+<text x="380.0" y="220.0" text-anchor="middle" font-size="8.5" font-weight="500" fill="#FFFFFF">insulin, amylin</text>
+<circle cx="380.0" cy="94.0" r="34" fill="#325C27" opacity="0.92"/>
+<text x="380.0" y="91.0" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">Alpha (α)</text>
+<text x="380.0" y="104.0" text-anchor="middle" font-size="8.5" font-weight="500" fill="#FFFFFF">glucagon</text>
+<circle cx="475.7" cy="271.0" r="30" fill="#8A6D1D" opacity="0.92"/>
+<text x="475.7" y="268.0" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">Delta (δ)</text>
+<text x="475.7" y="281.0" text-anchor="middle" font-size="8.5" font-weight="500" fill="#FFFFFF">somatostatin</text>
+<circle cx="284.3" cy="271.0" r="30" fill="#6B4E9C" opacity="0.92"/>
+<text x="284.3" y="268.0" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">PP cells</text>
+<text x="284.3" y="281.0" text-anchor="middle" font-size="8.5" font-weight="500" fill="#FFFFFF">pancreatic polypeptide</text>
+<path d="M 446.0 248.5 Q 420.0 220.0 388.0 205.0" fill="none" stroke="#8A6D1D" stroke-width="1.5" stroke-dasharray="3,3"/>
+<text x="450.0" y="260.0" font-size="9" fill="#8A6D1D" font-weight="700">⊣ insulin &amp; glucagon</text>
+</svg>
+<div class="diagram-caption">Fig. 5 — Islet paracrine architecture: core-to-mantle blood flow and delta-cell inhibition</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Synthesis</span>Insulin — Preproinsulin to Insulin</h2>
+    <div class="pathway">
+      <div class="pw-node">Preproinsulin<br><span style="font-weight:400;font-size:10px">(mRNA translation, ER)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">signal peptidase<br>cleaves signal peptide</span></div>
+      <div class="pw-node">Proinsulin<br><span style="font-weight:400;font-size:10px">(folds, forms disulfide bonds)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">PC1/3 + PC2<br>+ carboxypeptidase E<br>(secretory granules)</span></div>
+      <div class="pw-node final">Insulin + C-peptide<br><span style="font-weight:400;font-size:10px">equimolar</span></div>
+    </div>
+    <div class="alert alert-verify">
+      <div class="alert-title">Why C-peptide matters clinically</div>
+      Because insulin and C-peptide are cleaved in equimolar amounts and packaged together, C-peptide is a direct proxy for <strong>endogenous</strong> insulin secretion — and it is <em>not</em> present in commercial insulin preparations. A hypoglycemic patient with high insulin but <strong>suppressed</strong> C-peptide points to exogenous insulin administration (accidental or factitious); high insulin <strong>with</strong> high C-peptide points to an endogenous source (insulinoma, sulfonylurea use — sulfonylureas stimulate the patient's own beta cells, so C-peptide stays elevated).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Trigger</span>Glucose-Stimulated Insulin Secretion — the K-ATP Mechanism</h2>
+    <ol class="plain">
+      <li>Glucose enters the beta cell via <strong>GLUT2</strong> (high-capacity, low-affinity — lets intracellular glucose track plasma glucose faithfully without saturating).</li>
+      <li><strong>Glucokinase</strong> phosphorylates glucose — the beta cell's glucose sensor (rate-limiting, sets the glucose threshold for insulin release around ~90 mg/dL).</li>
+      <li>Glycolysis/oxidative metabolism raises the intracellular <strong>ATP:ADP ratio</strong>.</li>
+      <li>Rising ATP closes the <strong>K-ATP channel</strong> (SUR1/Kir6.2 subunits) → membrane depolarizes.</li>
+      <li>Depolarization opens <strong>voltage-gated Ca²⁺ channels</strong> → Ca²⁺ influx.</li>
+      <li>Ca²⁺ triggers exocytosis of pre-formed insulin granules.</li>
+    </ol>
+    <p><strong>Sulfonylureas</strong> (glipizide, glyburide) bind SUR1 directly and close the K-ATP channel independent of glucose — the pharmacologic reason they can cause hypoglycemia even in the absence of a meal, unlike glucose-dependent secretagogues (GLP-1 agonists).</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Receptor</span>Insulin Signaling — Two Downstream Arms</h2>
+    <p>Insulin receptor is a receptor tyrosine kinase (see Foundational Principles). Autophosphorylation recruits <strong>IRS-1/IRS-2</strong>, which branches into two distinct signaling arms with different physiologic jobs:</p>
+    <table>
+      <tr><th>Arm</th><th>Key nodes</th><th>Effect</th></tr>
+      <tr><td><strong>PI3K/Akt (metabolic)</strong></td><td>PI3K → PDK1 → Akt</td><td><strong>GLUT4</strong> vesicle translocation to membrane (muscle, fat), glycogen synthase activation (via GSK3 inhibition), lipogenesis, suppression of hepatic gluconeogenesis (via FOXO1 inhibition)</td></tr>
+      <tr><td><strong>Ras/MAPK (mitogenic)</strong></td><td>Grb2/SOS → Ras → Raf → MEK → ERK</td><td>Gene transcription, cell growth/proliferation — this arm is relatively spared in classic insulin resistance, which is part of why insulin-resistant/hyperinsulinemic states (PCOS, metabolic syndrome) can show <em>preserved or exaggerated</em> mitogenic signaling despite blunted metabolic signaling — a proposed mechanism linking hyperinsulinemia to androgen excess in PCOS via this arm acting on theca cells.</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Function</span>Insulin's Peripheral Actions</h2>
+    <div class="hquick">
+      <div class="hquick-item"><div class="hquick-label">Muscle/Fat</div><div class="hquick-val">↑ GLUT4 translocation → glucose uptake; ↑ glycogenesis, lipogenesis</div></div>
+      <div class="hquick-item"><div class="hquick-label">Liver</div><div class="hquick-val">↓ gluconeogenesis, ↓ glycogenolysis, ↑ glycogen synthesis, ↑ lipogenesis (no GLUT4 needed — hepatocyte uptake is largely insulin-independent via GLUT2, but insulin still controls output)</div></div>
+      <div class="hquick-item"><div class="hquick-label">Adipose</div><div class="hquick-val">Potently inhibits <strong>hormone-sensitive lipase</strong> → suppresses lipolysis and ketogenesis (this is why insulin deficiency/resistance, not just hyperglycemia, drives DKA)</div></div>
+      <div class="hquick-item"><div class="hquick-label">Potassium</div><div class="hquick-val">Drives K⁺ into cells via Na⁺/K⁺-ATPase stimulation — the mechanism behind insulin/dextrose therapy for hyperkalemia</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Counter-regulation</span>Glucagon</h2>
+    <p>Made from <strong>proglucagon</strong> — the same precursor gene expressed differently by tissue-specific prohormone convertases, a good example of one gene producing entirely different hormones depending on cleavage context:</p>
+    <table>
+      <tr><th>Tissue</th><th>Convertase</th><th>Product</th></tr>
+      <tr><td>Pancreatic alpha cell</td><td class="mono">PC2</td><td>Glucagon</td></tr>
+      <tr><td>Intestinal L-cell</td><td class="mono">PC1/3</td><td>GLP-1, GLP-2, oxyntomodulin (glucagon-like peptides — see Volume 2 for the incretin system)</td></tr>
+    </table>
+    <p>Glucagon acts on hepatocyte Gs-coupled receptors → cAMP/PKA → activates glycogen phosphorylase (glycogenolysis) and gluconeogenic enzymes (PEPCK, fructose-1,6-bisphosphatase), and promotes ketogenesis by favoring fatty acid oxidation over re-esterification in the liver. Its receptor is essentially liver-restricted (unlike insulin's near-ubiquitous receptor distribution) — glucagon's job is specifically hepatic glucose output, not peripheral glucose disposal.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Local brake</span>Somatostatin &amp; Amylin</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--panc)">Somatostatin (delta cells)</div>
+        <p style="margin:0">Broad paracrine inhibitor — suppresses insulin <em>and</em> glucagon release locally, plus (systemically, from hypothalamus and elsewhere) GH, TSH, and gastrin. This is why octreotide can blunt both hyper- and hypoglycemic counter-regulation and requires careful glucose monitoring when used clinically.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--panc)">Amylin (co-secreted with insulin)</div>
+        <p style="margin:0">Delays gastric emptying, suppresses (inappropriately elevated) postprandial glucagon, and promotes satiety via the area postrema. Deficient in insulin-deficient states (T1DM) alongside insulin — the physiologic rationale for pramlintide as adjunct therapy.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Breakdown</span>Insulin Clearance</h2>
+    <p>Roughly half of portal-vein insulin is extracted by the liver on first pass (hepatic <strong>insulin-degrading enzyme</strong>) — meaning endogenous pancreatic insulin never reaches systemic circulation at the concentration it was secreted. This is one reason subcutaneously injected insulin (which bypasses first-pass hepatic clearance, entering systemic circulation directly) behaves pharmacokinetically differently from endogenous insulin and can produce relatively more peripheral than hepatic effect for a given dose. The kidney handles most of the remainder of insulin clearance — renal impairment prolongs insulin half-life and is a common cause of increasing hypoglycemia risk as CKD progresses.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc-bg);color:var(--panc)">Genetics</span>Genetic Disease Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">MODY (Maturity-Onset Diabetes of the Young)</span>
+        <span class="gene-locus">Multiple genes — GCK, HNF1A, HNF4A most common</span>
+      </div>
+      <div class="gene-inheritance">Autosomal dominant · Single-gene, non-autoimmune</div>
+      <table style="margin-top:8px">
+        <tr><th>Subtype</th><th>Gene</th><th>Mechanism / picture</th></tr>
+        <tr><td><strong>GCK-MODY (MODY2)</strong></td><td class="mono">GCK</td><td>Glucokinase mutation raises the beta cell's glucose-sensing threshold — mild, stable, non-progressive fasting hyperglycemia present from birth; usually does <em>not</em> require pharmacologic treatment</td></tr>
+        <tr><td><strong>HNF1A-MODY (MODY3)</strong></td><td class="mono">HNF1A</td><td>Most common MODY subtype; progressive beta-cell dysfunction, often initially misdiagnosed as T1DM or T2DM; characteristically <strong>very sulfonylurea-sensitive</strong> — a clinically useful treatment clue</td></tr>
+        <tr><td><strong>HNF4A-MODY (MODY1)</strong></td><td class="mono">HNF4A</td><td>Similar progressive course to MODY3; associated with macrosomia and transient neonatal hypoglycemia in affected infants</td></tr>
+      </table>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Permanent Neonatal Diabetes Mellitus</span>
+        <span class="gene-locus">KCNJ11 or ABCC8 (K-ATP channel subunits)</span>
+      </div>
+      <div class="gene-inheritance">Usually de novo or autosomal dominant</div>
+      <p style="margin:8px 0 0">Activating mutations in the Kir6.2 or SUR1 K-ATP channel subunits lock the channel open, preventing depolarization and insulin release regardless of glucose level. Diagnosed &lt;6 months of age. Clinically important: because sulfonylureas act directly on SUR1 to close the channel independent of the mutation, most affected infants can be <strong>transitioned off insulin injections onto high-dose sulfonylurea therapy</strong> — one of the clearest examples of genotype directly dictating a specific pharmacologic choice in endocrinology.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Type 1 Diabetes — Autoimmune Markers</span>
+        <span class="gene-locus">HLA-DR3/DR4 association; autoantibodies against GAD65, IA-2, ZnT8, insulin</span>
+      </div>
+      <div class="gene-inheritance">Polygenic autoimmune</div>
+      <p style="margin:8px 0 0">T-cell mediated beta cell destruction. Autoantibody positivity (anti-GAD65 most commonly tested) supports the diagnosis and helps distinguish autoimmune T1DM from MODY or ketosis-prone atypical T2DM when the clinical picture is ambiguous — a distinction with direct treatment implications (insulin-dependent vs. potentially sulfonylurea-responsive).</p>
+    </div>
+  </div>
+
+  <div class="alert alert-verify">
+    <div class="alert-title">Verify before relying</div>
+    Genetic subtyping and pharmacologic implications (e.g., sulfonylurea responsiveness in HNF1A-MODY or KCNJ11 neonatal diabetes) should be confirmed with current genetics/endocrinology consultation and institutional protocol before changing a patient's regimen based on suspected monogenic diabetes.
+  </div>
+</section>
+
+
+<section id="calc" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--calc)">Axis 6 · Calcium-Phosphate-Bone</div>
+    <h1 class="domain-title">PTH, Vitamin D, Calcitonin &amp; FGF23</h1>
+    <p class="domain-sub">A three-hormone system (plus a fourth counter-player) regulating serum calcium and phosphate through coordinated action on bone, kidney, and gut — with genetics that map cleanly onto each node.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--calc-bg);color:var(--calc)">Sensor</span>The Calcium-Sensing Receptor (CaSR)</h2>
+    <p>Chief cells of the parathyroid gland express <strong>CaSR</strong>, a Gq-coupled receptor that directly senses ionized (free, not total) serum calcium. Rising calcium activates CaSR → <strong>suppresses</strong> PTH release; falling calcium removes that brake → PTH rises. This is an inverse sigmoidal relationship, not linear — small changes near the physiologic set-point produce large PTH swings, while the system is relatively insensitive to calcium changes far from set-point.</p>
+    <div class="diagram-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" width="100%" height="auto" font-family="Inter, sans-serif">
+<rect x="0" y="0" width="760" height="560" fill="#FBF8F1" rx="14"/>
+<text x="380.0" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#4A3572" font-family="Fraunces, serif">Calcium-Phosphate Axis — Hub &amp; Spoke</text>
+<defs>
+      <marker id="calcArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A3572"/></marker>
+      <marker id="calcArrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A6D1D"/></marker>
+      <marker id="calcArrowTeal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C7A72"/></marker>
+    </defs>
+<rect x="295.0" y="242.0" width="170" height="56" rx="9" fill="#4A3572" stroke="#4A3572" stroke-width="1.5"/>
+<text x="380.0" y="274.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#FFFFFF">Serum Ca²⁺ / PO₄</text>
+<rect x="25.0" y="81.0" width="190" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="120" y="107.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Parathyroid gland</text>
+<text x="120" y="121.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">CaSR senses Ca²⁺</text>
+<rect x="540.0" y="81.0" width="200" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="640" y="107.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Bone</text>
+<text x="640" y="121.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">osteoblast → RANKL → osteoclast</text>
+<rect x="540.0" y="241.0" width="200" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="640" y="267.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Kidney</text>
+<text x="640" y="281.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">1α-hydroxylase · Ca/PO₄ handling</text>
+<rect x="540.0" y="401.0" width="200" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="640" y="427.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Vitamin D (calcitriol)</text>
+<text x="640" y="441.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">active hormone</text>
+<rect x="25.0" y="401.0" width="190" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="120" y="427.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Intestine</text>
+<text x="120" y="441.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">Ca²⁺ / PO₄ absorption</text>
+<rect x="25.0" y="241.0" width="190" height="58" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="120" y="267.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">Calcitonin</text>
+<text x="120" y="281.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">thyroid C-cells</text>
+<rect x="295.0" y="475.0" width="170" height="50" rx="9" fill="#FFFFFF" stroke="#4A3572" stroke-width="1.5"/>
+<text x="380.0" y="497.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2A2A26">FGF23</text>
+<text x="380.0" y="511.0" text-anchor="middle" font-size="9" font-weight="400" fill="#2A2A26">osteocyte-derived</text>
+<line x1="70.7" y1="108.3" x2="250.9" y2="215.7" stroke="#4A3572" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="202.5" y="161" width="15" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="210" y="172" text-anchor="middle" font-size="9" font-weight="700" fill="#4A3572">PTH</text>
+<line x1="335.1" y1="215.7" x2="498.5" y2="108.3" stroke="#4A3572" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="532.5" y="161" width="55" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="560" y="172" text-anchor="middle" font-size="9" font-weight="700" fill="#4A3572">↑resorption</text>
+<line x1="374.9" y1="241.7" x2="446.0" y2="241.4" stroke="#4A3572" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="505.0" y="241" width="110" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="560" y="252" text-anchor="middle" font-size="9" font-weight="700" fill="#4A3572">↑Ca reab. / ↓PO₄ reab.</text>
+<line x1="540.0" y1="268.3" x2="540.0" y2="373.7" stroke="#4A3572" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="647.5" y="341" width="45" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="670" y="352" text-anchor="middle" font-size="9" font-weight="700" fill="#4A3572">activates</text>
+<line x1="498.0" y1="373.7" x2="335.6" y2="268.3" stroke="#6B4E9C" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="482.5" y="381" width="155" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="560" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#6B4E9C">↑gut absorption (via intestine)</text>
+<line x1="71.3" y1="373.7" x2="250.3" y2="268.3" stroke="#4A3572" stroke-width="1.6" marker-end="url(#calcArrow)"/>
+<rect x="182.5" y="381" width="55" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="210" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#4A3572">Ca²⁺/PO₄ in</text>
+<line x1="114.3" y1="241.3" x2="215.1" y2="241.7" stroke="#8A6D1D" stroke-width="1.6" marker-end="url(#calcArrowGold)"/>
+<rect x="182.5" y="261" width="55" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="210" y="272" text-anchor="middle" font-size="9" font-weight="700" fill="#8A6D1D">↓resorption</text>
+<line x1="295.0" y1="451.5" x2="295.0" y2="268.3" stroke="#2C7A72" stroke-width="1.6" marker-end="url(#calcArrowTeal)"/>
+<rect x="265.0" y="461" width="50" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="290.0" y="472" text-anchor="middle" font-size="9" font-weight="700" fill="#2C7A72">↓PO₄ reab.</text>
+<line x1="372.8" y1="451.5" x2="449.7" y2="428.3" stroke="#2C7A72" stroke-width="1.6" stroke-dasharray="4,3" marker-end="url(#calcArrowTeal)"/>
+<rect x="480.0" y="491" width="80" height="14" fill="#FBF8F1" opacity="0.92"/>
+<text x="520" y="502" text-anchor="middle" font-size="9" font-weight="700" fill="#2C7A72">⊣ 1α-hydroxylase</text>
+<circle cx="30" cy="538" r="5" fill="#4A3572"/><text x="42" y="542" font-size="9.5" fill="#4A3572">PTH — raises Ca²⁺</text>
+<circle cx="200" cy="538" r="5" fill="#8A6D1D"/><text x="212" y="542" font-size="9.5" fill="#8A6D1D">Calcitonin — opposes PTH</text>
+<circle cx="400" cy="538" r="5" fill="#2C7A72"/><text x="412" y="542" font-size="9.5" fill="#2C7A72">FGF23 — phosphaturic, ⊣ vitamin D</text>
+<circle cx="630" cy="538" r="5" fill="#6B4E9C"/><text x="642" y="542" font-size="9.5" fill="#6B4E9C">Vitamin D — gut/bone/kidney</text>
+</svg>
+<div class="diagram-caption">Fig. 6 — Calcium-phosphate hub: PTH, vitamin D, calcitonin, and FGF23 converging on serum Ca²⁺/PO₄</div>
+</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--calc-bg);color:var(--calc)">PTH</span>Parathyroid Hormone — Synthesis &amp; Action</h2>
+    <div class="pathway">
+      <div class="pw-node">PrepoPTH</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">signal peptidase</span></div>
+      <div class="pw-node">ProPTH</div>
+      <div class="pw-arrow">→<span class="pw-enzyme">Golgi cleavage</span></div>
+      <div class="pw-node final">PTH (84-aa, active as intact 1-84)</div>
+    </div>
+    <p>PTH's biologically active domain is the N-terminal 1–34 fragment (the basis of teriparatide, a synthetic PTH 1-34 analog) — intact PTH assays measure the full 1-84 molecule, while some older/less specific assays cross-react with inactive C-terminal fragments that accumulate in renal failure, a classic pitfall in interpreting PTH levels in CKD.</p>
+    <table>
+      <tr><th>Target organ</th><th>Effect</th><th>Net result</th></tr>
+      <tr><td><strong>Bone</strong></td><td>Binds PTH receptor (PTH1R) on <strong>osteoblasts</strong> (osteoclasts lack the receptor) → upregulates <strong>RANKL</strong>, downregulates <strong>osteoprotegerin (OPG)</strong> → osteoblast-mediated osteoclast activation</td><td>Continuous exposure: net resorption (releases Ca²⁺ + phosphate). Intermittent/pulsatile exposure: paradoxically <strong>anabolic</strong> — favors bone formation over resorption (basis of teriparatide dosing as a daily injection rather than continuous infusion)</td></tr>
+      <tr><td><strong>Kidney — distal tubule</strong></td><td>↑ Ca²⁺ reabsorption</td><td>Conserves filtered calcium</td></tr>
+      <tr><td><strong>Kidney — proximal tubule</strong></td><td>↓ phosphate reabsorption (inhibits NaPi cotransporters)</td><td><strong>Phosphaturic</strong> — net effect is calcium up, phosphate down</td></tr>
+      <tr><td><strong>Kidney — proximal tubule</strong></td><td>↑ <strong>1α-hydroxylase (CYP27B1)</strong> activity</td><td>Activates vitamin D → indirectly increases intestinal calcium/phosphate absorption</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--calc-bg);color:var(--calc)">Vitamin D</span>Activation Cascade</h2>
+    <div class="pathway">
+      <div class="pw-node">7-Dehydrocholesterol<br><span style="font-weight:400;font-size:10px">(skin)</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">UVB</span></div>
+      <div class="pw-node">Cholecalciferol (D3)<br><span style="font-weight:400;font-size:10px">or dietary D2/D3</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP2R1<br>(liver, 25-hydroxylase)</span></div>
+      <div class="pw-node">25-OH-Vitamin D<br><span style="font-weight:400;font-size:10px">storage form — what labs measure</span></div>
+      <div class="pw-arrow">→<span class="pw-enzyme">CYP27B1<br>(kidney, 1α-hydroxylase,<br>PTH-stimulated)</span></div>
+      <div class="pw-node final">1,25-(OH)₂-Vitamin D<br><span style="font-weight:400;font-size:10px">calcitriol — active form</span></div>
+    </div>
+    <div class="alert alert-verify">
+      <div class="alert-title">Why 25-OH-D, not calcitriol, is the clinical screening test</div>
+      25-OH-vitamin D has a long half-life (~2–3 weeks) and directly reflects substrate availability (sun + diet), making it the correct screening measure for vitamin D <em>status</em>. Calcitriol (1,25-(OH)₂-D) has a short half-life (~4–6 hours), is tightly regulated by PTH/phosphate/FGF23 rather than substrate, and can be normal or even elevated in vitamin D deficiency with secondary hyperparathyroidism — measuring it to assess overall vitamin D status is a common ordering error.
+    </div>
+    <p><strong>Calcitriol's actions:</strong> intestine (↑ calbindin → ↑ active transcellular Ca²⁺ and phosphate absorption), bone (supports mineralization at physiologic levels; at very high levels can promote resorption alongside PTH), kidney (modest Ca²⁺ reabsorption), and — importantly — direct negative feedback on the parathyroid chief cell to suppress PTH transcription.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--calc-bg);color:var(--calc)">Counter-players</span>Calcitonin &amp; FGF23</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="color:var(--calc)">Calcitonin</div>
+        <p style="margin:0">From parafollicular (C) cells of the thyroid, released in response to <em>rising</em> calcium. Directly inhibits osteoclast activity, opposing PTH. Physiologic role in normal human calcium homeostasis is modest (thyroidectomized and medullary-thyroid-cancer patients with absent/excess calcitonin show only mild calcium derangement) — its main clinical utility is as a tumor marker and surveillance tool for <strong>medullary thyroid carcinoma</strong>, notably in MEN2 syndromes.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--calc)">FGF23</div>
+        <p style="margin:0">Secreted by <strong>osteocytes</strong> in response to rising phosphate and calcitriol. Requires <strong>Klotho</strong> as an obligate co-receptor for high-affinity FGFR binding in the kidney. Actions: <strong>phosphaturic</strong> (inhibits proximal tubule NaPi cotransporters — same direction as PTH) and <strong>suppresses CYP27B1</strong> (opposite direction from PTH — lowers active vitamin D). Net effect: FGF23 is the body's dedicated phosphate-lowering hormone, willing to sacrifice vitamin D activation to do it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--calc-bg);color:var(--calc)">Genetics</span>Genetic Disease Correlations</h2>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Familial Hypocalciuric Hypercalcemia (FHH)</span>
+        <span class="gene-locus">CASR (inactivating) · 3q13</span>
+      </div>
+      <div class="gene-inheritance">Autosomal dominant</div>
+      <p style="margin:8px 0 0">CaSR set-point shifted higher — the parathyroid and renal tubule both "think" calcium is lower than it is. Result: mild hypercalcemia with PTH inappropriately normal-to-mildly-elevated (mimics primary hyperparathyroidism) but <strong>low urinary calcium excretion</strong> (Ca/Cr clearance ratio &lt;0.01) — the key lab discriminator, since primary hyperparathyroidism causes high or normal urinary calcium. Recognizing FHH prevents unnecessary parathyroidectomy.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Neonatal Severe Hyperparathyroidism</span>
+        <span class="gene-locus">CASR (homozygous inactivating) · 3q13</span>
+      </div>
+      <div class="gene-inheritance">Autosomal recessive (homozygous FHH)</div>
+      <p style="margin:8px 0 0">Complete loss of CaSR function — severe, life-threatening neonatal hypercalcemia with markedly elevated PTH, requiring urgent parathyroidectomy.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Pseudohypoparathyroidism Type 1A (Albright Hereditary Osteodystrophy)</span>
+        <span class="gene-locus">GNAS (maternal allele) · 20q13</span>
+      </div>
+      <div class="gene-inheritance">Autosomal dominant with genomic imprinting</div>
+      <p style="margin:8px 0 0"><strong>End-organ PTH resistance</strong> from a Gsα defect — PTH is elevated but kidney/bone cannot respond, producing hypocalcemia and hyperphosphatemia despite high PTH (distinguishing it from hypoparathyroidism, where PTH is low). Because GNAS is imprinted, phenotype depends on parent-of-origin: maternal-allele mutations cause full hormone resistance plus the somatic features of Albright hereditary osteodystrophy (short stature, short 4th/5th metacarpals, obesity, subcutaneous ossifications); paternal-allele mutations cause the somatic features alone without hormone resistance (pseudo-pseudohypoparathyroidism).</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">X-Linked Hypophosphatemic Rickets (XLH)</span>
+        <span class="gene-locus">PHEX · Xp22.1</span>
+      </div>
+      <div class="gene-inheritance">X-linked dominant · Most common inherited rickets</div>
+      <p style="margin:8px 0 0">PHEX normally degrades FGF23 (indirectly); loss of function causes <strong>FGF23 excess</strong> → renal phosphate wasting and impaired calcitriol activation despite low phosphate (calcitriol should rise in response to hypophosphatemia but is FGF23-suppressed instead — an inappropriately "normal" calcitriol in the face of hypophosphatemia is itself a diagnostic clue). Presents with rachitic bone disease, short stature, and — unusually for a phosphate/calcium disorder — <strong>normal serum calcium and PTH</strong>, distinguishing it from vitamin D deficiency rickets.</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">Tumor-Induced Osteomalacia (TIO)</span>
+        <span class="gene-locus">Acquired — ectopic FGF23 production by a (usually benign, phosphaturic mesenchymal) tumor</span>
+      </div>
+      <div class="gene-inheritance">Acquired, paraneoplastic</div>
+      <p style="margin:8px 0 0">The acquired phenocopy of XLH — same FGF23-driven biochemistry (hypophosphatemia, renal phosphate wasting, inappropriately normal/low calcitriol) but caused by an occult tumor rather than a germline mutation. Should be considered in an adult presenting with new hypophosphatemic osteomalacia and no prior history of rickets; often localized with functional imaging (somatostatin-receptor or FGF23-directed PET).</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">DiGeorge Syndrome</span>
+        <span class="gene-locus">22q11.2 deletion</span>
+      </div>
+      <div class="gene-inheritance">Usually de novo microdeletion</div>
+      <p style="margin:8px 0 0">Failed development of the 3rd/4th pharyngeal pouches → parathyroid (and thymic) aplasia/hypoplasia. Presents with neonatal hypocalcemic seizures/tetany from congenital hypoparathyroidism, alongside conotruncal cardiac defects and T-cell immunodeficiency (part of the same developmental field).</p>
+    </div>
+
+    <div class="gene-card">
+      <div class="gene-card-head">
+        <span class="gene-name">MEN1 &amp; MEN2A — Parathyroid Involvement</span>
+        <span class="gene-locus">MEN1 (menin, tumor suppressor) · 11q13 / RET (proto-oncogene) · 10q11</span>
+      </div>
+      <div class="gene-inheritance">Both autosomal dominant</div>
+      <p style="margin:8px 0 0"><strong>MEN1</strong>: parathyroid hyperplasia/adenoma (often the first and most common manifestation) + pituitary adenoma + pancreatic neuroendocrine tumor ("3 P's"). <strong>MEN2A</strong>: parathyroid hyperplasia + medullary thyroid carcinoma + pheochromocytoma — the calcitonin-secreting C-cell connection makes routine calcitonin surveillance relevant in known RET mutation carriers.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  ENDOCRINE ATLAS · VOLUME 1 OF 3 — CLASSIC AXES<br>
+  Vol. 2: Adipokine / GI / Neuroendocrine Hormones · Vol. 3: Interaction Matrix &amp; Clinical Scenarios<br>
+  For clinician education — verify all thresholds, cutoffs, and dosing against current institutional/lab references.
+</footer>
+
+<script>
+(function() {
+  "use strict";
+
+  // ---------- Theme toggle ----------
+  var THEME_KEY_FALLBACK = null; // no localStorage per artifact rules; in-memory only
+  var root = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    if (toggleBtn) toggleBtn.textContent = t === 'dark' ? '☀' : '☾';
+  }
+
+  // default to light on load
+  applyTheme('light');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      var current = root.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // ---------- Dropdown navigation ----------
+  var navSelect = document.getElementById('domainNav');
+  var domains = document.querySelectorAll('.domain');
+
+  function showDomain(id) {
+    for (var i = 0; i < domains.length; i++) {
+      domains[i].classList.toggle('active', domains[i].id === id);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  if (navSelect) {
+    navSelect.addEventListener('change', function() {
+      showDomain(this.value);
+    });
+    // activate first option on load
+    if (navSelect.options.length > 0) {
+      showDomain(navSelect.options[0].value);
+    }
+  }
+})();
+
+</script>
+</body>
+</html>
