@@ -21,7 +21,6 @@ import imgNeurologyAsset from '@/assets/blog/neurology.png.asset.json';
 import imgInfectious from '@/assets/blog/infectious-disease.jpg';
 import imgOncology from '@/assets/blog/oncology.jpg';
 import imgDermatologyAsset from '@/assets/blog/dermatology.png.asset.json';
-import imgObgyn from '@/assets/blog/obgyn.jpg';
 import imgPediatrics from '@/assets/blog/pediatrics.jpg';
 import imgPsychiatry from '@/assets/blog/psychiatry.jpg';
 import imgMskAsset from '@/assets/blog/msk.png.asset.json';
