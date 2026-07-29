@@ -310,6 +310,86 @@ const AllPosts = () => {
       tags: ["Trauma", "Critical Care", "Resuscitation", "Clinical Education"]
     },
     {
+      title: "GI Atlas Vol. 1 — Hormones & Neurotransmitters",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Gastrin, CCK, secretin, GIP, motilin, and enteric neurotransmitters — source cells, stimuli, actions, and clinical correlates.",
+      image: businessPost,
+      slug: "gi-atlas-vol1",
+      tags: ["Gastroenterology", "Physiology", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 2 — Secretory & Absorptive Physiology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Salivary and gastric secretion, pancreatic exocrine function, bile, and carbohydrate, protein, fat, vitamin and water absorption.",
+      image: businessPost,
+      slug: "gi-atlas-vol2",
+      tags: ["Gastroenterology", "Physiology", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 3 — Motility Disorders",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Esophageal motility, gastroparesis, small bowel dysmotility, colonic and anorectal disorders, and postoperative ileus.",
+      image: businessPost,
+      slug: "gi-atlas-vol3",
+      tags: ["Gastroenterology", "Motility", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 4 — Pharmacology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Acid suppression, antiemetics, prokinetics, laxatives, antidiarrheals, and IBD agents — mechanisms, dosing, and adverse effects.",
+      image: businessPost,
+      slug: "gi-atlas-vol4",
+      tags: ["Gastroenterology", "Pharmacology", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 5 — GI Surgery",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Core GI operations — indications, anatomy altered, postoperative course, and complications to anticipate.",
+      image: businessPost,
+      slug: "gi-atlas-vol5",
+      tags: ["Gastroenterology", "Surgery", "Clinical Education"]
+    },
+    {
+      title: "GI Atlas Vol. 5b — More Surgeries & Device Care",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Additional GI procedures plus ostomy, feeding tube, and drain management — troubleshooting and bedside care.",
+      image: businessPost,
+      slug: "gi-atlas-vol5b",
+      tags: ["Gastroenterology", "Surgery", "Clinical Education"]
+    },
+    {
+      title: "GI Emergencies & Hepatology Atlas Vol. 1",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Upper and lower GI bleeding, cirrhosis and portal hypertension, HE/SBP, hepatorenal syndrome, pancreatitis, esophageal emergencies, and ischemic colitis.",
+      image: businessPost,
+      slug: "gi-emergencies-hepatology-atlas-vol1",
+      tags: ["Gastroenterology", "Hepatology", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "GI Symptoms, Stool & Quick-Facts Atlas Vol. 1",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "July 29, 2026",
+      excerpt: "Bristol stool chart, stool color differential, blood in stool, diarrhea classification, constipation pharmacology, and rapid-recall GI facts.",
+      image: businessPost,
+      slug: "gi-symptoms-stool-quickfacts-atlas-vol1",
+      tags: ["Gastroenterology", "Symptoms", "Clinical Education"]
+    },
+    {
       title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -826,6 +906,14 @@ const AllPosts = () => {
     "gi-atlas": "Gastroenterology",
     "gi-physical-exam-atlas": "Gastroenterology",
     "gi-atlas-vol6": "Gastroenterology",
+    "gi-atlas-vol1": "Gastroenterology",
+    "gi-atlas-vol2": "Gastroenterology",
+    "gi-atlas-vol3": "Gastroenterology",
+    "gi-atlas-vol4": "Gastroenterology",
+    "gi-atlas-vol5": "Gastroenterology",
+    "gi-atlas-vol5b": "Gastroenterology",
+    "gi-emergencies-hepatology-atlas-vol1": "Gastroenterology",
+    "gi-symptoms-stool-quickfacts-atlas-vol1": "Gastroenterology",
     // ENT
     "ent-atlas": "ENT",
     // Ophthalmology
