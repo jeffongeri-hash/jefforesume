@@ -21,10 +21,13 @@ import imgNeurologyAsset from '@/assets/blog/neurology.png.asset.json';
 import imgInfectious from '@/assets/blog/infectious-disease.jpg';
 import imgOncology from '@/assets/blog/oncology.jpg';
 import imgDermatologyAsset from '@/assets/blog/dermatology.png.asset.json';
-import imgObgyn from '@/assets/blog/obgyn.jpg';
 import imgPediatrics from '@/assets/blog/pediatrics.jpg';
 import imgPsychiatry from '@/assets/blog/psychiatry.jpg';
 import imgMskAsset from '@/assets/blog/msk.png.asset.json';
+import imgGiAsset from '@/assets/blog/gi.png.asset.json';
+import imgEndoAsset from '@/assets/blog/endocrinology.png.asset.json';
+import imgEntAsset from '@/assets/blog/ent.png.asset.json';
+import imgObgynAsset from '@/assets/blog/obgyn-new.png.asset.json';
 const imgCardiology = imgCardiologyAsset.url;
 const imgPulmonary = imgPulmonaryAsset.url;
 const imgRenal = imgRenalAsset.url;
@@ -32,6 +35,10 @@ const imgHematology = imgHematologyAsset.url;
 const imgNeurology = imgNeurologyAsset.url;
 const imgDermatology = imgDermatologyAsset.url;
 const imgMsk = imgMskAsset.url;
+const imgGi = imgGiAsset.url;
+const imgEndo = imgEndoAsset.url;
+const imgEnt = imgEntAsset.url;
+const imgObgynNew = imgObgynAsset.url;
 import imgToxicology from '@/assets/blog/toxicology.jpg';
 import imgProcedures from '@/assets/blog/procedures.jpg';
 
@@ -1048,7 +1055,11 @@ const AllPosts = () => {
     "Infectious Disease": imgInfectious,
     "Oncology": imgOncology,
     "Dermatology": imgDermatology,
-    "OB/GYN": imgObgyn,
+    "ENT": imgEnt,
+    "Ophthalmology": imgEnt,
+    "Gastroenterology": imgGi,
+    "Endocrinology": imgEndo,
+    "OB/GYN": imgObgynNew,
     "Pediatrics": imgPediatrics,
     "Psychiatry": imgPsychiatry,
     "Musculoskeletal": imgMsk,
