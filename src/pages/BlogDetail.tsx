@@ -642,6 +642,134 @@ const blogPosts = {
       <p><a href="/embeds/adult-trauma-resuscitation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "gi-atlas-vol1": {
+    title: "GI Atlas Vol. 1 — Hormones & Neurotransmitters",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Gastrin, CCK, secretin, GIP, motilin, and enteric neurotransmitters — source cells, stimuli, actions, and clinical correlates.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol1.html" title="GI Atlas Vol. 1 — Hormones & Neurotransmitters" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol2": {
+    title: "GI Atlas Vol. 2 — Secretory & Absorptive Physiology",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Salivary and gastric secretion, pancreatic exocrine function, bile, and carbohydrate, protein, fat, vitamin and water absorption.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol2.html" title="GI Atlas Vol. 2 — Secretory & Absorptive Physiology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol3": {
+    title: "GI Atlas Vol. 3 — Motility Disorders",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Esophageal motility, gastroparesis, small bowel dysmotility, colonic and anorectal disorders, and postoperative ileus.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol3.html" title="GI Atlas Vol. 3 — Motility Disorders" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol3.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol4": {
+    title: "GI Atlas Vol. 4 — Pharmacology",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Acid suppression, antiemetics, prokinetics, laxatives, antidiarrheals, and IBD agents — mechanisms, dosing, and adverse effects.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol4.html" title="GI Atlas Vol. 4 — Pharmacology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol5": {
+    title: "GI Atlas Vol. 5 — GI Surgery",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Core GI operations — indications, anatomy altered, postoperative course, and complications to anticipate.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol5.html" title="GI Atlas Vol. 5 — GI Surgery" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol5b": {
+    title: "GI Atlas Vol. 5b — More Surgeries & Device Care",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Additional GI procedures plus ostomy, feeding tube, and drain management — troubleshooting and bedside care.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol5b.html" title="GI Atlas Vol. 5b — More Surgeries & Device Care" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol5b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-emergencies-hepatology-atlas-vol1": {
+    title: "GI Emergencies & Hepatology Atlas Vol. 1",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Upper and lower GI bleeding, cirrhosis and portal hypertension, HE/SBP, hepatorenal syndrome, pancreatitis, esophageal emergencies, and ischemic colitis.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-emergencies-hepatology-atlas-vol1.html" title="GI Emergencies & Hepatology Atlas Vol. 1" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-emergencies-hepatology-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-symptoms-stool-quickfacts-atlas-vol1": {
+    title: "GI Symptoms, Stool & Quick-Facts Atlas Vol. 1",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Bristol stool chart, stool color differential, blood in stool, diarrhea classification, constipation pharmacology, and rapid-recall GI facts.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-symptoms-stool-quickfacts-atlas-vol1.html" title="GI Symptoms, Stool & Quick-Facts Atlas Vol. 1" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-symptoms-stool-quickfacts-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "gi-atlas-vol6": {
     title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
     category: "HEALTHCARE",
