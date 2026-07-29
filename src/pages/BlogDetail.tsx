@@ -466,6 +466,86 @@ const blogPosts = {
       <p><a href="/embeds/ent-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "ocular-differential-atlas-vol2b": {
+    title: "Ocular Atlas Vol. 2b — Massive Differential Diagnosis Reference",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "30 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Eye complaints organized by chief complaint — red eye, vision loss, diplopia, anisocoria, ptosis, proptosis, corneal/surface disease, and pediatric presentations.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/ocular-differential-atlas-vol2b.html" title="Ocular Atlas Vol. 2b" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/ocular-differential-atlas-vol2b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-atlas-vol1a": {
+    title: "Cardiology Atlas Vol. 1a — Vascular & Ischemic Disease",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Hypertension, lipid management, coronary artery disease, and peripheral arterial disease — risk stratification, pharmacology, and management pathways.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol1a.html" title="Cardiology Atlas Vol. 1a" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol1a.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-atlas-vol1b": {
+    title: "Cardiology Atlas Vol. 1b — Heart Failure & Structural/Inflammatory Disease",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Heart failure phenotypes, cardiomyopathies, valvular disease, pericarditis, endocarditis, and pulmonary hypertension — diagnosis through treatment.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol1b.html" title="Cardiology Atlas Vol. 1b" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol1b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "adult-trauma-resuscitation-atlas": {
+    title: "Adult Trauma & Resuscitation Atlas",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "24 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Primary and secondary survey, shock states, massive transfusion, and damage-control resuscitation — with dosing, procedures, and disposition pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/adult-trauma-resuscitation-atlas.html" title="Adult Trauma & Resuscitation Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/adult-trauma-resuscitation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "gi-atlas-vol6": {
+    title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>IBD clinical management, colorectal cancer screening, tumor markers and staging, viral hepatitis, and pediatric GI emergencies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/gi-atlas-vol6.html" title="GI Atlas Vol. 6" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/gi-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "bulletproof-note-atlas": {
     title: "The Bulletproof Note — HPI, Exam & Disposition for the Deposition",
     category: "HEALTHCARE",
