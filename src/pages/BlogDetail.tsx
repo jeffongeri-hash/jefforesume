@@ -770,6 +770,134 @@ const blogPosts = {
       <p><a href="/embeds/gi-symptoms-stool-quickfacts-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "endocrine-atlas-vol1": {
+    title: "Endocrine Atlas Vol. 1 — Classic Axes",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>HPA, HPT, HPG and pancreatic axes — hormone cascades, feedback loops, and clinical correlates.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol1.html" title="Endocrine Atlas Vol. 1 — Classic Axes" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol2": {
+    title: "Endocrine Atlas Vol. 2 — Adipokine, GI & Neuroendocrine Hormones",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Leptin, ghrelin, incretins, RAAS, catecholamines, EPO, posterior pituitary, GH/IGF-1, and melatonin.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol2.html" title="Endocrine Atlas Vol. 2 — Adipokine, GI & Neuroendocrine Hormones" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol3a": {
+    title: "Endocrine Atlas Vol. 3a — Corticosteroid Pharmacology",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Steroid potency and equivalency, routes and PK, adrenal suppression, and taper protocols.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol3a.html" title="Endocrine Atlas Vol. 3a — Corticosteroid Pharmacology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol3a.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol3b": {
+    title: "Endocrine Atlas Vol. 3b — Testosterone & Estrogen HRT",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Testosterone and estrogen replacement — formulations, dosing, monitoring, and risk counseling.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol3b.html" title="Endocrine Atlas Vol. 3b — Testosterone & Estrogen HRT" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol3b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol3c": {
+    title: "Endocrine Atlas Vol. 3c — Labs & Monitoring Reference",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Endocrine lab panels, dynamic testing, reference ranges, and monitoring intervals.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol3c.html" title="Endocrine Atlas Vol. 3c — Labs & Monitoring Reference" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol3c.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol4": {
+    title: "Endocrine Atlas Vol. 4 — Endocrine Emergencies",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>DKA, HHS, myxedema coma, thyroid storm, adrenal crisis, and severe electrolyte derangements.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol4.html" title="Endocrine Atlas Vol. 4 — Endocrine Emergencies" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol5": {
+    title: "Endocrine Atlas Vol. 5 — Special Topics & Diagnostic Pitfalls",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Assay interference, sick euthyroid, incidentalomas, and the classic endocrine diagnostic traps.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol5.html" title="Endocrine Atlas Vol. 5 — Special Topics & Diagnostic Pitfalls" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "endocrine-atlas-vol6": {
+    title: "Endocrine Atlas Vol. 6 — Interaction Matrix & Clinical Scenarios",
+    category: "HEALTHCARE",
+    date: "July 29, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Cross-axis hormone interactions, drug-endocrine interference, and integrated clinical scenarios.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/endocrine-atlas-vol6.html" title="Endocrine Atlas Vol. 6 — Interaction Matrix & Clinical Scenarios" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/endocrine-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "gi-atlas-vol6": {
     title: "GI Atlas Vol. 6 — IBD Management, Malignancy & Viral Hepatitis",
     category: "HEALTHCARE",
