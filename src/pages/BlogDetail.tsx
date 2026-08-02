@@ -754,6 +754,54 @@ const blogPosts = {
       <p><a href="/embeds/cardiothoracic-surgery-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "cardiology-atlas-vol3": {
+    title: "Cardiology Atlas Vol. 3 — Arrhythmias & Conduction Disease",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Bradyarrhythmias, AV block, SVT, atrial fibrillation, wide-complex tachycardia, VT, and inherited channelopathies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol3.html" title="Cardiology Atlas Vol. 3" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol3.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiothoracic-surgery-atlas-vol1": {
+    title: "Cardiothoracic Surgery Atlas Vol. 1 — Cardiac Surgery & Devices",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "25 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>CABG, PCI, valve surgery, aortic operations, LVADs, transplant, and post-operative cardiac surgical care.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiothoracic-surgery-atlas-vol1.html" title="Cardiothoracic Surgery Atlas Vol. 1" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiothoracic-surgery-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "__cardiothoracic-surgery-atlas-vol2-old": {
+    title: "Cardiothoracic Surgery Atlas Vol. 2 — Thoracic Surgery",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "23 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Pneumothorax, esophageal emergencies, mediastinal disease, chest trauma, lung resection, and pleural procedures.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiothoracic-surgery-atlas-vol2.html" title="Cardiothoracic Surgery Atlas Vol. 2" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiothoracic-surgery-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "vascular-atlas-vol1": {
     title: "Vascular Atlas Vol. 1 — Arterial Disease",
     category: "HEALTHCARE",
