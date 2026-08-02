@@ -626,6 +626,166 @@ const blogPosts = {
       <p><a href="/embeds/cardiology-atlas-vol1b.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "cardiology-atlas-vol4": {
+    title: "Cardiology Atlas Vol. 4 — ACS Deep Dive",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "28 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>STEMI and NSTEMI recognition, risk scoring, reperfusion strategy, antiplatelet and anticoagulation regimens, RV infarction, and special populations.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol4.html" title="Cardiology Atlas Vol. 4" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-atlas-vol5": {
+    title: "Cardiology Atlas Vol. 5 — Acute MI Complications & Cardiogenic Shock",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "24 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Cardiogenic shock, mechanical circulatory support, papillary muscle rupture, ventricular septal rupture, free-wall rupture, aneurysm, and post-MI care.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol5.html" title="Cardiology Atlas Vol. 5" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-atlas-vol6": {
+    title: "Cardiology Atlas Vol. 6 — Peripartum & Pregnancy Cardiac Emergencies",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Pregnancy cardiac physiology, peripartum cardiomyopathy, preeclampsia, P-SCAD, amniotic fluid embolism, mWHO risk classification, and drug safety.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-atlas-vol6.html" title="Cardiology Atlas Vol. 6" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-pharm-atlas-vol1": {
+    title: "Cardiology Pharmacology Atlas Vol. 1 — Blood Pressure & Lipid Medications",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "26 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Diuretics, RAAS blockade, calcium channel blockers, beta blockers, alpha agents, and lipid-lowering therapy — dosing, monitoring, and pitfalls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-pharm-atlas-vol1.html" title="Cardiology Pharmacology Atlas Vol. 1" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-pharm-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-pharm-atlas-vol2": {
+    title: "Cardiology Pharmacology Atlas Vol. 2 — Heart Failure & Rate/Rhythm Control",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>GDMT pillars, adjunct heart failure agents, rate control, and antiarrhythmics by Vaughan-Williams class with dosing and safety pearls.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-pharm-atlas-vol2.html" title="Cardiology Pharmacology Atlas Vol. 2" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-pharm-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-pharm-atlas-vol3": {
+    title: "Cardiology Pharmacology Atlas Vol. 3 — Antithrombotics & Remaining Agents",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "27 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Antiplatelets, heparins, warfarin, DOACs, reversal agents, and dosing adjustments in CKD and heart failure — plus emerging therapies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-pharm-atlas-vol3.html" title="Cardiology Pharmacology Atlas Vol. 3" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-pharm-atlas-vol3.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiology-physical-exam-atlas": {
+    title: "Cardiology Physical Exam, Documentation & Risk Stratification Atlas",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "21 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Cardiac auscultation, JVP assessment, vascular and skin findings, risk stratification tools, and bulletproof cardiac documentation.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiology-physical-exam-atlas.html" title="Cardiology Physical Exam Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiology-physical-exam-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "cardiothoracic-surgery-atlas-vol2": {
+    title: "Cardiothoracic Surgery Atlas Vol. 2 — Thoracic Surgery",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "23 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Pneumothorax, esophageal emergencies, mediastinal disease, chest trauma, lung resection, and pleural procedures.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/cardiothoracic-surgery-atlas-vol2.html" title="Cardiothoracic Surgery Atlas Vol. 2" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/cardiothoracic-surgery-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "vascular-atlas-vol1": {
+    title: "Vascular Atlas Vol. 1 — Arterial Disease",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "24 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Acute limb ischemia, aortic syndromes, vasculitis, renal and mesenteric arterial disease, and carotid disease.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/vascular-atlas-vol1.html" title="Vascular Atlas Vol. 1" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/vascular-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "vascular-atlas-vol2": {
+    title: "Vascular Atlas Vol. 2 — Venous & Access Disease",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Chronic venous insufficiency, VTE, vascular access, AV malformations, lymphedema, and vascular trauma.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/vascular-atlas-vol2.html" title="Vascular Atlas Vol. 2" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/vascular-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "adult-trauma-resuscitation-atlas": {
     title: "Adult Trauma & Resuscitation Atlas",
     category: "HEALTHCARE",

@@ -307,6 +307,106 @@ const AllPosts = () => {
       tags: ["Cardiology", "Heart Failure", "Valvular Disease", "Clinical Education"]
     },
     {
+      title: "Cardiology Atlas Vol. 4 — ACS Deep Dive",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "STEMI/NSTEMI recognition, risk scores, reperfusion strategy, antiplatelet and anticoagulation regimens, RV infarction, and special ACS populations.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol4",
+      tags: ["Cardiology", "ACS", "STEMI", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Atlas Vol. 5 — Acute MI Complications & Cardiogenic Shock",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Cardiogenic shock, mechanical circulatory support, papillary muscle rupture, VSR, free-wall rupture, aneurysm, and post-MI care.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol5",
+      tags: ["Cardiology", "Cardiogenic Shock", "Critical Care", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Atlas Vol. 6 — Peripartum & Pregnancy Cardiac Emergencies",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Pregnancy cardiac physiology, peripartum cardiomyopathy, preeclampsia, P-SCAD, amniotic fluid embolism, mWHO risk classes, and drug safety.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol6",
+      tags: ["Cardiology", "Obstetrics", "Emergencies", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Pharmacology Atlas Vol. 1 — Blood Pressure & Lipid Medications",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Diuretics, RAAS blockade, calcium channel blockers, beta blockers, alpha agents, and lipid-lowering therapy — dosing, monitoring, and pitfalls.",
+      image: businessPost,
+      slug: "cardiology-pharm-atlas-vol1",
+      tags: ["Cardiology", "Pharmacology", "Hypertension", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Pharmacology Atlas Vol. 2 — Heart Failure & Rate/Rhythm Control",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "GDMT pillars, adjunct heart failure agents, rate control, and antiarrhythmics by Vaughan-Williams class with dosing and safety pearls.",
+      image: businessPost,
+      slug: "cardiology-pharm-atlas-vol2",
+      tags: ["Cardiology", "Pharmacology", "Heart Failure", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Pharmacology Atlas Vol. 3 — Antithrombotics & Remaining Agents",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Antiplatelets, heparins, warfarin, DOACs, reversal agents, and dosing in CKD and heart failure — with emerging therapies.",
+      image: businessPost,
+      slug: "cardiology-pharm-atlas-vol3",
+      tags: ["Cardiology", "Pharmacology", "Anticoagulation", "Clinical Education"]
+    },
+    {
+      title: "Cardiology Physical Exam, Documentation & Risk Stratification Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Cardiac auscultation, JVP, vascular and skin findings, risk stratification tools, and bulletproof cardiac documentation.",
+      image: businessPost,
+      slug: "cardiology-physical-exam-atlas",
+      tags: ["Cardiology", "Physical Exam", "Documentation", "Clinical Education"]
+    },
+    {
+      title: "Cardiothoracic Surgery Atlas Vol. 2 — Thoracic Surgery",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Pneumothorax, esophageal emergencies, mediastinal disease, chest trauma, lung resection, and pleural procedures.",
+      image: businessPost,
+      slug: "cardiothoracic-surgery-atlas-vol2",
+      tags: ["Cardiology", "Thoracic Surgery", "Clinical Education"]
+    },
+    {
+      title: "Vascular Atlas Vol. 1 — Arterial Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Acute limb ischemia, aortic syndromes, vasculitis, renal and mesenteric arterial disease, and carotid disease.",
+      image: businessPost,
+      slug: "vascular-atlas-vol1",
+      tags: ["Cardiology", "Vascular", "Clinical Education"]
+    },
+    {
+      title: "Vascular Atlas Vol. 2 — Venous & Access Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Chronic venous insufficiency, VTE, vascular access, AV malformations, lymphedema, and vascular trauma.",
+      image: businessPost,
+      slug: "vascular-atlas-vol2",
+      tags: ["Cardiology", "Vascular", "VTE", "Clinical Education"]
+    },
+    {
       title: "Adult Trauma & Resuscitation Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -973,6 +1073,16 @@ const AllPosts = () => {
     "cardiac-labs-atlas": "Cardiology",
     "cardiology-atlas-vol1a": "Cardiology",
     "cardiology-atlas-vol1b": "Cardiology",
+    "cardiology-atlas-vol4": "Cardiology",
+    "cardiology-atlas-vol5": "Cardiology",
+    "cardiology-atlas-vol6": "Cardiology",
+    "cardiology-pharm-atlas-vol1": "Cardiology",
+    "cardiology-pharm-atlas-vol2": "Cardiology",
+    "cardiology-pharm-atlas-vol3": "Cardiology",
+    "cardiology-physical-exam-atlas": "Cardiology",
+    "cardiothoracic-surgery-atlas-vol2": "Cardiology",
+    "vascular-atlas-vol1": "Cardiology",
+    "vascular-atlas-vol2": "Cardiology",
     "adult-trauma-resuscitation-atlas": "Pulmonary & Critical Care",
     // Hematology
     "hematology-hematopoiesis-atlas": "Hematology",

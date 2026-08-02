@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiology Physical Exam, Documentation &amp; Risk Stratification Atlas</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-exam: #ef5350;
+  --accent-jvp: #4fc3f7;
+  --accent-vascexam: #aed581;
+  --accent-skin: #ffb74d;
+  --accent-riskstrat: #ba68c8;
+  --accent-docs: #4dd0e1;
+  --accent: #ff8a65;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-exam: #b3261e;
+  --accent-jvp: #0d6d8f;
+  --accent-vascexam: #5a7d1f;
+  --accent-skin: #a25b00;
+  --accent-riskstrat: #7b3f96;
+  --accent-docs: #007680;
+  --accent: #c85a2e;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#exam { --sec-accent: var(--accent-exam); }
+#jvp { --sec-accent: var(--accent-jvp); }
+#vascexam { --sec-accent: var(--accent-vascexam); }
+#skin { --sec-accent: var(--accent-skin); }
+#riskstrat { --sec-accent: var(--accent-riskstrat); }
+#docs { --sec-accent: var(--accent-docs); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+.drug-table th, .drug-table td { white-space: normal; min-width: 130px; }
+.drug-table td.drug-name { font-weight: 700; color: var(--text); min-width: 140px; }
+.drug-table td.mono-cell { font-family: var(--font-mono); font-size: 12.5px; }
+.class-divider td { background: var(--surface-2); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--sec-accent, var(--accent)); padding: 8px 14px; }
+.moa-strip { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--surface-2); border-radius: 10px; margin: 14px 0; font-size: 14px; color: var(--text-dim); }
+.moa-strip .moa-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--sec-accent, var(--accent)); flex-shrink: 0; }
+.mnemonic-box { background: linear-gradient(135deg, color-mix(in srgb, var(--sec-accent, var(--accent)) 16%, var(--surface)), var(--surface)); border: 1.5px dashed var(--sec-accent, var(--accent)); border-radius: 14px; padding: 20px 22px; margin: 22px 0; }
+.mnemonic-box .mnem-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 10px; }
+.mnemonic-box .mnem-phrase { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiology Atlas Series</span>
+    <span class="title">Physical Exam, Documentation &amp; Risk Stratification</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#exam">Cardiac Auscultation &amp; Palpation</option>
+      <option value="#jvp">JVP, Volume Status &amp; Edema</option>
+      <option value="#vascexam">Vascular Exam</option>
+      <option value="#skin">Skin &amp; Extremity Findings by Disease</option>
+      <option value="#riskstrat">Risk Stratification Tools</option>
+      <option value="#docs">Documentation &amp; Medicolegal Pearls</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Exam Technique, Documentation &amp; Decision Tools</div>
+  <h1>Physical Exam, Documentation &amp; Risk Stratification</h1>
+  <p class="lede">The bedside skills that tie the whole atlas series together — cardiac and vascular exam technique, the skin/extremity findings that point to specific diagnoses covered earlier in this series, interactive risk stratification calculators, and cardiology-specific documentation pearls.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-exam)" href="#exam">
+      <div class="n">01</div><div class="t">Cardiac Auscultation &amp; Palpation</div>
+      <div class="d">Heart sounds, murmur grading, precordial exam</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-jvp)" href="#jvp">
+      <div class="n">02</div><div class="t">JVP, Volume Status &amp; Edema</div>
+      <div class="d">JVP technique, hepatojugular reflux, edema grading</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-vascexam)" href="#vascexam">
+      <div class="n">03</div><div class="t">Vascular Exam</div>
+      <div class="d">Pulse grading, bruits, ABI and capillary refill technique</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-skin)" href="#skin">
+      <div class="n">04</div><div class="t">Skin &amp; Extremity Findings by Disease</div>
+      <div class="d">PAD, CVI/PVD, HF, endocarditis stigmata, vasculitis</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-riskstrat)" href="#riskstrat">
+      <div class="n">05</div><div class="t">Risk Stratification Tools</div>
+      <div class="d">Interactive HEART, PERC, Wells, NYHA, Killip</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-docs)" href="#docs">
+      <div class="n">06</div><div class="t">Documentation &amp; Medicolegal Pearls</div>
+      <div class="d">Structured exam notes, murmur notation, defensible charting</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: EXAM -->
+
+<section class="section" id="exam">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">Cardiac Auscultation &amp; Palpation</h2>
+  <p class="section-sub">The physical exam counterpart to the cardiac action potential diagram in the Pharmacology Atlas — timing tells you nearly as much as the sound itself.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_heartsounds" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_heartsounds" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_heartsounds" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_heartsounds" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-exam)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Heart sounds &amp; murmur timing across the cardiac cycle</text>
+<line x1="60" y1="160" x2="920" y2="160" stroke="var(--text-mute)" stroke-width="1" stroke-dasharray="2,3"/>
+<rect x="150" y="50" width="280" height="220" fill="var(--accent-exam)" opacity="0.06"/>
+<text x="290" y="45" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-exam)" font-family="Inter, sans-serif">SYSTOLE</text>
+<rect x="430" y="50" width="420" height="220" fill="var(--accent-jvp)" opacity="0.06"/>
+<text x="640" y="45" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-jvp)" font-family="Inter, sans-serif">DIASTOLE</text>
+<line x1="150" y1="150" x2="150" y2="170" stroke="var(--text)" stroke-width="4"/>
+<text x="150" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="var(--text)" font-family="Inter, sans-serif">S1</text>
+<text x="150" y="195" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">Mitral/tricuspid</text>
+<text x="150" y="209" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">valve closure</text>
+<line x1="430" y1="150" x2="430" y2="170" stroke="var(--text)" stroke-width="4"/>
+<text x="430" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="var(--text)" font-family="Inter, sans-serif">S2</text>
+<text x="430" y="195" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">Aortic/pulmonic</text>
+<text x="430" y="209" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">valve closure</text>
+<line x1="520" y1="150" x2="520" y2="170" stroke="var(--warn)" stroke-width="4"/>
+<text x="520" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="var(--warn)" font-family="Inter, sans-serif">S3</text>
+<text x="520" y="195" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">Rapid ventricular</text>
+<text x="520" y="209" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">filling (early diastole)</text>
+<line x1="820" y1="150" x2="820" y2="170" stroke="var(--warn)" stroke-width="4"/>
+<text x="820" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="var(--warn)" font-family="Inter, sans-serif">S4</text>
+<text x="820" y="195" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">Atrial kick against</text>
+<text x="820" y="209" text-anchor="middle" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">stiff ventricle (late diastole)</text>
+<rect x="150" y="220" width="280" height="40" rx="12" fill="var(--surface-2)" stroke="var(--accent-exam)" stroke-width="1.6"/>
+<text x="290.0" y="243.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AS/MR/VSD murmurs occur HERE (systolic)</text>
+<rect x="430" y="220" width="420" height="40" rx="12" fill="var(--surface-2)" stroke="var(--accent-jvp)" stroke-width="1.6"/>
+<text x="640.0" y="243.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AR/MS murmurs occur HERE (diastolic)</text>
+<text x="20" y="300" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">S3 is normal in children/young adults/high-output states, pathologic in adults with volume overload (HF). S4 is almost always pathologic -- a stiff, non-compliant ventricle (LVH, ischemia, HTN).</text>
+</svg>
+    <div class="diagram-caption">Murmur timing (systolic vs. diastolic) is the single fastest way to narrow the differential before you've even characterized the murmur's quality — see Vol. 1b for the full pathophysiology of each lesion.</div>
+  </div>
+
+  <h4 class="micro-title">Auscultation Landmarks</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Location</th><th>Valve Best Heard</th><th>Landmark</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Aortic area</td><td>Aortic valve</td><td class="mono-cell">2nd right intercostal space, sternal border</td></tr>
+        <tr><td class="drug-name">Pulmonic area</td><td>Pulmonic valve</td><td class="mono-cell">2nd left intercostal space, sternal border</td></tr>
+        <tr><td class="drug-name">Erb's point</td><td>Aortic + pulmonic (combined)</td><td class="mono-cell">3rd left intercostal space, sternal border</td></tr>
+        <tr><td class="drug-name">Tricuspid area</td><td>Tricuspid valve</td><td class="mono-cell">4th-5th left intercostal space, sternal border</td></tr>
+        <tr><td class="drug-name">Mitral area (apex)</td><td>Mitral valve</td><td class="mono-cell">5th left intercostal space, midclavicular line</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="micro-title">Murmur Grading (Levine Scale)</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Grade</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">I</td><td>Barely audible, only heard with careful auscultation in a quiet room</td></tr>
+        <tr><td class="mono-cell">II</td><td>Faint but immediately audible</td></tr>
+        <tr><td class="mono-cell">III</td><td>Moderately loud, no palpable thrill</td></tr>
+        <tr><td class="mono-cell">IV</td><td>Loud, WITH a palpable thrill</td></tr>
+        <tr><td class="mono-cell">V</td><td>Very loud, thrill present, audible with the stethoscope edge barely touching the chest</td></tr>
+        <tr><td class="mono-cell">VI</td><td>Audible with the stethoscope entirely off the chest</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Dynamic maneuvers change murmur intensity in diagnostic ways</span>
+    <p>Valsalva (strain phase) decreases preload — most murmurs soften, but hypertrophic cardiomyopathy's murmur gets LOUDER (less blood volume to counteract the dynamic outflow obstruction). Passive leg raise/squatting increases preload and afterload — mitral regurgitation and aortic regurgitation murmurs increase, while HCM's murmur decreases. This maneuver-based logic (see Vol. 1b for the full HCM discussion) is one of the highest-yield bedside diagnostic tools in cardiology.</p>
+  </div>
+
+  <h4 class="micro-title">Precordial Palpation</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Point of maximal impulse (PMI)</span><p>Normally at the 5th intercostal space, midclavicular line, roughly the size of a quarter. Displaced laterally/inferiorly suggests LV dilation; a sustained, forceful PMI suggests LV hypertrophy/pressure overload.</p></div>
+    <div class="callout"><span class="callout-label">Heaves and thrills</span><p>A parasternal heave (sustained lift along the left sternal border) suggests RV hypertrophy/pressure overload (e.g., pulmonary hypertension — see Vol. 1b). A palpable thrill corresponds to a Grade IV+ murmur and localizes to the same area as the murmur's maximal intensity.</p></div>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">When Exam Findings Warrant Escalation</span>
+    <dl>
+      <dt>Urgent evaluation</dt><dd>Any new murmur with hemodynamic instability, a new diastolic murmur (always pathologic, unlike some soft systolic murmurs), or a loud new murmur after MI (suspect papillary muscle rupture or VSD — see Vol. 5).</dd>
+      <dt>Who to call</dt><dd>Cardiology for any new or changed murmur warranting echocardiographic characterization beyond the bedside exam.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: JVP -->
+
+<section class="section" id="jvp">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">JVP, Volume Status &amp; Edema</h2>
+  <p class="section-sub">The JVP is a direct window into right atrial pressure — a skill that takes practice to trust, but pays off constantly in undifferentiated dyspnea and volume status assessment.</p>
+
+  <h4 class="micro-title">Technique</h4>
+  <p>Position the patient reclined at 30-45 degrees, head turned slightly away from the side being examined. Identify the internal jugular vein's pulsation (not the carotid — the JVP has a biphasic, undulating quality and is not palpable, while the carotid has a single, palpable outward thrust). Measure the vertical height from the sternal angle to the top of the visible pulsation, then add 5cm (the estimated distance from the sternal angle to the right atrium) to estimate central venous pressure. Normal JVP is roughly 6-8cm of water (or often simplified to &lt;3-4cm above the sternal angle).</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_jvpwave" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_jvpwave" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_jvpwave" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_jvpwave" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-jvp)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">The JVP waveform</text>
+<line x1="80" y1="60" x2="80" y2="230" stroke="var(--text-mute)" stroke-width="1.5"/>
+<line x1="80" y1="220" x2="900" y2="220" stroke="var(--text-mute)" stroke-width="1" stroke-dasharray="3,3"/>
+<path d="M80,220 C95,110 115,110 130,200 C140,180 150,210 160,195 C180,225 220,250 250,240 C300,225 340,90 380,95 C420,100 450,235 480,230" fill="none" stroke="var(--accent-jvp)" stroke-width="3"/>
+<text x="110" y="87" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-jvp)" font-family="Inter, sans-serif">a</text>
+<text x="145" y="122" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-jvp)" font-family="Inter, sans-serif">c</text>
+<text x="215" y="247" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-jvp)" font-family="Inter, sans-serif">x</text>
+<text x="380" y="77" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-jvp)" font-family="Inter, sans-serif">v</text>
+<text x="470" y="227" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-jvp)" font-family="Inter, sans-serif">y</text>
+<text x="20" y="270" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">a wave: atrial contraction (absent in AFib). c wave: tricuspid bulge, often not visible at bedside. x descent: atrial relaxation.</text>
+<text x="20" y="288" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">v wave: passive atrial filling (large/giant v wave = tricuspid regurgitation). y descent: tricuspid opens, rapid filling (blunted in tamponade, steep in constriction).</text>
+</svg>
+    <div class="diagram-caption">Recognizing individual waveform components takes practice, but two are especially high-yield: the a wave disappears in atrial fibrillation (no organized atrial contraction), and a giant/prominent v wave suggests significant tricuspid regurgitation.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Hepatojugular reflux — an active provocation, not just observation</span>
+    <p>Apply firm, sustained pressure over the right upper quadrant (liver) for 10-15 seconds while watching the JVP. A sustained rise in JVP (rather than a transient bump that falls back down) during compression indicates the right heart cannot accommodate the increased venous return — a positive test supports a volume-overloaded or non-compliant right heart, useful when the resting JVP is ambiguous.</p>
+  </div>
+
+  <h4 class="micro-title">Peripheral Edema Grading</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Grade</th><th>Pit Depth</th><th>Recovery Time</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">1+</td><td>~2mm</td><td>Rapid (immediate)</td></tr>
+        <tr><td class="mono-cell">2+</td><td>~4mm</td><td>10-15 seconds</td></tr>
+        <tr><td class="mono-cell">3+</td><td>~6mm</td><td>1-2 minutes</td></tr>
+        <tr><td class="mono-cell">4+</td><td>~8mm</td><td>2-5 minutes, visibly deep/prolonged</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Symmetric vs. asymmetric edema — the fastest triage question</span>
+    <p>Bilateral, symmetric edema points toward a systemic cause (heart failure, renal disease, hepatic disease, venous insufficiency if chronic) — see the Skin &amp; Extremity Findings section. Unilateral or asymmetric edema shifts the differential sharply toward a local process: DVT (see the Risk Stratification section's Wells score), lymphedema, or localized venous obstruction. This single observation should shape your workup before you've done anything else.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">When Volume Status Findings Warrant Escalation</span>
+    <dl>
+      <dt>Urgent evaluation</dt><dd>Markedly elevated JVP with respiratory distress (consider acute decompensated HF, tamponade — see Vol. 1b) or any asymmetric leg swelling with concern for DVT.</dd>
+      <dt>Who to call</dt><dd>Cardiology for volume status assessment in complex or ambiguous presentations; consider bedside ultrasound (IVC assessment) as an objective adjunct when the JVP exam is equivocal.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: VASCEXAM -->
+
+<section class="section" id="vascexam">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">Vascular Exam</h2>
+  <p class="section-sub">The bedside counterpart to Vascular Vol. 1 and 2 — pulse grading, bruit auscultation, and the ABI technique that turns a subjective exam into an objective number.</p>
+
+  <h4 class="micro-title">Pulse Grading Scale</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Grade</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">0</td><td>Absent — no palpable pulse</td></tr>
+        <tr><td class="mono-cell">1+</td><td>Diminished, weak, difficult to palpate</td></tr>
+        <tr><td class="mono-cell">2+</td><td>Normal</td></tr>
+        <tr><td class="mono-cell">3+</td><td>Increased/bounding (consider aortic regurgitation, hyperdynamic states, or an aneurysmal segment at the palpation site)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="micro-title">Standard Pulse Locations</h4>
+  <p>Carotid, brachial, radial, femoral, popliteal, posterior tibial, and dorsalis pedis — document bilaterally and compare symmetry. Asymmetric pulses (especially between right and left, or upper vs. lower extremity) point toward focal arterial disease, dissection (see Vascular Vol. 1), or coarctation in a younger patient.</p>
+
+  <h4 class="micro-title">Bruit Auscultation</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Carotid bruit</span><p>Auscultate each carotid separately with the bell, patient holding breath briefly to eliminate breath sounds — a bruit suggests turbulent flow from stenosis, though the correlation between bruit presence/loudness and stenosis severity is imperfect (a very tight stenosis can be silent if flow becomes too slow to be turbulent).</p></div>
+    <div class="callout"><span class="callout-label">Abdominal/renal/femoral bruits</span><p>An abdominal bruit (especially with lateralization) raises suspicion for renal artery stenosis (see Vascular Vol. 1) — auscultate just lateral to the midline, above and below the umbilicus. A femoral bruit suggests iliofemoral PAD.</p></div>
+  </div>
+
+  <h4 class="micro-title">Ankle-Brachial Index (ABI) — Technique</h4>
+  <p>With the patient supine and rested for several minutes, measure systolic BP at the brachial artery (both arms, use the higher value) and at the dorsalis pedis/posterior tibial artery of each ankle using a Doppler probe. ABI = highest ankle systolic pressure for that leg ÷ higher of the two brachial systolic pressures. See Vascular Vol. 1 for the full interpretation table (normal, borderline, mild-moderate, severe PAD, and the noncompressible-vessel caveat in diabetes/ESRD).</p>
+
+  <h4 class="micro-title">Capillary Refill</h4>
+  <p>Press the nail bed or fingertip/toe pad until it blanches, release, and count seconds until color returns — normal is under 2 seconds. Delayed refill suggests poor peripheral perfusion (shock, severe PAD, acute limb ischemia — see Vascular Vol. 1's 6 Ps) but is affected by ambient temperature and patient age, so interpret alongside other perfusion signs rather than in isolation.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Acute limb ischemia — a time-critical exam</span>
+    <p>Absent pulses combined with pain, pallor, poikilothermia, and especially new paresthesia or paralysis is a surgical emergency (see Vascular Vol. 1's Acute Limb Ischemia section) — this exam should be fast, systematic, and immediately escalated if positive, not deferred pending further workup.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">When Vascular Exam Findings Warrant Escalation</span>
+    <dl>
+      <dt>Emergent evaluation</dt><dd>Any exam consistent with acute limb ischemia (see above) — this does not wait for imaging.</dd>
+      <dt>Urgent evaluation</dt><dd>New asymmetric pulses, a new bruit with associated symptoms, or an abnormal ABI in a patient with claudication symptoms.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery for any exam finding suggesting acute or critical limb ischemia; vascular medicine for further workup of an abnormal but non-emergent vascular exam.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: SKIN -->
+
+<section class="section" id="skin">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">Skin &amp; Extremity Findings by Disease</h2>
+  <p class="section-sub">The single fastest way to narrow a differential before any test results come back — arterial disease, venous disease, heart failure, and endocarditis each leave a distinctive signature on the skin.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_skinfindings" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_skinfindings" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_skinfindings" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_skinfindings" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-skin)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Skin &amp; extremity findings by disease -- arterial vs. venous at a glance</text>
+<rect x="20" y="44" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-skin)" stroke-width="1.6"/>
+<text x="250.0" y="62" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-skin)" font-family="Inter, sans-serif" style="text-transform:uppercase">PAD (ARTERIAL)</text>
+<text x="250.0" y="101.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hair loss over the affected extremity</text>
+<text x="250.0" y="113.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Shiny, thin, atrophic skin</text>
+<text x="250.0" y="126.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pallor on elevation (Buerger test) --</text>
+<text x="250.0" y="139.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  elevate leg 45deg x60sec, note pallor</text>
+<text x="250.0" y="152.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Dependent rubor -- deep red color when</text>
+<text x="250.0" y="165.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  the leg is lowered (reactive hyperemia</text>
+<text x="250.0" y="177.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  from chronically vasodilated vessels)</text>
+<text x="250.0" y="190.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Cool skin temperature</text>
+<text x="250.0" y="203.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Diminished/absent pulses</text>
+<text x="250.0" y="216.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ulcers: distal, punched-out, pale base</text>
+<text x="250.0" y="229.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (see Vascular Vol. 1)</text>
+<rect x="500" y="44" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-vascexam)" stroke-width="1.6"/>
+<text x="730.0" y="62" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-vascexam)" font-family="Inter, sans-serif" style="text-transform:uppercase">CVI / PVD (VENOUS)</text>
+<text x="730.0" y="101.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hemosiderin staining (brown/rust</text>
+<text x="730.0" y="113.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pigmentation from RBC extravasation)</text>
+<text x="730.0" y="126.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lipodermatosclerosis (fibrotic,</text>
+<text x="730.0" y="139.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  "inverted champagne bottle" leg shape)</text>
+<text x="730.0" y="152.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Stasis dermatitis (erythematous,</text>
+<text x="730.0" y="165.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  scaly, itchy skin)</text>
+<text x="730.0" y="177.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Atrophie blanche (white, atrophic</text>
+<text x="730.0" y="190.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  scarred patches)</text>
+<text x="730.0" y="203.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Warm skin, normal pulses</text>
+<text x="730.0" y="216.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ulcers: medial malleolus, irregular</text>
+<text x="730.0" y="229.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  borders, ruddy base (see Vascular Vol. 2)</text>
+<line x1="20" y1="284" x2="960" y2="284" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="308" font-size="12.5" font-weight="700" fill="var(--accent-jvp)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Heart failure -- edema and congestion signs</text>
+<rect x="20" y="324" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--accent-jvp)" stroke-width="1.6"/>
+<text x="480.0" y="351.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bilateral, symmetric, DEPENDENT pitting edema (legs if ambulatory, sacrum if bedbound) -- pits on firm pressure</text>
+<text x="480.0" y="365.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">over the tibia, graded 1+ to 4+ by depth/recovery time (see the JVP/Volume Status section for the grading scale).</text>
+<text x="480.0" y="379.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Cool, sometimes cyanotic extremities in low-output states; associated JVD, hepatojugular reflux, and (in advanced</text>
+<text x="480.0" y="393.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">right heart failure) ascites, hepatomegaly, and anasarca.</text>
+<line x1="20" y1="434" x2="960" y2="434" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="458" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Endocarditis stigmata &amp; vasculitis (don't confuse these)</text>
+<rect x="20" y="474" width="460" height="70" rx="12" fill="var(--surface-2)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="499.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Janeway lesions: painLESS, macular, on palms/soles (septic emboli)</text>
+<text x="250.0" y="512.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Osler nodes: painFUL, nodular, on pulp of fingers/toes (immune complex)</text>
+<text x="250.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Splinter hemorrhages, Roth spots -- see Vol. 1b for full detail</text>
+<rect x="500" y="474" width="460" height="70" rx="12" fill="var(--surface-2)" stroke="var(--accent-exam)" stroke-width="1.6"/>
+<text x="730.0" y="499.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Palpable purpura -- small vessel vasculitis (does not blanch)</text>
+<text x="730.0" y="512.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Livedo reticularis -- net-like mottled discoloration (medium/large vessel)</text>
+<text x="730.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">See Vascular Vol. 1's Vasculitis section for the full framework</text>
+</svg>
+    <div class="diagram-caption">Arterial (PAD) and venous (CVI/PVD) disease produce nearly opposite skin findings — cool/pale/hairless vs. warm/pigmented/edematous — which is exactly why getting this distinction right changes management (compression therapy helps venous disease and can harm arterial disease — see Vascular Vol. 2).</div>
+  </div>
+
+  <h4 class="micro-title">Quick Differentiation: Arterial vs. Venous Ulcer</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Feature</th><th>Arterial (PAD)</th><th>Venous (CVI)</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Location</td><td>Distal (toes, foot, pressure points)</td><td>Medial malleolus ("gaiter" region)</td></tr>
+        <tr><td class="drug-name">Appearance</td><td>Well-demarcated, "punched out," pale base</td><td>Irregular borders, shallow, ruddy/red base</td></tr>
+        <tr><td class="drug-name">Pain</td><td>Severe, worse with elevation</td><td>Mild-moderate, improves with elevation</td></tr>
+        <tr><td class="drug-name">Surrounding skin</td><td>Shiny, hairless, cool</td><td>Hemosiderin staining, lipodermatosclerosis</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="micro-title">Endocarditis Stigmata — Full Reference</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Finding</th><th>Description</th><th>Mechanism</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Janeway lesions</td><td>Painless, flat, macular, on palms/soles</td><td>Septic microemboli</td></tr>
+        <tr><td class="drug-name">Osler nodes</td><td>Painful, raised, nodular, on finger/toe pulps</td><td>Immune complex deposition</td></tr>
+        <tr><td class="drug-name">Splinter hemorrhages</td><td>Linear, red-brown streaks under the nail bed</td><td>Microemboli to nail bed capillaries</td></tr>
+        <tr><td class="drug-name">Roth spots</td><td>Retinal hemorrhages with pale centers (fundoscopic finding)</td><td>Immune complex-mediated retinal vasculitis</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Mnemonic — "Painless Janeway, painful Osler"</span>
+    <p>Janeway = painle<strong>SS</strong> (both have double letters — a small memory hook), flat, on the palms/soles. Osler nodes = painful, raised, on the pulps. Getting this pairing backwards is a common exam error worth deliberately avoiding.</p>
+  </div>
+
+  <h4 class="micro-title">Vasculitis Skin Findings</h4>
+  <p>Palpable purpura (raised, non-blanching, classically on dependent areas like the lower legs) is the hallmark of small-vessel vasculitis — IgA vasculitis, ANCA-associated vasculitis, cryoglobulinemic vasculitis (see Vascular Vol. 1). Livedo reticularis (a net-like, mottled purple-red discoloration) suggests medium/large-vessel involvement or a vasospastic/microthrombotic process — seen in polyarteritis nodosa, antiphospholipid syndrome, and cholesterol embolization syndrome among others.</p>
+
+  <div class="callout warn">
+    <span class="callout-label">Cholesterol embolization — an easy-to-miss cause of livedo reticularis</span>
+    <p>New livedo reticularis, especially involving the toes ("blue toe syndrome") with palpable pulses, after a recent cardiac catheterization or vascular procedure should raise suspicion for cholesterol embolization syndrome — atheromatous debris showering distally from a disrupted plaque. This is easy to misattribute to a primary vasculitis if the procedural history isn't specifically elicited.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">When Skin Findings Warrant Escalation</span>
+    <dl>
+      <dt>Urgent evaluation</dt><dd>New endocarditis stigmata in a febrile or bacteremic patient — pursue the 2023 Duke-ISCVID workup (see Vol. 1b); new palpable purpura or livedo reticularis with systemic symptoms.</dd>
+      <dt>Who to call</dt><dd>Cardiology/infectious disease for suspected endocarditis; rheumatology for suspected vasculitis; vascular surgery/medicine for arterial vs. venous ulcer management once differentiated.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: RISKSTRAT -->
+
+<section class="section" id="riskstrat">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">Risk Stratification Tools</h2>
+  <p class="section-sub">Four calculators covering the most common undifferentiated cardiology/PE-adjacent presentations, plus quick-reference tables for NYHA and Killip classification.</p>
+
+  <h4 class="micro-title">Interactive: HEART Score (Undifferentiated Chest Pain)</h4>
+  <p>Full clinical context lives in Vol. 4's ACS Deep Dive — reprised here as a standalone bedside tool.</p>
+
+  <div class="calc-card" id="heartCalc2">
+    <div class="calc-radio-group">
+      <span class="group-label">History</span>
+      <div class="calc-item"><input type="radio" name="h2_hist" id="h2h0" data-pts="0" checked><label for="h2h0">Slightly suspicious</label></div>
+      <div class="calc-item"><input type="radio" name="h2_hist" id="h2h1" data-pts="1"><label for="h2h1">Moderately suspicious</label></div>
+      <div class="calc-item"><input type="radio" name="h2_hist" id="h2h2" data-pts="2"><label for="h2h2">Highly suspicious</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">ECG</span>
+      <div class="calc-item"><input type="radio" name="h2_ecg" id="h2e0" data-pts="0" checked><label for="h2e0">Normal</label></div>
+      <div class="calc-item"><input type="radio" name="h2_ecg" id="h2e1" data-pts="1"><label for="h2e1">Non-specific repolarization disturbance</label></div>
+      <div class="calc-item"><input type="radio" name="h2_ecg" id="h2e2" data-pts="2"><label for="h2e2">Significant ST deviation</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Age</span>
+      <div class="calc-item"><input type="radio" name="h2_age" id="h2a0" data-pts="0" checked><label for="h2a0">&lt; 45</label></div>
+      <div class="calc-item"><input type="radio" name="h2_age" id="h2a1" data-pts="1"><label for="h2a1">45-65</label></div>
+      <div class="calc-item"><input type="radio" name="h2_age" id="h2a2" data-pts="2"><label for="h2a2">&gt; 65</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Risk factors</span>
+      <div class="calc-item"><input type="radio" name="h2_rf" id="h2r0" data-pts="0" checked><label for="h2r0">No known risk factors</label></div>
+      <div class="calc-item"><input type="radio" name="h2_rf" id="h2r1" data-pts="1"><label for="h2r1">1-2 risk factors</label></div>
+      <div class="calc-item"><input type="radio" name="h2_rf" id="h2r2" data-pts="2"><label for="h2r2">&ge;3 risk factors, or known atherosclerotic disease</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Initial troponin</span>
+      <div class="calc-item"><input type="radio" name="h2_trop" id="h2t0" data-pts="0" checked><label for="h2t0">&le; normal limit</label></div>
+      <div class="calc-item"><input type="radio" name="h2_trop" id="h2t1" data-pts="1"><label for="h2t1">1-3x normal limit</label></div>
+      <div class="calc-item"><input type="radio" name="h2_trop" id="h2t2" data-pts="2"><label for="h2t2">&gt; 3x normal limit</label></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="heartScore2">0</div></div>
+      <div class="score-interp" id="heartInterp2">Low risk (0-3): ~1-2% 6-week MACE.</div>
+    </div>
+    <div class="calc-note"><span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: PERC Score (PE Rule-Out Criteria)</h4>
+  <p>Applies ONLY to patients already judged low pretest probability for PE by clinical gestalt — PERC is not a standalone screening tool for undifferentiated patients. If all 8 criteria are negative in a low-probability patient, PE can reasonably be excluded without D-dimer or imaging.</p>
+
+  <div class="calc-card" id="percCalc">
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_age"><label for="p_age">Age &ge; 50</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_hr"><label for="p_hr">Heart rate &ge; 100</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_spo2"><label for="p_spo2">SpO2 &lt; 95% on room air</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_hemoptysis"><label for="p_hemoptysis">Hemoptysis</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_estrogen"><label for="p_estrogen">Estrogen use (OCPs, HRT)</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_priorvte"><label for="p_priorvte">Prior DVT/PE</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_legswelling"><label for="p_legswelling">Unilateral leg swelling</label></div>
+      <div class="calc-item"><input type="checkbox" class="perc-item" id="p_surgery"><label for="p_surgery">Surgery/trauma requiring hospitalization within 4 weeks</label></div>
+    </div>
+    <div class="calc-result" id="percResult">
+      <div class="score-interp" id="percInterp" style="text-align:left; flex:1;">All criteria negative — PERC negative. If pretest probability is already low, PE may reasonably be excluded without further testing.</div>
+    </div>
+    <div class="calc-note">Only valid in patients already assessed as low pretest probability by clinical gestalt. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: Wells Score — DVT</h4>
+  <div class="calc-card" id="wellsDvtCalc">
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd1"><label for="wd1">Active cancer (treatment within 6 months or palliative)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd2"><label for="wd2">Paralysis, paresis, or recent leg immobilization</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd3"><label for="wd3">Bedridden &gt;3 days, or major surgery within 12 weeks</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd4"><label for="wd4">Localized tenderness along the deep venous system</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd5"><label for="wd5">Entire leg swollen</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd6"><label for="wd6">Calf swelling &gt;3cm vs. asymptomatic leg</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd7"><label for="wd7">Pitting edema confined to symptomatic leg</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd8"><label for="wd8">Collateral superficial veins (non-varicose)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="1" id="wd9"><label for="wd9">Previously documented DVT</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wd-item" data-pts="-2" id="wd10"><label for="wd10">Alternative diagnosis at least as likely as DVT</label><span class="pts">-2</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="wdScore">0</div></div>
+      <div class="score-interp" id="wdInterp" style="text-align:right; flex:1;">Low probability (&le;0) — consider D-dimer.</div>
+    </div>
+    <div class="calc-note"><span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: Wells Score — PE</h4>
+  <div class="calc-card" id="wellsPeCalc">
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="3" id="wp1"><label for="wp1">Clinical signs/symptoms of DVT</label><span class="pts">+3</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="3" id="wp2"><label for="wp2">PE is the #1 diagnosis, or equally likely</label><span class="pts">+3</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="1.5" id="wp3"><label for="wp3">Heart rate &gt; 100</label><span class="pts">+1.5</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="1.5" id="wp4"><label for="wp4">Immobilization &ge;3 days, or surgery within 4 weeks</label><span class="pts">+1.5</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="1.5" id="wp5"><label for="wp5">Previous DVT/PE</label><span class="pts">+1.5</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="1" id="wp6"><label for="wp6">Hemoptysis</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" class="wp-item" data-pts="1" id="wp7"><label for="wp7">Malignancy (treated within 6 months or palliative)</label><span class="pts">+1</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="wpScore">0</div></div>
+      <div class="score-interp" id="wpInterp" style="text-align:right; flex:1;">PE unlikely (&le;4) — consider D-dimer.</div>
+    </div>
+    <div class="calc-note"><span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Quick Reference: NYHA Functional Class</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Class</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">I</td><td>No symptom limitation with ordinary physical activity</td></tr>
+        <tr><td class="mono-cell">II</td><td>Slight limitation; comfortable at rest, ordinary activity causes symptoms</td></tr>
+        <tr><td class="mono-cell">III</td><td>Marked limitation; comfortable at rest, less-than-ordinary activity causes symptoms</td></tr>
+        <tr><td class="mono-cell">IV</td><td>Symptoms at rest; any physical activity increases discomfort</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="micro-title">Quick Reference: Killip Classification (Post-MI)</h4>
+  <div class="table-wrap">
+    <table class="drug-table">
+      <thead><tr><th>Class</th><th>Findings</th><th>Approximate In-Hospital Mortality</th></tr></thead>
+      <tbody>
+        <tr><td class="mono-cell">I</td><td>No signs of heart failure</td><td class="mono-cell">~5%</td></tr>
+        <tr><td class="mono-cell">II</td><td>Rales, S3, or elevated JVP</td><td class="mono-cell">~10-20%</td></tr>
+        <tr><td class="mono-cell">III</td><td>Overt pulmonary edema</td><td class="mono-cell">~35-40%</td></tr>
+        <tr><td class="mono-cell">IV</td><td>Cardiogenic shock</td><td class="mono-cell">~60-80%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px; color:var(--text-mute);">Mortality figures are commonly cited historical approximations — verify against current sources before quoting. <span class="verify-tag">verify before relying</span></p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Who to call</dt><dd>Cardiology for high-risk HEART scores requiring early invasive workup (see Vol. 4); pursue CTPA/formal imaging for any DVT/PE-probability tool result suggesting further testing is warranted, rather than treating the calculator score as a final answer in isolation.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  function wireRadioCalc(cardId, groups, scoreId, interpId, interpFn) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+    function recalc() {
+      var total = 0;
+      groups.forEach(function(g) {
+        var radios = card.querySelectorAll('input[name="' + g + '"]');
+        radios.forEach(function(r) { if (r.checked) total += parseInt(r.getAttribute('data-pts'), 10); });
+      });
+      document.getElementById(scoreId).textContent = total;
+      document.getElementById(interpId).textContent = interpFn(total);
+    }
+    groups.forEach(function(g) {
+      card.querySelectorAll('input[name="' + g + '"]').forEach(function(r) { r.addEventListener('change', recalc); });
+    });
+    recalc();
+  }
+
+  wireRadioCalc('heartCalc2', ['h2_hist','h2_ecg','h2_age','h2_rf','h2_trop'], 'heartScore2', 'heartInterp2', function(s) {
+    if (s <= 3) return "Low risk (0-3): ~1-2% 6-week MACE — early discharge reasonable.";
+    if (s <= 6) return "Moderate risk (4-6): ~12-17% 6-week MACE — admit for further workup.";
+    return "High risk (7-10): ~50-65% 6-week MACE — early invasive strategy.";
+  });
+
+  function wirePERC() {
+    var card = document.getElementById('percCalc');
+    if (!card) return;
+    var boxes = card.querySelectorAll('.perc-item');
+    var resultDiv = document.getElementById('percResult');
+    var interp = document.getElementById('percInterp');
+    function recalc() {
+      var anyChecked = Array.from(boxes).some(function(cb){ return cb.checked; });
+      if (anyChecked) {
+        resultDiv.style.background = 'color-mix(in srgb, var(--warn) 16%, var(--surface))';
+        resultDiv.style.borderColor = 'var(--warn)';
+        interp.textContent = 'PERC POSITIVE (at least one criterion present) — PE cannot be excluded by PERC alone; proceed to D-dimer or imaging per clinical judgment.';
+      } else {
+        resultDiv.style.background = 'color-mix(in srgb, var(--good) 14%, var(--surface))';
+        resultDiv.style.borderColor = 'var(--good)';
+        interp.textContent = 'All criteria negative — PERC negative. If pretest probability is already low, PE may reasonably be excluded without further testing.';
+      }
+    }
+    boxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+    recalc();
+  }
+  wirePERC();
+
+  function wireSumCalc(cardId, itemClass, scoreId, interpId, interpFn) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+    var boxes = card.querySelectorAll('.' + itemClass);
+    function recalc() {
+      var total = 0;
+      boxes.forEach(function(cb){ if (cb.checked) total += parseFloat(cb.getAttribute('data-pts')); });
+      document.getElementById(scoreId).textContent = total;
+      document.getElementById(interpId).textContent = interpFn(total);
+    }
+    boxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+    recalc();
+  }
+
+  wireSumCalc('wellsDvtCalc', 'wd-item', 'wdScore', 'wdInterp', function(s) {
+    if (s <= 0) return "Low probability (≤0) — DVT unlikely, consider D-dimer.";
+    if (s <= 2) return "Moderate probability (1-2) — consider D-dimer +/- ultrasound.";
+    return "High probability (≥3) — consider proceeding directly to ultrasound.";
+  });
+
+  wireSumCalc('wellsPeCalc', 'wp-item', 'wpScore', 'wpInterp', function(s) {
+    if (s <= 4) return "PE unlikely (≤4) — consider D-dimer.";
+    return "PE likely (>4) — consider proceeding directly to CTPA.";
+  });
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: DOCS -->
+
+<section class="section" id="docs">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Physical Exam, Documentation &amp; Risk Stratification</div>
+  <h2 class="section-title">Documentation &amp; Medicolegal Pearls</h2>
+  <p class="section-sub">Closing this atlas — and the entire series — with how to write down everything the prior five sections taught you to find, in a way that protects both the patient and you.</p>
+
+  <h4 class="micro-title">Structured Cardiac Exam Documentation</h4>
+  <p>A complete, reproducible cardiac exam note follows a consistent structure — inspection, palpation, auscultation, and a synthesis statement — rather than a vague "heart: RRR, no m/r/g" that provides little defensible detail if the chart is ever reviewed.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">A more defensible template</span>
+    <p>"Inspection: no visible heaves or lifts. Palpation: PMI non-displaced, 5th ICS MCL, no thrill. Auscultation: S1/S2 normal, regular rate and rhythm, no S3/S4, no murmurs/rubs/gallops appreciated at aortic, pulmonic, tricuspid, and mitral positions. JVP estimated at [X]cm, no HJR. Extremities: no edema, pulses 2+ and symmetric bilaterally (radial, femoral, DP, PT)." This takes seconds longer to write than "RRR, no m/r/g" but documents that a systematic exam was actually performed at each landmark — valuable both for patient care continuity and medicolegal defensibility.</p>
+  </div>
+
+  <h4 class="micro-title">Murmur Documentation — Use the Full Notation</h4>
+  <p>A complete murmur description includes: timing (systolic/diastolic), grade (I-VI, see the Cardiac Auscultation section), location/point of maximal intensity, radiation, quality (harsh, blowing, rumbling), and pitch — e.g., "Grade III/VI harsh systolic murmur, loudest at the right 2nd intercostal space, radiating to the carotids." A murmur documented only as "systolic murmur" gives the next clinician (or a chart reviewer) almost nothing to work with.</p>
+
+  <h4 class="micro-title">Risk Score Documentation — Show Your Work</h4>
+  <div class="callout warn">
+    <span class="callout-label">Document the score AND the individual components</span>
+    <p>Writing "HEART score 3, low risk, discharged" is weaker than writing "HEART score 3 (History: 1 - moderately suspicious; ECG: 0 - normal; Age: 0; Risk factors: 1 - one risk factor, hypertension; Troponin: 1 - mildly elevated but non-dynamic), low risk category, discussed with patient, shared decision-making regarding discharge with close follow-up." The itemized breakdown demonstrates the clinical reasoning behind the number, which matters enormously if that chart is ever reviewed months or years later — a bare number invites the question "how did you get there?" with no answer in the record.</p>
+  </div>
+
+  <h4 class="micro-title">Documenting a Negative/Reassuring Exam Has Real Value</h4>
+  <p>Explicitly charting pertinent negatives — "no JVD, no lower extremity edema, no hepatojugular reflux, ABI within normal limits bilaterally, no carotid bruits" — is not filler. It demonstrates that specific, relevant findings were actively sought and not simply omitted, which is a meaningfully different (and more defensible) record than a chart that's simply silent on the topic.</p>
+
+  <h4 class="micro-title">The "I Considered and Ruled Out" Note</h4>
+  <div class="callout pearl">
+    <span class="callout-label">Naming the dangerous diagnoses you excluded, and why</span>
+    <p>For high-risk chief complaints (chest pain, syncope, dyspnea), explicitly documenting the specific dangerous diagnoses considered and the reasoning for excluding each — "Aortic dissection considered given the atypical pain description; however, pain was reproducible on palpation, no pulse deficit, no widened mediastinum on CXR, low clinical suspicion" — creates a far stronger record than a diagnosis and disposition alone. This directly mirrors the documentation philosophy from your ED Charting/Bulletproof Note atlas, applied specifically to cardiovascular chief complaints.</p>
+  </div>
+
+  <h4 class="micro-title">Cross-Referencing This Atlas Series in Your Documentation</h4>
+  <p>When your clinical reasoning draws on a specific guideline-based framework — the 2025 ACC/AHA hypertension thresholds, the SCAI shock staging system, the Duke-ISCVID endocarditis criteria — naming the framework explicitly in your note ("SCAI Stage C cardiogenic shock, escalating to mechanical circulatory support per shock team discussion") demonstrates guideline-concordant reasoning far more clearly than a narrative summary alone, and creates an easier record to defend or explain later.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Discharge documentation for "ruled out" risk-score-negative patients</span>
+    <p>A patient discharged after a reassuring HEART score, negative PERC, or low Wells score with a negative D-dimer still needs explicit return-precaution documentation — what specific symptoms should prompt return, and confirmation the patient verbalized understanding. A risk score result is a probability statement, not a guarantee, and the chart should reflect that the patient was given clear guidance for the residual (even if small) risk.</p>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">This completes the Cardiology Atlas series</span>
+    <p>Physical exam technique, documentation practice, and risk stratification tools — the bedside skills that connect everything built across the Cardiology, Vascular, Cardiothoracic Surgery, and Pharmacology Atlases into a single, usable clinical reference library.</p>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiology Physical Exam, Documentation &amp; Risk Stratification Atlas · Built for clinical education and bedside reference. Interactive calculators are teaching aids, not a substitute for clinical judgment or institutional protocol. This atlas is designed to be read alongside the disease-focused Cardiology, Vascular, Cardiothoracic Surgery, and Pharmacology Atlases built earlier in this series.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>
