@@ -317,6 +317,26 @@ const AllPosts = () => {
       tags: ["Cardiology", "ACS", "STEMI", "Clinical Education"]
     },
     {
+      title: "Cardiology Atlas Vol. 3 — Arrhythmias & Conduction Disease",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "Bradyarrhythmias, AV block, SVT, atrial fibrillation, wide-complex tachycardia, VT, and inherited channelopathies.",
+      image: businessPost,
+      slug: "cardiology-atlas-vol3",
+      tags: ["Cardiology", "Arrhythmia", "EKG", "Clinical Education"]
+    },
+    {
+      title: "Cardiothoracic Surgery Atlas Vol. 1 — Cardiac Surgery & Devices",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 2, 2026",
+      excerpt: "CABG, PCI, valve surgery, aortic operations, LVADs, transplant, and post-operative cardiac surgical care.",
+      image: businessPost,
+      slug: "cardiothoracic-surgery-atlas-vol1",
+      tags: ["Cardiology", "Cardiac Surgery", "Devices", "Clinical Education"]
+    },
+    {
       title: "Cardiology Atlas Vol. 5 — Acute MI Complications & Cardiogenic Shock",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1081,6 +1101,8 @@ const AllPosts = () => {
     "cardiology-pharm-atlas-vol3": "Cardiology",
     "cardiology-physical-exam-atlas": "Cardiology",
     "cardiothoracic-surgery-atlas-vol2": "Cardiology",
+    "cardiology-atlas-vol3": "Cardiology",
+    "cardiothoracic-surgery-atlas-vol1": "Cardiology",
     "vascular-atlas-vol1": "Cardiology",
     "vascular-atlas-vol2": "Cardiology",
     "adult-trauma-resuscitation-atlas": "Pulmonary & Critical Care",
