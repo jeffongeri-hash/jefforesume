@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vascular Atlas · Vol. 1 — Arterial Disease</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-ali: #ef5350;
+  --accent-aortic: #ffb74d;
+  --accent-vasculitis: #ba68c8;
+  --accent-renal: #aed581;
+  --accent-mesenteric: #ff8a65;
+  --accent-carotid: #7986cb;
+  --accent: #4fc3f7;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-ali: #b3261e;
+  --accent-aortic: #a25b00;
+  --accent-vasculitis: #7b3f96;
+  --accent-renal: #5a7d1f;
+  --accent-mesenteric: #c85a2e;
+  --accent-carotid: #3949ab;
+  --accent: #0d6d8f;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#pad { --sec-accent: var(--accent-pad); }
+#ali { --sec-accent: var(--accent-ali); }
+#aortic { --sec-accent: var(--accent-aortic); }
+#vasculitis { --sec-accent: var(--accent-vasculitis); }
+#renal { --sec-accent: var(--accent-renal); }
+#mesenteric { --sec-accent: var(--accent-mesenteric); }
+#carotid { --sec-accent: var(--accent-carotid); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Vascular Atlas</span>
+    <span class="title">Vol. 1 — Arterial Disease</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#pad">PAD &amp; Chronic Limb-Threatening Ischemia</option>
+      <option value="#ali">Acute Limb Ischemia</option>
+      <option value="#aortic">Aortic Aneurysm &amp; Dissection</option>
+      <option value="#vasculitis">Vasculitis Spectrum</option>
+      <option value="#renal">Renovascular Disease</option>
+      <option value="#mesenteric">Mesenteric Ischemia</option>
+      <option value="#carotid">Carotid Disease &amp; Raynaud's</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Arterial Disease</h1>
+  <p class="lede">Pathophysiology, staging systems, and management for the arterial side of vascular medicine — built to the 2024 ACC/AHA/Multisociety Lower Extremity PAD Guideline and the 2022 ACR/EULAR vasculitis classification criteria.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-pad)" href="#pad">
+      <div class="n">01</div><div class="t">PAD &amp; Chronic Limb-Threatening Ischemia</div>
+      <div class="d">2024 guideline, WIfI classification, revascularization</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-ali)" href="#ali">
+      <div class="n">02</div><div class="t">Acute Limb Ischemia</div>
+      <div class="d">Rutherford staging, the 6 P's, time-critical management</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-aortic)" href="#aortic">
+      <div class="n">03</div><div class="t">Aortic Aneurysm &amp; Dissection</div>
+      <div class="d">Thoracic vs. abdominal, genetic syndromes, screening</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-vasculitis)" href="#vasculitis">
+      <div class="n">04</div><div class="t">Vasculitis Spectrum</div>
+      <div class="d">Large, medium, and small vessel disease by vessel size</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-renal)" href="#renal">
+      <div class="n">05</div><div class="t">Renovascular Disease</div>
+      <div class="d">Atherosclerotic vs. FMD, renovascular hypertension</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-mesenteric)" href="#mesenteric">
+      <div class="n">06</div><div class="t">Mesenteric Ischemia</div>
+      <div class="d">Acute (embolic/thrombotic/NOMI) and chronic disease</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-carotid)" href="#carotid">
+      <div class="n">07</div><div class="t">Carotid Disease &amp; Raynaud's</div>
+      <div class="d">Stroke prevention, vasospastic disorders</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: PAD -->
+
+<section class="section" id="pad">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Arterial Disease</div>
+  <h2 class="section-title">PAD &amp; Chronic Limb-Threatening Ischemia</h2>
+  <p class="section-sub">A deeper look than Vol. 1a's introduction — built to the 2024 ACC/AHA/Multisociety Lower Extremity PAD Guideline, the first major update to reframe PAD around four distinct clinical subsets.</p>
+
+  <h3 class="sub-title">Four Clinical Subsets &amp; the WIfI Classification</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 520" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_pad2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_pad2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_pad2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_pad2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2024 ACC/AHA: four clinical subsets of PAD</text>
+<rect x="20" y="40" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="125.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">ASYMPTOMATIC</text>
+<text x="125.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No reported leg symptoms, but may have functional impairment on objective walking testing. 20-59% of all confirmed PAD. Still carries increased MACE risk -- this is NOT a benign finding just because it's silent.</text>
+<rect x="260" y="40" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="365.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">CHRONIC SYMPTOMATIC</text>
+<text x="365.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Claudication -- reproducible exertional pain, relieved by rest. Structured exercise therapy has outcomes comparable to revascularization for claudication alone.</text>
+<rect x="500" y="40" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="605.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">CHRONIC LIMB-THREATENING ISCHEMIA</text>
+<text x="605.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ischemic rest pain, ulceration, and/or gangrene. 1-year amputation rate 15-20%; 1-year mortality 15-40%. Use WIfI classification to guide revascularization urgency.</text>
+<rect x="740" y="40" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="845.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">ACUTE LIMB ISCHEMIA</text>
+<text x="845.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sudden arterial occlusion (embolic or in-situ thrombotic) -- surgical emergency, see next section for full staging and management.</text>
+<line x1="230" y1="130" x2="260" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad2)"/>
+<line x1="470" y1="130" x2="500" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad2)"/>
+<line x1="710" y1="130" x2="740" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad2)"/>
+<line x1="20" y1="246" x2="960" y2="246" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="270" font-size="12.5" font-weight="700" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">WIfI classification for CLTI (Wound, Ischemia, foot Infection)</text>
+<rect x="20" y="286" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="125.0" y="304" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Wound</text>
+<text x="125.0" y="357.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Grade 0 (none) to 3 (extensive tissue loss, unsalvageable without complex reconstruction)</text>
+<rect x="260" y="286" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="365.0" y="304" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Ischemia</text>
+<text x="365.0" y="357.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Grade 0 (ABI&gt;=0.8) to 3 (ABI&lt;0.4, toe pressure &lt;30mmHg) -- based on ABI, toe pressure, or TcPO2</text>
+<rect x="500" y="286" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="605.0" y="304" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">foot Infection</text>
+<text x="605.0" y="357.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Grade 0 (none) to 3 (systemic inflammatory response -- sepsis)</text>
+<rect x="740" y="286" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="845.0" y="304" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Composite score</text>
+<text x="845.0" y="357.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Grades combine into a risk stratification that predicts 1-year amputation risk and guides revascularization urgency</text>
+<line x1="20" y1="426" x2="960" y2="426" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="450" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">New in 2024: low-dose rivaroxaban (2.5mg BID) plus low-dose aspirin is a reasonable addition to reduce MACE/MALE in symptomatic PAD (from COMPASS/VOYAGER PAD data),</text>
+<text x="20" y="468" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">alongside the established pillars of smoking cessation, high-intensity statin, BP control, and supervised exercise therapy.</text>
+</svg>
+    <div class="diagram-caption">Each subset has a different natural history and management priority — the guideline explicitly warns against treating "asymptomatic" as synonymous with "low risk," since MACE risk remains elevated even without leg symptoms.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Why WIfI matters</span>
+    <p>The WIfI classification (Wound, Ischemia, foot Infection) gives CLTI a shared language across vascular surgery, podiatry, and wound care — much like SCAI staging does for cardiogenic shock (Vol. 5). A composite WIfI stage predicts 1-year amputation risk and directly informs how urgently revascularization should proceed relative to wound/infection management.</p>
+  </div>
+
+  <h4 class="micro-title">Medical Therapy — What's New in 2024</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">The established pillars</span><p>Smoking cessation, high-intensity statin therapy, blood pressure control, and supervised exercise therapy remain the foundation — supervised exercise in particular has outcomes for claudication comparable to revascularization in appropriately selected patients.</p></div>
+    <div class="callout"><span class="callout-label">Low-dose rivaroxaban + aspirin</span><p>Building on COMPASS and VOYAGER PAD trial data, low-dose rivaroxaban (2.5mg twice daily) added to low-dose aspirin is now a reasonable option to reduce major adverse cardiovascular and limb events in symptomatic PAD — a genuinely new addition to the standard medical regimen beyond the traditional pillars.</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Multidisciplinary care is now explicitly recommended</span>
+    <p>The 2024 guideline formally recommends a multispecialty team — vascular medicine, vascular surgery/interventionalists, podiatry, and wound care working together — particularly for CLTI, reflecting evidence that siloed, single-specialty care produces worse limb salvage outcomes than coordinated team-based management.</p>
+  </div>
+
+  <h4 class="micro-title">Revascularization Threshold by Subset</h4>
+  <p>Asymptomatic PAD generally does not warrant revascularization — risk factor modification is the priority. Claudication warrants revascularization only after an adequate trial of supervised exercise and medical therapy fails to provide acceptable quality of life, since the procedural risk must be weighed against a non-limb-threatening baseline. CLTI is the clearest revascularization indication — the goal shifts from symptom improvement to limb salvage, and delay directly costs tissue.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery or interventional vascular medicine for any confirmed CLTI — the WIfI stage should be communicated directly, since it drives urgency triage on the receiving end.</dd>
+      <dt>Urgent (days, not weeks) referral</dt><dd>New rest pain or non-healing ulceration in a patient with known PAD — this is the transition point from chronic symptomatic disease to CLTI and changes the entire management timeline.</dd>
+      <dt>Transfer if no vascular surgery/endovascular capability on-site</dt><dd>Any CLTI patient at a facility without revascularization capability — arrange transfer proactively rather than waiting for wound deterioration or infection to force the issue.</dd>
+      <dt>Transport considerations</dt><dd>Protect the affected limb from further trauma or pressure during transport; standard transport is usually adequate for stable CLTI without active infection, but escalate to more urgent transport if signs of limb-threatening infection or acute deterioration develop.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery for surgical revascularization candidacy; interventional radiology/cardiology for endovascular-first approaches depending on local practice patterns; podiatry and wound care in parallel for any CLTI with tissue loss.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: ALI -->
+
+<section class="section" id="ali">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Arterial Disease</div>
+  <h2 class="section-title">Acute Limb Ischemia</h2>
+  <p class="section-sub">A limb-viability clock measured in hours — the Rutherford classification exists specifically to communicate urgency in a single shared vocabulary.</p>
+
+  <h3 class="sub-title">Rutherford Staging</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_ali" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_ali" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_ali" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_ali" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-ali)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Rutherford classification of acute limb ischemia</text>
+<rect x="20" y="40" width="210" height="200" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="125.0" y="58" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">I -- VIABLE</text>
+<text x="125.0" y="150.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Not immediately threatened. No sensory loss, no muscle weakness. Audible arterial +/- venous Doppler signal.</text>
+<rect x="260" y="40" width="210" height="200" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="365.0" y="58" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">IIa -- MARGINALLY THREATENED</text>
+<text x="365.0" y="150.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Salvageable if promptly treated. Minimal sensory loss (toes) or none; no muscle weakness. Arterial signal often inaudible; venous signal audible.</text>
+<rect x="500" y="40" width="210" height="200" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="605.0" y="58" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">IIb -- IMMEDIATELY THREATENED</text>
+<text x="605.0" y="150.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Salvageable with IMMEDIATE revascularization. Sensory loss beyond toes, associated with rest pain; mild-moderate muscle weakness. Arterial signal usually inaudible.</text>
+<rect x="740" y="40" width="210" height="200" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="845.0" y="58" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">III -- IRREVERSIBLE</text>
+<text x="845.0" y="150.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Major tissue loss or permanent nerve damage inevitable. Profound sensory loss, anesthetic; profound weakness, paralysis (rigor). No Doppler signals (arterial or venous).</text>
+<line x1="20" y1="266" x2="960" y2="266" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="290" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">The 6 Ps (clinical exam)</text>
+<rect x="20" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="92.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Pain</text>
+<text x="92.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Early finding</text>
+<rect x="173" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="245.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Pallor</text>
+<text x="245.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Early finding</text>
+<rect x="326" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="398.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Pulselessness</text>
+<text x="398.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Early finding</text>
+<rect x="479" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="551.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Paresthesia</text>
+<text x="551.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LATE finding</text>
+<rect x="632" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="704.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Poikilothermia</text>
+<text x="704.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Early finding</text>
+<rect x="785" y="306" width="145" height="60" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="857.5" y="324" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Paralysis</text>
+<text x="857.5" y="346.9" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LATE finding</text>
+<line x1="20" y1="392" x2="960" y2="392" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="416" font-size="11.5" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif">Embolic vs. thrombotic in-situ occlusion</text>
+<text x="20" y="438" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Embolic: sudden onset, no prior claudication history, identifiable source (AFib, recent MI, prosthetic valve) -- often more dramatic presentation.</text>
+<text x="20" y="456" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Thrombotic (in-situ): prior claudication history, gradual worsening, underlying atherosclerotic PAD -- may have better collateral development, slightly more time to intervene.</text>
+</svg>
+    <div class="diagram-caption">Stage IIb ("immediately threatened") is the critical inflection point — this is salvageable, but only with immediate revascularization, not scheduled or next-day intervention.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Paresthesia and paralysis are late, ominous findings</span>
+    <p>Pain, pallor, and pulselessness can be present in viable or marginally threatened limbs — but new paresthesia (sensory loss) or paralysis (motor loss) signal nerve and muscle ischemia severe enough to indicate Stage IIb or worse. Don't wait for these late findings to escalate; a limb without sensory or motor deficit but with an absent pulse and rest pain already warrants urgent evaluation.</p>
+  </div>
+
+  <h4 class="micro-title">Expandable: Time-Critical Decision Points</h4>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Determine viability stage immediately on presentation</summary>
+    <div class="algo-body">
+      <p>A focused vascular exam (pulses, Doppler signals both arterial and venous, sensory and motor exam) takes minutes and directly determines the entire subsequent pathway — this should happen before, not after, imaging is arranged.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — Stage III (irreversible)? Consider primary amputation</summary>
+    <div class="algo-body">
+      <p>Profound sensory and motor loss with no Doppler signal at all indicates tissue that cannot be salvaged — attempting revascularization of an irreversibly ischemic limb risks reperfusion injury (severe hyperkalemia, myoglobinuria, compartment syndrome, systemic acidosis) without benefit. This is a difficult but necessary determination made jointly with vascular surgery.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Stage I or IIa? Imaging can proceed before intervention</summary>
+    <div class="algo-body">
+      <p>A viable or marginally threatened limb tolerates the time needed for CT angiography or formal angiography to define the anatomy and plan the specific revascularization approach (endovascular thrombectomy/thrombolysis vs. open surgical embolectomy vs. bypass).</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Stage IIb? Go straight to the OR/angio suite</summary>
+    <div class="algo-body">
+      <p>Immediately threatened limbs do not have time for extensive imaging workup — anticoagulate immediately (heparin, to prevent thrombus propagation) and proceed directly to revascularization, with imaging obtained on the way to or during the procedure rather than delaying intervention for a formal study beforehand.</p>
+    </div>
+  </details>
+
+  <h4 class="micro-title">Anticoagulate Immediately, Regardless of Stage</h4>
+  <p>Systemic heparin should be started as soon as ALI is suspected, before the etiology (embolic vs. thrombotic) or exact revascularization plan is determined — this prevents proximal and distal thrombus propagation and buys time for definitive treatment planning. This is one of the few interventions in this diagnosis that should never be delayed pending further workup.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Watch for reperfusion complications after revascularization</span>
+    <p>Once flow is restored, monitor closely for compartment syndrome (may require prophylactic or therapeutic fasciotomy), hyperkalemia, myoglobinuria/rhabdomyolysis, and systemic acidosis from washout of ischemic metabolic byproducts — these can be as life-threatening as the ischemia itself, particularly after prolonged ischemia time before revascularization.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery emergently for any suspected ALI regardless of stage — even Stage I/IIa needs prompt surgical involvement given how quickly staging can change.</dd>
+      <dt>ICU admission</dt><dd>Post-revascularization for any patient with significant ischemia time before treatment, given reperfusion injury risk; any patient with hemodynamic instability from the underlying embolic source (e.g., new AFib with RVR) or from reperfusion complications.</dd>
+      <dt>Transfer if no vascular surgery on-site</dt><dd>Emergent transfer for any Stage IIb or higher — this is one of the true time-critical vascular emergencies, and pre-arrival notification to the receiving vascular surgery team is essential.</dd>
+      <dt>Transport considerations</dt><dd>Continue heparin infusion uninterrupted throughout transport; keep the limb protected and in a dependent (not elevated) position to maximize perfusion; a critical care or specialized transport team for any patient with reperfusion complications already evident.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery directly and emergently; cardiology in parallel if an embolic source needs urgent evaluation (echo for thrombus, rhythm management for AFib).</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: AORTIC -->
+
+<section class="section" id="aortic">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Arterial Disease</div>
+  <h2 class="section-title">Aortic Aneurysm &amp; Dissection</h2>
+  <p class="section-sub">Vol. 1a covered the core pathophysiology and rupture-risk-by-diameter framework — this section goes deeper into the thoracic/abdominal distinction and the genetic syndromes that change the rules entirely.</p>
+
+  <h3 class="sub-title">Thoracic vs. Abdominal, and the Heritable Syndromes</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_aortic2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_aortic2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_aortic2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_aortic2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-aortic)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Thoracic vs. abdominal aneurysm &amp; heritable syndromes</text>
+<rect x="20" y="40" width="460" height="170" rx="12" fill="var(--surface)" stroke="var(--accent-aortic)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-aortic)" font-family="Inter, sans-serif" style="text-transform:uppercase">THORACIC AORTIC ANEURYSM</text>
+<text x="250.0" y="69.7" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Less common than AAA; more often associated</text>
+<text x="250.0" y="83.0" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with genetic connective tissue disease</text>
+<text x="250.0" y="96.3" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="109.6" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Screening: not population-wide like AAA --</text>
+<text x="250.0" y="122.9" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">targeted to those with FHx or known genetic</text>
+<text x="250.0" y="136.2" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">syndrome</text>
+<text x="250.0" y="149.5" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="162.8" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Growth rate and rupture risk vary by segment</text>
+<text x="250.0" y="176.2" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(root/ascending vs. arch vs. descending) --</text>
+<text x="250.0" y="189.5" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">root/ascending generally repaired at smaller</text>
+<text x="250.0" y="202.8" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">diameters given higher risk at a given size</text>
+<rect x="500" y="40" width="460" height="170" rx="12" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase">ABDOMINAL AORTIC ANEURYSM</text>
+<text x="730.0" y="69.7" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">More common overall; strongly associated</text>
+<text x="730.0" y="83.0" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with smoking, atherosclerosis, male sex,</text>
+<text x="730.0" y="96.3" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">age &gt;65</text>
+<text x="730.0" y="109.6" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="122.9" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Screening: USPSTF one-time ultrasound for</text>
+<text x="730.0" y="136.2" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">men 65-75 who have ever smoked (Grade B)</text>
+<text x="730.0" y="149.5" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-- see Vol. 1a for full screening detail</text>
+<text x="730.0" y="162.8" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="176.2" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Repair threshold ~5.5cm (men), ~5.0cm</text>
+<text x="730.0" y="189.5" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(women) -- see Vol. 1a for full rupture-risk</text>
+<text x="730.0" y="202.8" text-anchor="middle" font-size="10.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">by diameter table</text>
+<line x1="20" y1="230" x2="960" y2="230" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="254" font-size="12.5" font-weight="700" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Heritable thoracic aortic disease -- think of these in young patients</text>
+<rect x="20" y="270" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-vasculitis)" stroke-width="1.6"/>
+<text x="170.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase">Marfan syndrome</text>
+<text x="170.0" y="371.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">FBN1 mutation. Tall stature, arachnodactyly, lens dislocation, pectus deformity. Aortic root dilation is the dominant risk -- repair threshold lower (~4.5-5.0cm) than typical TAA.</text>
+<rect x="340" y="270" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-vasculitis)" stroke-width="1.6"/>
+<text x="490.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase">Loeys-Dietz syndrome</text>
+<text x="490.0" y="371.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">TGF-beta pathway genes. Often MORE aggressive than Marfan -- arterial tortuosity, hypertelorism, bifid uvula. Repair at smaller diameters given higher rupture risk per size.</text>
+<rect x="660" y="270" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-vasculitis)" stroke-width="1.6"/>
+<text x="810.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase">Vascular Ehlers-Danlos</text>
+<text x="810.0" y="371.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">COL3A1 mutation. Arterial FRAGILITY with risk of spontaneous rupture/dissection even at NORMAL diameters -- imaging surveillance alone is less reassuring than in other syndromes.</text>
+</svg>
+    <div class="diagram-caption">Location and etiology change both the screening strategy and the repair threshold — a young patient with a dilated aortic root needs a fundamentally different workup and follow-up plan than an older patient with a typical infrarenal AAA.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Vascular Ehlers-Danlos is the one that breaks the "watch and wait" model</span>
+    <p>Unlike Marfan or Loeys-Dietz, where surveillance imaging and a defined diameter threshold guide timing, vascular Ehlers-Danlos syndrome carries meaningful spontaneous arterial rupture and dissection risk even at normal or near-normal diameters. A young patient with a strong family history of unexplained arterial rupture or dissection, easy bruising, and characteristic thin, translucent skin deserves genetics referral regardless of what imaging shows at a single point in time.</p>
+  </div>
+
+  <h4 class="micro-title">When to Suspect a Genetic Syndrome</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Clinical red flags</span><p>Aortic aneurysm/dissection at a young age (generally &lt;50), a family history of the same, disproportionate tall stature or skeletal features (arachnodactyly, pectus deformity), or a combination of aortic disease with other systemic features (lens dislocation, joint hypermobility, distinctive facial features) should all prompt consideration of a heritable etiology.</p></div>
+    <div class="callout"><span class="callout-label">Why it matters practically</span><p>Confirming a genetic syndrome changes the repair threshold (often smaller than standard TAA thresholds), triggers family cascade screening (first-degree relatives should be screened even if asymptomatic), and often changes activity recommendations (avoiding isometric/high-intensity exercise, contact sports) given the different risk profile of the underlying connective tissue defect.</p></div>
+  </div>
+
+  <h4 class="micro-title">Surveillance Imaging Cadence</h4>
+  <p>Once identified, aneurysms are followed with serial imaging (echocardiography for the aortic root, CT or MRI for more distal segments) at intervals determined by size and growth rate — smaller, stable aneurysms are typically followed annually, while larger or rapidly growing aneurysms (growth &gt;0.5cm/year is itself a red flag regardless of absolute size) warrant closer interval follow-up and earlier surgical discussion.</p>
+
+  <div class="callout warn">
+    <span class="callout-label">Bicuspid aortic valve and aortopathy</span>
+    <p>Bicuspid aortic valve is associated with its own aortopathy independent of Marfan/Loeys-Dietz/vEDS — aortic dilation in this population follows its own size-index-based thresholds (indexed to body surface area) and deserves dedicated aortic imaging surveillance alongside valve function monitoring, not just an incidental note on an echo report.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiothoracic surgery (for thoracic) or vascular surgery (for abdominal) upon reaching the size threshold for repair, or sooner if rapid growth or symptoms develop; genetics referral for any suspected heritable syndrome.</dd>
+      <dt>Emergent evaluation</dt><dd>Any new chest, back, or abdominal pain in a patient with a known aneurysm — this could represent expansion, impending rupture, or dissection and warrants immediate imaging, not routine follow-up scheduling.</dd>
+      <dt>Transfer if no cardiothoracic/vascular surgery on-site</dt><dd>Any aneurysm approaching or exceeding the repair threshold, or any acute symptoms in a patient with a known aneurysm — err toward earlier transfer given the catastrophic consequences of rupture.</dd>
+      <dt>Transport considerations</dt><dd>Blood pressure control during transport for any symptomatic aneurysm (treat as potential impending rupture/dissection until proven otherwise); avoid unnecessary Valsalva or straining.</dd>
+      <dt>Who to call</dt><dd>Cardiothoracic surgery for thoracic aortic disease; vascular surgery for abdominal aortic disease; medical genetics for suspected heritable connective tissue disease, ideally involved before major family-planning or activity decisions are made.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: VASCULITIS -->
+
+<section class="section" id="vasculitis">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Arterial Disease</div>
+  <h2 class="section-title">Vasculitis Spectrum</h2>
+  <p class="section-sub">Organizing vasculitis by vessel size — large, medium, and small — turns a sprawling list of eponymous syndromes into a manageable framework, built to the 2022 ACR/EULAR classification criteria.</p>
+
+  <h3 class="sub-title">Large, Medium, and Small Vessel Disease</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_vasculitis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_vasculitis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_vasculitis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_vasculitis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Vasculitis organized by vessel size</text>
+<rect x="20" y="40" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-vasculitis)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase">LARGE VESSEL (aorta &amp;amp; major branches)</text>
+<text x="250.0" y="84.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">GIANT CELL ARTERITIS: age &gt;50, new headache,</text>
+<text x="250.0" y="97.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">jaw claudication, visual loss (ophthalmologic</text>
+<text x="250.0" y="109.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">EMERGENCY -- treat with high-dose steroids</text>
+<text x="250.0" y="122.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">immediately on clinical suspicion, do NOT wait</text>
+<text x="250.0" y="135.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for biopsy confirmation), associated with</text>
+<text x="250.0" y="148.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">polymyalgia rheumatica. Temporal artery biopsy</text>
+<text x="250.0" y="161.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">or ultrasound (halo sign) for confirmation.</text>
+<text x="250.0" y="173.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="186.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">TAKAYASU ARTERITIS: age &lt;40 (2022 ACR/EULAR</text>
+<text x="250.0" y="199.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">criteria use &lt;=60 as cutoff), female</text>
+<text x="250.0" y="212.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">predominance, absent/asymmetric pulses</text>
+<text x="250.0" y="225.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">("pulseless disease"), limb claudication,</text>
+<text x="250.0" y="237.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">aortic arch and branch vessel involvement</text>
+<rect x="500" y="40" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">MEDIUM VESSEL</text>
+<text x="730.0" y="73.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">POLYARTERITIS NODOSA: medium muscular</text>
+<text x="730.0" y="85.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">arteries, NO glomerulonephritis (distinguishes</text>
+<text x="730.0" y="98.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">from ANCA vasculitis), mononeuritis multiplex,</text>
+<text x="730.0" y="110.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">livedo reticularis, renal artery microaneurysms.</text>
+<text x="730.0" y="123.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Historically linked to Hepatitis B.</text>
+<text x="730.0" y="135.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="148.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">KAWASAKI DISEASE: pediatric, fever &gt;=5 days</text>
+<text x="730.0" y="161.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">plus mucocutaneous findings -- coronary artery</text>
+<text x="730.0" y="173.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">aneurysm is the feared complication; IVIG</text>
+<text x="730.0" y="186.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reduces this risk substantially</text>
+<text x="730.0" y="198.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="211.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">BUERGER'S DISEASE (thromboangiitis obliterans):</text>
+<text x="730.0" y="223.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">young smokers, distal extremity ischemia --</text>
+<text x="730.0" y="236.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">complete tobacco cessation is the only</text>
+<text x="730.0" y="248.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">effective disease-modifying intervention</text>
+<line x1="20" y1="280" x2="960" y2="280" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<rect x="20" y="296" width="920" height="130" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="314" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">SMALL VESSEL</text>
+<text x="480.0" y="345.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ANCA-ASSOCIATED VASCULITIS (small vessel): granulomatosis with polyangiitis (upper/lower respiratory + renal --</text>
+<text x="480.0" y="358.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cavitary lung lesions, saddle-nose deformity, rapidly progressive GN), microscopic polyangiitis (renal + pulmonary,</text>
+<text x="480.0" y="372.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">no granulomas), eosinophilic granulomatosis with polyangiitis (asthma + eosinophilia + vasculitis). c-ANCA/PR3</text>
+<text x="480.0" y="385.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">classically associated with GPA; p-ANCA/MPO with MPA and EGPA -- but overlap exists, don't over-rely on serology alone.</text>
+<text x="480.0" y="399.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">IgA vasculitis (Henoch-Schonlein), cryoglobulinemic vasculitis also fall in this small-vessel category.</text>
+<line x1="20" y1="446" x2="960" y2="446" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="470" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">2021 ACR/Vasculitis Foundation guideline: glucocorticoids remain first-line induction across large-vessel vasculitis; tocilizumab (IL-6 blockade) is a recognized</text>
+<text x="20" y="488" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">steroid-sparing option specifically for GCA. ANCA-associated vasculitis induction now favors rituximab over cyclophosphamide in most cases given comparable efficacy and better side-effect profile.</text>
+</svg>
+    <div class="diagram-caption">Vessel size predicts both typical presentation (large vessel disease produces claudication-like and pulse-deficit findings; small vessel disease produces palpable purpura and glomerulonephritis) and the urgency of specific complications.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Giant cell arteritis is a true ophthalmologic emergency</span>
+    <p>Visual loss from GCA can become permanent within hours — if clinical suspicion is reasonable (age &gt;50, new headache, jaw claudication, elevated inflammatory markers, especially with any visual symptoms), start high-dose glucocorticoids immediately. Do not wait for temporal artery biopsy confirmation, which can be performed within 1-2 weeks of steroid initiation without significantly compromising diagnostic yield — but visual loss waits for no one.</p>
+  </div>
+
+  <h4 class="micro-title">GCA vs. Takayasu — Overlapping But Distinct</h4>
+  <p>Both are large-vessel vasculitides, and the 2022 ACR/EULAR criteria were specifically developed and validated to help distinguish them — age remains a key discriminator (Takayasu classically under 40, GCA classically over 50) but a genuine overlap zone exists in the 40-60 range, where imaging findings, presence of polymyalgia rheumatica features, and specific branch vessel involvement pattern help resolve the distinction.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>GCA</th><th>Takayasu</th></tr></thead>
+      <tbody>
+        <tr><td>Typical age</td><td>&gt;50</td><td>&lt;40 (up to 60 in 2022 criteria)</td></tr>
+        <tr><td>Sex</td><td>Female predominant, less pronounced</td><td>Strongly female predominant</td></tr>
+        <tr><td>Classic symptom</td><td>Headache, jaw claudication, visual loss</td><td>Limb claudication, absent/asymmetric pulses ("pulseless disease")</td></tr>
+        <tr><td>Associated condition</td><td>Polymyalgia rheumatica</td><td>Less commonly associated with PMR</td></tr>
+        <tr><td>Imaging</td><td>Temporal artery ultrasound (halo sign), PET-CT for extracranial large-vessel involvement</td><td>CT/MR angiography or PET-CT of aorta and branches</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="micro-title">Buerger's Disease — The One Where the Treatment Is Behavioral</h4>
+  <p>Thromboangiitis obliterans occurs almost exclusively in tobacco users (including smokeless tobacco and possibly cannabis) and produces distal extremity ischemia in young patients without typical atherosclerotic risk factors. Complete and total tobacco cessation — not partial reduction — is the only intervention that reliably halts progression; continued use, even in small amounts, is associated with ongoing disease activity and progression to amputation.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Treatment has shifted toward biologics and rituximab</span>
+    <p>Glucocorticoids remain first-line induction therapy across large-vessel vasculitis, but tocilizumab (IL-6 receptor blockade) is now a recognized steroid-sparing option specifically for GCA. For ANCA-associated vasculitis, rituximab has increasingly displaced cyclophosphamide as induction therapy in many cases, given comparable efficacy with a more favorable long-term toxicity profile (particularly regarding infertility and secondary malignancy risk with cyclophosphamide).</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Rheumatology for any suspected vasculitis, ideally same-day for large-vessel disease with visual or neurologic symptoms; ophthalmology emergently for any visual symptoms in suspected GCA.</dd>
+      <dt>Start treatment before confirmation</dt><dd>High-dose glucocorticoids for suspected GCA with visual symptoms should begin immediately, in parallel with — not after — arranging biopsy or imaging confirmation.</dd>
+      <dt>ICU admission</dt><dd>Any vasculitis with severe multi-organ involvement (pulmonary hemorrhage in ANCA-associated disease, rapidly progressive glomerulonephritis with acute kidney injury, mesenteric involvement in PAN).</dd>
+      <dt>Transfer if no rheumatology on-site</dt><dd>Any complex vasculitis requiring immunosuppressive induction therapy decision-making, or any diagnostic uncertainty between overlapping syndromes (GCA vs. Takayasu, or distinguishing ANCA-associated subtypes).</dd>
+      <dt>Who to call</dt><dd>Rheumatology as the primary specialty for essentially all vasculitis management; ophthalmology emergently for GCA with visual symptoms; nephrology for renal involvement in any of the ANCA-associated or PAN spectrum.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: RENAL -->
+
+<section class="section" id="renal">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Arterial Disease</div>
+  <h2 class="section-title">Renovascular Disease</h2>
+  <p class="section-sub">Two mechanisms producing the same hypertensive phenotype through completely different disease processes — and a management approach that diverges sharply between them.</p>
+
+  <h3 class="sub-title">Atherosclerotic RAS vs. Fibromuscular Dysplasia</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_renal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_renal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_renal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_renal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-renal)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-renal)" font-family="Inter, sans-serif" style="text-transform:uppercase">ATHEROSCLEROTIC RAS</text>
+<text x="250.0" y="45.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Older patients, typically &gt;50, with</text>
+<text x="250.0" y="58.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">traditional atherosclerotic risk factors</text>
+<text x="250.0" y="71.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="84.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: ostial/proximal renal artery</text>
+<text x="250.0" y="97.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(often part of diffuse aortoiliac disease)</text>
+<text x="250.0" y="109.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="122.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Presentation: resistant hypertension,</text>
+<text x="250.0" y="135.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">recurrent flash pulmonary edema</text>
+<text x="250.0" y="148.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(bilateral disease), progressive CKD,</text>
+<text x="250.0" y="161.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AKI after ACEi/ARB initiation (removes</text>
+<text x="250.0" y="173.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">compensatory efferent arteriolar</text>
+<text x="250.0" y="186.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">constriction in a stenotic kidney)</text>
+<text x="250.0" y="199.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="212.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Management: medical therapy first-line;</text>
+<text x="250.0" y="225.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">stenting reserved for specific scenarios</text>
+<text x="250.0" y="237.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(flash pulmonary edema, refractory HTN,</text>
+<text x="250.0" y="250.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">progressive renal function decline despite</text>
+<text x="250.0" y="263.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">optimal medical therapy) -- routine stenting</text>
+<text x="250.0" y="276.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for HTN alone is NOT beneficial per trial data</text>
+<rect x="500" y="20" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-vasculitis)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-vasculitis)" font-family="Inter, sans-serif" style="text-transform:uppercase">FIBROMUSCULAR DYSPLASIA (FMD)</text>
+<text x="730.0" y="52.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Younger patients, strong female</text>
+<text x="730.0" y="65.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">predominance (~90%)</text>
+<text x="730.0" y="77.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="90.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: mid-to-distal renal artery,</text>
+<text x="730.0" y="103.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">classic "string of beads" angiographic</text>
+<text x="730.0" y="116.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">appearance from alternating stenosis</text>
+<text x="730.0" y="129.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">and mini-aneurysmal dilation</text>
+<text x="730.0" y="141.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="154.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Presentation: hypertension, often the</text>
+<text x="730.0" y="167.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ONLY manifestation -- consider in any</text>
+<text x="730.0" y="180.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">young patient with new significant HTN,</text>
+<text x="730.0" y="193.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">especially without other risk factors</text>
+<text x="730.0" y="205.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="218.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Management: percutaneous transluminal</text>
+<text x="730.0" y="231.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">angioplasty WITHOUT stenting is often</text>
+<text x="730.0" y="244.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">curative or substantially improves BP --</text>
+<text x="730.0" y="257.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">different treatment paradigm than</text>
+<text x="730.0" y="269.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">atherosclerotic disease</text>
+<line x1="20" y1="300" x2="960" y2="300" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="324" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Screening trigger, either etiology: resistant hypertension (uncontrolled on 3+ agents including a diuretic), abrupt worsening of previously controlled BP,</text>
+<text x="20" y="342" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">HTN onset before age 30, an abdominal bruit on exam, or unexplained recurrent flash pulmonary edema -- duplex ultrasound is a reasonable first-line imaging test for either.</text>
+</svg>
+    <div class="diagram-caption">Age and sex distribution alone should raise or lower suspicion for each — a young woman with new severe hypertension and no other risk factors points strongly toward FMD, while an older patient with diffuse atherosclerosis points toward the atherosclerotic mechanism.</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Stenting for atherosclerotic RAS is not routinely beneficial</span>
+    <p>Multiple randomized trials (including CORAL) have shown that renal artery stenting does not improve blood pressure or renal outcomes compared to optimal medical therapy alone for most patients with atherosclerotic RAS — this substantially narrowed the indications for intervention compared to older practice patterns. Reserve stenting for specific scenarios: recurrent flash pulmonary edema, refractory hypertension despite maximal medical therapy, or progressive renal function decline attributable to the stenosis.</p>
+  </div>
+
+  <h4 class="micro-title">The AKI-After-ACEi/ARB Pattern, Explained</h4>
+  <p>In a kidney with significant arterial stenosis, angiotensin II-mediated efferent arteriolar constriction is a critical compensatory mechanism maintaining glomerular filtration pressure despite reduced renal blood flow. ACE inhibitors and ARBs remove this compensation — in bilateral RAS (or unilateral stenosis to a solitary functioning kidney), this can precipitate acute kidney injury shortly after starting or increasing the dose of one of these agents. A significant creatinine rise (generally &gt;30%) after ACEi/ARB initiation should prompt renal artery imaging workup rather than simply discontinuing the drug and moving on.</p>
+
+  <h4 class="micro-title">FMD Beyond the Renal Arteries</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Multi-vessel disease is common</span><p>FMD can affect the carotid and vertebral arteries (presenting with headache, pulsatile tinnitus, dissection, or stroke), and is associated with an increased prevalence of intracranial aneurysms — a patient diagnosed with renal FMD reasonably warrants screening imaging of the cervicocranial vasculature.</p></div>
+    <div class="callout"><span class="callout-label">Association with SCAD</span><p>Fibromuscular dysplasia has a recognized association with spontaneous coronary artery dissection (see Vol. 6) — the underlying arteriopathy is thought to be a shared predisposing factor, and a patient with one of these diagnoses reasonably warrants consideration of screening for the other.</p></div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Duplex ultrasound as first-line imaging</span>
+    <p>Renal duplex ultrasound is a reasonable first-line, non-invasive test for either etiology — operator-dependent but avoids contrast and radiation exposure. CT or MR angiography provides more definitive anatomic detail when duplex is equivocal or when intervention is being planned.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Nephrology or vascular medicine for any confirmed or strongly suspected renovascular disease, particularly when AKI, refractory hypertension, or recurrent flash pulmonary edema are present.</dd>
+      <dt>Urgent evaluation</dt><dd>New severe hypertension in a young patient (especially female) without other risk factors — this warrants reasonably prompt FMD workup rather than routine outpatient follow-up timelines.</dd>
+      <dt>Transfer if no interventional nephrology/vascular capability on-site</dt><dd>Any patient meeting criteria for intervention (recurrent flash pulmonary edema, refractory hypertension, progressive renal decline) needs access to renal artery intervention capability.</dd>
+      <dt>Transport considerations</dt><dd>Standard transport is generally adequate; ensure any recent ACEi/ARB dosing changes are clearly documented if AKI prompted the transfer, since this affects the receiving team's diagnostic approach.</dd>
+      <dt>Who to call</dt><dd>Nephrology for the renal function and hypertension management angle; vascular medicine or interventional radiology for imaging and potential intervention planning.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: MESENTERIC -->
+
+<section class="section" id="mesenteric">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Arterial Disease</div>
+  <h2 class="section-title">Mesenteric Ischemia</h2>
+  <p class="section-sub">"Pain out of proportion to exam" is the single most important phrase in this section — recognizing acute mesenteric ischemia before peritoneal signs develop is the whole game.</p>
+
+  <h3 class="sub-title">Three Mechanisms of Acute Disease</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 520" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_mesenteric" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_mesenteric" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_mesenteric" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_mesenteric" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-mesenteric)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Acute mesenteric ischemia -- three mechanisms</text>
+<rect x="20" y="40" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--accent-mesenteric)" stroke-width="1.6"/>
+<text x="170.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-mesenteric)" font-family="Inter, sans-serif" style="text-transform:uppercase">EMBOLIC (~40-50%)</text>
+<text x="170.0" y="136.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sudden onset, severe pain. Source: AFib, recent MI, valve disease. Classically lodges just distal to a major SMA branch point (middle colic artery origin) -- sparing the proximal jejunum but affecting everything downstream.</text>
+<rect x="340" y="40" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="490.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">THROMBOTIC IN-SITU (~25-30%)</text>
+<text x="490.0" y="136.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Gradual onset on a background of chronic mesenteric atherosclerosis -- often a history of chronic postprandial pain ("intestinal angina") preceding the acute event. Affects the SMA origin specifically.</text>
+<rect x="660" y="40" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">NON-OCCLUSIVE (NOMI) (~20-30%)</text>
+<text x="810.0" y="136.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No fixed arterial occlusion -- diffuse mesenteric vasoconstriction from low-flow states (shock, heart failure, vasopressor use, recent cardiac surgery). Watch for this in the critically ill patient.</text>
+<line x1="20" y1="230" x2="960" y2="230" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="254" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">The classic teaching pearl</text>
+<rect x="20" y="270" width="920" height="80" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="306.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">"Pain out of proportion to exam" -- severe abdominal pain with a soft, minimally tender abdomen on early exam.</text>
+<text x="480.0" y="321.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Peritoneal signs indicate bowel infarction has ALREADY occurred -- a late and ominous finding, not confirmation to wait for.</text>
+<line x1="20" y1="374" x2="960" y2="374" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="398" font-size="12.5" font-weight="700" fill="var(--accent-mesenteric)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Chronic mesenteric ischemia (&quot;intestinal angina&quot;)</text>
+<rect x="20" y="414" width="920" height="86" rx="12" fill="var(--surface)" stroke="var(--accent-mesenteric)" stroke-width="1.6"/>
+<text x="480.0" y="446.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Postprandial abdominal pain (15-30 min after eating, resolving over 1-2 hours), food fear, and unintentional weight</text>
+<text x="480.0" y="460.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">loss -- typically requires &gt;=2 of the 3 mesenteric vessels (celiac, SMA, IMA) to be significantly stenosed given</text>
+<text x="480.0" y="474.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">extensive collateral circulation between them. Revascularization (endovascular or surgical) for symptomatic disease.</text>
+</svg>
+    <div class="diagram-caption">Embolic disease strikes suddenly in a patient with an identifiable cardiac source; thrombotic disease evolves on a background of chronic mesenteric atherosclerosis; NOMI occurs without any fixed occlusion at all, purely from low-flow vasoconstriction.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Don't wait for peritoneal signs</span>
+    <p>Severe abdominal pain with a benign-appearing, soft, minimally tender abdomen is the classic early presentation — and it's precisely the presentation most likely to be dismissed or worked up slowly. By the time peritoneal signs (rebound, guarding, rigidity) develop, transmural bowel infarction has typically already occurred. Maintain a low threshold for CT angiography in any patient with severe, acute abdominal pain disproportionate to exam findings, particularly with risk factors (AFib, recent MI, atherosclerotic disease, low-flow state).</p>
+  </div>
+
+  <h4 class="micro-title">NOMI — The One That's Easy to Miss in the ICU</h4>
+  <p>Non-occlusive mesenteric ischemia occurs in critically ill patients already receiving vasopressors, in cardiogenic or septic shock, or recently post-cardiac surgery — settings where abdominal pain is easily attributed to the primary illness, sedation may mask symptoms, and the patient often cannot reliably report pain at all. An unexplained rise in lactate, new metabolic acidosis, or feeding intolerance in a hemodynamically tenuous ICU patient should prompt consideration of NOMI even without classic abdominal findings.</p>
+
+  <h4 class="micro-title">Diagnostic Approach</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">CT angiography</span><p>First-line imaging for suspected acute mesenteric ischemia — can identify the occlusion site and distinguish embolic/thrombotic disease from NOMI's diffuse vasoconstriction pattern, while also assessing for bowel wall changes suggesting infarction.</p></div>
+    <div class="callout"><span class="callout-label">Lactate is a marker, not a rule-out</span><p>Elevated lactate supports the diagnosis but a normal lactate does NOT exclude early mesenteric ischemia — lactate rises only once significant tissue ischemia/infarction has occurred, and clinical suspicion should drive imaging regardless of an initially normal level.</p></div>
+  </div>
+
+  <h3 class="sub-title">Chronic Mesenteric Ischemia</h3>
+  <p>The "intestinal angina" pattern — postprandial pain 15-30 minutes after eating, resolving over 1-2 hours as metabolic demand falls — develops food fear and progressive weight loss as patients unconsciously restrict intake to avoid triggering pain. Given the extensive collateral circulation between the celiac, superior mesenteric, and inferior mesenteric arteries, symptomatic disease typically requires significant stenosis of at least two of the three vessels; single-vessel disease is usually well compensated and asymptomatic.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Chronic disease can acutely decompensate</span>
+    <p>A patient with known chronic mesenteric ischemia (or unrecognized chronic disease) can develop acute-on-chronic thrombotic occlusion — a sudden worsening of previously stable postprandial pain, or a new pattern of continuous rather than postprandial pain, should prompt urgent reevaluation rather than reassurance that "this is just their usual pain."</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery and general surgery jointly for any suspected acute mesenteric ischemia — both revascularization and potential bowel resection capability need to be immediately available.</dd>
+      <dt>Emergent surgical evaluation</dt><dd>Any peritoneal signs, hemodynamic instability, or CT evidence of bowel infarction/pneumatosis — these findings indicate a surgical abdomen requiring emergent exploration, not just revascularization alone.</dd>
+      <dt>Transfer if no vascular/GI surgery capability on-site</dt><dd>Any suspected acute mesenteric ischemia at a facility without emergent revascularization and bowel resection capability — this is one of the highest-mortality surgical emergencies and delay directly costs bowel length and patient survival.</dd>
+      <dt>Transport considerations</dt><dd>Aggressive fluid resuscitation en route given third-spacing and potential impending shock; avoid vasopressors if possible given the risk of worsening mesenteric vasoconstriction (particularly relevant if NOMI is a consideration), using fluids preferentially to support perfusion.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery for revascularization; general/GI surgery in parallel given the substantial likelihood of needing bowel resection; interventional radiology as an alternative or adjunct for endovascular revascularization approaches.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: CAROTID -->
+
+<section class="section" id="carotid">
+  <div class="section-eyebrow"><span class="dot"></span>07 / Arterial Disease</div>
+  <h2 class="section-title">Carotid Disease &amp; Raynaud's</h2>
+  <p class="section-sub">Two very different entities sharing this final section — large-vessel stroke prevention and small-vessel vasospasm — but each with a clear decision framework worth knowing cold.</p>
+
+  <h3 class="sub-title">Carotid Stenosis Management Thresholds</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_carotid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_carotid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_carotid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_carotid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-carotid)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Carotid stenosis: symptomatic vs. asymptomatic thresholds</text>
+<rect x="20" y="40" width="460" height="170" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">SYMPTOMATIC</text>
+<text x="250.0" y="82.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Recent (within 6 months) TIA or stroke</text>
+<text x="250.0" y="95.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">referable to the stenotic carotid territory</text>
+<text x="250.0" y="109.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="122.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Revascularization (CEA or CAS) generally</text>
+<text x="250.0" y="136.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">recommended for stenosis &gt;=70% (and</text>
+<text x="250.0" y="149.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reasonable for 50-69% in appropriately</text>
+<text x="250.0" y="163.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">selected patients) -- benefit is highest</text>
+<text x="250.0" y="177.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">when performed early after the index event</text>
+<text x="250.0" y="190.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(ideally within 2 weeks)</text>
+<rect x="500" y="40" width="460" height="170" rx="12" fill="var(--surface)" stroke="var(--accent-carotid)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-carotid)" font-family="Inter, sans-serif" style="text-transform:uppercase">ASYMPTOMATIC</text>
+<text x="730.0" y="82.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No referable neurologic event</text>
+<text x="730.0" y="95.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="109.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Threshold for intervention is higher (&gt;=70%)</text>
+<text x="730.0" y="122.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">and benefit is more modest than in symptomatic</text>
+<text x="730.0" y="136.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">disease -- optimal medical therapy alone</text>
+<text x="730.0" y="149.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(antiplatelet, high-intensity statin, BP control)</text>
+<text x="730.0" y="163.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">has narrowed the gap with intervention in</text>
+<text x="730.0" y="177.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">contemporary trials; decision should be</text>
+<text x="730.0" y="190.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">individualized and shared with the patient</text>
+<line x1="20" y1="230" x2="960" y2="230" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="254" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">CEA (carotid endarterectomy) vs. CAS (carotid artery stenting): CEA generally preferred in older patients and those with anatomy unfavorable for stenting; CAS</text>
+<text x="20" y="272" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">may be preferred in younger patients, those with a hostile surgical neck (prior radiation/surgery), or significant cardiac comorbidity increasing surgical risk.</text>
+<line x1="20" y1="300" x2="960" y2="300" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="324" font-size="12.5" font-weight="700" fill="var(--accent-mesenteric)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Raynaud phenomenon -- primary vs. secondary</text>
+<rect x="20" y="340" width="460" height="140" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="250.0" y="358" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">PRIMARY (IDIOPATHIC)</text>
+<text x="250.0" y="376.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Young patients (often onset teens-20s),</text>
+<text x="250.0" y="389.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">symmetric, no tissue damage/ulceration,</text>
+<text x="250.0" y="401.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">normal nailfold capillaries, negative ANA</text>
+<text x="250.0" y="414.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="427.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Triggered by cold or emotional stress --</text>
+<text x="250.0" y="440.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">classic tri-phasic color change (white --&gt;</text>
+<text x="250.0" y="453.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">blue --&gt; red) as vasospasm, cyanosis, and</text>
+<text x="250.0" y="465.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reperfusion occur in sequence</text>
+<rect x="500" y="340" width="460" height="140" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="730.0" y="358" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">SECONDARY</text>
+<text x="730.0" y="376.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Older onset, asymmetric, digital ulceration</text>
+<text x="730.0" y="389.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">or tissue loss possible, abnormal nailfold</text>
+<text x="730.0" y="401.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">capillaries, positive ANA/specific autoantibodies</text>
+<text x="730.0" y="414.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="427.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Associated with scleroderma (esp. anti-</text>
+<text x="730.0" y="440.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">centromere or anti-Scl-70), lupus, mixed</text>
+<text x="730.0" y="453.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">connective tissue disease -- warrants</text>
+<text x="730.0" y="465.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">rheumatologic workup and closer monitoring</text>
+</svg>
+    <div class="diagram-caption">Top: symptomatic status changes both the intervention threshold and the urgency — recent stroke/TIA meaningfully raises the benefit of intervention compared to the same degree of stenosis found incidentally. Bottom: primary vs. secondary Raynaud's phenomenon.</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Optimal medical therapy has changed the asymptomatic calculus</span>
+    <p>Contemporary medical therapy (high-intensity statins, modern antiplatelet regimens, aggressive risk factor control) has substantially reduced the stroke rate in medically-managed asymptomatic carotid stenosis compared to older trial-era data — narrowing, though not eliminating, the benefit of intervention in this population. This makes asymptomatic carotid stenosis a genuinely shared decision-making conversation rather than an automatic referral for intervention once a threshold diameter is met.</p>
+  </div>
+
+  <h4 class="micro-title">Timing of Intervention After Symptomatic Event</h4>
+  <p>For symptomatic patients meeting intervention criteria, earlier revascularization (within 2 weeks of the index TIA/stroke) captures the greatest risk reduction — the risk of recurrent stroke is highest in the days immediately following the initial event, and delaying intervention past this window meaningfully reduces the net benefit. This creates real urgency around symptomatic carotid disease workup and specialist referral, more than is often appreciated outside of stroke-focused practice.</p>
+
+  <h4 class="micro-title">CEA vs. CAS — Choosing the Approach</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Favor CEA</span><p>Older patients (particularly &gt;70), and anatomy unfavorable for stenting (extensive calcification, tortuous vessels, unfavorable aortic arch anatomy for catheter access).</p></div>
+    <div class="callout"><span class="callout-label">Favor CAS</span><p>Younger patients, a "hostile neck" from prior surgery or radiation therapy that increases open surgical risk, and significant cardiac comorbidity that elevates general anesthesia/open surgical risk.</p></div>
+  </div>
+
+  <h3 class="sub-title">Raynaud's Phenomenon</h3>
+  <p>The primary/secondary distinction is the entire clinical task here — primary Raynaud's is a benign, common condition requiring reassurance and conservative management (cold avoidance, layered clothing, smoking cessation), while secondary Raynaud's is a marker of underlying systemic disease requiring its own dedicated workup and monitoring.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Digital ulceration or asymmetric presentation changes everything</span>
+    <p>Tissue loss, asymmetric involvement, onset after age 30-40, and abnormal nailfold capillaroscopy findings are red flags for secondary Raynaud's that warrant rheumatologic referral and autoantibody testing (ANA with reflex to specific antibodies including anti-centromere and anti-Scl-70/topoisomerase for scleroderma spectrum disease) — these patients need monitoring for progression to a defined connective tissue disease, which can sometimes precede other diagnostic features by years.</p>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Management escalation for severe/secondary disease</span>
+    <p>Calcium channel blockers (typically dihydropyridines like nifedipine) are first-line pharmacologic therapy when conservative measures are insufficient. For severe secondary disease with digital ulceration or critical ischemia, phosphodiesterase-5 inhibitors, topical nitrates, or in severe cases IV prostacyclin analogs and even botulinum toxin injection or surgical sympathectomy have roles — this escalation pathway is generally managed jointly with rheumatology given the underlying systemic disease driving severity.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery/neurology (stroke service) for any symptomatic carotid stenosis meeting intervention criteria — timing matters, so this should not wait for routine outpatient referral; rheumatology for any suspected secondary Raynaud's.</dd>
+      <dt>Urgent evaluation</dt><dd>Recent TIA or minor stroke with carotid stenosis on imaging — the 2-week window for maximal intervention benefit makes this a time-sensitive referral, similar in spirit to other "don't delay" vascular presentations in this atlas.</dd>
+      <dt>Transfer if no vascular surgery/interventional neurology on-site</dt><dd>Symptomatic carotid stenosis requiring intervention at a facility without that capability; digital ischemia/ulceration from severe Raynaud's not responding to outpatient escalation.</dd>
+      <dt>Transport considerations</dt><dd>Standard neurologic/stroke transport precautions for symptomatic carotid disease (blood pressure parameters per the specific post-stroke/TIA protocol in use); protect ischemic digits from further cold exposure or trauma during any transport for severe Raynaud's complications.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery and/or neurology (stroke) jointly for carotid intervention decision-making; rheumatology for secondary Raynaud's workup and escalating therapy.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Vascular Atlas Vol. 1 — Arterial Disease · Built for clinical education and bedside reference. Verify thresholds and dosing against institutional protocol and current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>
