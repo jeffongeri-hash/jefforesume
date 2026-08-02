@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OB/GYN &amp; Women's Health Atlas — Vol. 7: Contraception &amp; Cancer Screening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --acc-1: #4E8F7A; /* method comparison */
+  --acc-2: #4C7A9E; /* MEC */
+  --acc-3: #C1893E; /* emergency contraception */
+  --acc-4: #C2765F; /* IUD complications */
+  --acc-5: #6B5B95; /* permanent contraception */
+  --acc-6: #A13D6B; /* cervical screening */
+  --acc-7: #7A3E6B; /* breast screening/risk */
+  --acc-8: #5B4E8A; /* ovarian/endometrial/genetic */
+}
+
+[data-theme="light"] {
+  --bg: #F9F7F5; --surface: #FFFFFF; --surface-2: #EFEAE4;
+  --border: #DED6CB; --text: #26241F; --text-secondary: #58534A;
+  --text-tertiary: #797467; --shadow: rgba(38, 36, 31, 0.08);
+}
+[data-theme="dark"] {
+  --bg: #161512; --surface: #1F1D19; --surface-2: #282521;
+  --border: #37332A; --text: #EFECE3; --text-secondary: #C3BEB0;
+  --text-tertiary: #989384; --shadow: rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 17px; line-height: 1.65; transition: background 0.25s ease, color 0.25s ease; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; color: var(--text); margin: 0 0 0.5em; }
+p { margin: 0 0 1em; color: var(--text); }
+a { color: inherit; }
+.mono { font-family: var(--font-mono); }
+
+header.hero { padding: 3.5rem 1.5rem 3rem; background: linear-gradient(160deg, var(--surface) 0%, var(--bg) 70%); border-bottom: 1px solid var(--border); }
+.hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 0.9rem; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 600; line-height: 1.1; max-width: 19ch; margin-bottom: 0.6rem; }
+.hero h1 em { font-style: italic; font-weight: 500; color: var(--acc-6); }
+.hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 60ch; margin-bottom: 0; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+.pill { font-family: var(--font-mono); font-size: 0.72rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface); }
+
+.controls-bar { position: sticky; top: 0; z-index: 50; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; box-shadow: 0 2px 12px var(--shadow); }
+.brand-mini { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.controls-right { display: flex; align-items: center; gap: 0.5rem; }
+select.nav-select { font-family: var(--font-body); font-size: 0.85rem; padding: 0.5rem 0.7rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); max-width: 46vw; }
+button.theme-toggle { border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 10px; padding: 0.5rem 0.65rem; font-size: 1rem; cursor: pointer; line-height: 1; }
+button.theme-toggle:focus-visible, select.nav-select:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--acc-2); outline-offset: 2px; }
+
+/* Efficacy ladder — signature element */
+eff-wrap { }
+.eff-wrap { padding: 0 1.5rem 2.2rem; }
+.eff-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+.eff-bars { display: flex; flex-direction: column; gap: 0.5rem; }
+.eff-row { display: grid; grid-template-columns: 120px 1fr 52px; align-items: center; gap: 0.6rem; }
+.eff-lbl { font-family: var(--font-mono); font-size: 0.71rem; color: var(--text-secondary); }
+.eff-track { height: 10px; background: var(--surface-2); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.eff-fill { height: 100%; border-radius: 6px; background: var(--acc-1); }
+.eff-val { font-family: var(--font-mono); font-size: 0.71rem; color: var(--text-tertiary); text-align: right; }
+
+main { max-width: 880px; margin: 0 auto; padding: 0 1.25rem 6rem; }
+section.vol-section { padding-top: 3.2rem; scroll-margin-top: 4.2rem; border-top: 1px solid var(--border); margin-top: 3.2rem; }
+section.vol-section:first-of-type { border-top: none; margin-top: 1rem; }
+.section-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.3rem; }
+.section-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--sec-accent, var(--acc-1)); }
+.section-head h2 { font-size: clamp(1.5rem, 4vw, 1.9rem); border-left: 4px solid var(--sec-accent, var(--acc-1)); padding-left: 0.7rem; margin: 0; }
+.section-intro { color: var(--text-secondary); margin: 0.8rem 0 1.8rem; max-width: 68ch; }
+h3.sub { font-size: 1.2rem; margin-top: 2.1rem; color: var(--sec-accent, var(--text)); }
+h4.sub-sub { font-size: 1.02rem; margin-top: 1.4rem; font-family: var(--font-body); font-weight: 700; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.3rem; margin: 1.1rem 0; }
+.callout { border-radius: 12px; padding: 1rem 1.2rem; margin: 1.2rem 0; border: 1px solid var(--border); border-left: 4px solid var(--c-color, var(--acc-1)); background: var(--surface); }
+.callout-title { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--c-color, var(--acc-1)); margin-bottom: 0.45rem; font-weight: 600; }
+.callout.evidence { --c-color: var(--acc-1); }
+.callout.escalate { --c-color: #C1442E; }
+.callout.verify { --c-color: var(--text-tertiary); }
+.callout.stat { --c-color: var(--acc-2); }
+.callout.myth { --c-color: #A64545; }
+.callout.genetic { --c-color: var(--acc-8); }
+
+.tier { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap; }
+.tier.a { background: rgba(78,143,122,0.2); color: #2E6551; }
+.tier.b { background: rgba(193,137,62,0.2); color: #8A5E21; }
+[data-theme="dark"] .tier.a { color: #A3D4C2; }
+[data-theme="dark"] .tier.b { color: #E5BE8E; }
+
+.table-wrap { overflow-x: auto; margin: 1.2rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; min-width: 480px; }
+th, td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary); background: var(--surface-2); }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { font-family: var(--font-mono); }
+
+ul.clean { margin: 0.4rem 0 1em; padding-left: 1.2rem; }
+ul.clean li { margin-bottom: 0.35rem; }
+
+.stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; margin: 1.3rem 0; }
+.stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
+.stat-num { font-family: var(--font-mono); font-size: 1.35rem; font-weight: 600; color: var(--sec-accent, var(--acc-1)); display:block; }
+.stat-cap { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+footer { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: var(--text-tertiary); font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem;}
+strong { color: var(--text); }
+.src { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+@media (max-width: 560px) { .hero { padding: 2.4rem 1.1rem 2rem; } main { padding: 0 0.9rem 5rem; } select.nav-select { max-width: 58vw; } .eff-row { grid-template-columns: 92px 1fr 44px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body data-theme="light">
+
+<div class="controls-bar">
+  <div class="brand-mini">OB/GYN Atlas · Vol. 7</div>
+  <div class="controls-right">
+    <select class="nav-select" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to section…</option>
+      <option value="#s1">1 · Contraceptive Method Comparison</option>
+      <option value="#s2">2 · US Medical Eligibility Criteria</option>
+      <option value="#s3">3 · Emergency Contraception</option>
+      <option value="#s4">4 · IUD Complications</option>
+      <option value="#s5">5 · Permanent Contraception</option>
+      <option value="#s6">6 · Cervical Cancer Screening</option>
+      <option value="#s7">7 · Breast Cancer Screening &amp; Risk</option>
+      <option value="#s8">8 · Ovarian, Endometrial &amp; Genetic Risk</option>
+    </select>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">◐</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-eyebrow">Women's Health Atlas · Volume 7 (Supplemental)</div>
+  <h1>Contraception &amp; <em>Cancer Screening</em></h1>
+  <p class="hero-sub">Full US MEC depth for contraceptive counseling, plus risk-stratified cancer screening — where the guidelines actually diverge between bodies, and where genetic risk (BRCA, Lynch) changes everything about the surveillance plan.</p>
+  <div class="hero-meta">
+    <span class="pill">CDC/ACOG/ACS/USPSTF/NCCN-anchored</span>
+    <span class="pill">Full US MEC 2024 depth</span>
+    <span class="pill">8 modules</span>
+  </div>
+</header>
+
+<div class="eff-wrap">
+  <div class="eff-label">Typical-use failure rates — the number that actually drives counseling</div>
+  <div class="eff-bars" id="effBars"></div>
+</div>
+
+<main id="main-content">
+
+<section class="vol-section" id="s1" style="--sec-accent: var(--acc-1);">
+  <div class="section-head"><span class="section-num">01</span><h2>Contraceptive Method Comparison</h2></div>
+  <p class="section-intro">Typical-use failure rates — not perfect-use — are what should drive most counseling conversations, since perfect use is the exception in real life, not the rule.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th class="num">Typical-use failure/yr</th><th>Mechanism</th></tr></thead>
+      <tbody>
+        <tr><td>Etonogestrel implant</td><td class="num mono">0.05%</td><td>Progestin — ovulation suppression, cervical mucus thickening; effective 3 years</td></tr>
+        <tr><td>Hormonal IUD (LNG)</td><td class="num mono">0.1–0.4%</td><td>Local progestin — endometrial suppression, cervical mucus, partial ovulation suppression at higher doses; effective 3–8 years depending on formulation</td></tr>
+        <tr><td>Copper IUD</td><td class="num mono">0.8%</td><td>Copper ions are spermicidal/toxic to ova; non-hormonal; effective up to 10–12 years</td></tr>
+        <tr><td>DMPA injection</td><td class="num mono">4%</td><td>Progestin — ovulation suppression; q12–13 week dosing (the gap between visits is where typical-use failure creeps in)</td></tr>
+        <tr><td>Combined pill/patch/ring</td><td class="num mono">~7%</td><td>Estrogen + progestin — ovulation suppression; user-dependent daily/weekly/monthly adherence</td></tr>
+        <tr><td>Progestin-only pill</td><td class="num mono">~7–9%</td><td>Narrower daily timing window than combined pills for older formulations; newer drospirenone-only POPs have more forgiving timing</td></tr>
+        <tr><td>Male condom</td><td class="num mono">13%</td><td>Barrier; also the only widely used method with meaningful STI protection</td></tr>
+        <tr><td>Fertility awareness-based methods</td><td class="num mono">~2–23%</td><td>Wide range reflects method rigor (symptothermal with strict rules performs far better than calendar-based alone) and user adherence</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout evidence">
+    <div class="callout-title">The counseling point that matters more than any single number</div>
+    <p style="margin:0">LARC methods (implant, both IUD types) have <strong>no meaningful gap between perfect-use and typical-use failure rates</strong> — once placed, there's nothing left for the patient to remember to do. Every other method's real-world effectiveness depends heavily on adherence, which is exactly why LARC methods outperform user-dependent methods so substantially in actual population data despite pills/injections having reasonable perfect-use efficacy on paper.</p>
+  </div>
+</section>
+
+<section class="vol-section" id="s2" style="--sec-accent: var(--acc-2);">
+  <div class="section-head"><span class="section-num">02</span><h2>US Medical Eligibility Criteria (2024)</h2></div>
+  <p class="section-intro">The CDC's 2024 update — first since 2016 — is the framework every method-safety conversation should run through.</p>
+
+  <h3 class="sub">The Four Categories</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td>No restriction — method can be used</td></tr>
+        <tr><td class="mono">2</td><td>Advantages generally outweigh risks — method can generally be used</td></tr>
+        <tr><td class="mono">3</td><td>Risks generally outweigh advantages — use requires careful clinical judgment, additional counseling, or closer follow-up; this method usually isn't the first choice if others are available</td></tr>
+        <tr><td class="mono">4</td><td>Unacceptable health risk — method should not be used</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">High-Yield Conditions — Combined Hormonal Contraceptives</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Condition</th><th class="num">Category</th></tr></thead>
+      <tbody>
+        <tr><td>Migraine with aura, any age</td><td class="num mono">4 — absolute contraindication</td></tr>
+        <tr><td>Smoking, age &lt;35</td><td class="num mono">2</td></tr>
+        <tr><td>Smoking, age ≥35, &lt;15 cigarettes/day</td><td class="num mono">3</td></tr>
+        <tr><td>Smoking, age ≥35, ≥15 cigarettes/day</td><td class="num mono">4</td></tr>
+        <tr><td>History of VTE/PE (not on anticoagulation)</td><td class="num mono">4</td></tr>
+        <tr><td>Uncontrolled hypertension</td><td class="num mono">4 (controlled HTN: 3)</td></tr>
+        <tr><td>Breastfeeding, &lt;21 days postpartum</td><td class="num mono">4 (VTE risk window)</td></tr>
+        <tr><td>Known thrombogenic mutation (e.g., Factor V Leiden)</td><td class="num mono">4</td></tr>
+        <tr><td>SLE with positive/unknown antiphospholipid antibodies</td><td class="num mono">4</td></tr>
+        <tr><td>Breast cancer, current</td><td class="num mono">4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout stat">
+    <div class="callout-title">The takeaway for migraine specifically</div>
+    <p style="margin:0">Migraine with aura is a <strong>category 4 at any age</strong> — this is one of the few absolute contraindications that doesn't scale with additional risk factors the way smoking does. Progestin-only methods (POP, DMPA, implant, hormonal IUD) remain category 1–2 for migraine with aura, making them the go-to alternative rather than trying to risk-stratify around the estrogen component.</p>
+  </div>
+
+  <h3 class="sub">2024 Update Highlights</h3>
+  <ul class="clean">
+    <li><strong>New conditions added:</strong> chronic kidney disease (including dialysis-specific guidance) and antiphospholipid syndrome, each with method-specific categorization for the first time.</li>
+    <li><strong>Revised guidance</strong> on breastfeeding/postpartum windows, obesity, surgery with immobilization, VTE with/without anticoagulation, thrombophilia, valvular heart disease, peripartum cardiomyopathy, SLE, HIV risk, cirrhosis/liver tumors, sickle cell disease, and solid organ transplantation.</li>
+    <li><strong>New method-specific guidance</strong> added for newer COC formulations (estetrol-containing), patches, rings, POPs, and LNG-IUD systems.</li>
+  </ul>
+  <p class="src">CDC MMWR, August 2024 (Vol. 73, No. 4) — the U.S. MEC app and summary chart are worth having on your own phone for quick point-of-care reference.</p>
+</section>
+
+<section class="vol-section" id="s3" style="--sec-accent: var(--acc-3);">
+  <div class="section-head"><span class="section-num">03</span><h2>Emergency Contraception</h2></div>
+  <p class="section-intro">Per ACOG — the copper IUD wins on every axis except convenience, and weight genuinely changes which pill to recommend.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th class="num">Window</th><th class="num">Pregnancy rate</th><th>Weight/BMI effect</th></tr></thead>
+      <tbody>
+        <tr><td>Copper IUD</td><td class="num mono">Up to 5 days</td><td class="num mono">~0.3%</td><td><strong>None</strong> — efficacy unaffected by weight</td></tr>
+        <tr><td>Ulipristal acetate</td><td class="num mono">Up to 5 days, no loss of efficacy across the window</td><td class="num mono">~1.5%</td><td>Reduced efficacy at BMI ≥30, but retains meaningfully better performance than levonorgestrel up to BMI ~35</td></tr>
+        <tr><td>Levonorgestrel</td><td class="num mono">Labeled 72h; some efficacy retained to 120h</td><td class="num mono">~1.5–2.5%, rising with time elapsed</td><td>Loses efficacy at a <strong>lower BMI threshold</strong> than ulipristal — least reliable option in patients with obesity</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout evidence">
+    <div class="callout-title">ACOG's practical ranking</div>
+    <p style="margin:0">Regardless of body weight, the <strong>copper IUD is the most effective EC method</strong>, followed by <strong>ulipristal acetate</strong>. ACOG specifically encourages same-day IUD placement capability for this reason. When ulipristal isn't accessible/acceptable, levonorgestrel remains reasonable — <strong>never refuse or discourage EC based on weight</strong>; counsel on the efficacy difference and let the patient decide.</p>
+  </div>
+
+  <ul class="clean">
+    <li><strong>Timing:</strong> effectiveness is highest in the first 24 hours for any oral method — encourage same-day dosing rather than waiting.</li>
+    <li><strong>Mechanism:</strong> all EC methods work by delaying or preventing ovulation (or, for copper IUD, primarily by a spermicidal/toxic effect on sperm and ova) — none of them disrupt an existing implanted pregnancy, which is worth stating plainly given persistent public confusion on this point.</li>
+    <li><strong>Starting ongoing contraception after EC:</strong> any regular method can start immediately after levonorgestrel or combined EC (with 7 days of backup/abstinence). After <strong>ulipristal acetate</strong>, wait <strong>at least 5 days</strong> before starting a progestin-containing method, since progestins can blunt ulipristal's antiprogestin mechanism.</li>
+  </ul>
+</section>
+
+<section class="vol-section" id="s4" style="--sec-accent: var(--acc-4);">
+  <div class="section-head"><span class="section-num">04</span><h2>IUD Complications</h2></div>
+  <p class="section-intro">The ER-relevant IUD presentations — most are more reassuring than they feel to the patient in the moment.</p>
+
+  <h3 class="sub">Perforation</h3>
+  <p>Rare — roughly <strong>1 in 1,000</strong> insertions — and occurs almost exclusively <strong>at the time of insertion</strong>, not spontaneously afterward. Risk is higher with insertion during breastfeeding/postpartum (altered uterine wall tone) and with an inexperienced inserter. A perforated IUD that has migrated into the peritoneal cavity or embedded in bowel/bladder requires surgical (usually laparoscopic) removal — it should not be left in place.</p>
+
+  <h3 class="sub">Expulsion</h3>
+  <p>Occurs in roughly <strong>2–10%</strong> of users, most commonly in the <strong>first year</strong>, especially the first 3 months. Risk factors: nulliparity, insertion immediately postpartum or post-abortion, and younger age. A patient who can no longer feel her strings, feels the device at or below the cervical os, or has a partner who feels hard plastic during intercourse should be evaluated for partial/complete expulsion with ultrasound.</p>
+
+  <h3 class="sub">"Lost Strings" — A Stepwise Approach</h3>
+  <ul class="clean">
+    <li>First, consider whether strings have simply retracted into the cervical canal (common, benign) versus true expulsion or perforation.</li>
+    <li>Pregnancy test — always, regardless of how unlikely it seems.</li>
+    <li>Pelvic ultrasound to confirm intrauterine location.</li>
+    <li>If not visualized on ultrasound and not expelled, an abdominal X-ray is the next step to rule out a perforated, extrauterine device before assuming it was expelled unnoticed.</li>
+  </ul>
+
+  <h3 class="sub">Actinomyces-Like Organisms on Pap Smear</h3>
+  <div class="callout myth">
+    <div class="callout-title">Don't reflexively remove the IUD</div>
+    <p style="margin:0">Incidental detection of actinomyces-like organisms on a routine Pap smear in an <strong>asymptomatic</strong> IUD user does <strong>not</strong> require IUD removal or antibiotic treatment — this is a common source of unnecessary device removal. Removal and treatment are reserved for a patient with actual signs/symptoms of pelvic infection.</p>
+  </div>
+
+  <h3 class="sub">Pain/Cramping at Removal or Insertion</h3>
+  <p>Genuinely common and generally self-limited; severe pain out of proportion to a routine insertion, especially with heavy bleeding or peritoneal signs, should raise concern for perforation and prompt the workup above rather than reassurance alone.</p>
+</section>
+
+<section class="vol-section" id="s5" style="--sec-accent: var(--acc-5);">
+  <div class="section-head"><span class="section-num">05</span><h2>Permanent Contraception</h2></div>
+  <p class="section-intro">Brief by design — vasectomy is urologic territory, but both deserve a place in a contraception counseling conversation.</p>
+
+  <h3 class="sub">Tubal Ligation vs. Salpingectomy</h3>
+  <div class="callout evidence">
+    <div class="callout-title">Salpingectomy has displaced tubal ligation as the preferred approach <span class="tier a">Tier A</span></div>
+    <p style="margin:0"><strong>Complete bilateral salpingectomy</strong> (full removal of the fallopian tubes, rather than ligation/partial removal) is now favored by ACOG and increasingly standard practice — it provides equivalent or better contraceptive efficacy while also reducing lifetime ovarian cancer risk, since a meaningful proportion of what's classified as "ovarian" high-grade serous cancer actually originates in the fallopian tube epithelium. This makes salpingectomy a reasonable default recommendation over traditional tubal ligation when a patient has decided on permanent sterilization, including as an opportunistic procedure at the time of an already-planned cesarean delivery or other pelvic surgery.</p>
+  </div>
+  <ul class="clean">
+    <li>Failure rate is low (roughly &lt;1%) but <strong>not zero</strong> — a pregnancy after tubal sterilization carries a substantially elevated relative risk of being ectopic and should be evaluated accordingly.</li>
+    <li>Should be counseled as <strong>permanent</strong> — reversal is a complex, not-always-successful surgical undertaking, and patients should make this decision assuming it's final.</li>
+  </ul>
+
+  <h3 class="sub">Vasectomy — Brief Overview</h3>
+  <ul class="clean">
+    <li>Outpatient urologic procedure, local anesthesia, meaningfully lower complication rate and cost than female sterilization procedures — worth mentioning as the more favorable option on a pure risk/efficacy/cost basis when a couple is deciding between the two.</li>
+    <li><strong>Not immediately effective</strong> — requires confirmatory semen analysis showing azoospermia (typically ~3 months/20 ejaculations later); backup contraception is required until confirmed.</li>
+    <li>Also intended as permanent; reversal (vasovasostomy) is possible but success declines with time since the original procedure.</li>
+  </ul>
+</section>
+
+<section class="vol-section" id="s6" style="--sec-accent: var(--acc-6);">
+  <div class="section-head"><span class="section-num">06</span><h2>Cervical Cancer Screening</h2></div>
+  <p class="section-intro">A genuinely useful example of two major guideline bodies actively disagreeing — worth knowing both positions rather than picking one and forgetting the other exists.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>ACS (2020)</th><th>USPSTF</th></tr></thead>
+      <tbody>
+        <tr><td>Starting age</td><td class="mono">25</td><td class="mono">21</td></tr>
+        <tr><td>Ages 21–24</td><td>No screening</td><td>Cytology alone, every 3 years</td></tr>
+        <tr><td>Ages 25–65</td><td>Primary HPV testing every 5 years (preferred)</td><td>Cytology every 3 years, <em>or</em> co-testing/primary HPV every 5 years starting at 30</td></tr>
+        <tr><td>If primary HPV unavailable</td><td>Co-testing q5yr or cytology alone q3yr</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout stat">
+    <div class="callout-title">Why ACS moved the starting age to 25</div>
+    <p style="margin:0">Fewer than <strong>1%</strong> of cervical cancers occur before age 25, most HPV infections in the 21–24 age group are transient and clear spontaneously, and treating the resulting transient abnormalities carries its own downstream risk — including an association with increased preterm birth risk in future pregnancies. Modeling behind the 2020 update projected that starting primary HPV testing at 25 would prevent <strong>13% more cervical cancers and 7% more cervical cancer deaths</strong> than the older cytology-first approach, while requiring 45% fewer total tests.</p>
+  </div>
+
+  <h3 class="sub">Stopping Screening</h3>
+  <p>Both bodies support discontinuing screening around age <strong>65</strong> in patients with adequate prior negative screening history and no history of CIN2+ in the past 25 years — screening a patient with a long, well-documented negative history well past this point adds little benefit and isn't necessary.</p>
+
+  <h3 class="sub">Self-Collection</h3>
+  <p>Self-collected HPV samples are now an <strong>acceptable alternative</strong> when provider-collected samples aren't feasible or acceptable to the patient — a meaningful access tool for patients who decline or can't tolerate a speculum exam, though provider collection remains preferred when available.</p>
+</section>
+
+<section class="vol-section" id="s7" style="--sec-accent: var(--acc-7);">
+  <div class="section-head"><span class="section-num">07</span><h2>Breast Cancer Screening &amp; Risk Stratification</h2></div>
+  <p class="section-intro">2024 brought the first real USPSTF change on this topic in years — and there's still no full consensus on frequency.</p>
+
+  <h3 class="sub">Average-Risk Screening — Where Bodies Now Agree (Mostly)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>USPSTF (2024)</th><th>ACS / ACR</th></tr></thead>
+      <tbody>
+        <tr><td>Starting age</td><td class="mono">40</td><td class="mono">40 (opportunity to start); 45 (regular start, ACS)</td></tr>
+        <tr><td>Interval</td><td class="mono">Every 2 years</td><td class="mono">Every year (ACS/ACR)</td></tr>
+        <tr><td>Stopping age</td><td>No recommendation ≥75 (insufficient evidence)</td><td>Continue as long as in good health</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout stat">
+    <div class="callout-title">The headline change</div>
+    <p style="margin:0">USPSTF lowering the start age from 50 to 40 (2024) is estimated to prevent <strong>19% more breast cancer deaths</strong> than the prior recommendation, and specifically addresses that Black women are <strong>40% more likely to die of breast cancer</strong> than white women, often from more aggressive disease diagnosed at younger ages. The remaining disagreement — annual vs. biennial — is a real, unresolved difference between USPSTF and ACS/ACR, not a settled point.</p>
+  </div>
+
+  <h3 class="sub">High-Risk Screening &amp; Risk-Assessment Tools</h3>
+  <ul class="clean">
+    <li><strong>Tyrer-Cuzick (IBIS) model</strong> and similar risk calculators incorporate family history, breast density, reproductive history, and other factors to estimate lifetime and 10-year risk — used to identify patients who qualify for supplemental MRI screening (generally offered at a calculated lifetime risk ≥20%).</li>
+    <li><strong>Annual breast MRI in addition to mammography</strong> is recommended for BRCA1/2 carriers and other confirmed high-lifetime-risk patients, typically starting around <strong>age 25–30</strong> — earlier than average-risk mammography alone would start.</li>
+    <li><strong>Dense breast notification</strong> laws now require disclosure of breast density on mammogram reports in essentially all U.S. states — relevant because density itself is an independent risk factor and reduces mammographic sensitivity, which is part of the rationale for supplemental imaging discussions in dense-breasted patients.</li>
+  </ul>
+
+  <h3 class="sub">Chemoprevention for High-Risk Patients</h3>
+  <p>Tamoxifen or raloxifene reduces breast cancer incidence in high-risk patients (5-year risk generally ≥1.67% by risk-model calculation, or known high-risk genetic/histologic factors) by a meaningful margin in trial data — a genuine, underused option worth raising specifically in patients who screen as high-risk but decline or aren't candidates for prophylactic surgery.</p>
+</section>
+
+<section class="vol-section" id="s8" style="--sec-accent: var(--acc-8);">
+  <div class="section-head"><span class="section-num">08</span><h2>Ovarian, Endometrial &amp; Genetic Risk</h2></div>
+  <p class="section-intro">The module where "there's no screening test" is the correct, evidence-based answer — and where genetic testing changes the entire management plan instead.</p>
+
+  <h3 class="sub">Ovarian Cancer — No Effective Average-Risk Screening <span class="tier a">Tier A evidence, for a negative finding</span></h3>
+  <div class="callout myth">
+    <div class="callout-title">This is a genuinely settled question, despite ongoing patient demand for "the test"</div>
+    <p style="margin:0">The <strong>PLCO trial</strong> (&gt;68,000 women) and the <strong>UKCTOCS trial</strong> (together &gt;270,000 women across both trials) both found <strong>no mortality reduction</strong> from annual CA-125 and transvaginal ultrasound screening in average-risk women. Worse, PLCO found <strong>72% of cancers detected through screening were already advanced stage (III/IV)</strong> despite the screening effort, and <strong>15% of patients who underwent surgery for a false-positive finding had a serious surgical complication</strong> with no cancer found. The FDA issued a 2016 safety communication specifically recommending against marketed "ovarian cancer screening tests" for this reason. Both CDC and USPSTF are explicit: <strong>there is no recommended ovarian cancer screening test for average-risk, asymptomatic women.</strong></p>
+  </div>
+  <p>What this means practically: don't order CA-125/TVUS as a "screening" test for an average-risk asymptomatic patient who requests it — redirect the conversation to symptom awareness (persistent bloating, early satiety, pelvic/abdominal pain, urinary urgency lasting most days for several weeks is the pattern worth acting on) and, if there's a concerning family history, to genetic risk assessment instead (below).</p>
+
+  <h3 class="sub">High-Risk Ovarian Cancer Surveillance — Still Imperfect</h3>
+  <p>Even in confirmed BRCA1/2 carriers, semi-annual CA-125/TVUS surveillance <strong>has not been shown to reduce mortality</strong> — it's offered as an imperfect bridge for patients delaying risk-reducing surgery, not because it's been proven effective. This is a meaningful nuance: the same tests that don't work for screening in average-risk women also don't have great evidence in high-risk women — the real risk-reduction tool is surgery, not surveillance.</p>
+
+  <h3 class="sub">BRCA1/2 — Risk-Reducing Surgery Timing</h3>
+  <div class="stat-strip">
+    <div class="stat-box"><span class="stat-num">35–40</span><div class="stat-cap">RRSO age, BRCA1 (after childbearing complete)</div></div>
+    <div class="stat-box"><span class="stat-num">40–45</span><div class="stat-cap">RRSO age, BRCA2 — later, since BRCA2-associated ovarian cancer onset is ~8–10 years later on average</div></div>
+    <div class="stat-box"><span class="stat-num">80–96%</span><div class="stat-cap">Ovarian cancer risk reduction from RRSO</div></div>
+  </div>
+  <p>Risk-reducing bilateral salpingo-oophorectomy (RRSO) also reduces breast cancer risk substantially (37% in BRCA1, 64% in BRCA2 carriers in pooled data) — a dual benefit that factors into timing discussions alongside fertility planning. The tradeoff: RRSO before natural menopause causes surgical menopause, with real downstream effects on bone density, cardiovascular risk, and cognitive/quality-of-life measures — hormone replacement therapy after RRSO does not appear to negate the cancer-risk benefit and is generally appropriate for symptom management unless otherwise contraindicated, a nuance worth knowing since patients (and some providers) sometimes assume HRT is off the table after a BRCA-related surgery.</p>
+
+  <h3 class="sub">Lynch Syndrome — Endometrial &amp; Ovarian Risk</h3>
+  <ul class="clean">
+    <li>Lynch syndrome (MLH1, MSH2, MSH6, PMS2, or EPCAM mutations) carries substantially elevated lifetime risk of both <strong>endometrial</strong> and <strong>ovarian</strong> cancer, in addition to the better-known colorectal risk.</li>
+    <li><strong>No proven effective screening</strong> exists for either endometrial or ovarian cancer in this population either — annual endometrial biopsy/TVUS starting around age 30–35 is commonly offered, but (as with BRCA/ovarian surveillance above) the evidence for mortality benefit is limited rather than well-established.</li>
+    <li><strong>Risk-reducing hysterectomy with bilateral salpingo-oophorectomy</strong> after completion of childbearing is the recommended definitive risk-reduction strategy — directly analogous to BRCA/RRSO, and the conversation to prioritize over surveillance alone.</li>
+    <li><strong>Postmenopausal bleeding</strong> functions as the practical "screening trigger" for endometrial cancer in the general population — any postmenopausal bleeding warrants prompt endometrial evaluation (biopsy ± TVUS) regardless of Lynch status, since there's no routine screening test for endometrial cancer in average-risk women either.</li>
+  </ul>
+
+  <h3 class="sub">When to Refer for Genetic Counseling</h3>
+  <div class="callout genetic">
+    <div class="callout-title">Family history red flags worth a referral</div>
+    <ul class="clean" style="margin-bottom:0">
+      <li>Breast cancer diagnosed before age 50, or triple-negative breast cancer at any age</li>
+      <li>Ovarian, fallopian tube, or primary peritoneal cancer at any age, in the patient or a close relative</li>
+      <li>Male breast cancer in the family</li>
+      <li>Multiple relatives on the same side with breast and/or ovarian cancer</li>
+      <li>Known family BRCA or Lynch mutation</li>
+      <li>Personal or family history of colorectal or endometrial cancer before age 50 (Lynch pattern)</li>
+      <li>Ashkenazi Jewish ancestry with any personal or family breast/ovarian cancer history — founder mutation prevalence is substantially higher in this population</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>Volume 7 of the OB/GYN &amp; Women's Health Atlas. Reflects the 2024 US MEC/US SPR, ACOG committee opinions, 2020 ACS and 2024 USPSTF cancer screening guidance, and NCCN genetic/familial high-risk guidelines current as of build date. Guidelines from different bodies sometimes diverge — this volume presents each position rather than picking a winner. Verify current thresholds before relying on them clinically.</p>
+</footer>
+
+<script>
+const root = document.body;
+const toggle = document.getElementById('themeToggle');
+function applyTheme(t) { root.setAttribute('data-theme', t); toggle.textContent = t === 'dark' ? '◑' : '◐'; }
+try {
+  const saved = localStorage.getItem('obgyn-atlas-theme');
+  applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+} catch(e) { applyTheme('light'); }
+toggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('obgyn-atlas-theme', next); } catch(e) {}
+});
+document.getElementById('navSelect').addEventListener('change', function() {
+  if (this.value) { document.querySelector(this.value).scrollIntoView({ behavior: 'smooth', block: 'start' }); this.value = ''; }
+});
+
+const effData = [
+  { label: 'Sterilization / implant', pct: 0.2, cap: '0.05–0.2%' },
+  { label: 'Hormonal IUD', pct: 0.2, cap: '0.1–0.4%' },
+  { label: 'Copper IUD', pct: 0.8, cap: '0.8%' },
+  { label: 'DMPA injection', pct: 4, cap: '4%' },
+  { label: 'Pill/patch/ring', pct: 7, cap: '7%' },
+  { label: 'Male condom', pct: 13, cap: '13%' },
+  { label: 'Fertility awareness', pct: 23, cap: '~23%' },
+];
+const wrap = document.getElementById('effBars');
+const maxPct = 23;
+effData.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'eff-row';
+  const w = Math.max((d.pct / maxPct) * 100, 3);
+  row.innerHTML = '<div class="eff-lbl">' + d.label + '</div><div class="eff-track"><div class="eff-fill" style="width:' + w + '%;"></div></div><div class="eff-val">' + d.cap + '</div>';
+  wrap.appendChild(row);
+});
+</script>
+</body>
+</html>

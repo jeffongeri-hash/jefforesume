@@ -754,6 +754,166 @@ const blogPosts = {
       <p><a href="/embeds/cardiothoracic-surgery-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "obgyn-atlas-vol1": {
+    title: "OB/GYN Atlas Vol. 1 — Antepartum Foundations",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Trimester-by-trimester care, prenatal labs and biomarkers, growth surveillance, imaging, birth preparation, and antepartum emergencies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol1.html" title="OB/GYN Atlas Vol. 1 — Antepartum Foundations" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol2": {
+    title: "OB/GYN Atlas Vol. 2 — Labor & Delivery",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Stages of labor, induction, fetal heart rate monitoring, analgesia, delivery mechanics, operative delivery, and intrapartum emergencies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol2.html" title="OB/GYN Atlas Vol. 2 — Labor & Delivery" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol3": {
+    title: "OB/GYN Atlas Vol. 3 — Complications",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Gestational diabetes, obesity, UTI and renal disease, hypertensive disorders, cardiac disease, and perinatal mental health.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol3.html" title="OB/GYN Atlas Vol. 3 — Complications" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol3.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol4": {
+    title: "OB/GYN Atlas Vol. 4 — Fertility, Preconception & Epigenetics",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Infertility workup, assisted reproductive technology, preconception optimization, epigenetics, and cost considerations.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol4.html" title="OB/GYN Atlas Vol. 4 — Fertility, Preconception & Epigenetics" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol5": {
+    title: "OB/GYN Atlas Vol. 5 — Complementary & Traditional Approaches",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Water immersion, acupuncture and TCM, chiropractic care, herbals and supplements, mind-body therapy, and cultural postpartum practices.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol5.html" title="OB/GYN Atlas Vol. 5 — Complementary & Traditional Approaches" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol6": {
+    title: "OB/GYN Atlas Vol. 6 — Gynecologic Emergencies",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Ovarian torsion, ruptured cysts, PID and tubo-ovarian abscess, Bartholin abscess, acute AUB, toxic shock, and vulvovaginal emergencies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol6.html" title="OB/GYN Atlas Vol. 6 — Gynecologic Emergencies" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol7": {
+    title: "OB/GYN Atlas Vol. 7 — Contraception & Cancer Screening",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Contraceptive method comparison, US MEC, emergency contraception, IUD complications, and cervical, breast, ovarian and endometrial screening.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol7.html" title="OB/GYN Atlas Vol. 7 — Contraception & Cancer Screening" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol7.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol8": {
+    title: "OB/GYN Atlas Vol. 8 — Breast Health, Lactation & Outpatient Gynecology",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Lactation-related breast conditions, benign breast disease, medication safety, chronic AUB, PCOS, endometriosis, fibroids, and vulvar dermatoses.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol8.html" title="OB/GYN Atlas Vol. 8 — Breast Health, Lactation & Outpatient Gynecology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol8.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "obgyn-atlas-vol9": {
+    title: "OB/GYN Atlas Vol. 9 — Menopause & Perimenopause",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>The menopausal transition, vasomotor symptoms, hormone therapy, GSM, bone health, cardiometabolic risk, and premature ovarian insufficiency.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/obgyn-atlas-vol9.html" title="OB/GYN Atlas Vol. 9 — Menopause & Perimenopause" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/obgyn-atlas-vol9.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "female-development-physiology-atlas": {
+    title: "Female Development, Physiology & Research Equity Atlas",
+    category: "HEALTHCARE",
+    date: "August 2, 2026",
+    readTime: "22 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Puberty and development, menstrual physiology and pain, hormonal contraceptives, pregnancy and aging physiology, and research equity gaps.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/female-development-physiology-atlas.html" title="Female Development, Physiology & Research Equity Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/female-development-physiology-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "cardiology-atlas-vol3": {
     title: "Cardiology Atlas Vol. 3 — Arrhythmias & Conduction Disease",
     category: "HEALTHCARE",
