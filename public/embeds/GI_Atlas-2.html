@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GI Atlas &mdash; Differential, Pharmacology &amp; IBD Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --ruq: #e0a458;
+  --ruq-soft: rgba(224,164,88,.13);
+  --luq: #4fb3a9;
+  --luq-soft: rgba(79,179,169,.13);
+  --epi: #d4685f;
+  --epi-soft: rgba(212,104,95,.13);
+  --rlq: #8e7dd1;
+  --rlq-soft: rgba(142,125,209,.13);
+  --llq: #6ea8d8;
+  --llq-soft: rgba(110,168,216,.13);
+  --diffuse: #d9b64e;
+  --diffuse-soft: rgba(217,182,78,.14);
+  --pelvic: #cf7aa8;
+  --pelvic-soft: rgba(207,122,168,.13);
+  --flank: #6fae5c;
+  --flank-soft: rgba(111,174,92,.13);
+
+  --accent: #e0a458;
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+  --preg: #cf7aa8;
+  --preg-soft: rgba(207,122,168,.14);
+  --peds: #6ea8d8;
+  --peds-soft: rgba(110,168,216,.14);
+  --geri: #b98a5a;
+  --geri-soft: rgba(185,138,90,.14);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:var(--font-display); font-size:1.15rem; font-weight:600;
+  display:flex; align-items:baseline; gap:8px; white-space:nowrap;
+}
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; }
+.navdrop{ position:relative; }
+.navdrop > button{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.03em;
+  background:var(--bg-elev); color:var(--ink); border:1px solid var(--line);
+  padding:9px 16px; border-radius:999px; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+  transition:border-color .15s ease;
+}
+.navdrop > button:hover{ border-color:var(--accent); }
+.navdrop .chev{ font-size:.7em; opacity:.6; transition:transform .15s ease;}
+.navdrop.open .chev{ transform:rotate(180deg); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  background:var(--bg-elev-2); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  min-width:300px; max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .22s ease, opacity .18s ease;
+  padding:0; z-index:50;
+}
+.navdrop.open .navmenu{ max-height:70vh; opacity:1; overflow-y:auto; padding:8px; }
+.navmenu button{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  background:transparent; border:none; color:var(--ink); font-family:var(--font-body);
+  font-size:.88rem; padding:9px 10px; border-radius:7px; cursor:pointer;
+}
+.navmenu button:hover{ background:var(--bg-elev); }
+.navmenu .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+.navmenu .num{ font-family:var(--font-mono); font-size:.7rem; color:var(--ink-faint); width:1.4em; flex:none;}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  border-radius:999px; width:36px; height:36px; cursor:pointer; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+}
+
+.wrap{ max-width:980px; margin:0 auto; padding:0 20px 120px; }
+.hero{ padding:48px 0 28px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+.hero .eyebrow{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;}
+.hero h1{ font-size:2.3rem; }
+.hero .lede{ color:var(--ink-dim); font-size:1.02rem; max-width:64ch; }
+.source-strip{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.source-chip{
+  font-family:var(--font-mono); font-size:.68rem; color:var(--ink-dim);
+  border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+}
+
+.domain{ display:none; padding-top:36px; }
+.domain.active{ display:block; }
+.domain-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+.domain-head .icon{ font-size:1.6rem; }
+.domain-head h2{ margin:0; font-size:1.7rem; }
+.domain-desc{ color:var(--ink-dim); max-width:70ch; margin-bottom:20px; }
+
+/* quick-jump chip row */
+.jumprow{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px; position:sticky; top:70px; z-index:20;
+  background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(6px); padding:10px 0; }
+.jumpchip{
+  font-family:var(--font-mono); font-size:.7rem; padding:6px 13px; border-radius:999px;
+  border:1px solid var(--line); background:var(--bg-elev); color:var(--ink-dim); cursor:pointer;
+  text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+}
+.jumpchip .dot{ width:7px; height:7px; border-radius:50%; }
+
+.section{ margin-bottom:40px; scroll-margin-top:120px; }
+.section > h3{
+  font-size:1.2rem; display:flex; align-items:center; gap:10px;
+  padding-bottom:9px; border-bottom:2px solid var(--line-soft); margin-bottom:6px;
+}
+.section > h3 .swatch{ width:12px; height:12px; border-radius:3px; flex:none; }
+.section .count{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); font-weight:400; margin-left:auto; }
+.section-intro{ color:var(--ink-dim); font-size:.9rem; margin:8px 0 16px; }
+
+.card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin-bottom:14px; }
+.card h4{ font-size:1rem; margin-bottom:8px; }
+
+.callout{ border-radius:var(--radius); padding:16px 18px; margin:14px 0; border:1px solid; }
+.callout h4{ display:flex; align-items:center; gap:8px; font-size:.92rem; margin-bottom:6px; font-family:var(--font-body); font-weight:700;}
+.callout.pearl{ background:var(--good-soft); border-color:var(--good); }
+.callout.pearl h4{ color:var(--good); }
+.callout.miss{ background:var(--danger-soft); border-color:var(--danger); }
+.callout.miss h4{ color:var(--danger); }
+.callout.warn{ background:var(--warn-soft); border-color:var(--warn); }
+.callout.warn h4{ color:var(--warn); }
+
+/* accordion */
+.acc{ border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; overflow:hidden; background:var(--bg-elev); }
+.acc-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:13px 18px; cursor:pointer; user-select:none; }
+.acc-head-left{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.acc-head h4{ margin:0; font-size:.98rem; }
+.acc-head .plus{ font-size:1.1rem; color:var(--ink-faint); transition:transform .18s ease; flex:none; }
+.acc.open .plus{ transform:rotate(45deg); }
+.acc-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 18px; }
+.acc.open .acc-body{ padding:0 18px 16px; }
+.hallmark{ font-size:.92rem; margin-bottom:8px; padding:10px 12px; background:var(--bg-elev-2); border-radius:7px; border-left:3px solid var(--accent-line, var(--accent)); }
+.hallmark b{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px; color:var(--ink-faint); }
+.pearl-text{ font-size:.88rem; color:var(--ink-dim); }
+.pearl-text b{ color:var(--ink); }
+
+.badge{ display:inline-block; font-family:var(--font-mono); font-size:.62rem; padding:2px 8px; border-radius:999px; font-weight:600; letter-spacing:.02em; white-space:nowrap;}
+.badge.miss{ background:var(--danger-soft); color:var(--danger); }
+.badge.preg{ background:var(--preg-soft); color:var(--preg); }
+.badge.peds{ background:var(--peds-soft); color:var(--peds); }
+.badge.geri{ background:var(--geri-soft); color:var(--geri); }
+
+.dx-controls{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.dx-filter{ font-family:var(--font-mono); font-size:.72rem; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--bg-elev); color:var(--ink-dim); cursor:pointer; }
+.dx-filter.active{ background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600;}
+
+.foot{ margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:.78rem; }
+ul.tight{ margin:0 0 1em 1.1em; padding:0; }
+ul.tight li{ margin-bottom:5px; }
+.small{ font-size:.85rem; color:var(--ink-dim); }
+.verify{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:8px; margin-top:10px;}
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="brand">GI Atlas <span class="sub">Clinical Reference</span></div>
+  <div class="navwrap">
+    <div class="navdrop" id="navdrop">
+      <button id="navbtn"><span class="navlabel">🫃 Abdominal Pain Differential</span><span class="chev">▼</span></button>
+      <div class="navmenu"><button data-dom="ddx"><span class="dot" style="background:var(--ruq)"></span><span class="num">01</span>🫃 Abdominal Pain Differential</button><button data-dom="pharm"><span class="dot" style="background:var(--epi)"></span><span class="num">02</span>💊 GI Pharmacology</button><button data-dom="ibd"><span class="dot" style="background:var(--llq)"></span><span class="num">03</span>🩸 Inflammatory Bowel Disease</button></div>
+    </div>
+  </div>
+  <button class="themetoggle" id="themeBtn" aria-label="Toggle theme">☀️</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Gastroenterology &middot; Emergency &amp; Outpatient Reference</div>
+    <h1>GI Atlas</h1>
+    <p class="lede">A combined differential for abdominal pain organized by anatomic region, a
+    GI-specific pharmacology reference spanning acid suppression, motility, pain, constipation,
+    diarrhea, and GI-infection antibiotics, and a dedicated deep-dive on ulcerative colitis and Crohn's
+    disease — disease trajectory, medications, ER flare management, and patient education.</p>
+    <div class="source-strip">
+      <span class="source-chip">77 abdominal pain differentials</span>
+      <span class="source-chip">39 GI pharmacology agents</span>
+      <span class="source-chip">IBD flare management &amp; red flags</span>
+      <span class="source-chip">Pregnancy / pediatric / geriatric flags</span>
+    </div>
+  </div>
+
+  
+<div class="domain active" id="dom-ddx">
+<div class="domain-head"><span class="icon">🫃</span><h2>Abdominal Pain — Combined Differential</h2></div>
+<p class="domain-desc">77 diagnoses organized by the anatomic region where they classically present,
+each with the single highest-yield hallmark finding and a clinical pearl. The RUQ/biliary-hepatic complex
+alone now covers 17 distinct entities — gallbladder disease is not just
+"cholecystitis vs. not." Badges flag can't-miss diagnoses and special-population considerations (pregnancy,
+pediatric, geriatric) where the typical presentation shifts.</p>
+
+<div class="jumprow"><a href="#reg-ruq" class="jumpchip"><span class="dot" style="background:var(--ruq)"></span>Right Upper Quadrant</a><a href="#reg-luq" class="jumpchip"><span class="dot" style="background:var(--luq)"></span>Left Upper Quadrant</a><a href="#reg-epi" class="jumpchip"><span class="dot" style="background:var(--epi)"></span>Epigastric</a><a href="#reg-rlq" class="jumpchip"><span class="dot" style="background:var(--rlq)"></span>Right Lower Quadrant</a><a href="#reg-llq" class="jumpchip"><span class="dot" style="background:var(--llq)"></span>Left Lower Quadrant</a><a href="#reg-diffuse" class="jumpchip"><span class="dot" style="background:var(--diffuse)"></span>Periumbilical / Diffuse</a><a href="#reg-pelvic" class="jumpchip"><span class="dot" style="background:var(--pelvic)"></span>Suprapubic / Pelvic</a><a href="#reg-flank" class="jumpchip"><span class="dot" style="background:var(--flank)"></span>Flank</a></div>
+
+<div class="section" id="reg-ruq">
+          <h3><span class="swatch" style="background:var(--ruq)"></span>Right Upper Quadrant (RUQ)<span class="count">17 diagnoses</span></h3>
+          <p class="section-intro">Biliary and hepatic pathology dominates — and the biliary tree alone deserves a full differential of its own, not just ‘cholecystitis.’</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute calculous cholecystitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Murphy's sign (inspiratory arrest on RUQ palpation) + fever + leukocytosis; US shows wall thickening &gt;3mm, pericholecystic fluid, sonographic Murphy's sign, with stones present.</div>
+                <div class="pearl-text"><b>Pearl:</b> Distinguish from biliary colic by duration and systemic signs — colic resolves in hours without fever; cholecystitis persists &gt;6h with an inflammatory picture.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acalculous cholecystitis</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>RUQ pain/fever in a critically ill, fasting/TPN-dependent, or mechanically ventilated patient, with cholecystitis findings on imaging but NO stones.</div>
+                <div class="pearl-text"><b>Pearl:</b> Higher rate of gangrene and perforation than calculous disease because it's recognized later — keep it on the differential in any ICU patient with unexplained sepsis and no other source.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Emphysematous cholecystitis</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Gas within the gallbladder wall or lumen on imaging; disproportionately affects diabetics and older men.</div>
+                <div class="pearl-text"><b>Pearl:</b> A more virulent, gas-forming process (often Clostridium or E. coli) with higher gangrene/perforation risk — treat as a surgical emergency, not routine cholecystitis management.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Biliary colic (symptomatic cholelithiasis)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Transient RUQ/epigastric pain post-fatty meal, resolves within 1–6 hours, no fever or peritoneal signs.</div>
+                <div class="pearl-text"><b>Pearl:</b> A normal-appearing gallbladder wall on US (no thickening/pericholecystic fluid) despite visible stones is what argues against cholecystitis — the stones themselves don't make the diagnosis.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Choledocholithiasis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>RUQ pain with elevated bilirubin/alk phos and a dilated common bile duct on imaging, without fever — a stone in the duct without infection yet.</div>
+                <div class="pearl-text"><b>Pearl:</b> The absence of fever/hypotension here (vs. cholangitis below) generally allows urgent rather than emergent ERCP — but watch the trajectory closely since this can progress quickly.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute ascending cholangitis</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Charcot's triad: fever, jaundice, RUQ pain. Reynold's pentad adds hypotension + altered mental status — a surgical/GI emergency requiring urgent biliary decompression (ERCP).</div>
+                <div class="pearl-text"><b>Pearl:</b> Don't wait for all three Charcot components — sensitivity of the full triad is poor; a rising bilirubin with fever is enough to escalate.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Mirizzi syndrome</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Obstructive jaundice from a stone impacted in the cystic duct/gallbladder neck extrinsically compressing the common hepatic duct — can mimic a malignant biliary stricture on imaging.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a patient with obstructive jaundice and a large impacted cystic duct stone before assuming cholangiocarcinoma — the imaging appearance can be deceptively similar.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Gallstone ileus</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Small bowel obstruction from a gallstone that eroded through a cholecystoenteric fistula; Rigler's triad on imaging — pneumobilia, SBO, and an ectopic gallstone.</div>
+                <div class="pearl-text"><b>Pearl:</b> A rare cause of SBO, more common in older women without a hernia or prior surgery to otherwise explain obstruction — look specifically for pneumobilia on CT.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Biliary dyskinesia</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Biliary-colic-type pain with a normal ultrasound (no stones) and a low gallbladder ejection fraction on HIDA scan with CCK stimulation.</div>
+                <div class="pearl-text"><b>Pearl:</b> Don't dismiss classic biliary colic symptoms just because the ultrasound is “normal” — HIDA/CCK-EF is the appropriate next step, and a low EF supports cholecystectomy.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Porcelain gallbladder / gallbladder carcinoma</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Calcified gallbladder wall on imaging, often an incidental finding; carcinoma may present with a RUQ mass, weight loss, and jaundice in advanced disease.</div>
+                <div class="pearl-text"><b>Pearl:</b> Porcelain gallbladder carries an associated increased gallbladder cancer risk (more modest than classically taught, but real) and is generally an indication for cholecystectomy.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute viral/toxic hepatitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>RUQ pain/tenderness + jaundice + marked transaminitis (often in the thousands for viral/toxic causes).</div>
+                <div class="pearl-text"><b>Pearl:</b> Ask specifically about acetaminophen (staggered overdose is easy to miss), supplements, and new medications — drug-induced liver injury is common and under-asked.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Hepatic abscess (pyogenic/amebic)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Fever + RUQ pain + travel history (amebic) or a biliary/GI source (pyogenic); imaging shows a rim-enhancing hepatic lesion.</div>
+                <div class="pearl-text"><b>Pearl:</b> Amebic abscess classically occurs without active dysentery at presentation — travel history alone should raise it even without diarrhea.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Budd-Chiari syndrome (hepatic vein thrombosis)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Classic triad: RUQ pain, hepatomegaly, and new ascites from hepatic venous outflow obstruction.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a patient with a hypercoagulable state (myeloproliferative disorders are the most common underlying cause) presenting with painful hepatomegaly and new ascites.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Perforated duodenal ulcer (RUQ presentation)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Sudden severe pain that can localize RUQ (tracking along the paracolic gutter) before becoming diffuse; free air under the diaphragm on upright CXR.</div>
+                <div class="pearl-text"><b>Pearl:</b> Free air can be absent in up to 30% of perforations — a normal CXR does not exclude perforation if the clinical story fits.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Right lower lobe pneumonia (referred)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>RUQ pain with cough, fever, and tachypnea; exam may reveal decreased breath sounds/crackles at the right base.</div>
+                <div class="pearl-text"><b>Pearl:</b> Diaphragmatic irritation from basilar pneumonia is a classic referred-pain mimic of RUQ pathology — a quick lung exam and CXR save an unnecessary RUQ US.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Fitz-Hugh-Curtis syndrome (perihepatitis)</h4><span class="badge preg">PREGNANCY</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>RUQ pain in a sexually active woman with concurrent or recent PID; “violin-string” adhesions between liver capsule and peritoneum if visualized surgically.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in any young woman with RUQ pain and pelvic pathology risk factors — pelvic exam and STI testing belong in the RUQ pain workup for this population.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Subphrenic / subhepatic abscess</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Hallmark</b>Fever and RUQ pain days to weeks after abdominal surgery or perforation; imaging shows a fluid collection under the diaphragm or liver.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a post-operative patient with a new fever plateau and RUQ discomfort — a delayed complication that's easy to miss once the patient is out of the immediate post-op window.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-luq">
+          <h3><span class="swatch" style="background:var(--luq)"></span>Left Upper Quadrant (LUQ)<span class="count">7 diagnoses</span></h3>
+          <p class="section-intro">Splenic and gastric pathology; less common as a presenting complaint, which makes it easy to underweight.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Splenic infarct</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>Sudden sharp LUQ pain, often pleuritic; look for an embolic source (atrial fibrillation, endocarditis) or hemoglobinopathy (sickle cell).</div>
+                <div class="pearl-text"><b>Pearl:</b> In sickle cell patients, recurrent infarcts lead to autosplenectomy over time — a normal-sized or small spleen on imaging doesn't rule out this history.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Splenic rupture</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>LUQ pain + hypotension after trauma, or spontaneous in a splenomegalic patient (classically infectious mononucleosis); Kehr's sign = referred left shoulder pain from diaphragmatic irritation.</div>
+                <div class="pearl-text"><b>Pearl:</b> Ask about recent mono/EBV diagnosis and contact-sport participation — spontaneous rupture of a mono-enlarged spleen is a genuine, if uncommon, emergency.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Splenic abscess</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>Fever + LUQ pain in an immunocompromised patient or IV drug user; rim-enhancing splenic lesion on imaging.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in endocarditis with septic emboli — the spleen is a common seeding site.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute gastritis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>Epigastric/LUQ burning pain, often with NSAID, alcohol, or stress (critical illness) exposure; may have associated nausea/hematemesis if erosive.</div>
+                <div class="pearl-text"><b>Pearl:</b> Ask specifically about OTC NSAID use — patients frequently don't volunteer ibuprofen or aspirin as a “medication.”</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Left lower lobe pneumonia (referred)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>LUQ pain with respiratory symptoms; mirrors the RUQ/right-lung referred-pain mechanism.</div>
+                <div class="pearl-text"><b>Pearl:</b> A basilar pneumonia can present as isolated upper-quadrant abdominal pain, especially in children and the elderly.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Splenic vein thrombosis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>LUQ pain with isolated gastric varices (without esophageal varices) on endoscopy, often in the setting of pancreatitis or pancreatic cancer.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a patient with a pancreatitis history and a new upper GI bleed from isolated gastric varices — a distinct mechanism from portal-hypertension-related varices.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Pancreatic tail pseudocyst / mass</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Hallmark</b>LUQ fullness or pain, often weeks after a pancreatitis episode, with a cystic collection on imaging.</div>
+                <div class="pearl-text"><b>Pearl:</b> A pseudocyst can compress adjacent structures or become infected — persistent LUQ pain after a resolved pancreatitis episode warrants imaging.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-epi">
+          <h3><span class="swatch" style="background:var(--epi)"></span>Epigastric<span class="count">12 diagnoses</span></h3>
+          <p class="section-intro">Pancreatic, gastric, and cardiac pathology overlap here — the region most likely to hide a mimic.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute pancreatitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Epigastric pain radiating to the back, lipase &gt;3x upper limit of normal; Cullen sign (periumbilical ecchymosis) and Grey Turner sign (flank ecchymosis) indicate hemorrhagic pancreatitis.</div>
+                <div class="pearl-text"><b>Pearl:</b> Lipase magnitude does not correlate with severity — use a validated severity score (e.g., BISAP) rather than the lipase value itself to risk-stratify.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Chronic pancreatitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Recurrent epigastric pain with steatorrhea and/or new diabetes in a patient with chronic alcohol use or a prior acute pancreatitis history; pancreatic calcifications on imaging.</div>
+                <div class="pearl-text"><b>Pearl:</b> Don't expect lipase to be markedly elevated the way it is in acute disease — calcifications on plain imaging are a late but fairly specific finding.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Peptic ulcer disease (gastric/duodenal)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Epigastric pain with a meal-relationship pattern: gastric ulcers often worsen with food, duodenal ulcers classically improve with food and recur 2–3h later.</div>
+                <div class="pearl-text"><b>Pearl:</b> H. pylori testing and NSAID history belong in every PUD workup — treating the ulcer without addressing the cause invites recurrence.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Perforated peptic ulcer</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Sudden, severe, diffuse pain often following a preceding epigastric ulcer history; rigid “board-like” abdomen, free air on imaging.</div>
+                <div class="pearl-text"><b>Pearl:</b> Pain can transiently improve as chemical peritonitis evolves before worsening again — don't be falsely reassured by a brief lull.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Boerhaave syndrome (esophageal rupture)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Mackler's triad: vomiting, severe chest/epigastric pain, and subcutaneous emphysema, following forceful retching/vomiting.</div>
+                <div class="pearl-text"><b>Pearl:</b> Mortality rises sharply with delayed diagnosis — have a low threshold for contrast esophagram/CT after severe pain post-vomiting, especially with crepitus on exam.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>GERD</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Burning epigastric/retrosternal pain, worse lying flat or postprandially, improved with antacids.</div>
+                <div class="pearl-text"><b>Pearl:</b> GERD is a diagnosis of exclusion in a patient with cardiac risk factors and epigastric pain — don't anchor on it before an ECG.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Functional dyspepsia</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Chronic/recurrent epigastric pain or fullness without an identifiable structural cause on endoscopy.</div>
+                <div class="pearl-text"><b>Pearl:</b> A diagnosis of exclusion — alarm features (weight loss, GI bleeding, dysphagia, age &gt;60 at onset) should prompt endoscopy before settling on this label.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Inferior MI (atypical GI presentation)</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Epigastric pain, nausea, and diaphoresis without classic chest pain — particularly in diabetics, women, and the elderly.</div>
+                <div class="pearl-text"><b>Pearl:</b> Get an ECG on essentially any epigastric pain patient with vascular risk factors, even when the story sounds like “indigestion.”</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Aortic dissection (epigastric/back presentation)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Sudden, severe, tearing pain, may radiate to the back; check pulse/BP differentials between extremities.</div>
+                <div class="pearl-text"><b>Pearl:</b> A normal CXR or D-dimer does not exclude dissection — name the diagnosis and use a validated pretest tool (e.g., ADD-RS) rather than a single test to argue it away.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Gastric volvulus</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Borchardt's triad: severe epigastric pain, retching without ability to vomit, and inability to pass a nasogastric tube.</div>
+                <div class="pearl-text"><b>Pearl:</b> Rare, but the triad is close to pathognomonic — recognize it rather than attributing an unpassable NG tube to technique.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Gastric cancer</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Epigastric pain with early satiety, unintentional weight loss, and possibly a palpable epigastric mass or Virchow's node (left supraclavicular) in advanced disease.</div>
+                <div class="pearl-text"><b>Pearl:</b> New dyspepsia in a patient over 50, especially with alarm features (weight loss, anemia, dysphagia), warrants endoscopy rather than an empiric PPI trial alone.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Pancreatic cancer</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Hallmark</b>Painless jaundice with a palpable, non-tender distended gallbladder (Courvoisier's sign) from head-of-pancreas tumors; epigastric pain radiating to the back in more advanced body/tail tumors.</div>
+                <div class="pearl-text"><b>Pearl:</b> New-onset diabetes or unexplained migratory thrombophlebitis (Trousseau's syndrome) in an older adult can be an early paraneoplastic clue preceding the more obvious presentation.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-rlq">
+          <h3><span class="swatch" style="background:var(--rlq)"></span>Right Lower Quadrant (RLQ)<span class="count">12 diagnoses</span></h3>
+          <p class="section-intro">Appendiceal and adnexal/gonadal pathology dominate, but inflammatory, infectious, and retroperitoneal mimics belong here too.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute appendicitis</h4><span class="badge miss">CAN'T MISS</span><span class="badge preg">PREGNANCY</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Periumbilical pain migrating to RLQ (McBurney's point), anorexia, low-grade fever, guarding; migration pattern reflects the shift from visceral to somatic pain.</div>
+                <div class="pearl-text"><b>Pearl:</b> Presentation is blunted and delayed in pregnancy (appendix displaced upward/laterally by the gravid uterus) and in the elderly (attenuated fever/leukocytosis) — both groups perforate more often because diagnosis is delayed.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ectopic pregnancy (right-sided)</h4><span class="badge miss">CAN'T MISS</span><span class="badge preg">PREGNANCY</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Positive pregnancy test + adnexal tenderness ± vaginal bleeding; rupture causes sudden severe pain, hypotension, and peritoneal signs.</div>
+                <div class="pearl-text"><b>Pearl:</b> Check a pregnancy test in every reproductive-age patient with lower abdominal pain before attributing it to appendicitis or a GI cause — this is a non-negotiable step, not an optional one.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ovarian torsion (right)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Sudden severe unilateral pain with nausea/vomiting; US shows an enlarged ovary ± absent Doppler flow (flow can be present intermittently and does not exclude torsion).</div>
+                <div class="pearl-text"><b>Pearl:</b> Don't be reassured by normal Doppler flow alone — torsion can intermittently detort, and clinical suspicion should drive emergent gynecologic evaluation regardless of flow findings.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ovarian cyst rupture (right)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Sudden sharp pain, often mid-cycle (ruptured follicular/corpus luteum cyst); typically less peritoneal irritation than torsion, may have free fluid on US.</div>
+                <div class="pearl-text"><b>Pearl:</b> Hemorrhagic cyst rupture in a patient on anticoagulation can cause significant hemoperitoneum — check a hemoglobin trend, not just a single value.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Testicular torsion (referred lower abdominal pain)</h4><span class="badge miss">CAN'T MISS</span><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Younger males may present with lower abdominal pain before localizing to the scrotum; absent cremasteric reflex and a high-riding, horizontal testicle are supportive exam findings.</div>
+                <div class="pearl-text"><b>Pearl:</b> Always ask about and examine the scrotum in a young male with lower abdominal pain — torsion is a time-sensitive (ideally &lt;6h) diagnosis where imaging shouldn't delay urologic consultation if suspicion is high.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Mesenteric lymphadenitis (pediatric)</h4><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>RLQ pain mimicking appendicitis in a child, often with a preceding or concurrent viral URI; CT/US shows enlarged mesenteric nodes with a normal appendix.</div>
+                <div class="pearl-text"><b>Pearl:</b> A leading appendicitis mimic in children — the recent URI history is the key differentiator on history alone.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Meckel's diverticulitis</h4><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Mimics appendicitis; classically associated with painless lower GI bleeding in children (rule of 2s: ~2% of population, 2 feet from ileocecal valve, 2% symptomatic).</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a child with recurrent “appendicitis-like” pain and a history of painless rectal bleeding — a Meckel's scan (technetium-99m) is the diagnostic study of choice.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Cecal diverticulitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Right-sided diverticulitis mimicking appendicitis, more common in patients of Asian descent and at a younger age than typical left-sided diverticulitis.</div>
+                <div class="pearl-text"><b>Pearl:</b> CT differentiates the two; don't assume right-sided pain in a young patient is always appendicitis, especially in populations with higher right-sided diverticular prevalence.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Right-sided colon cancer</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Often insidious — iron-deficiency anemia, occult bleeding, or vague RLQ discomfort rather than acute pain; can present acutely with obstruction or perforation.</div>
+                <div class="pearl-text"><b>Pearl:</b> Unexplained iron-deficiency anemia in an adult over screening age warrants colon cancer workup even without dramatic pain.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Crohn's disease (terminal ileitis)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>RLQ pain mimicking appendicitis, often with a history of chronic diarrhea, weight loss, or prior similar episodes; imaging shows terminal ileal wall thickening rather than a dilated, non-compressible appendix.</div>
+                <div class="pearl-text"><b>Pearl:</b> A normal appendix on CT with terminal ileal inflammation should prompt consideration of new or known Crohn's disease rather than proceeding straight to appendectomy.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Yersinia enterocolitica ileitis</h4><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>RLQ pain and diarrhea mimicking appendicitis, often from undercooked pork or unpasteurized milk exposure; mesenteric adenitis and terminal ileitis with a grossly normal appendix if operated on.</div>
+                <div class="pearl-text"><b>Pearl:</b> A classic “pseudoappendicitis” cause — consider it with the right exposure history, especially in children and young adults.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Psoas abscess</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Hallmark</b>Pain with hip flexion (positive psoas sign), fever, and a limp or flexed-hip posture; often associated with adjacent GI pathology (Crohn's, diverticulitis, appendicitis) or vertebral osteomyelitis.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a patient who holds the hip flexed and resists extension — a retroperitoneal process that's easy to miss without a directed exam maneuver.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-llq">
+          <h3><span class="swatch" style="background:var(--llq)"></span>Left Lower Quadrant (LLQ)<span class="count">7 diagnoses</span></h3>
+          <p class="section-intro">Diverticular and adnexal pathology; sigmoid colon's fixed retroperitoneal position explains the pattern.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute diverticulitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>LLQ pain (sigmoid colon), fever, leukocytosis — often called “left-sided appendicitis” for its analogous presentation.</div>
+                <div class="pearl-text"><b>Pearl:</b> Uncomplicated diverticulitis in reliable, non-toxic outpatients is increasingly managed without antibiotics per some guidelines — know your local practice pattern before reflexively prescribing.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ovarian torsion (left)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Same presentation and pearls as right-sided torsion, mirrored to the left adnexa.</div>
+                <div class="pearl-text"><b>Pearl:</b> Laterality doesn't change the urgency — don't let a left-sided location lower your suspicion relative to the right.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ectopic pregnancy (left)</h4><span class="badge miss">CAN'T MISS</span><span class="badge preg">PREGNANCY</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Same presentation and pearls as right-sided ectopic, mirrored to the left adnexa.</div>
+                <div class="pearl-text"><b>Pearl:</b> Same non-negotiable pregnancy test rule applies regardless of laterality.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ovarian cyst rupture (left)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Same presentation and pearls as right-sided cyst rupture, mirrored to the left adnexa.</div>
+                <div class="pearl-text"><b>Pearl:</b> Same hemoglobin-trend caution applies in anticoagulated patients regardless of laterality.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Sigmoid volvulus</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Elderly or nursing-home/chronically constipated patients with massive abdominal distension; “coffee bean” or “bent inner tube” sign on abdominal X-ray.</div>
+                <div class="pearl-text"><b>Pearl:</b> A classic diagnosis in the chronically debilitated, immobile elderly patient — plain films are often diagnostic and can guide urgent decompression before CT is needed.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ischemic colitis (splenic flexure / watershed)</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Crampy LLQ pain followed by hematochezia, often in an older patient with vascular risk factors or a recent hypotensive episode; “thumbprinting” on imaging at watershed areas.</div>
+                <div class="pearl-text"><b>Pearl:</b> Usually less severe than acute mesenteric ischemia (colonic, not small bowel) but still warrants inpatient monitoring for progression to transmural infarction.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Sigmoid colon cancer</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Hallmark</b>Change in bowel habits, hematochezia, or LLQ discomfort with possible obstructive symptoms in an older adult.</div>
+                <div class="pearl-text"><b>Pearl:</b> New LLQ pain with a change in stool caliber/frequency in a patient over screening age should prompt colonoscopy consideration even if an acute diverticulitis episode is also diagnosed.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-diffuse">
+          <h3><span class="swatch" style="background:var(--diffuse)"></span>Periumbilical / Diffuse<span class="count">10 diagnoses</span></h3>
+          <p class="section-intro">Visceral referred pain, obstructive, vascular, and metabolic causes — the region where 'pain out of proportion to exam' matters most.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Early appendicitis (pre-migration)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Vague, poorly localized periumbilical pain before it migrates to the RLQ — reflects visceral referred pain via the T10 dermatome before somatic peritoneal irritation develops.</div>
+                <div class="pearl-text"><b>Pearl:</b> A patient examined early in the course may have a benign-appearing abdomen — serial exams matter more than a single normal one if the story fits appendicitis.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Small bowel obstruction</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Crampy, colicky diffuse pain with distension, vomiting, and obstipation; prior abdominal surgery (adhesions) is the most common risk factor.</div>
+                <div class="pearl-text"><b>Pearl:</b> High-pitched or absent bowel sounds are unreliable in isolation — CT with the transition point is the diagnostic study, and peritoneal signs should raise concern for strangulation.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Large bowel obstruction</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Distension and obstipation with vomiting occurring later than in SBO, often from a colonic mass, volvulus, or severe stricture; imaging shows colonic dilation up to the transition point.</div>
+                <div class="pearl-text"><b>Pearl:</b> A competent ileocecal valve can create a closed-loop obstruction with rapid cecal distension — cecal diameter &gt;10–12cm is a surgical urgency for perforation risk.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute mesenteric ischemia</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Classic teaching: pain out of proportion to a relatively benign-appearing exam, in a patient with vascular risk factors (atrial fibrillation, atherosclerosis, low-flow states).</div>
+                <div class="pearl-text"><b>Pearl:</b> Lactate elevation is a late finding, not an early screening tool — a normal lactate does not exclude mesenteric ischemia early in its course; suspicion should drive CT angiography.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Diabetic ketoacidosis</h4><span class="badge miss">CAN'T MISS</span><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Diffuse abdominal pain can be a presenting symptom of DKA, especially in children and young adults, independent of any intra-abdominal pathology.</div>
+                <div class="pearl-text"><b>Pearl:</b> Check a point-of-care glucose and ketones in any diabetic (or undiagnosed young patient) with diffuse abdominal pain before pursuing an extensive GI workup.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Intussusception (pediatric)</h4><span class="badge miss">CAN'T MISS</span><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Intermittent severe colicky pain with lethargy between episodes, “currant jelly” stools (a late finding), and a palpable sausage-shaped abdominal mass.</div>
+                <div class="pearl-text"><b>Pearl:</b> The lethargy between episodes can be mistaken for a postictal or septic picture — consider intussusception in an infant/toddler with episodic pain and lethargy even without the classic stool finding.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Malrotation with midgut volvulus (infant)</h4><span class="badge miss">CAN'T MISS</span><span class="badge peds">PEDIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Bilious vomiting in an infant is midgut volvulus until proven otherwise; can progress rapidly to bowel necrosis.</div>
+                <div class="pearl-text"><b>Pearl:</b> Bilious emesis in a neonate/young infant is a surgical emergency requiring immediate evaluation — one of the least forgivable misses in pediatrics given how fast ischemia progresses.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ruptured abdominal aortic aneurysm</h4><span class="badge miss">CAN'T MISS</span><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Diffuse abdominal and/or back pain, a pulsatile abdominal mass, and hypotension — the classic triad is present in only a minority of patients, so don't wait for all three.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in any older patient with unexplained hypotension and abdominal/flank/back pain, even without a known AAA history — bedside ultrasound can be diagnostic in seconds.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>IBD flare (Crohn's disease / ulcerative colitis)</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Diffuse or localized abdominal pain with bloody diarrhea (more classic for UC) or without (Crohn's more variable), weight loss, and a known IBD history.</div>
+                <div class="pearl-text"><b>Pearl:</b> Toxic megacolon is the feared complication of a severe UC flare — colonic dilation with systemic toxicity is a surgical emergency, not just “another flare.”</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute intermittent porphyria</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Hallmark</b>Severe diffuse abdominal pain with neuropsychiatric symptoms and dark/reddish urine, often triggered by certain medications, fasting, or hormonal changes.</div>
+                <div class="pearl-text"><b>Pearl:</b> A rare but classic “surgical abdomen mimic” — normal imaging and labs in a patient with recurrent severe pain plus neuro/psych symptoms should raise this, especially with a triggering medication history.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-pelvic">
+          <h3><span class="swatch" style="background:var(--pelvic)"></span>Suprapubic / Pelvic<span class="count">7 diagnoses</span></h3>
+          <p class="section-intro">Genitourinary and gynecologic pathology; overlaps heavily with the lower quadrants above.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute urinary retention</h4><span class="badge geri">GERIATRIC</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Suprapubic pain/pressure with a palpably distended bladder; often in older men with BPH or in the setting of anticholinergic medications.</div>
+                <div class="pearl-text"><b>Pearl:</b> Bladder scan or straight catheterization is both diagnostic and therapeutic — don't miss this easy fix while chasing a more complex differential.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Pelvic inflammatory disease</h4><span class="badge preg">PREGNANCY</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Bilateral lower abdominal/pelvic pain with cervical motion tenderness, adnexal tenderness, and possibly fever in a sexually active woman.</div>
+                <div class="pearl-text"><b>Pearl:</b> Treatment threshold is intentionally low — empiric treatment is recommended for sexually active women with pelvic/lower abdominal pain and no other identified cause, given the reproductive consequences of delayed treatment.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Tubo-ovarian abscess</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Severe bilateral or unilateral pelvic pain, fever, and a complex adnexal mass on imaging, typically a progression of untreated/undertreated PID.</div>
+                <div class="pearl-text"><b>Pearl:</b> Rupture causes diffuse peritonitis and sepsis — a more severe, often inpatient-IV-antibiotic (± drainage) diagnosis than uncomplicated PID.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Endometriosis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Cyclic pelvic pain correlating with menses, often with a history of dysmenorrhea, dyspareunia, or infertility.</div>
+                <div class="pearl-text"><b>Pearl:</b> A chronic-pain diagnosis of exclusion in the acute setting — still rule out ectopic pregnancy and torsion first in any acute presentation before attributing pain to known endometriosis.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Mittelschmerz</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Unilateral mid-cycle pelvic pain coinciding with ovulation, typically mild and self-limited.</div>
+                <div class="pearl-text"><b>Pearl:</b> A benign mimic of more serious adnexal pathology — still worth a pregnancy test and brief reassessment if pain is severe or persistent, since torsion/rupture can occur at any cycle point.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Acute cystitis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Suprapubic pain/pressure with dysuria, frequency, and urgency; typically afebrile and without flank pain (which would suggest pyelonephritis instead).</div>
+                <div class="pearl-text"><b>Pearl:</b> Flank pain, fever, or systemic symptoms should prompt reclassification as pyelonephritis with a different treatment course — don't undertreat an upper-tract infection as simple cystitis.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ovarian mass/cyst (non-ruptured)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Hallmark</b>Dull, persistent pelvic pain or pressure with an adnexal mass on exam/imaging, without the sudden severe onset of torsion or rupture.</div>
+                <div class="pearl-text"><b>Pearl:</b> Size and characteristics on ultrasound (simple vs. complex) guide urgency — a large or rapidly growing mass still warrants gynecologic follow-up even without acute features.</div>
+              </div>
+            </div>
+        </div><div class="section" id="reg-flank">
+          <h3><span class="swatch" style="background:var(--flank)"></span>Flank<span class="count">5 diagnoses</span></h3>
+          <p class="section-intro">Renal and retroperitoneal pathology; the colicky, writhing patient who can't get comfortable is the classic tell.</p>
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Nephrolithiasis (renal colic)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Hallmark</b>Severe colicky flank pain radiating to the groin, with hematuria (present in the majority but its absence doesn't exclude a stone); patients characteristically writhe and cannot find a comfortable position.</div>
+                <div class="pearl-text"><b>Pearl:</b> The writhing, can't-sit-still patient is a genuine bedside discriminator from peritonitis, where patients lie still to avoid movement — a useful gestalt clue while workup is pending.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Pyelonephritis</h4><span class="badge preg">PREGNANCY</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Hallmark</b>Flank pain with fever, CVA (costovertebral angle) tenderness, and lower urinary tract symptoms (dysuria, frequency).</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider complicating factors — obstruction (stone), pregnancy, diabetes, or immunocompromise — that change disposition from oral outpatient therapy to admission and imaging.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Renal infarct</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Hallmark</b>Sudden severe flank pain, often with an embolic source (atrial fibrillation, endocarditis) or hypercoagulable state; can mimic renal colic but typically lacks the classic colicky waxing/waning pattern.</div>
+                <div class="pearl-text"><b>Pearl:</b> An underrecognized mimic of renal colic — consider it in a patient with atrial fibrillation and acute flank pain, especially if urinalysis lacks the hematuria you'd expect with a stone.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Renal vein thrombosis</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Hallmark</b>Flank pain with hematuria and acute kidney injury, classically associated with nephrotic syndrome (loss of antithrombin III) or another hypercoagulable state.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in a patient with known nephrotic syndrome and new flank pain — an underrecognized complication of the hypercoagulable state nephrotic syndrome creates.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Retroperitoneal hematoma</h4><span class="badge miss">CAN'T MISS</span></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Hallmark</b>Flank/back pain with a falling hemoglobin, often in an anticoagulated patient, sometimes after a femoral vascular access procedure; Grey Turner sign (flank ecchymosis) can appear if hemorrhage tracks subcutaneously.</div>
+                <div class="pearl-text"><b>Pearl:</b> Consider in any anticoagulated patient with new flank/back pain and hypotension or a hemoglobin drop, even without a clear traumatic mechanism — recent vascular access is a key historical clue.</div>
+              </div>
+            </div>
+        </div>
+
+<p class="verify">Hallmarks and pearls are the highest-yield single clues, not the complete diagnostic
+picture for any of these — always confirm against current literature, local protocols, and your own
+clinical judgment before applying.</p>
+</div>
+<div class="domain" id="dom-pharm">
+<div class="domain-head"><span class="icon">💊</span><h2>GI Pharmacology</h2></div>
+<p class="domain-desc">39 GI-specific agents across 6 categories, each with mechanism of action,
+indications, dosage, pharmacokinetics, contraindications, and clinical considerations. General
+analgesics are covered in the separate analgesics atlas — this page focuses on drugs that act
+specifically on the GI tract.</p>
+
+<div class="jumprow"><a href="#pharm-acid" class="jumpchip"><span class="dot" style="background:var(--epi)"></span>Acid Suppression / Reflux</a><a href="#pharm-motility" class="jumpchip"><span class="dot" style="background:var(--ruq)"></span>Motility / Antiemetics</a><a href="#pharm-pain" class="jumpchip"><span class="dot" style="background:var(--luq)"></span>Pain / Antispasmodics</a><a href="#pharm-esophageal" class="jumpchip"><span class="dot" style="background:var(--rlq)"></span>Esophageal Spasm</a><a href="#pharm-constip" class="jumpchip"><span class="dot" style="background:var(--llq)"></span>Constipation</a><a href="#pharm-diarrhea" class="jumpchip"><span class="dot" style="background:var(--diffuse)"></span>Diarrhea / GI Bleeding Adjuncts</a><a href="#pharm-abx" class="jumpchip"><span class="dot" style="background:var(--flank)"></span>Antibiotics for GI Infections</a></div>
+
+<div class="section" id="pharm-acid">
+          <h3><span class="swatch" style="background:var(--epi)"></span>Acid Suppression / Reflux<span class="count">5 agents</span></h3>
+          <p class="section-intro">PPIs, H2 blockers, antacids, and reflux-specific mechanical/motility agents — the foundation of PUD/GERD management and stress ulcer prophylaxis.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Omeprazole (and PPI class)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Mechanism of action</b>Irreversibly inhibits the H+/K+-ATPase (proton pump) in gastric parietal cells, blocking the final common step of acid secretion.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>GERD, PUD, H. pylori eradication (combination therapy), stress ulcer prophylaxis, Zollinger-Ellison syndrome.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>20–40mg PO daily, up to BID for severe disease/ZES; IV formulations available for inpatient/NPO patients.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Prodrug activated in the acidic parietal cell canaliculus; half-life ~1h but effect lasts 24+ hours because binding is irreversible — full effect requires several days of dosing as pumps are progressively bound. Hepatic metabolism (CYP2C19).</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Caution with concurrent clopidogrel — CYP2C19 competition can reduce clopidogrel's activation to its active form; use pantoprazole instead if acid suppression is needed alongside clopidogrel.</div>
+                <div class="pearl-text"><b>Considerations:</b> Long-term use is associated with increased C. diff risk, fracture risk, and B12/magnesium deficiency; take 30–60 minutes before a meal for best effect; rebound acid hypersecretion can occur on abrupt discontinuation after prolonged use.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Famotidine (H2RA class)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Mechanism of action</b>Competitively blocks histamine H2 receptors on parietal cells, reducing acid secretion — less potent than PPIs.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>GERD, PUD, stress ulcer prophylaxis; also used as an H2-blockade adjunct in urticaria/anaphylaxis management.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>20–40mg PO/IV BID; reduce dose in renal impairment.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset ~1h, duration 10–12h, half-life 2.5–3.5h (prolonged in renal impairment), renally eliminated.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Dose-adjust for renal impairment; rare QT prolongation reported at high doses.</div>
+                <div class="pearl-text"><b>Considerations:</b> Tachyphylaxis develops with continuous multi-day use; less potent than PPIs but a reasonable short-term/PRN option given fewer long-term risk associations.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Calcium carbonate / aluminum-magnesium hydroxide (antacids)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Mechanism of action</b>Direct chemical neutralization of gastric acid.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Immediate symptomatic relief of dyspepsia/heartburn.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Varies by formulation; typically PRN with meals and at symptom onset.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset within minutes; short duration (30 min–2h); minimal systemic absorption, though some renal excretion of magnesium/aluminum occurs.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Avoid magnesium/aluminum-containing antacids in significant renal impairment (accumulation risk); separate from other oral medications by 2 hours since antacids chelate and reduce absorption of many drugs (fluoroquinolones, tetracyclines, levothyroxine).</div>
+                <div class="pearl-text"><b>Considerations:</b> Magnesium-containing formulations cause diarrhea; aluminum-containing formulations cause constipation — many products combine both to offset each other.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Alginate-antacid raft-forming agents (e.g., Gaviscon)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Mechanism of action</b>Alginate reacts with gastric acid to form a viscous, low-density gel “raft” that floats on top of gastric contents, creating a physical barrier that blocks reflux into the esophagus — a mechanical effect distinct from acid neutralization or suppression.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>GERD, particularly postprandial and positional (bending/lying down) breakthrough symptoms.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>10–20mL PO after meals and at bedtime.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Acts locally and mechanically within the stomach; not systemically absorbed.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Some formulations contain significant sodium or calcium content — caution in renal impairment or sodium-restricted patients.</div>
+                <div class="pearl-text"><b>Considerations:</b> A genuinely useful add-on for patients with breakthrough postprandial reflux despite standing PPI therapy, since the mechanism (physical barrier) is complementary rather than redundant with acid suppression.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Baclofen (for refractory GERD)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--epi)"><b>Mechanism of action</b>GABA-B receptor agonist that reduces the frequency of transient lower esophageal sphincter relaxations (TLESRs) — the underlying mechanism behind the majority of reflux episodes, including many that occur despite adequate acid suppression.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Refractory GERD with a significant TLESR component, particularly when symptoms persist despite optimized PPI therapy.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>5–20mg PO TID; start low and titrate.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Renal elimination; crosses the blood-brain barrier, accounting for its CNS side effects.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Renal impairment (dose reduction needed); do not stop abruptly after prolonged use — abrupt discontinuation carries a withdrawal seizure risk.</div>
+                <div class="pearl-text"><b>Considerations:</b> CNS side effects (sedation, dizziness) often limit tolerability; generally reserved for refractory cases under specialist guidance rather than used as an early-line GERD therapy.</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-motility">
+          <h3><span class="swatch" style="background:var(--ruq)"></span>Motility / Antiemetics<span class="count">11 agents</span></h3>
+          <p class="section-intro">Prokinetics and antiemetics for gastroparesis, GERD, and nausea/vomiting.</p>
+          
+    <div class="tbl-wrap" style="overflow-x:auto; margin-bottom:20px;">
+    <table>
+    <tr><th>Clinical scenario</th><th>Preferred agent(s)</th><th>Why</th></tr>
+    <tr><td>Migraine-associated nausea</td><td>Prochlorperazine, metoclopramide, or droperidol</td><td>All three have independent efficacy against the headache itself, not just the nausea</td></tr>
+    <tr><td>Vertigo / motion sickness</td><td>Promethazine, diphenhydramine, or scopolamine</td><td>Antihistamine/anticholinergic action on vestibular pathways outperforms pure D2 antagonists here</td></tr>
+    <tr><td>Gastroparesis / GERD-related nausea</td><td>Metoclopramide (or domperidone where available)</td><td>Only agents on this list with a genuine prokinetic effect, not just antiemetic</td></tr>
+    <tr><td>Chemotherapy-induced nausea</td><td>Ondansetron + dexamethasone ± an NK1 antagonist</td><td>Combination therapy targeting multiple emetogenic pathways is standard for moderate-high emetogenic regimens</td></tr>
+    <tr><td>Opioid-induced nausea</td><td>Low-dose haloperidol or ondansetron</td><td>Haloperidol has specific ED case-series support for this indication</td></tr>
+    <tr><td>Post-operative nausea prophylaxis</td><td>Ondansetron + dexamethasone (given at induction)</td><td>Combining mechanisms prophylactically outperforms either agent alone</td></tr>
+    <tr><td>Cannabinoid hyperemesis / cyclic vomiting</td><td>Haloperidol or droperidol</td><td>Emerging ED literature support when standard antiemetics fail</td></tr>
+    <tr><td>Refractory nausea (any cause)</td><td>Combine agents from different mechanistic classes</td><td>Escalating within one class (e.g., more ondansetron) is less effective than adding a second mechanism</td></tr>
+    </table>
+    </div>
+    
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Metoclopramide (Reglan)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Dopamine D2 receptor antagonist (central and peripheral) with 5-HT4 agonist activity; increases lower esophageal sphincter tone, gastric antral contractions, and gastric emptying; central antiemetic effect via chemoreceptor trigger zone D2 blockade.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Gastroparesis, GERD, nausea/vomiting, migraine adjunct.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>10mg IV/PO up to QID; limit duration of use to under 12 weeks given tardive dyskinesia risk.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset: IV 1–3 min, PO 30–60 min; half-life 5–6h; renally eliminated (dose-adjust in renal impairment).</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Parkinson's disease, GI obstruction/perforation, seizure disorder (lowers seizure threshold), pheochromocytoma.</div>
+                <div class="pearl-text"><b>Considerations:</b> Carries a black box warning for tardive dyskinesia with prolonged use; can cause acute extrapyramidal symptoms/akathisia — treat with diphenhydramine or benztropine; give as a slow IV push to reduce akathisia risk. <b>Most effective for:</b> gastroparesis and GERD-related nausea, given its dual prokinetic/antiemetic action — the only agent on this list that treats both the motility problem and the nausea it causes.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Prochlorperazine (Compazine)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Phenothiazine; D2 receptor antagonist at the chemoreceptor trigger zone, with additional anticholinergic and antihistaminergic activity.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Nausea/vomiting broadly, and independently effective as a migraine abortive agent (not just for the associated nausea).</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>10mg IV/IM/PO q6–8h PRN; 25mg PR suppository.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset 10–20 min IV; half-life ~7h; hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Parkinson's disease, severe CNS depression, bone marrow suppression, children under 2 years or under 20lbs.</div>
+                <div class="pearl-text"><b>Considerations:</b> Higher extrapyramidal symptom/akathisia risk than metoclopramide in some studies — many EDs co-administer diphenhydramine; also carries QT-prolongation risk. <b>Most effective for:</b> migraine headache with associated nausea — one of the best-evidenced components of an ED migraine cocktail, with efficacy against the headache itself, not just the nausea.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Droperidol</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Butyrophenone; potent D2 receptor antagonist with additional alpha-adrenergic blocking activity, producing a strong central antiemetic and sedative effect.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Refractory nausea/vomiting, post-operative nausea, migraine (effective abortive agent).</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>0.625–1.25mg IV for antiemetic/migraine use — notably lower than the doses used for agitation.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset 3–10 min IV; half-life ~2h; hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Known QT prolongation or congenital long QT syndrome.</div>
+                <div class="pearl-text"><b>Considerations:</b> Carries an FDA black box warning (added 2001) for QT prolongation and torsades de pointes risk, which sharply curtailed its use for years despite strong efficacy data; many EDs have since reintroduced it at low doses with baseline ECG/electrolyte optimization given accumulating reassuring real-world safety data — institutional protocols vary, so know your local policy. <b>Most effective for:</b> refractory nausea that hasn't responded to ondansetron/metoclopramide, and migraine — comparable or superior efficacy to prochlorperazine in some head-to-head data.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Promethazine (Phenergan)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Phenothiazine antihistamine (H1 antagonist) with anticholinergic and antidopaminergic (D2) activity; antiemetic effect via both CTZ D2 blockade and vestibular/H1-mediated pathways.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Nausea/vomiting broadly, particularly vertigo and motion-sickness-related nausea; also used as a sedative/allergic-reaction adjunct.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>12.5–25mg IV/IM/PO/PR q4–6h PRN.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset ~20 min (faster IV); half-life 9–16h; hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Children under 2 years (black box warning — respiratory depression risk), severe CNS depression, narrow-angle glaucoma.</div>
+                <div class="pearl-text"><b>Considerations:</b> Carries a black box warning for severe tissue injury (including gangrene) with IV extravasation or accidental intra-arterial injection — give IM or via a well-running large-bore IV line, never subcutaneously or intra-arterially. <b>Most effective for:</b> vertigo/motion-sickness-associated nausea, where its antihistamine/anticholinergic action on vestibular pathways gives it an edge over pure D2 antagonists.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Haloperidol (low-dose, antiemetic use)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Butyrophenone; D2 receptor antagonist, mechanistically similar to droperidol.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Refractory nausea/vomiting, including opioid-induced nausea; emerging off-label use for cyclic vomiting syndrome and cannabinoid hyperemesis syndrome.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>0.5–2mg IV/IM for antiemetic use — substantially lower than psychiatric/agitation dosing.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset 15–30 min IV; half-life 14–26h (notably longer than droperidol); hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Parkinson's disease, QT prolongation, severe CNS depression.</div>
+                <div class="pearl-text"><b>Considerations:</b> Shares the extrapyramidal symptom and QT-prolongation risks of the antidopaminergic class. <b>Most effective for:</b> opioid-induced nausea and, per a growing body of ED case-series evidence, cannabinoid hyperemesis syndrome and cyclic vomiting syndrome — though it isn't FDA-approved specifically for either indication.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Diphenhydramine</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>H1 antihistamine with anticholinergic properties; antiemetic effect primarily via vestibular/central H1 blockade, and separately useful for preventing or treating extrapyramidal side effects from antidopaminergic antiemetics.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Vertigo-associated nausea; routine adjunct given alongside metoclopramide/prochlorperazine/droperidol/haloperidol to prevent or treat EPS.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>25–50mg IV/IM/PO q6h PRN.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset 15–30 min; half-life 4–8h (longer in the elderly); hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Narrow-angle glaucoma; relative caution in severe asthma/COPD (anticholinergic drying of secretions) and with other CNS depressants.</div>
+                <div class="pearl-text"><b>Considerations:</b> Significant sedation and anticholinergic burden — particularly risky in elderly patients (delirium risk; on the Beers criteria list). <b>Most effective for:</b> vertigo/motion-sickness nausea, and as EPS prophylaxis whenever a D2-antagonist antiemetic is given.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Scopolamine (transdermal)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Anticholinergic (muscarinic antagonist); reduces vestibular signal input to the central vomiting center.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Motion sickness, vertigo-related nausea, post-operative nausea prophylaxis.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>One transdermal patch behind the ear, applied at least 4 hours before the anticipated need (travel, surgery); effect lasts up to 72 hours.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Slow onset (hours) due to transdermal delivery; prolonged duration from a depot effect in the skin.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Narrow-angle glaucoma, urinary retention/BPH, myasthenia gravis.</div>
+                <div class="pearl-text"><b>Considerations:</b> Delayed onset makes it unsuitable for acute, already-occurring nausea — it must be applied proactively, before the trigger. <b>Most effective for:</b> motion sickness and vestibular-origin nausea specifically; not useful for chemotherapy-induced or gastroenteritis-related nausea given its distinct, vestibular-specific mechanism.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Dexamethasone (antiemetic adjunct)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Corticosteroid; the precise antiemetic mechanism is incompletely understood but involves anti-inflammatory/anti-edema effects, prostaglandin inhibition, and modulation of central neurotransmitter pathways.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Chemotherapy-induced nausea/vomiting (standard adjunct for moderate-to-highly emetogenic regimens), post-operative nausea/vomiting prophylaxis.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>4–10mg IV single dose for acute/prophylactic use; higher, scheduled dosing as part of formal multi-day chemo antiemetic protocols.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Long biologic half-life (36–54h); hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Active untreated systemic infection (relative), uncontrolled hyperglycemia.</div>
+                <div class="pearl-text"><b>Considerations:</b> Single-dose antiemetic use carries minimal steroid-related risk. <b>Most effective for:</b> chemotherapy-induced nausea as part of a combination regimen (with a 5-HT3 antagonist ± an NK1 antagonist), and post-op nausea prophylaxis given at induction — it's an adjunct that potentiates other antiemetics rather than a standalone treatment.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Domperidone</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Peripheral D2 receptor antagonist; because it does not meaningfully cross the blood-brain barrier, it produces prokinetic/antiemetic effects (acting at the area postrema, which lies outside the BBB) with substantially less central/extrapyramidal side-effect burden than metoclopramide.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Gastroparesis, GERD-related nausea; used as a first-line prokinetic in many countries outside the US.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>10mg PO TID–QID (dosing varies by country).</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal CNS penetration (a P-glycoprotein substrate at the blood-brain barrier); hepatic metabolism (CYP3A4).</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Not FDA-approved or commercially available in the US (accessible only via expanded-access IND or compounding); QT prolongation risk, which has led several countries to restrict its availability; avoid with other QT-prolonging drugs.</div>
+                <div class="pearl-text"><b>Considerations:</b> The key US-practice pearl is availability, not efficacy — it's genuinely first-line internationally for gastroparesis specifically because it avoids metoclopramide's EPS/tardive dyskinesia risk, but most US clinicians will never have it on formulary. <b>Most effective for:</b> long-term gastroparesis management when EPS risk from metoclopramide is a concern (e.g., Parkinson's disease patients needing prokinetic support, or patients who've already had an EPS reaction to metoclopramide).</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ondansetron</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Selective 5-HT3 receptor antagonist, blocking serotonin at vagal afferent terminals in the GI tract and centrally at the chemoreceptor trigger zone.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Nausea/vomiting from chemotherapy, post-operative, gastroenteritis, and general ED use.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>4–8mg IV/PO/ODT; FDA safety limit of 16mg for a single IV dose given dose-dependent QT prolongation.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset ~30 min; half-life 3–6h; hepatic metabolism (CYP3A4, 2D6, 1A2) with renal elimination of metabolites.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Congenital long QT syndrome; caution with other QT-prolonging medications.</div>
+                <div class="pearl-text"><b>Considerations:</b> QT prolongation is dose-dependent — obtain an ECG for high doses or in patients with electrolyte abnormalities or other QT-prolonging medications, and correct hypokalemia/hypomagnesemia before or alongside administration.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Erythromycin (prokinetic dosing)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Motilin receptor agonist, stimulating antral contractions and accelerating gastric emptying — distinct from its antibacterial mechanism.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Gastroparesis (off-label); pre-endoscopy administration for upper GI bleed to improve visualization by clearing retained blood/contents.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>3mg/kg IV over 30–60 minutes (pre-endoscopy); 250mg PO TID–QID for gastroparesis — notably lower than antibacterial dosing.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Hepatic metabolism via CYP3A4 (both substrate and inhibitor, creating significant interaction potential); biliary excretion.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>QT prolongation; avoid with other QT-prolonging drugs or strong CYP3A4 interactions.</div>
+                <div class="pearl-text"><b>Considerations:</b> Prokinetic benefit is subject to tachyphylaxis within days to weeks, limiting usefulness for chronic gastroparesis management; screen the medication list carefully for CYP3A4 interactions before use.</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-pain">
+          <h3><span class="swatch" style="background:var(--luq)"></span>Pain / Antispasmodics<span class="count">3 agents</span></h3>
+          <p class="section-intro">GI-specific antispasmodics and mucosal-protective agents — general analgesia is covered in the separate analgesics atlas.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Dicyclomine</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Mechanism of action</b>Anticholinergic/antimuscarinic agent with direct smooth muscle relaxant effect on the GI tract, reducing spasm.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>IBS, functional abdominal pain/spasm.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>10–20mg PO QID.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset 1–2h PO; parent drug half-life ~1.8h, though active metabolites persist longer; hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Glaucoma, GI/GU obstruction, myasthenia gravis, severe ulcerative colitis.</div>
+                <div class="pearl-text"><b>Considerations:</b> Anticholinergic effects (dry mouth, blurred vision, urinary retention, constipation) warrant caution in the elderly (anticholinergic burden/delirium risk); avoid in severe UC — anticholinergic slowing of colonic motility can precipitate toxic megacolon (see the IBD section).</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Hyoscyamine</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Mechanism of action</b>Anticholinergic/antispasmodic, mechanistically similar to dicyclomine.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>IBS, adjunct for biliary/renal colic-associated spasm, general GI spasm.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>0.125–0.25mg SL/PO QID PRN.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Rapid onset sublingually; half-life 3–5h.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Same anticholinergic-class contraindications as dicyclomine: glaucoma, GI/GU obstruction, myasthenia gravis, severe ulcerative colitis.</div>
+                <div class="pearl-text"><b>Considerations:</b> Same toxic-megacolon caution as dicyclomine applies — avoid anticholinergic antispasmodics in a patient with known or suspected severe/fulminant colitis.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Sucralfate (Carafate)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--luq)"><b>Mechanism of action</b>Forms a viscous protective barrier by binding to proteins exposed at an ulcer base in an acidic environment, shielding it from acid, pepsin, and bile.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>PUD (adjunct), stress ulcer prophylaxis, oral/esophageal mucositis pain relief.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>1g PO QID, ideally on an empty stomach — 1 hour before meals and at bedtime.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal systemic absorption; acts locally at the mucosal surface.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Caution in renal failure (aluminum component can accumulate with prolonged use).</div>
+                <div class="pearl-text"><b>Considerations:</b> Binds and reduces absorption of many other oral medications — separate dosing by at least 2 hours; requires an acidic environment to activate, so avoid co-administering simultaneously with acid suppressants when possible.</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-esophageal">
+          <h3><span class="swatch" style="background:var(--rlq)"></span>Esophageal Spasm<span class="count">4 agents</span></h3>
+          <p class="section-intro">Agents targeting esophageal smooth muscle specifically — mechanistically distinct from the intestinal antispasmodics above, since esophageal spastic disorders respond to a different drug class entirely.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Diltiazem (esophageal spasm)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Mechanism of action</b>Calcium channel blocker; reduces smooth muscle contractility in the esophageal wall, lowering both the amplitude and frequency of spastic contractions.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Diffuse esophageal spasm, and the related hypercontractile disorders (“nutcracker”/jackhammer esophagus).</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>60–90mg PO before meals (dosing extrapolated from small studies rather than large trials).</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Hypotension, significant bradycardia/heart block, severe left ventricular dysfunction.</div>
+                <div class="pearl-text"><b>Considerations:</b> Evidence base is modest (small studies/case series), but the favorable safety profile makes it a reasonable first trial before escalating to more invasive options like endoscopic botulinum toxin injection.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Sildenafil (esophageal spasm)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Mechanism of action</b>PDE-5 inhibitor; increases cGMP within esophageal smooth muscle, promoting relaxation — the same mechanistic class as its better-known indication, applied here to the esophagus instead.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Refractory spastic esophageal motility disorders not responding to first-line measures.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Used off-label; dosing is variable and drawn from small studies rather than a standardized regimen.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Hepatic metabolism (CYP3A4).</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Concurrent nitrates (risk of severe, potentially life-threatening hypotension), unstable cardiac disease.</div>
+                <div class="pearl-text"><b>Considerations:</b> Based on limited trial data — reserve for specialist-guided use in refractory cases, and screen the medication list carefully for nitrates before considering it.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Low-dose tricyclic antidepressants (imipramine, amitriptyline)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Mechanism of action</b>Visceral pain modulation through central and peripheral mechanisms at doses well below those used for depression — not primarily a motility effect, but a reduction in esophageal hypersensitivity/pain perception.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Functional chest pain of esophageal origin and esophageal hypersensitivity, including some presentations of non-cardiac chest pain once cardiac causes are excluded.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Substantially lower than antidepressant dosing — e.g., imipramine 25–50mg at bedtime.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Hepatic metabolism; anticholinergic and antihistaminergic properties account for most side effects.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Cardiac conduction abnormalities (QT prolongation risk), narrow-angle glaucoma, urinary retention risk.</div>
+                <div class="pearl-text"><b>Considerations:</b> Effect takes weeks to build, so set expectations accordingly; anticholinergic side effects (dry mouth, sedation, constipation) can limit tolerability, particularly in older adults.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Peppermint oil</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--rlq)"><b>Mechanism of action</b>Direct smooth muscle relaxant effect via calcium-channel-blocking activity on GI (including esophageal) smooth muscle.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Esophageal spasm and, more commonly, IBS-related intestinal spasm as an adjunct.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Enteric-coated capsules or diluted oil formulations; dosing varies by product.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Acts locally on GI smooth muscle; minimal systemic absorption with enteric-coated formulations.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Significant GERD or hiatal hernia.</div>
+                <div class="pearl-text"><b>Considerations:</b> Generally well-tolerated with a favorable safety profile, making it a reasonable low-risk first adjunct — but its lower esophageal sphincter-relaxing effect can worsen reflux, so avoid it (or use cautiously) in patients with significant GERD.</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-constip">
+          <h3><span class="swatch" style="background:var(--llq)"></span>Constipation<span class="count">5 agents</span></h3>
+          <p class="section-intro">Bulk-forming, osmotic, stimulant, and secretagogue agents, plus opioid-induced constipation (PAMORA) options.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Polyethylene glycol 3350</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Mechanism of action</b>Osmotic laxative; non-absorbable, retains water in the colon to soften stool and increase volume, stimulating peristalsis.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Acute and chronic constipation; also used at higher volumes for bowel preparation.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>17g powder dissolved in 4–8oz liquid PO daily for constipation; much larger volumes for bowel prep protocols.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Not systemically absorbed; onset 1–3 days with daily dosing, or 30–60 minutes with large-volume bowel-prep dosing.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Bowel obstruction, ileus.</div>
+                <div class="pearl-text"><b>Considerations:</b> Generally considered first-line for chronic constipation given a favorable safety and tolerability profile, with minimal electrolyte disturbance compared to other osmotic agents.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Lactulose</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Mechanism of action</b>Non-absorbable synthetic disaccharide; osmotic effect in the colon, and separately, colonic bacterial fermentation acidifies the lumen, converting ammonia (NH3) to ammonium (NH4+) which is then trapped and excreted.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Constipation; hepatic encephalopathy.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Constipation: 15–30mL PO daily–BID. Hepatic encephalopathy: 30–45mL PO TID–QID, titrated to 2–3 soft stools per day.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal systemic absorption; colonic bacterial metabolism produces gas, which drives its most common side effect (bloating/flatulence).</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Galactosemia.</div>
+                <div class="pearl-text"><b>Considerations:</b> For hepatic encephalopathy, titrate to clinical stool response rather than a fixed dose — this is a titrate-to-effect medication, not a set-and-forget one.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Senna / Bisacodyl (stimulant laxatives)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Mechanism of action</b>Stimulates colonic myenteric plexus activity, increasing peristalsis, and alters colonic electrolyte/water transport.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Constipation (short-term/PRN), opioid-induced constipation prevention (typically paired with a stool softener), bowel-prep adjunct.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Senna 8.6–17.2mg PO daily–BID; bisacodyl 5–10mg PO daily or 10mg PR suppository.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset ~6–12h orally; bisacodyl suppository onset 15–60 minutes.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Bowel obstruction, acute abdomen/suspected appendicitis, severe dehydration.</div>
+                <div class="pearl-text"><b>Considerations:</b> First-line adjunct for opioid-induced constipation prophylaxis, generally paired with a stool softener; reserve for intermittent rather than indefinite daily use where possible.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Docusate sodium</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Mechanism of action</b>Stool softener (surfactant) — reduces stool surface tension, allowing water and fat to penetrate and soften it.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Prevention of straining (post-operative, post-MI, hemorrhoids); mild constipation prophylaxis.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>100mg PO BID.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal systemic absorption.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>No major contraindications.</div>
+                <div class="pearl-text"><b>Considerations:</b> Evidence for docusate as monotherapy for *established* constipation is weak — it's best used preventively; pair with a stimulant or osmotic agent when actually treating existing constipation.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Methylnaltrexone (PAMORA)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--llq)"><b>Mechanism of action</b>Peripherally-acting mu-opioid receptor antagonist; blocks opioid effects on the GI tract without meaningfully crossing the blood-brain barrier, preserving central analgesia.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Opioid-induced constipation refractory to standard laxative therapy.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>8–12mg SC (weight-based), or 450mg PO daily.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal CNS penetration (does not reverse central analgesic effect); renal elimination.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Known or suspected GI obstruction.</div>
+                <div class="pearl-text"><b>Considerations:</b> Reserved for refractory opioid-induced constipation after standard laxatives fail; use caution in patients with compromised GI wall integrity (e.g., malignancy) given a reported risk of GI perforation.</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-diarrhea">
+          <h3><span class="swatch" style="background:var(--diffuse)"></span>Diarrhea / GI Bleeding Adjuncts<span class="count">6 agents</span></h3>
+          <p class="section-intro">Anti-motility, adsorbent, and targeted secretory-diarrhea agents, plus the somatostatin/octreotide class used for upper GI/variceal bleeding.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Loperamide</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>Peripheral mu-opioid receptor agonist acting on intestinal smooth muscle, slowing motility and increasing water/electrolyte absorption; minimal CNS penetration at therapeutic doses.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Acute/chronic non-infectious diarrhea, IBS-D.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>4mg initial dose, then 2mg after each loose stool, OTC max 16mg/day.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Onset ~1h; half-life 9–14h; hepatic metabolism; minimal systemic absorption/CNS penetration at labeled doses.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Bloody diarrhea or high fever (invasive bacterial pathogen concern until excluded), C. diff-associated diarrhea/pseudomembranous colitis, and active severe ulcerative colitis — toxic megacolon risk in all three.</div>
+                <div class="pearl-text"><b>Considerations:</b> Supratherapeutic/misuse dosing (taken for an opioid-like euphoric effect) is a recognized cause of fatal cardiac arrhythmias (QT prolongation, torsades) — “loperamide abuse” is a real ED presentation, not just a theoretical risk.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Diphenoxylate-atropine</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>Diphenoxylate is an opioid agonist slowing GI motility; atropine is added in a subtherapeutic dose specifically to discourage deliberate misuse (causes anticholinergic effects at higher doses).</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Acute diarrhea.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>2.5–5mg (1–2 tablets) PO QID PRN, per product labeling.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Hepatic metabolism to the active metabolite difenoxin; crosses the blood-brain barrier more than loperamide at high doses, contributing to abuse potential.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Same infectious-diarrhea and pseudomembranous colitis contraindications as loperamide; avoid in young children (respiratory depression risk).</div>
+                <div class="pearl-text"><b>Considerations:</b> Higher CNS depression/abuse potential than loperamide given better CNS penetration — loperamide is generally preferred when an anti-motility agent is appropriate.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Bismuth subsalicylate</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>Antisecretory, mildly antimicrobial, and anti-inflammatory (salicylate-mediated) effects on the GI tract.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Traveler's diarrhea (treatment and prophylaxis), dyspepsia, mild diarrhea.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>524mg (2 tablets or 30mL) PO QID PRN.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>The salicylate component is absorbed systemically (relevant for aspirin allergy/Reye syndrome concerns); bismuth itself is minimally absorbed.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Aspirin allergy; avoid in children/teenagers with a viral illness (Reye syndrome risk); caution with concurrent anticoagulation given the salicylate component.</div>
+                <div class="pearl-text"><b>Considerations:</b> Causes harmless black discoloration of the stool and tongue — worth counseling patients on proactively so it isn't mistaken for melena and doesn't trigger an unnecessary GI bleed workup.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Octreotide</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>Somatostatin analog; inhibits secretion of multiple GI hormones (gastrin, VIP, insulin, glucagon), reduces splanchnic blood flow, and inhibits intestinal secretion.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Refractory secretory diarrhea (carcinoid syndrome, VIPoma), variceal bleeding adjunct.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Variceal bleeding: 50mcg IV bolus, then 25–50mcg/hr infusion. Secretory diarrhea: 50–100mcg SC BID–TID, titrated.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Half-life ~1.5–2h (immediate-release); hepatic metabolism.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Caution in gallstone disease — reduces gallbladder motility and promotes gallstone formation with prolonged use.</div>
+                <div class="pearl-text"><b>Considerations:</b> Not a first-line agent for routine/undifferentiated diarrhea — reserved for specific secretory or variceal-bleeding indications, not general use.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Somatostatin (native peptide, upper GI/variceal bleeding)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>The native peptide hormone from which octreotide was synthetically derived — the same broad inhibitory effects on splanchnic blood flow and GI hormone secretion, reducing portal pressure and bleeding from varices.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Acute variceal upper GI bleeding; used as an adjunct in some acute non-variceal bleeding protocols. More commonly used outside the US, where octreotide has largely taken its place.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>250mcg IV bolus, then a continuous infusion of 250–500mcg/hr — continuous infusion is essential, not optional, given the pharmacokinetics below.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Extremely short half-life of only 1–3 minutes (compared to octreotide's ~90–120 minutes) — this is the single defining difference between the two drugs, and why somatostatin cannot be dosed intermittently the way octreotide can.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Similar cautions to octreotide, notably gallbladder motility effects with prolonged use.</div>
+                <div class="pearl-text"><b>Considerations:</b> Worth knowing this exists as a distinct agent from octreotide, even in US practice where it's rarely stocked — octreotide's much longer half-life and resulting practical dosing advantage is exactly why it displaced somatostatin in most American EDs and ICUs despite sharing the same mechanism.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Cholestyramine</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--diffuse)"><b>Mechanism of action</b>Bile acid sequestrant; binds bile acids in the gut lumen, preventing their reabsorption and their colonic-irritant/secretory effect.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Bile acid diarrhea (post-cholecystectomy diarrhea, ileal resection or Crohn's-related bile acid malabsorption), pruritus of cholestasis.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>4g PO 1–2x/day, titrated.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Not systemically absorbed; acts locally within the gut lumen.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Complete biliary obstruction.</div>
+                <div class="pearl-text"><b>Considerations:</b> Significantly reduces absorption of many other oral medications and fat-soluble vitamins — separate dosing by several hours; particularly useful in Crohn's patients with ileal disease or resection causing bile acid malabsorption (see the IBD section).</div>
+              </div>
+            </div>
+        </div><div class="section" id="pharm-abx">
+          <h3><span class="swatch" style="background:var(--flank)"></span>Antibiotics for GI Infections<span class="count">5 agents</span></h3>
+          <p class="section-intro">C. diff, traveler's diarrhea, intra-abdominal/diverticulitis, and H. pylori eradication regimens.</p>
+          
+          <div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Vancomycin (oral, for C. difficile)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Mechanism of action</b>Inhibits bacterial cell wall synthesis; the oral formulation acts locally within the gut lumen against C. diff with minimal systemic absorption.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>C. difficile infection — current first-line therapy per updated IDSA/SHEA guidelines for both initial and severe episodes.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>125mg PO QID standard dosing; 500mg PO QID for severe/fulminant disease, often combined with IV metronidazole and rectal vancomycin if ileus is present.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal systemic absorption when taken orally — this is why oral vancomycin does not require the nephrotoxicity/level monitoring used for IV vancomycin.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>No major contraindications for oral use given minimal systemic absorption.</div>
+                <div class="pearl-text"><b>Considerations:</b> This first-line status is a relatively recent guideline shift — worth actively updating if your working knowledge still defaults to metronidazole-first for C. diff.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Metronidazole</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Mechanism of action</b>Forms cytotoxic free radicals within anaerobic/microaerophilic organisms after intracellular reduction, causing DNA damage.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Intra-abdominal infections requiring anaerobic coverage (diverticulitis, abscess), H. pylori regimens, giardiasis, amebiasis; alternative/adjunct for C. diff when vancomycin/fidaxomicin is unavailable or in combination for fulminant disease.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>C. diff (adjunct/alternative): 500mg PO TID. Intra-abdominal infection: 500mg IV/PO q8h, combined with an agent covering gram-negative/aerobic organisms.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Excellent oral bioavailability; hepatic metabolism; half-life 6–8h.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Avoid alcohol during treatment and for 3 days after (disulfiram-like reaction); relative caution in the first trimester of pregnancy.</div>
+                <div class="pearl-text"><b>Considerations:</b> Metallic taste is a common complaint; peripheral neuropathy can occur with prolonged use; no longer first-line monotherapy for C. diff per current guidelines (see oral vancomycin above).</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Rifaximin</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Mechanism of action</b>Non-absorbed rifamycin derivative; inhibits bacterial RNA synthesis, acting locally within the gut lumen.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Traveler's diarrhea, hepatic encephalopathy (adjunct to lactulose), IBS-D.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Traveler's diarrhea: 200mg PO TID x3 days. Hepatic encephalopathy: 550mg PO BID.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Minimal systemic absorption (&lt;1%); acts locally.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Hypersensitivity to rifamycins.</div>
+                <div class="pearl-text"><b>Considerations:</b> Not effective for invasive bacterial diarrhea (e.g., invasive Shigella/Salmonella with systemic toxicity) given its minimal systemic absorption — appropriate only for non-invasive traveler's diarrhea, not a undifferentiated febrile dysentery.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>Ciprofloxacin + metronidazole (diverticulitis/intra-abdominal regimen)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Mechanism of action</b>Ciprofloxacin inhibits bacterial DNA gyrase/topoisomerase IV (gram-negative coverage); metronidazole provides anaerobic coverage (mechanism above).</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Acute diverticulitis (complicated, or selected uncomplicated cases), other mixed aerobic-anaerobic intra-abdominal infections.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Ciprofloxacin 500mg PO BID (or 400mg IV q12h) plus metronidazole 500mg PO/IV TID, typically 4–7 days depending on severity and response.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Ciprofloxacin: good oral bioavailability, renal elimination (dose-adjust in renal impairment). Metronidazole: as above.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Fluoroquinolones: tendon rupture risk (higher with concurrent steroids or in the elderly), QT prolongation, and an aortic aneurysm/dissection warning; avoid in myasthenia gravis.</div>
+                <div class="pearl-text"><b>Considerations:</b> Uncomplicated diverticulitis in reliable, non-toxic outpatients is increasingly managed without antibiotics per some guidelines — reserve this regimen for complicated disease, immunocompromise, significant comorbidity, or systemic toxicity; amoxicillin-clavulanate alone is a reasonable single-agent alternative.</div>
+              </div>
+            </div><div class="acc">
+              <div class="acc-head">
+                <div class="acc-head-left"><h4>H. pylori eradication regimens (triple / bismuth quadruple therapy)</h4></div>
+                <span class="plus">+</span>
+              </div>
+              <div class="acc-body">
+                <div class="hallmark" style="--accent-line: var(--flank)"><b>Mechanism of action</b>Combination regimen: a PPI raises gastric pH to improve antibiotic efficacy, paired with 2–3 antimicrobial agents targeting H. pylori.</div>
+                <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>H. pylori-associated PUD, gastric MALT lymphoma, and any confirmed H. pylori infection.</div>
+                <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Triple therapy: PPI BID + amoxicillin 1g BID + clarithromycin 500mg BID x14 days. Bismuth quadruple therapy: PPI BID + bismuth subsalicylate + metronidazole 250–500mg QID + tetracycline 500mg QID x10–14 days.</div>
+                <div class="hallmark" style="--accent-line: var(--pelvic)"><b>Pharmacokinetics</b>Combination regimen — pharmacokinetics of each component as detailed in their individual entries above.</div>
+                <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Penicillin allergy rules out amoxicillin-containing triple therapy (use bismuth quadruple instead); clarithromycin has significant CYP3A4 drug-interaction potential (notably certain statins and QT-prolonging drugs).</div>
+                <div class="pearl-text"><b>Considerations:</b> Rising clarithromycin resistance has shifted many regions toward bismuth quadruple therapy as first-line rather than reserving it for treatment failures; confirm eradication with urea breath or stool antigen testing at least 4 weeks after completing therapy and after holding the PPI for 1–2 weeks beforehand to avoid a false negative.</div>
+              </div>
+            </div>
+        </div>
+
+<p class="verify">Dosages reflect typical adult ED/outpatient dosing conventions — always verify
+against current prescribing information, renal/hepatic dose adjustments, and local formulary before
+prescribing.</p>
+</div>
+<div class="domain" id="dom-ibd">
+<div class="domain-head"><span class="icon">🩸</span><h2>Inflammatory Bowel Disease</h2></div>
+<p class="domain-desc">A dedicated deep-dive on ulcerative colitis and Crohn's disease: how they differ,
+who's at risk, what these patients are likely to face over the course of their disease, how their
+specific medications work, and — the section built specifically for shift work — how to recognize
+and manage a flare in the ER, know when it needs admission, and counsel patients on prevention.</p>
+
+<div class="jumprow">
+  <a href="#ibd-compare" class="jumpchip"><span class="dot" style="background:var(--ruq)"></span>UC vs. Crohn's</a>
+  <a href="#ibd-risk" class="jumpchip"><span class="dot" style="background:var(--luq)"></span>Risk Factors</a>
+  <a href="#ibd-extra" class="jumpchip"><span class="dot" style="background:var(--epi)"></span>Extraintestinal</a>
+  <a href="#ibd-future" class="jumpchip"><span class="dot" style="background:var(--rlq)"></span>Disease Trajectory</a>
+  <a href="#ibd-meds" class="jumpchip"><span class="dot" style="background:var(--llq)"></span>IBD Medications</a>
+  <a href="#ibd-er" class="jumpchip"><span class="dot" style="background:var(--diffuse)"></span>ER Flare Management</a>
+  <a href="#ibd-admit" class="jumpchip"><span class="dot" style="background:var(--danger)"></span>Hospitalization Red Flags</a>
+  <a href="#ibd-edu" class="jumpchip"><span class="dot" style="background:var(--pelvic)"></span>Patient Education</a>
+</div>
+
+<div class="section" id="ibd-compare">
+<h3><span class="swatch" style="background:var(--ruq)"></span>Ulcerative Colitis vs. Crohn's Disease</h3>
+<div class="tbl-wrap" style="overflow-x:auto">
+<table>
+<tr><th>Feature</th><th>Ulcerative Colitis</th><th>Crohn's Disease</th></tr>
+<tr><td><b>Location</b></td><td>Rectum, extending proximally in a continuous fashion; colon only</td><td>Anywhere from mouth to anus; terminal ileum most common; classic “skip lesions” with normal bowel between affected segments</td></tr><tr><td><b>Depth of involvement</b></td><td>Mucosa and submucosa only</td><td>Transmural (full-thickness) — the basis for fistula and stricture formation</td></tr><tr><td><b>Distribution pattern</b></td><td>Continuous, no skip areas</td><td>Discontinuous — skip lesions and “cobblestoning” on endoscopy</td></tr><tr><td><b>Rectal involvement</b></td><td>Almost always present</td><td>Variable — often spared, even with active disease elsewhere</td></tr><tr><td><b>Fistulas / strictures</b></td><td>Rare</td><td>Common — enteroenteric, enterocutaneous, enterovesical, and rectovaginal fistulas; stricturing disease causing obstruction</td></tr><tr><td><b>Granulomas on histology</b></td><td>Not a feature</td><td>Non-caseating granulomas support the diagnosis when present (not required)</td></tr><tr><td><b>Smoking effect</b></td><td>Paradoxically protective / ameliorates disease</td><td>Worsens disease activity and increases surgical recurrence risk</td></tr><tr><td><b>Surgical cure</b></td><td>Colectomy is curative for the bowel disease</td><td>Surgery is not curative — recurrence at the anastomosis is common</td></tr><tr><td><b>Colorectal cancer risk</b></td><td>Increased with extent (pancolitis) and duration (typically &gt;8–10 years)</td><td>Increased specifically with colonic involvement; small bowel adenocarcinoma risk also elevated (rare)</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section" id="ibd-risk">
+<h3><span class="swatch" style="background:var(--luq)"></span>Risk Factors &amp; Epidemiology</h3>
+<div class="card"><h4>Family history / genetics</h4><p>First-degree relatives have substantially increased risk; NOD2/CARD15 mutations specifically associated with ileal Crohn's disease.</p></div><div class="card"><h4>Age of onset</h4><p>Bimodal distribution — a peak in the teens/20s and a second, smaller peak in the 50s–60s.</p></div><div class="card"><h4>Ethnicity</h4><p>Ashkenazi Jewish populations have a notably increased incidence of both UC and Crohn's.</p></div><div class="card"><h4>Smoking</h4><p>The single most divergent risk factor between the two diseases — harmful and disease-worsening in Crohn's, but associated with a lower incidence and milder course of UC (never a reason to recommend starting, given smoking's other harms).</p></div><div class="card"><h4>Appendectomy</h4><p>Some epidemiologic association with reduced UC risk, particularly when performed for confirmed appendicitis at a young age; the relationship with Crohn's is less clear and possibly opposite.</p></div><div class="card"><h4>NSAIDs</h4><p>Can trigger flares in both diseases and are generally best avoided in known IBD patients in favor of acetaminophen for pain control.</p></div><div class="card"><h4>Geography / “hygiene hypothesis”</h4><p>Higher incidence in industrialized, urban environments, with rising incidence in newly industrializing regions — implicates environmental/microbiome factors alongside genetic susceptibility.</p></div><div class="card"><h4>Diet</h4><p>Western dietary pattern (high fat, high refined sugar, low fiber) shows epidemiologic association with IBD risk, though causality remains unproven and this shouldn't be overstated to patients as a cause of their disease.</p></div>
+</div>
+
+<div class="section" id="ibd-extra">
+<h3><span class="swatch" style="background:var(--epi)"></span>Extraintestinal Manifestations</h3>
+<p class="section-intro">A useful organizing principle: manifestations that parallel bowel disease
+activity generally improve when the flare is treated; those that run an independent course do not,
+and need their own separate management track.</p>
+<div class="card"><h4>Peripheral arthritis</h4><p>Typically parallels intestinal disease activity — tends to improve as the underlying flare is treated.</p></div><div class="card"><h4>Axial arthritis / ankylosing spondylitis</h4><p>Runs an independent course from bowel activity — treating the flare will not necessarily improve axial symptoms.</p></div><div class="card"><h4>Erythema nodosum</h4><p>Tender, red nodules (classically the anterior shins) that generally parallel disease activity.</p></div><div class="card"><h4>Pyoderma gangrenosum</h4><p>Can arise independent of bowel disease activity; classically starts as a pustule that ulcerates with a violaceous, undermined border — avoid debridement, which can worsen it (pathergy).</p></div><div class="card"><h4>Episcleritis</h4><p>Generally parallels bowel disease activity; typically not sight-threatening.</p></div><div class="card"><h4>Uveitis</h4><p>Runs independent of bowel activity and is potentially sight-threatening — warrants urgent ophthalmology involvement regardless of how the underlying bowel disease is doing.</p></div><div class="card"><h4>Primary sclerosing cholangitis (PSC)</h4><p>Classically associated with ulcerative colitis (though it occurs in Crohn's too); runs a course independent of bowel disease activity and increases cholangiocarcinoma risk — an important long-term surveillance consideration distinct from the colorectal cancer risk below.</p></div><div class="card"><h4>Venous thromboembolism</h4><p>IBD itself is an independent hypercoagulable state, with risk further elevated during active flares — relevant to VTE prophylaxis decisions covered in the ER management section below.</p></div>
+</div>
+
+<div class="section" id="ibd-future">
+<h3><span class="swatch" style="background:var(--rlq)"></span>Long-Term Disease Trajectory — What These Patients Are Likely to Face</h3>
+<p class="section-intro">The natural history each disease tends toward, beyond the current flare —
+useful for counseling patients on what surveillance and vigilance actually looks like long-term.</p>
+<div class="card"><h4>Ulcerative colitis</h4>
+<div class="tbl-wrap"><table><tr><td><b>Colectomy</b></td><td>Roughly 15–30% of UC patients will require colectomy over their lifetime, with risk correlating with disease extent and severity.</td></tr><tr><td><b>Colorectal cancer surveillance</b></td><td>Surveillance colonoscopy typically begins 8–10 years after diagnosis (earlier and more frequently with pancolitis or concurrent PSC), given cumulative cancer risk with extensive, long-duration disease.</td></tr><tr><td><b>Toxic megacolon</b></td><td>A severe-flare complication (see ER management below) — the reason severe colitis is managed as an inpatient emergency rather than an outpatient medication adjustment.</td></tr><tr><td><b>Dysplasia</b></td><td>Chronic mucosal inflammation over years predisposes to dysplastic changes, which is the biologic basis for surveillance colonoscopy rather than relying on symptoms to prompt screening.</td></tr></table></div>
+</div>
+<div class="card"><h4>Crohn's disease</h4>
+<div class="tbl-wrap"><table><tr><td><b>Stricture → bowel obstruction</b></td><td>Transmural inflammation with chronic fibrosis narrows the bowel lumen over time, a common cause of recurrent partial or complete obstruction.</td></tr><tr><td><b>Fistula formation</b></td><td>Enteroenteric, enterocutaneous, enterovesical, and rectovaginal fistulas can all develop from transmural, penetrating disease — often requiring combined medical and surgical management.</td></tr><tr><td><b>Abscess formation</b></td><td>Penetrating disease can seed intra-abdominal or perianal abscesses, requiring drainage in addition to medical therapy.</td></tr><tr><td><b>Eventual surgery</b></td><td>Up to 70–80% of Crohn's patients will require at least one surgery over their lifetime — and unlike UC, surgery is not curative; disease recurrence at or near the anastomosis is common.</td></tr><tr><td><b>Malnutrition / vitamin deficiency</b></td><td>Terminal ileal disease or resection impairs B12 and bile acid absorption; extensive small bowel involvement can impair fat-soluble vitamin (A, D, E, K) absorption.</td></tr><tr><td><b>Colorectal cancer</b></td><td>Elevated specifically with colonic involvement, similar in principle to UC's extent-and-duration-based risk.</td></tr></table></div>
+</div>
+</div>
+
+<div class="section" id="ibd-meds">
+<h3><span class="swatch" style="background:var(--llq)"></span>IBD-Specific Medications</h3>
+<p class="section-intro">The treatment ladder from topical anti-inflammatory therapy through
+steroid-sparing and biologic agents — each with mechanism, indications, dosage, contraindications,
+and considerations.</p>
+<div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Mesalamine (5-ASA)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Topical anti-inflammatory action within the gut lumen (mechanism not fully elucidated; involves NF-κB pathway inhibition and modulation of prostaglandin/leukotriene production).</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Induction and maintenance of remission in mild-to-moderate ulcerative colitis; considerably less effective in Crohn's disease.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Oral formulations vary by brand/release mechanism (pH-dependent or time-dependent coating targeting the terminal ileum/colon); rectal suppositories/enemas for isolated distal (proctitis/left-sided) disease.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Salicylate hypersensitivity.</div>
+            <div class="pearl-text"><b>Considerations:</b> Formulation and route matter clinically — combining oral and rectal mesalamine is more effective than oral alone for left-sided or extensive disease; a common real-world undertreatment error is prescribing oral therapy alone for distal disease that would benefit from a rectal formulation.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Corticosteroids (prednisone, budesonide, IV methylprednisolone/hydrocortisone)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Broad anti-inflammatory and immunosuppressive action via the glucocorticoid receptor.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Induction of remission in moderate-to-severe flares — explicitly not a maintenance therapy given cumulative side-effect burden.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Prednisone 40–60mg/day oral with a taper; IV methylprednisolone 40–60mg/day or hydrocortisone 100mg IV q8h for severe/hospitalized flares; budesonide 9mg/day for mild-moderate ileal/right-colon Crohn's (high first-pass hepatic metabolism gives fewer systemic effects than prednisone).</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Untreated systemic infection; live vaccines should be avoided while on immunosuppressive doses.</div>
+            <div class="pearl-text"><b>Considerations:</b> Steroid-dependence (unable to taper without relapse) or steroid-refractoriness is a treatment-failure signal that should prompt escalation to a steroid-sparing agent, not another steroid course — taper appropriately to avoid adrenal insufficiency, and screen for latent TB/hepatitis B before the biologic therapy that often follows.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Azathioprine / 6-mercaptopurine (thiopurines)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Purine synthesis inhibition, producing a broad immunosuppressive effect.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Steroid-sparing maintenance therapy; frequently combined with a biologic to reduce immunogenicity (anti-drug antibody formation) against the biologic agent.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Azathioprine 2–2.5mg/kg/day; 6-mercaptopurine 1–1.5mg/kg/day.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Known TPMT deficiency without dose adjustment (check TPMT genotype/phenotype before starting — severe myelosuppression risk in poor metabolizers).</div>
+            <div class="pearl-text"><b>Considerations:</b> Slow onset of action (weeks to months) — not appropriate for acute flare induction; requires regular CBC/LFT monitoring; long-term use carries increased lymphoma and non-melanoma skin cancer risk, so sun protection counseling is worth including.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Anti-TNF biologics (infliximab, adalimumab)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Bind and neutralize tumor necrosis factor-alpha, interrupting a key inflammatory cytokine cascade in IBD.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Moderate-to-severe UC or Crohn's, steroid-refractory or steroid-dependent disease, and fistulizing Crohn's disease (a particular strength of this class).</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Infliximab 5mg/kg IV at weeks 0, 2, 6, then every 8 weeks; adalimumab 160mg SC at week 0, 80mg at week 2, then 40mg every 2 weeks.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Active serious infection, untreated latent TB, a history of demyelinating disease; relative contraindication in NYHA class III/IV heart failure.</div>
+            <div class="pearl-text"><b>Considerations:</b> Screen for latent TB and hepatitis B before starting; increased infection risk; rare but serious associations include lymphoma, demyelinating disease, and drug-induced lupus-like syndrome — combination with a thiopurine can reduce anti-drug antibody formation and improve durability of response.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Vedolizumab (gut-selective biologic)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Blocks the α4β7 integrin, preventing lymphocyte adhesion and migration specifically into gut tissue — gut-selective rather than systemically immunosuppressive.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Moderate-to-severe UC or Crohn's, including as an option when anti-TNF therapy has failed or is contraindicated.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>300mg IV at weeks 0, 2, 6, then every 8 weeks.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Active serious infection.</div>
+            <div class="pearl-text"><b>Considerations:</b> The gut-selective mechanism carries a theoretically lower risk of systemic infection/malignancy compared to anti-TNF agents, though onset of action can be slower — counsel patients that full effect may take longer to become apparent than with anti-TNF therapy.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Ustekinumab (anti-IL-12/23 biologic)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Blocks the shared p40 subunit of interleukin-12 and interleukin-23, interrupting Th1 and Th17-mediated inflammatory pathways.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Moderate-to-severe Crohn's disease and ulcerative colitis, including after anti-TNF failure.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Weight-based IV induction dose, then 90mg SC every 8 weeks for maintenance.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Active serious infection.</div>
+            <div class="pearl-text"><b>Considerations:</b> Generally well-tolerated with a favorable long-term safety profile relative to older biologic classes; still requires the same baseline infection screening (TB, hepatitis B) as other biologics before starting.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>JAK inhibitors (tofacitinib, upadacitinib)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--ruq)"><b>Mechanism of action</b>Block Janus kinase (JAK)-STAT intracellular signaling downstream of multiple cytokine receptors, broadly dampening inflammatory signaling.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Indications</b>Moderate-to-severe ulcerative colitis refractory to other therapies.</div>
+            <div class="hallmark" style="--accent-line: var(--warn)"><b>Dosage</b>Tofacitinib 10mg PO BID for induction, then 5mg PO BID for maintenance.</div>
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Contraindications</b>Active serious infection; use caution in patients over 50 with cardiovascular risk factors.</div>
+            <div class="pearl-text"><b>Considerations:</b> Carries a black box warning for increased risk of major cardiovascular events, malignancy, venous thromboembolism, and death compared to TNF inhibitors, based on post-marketing safety data — this warrants an explicit risk-benefit discussion, particularly in older patients or those with cardiovascular risk factors.</div>
+          </div>
+        </div>
+</div>
+
+<div class="section" id="ibd-er">
+<h3><span class="swatch" style="background:var(--diffuse)"></span>ER Flare Management</h3>
+<div class="card">
+<h4>Severity assessment</h4>
+<p>The Truelove and Witts criteria remain the most widely used bedside severity framework for UC:
+<b>mild</b> disease is &lt;4 stools/day without systemic toxicity; <b>severe</b> disease is ≥6 bloody
+stools/day <b>plus at least one</b> of: heart rate &gt;90, temperature &gt;37.8°C, hemoglobin
+&lt;10.5g/dL, or ESR &gt;30. Crohn's severity is less standardized at the bedside but the same systemic
+toxicity markers (fever, tachycardia, anemia, elevated inflammatory markers) apply.</p>
+</div>
+<div class="card">
+<h4>Labs to send</h4>
+<ul class="tight">
+<li>CBC (anemia, leukocytosis), CRP/ESR (inflammatory burden), albumin (nutritional status and a
+severity marker), electrolytes</li>
+<li><b>Stool studies, including C. difficile toxin/PCR</b> — non-negotiable. Superimposed C. diff
+can both mimic and trigger an IBD flare, and its presence changes management substantially (treat the
+infection; be cautious about escalating immunosuppression on top of an active C. diff infection)</li>
+<li>Stool culture/ova and parasites to exclude infectious mimics when the picture isn't clearly a known
+IBD flare</li>
+</ul>
+</div>
+<div class="card">
+<h4>Imaging</h4>
+<p>CT abdomen/pelvis with contrast for any suspected complication — abscess, perforation,
+obstruction, or toxic megacolon — particularly relevant in Crohn's given its transmural
+complications. A plain abdominal X-ray is a fast first screen for colonic dilation (toxic megacolon,
+generally defined as transverse colon diameter &gt;6cm) or free air.</p>
+</div>
+<div class="callout miss">
+<h4>🚩 The single most important prescribing pearl in this section</h4>
+<p>Avoid anti-motility agents (loperamide, diphenoxylate-atropine) and anticholinergic antispasmodics
+(dicyclomine, hyoscyamine) in a patient with severe or fulminant colitis — slowing colonic motility
+in this setting is a recognized precipitant of toxic megacolon. This is one of the few places in this
+whole atlas where the standard symptomatic-relief reflex is actively dangerous.</p>
+</div>
+<div class="card">
+<h4>Treatment approach</h4>
+<ul class="tight">
+<li>IV fluid and electrolyte repletion</li>
+<li>IV corticosteroids (methylprednisolone or hydrocortisone) for moderate-severe flares</li>
+<li><b>VTE prophylaxis</b> — IBD flares are an independent hypercoagulable state, and most guidelines
+support VTE prophylaxis during hospitalization even in the presence of GI bleeding, which surprises
+many clinicians on first encounter</li>
+<li>GI and/or surgery consultation for severe flares or any sign of a structural complication</li>
+<li>Empiric broad-spectrum antibiotics are reasonable when a complication (perforation, abscess, toxic
+megacolon) is suspected, but are not indicated for an uncomplicated flare</li>
+</ul>
+</div>
+<div class="callout miss">
+<h4>🚩 Can't-miss complications</h4>
+<ul class="tight">
+<li><b>Toxic megacolon</b> — colonic dilation with systemic toxicity; a surgical emergency</li>
+<li><b>Perforation</b> — free air, peritonitis</li>
+<li><b>Massive lower GI bleeding</b></li>
+<li><b>Abscess or fistula</b> (Crohn's) and <b>bowel obstruction</b> from stricturing disease (Crohn's)</li>
+</ul>
+</div>
+</div>
+
+<div class="section" id="ibd-admit">
+<h3><span class="swatch" style="background:var(--danger)"></span>Hospitalization Criteria / Red Flags</h3>
+<div class="card">
+<ul class="tight">
+<li>Meets Truelove-Witts severe criteria (above)</li>
+<li>Signs of toxic megacolon — abdominal distension, decreased/absent bowel sounds, systemic
+toxicity, colonic dilation on imaging</li>
+<li>Peritoneal signs or suspected perforation</li>
+<li>Inability to tolerate oral intake or significant dehydration</li>
+<li>Significant GI bleeding, especially if requiring transfusion</li>
+<li>Failure of outpatient steroid therapy (steroid-refractory flare)</li>
+<li>New or significant electrolyte derangement</li>
+<li>Signs of sepsis or a suspected abscess</li>
+</ul>
+</div>
+</div>
+
+<div class="section" id="ibd-edu">
+<h3><span class="swatch" style="background:var(--pelvic)"></span>Patient Education for Flare Prevention</h3>
+<div class="grid2">
+<div class="card"><h4>Medication adherence</h4>
+<p>The single biggest modifiable factor — non-adherence to maintenance therapy is a leading, and
+largely preventable, cause of relapse. Worth asking about directly and non-judgmentally at every visit.</p>
+</div>
+<div class="card"><h4>NSAID avoidance</h4>
+<p>NSAIDs can trigger flares in both UC and Crohn's — steer patients toward acetaminophen for pain
+control where possible.</p>
+</div>
+<div class="card"><h4>Smoking</h4>
+<p>Cessation counseling is appropriate for Crohn's patients given its clear disease-worsening effect and
+association with higher surgical recurrence. For UC, cessation can occasionally coincide with a flare
+in former smokers — still worth recommending given smoking's broader health risks, but worth
+mentioning to patients so an unexpected flare after quitting isn't mistaken for a treatment failure.</p>
+</div>
+<div class="card"><h4>Infection precautions</h4>
+<p>Review vaccination status, especially before starting or while on biologics/immunosuppressants —
+live vaccines should be avoided during active immunosuppression. Reinforce hand hygiene and sick-contact
+avoidance.</p>
+</div>
+<div class="card"><h4>Stress management</h4>
+<p>Stress doesn't cause IBD, but it can worsen symptom perception and may influence flare frequency in
+some patients — a referral for stress-reduction strategies or counseling is a reasonable adjunct,
+not a replacement for medical therapy.</p>
+</div>
+<div class="card"><h4>Diet</h4>
+<p>No single diet has strong evidence for preventing flares, though a low-residue/low-fiber approach can
+help symptomatically during active flares or with known strictures. Avoid implying to patients that
+diet caused their disease — that framing adds guilt without evidence behind it.</p>
+</div>
+<div class="card"><h4>Lab monitoring adherence</h4>
+<p>Patients on thiopurines or biologics need regular CBC/LFT monitoring (and sometimes drug-level
+monitoring) — missed labs are a preventable gap that can let a preventable complication go unnoticed.</p>
+</div>
+<div class="card"><h4>Early symptom recognition</h4>
+<p>Encourage patients to seek care early when they notice their own early flare symptoms rather than
+waiting — earlier intervention generally means a shorter, milder course and a lower chance of
+needing hospitalization.</p>
+</div>
+</div>
+</div>
+
+<p class="verify">Disease trajectory statistics, medication dosing, and severity criteria reflect general
+teaching patterns at time of writing — verify against current guidelines (ACG, AGA) and the
+patient's specific clinical context before applying.</p>
+</div>
+
+
+  <div class="foot">
+    Built as a personal clinical reference. Hallmarks and pearls reflect general teaching points at time
+    of writing &mdash; verify against current literature and local protocols before applying clinically.
+    Not a substitute for clinical judgment.
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  root.setAttribute('data-theme', 'dark');
+  function paintToggle(){
+    var btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = root.getAttribute('data-theme') === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+  }
+  paintToggle();
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    paintToggle();
+  });
+
+  var navdrop = document.getElementById('navdrop');
+  var navbtn = document.getElementById('navbtn');
+  navbtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    navdrop.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!navdrop.contains(e.target)) navdrop.classList.remove('open');
+  });
+
+  var domains = document.querySelectorAll('.domain');
+  var menuBtns = document.querySelectorAll('.navmenu button');
+  menuBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.getAttribute('data-dom');
+      domains.forEach(function(d){ d.classList.toggle('active', d.id === 'dom-' + target); });
+      navdrop.classList.remove('open');
+      navbtn.querySelector('.navlabel').textContent = btn.textContent.trim();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.acc-head').forEach(function(head){
+    head.addEventListener('click', function(){
+      var acc = head.closest('.acc');
+      var body = acc.querySelector('.acc-body');
+      var isOpen = acc.classList.contains('open');
+      if(isOpen){
+        body.style.maxHeight = null;
+        acc.classList.remove('open');
+      } else {
+        acc.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>GI Emergencies & Hepatology Atlas · Volume 1</title>
+<style>
+/* ============================================================
+   GI EMERGENCIES & HEPATOLOGY ATLAS — VOLUME 1
+   Design system: Fraunces (display) / Inter (body) / JetBrains Mono (data)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #FAF9F6;
+  --bg-elevated: #FFFFFF;
+  --bg-inset: #F1EFEA;
+  --text-primary: #1C1A17;
+  --text-secondary: #423D37;
+  --text-tertiary: #6B6559;
+  --border: #E3DFD6;
+  --border-strong: #C9C2B4;
+
+  --accent: #A13D3D;
+  --accent-bg: #FBEBEA;
+  --danger: #A13D3D;
+  --danger-bg: #FBEBEA;
+  --info: #2C5F8A;
+  --info-bg: #EAF1F8;
+
+  --ugib: #A13D3D;       /* upper GI bleed — alert red */
+  --ugib-bg: #FBEBEA;
+  --lgib: #B8452E;       /* lower GI bleed — flame */
+  --lgib-bg: #FCEEE9;
+  --cirr: #8A6D1D;        /* cirrhosis/portal HTN — bile gold */
+  --cirr-bg: #F8F1DE;
+  --hesbp: #6B4E9C;       /* HE/SBP — violet */
+  --hesbp-bg: #F1EBF7;
+  --hrs: #2C6E8A;          /* HRS/complications — sky blue */
+  --hrs-bg: #E9F3F7;
+  --panc3: #4A7C3C;        /* acute pancreatitis — green */
+  --panc3-bg: #EEF5EA;
+  --esoem: #7A5C3E;        /* esophageal emergencies — walnut */
+  --esoem-bg: #F5EFE6;
+  --isch: #3B5A8A;          /* ischemic colitis/toxic megacolon — steel blue */
+  --isch-bg: #EAF0F8;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #171512;
+  --bg-elevated: #211E1A;
+  --bg-inset: #1C1916;
+  --text-primary: #F2EFE9;
+  --text-secondary: #D8D2C7;
+  --text-tertiary: #A39D8F;
+  --border: #33302A;
+  --border-strong: #45413A;
+
+  --accent: #D98787;
+  --accent-bg: #2E1D1C;
+  --danger: #D98787;
+  --danger-bg: #2E1D1C;
+  --info: #7FAAD4;
+  --info-bg: #182430;
+
+  --ugib: #D98787;
+  --ugib-bg: #2E1D1C;
+  --lgib: #E08165;
+  --lgib-bg: #2E1D16;
+  --cirr: #D6B95C;
+  --cirr-bg: #2B2412;
+  --hesbp: #A98FD1;
+  --hesbp-bg: #241C33;
+  --hrs: #7FBBD4;
+  --hrs-bg: #172730;
+  --panc3: #8CBE7A;
+  --panc3-bg: #1B2818;
+  --esoem: #C2A37E;
+  --esoem-bg: #2A2115;
+  --isch: #7FA0D4;
+  --isch-bg: #182333;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-size: 17px;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.brand-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.header-controls { display: flex; align-items: center; gap: 10px; }
+
+.nav-select {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 9px 32px 9px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23423D37' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  color: var(--text-primary);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  max-width: 62vw;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+.domain { display: none; animation: fadeIn 0.3s ease; }
+.domain.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.domain-hero { padding: 32px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+.domain-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.domain-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+.domain-sub { font-size: 16px; color: var(--text-secondary); max-width: 640px; }
+
+.section { margin-bottom: 36px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.section-title .tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  vertical-align: middle;
+}
+.subsection-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+  color: var(--text-primary);
+}
+
+p { margin: 0 0 12px; color: var(--text-secondary); }
+strong { color: var(--text-primary); font-weight: 650; }
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.card-accent {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-bg);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.pathway {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 12px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.pw-node {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pw-node.final { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.pw-arrow {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+.pw-enzyme { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: none; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border-strong);
+}
+td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td strong, th strong { color: var(--text-primary); }
+.mono { font-family: var(--font-mono); font-size: 14px; }
+
+.alert { border-radius: var(--radius-md); padding: 14px 16px; margin: 14px 0; font-size: 15px; border-left: 4px solid; }
+.alert-verify { background: var(--info-bg); border-color: var(--info); color: var(--text-secondary); }
+.alert-danger { background: var(--danger-bg); border-color: var(--danger); }
+.alert-title { font-weight: 700; color: var(--text-primary); margin-bottom: 4px; font-size: 14.5px; }
+
+.gene-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--bg-elevated);
+}
+.gene-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.gene-name { font-weight: 700; font-size: 15.5px; }
+.gene-locus {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  background: var(--bg-inset);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+.gene-inheritance { font-size: 12px; font-weight: 600; color: var(--accent); }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+.chip { font-size: 13px; font-weight: 600; padding: 5px 11px; border-radius: 20px; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text-secondary); }
+
+.loop-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin: 2px 4px 2px 0;
+}
+.loop-neg { background: var(--info-bg); color: var(--info); }
+.loop-pos { background: var(--danger-bg); color: var(--danger); }
+
+.diagram-frame {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  margin: 16px 0;
+  text-align: center;
+}
+.diagram-frame img, .diagram-frame svg { max-width: 100%; height: auto; }
+.diagram-caption { font-size: 13px; color: var(--text-tertiary); margin-top: 8px; font-family: var(--font-mono); }
+
+.hquick { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
+.hquick-item { background: var(--bg-inset); border-radius: var(--radius-sm); padding: 10px 12px; }
+.hquick-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 3px; }
+.hquick-val { font-size: 14px; font-weight: 650; color: var(--text-primary); }
+
+ul.plain, ol.plain { margin: 8px 0 14px; padding-left: 20px; }
+ul.plain li, ol.plain li { margin-bottom: 6px; color: var(--text-secondary); }
+
+.divider-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.site-footer { text-align: center; padding: 30px 20px 60px; font-size: 13px; color: var(--text-tertiary); font-family: var(--font-mono); }
+
+@media print {
+  .site-header, .theme-toggle { display: none; }
+  .domain { display: block !important; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-eyebrow">Clinical Reference Atlas</div>
+    <div class="brand-title">GI Emergencies &amp; Hepatology — Vol. 1</div>
+  </div>
+  <div class="header-controls">
+    <select id="domainNav" class="nav-select" aria-label="Navigate sections">
+      <option value="ugib">◆ Upper GI Bleeding</option>
+<option value="lgib">◆ Lower & Occult GI Bleeding</option>
+<option value="cirr">◆ Cirrhosis & Portal Hypertension</option>
+<option value="hesbp">◆ Hepatic Encephalopathy & SBP</option>
+<option value="hrs">◆ Hepatorenal Syndrome & Complications</option>
+<option value="panc3">◆ Acute Pancreatitis</option>
+<option value="esoem">◆ Esophageal Emergencies</option>
+<option value="isch">◆ Ischemic Colitis & Toxic Megacolon</option>
+    </select>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">☾</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="ugib" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--ugib)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Upper GI Bleeding</h1>
+    <p class="domain-sub">Risk-stratify before endoscopy, treat variceal and non-variceal bleeding as genuinely different diseases from the moment of presentation, and know which older teaching has since been overturned.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ugib-bg);color:var(--ugib)">Risk Stratification</span>Before Endoscopy Even Happens</h2>
+    <table>
+      <tr><th>Score</th><th>What it does</th><th>Key number to remember</th></tr>
+      <tr><td><strong>Glasgow-Blatchford (GBS)</strong></td><td>Predicts need for intervention/transfusion — purely clinical + lab, no endoscopy required</td><td>GBS of <strong>0</strong> (urea &lt;6.5 mmol/L, Hgb ≥13/12 g/dL by sex, SBP ≥110, HR &lt;100, no melena/syncope/liver disease/heart failure) identifies patients safe for <strong>outpatient management</strong> — &lt;1% chance of needing intervention</td></tr>
+      <tr><td><strong>Rockall (pre- and post-endoscopy)</strong></td><td>Predicts mortality; includes age, unlike GBS</td><td>Better for mortality prediction than for deciding who needs intervention</td></tr>
+      <tr><td><strong>AIMS65</strong></td><td>Albumin, INR, altered mental status, SBP, age ≥65 — five simple variables</td><td>Comparable predictive performance to GBS/Rockall with less calculation burden; increasingly favored for its simplicity</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ugib-bg);color:var(--ugib)">Resuscitation</span>Restrictive Transfusion Is the Standard</h2>
+    <p>Target hemoglobin <strong>~7 g/dL</strong> in hemodynamically stable patients without active cardiac ischemia — the TRIGGER and Villanueva trials both demonstrated improved survival with restrictive versus liberal transfusion strategies in this population, a genuinely counterintuitive-sounding but well-established finding (overtransfusion in variceal bleeding specifically can raise portal pressure and worsen bleeding).</p>
+    <div class="alert alert-danger">
+      <div class="alert-title">Tranexamic acid is no longer recommended</div>
+      Following the HALT-IT trial, <strong>TXA is no longer recommended routinely</strong> for upper GI bleeding — it showed no mortality benefit and an increased risk of venous thromboembolism. This is a genuine reversal from earlier practice patterns and worth actively unlearning if it was part of an older personal protocol.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ugib-bg);color:var(--ugib)">Non-Variceal Bleeding</span></h2>
+    <table>
+      <tr><th>Step</th><th>Detail</th></tr>
+      <tr><td>Pre-endoscopy PPI</td><td>High-dose PPI infusion is reasonable before endoscopy (downstages high-risk stigmata, though it doesn't replace endoscopic therapy)</td></tr>
+      <tr><td>Endoscopy timing</td><td>Within 24 hours for most hospitalized patients once resuscitation is underway — the evidence does <strong>not</strong> support rushing to endoscopy within the first 12 hours purely to improve outcomes in stable patients, a nuance worth knowing since "as fast as possible" isn't actually the evidence-based answer here</td></tr>
+      <tr><td>Endoscopic findings determine everything downstream</td><td><strong>Clean-based ulcers</strong> need neither endoscopic hemostasis nor intensive monitoring — oral PPI and early discharge planning is appropriate. <strong>High-risk stigmata</strong> (active bleeding, visible vessel, adherent clot) get combination endoscopic hemostasis, then high-dose PPI infusion for 72 hours to reduce rebleeding</td></tr>
+      <tr><td>Gastric prokinetic</td><td>IV erythromycin (250mg, 30–120 min pre-endoscopy — GI Atlas Vol. 4's motilin receptor agonist mechanism) improves visualization in patients with significant blood/clot burden in the stomach</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ugib-bg);color:var(--ugib)">Variceal Bleeding</span>A Genuinely Different Disease From the Start</h2>
+    <div class="alert alert-verify">
+      <div class="alert-title">Start treatment before the scope reaches the patient</div>
+      Any patient with known cirrhosis or stigmata of portal hypertension presenting with UGIB should receive a <strong>vasoactive drug and antibiotics immediately</strong> — before endoscopy confirms the source, not after.
+    </div>
+    <table>
+      <tr><th>Component</th><th>Detail</th></tr>
+      <tr><td><strong>Vasoactive drug</strong></td><td><strong>Octreotide</strong> is the mainstay in the US (terlipressin is preferred internationally where available and reduces splanchnic blood flow/portal pressure more potently, though US availability has been historically limited — it has recently gained FDA approval for hepatorenal syndrome specifically, discussed later in this atlas, with variceal bleeding protocols evolving accordingly)</td></tr>
+      <tr><td><strong>Antibiotics</strong></td><td><strong>Ceftriaxone</strong> — prophylactic antibiotics are recommended in <strong>all</strong> cirrhotic patients with GI bleeding regardless of ascites/SBP status, since bacterial translocation and infection risk are elevated by the bleeding event itself, and infection is a well-established trigger for further variceal bleeding and mortality in this population</td></tr>
+      <tr><td><strong>Endoscopic therapy</strong></td><td>Band ligation is first-line for esophageal varices</td></tr>
+      <tr><td><strong>Refractory bleeding</strong></td><td>Balloon tamponade (temporizing only) or early TIPS (transjugular intrahepatic portosystemic shunt) in high-risk patients — TIPS decompresses the portal system directly, addressing the underlying pressure driving the bleed rather than just the bleeding point itself</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ugib-bg);color:var(--ugib)">Disposition</span></h2>
+    <p>GBS 0–1 with reliable follow-up: consider outpatient management. Any higher score, active comorbidity, or social barrier to follow-up: admit. Hemodynamically unstable patients need ICU-level care regardless of score.</p>
+  </div>
+</section>
+
+
+<section id="lgib" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--lgib)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Lower &amp; Occult GI Bleeding</h1>
+    <p class="domain-sub">Most lower GI bleeding stops on its own — the real work is figuring out whether it's actually upper GI bleeding in disguise, and which of the self-limited causes might not be.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--lgib-bg);color:var(--lgib)">First Question</span>Is This Really Lower GI Bleeding?</h2>
+    <p>A brisk upper GI bleed can present as hematochezia (rapid transit outpaces the usual melena-producing digestion of blood) — <strong>NG lavage</strong> or a compatible history/risk factor profile helps distinguish this before committing to a lower GI workup. An elevated BUN:creatinine ratio (from digested blood protein absorption — the same small intestinal amino acid absorption physiology from GI Atlas Vol. 2) favors an upper source even when the presenting symptom is hematochezia.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--lgib-bg);color:var(--lgib)">Common Causes by Frequency</span></h2>
+    <table>
+      <tr><th>Cause</th><th>Typical pattern</th></tr>
+      <tr><td><strong>Diverticular bleeding</strong> (most common cause of significant LGIB)</td><td>Painless, often brisk hematochezia — arises from a vessel at the diverticular neck (GI Atlas Vol. 3's diverticular disease mechanism); most stops spontaneously (~75–80%)</td></tr>
+      <tr><td>Angiodysplasia</td><td>Often recurrent, lower-volume bleeding; more common in older adults and those with CKD or aortic stenosis (Heyde syndrome — acquired von Willebrand deficiency from shear stress across a stenotic valve)</td></tr>
+      <tr><td>Hemorrhoidal bleeding</td><td>Bright red, on the toilet paper or coating stool, typically minor — GI Atlas Vol. 5b's hemorrhoid section</td></tr>
+      <tr><td>Ischemic colitis</td><td>Bloody diarrhea with cramping abdominal pain, usually self-limited — dedicated section later in this atlas</td></tr>
+      <tr><td>IBD flare</td><td>Bloody diarrhea with a known or new inflammatory pattern — GI Atlas Vol. 4</td></tr>
+      <tr><td>Post-polypectomy bleeding</td><td>Can occur immediately or be delayed up to 2 weeks after colonoscopic polypectomy</td></tr>
+      <tr><td>Colorectal malignancy</td><td>Often lower-volume, may present as occult bleeding/iron deficiency rather than overt hematochezia</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--lgib-bg);color:var(--lgib)">Risk Stratification &amp; Resuscitation</span></h2>
+    <p>The same restrictive transfusion threshold (~7 g/dL, higher if active cardiac disease) and hemodynamic-first resuscitation approach from upper GI bleeding applies. Unlike UGIB, there's no single universally adopted risk score with the same track record as GBS — clinical judgment (hemodynamic instability, ongoing visible bleeding, comorbidity burden, anticoagulant use) drives most triage decisions.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--lgib-bg);color:var(--lgib)">Diagnostic Approach</span></h2>
+    <table>
+      <tr><th>Modality</th><th>When used</th></tr>
+      <tr><td><strong>Colonoscopy</strong></td><td>First-line for hemodynamically stable patients, ideally after a rapid bowel prep — allows both diagnosis and therapeutic intervention (clipping, injection, cautery) in the same procedure</td></tr>
+      <tr><td><strong>CT angiography</strong></td><td>First-line for hemodynamically unstable or ongoing brisk bleeding where colonoscopy visualization would be inadequate — localizes an active bleeding site for possible embolization</td></tr>
+      <tr><td><strong>Tagged RBC scan</strong></td><td>More sensitive than CTA for slower bleeding (can detect lower bleeding rates) but less precise for anatomic localization — occasionally used to confirm ongoing bleeding before angiography when the diagnosis is uncertain</td></tr>
+      <tr><td><strong>Capsule endoscopy / push enteroscopy</strong></td><td>For suspected small bowel (mid-GI) sources not reached by standard upper or lower endoscopy — relevant when both are negative and bleeding continues or recurs</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--lgib-bg);color:var(--lgib)">Occult GI Bleeding &amp; Iron Deficiency Anemia</span></h2>
+    <p>Iron deficiency anemia in an adult (particularly a postmenopausal woman or any man) should be presumed GI in origin until proven otherwise — this is one of the highest-yield "don't just treat the anemia" principles in general medicine, since the underlying cause (colorectal cancer, celiac disease — GI Atlas Vol. 2, or a slower angiodysplastic/ulcer source) can be missed if iron repletion alone resolves the lab abnormality without a source being sought. Bidirectional endoscopy (both upper and lower) is standard for unexplained iron deficiency anemia without an obvious alternative source (heavy menstrual bleeding, known dietary insufficiency).</p>
+  </div>
+</section>
+
+
+<section id="cirr" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--cirr)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Cirrhosis &amp; Portal Hypertension</h1>
+    <p class="domain-sub">The foundation everything else in this atlas's hepatology sections builds on — two scoring systems that quantify liver disease severity, and the ascites physiology that determines which fluid is "portal hypertensive" and which isn't.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--cirr-bg);color:var(--cirr)">Scoring Severity</span></h2>
+    <table>
+      <tr><th>Score</th><th>Components</th><th>Use</th></tr>
+      <tr><td><strong>Child-Pugh</strong></td><td>Bilirubin, albumin, INR, ascites (none/mild/moderate-severe), encephalopathy grade — 5 variables, class A/B/C</td><td>Simpler, longer clinical track record; still widely used for prognosis and surgical risk discussions</td></tr>
+      <tr><td><strong>MELD(-Na)</strong></td><td>Bilirubin, creatinine, INR, sodium — objective lab values only</td><td>Primary tool for liver transplant allocation priority; more granular and less subjective than Child-Pugh (no clinical assessment of ascites/encephalopathy severity required)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--cirr-bg);color:var(--cirr)">Ascites</span>The SAAG Framework</h2>
+    <p>The <strong>serum-ascites albumin gradient (SAAG)</strong> — serum albumin minus ascitic fluid albumin — is the single most useful initial test on any new ascites, replacing the older, less reliable exudate/transudate framework used elsewhere in medicine.</p>
+    <table>
+      <tr><th>SAAG</th><th>Interpretation</th></tr>
+      <tr><td class="mono">≥ 1.1 g/dL</td><td>Portal hypertension-related (cirrhosis, heart failure, Budd-Chiari) — high hydrostatic pressure in the portal system pushes fluid out with proportionally little protein</td></tr>
+      <tr><td class="mono">&lt; 1.1 g/dL</td><td>Non-portal hypertensive cause (malignancy, tuberculosis, pancreatic ascites, nephrotic syndrome) — a fundamentally different diagnostic pathway</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--cirr-bg);color:var(--cirr)">Ascites Management</span></h2>
+    <div class="chip-row">
+      <span class="chip">Sodium restriction (~2g/day) is first-line</span>
+      <span class="chip">Diuretics: spironolactone + furosemide together (typically in a 100:40mg ratio) — spironolactone addresses the secondary hyperaldosteronism driving sodium retention in cirrhosis (Endocrine Atlas Vol. 2's RAAS section), furosemide adds natriuretic potency</span>
+      <span class="chip">Large-volume paracentesis for tense/refractory ascites, with albumin replacement (typically 6–8g per liter removed beyond 5L) to prevent post-paracentesis circulatory dysfunction</span>
+      <span class="chip">TIPS for refractory ascites not responding to medical management</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--cirr-bg);color:var(--cirr)">Esophageal Varices</span>Screening &amp; Primary Prophylaxis</h2>
+    <p>Screening endoscopy at diagnosis of cirrhosis identifies varices before a first bleed occurs. <strong>Non-selective beta-blockers</strong> (propranolol, nadolol, or carvedilol) reduce portal pressure and are first-line primary prophylaxis for medium/large varices; endoscopic band ligation is an alternative or adjunct, particularly for larger varices or beta-blocker intolerance. This primary-prevention framework is distinct from the acute variceal bleeding management covered in this atlas's Upper GI Bleeding section — prophylaxis happens before any bleed, acute management happens after one starts.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--cirr-bg);color:var(--cirr)">Why This Section Anchors the Rest</span></h2>
+    <p>Every downstream hepatology topic in this atlas — hepatic encephalopathy, SBP, hepatorenal syndrome — occurs specifically in the setting of the portal hypertension and synthetic dysfunction quantified here. Child-Pugh/MELD scores, SAAG-classified ascites, and variceal status aren't just diagnostic labels; they're the framework the rest of this atlas's hepatology sections directly reference for risk stratification and treatment threshold decisions.</p>
+  </div>
+</section>
+
+
+<section id="hesbp" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hesbp)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Hepatic Encephalopathy &amp; Spontaneous Bacterial Peritonitis</h1>
+    <p class="domain-sub">One number (PMN 250) makes the SBP diagnosis in this atlas's cleanest lab-driven call, and lactulose's mechanism here directly reuses the osmotic laxative physiology from GI Atlas Vol. 4.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hesbp-bg);color:var(--hesbp)">Hepatic Encephalopathy</span>Mechanism</h2>
+    <p>Impaired hepatic clearance of gut-derived nitrogenous compounds (ammonia foremost among them) allows them to reach the CNS and disrupt neurotransmission — portosystemic shunting (surgical, or the same TIPS procedure used therapeutically elsewhere in this atlas) bypasses the liver's clearance capacity entirely and can precipitate or worsen encephalopathy for exactly this reason, a genuine trade-off against TIPS's benefit for refractory ascites/variceal bleeding covered earlier.</p>
+    <div class="chip-row">
+      <span class="chip">Precipitants: GI bleeding (blood is a large protein/nitrogen load), infection, constipation, dehydration/diuretic overuse, sedatives/opioids, hypokalemia, TIPS</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hesbp-bg);color:var(--hesbp)">Treatment</span></h2>
+    <table>
+      <tr><th>Agent</th><th>Mechanism</th></tr>
+      <tr><td><strong>Lactulose</strong></td><td>Non-absorbable disaccharide (GI Atlas Vol. 4) — colonic bacterial fermentation acidifies the colonic lumen, trapping ammonia as non-absorbable ammonium (NH4+), and the resulting catharsis directly removes nitrogenous waste. Titrated to 2–3 soft bowel movements per day — under-dosing under-treats, over-dosing causes dehydration that can itself precipitate encephalopathy</td></tr>
+      <tr><td><strong>Rifaximin</strong></td><td>Gut-restricted antibiotic (GI Atlas Vol. 4) — reduces the colonic bacterial population responsible for ammonia production; typically added to, not substituted for, lactulose for recurrent/breakthrough episodes</td></tr>
+      <tr><td>Identify and treat the precipitant</td><td>Often more impactful than escalating HE-directed therapy itself — a patient who's constipated, hypokalemic, or has an unrecognized infection needs that addressed directly</td></tr>
+    </table>
+    <div class="alert alert-verify">
+      <div class="alert-title">Ammonia level correlates poorly with clinical severity</div>
+      Serial ammonia levels are not recommended for monitoring treatment response — the diagnosis and severity grading of hepatic encephalopathy are clinical (mental status, asterixis), not lab-driven. A markedly elevated ammonia in a clinically well-appearing patient doesn't necessarily need aggressive treatment escalation, and a clinically encephalopathic patient with a normal ammonia doesn't rule out the diagnosis.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hesbp-bg);color:var(--hesbp)">Spontaneous Bacterial Peritonitis</span>Diagnosis</h2>
+    <p>Ascitic fluid <strong>PMN count ≥250 cells/mm³</strong> is diagnostic, with or without a positive culture — this single lab value is the entire diagnostic threshold, and empiric antibiotics should start immediately once this cutoff is met, before culture results return. Culture-negative neutrocytic ascites (PMN ≥250, negative culture) is treated identically to culture-positive SBP. <strong>Bacterascites</strong> (positive culture, PMN &lt;250, asymptomatic) should <em>not</em> be treated — most cases are contamination or self-resolving, though a repeat paracentesis is reasonable to exclude evolution into true SBP.</p>
+    <div class="alert alert-verify">
+      <div class="alert-title">Distinguishing SBP from secondary bacterial peritonitis matters</div>
+      A surgically-treatable intra-abdominal source (perforated viscus, abscess — this atlas's surgical companion volumes) can also produce PMN ≥250 but needs source control, not just antibiotics. Suspect secondary peritonitis when ≥2 of: ascitic glucose &lt;50 mg/dL, protein &gt;1g/dL, or LDH above the serum upper limit — or when culture grows multiple organisms (SBP is classically monomicrobial, most commonly <em>E. coli</em> or gram-positive cocci).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hesbp-bg);color:var(--hesbp)">SBP Treatment</span></h2>
+    <div class="chip-row">
+      <span class="chip">Cefotaxime 2g IV q8h (or ceftriaxone) first-line</span>
+      <span class="chip">Broaden to piperacillin-tazobactam or a carbapenem ± vancomycin for healthcare-associated/nosocomial infection or recent broad-spectrum antibiotic exposure</span>
+      <span class="chip">5–7 day duration typical</span>
+      <span class="chip"><strong>IV albumin 1.5g/kg on day 1, 1g/kg on day 3</strong> — reduces hepatorenal syndrome incidence and mortality (this atlas's next section), particularly important with concurrent renal dysfunction or elevated bilirubin</span>
+    </div>
+    <p>Repeat paracentesis at 48 hours is reasonable to confirm response (PMN falling &lt;25% from baseline suggests treatment failure and should prompt broadening coverage and reconsidering secondary peritonitis).</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hesbp-bg);color:var(--hesbp)">SBP Prophylaxis</span></h2>
+    <p>Secondary prophylaxis (after a first SBP episode) and primary prophylaxis in high-risk patients (low ascitic protein &lt;1.5g/dL plus advanced liver disease or renal dysfunction, or a recent variceal bleed — already covered as universal antibiotic prophylaxis in this atlas's Upper GI Bleeding section) both use long-term antibiotic prophylaxis, typically a fluoroquinolone (ciprofloxacin) or trimethoprim-sulfamethoxazole.</p>
+  </div>
+</section>
+
+
+<section id="hrs" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hrs)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Hepatorenal Syndrome &amp; Other Complications</h1>
+    <p class="domain-sub">A diagnosis of exclusion with a genuinely new first-line drug in the US as of recently — plus the cirrhosis complications that round out this atlas's hepatology core.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hrs-bg);color:var(--hrs)">Hepatorenal Syndrome</span>Mechanism</h2>
+    <p>Advanced cirrhosis causes profound splanchnic vasodilation (nitric oxide-mediated, among other mechanisms), triggering compensatory systemic vasoconstriction and renal hypoperfusion despite normal or increased total blood volume — a functional (not structural) renal failure. Diagnosis is one of exclusion: acute kidney injury in a cirrhotic patient, without response to volume expansion (typically 48 hours of albumin), absence of shock, no recent nephrotoxin exposure, and no other identifiable structural kidney disease (proteinuria, hematuria, abnormal renal ultrasound).</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hrs-bg);color:var(--hrs)">Treatment</span>A Genuinely Recent Change</h2>
+    <div class="alert alert-verify">
+      <div class="alert-title">Terlipressin is now FDA-approved in the US</div>
+      For years, US practice was limited to <strong>midodrine + octreotide + albumin</strong> (modest efficacy) given terlipressin's unavailability, while <strong>terlipressin</strong> was the international standard given superior reversal rates. Terlipressin has recently gained FDA approval in the US for hepatorenal syndrome specifically, and centers are actively developing protocols to incorporate it — this represents a genuine, recent shift in the US treatment landscape worth updating on if trained on older material.
+    </div>
+    <table>
+      <tr><th>Regimen</th><th>Setting</th><th>Note</th></tr>
+      <tr><td>Terlipressin + albumin</td><td>Now first-line where available (ICU or appropriate monitored setting)</td><td>Improves reversal without dialysis and 10-day survival versus placebo in trial data</td></tr>
+      <tr><td>Norepinephrine + albumin</td><td>ICU-only alternative with comparable efficacy</td><td>Requires ICU-level monitoring given vasopressor use</td></tr>
+      <tr><td>Midodrine + octreotide + albumin</td><td>Non-ICU setting when terlipressin/norepinephrine aren't feasible</td><td>Historical US standard; lower efficacy than the options above</td></tr>
+    </table>
+    <p>Vasoconstrictor + albumin therapy continues for up to 14 days; liver transplantation remains the only definitive cure, since it addresses the underlying portal hypertension/splanchnic vasodilation directly rather than counteracting it pharmacologically.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hrs-bg);color:var(--hrs)">Other Cirrhosis Complications, Briefly</span></h2>
+    <table>
+      <tr><th>Complication</th><th>Key point</th></tr>
+      <tr><td><strong>Coagulopathy</strong></td><td>Elevated INR in cirrhosis reflects reduced synthesis of clotting factors <em>and</em> reduced synthesis of natural anticoagulants (protein C/S, antithrombin) — the net hemostatic balance is more complex than INR alone suggests, which is part of why FFP correction before procedures is used more selectively than the INR number alone might imply</td></tr>
+      <tr><td><strong>Hepatopulmonary syndrome</strong></td><td>Intrapulmonary vascular dilation causes hypoxemia, classically worse when upright (platypnea-orthodeoxia) — a distinct pulmonary complication of portal hypertension, not simply volume overload/effusion related</td></tr>
+      <tr><td><strong>Portopulmonary hypertension</strong></td><td>True pulmonary arterial hypertension developing in the setting of portal hypertension — distinct mechanism and management from hepatopulmonary syndrome despite the similar name</td></tr>
+      <tr><td><strong>Cirrhotic cardiomyopathy</strong></td><td>Blunted cardiac contractile response to stress despite normal/hyperdynamic resting function — relevant to why cirrhotic patients can decompensate hemodynamically during procedures/illness more than baseline echo findings would suggest</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hrs-bg);color:var(--hrs)">Tying the Hepatology Sections Together</span></h2>
+    <p>Every complication in this atlas's three hepatology sections shares the same upstream driver established in the Cirrhosis &amp; Portal Hypertension section: portal hypertension and splanchnic vasodilation. Ascites, SBP risk, encephalopathy precipitants, and hepatorenal syndrome's renal vasoconstriction are all downstream expressions of that same physiology — treating one complication (large-volume paracentesis, TIPS, a vasoconstrictor) frequently has direct, predictable effects on the others, for better (albumin in SBP reducing HRS incidence) or worse (TIPS improving ascites/variceal bleeding while worsening encephalopathy risk).</p>
+  </div>
+</section>
+
+
+<section id="panc3" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--panc3)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Acute Pancreatitis</h1>
+    <p class="domain-sub">The fluid resuscitation philosophy has genuinely reversed from aggressive to moderate — and the zymogen cascade misfiring intrapancreatically (GI Atlas Vol. 2) is the mechanism underlying everything in this section.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Diagnosis</span>2 of 3 Criteria</h2>
+    <div class="chip-row">
+      <span class="chip">Characteristic epigastric pain (often radiating to the back)</span>
+      <span class="chip">Lipase (or amylase) &gt;3x upper limit of normal</span>
+      <span class="chip">Characteristic imaging findings (CT/MRI)</span>
+    </div>
+    <p>Only 2 of the 3 are required — imaging is not mandatory for diagnosis if pain and lipase both fit, and is generally reserved for diagnostic uncertainty, failure to improve, or suspected local complications (below) rather than routine confirmation. Lipase is preferred over amylase given better sensitivity/specificity and a longer window of elevation.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Etiology</span></h2>
+    <table>
+      <tr><th>Cause</th><th>Note</th></tr>
+      <tr><td><strong>Gallstones</strong> (most common overall)</td><td>Transient common bile duct/ampullary obstruction — ERCP indicated if concurrent cholangitis or persistent obstruction, cholecystectomy same-admission once pancreatitis resolves (GI Atlas Vol. 5)</td></tr>
+      <tr><td><strong>Alcohol</strong> (second most common)</td><td>Direct acinar cell toxicity plus effects on the zymogen activation cascade (GI Atlas Vol. 2)</td></tr>
+      <tr><td>Hypertriglyceridemia</td><td>Typically triglycerides &gt;1000mg/dL — free fatty acids released by pancreatic lipase acting on the excess triglyceride directly injure acinar tissue</td></tr>
+      <tr><td>Medications</td><td>Numerous associations (thiazides, GLP-1 agonists debated, azathioprine, valproate, and others)</td></tr>
+      <tr><td>ERCP-related (post-ERCP pancreatitis)</td><td>Rectal indomethacin given periprocedurally reduces incidence in high-risk patients</td></tr>
+      <tr><td>Autoimmune, hereditary (PRSS1 — GI Atlas Vol. 2)</td><td>Less common; hereditary pancreatitis discussed in GI Atlas Vol. 2's Pancreatic Exocrine Secretion section</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Severity Classification</span>Revised Atlanta Classification</h2>
+    <table>
+      <tr><th>Category</th><th>Definition</th></tr>
+      <tr><td><strong>Mild</strong></td><td>No organ failure, no local/systemic complications</td></tr>
+      <tr><td><strong>Moderately severe</strong></td><td><em>Transient</em> organ failure (&lt;48h) and/or local complications, without persistent organ failure</td></tr>
+      <tr><td><strong>Severe</strong></td><td><em>Persistent</em> organ failure (&gt;48h) — single or multi-organ</td></tr>
+    </table>
+    <p><strong>BISAP score</strong> (BUN &gt;25, impaired mental status, SIRS, age &gt;60, pleural effusion) is a simple, validated bedside tool for early severity prediction, comparable in performance to more complex scores (Ranson's, APACHE-II) but calculable immediately at presentation rather than requiring 48-hour data. SIRS criteria present on day 1 are themselves highly sensitive for predicting a severe course.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Fluid Resuscitation</span>The Reversed Recommendation</h2>
+    <div class="alert alert-verify">
+      <div class="alert-title">Moderate, goal-directed resuscitation has replaced aggressive fluid loading</div>
+      Older teaching favored aggressive, high-volume crystalloid resuscitation. Current evidence and guidelines instead favor <strong>moderate, goal-directed fluid therapy</strong> with balanced crystalloids (lactated Ringer's preferred over normal saline, avoiding the hyperchloremic acidosis normal saline can cause) — aggressive fluid resuscitation is now recognized to risk fluid overload without clear outcome benefit, a genuine reversal worth updating on directly.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Nutrition &amp; Antibiotics</span></h2>
+    <div class="chip-row">
+      <span class="chip">Early oral/enteral feeding as tolerated — not the historical "bowel rest" default; early feeding is associated with better outcomes and is now standard even in moderately severe disease</span>
+      <span class="chip">Routine prophylactic antibiotics are <strong>not recommended</strong>, even in severe/necrotizing pancreatitis, absent confirmed infection — a frequently outdated assumption worth correcting directly</span>
+      <span class="chip">Antibiotics reserved for confirmed infected necrosis or a documented extrapancreatic infection (cholangitis, bacteremia)</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--panc3-bg);color:var(--panc3)">Local Complications</span>Terminology by Timing</h2>
+    <table>
+      <tr><th>Complication</th><th>Timing</th><th>Content</th></tr>
+      <tr><td>Acute peripancreatic fluid collection</td><td>&lt;4 weeks</td><td>Fluid only, no defined wall — most common local finding, often resolves spontaneously</td></tr>
+      <tr><td>Pancreatic pseudocyst</td><td>&gt;4 weeks</td><td>Fluid only, now with a defined wall</td></tr>
+      <tr><td>Acute necrotic collection</td><td>&lt;4 weeks</td><td>Necrotic tissue present, no defined wall</td></tr>
+      <tr><td>Walled-off necrosis</td><td>&gt;4 weeks</td><td>Necrotic tissue, now with a defined wall</td></tr>
+    </table>
+    <p>Infected necrosis (suspected with clinical deterioration, gas on imaging, or confirmed by FNA — though routine FNA is now discouraged given imaging usually suffices) requires antibiotics and, when feasible, delayed drainage/debridement (endoscopic, percutaneous, or surgical) — delaying intervention beyond the acute phase when possible generally improves outcomes compared to early necrosectomy, giving the collection time to organize/wall off first.</p>
+  </div>
+</section>
+
+
+<section id="esoem" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--esoem)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Esophageal Emergencies — Boerhaave Syndrome &amp; Mallory-Weiss Tear</h1>
+    <p class="domain-sub">Same mechanical trigger (forceful vomiting against a closed glottis), completely different severity — one is a surgical emergency, the other usually stops on its own.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--esoem-bg);color:var(--esoem)">Boerhaave Syndrome</span>Full-Thickness Esophageal Rupture</h2>
+    <p>Sudden, forceful vomiting against a closed glottis generates enough intraluminal pressure to cause <strong>full-thickness</strong> esophageal wall rupture — typically at the left posterolateral distal esophagus, its anatomically weakest point. This is a true surgical emergency with historically very high mortality, worsened directly by any delay in diagnosis/treatment, given that mediastinal and pleural contamination with GI content and oral flora rapidly progresses to mediastinitis and sepsis.</p>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td><strong>Classic triad</strong></td><td>Vomiting, chest pain, subcutaneous emphysema (Mackler's triad) — though the full triad is present in only a minority of cases, making a high index of suspicion necessary</td></tr>
+      <tr><td>Diagnosis</td><td>CT chest with oral contrast is the modality of choice — demonstrates the leak directly and assesses mediastinal contamination extent; contrast esophagram is an alternative where CT isn't immediately available</td></tr>
+      <tr><td>Treatment</td><td>Broad-spectrum antibiotics and antifungal coverage immediately, NPO, and urgent surgical consultation — surgical repair (primary closure with tissue reinforcement, or esophageal diversion/resection in delayed or extensive cases) is generally required, though select small, contained, early-recognized leaks in stable patients may be managed with esophageal stenting and drainage at specialized centers</td></tr>
+    </table>
+    <div class="alert alert-danger">
+      <div class="alert-title">Time to diagnosis/treatment is the dominant mortality predictor</div>
+      Mortality rises substantially with diagnostic/treatment delay beyond 24 hours — mirroring the same time-sensitivity theme as this atlas's surgical companion volume's perforated viscus section, but with a mediastinal (rather than purely peritoneal) contamination field that tends to be even less forgiving.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--esoem-bg);color:var(--esoem)">Mallory-Weiss Tear</span>Mucosal, Not Full-Thickness</h2>
+    <p>The same forceful-vomiting mechanism as Boerhaave, but producing only a <strong>mucosal/submucosal</strong> longitudinal tear (classically at the gastroesophageal junction) rather than full-thickness rupture — a fundamentally less severe injury given the intact outer wall layers, explaining the dramatically different clinical trajectory from Boerhaave despite the shared trigger.</p>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Presentation</td><td>Hematemesis following a bout of forceful vomiting/retching — often preceded by non-bloody vomiting before blood appears, reflecting the tear occurring partway through the vomiting episode</td></tr>
+      <tr><td>Natural history</td><td>The large majority stop bleeding spontaneously without intervention</td></tr>
+      <tr><td>Endoscopic therapy</td><td>Reserved for persistent or high-risk bleeding — clipping, injection, or thermal therapy, using the same risk-stratification logic as this atlas's Upper GI Bleeding section generally</td></tr>
+      <tr><td>Risk factors</td><td>Alcohol use (frequent forceful vomiting), hiatal hernia (GI Atlas Vol. 5's antireflux surgery section), hyperemesis of any cause</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--esoem-bg);color:var(--esoem)">The Same Trigger, Opposite Trajectories</span></h2>
+    <p>Boerhaave and Mallory-Weiss sit at opposite ends of a severity spectrum defined by exactly one variable: whether the esophageal wall tear is full-thickness or mucosal-only. This is worth holding side-by-side deliberately — a patient with forceful vomiting and chest pain needs Boerhaave actively ruled out (CT with contrast) even though the same history far more commonly produces the far more benign Mallory-Weiss picture, and the presence of hematemesis alone doesn't distinguish between them without imaging or endoscopy.</p>
+  </div>
+</section>
+
+
+<section id="isch" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--isch)">GI Emergencies &amp; Hepatology · Vol. 1</div>
+    <h1 class="domain-title">Ischemic Colitis &amp; Toxic Megacolon</h1>
+    <p class="domain-sub">Closing this atlas with the colonic counterpart to acute mesenteric ischemia (GI Atlas Vol. 5b) — usually far more forgiving, plus the dilation-driven emergency that can complicate either IBD or infectious colitis.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--isch-bg);color:var(--isch)">Ischemic Colitis</span>Usually Low-Flow, Not Occlusive</h2>
+    <p>Unlike acute mesenteric ischemia (GI Atlas Vol. 5b's Small Bowel Resection section — typically embolic/thrombotic large-vessel occlusion), ischemic colitis is most often <strong>non-occlusive</strong>, reflecting transient hypoperfusion to the colon's <strong>watershed areas</strong> — the splenic flexure (junction of SMA and IMA territory) and rectosigmoid junction (junction of IMA and internal iliac territory) — regions with the least collateral blood supply and therefore the most vulnerable to any drop in perfusion pressure.</p>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Presentation</td><td>Crampy abdominal pain followed by (often mild-to-moderate) bloody diarrhea — a notably less dramatic presentation than acute mesenteric ischemia's "pain out of proportion to exam"</td></tr>
+      <tr><td>Risk factors</td><td>Hypotension/shock states, recent cardiac or aortic surgery, vasopressor use, hemodialysis, cocaine use, strenuous endurance exercise (long-distance running redirects splanchnic flow), colonic obstruction</td></tr>
+      <tr><td>Diagnosis</td><td>CT (segmental wall thickening, often at a watershed location) and/or colonoscopy (pale mucosa, hemorrhagic nodules, or a sharp transition between affected and normal mucosa)</td></tr>
+      <tr><td>Treatment</td><td>Supportive — bowel rest, IV fluids, correcting the underlying hypoperfusion cause; most cases are mild and self-limited, resolving within days without specific intervention</td></tr>
+    </table>
+    <div class="alert alert-danger">
+      <div class="alert-title">Gangrenous/fulminant ischemic colitis is the exception</div>
+      A minority of cases progress to transmural infarction — peritonitis, hemodynamic instability, or lack of improvement (or worsening) over 48–72 hours should prompt surgical evaluation for resection, since this subset behaves much more like the more dangerous acute mesenteric ischemia rather than the typically self-limited majority.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--isch-bg);color:var(--isch)">Toxic Megacolon</span></h2>
+    <p>Acute colonic dilation (transverse colon diameter generally &gt;6cm) accompanied by systemic toxicity — a complication of severe colitis from any cause, most classically fulminant ulcerative colitis (GI Atlas Vol. 4) or <em>C. difficile</em> infection, reflecting the same loss of coordinated motility covered in GI Atlas Vol. 3's motility disorders volume, here driven by severe transmural inflammation rather than a primary neuromuscular disorder.</p>
+    <table>
+      <tr><th>Diagnostic criteria</th><th>Detail</th></tr>
+      <tr><td>Radiographic colonic dilation</td><td>Transverse colon &gt;6cm (some criteria use &gt;6cm or cecum &gt;9cm)</td></tr>
+      <tr><td>Plus systemic toxicity</td><td>≥3 of: fever &gt;38°C, HR &gt;120, WBC &gt;10,500, anemia — plus ≥1 of: dehydration, altered mental status, electrolyte disturbance, hypotension</td></tr>
+    </table>
+    <div class="chip-row">
+      <span class="chip">Bowel rest, NG decompression</span>
+      <span class="chip">IV corticosteroids if IBD-driven (Endocrine Atlas Vol. 3a's dosing principles) or targeted antibiotics if <em>C. diff</em>-driven (GI Atlas Vol. 4's oral vancomycin/fidaxomicin)</span>
+      <span class="chip">Broad-spectrum antibiotics empirically given perforation risk</span>
+      <span class="chip">Discontinue anticholinergics, opioids, and antimotility agents (loperamide, GI Atlas Vol. 4) — these worsen colonic stasis and can precipitate or accelerate toxic megacolon in active colitis, a genuinely important prescribing caution in a patient with severe colitis symptoms</span>
+      <span class="chip">Serial abdominal exams and imaging — worsening distension, peritonitis, or failure to improve within 24–72 hours of medical therapy is an indication for emergent colectomy</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--isch-bg);color:var(--isch)">Closing This Atlas</span></h2>
+    <p>This volume's eight sections form a connected emergency/hepatology core: GI bleeding (upper and lower) is the most common acute presentation; cirrhosis and its three major complications (encephalopathy/SBP, hepatorenal syndrome) explain why bleeding, infection, and renal failure cluster together in the same decompensating patient; acute pancreatitis and the esophageal/colonic emergencies round out the remaining high-acuity GI presentations most likely to define an actual emergency department shift. Every mechanism here builds directly on the physiology, pharmacology, and surgical anatomy established across the Endocrine and GI Atlas series — this volume is where that foundation gets applied under real time pressure.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  GI EMERGENCIES &amp; HEPATOLOGY ATLAS · VOLUME 1<br>
+  Companion series to the Endocrine Atlas (6 volumes) and GI Atlas (6 volumes)<br>
+  Verify all scoring thresholds, drug regimens, and protocols against current institutional/lab-specific references before clinical use.
+</footer>
+
+<script>
+(function() {
+  "use strict";
+
+  // ---------- Theme toggle ----------
+  var THEME_KEY_FALLBACK = null; // no localStorage per artifact rules; in-memory only
+  var root = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    if (toggleBtn) toggleBtn.textContent = t === 'dark' ? '☀' : '☾';
+  }
+
+  // default to light on load
+  applyTheme('light');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      var current = root.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // ---------- Dropdown navigation ----------
+  var navSelect = document.getElementById('domainNav');
+  var domains = document.querySelectorAll('.domain');
+
+  function showDomain(id) {
+    for (var i = 0; i < domains.length; i++) {
+      domains[i].classList.toggle('active', domains[i].id === id);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  if (navSelect) {
+    navSelect.addEventListener('change', function() {
+      showDomain(this.value);
+    });
+    // activate first option on load
+    if (navSelect.options.length > 0) {
+      showDomain(navSelect.options[0].value);
+    }
+  }
+})();
+
+</script>
+</body>
+</html>

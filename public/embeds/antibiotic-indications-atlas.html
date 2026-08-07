@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antibiotic &amp; Steroid Indications Atlas — When They're Actually Warranted</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#0d6e6e; --accent-dim:#095050; --accent-tint:#e7f4f4;
+  --bg:#faf9f7; --bg-panel:#ffffff; --bg-raised:#f2f4f3;
+  --text:#1a1e1d; --text-dim:#525957; --text-faint:#868d8b;
+  --border:#e0e5e3; --border-strong:#c9d1ce;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95; --danger-text:#9c1f2e;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(20,25,24,.06), 0 1px 2px rgba(20,25,24,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#3fd1c9; --accent-dim:#6be0da; --accent-tint:#0f2626;
+  --bg:#121615; --bg-panel:#1a1f1e; --bg-raised:#222827;
+  --text:#eef2f1; --text-dim:#adb6b3; --text-faint:#76807d;
+  --border:#2c3332; --border-strong:#3c4645;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1416; --danger-border:#7a2c35; --danger-text:#ff8a97;
+  --good-bg:#0f2a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.18); min-width:300px; padding:.4rem; z-index:200; max-height:78vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.5rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.85rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:960px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:1.95rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:70ch;}
+.sys-header{padding:2.6rem 0 .5rem; border-top:3px solid var(--accent); margin-top:1rem;}
+.sys-header h2{font-size:1.7rem; margin:0;}
+.sys-header .sys-kicker{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+section.cond{padding:1.8rem 0; border-top:1px solid var(--border);}
+h3.cond-title{font-size:1.3rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
+h4{font-size:1.02rem; margin:1.2rem 0 .5rem;}
+p{margin:.65rem 0;}
+.subnote{color:var(--text-faint); font-size:.84rem;}
+.box{border-radius:var(--radius); padding:.95rem 1.1rem; margin:.9rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border); color:var(--danger-text);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.35rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.35rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:.9rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.86rem; background:var(--bg-panel);}
+th,td{padding:.55rem .7rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.1rem .5rem; border-radius:99px; font-size:.7rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--danger-text); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.pill.iv{background:var(--accent-tint); color:var(--accent-dim); border:1px solid var(--accent);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:.9rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.84rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+footer{max-width:960px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">Rx</div>
+    <div class="brand-text">
+      <div class="title">Antibiotic Indications Atlas</div>
+      <div class="sub">WHEN THEY'RE ACTUALLY WARRANTED</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">Foundations</div>
+        <a href="#philosophy">Stewardship Philosophy &amp; IV-to-PO Framework</a>
+        <div class="grp">GI</div>
+        <a href="#diverticulitis">Diverticulitis</a>
+        <a href="#cdiff">C. difficile Colitis</a>
+        <a href="#infcolitis">Infectious/Bacterial Colitis</a>
+        <a href="#cholecystitis">Cholecystitis &amp; Cholangitis</a>
+        <a href="#appendicitis">Appendicitis</a>
+        <div class="grp">GU</div>
+        <a href="#asb">Asymptomatic Bacteriuria</a>
+        <a href="#cystitis">Uncomplicated Cystitis</a>
+        <a href="#pyelo">Pyelonephritis</a>
+        <a href="#prostatitis">Acute Bacterial Prostatitis</a>
+        <div class="grp">Respiratory</div>
+        <a href="#bronchitis">Acute Bronchitis</a>
+        <a href="#cap">Community-Acquired Pneumonia</a>
+        <a href="#copd">COPD Exacerbation</a>
+        <div class="grp">Skin &amp; Soft Tissue</div>
+        <a href="#purulent">Purulent SSTI / Abscess</a>
+        <a href="#nonpurulent">Nonpurulent Cellulitis</a>
+        <a href="#necfasc">Necrotizing Fasciitis</a>
+        <div class="grp">ENT / Oral</div>
+        <a href="#sinusitis">Acute Bacterial Sinusitis</a>
+        <a href="#aom">Acute Otitis Media</a>
+        <a href="#pharyngitis">Pharyngitis</a>
+        <a href="#ptabscess">Peritonsillar Abscess</a>
+        <a href="#dental">Dental / Oral Infections</a>
+        <div class="grp">Adjunctive Corticosteroids</div>
+        <a href="#steroid-philosophy">When Steroids Actually Help</a>
+        <a href="#steroid-cap">Severe CAP</a>
+        <a href="#steroid-copd">COPD Exacerbation</a>
+        <a href="#steroid-meningitis">Bacterial Meningitis</a>
+        <a href="#steroid-croup">Croup</a>
+        <a href="#steroid-asthma">Asthma Exacerbation</a>
+        <a href="#steroid-ent">Sinusitis &amp; Pharyngitis</a>
+        <a href="#steroid-anaphylaxis">Anaphylaxis</a>
+        <a href="#steroid-cord">Malignant Spinal Cord Compression</a>
+        <a href="#steroid-gout">Gout Flare</a>
+        <a href="#steroid-ibd">IBD Flare</a>
+        <a href="#steroid-summary">Steroid Comparison Table</a>
+        <div class="grp">Synthesis</div>
+        <a href="#summary">Master Comparison Table</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Primary Care Reference · Master Volume</div>
+    <h1>Antibiotic Indications Atlas</h1>
+    <p class="lede">The flip side of empiric-antibiotics teaching: for 18 common conditions, exactly where the evidence says treat vs. withhold, and oral vs. IV — anchored to IDSA (and companion AGA/ATS/AAP) guidelines, with the specific trial data behind each threshold. A dedicated corticosteroid section covers 11 more conditions where the same "does the evidence actually support this" lens applies.</p>
+  </div>
+
+  <section id="philosophy" class="cond">
+    <h2 class="sec-title" style="font-size:1.4rem;">Stewardship Philosophy &amp; the IV-to-PO Framework</h2>
+    <div class="box danger">
+      <div class="box-title">The organizing principle across this entire atlas</div>
+      <p>IDSA's core position, stated explicitly in their 2018 sepsis statement and implicit throughout every guideline below: <strong>if there is no infection, there is no indication for antibiotic therapy</strong> — and even where infection exists, many common conditions are self-limited or adequately treated with source control (drainage, observation) alone. Every condition below follows the same format: what actually defines "needs antibiotics," what defines "needs IV specifically," and what the evidence base is for the threshold.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">When does IV actually beat oral? (Applies across every condition below)</div>
+      <p>Route selection is frequently over-defaulted to IV out of habit rather than pharmacology. IV is genuinely necessary when: <strong>(1)</strong> the patient can't reliably absorb oral medication (vomiting, ileus, short bowel, severe mucositis), <strong>(2)</strong> the infection is severe/systemic enough that faster, more reliable serum levels matter (sepsis — see the companion Sepsis Atlas, meningitis, endocarditis), <strong>(3)</strong> no adequate oral option with sufficient bioavailability/tissue penetration exists for the specific organism/site (e.g., IV vancomycin for invasive MRSA — oral vancomycin doesn't absorb systemically). Conversely, <strong>highly bioavailable oral agents</strong> (fluoroquinolones, linezolid, metronidazole, doxycycline, TMP-SMX, and to a lesser extent amoxicillin-clavulanate) achieve serum levels close enough to IV dosing that route alone should rarely be the deciding factor once a patient can tolerate oral intake and isn't in shock. IV-to-PO switch criteria (afebrile ≥24h, hemodynamically stable, tolerating oral intake, clinically improving) apply across nearly every condition in this atlas and are a standing stewardship opportunity most inpatient teams underuse.</p>
+    </div>
+  </section>
+
+  <!-- ================= GI ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 01</div>
+    <h2>Gastrointestinal</h2>
+  </div>
+
+  <section id="diverticulitis" class="cond">
+    <h3 class="cond-title">Diverticulitis <span class="pill mid">AGA / ACP</span></h3>
+    <p>This is your example, and it's a genuine paradigm shift most training predates: <strong>uncomplicated diverticulitis increasingly does not need antibiotics at all.</strong></p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Hinchey stage</th><th>Description</th><th>Antibiotic decision</th></tr></thead>
+        <tbody>
+          <tr><td>Ia</td><td>Confined pericolic inflammation/phlegmon, no abscess</td><td><span class="pill hi">Selective</span> — AGA 2015: "antibiotics should be used selectively, rather than routinely." Multiple RCTs (AVOD, DIABOLO, STAND, DINAMO) show no difference in complications, recurrence, or surgery rate with observation alone in reliable, non-immunocompromised outpatients without sepsis.</td></tr>
+          <tr><td>Ib / II</td><td>Pericolic or pelvic abscess</td><td><span class="pill mid">Antibiotics + drainage</span> — abscess ≥3–4cm generally warrants IR drainage plus antibiotics; smaller abscesses may respond to antibiotics alone.</td></tr>
+          <tr><td>III</td><td>Purulent peritonitis</td><td><span class="pill lo">IV antibiotics + emergent surgery</span></td></tr>
+          <tr><td>IV</td><td>Feculent peritonitis</td><td><span class="pill lo">IV antibiotics + emergent surgery</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">The evidence for skipping antibiotics</div>
+        <p><strong>AVOD trial</strong> (2012, n=623): no difference in complications/emergency surgery (1.9% vs 1.0%) between antibiotics and IV fluids alone — 11-year follow-up (2019) confirmed no difference in recurrence (31.3% both arms), complications, or cancer detection.</p>
+        <p><strong>DIABOLO trial</strong> (2017) and <strong>STAND trial</strong> (2020, placebo-controlled, Hinchey Ia only): both confirmed non-inferiority of observation.</p>
+        <p><strong>DINAMO trial</strong> (480 outpatients): similarly low return-visit and hospitalization rates with vs. without amoxicillin-clavulanate.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Who still needs antibiotics even for "uncomplicated" disease</div>
+        <p>Immunosuppression, pregnancy, inability to tolerate oral intake, significant comorbidity, signs of sepsis, or failure of 48–72h observation — all of the major RCTs above explicitly excluded these patients, so the "skip antibiotics" evidence doesn't generalize to them.</p>
+      </div>
+    </div>
+    <div class="box good">
+      <div class="box-title">If treating: regimen</div>
+      <p><strong>Oral (outpatient, uncomplicated):</strong> amoxicillin-clavulanate 875/125mg BID, or ciprofloxacin 500mg BID + metronidazole 500mg TID, for 4–7 days (shorter courses increasingly favored).</p>
+      <p><strong>IV (complicated, Hinchey II–IV, or failed oral):</strong> a second/third-generation cephalosporin (cefuroxime or ceftriaxone) + metronidazole, or piperacillin-tazobactam, or a carbapenem — mirrors the intra-abdominal-source empiric logic from the Sepsis Atlas Volume 4.</p>
+    </div>
+    <p class="subnote">Location note: right-sided diverticulitis (more common in Asian populations) is generally managed with the same severity-based framework as left-sided disease, though it more often mimics appendicitis and warrants closer attention to the alternate diagnosis.</p>
+  </section>
+
+  <section id="cdiff" class="cond">
+    <h3 class="cond-title">C. difficile Colitis <span class="pill mid">IDSA/SHEA 2021</span></h3>
+    <div class="box danger">
+      <div class="box-title">Antibiotics are indicated here — the question is severity-tailored route and agent</div>
+      <p>Unlike diverticulitis, once CDI is confirmed, antibiotics (specifically anti-<em>C. diff</em> agents) are indicated at every severity level — the withholding question here is about the <em>triggering</em> antibiotic (stop the offending agent) and about using oral vancomycin/fidaxomicin instead of the historically reflexive metronidazole.</p>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Severity</th><th>Criteria</th><th>Regimen</th></tr></thead>
+        <tbody>
+          <tr><td>Non-severe</td><td class="num">WBC ≤15,000 AND Cr &lt;1.5 mg/dL</td><td><span class="pill hi">Oral</span> fidaxomicin 200mg PO BID ×10d (preferred, lower recurrence) OR vancomycin 125mg PO QID ×10d</td></tr>
+          <tr><td>Severe</td><td class="num">WBC &gt;15,000 OR Cr ≥1.5 mg/dL</td><td><span class="pill hi">Oral</span> — same regimens as non-severe; severity does not change the drug choice per 2021 update</td></tr>
+          <tr><td>Fulminant</td><td>Hypotension, shock, ileus, megacolon</td><td><span class="pill lo">Oral/NG vancomycin 500mg QID</span> <strong>PLUS IV metronidazole 500mg q8h</strong> — the one scenario in this table where IV therapy is added; fidaxomicin has no data in fulminant disease and should not be used</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subnote">Note the counterintuitive pharmacology: oral vancomycin works in CDI because it acts locally in the gut lumen (not systemically absorbed) — this is the opposite logic from most infections, where oral vancomycin would be useless and IV would be required.</p>
+  </section>
+
+  <section id="infcolitis" class="cond">
+    <h3 class="cond-title">Infectious / Bacterial Colitis (non-C. diff)</h3>
+    <div class="box good">
+      <div class="box-title">Most bacterial gastroenteritis does not need antibiotics</div>
+      <p><em>Salmonella</em>, <em>Campylobacter</em>, and non-O157 <em>E. coli</em> gastroenteritis in an immunocompetent, non-severely-ill host is typically self-limited and managed with supportive care (hydration) alone — treatment can prolong <em>Salmonella</em> carriage and, for <strong>Shiga toxin-producing E. coli (STEC/O157:H7)</strong>, antibiotics are actively <strong>contraindicated</strong> outside specific circumstances because they may increase the risk of hemolytic uremic syndrome (HUS) by promoting toxin release.</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">When treatment IS indicated</div>
+      <p>Severe disease (high fever, ≥6 bloody stools/day, hospitalization required), immunocompromise, age extremes (infants, frail elderly), suspected <em>Shigella</em> (treatment shortens duration and transmission), or invasive/bacteremic disease. <strong>Empiric outpatient regimen when indicated:</strong> azithromycin 500mg PO daily ×3d or a fluoroquinolone (ciprofloxacin 500mg BID ×3-5d, resistance-dependent). <strong>IV therapy</strong> reserved for bacteremia, severe systemic illness, or inability to tolerate oral intake — most infectious colitis, even when treatment is warranted, is a PO-appropriate diagnosis.</p>
+    </div>
+  </section>
+
+  <section id="cholecystitis" class="cond">
+    <h3 class="cond-title">Cholecystitis &amp; Cholangitis <span class="pill mid">Tokyo Guidelines</span></h3>
+    <div class="box danger">
+      <div class="box-title">Source control (not antibiotics alone) is the definitive treatment</div>
+      <p>Antibiotics are a bridge to — not a substitute for — cholecystectomy (cholecystitis) or biliary drainage (cholangitis). Tokyo Guidelines grade severity I (mild) through III (severe, organ dysfunction) and grade drives both antibiotic breadth and urgency of source control, mirroring the source-control-timing principle from the Sepsis Atlas.</p>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Mild-moderate (Grade I-II)</div>
+        <p><span class="pill iv">IV</span> ceftriaxone ± metronidazole, or a single agent like piperacillin-tazobactam, until surgery/drainage; can often transition to oral once source-controlled and clinically improving.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Severe (Grade III) / cholangitis with sepsis</div>
+        <p><span class="pill lo">IV</span> broad-spectrum coverage (piperacillin-tazobactam or a carbapenem) — this overlaps directly with unknown-source septic-patient coverage from the Sepsis Atlas Volume 4 — plus urgent biliary decompression (ERCP) for cholangitis, which should not be delayed for antibiotics to "work" first.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="appendicitis" class="cond">
+    <h3 class="cond-title">Appendicitis <span class="pill mid">CODA Trial</span></h3>
+    <div class="box warn">
+      <div class="box-title">Antibiotics-alone is a legitimate option for uncomplicated disease — not the default, but not fringe either</div>
+      <p>The CODA trial (NEJM 2020, n=1,552) found antibiotics alone (non-inferior primary outcome) avoided appendectomy in ~70% of patients at 90 days, though patients with an appendicolith had higher subsequent appendectomy rates in the antibiotics arm. This is shared-decision-making territory, not a strict guideline mandate — surgery remains standard of care, but antibiotics-alone is evidence-based for uncomplicated appendicitis without appendicolith, perforation, or abscess in a patient who understands the ~30% chance of eventual appendectomy.</p>
+    </div>
+    <p><strong>Regimen if treating medically or as pre-op coverage:</strong> IV piperacillin-tazobactam, or ceftriaxone + metronidazole — same intra-abdominal logic as diverticulitis/cholecystitis above. Complicated appendicitis (perforation, abscess) requires source control (drainage or surgery) plus IV antibiotics, not medical management alone.</p>
+  </section>
+
+  <!-- ================= GU ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 02</div>
+    <h2>Genitourinary</h2>
+  </div>
+
+  <section id="asb" class="cond">
+    <h3 class="cond-title">Asymptomatic Bacteriuria <span class="pill mid">IDSA 2019</span></h3>
+    <p>This is your second example, and it's the single clearest "don't treat the number, treat the patient" teaching point in all of outpatient medicine.</p>
+    <div class="box danger">
+      <div class="box-title">The rule</div>
+      <p><strong>Do NOT screen for or treat asymptomatic bacteriuria</strong> — defined as ≥10⁵ CFU/mL bacterial growth, with or without pyuria, in a patient with <strong>no</strong> urinary symptoms — in: healthy nonpregnant women (pre- or postmenopausal), older men or women (including those with delirium or a fall, provided there's no fever, new GU symptoms, or hemodynamic instability), diabetics, patients with indwelling catheters, spinal cord injury patients, or patients with urologic devices (including at implantation). This is a <strong>strong recommendation</strong>, and treating it is one of the most common sources of inappropriate antibiotic use and downstream <em>C. difficile</em> risk in both inpatient and outpatient medicine.</p>
+    </div>
+    <div class="cols2">
+      <div class="box good">
+        <div class="box-title">The two exceptions — screen AND treat</div>
+        <p><strong>Pregnancy</strong> — 4–7 days of therapy (nitrofurantoin or a beta-lactam preferred for pregnancy safety), because untreated ASB in pregnancy is linked to pyelonephritis and preterm labor.</p>
+        <p><strong>Before an invasive urologic procedure with expected mucosal trauma/bleeding</strong> (e.g., TURP) — treat immediately before the procedure to prevent bacteremia from mucosal disruption.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Your example, specifically</div>
+        <p>A "mostly asymptomatic woman" with a positive urinalysis or culture, no dysuria/frequency/urgency/suprapubic pain/fever — by IDSA 2019, this is textbook ASB. The urine culture should often not have been sent in the first place absent symptoms; if it was and it's positive, the correct action is <strong>no antibiotics</strong>, not treatment "to be safe."</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="cystitis" class="cond">
+    <h3 class="cond-title">Uncomplicated Cystitis (Symptomatic) <span class="pill mid">IDSA / ESMID 2010</span></h3>
+    <p>The moment symptoms (dysuria, frequency, urgency, suprapubic pain) are present in a healthy, nonpregnant woman without structural/functional urinary abnormality, this becomes a genuinely different — and PO-only — decision than ASB above.</p>
+    <div class="box good">
+      <div class="box-title">First-line oral regimens (all outpatient, no IV role)</div>
+      <p><strong>Nitrofurantoin</strong> 100mg PO BID ×5 days — avoid if early pyelonephritis suspected (inadequate tissue levels) or CrCl &lt;30.</p>
+      <p><strong>TMP-SMX</strong> DS PO BID ×3 days — avoid if local resistance &gt;20% or recent use.</p>
+      <p><strong>Fosfomycin</strong> 3g PO single dose — convenient but slightly lower efficacy than the above in comparative trials.</p>
+      <p><strong>Pivmecillinam</strong> where available — additional first-line option per the joint guideline.</p>
+    </div>
+    <p class="subnote">Fluoroquinolones and beta-lactams (amoxicillin-clavulanate, cefpodoxime) are considered second-line for uncomplicated cystitis specifically due to collateral resistance/C. diff concerns with fluoroquinolones and modestly inferior efficacy for beta-lactams — reserve fluoroquinolones for pyelonephritis or complicated UTI where their tissue penetration matters more.</p>
+  </section>
+
+  <section id="pyelo" class="cond">
+    <h3 class="cond-title">Pyelonephritis</h3>
+    <div class="box warn">
+      <div class="box-title">Oral is often still appropriate — IV is for instability or intolerance, not reflex</div>
+      <p>A well-appearing patient who can tolerate oral intake, is hemodynamically stable, and has no concerning comorbidity can often be treated entirely as an outpatient with oral fluoroquinolone (ciprofloxacin 500mg BID or levofloxacin 750mg daily) for 5–7 days, or TMP-SMX for 14 days if susceptible — frequently after a single ED-administered IV/IM dose of a long-acting agent (e.g., ceftriaxone 1g) to ensure early adequate levels while oral absorption catches up.</p>
+    </div>
+    <div class="box danger">
+      <div class="box-title">IV / admission indications</div>
+      <p>Hemodynamic instability or sepsis criteria (cross-reference Sepsis Atlas Vol. 1), inability to tolerate oral intake (vomiting), pregnancy, urologic obstruction (needs source control — nephrostomy/stent, not antibiotics alone), or failure of outpatient therapy. <strong>IV regimen:</strong> ceftriaxone, or a fluoroquinolone IV if oral not tolerated, or piperacillin-tazobactam/carbapenem if risk factors for resistant organisms (recent hospitalization, prior ESBL, healthcare exposure).</p>
+    </div>
+  </section>
+
+  <section id="prostatitis" class="cond">
+    <h3 class="cond-title">Acute Bacterial Prostatitis</h3>
+    <p>Unlike cystitis, prostatitis needs agents with reliable prostatic tissue penetration and a <strong>much longer course</strong> — fluoroquinolones or TMP-SMX for <strong>2–4 weeks</strong> (not the 3–7 days typical of cystitis), due to poor drug penetration into inflamed prostatic tissue and high relapse risk with shorter courses. <span class="pill lo">IV</span> therapy (ceftriaxone or a fluoroquinolone IV, ± an aminoglycoside for severe presentations) is warranted for patients with systemic toxicity, inability to tolerate oral intake, or urinary retention requiring catheterization — otherwise this is an oral-appropriate diagnosis once the patient is stable enough for the required prolonged course.</p>
+  </section>
+
+  <!-- ================= RESPIRATORY ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 03</div>
+    <h2>Respiratory</h2>
+  </div>
+
+  <section id="bronchitis" class="cond">
+    <h3 class="cond-title">Acute Bronchitis <span class="pill lo">Antibiotics NOT Indicated</span></h3>
+    <div class="box danger">
+      <div class="box-title">The clearest "don't" in this entire atlas</div>
+      <p>Acute bronchitis is viral in the overwhelming majority of cases. <strong>Purulent sputum is not a reliable marker of bacterial infection</strong> — over 95% of patients with purulent sputum in this context do not have pneumonia. ACCP and CDC guidance: routine antibiotic treatment is not justified regardless of cough duration (which routinely lasts 2–3 weeks even in uncomplicated viral bronchitis) or sputum color. Roughly 2.7 million outpatient visits annually are for this diagnosis, and the CDC estimates at least half of antibiotic prescriptions for acute respiratory conditions are unnecessary — bronchitis is a major driver of that number.</p>
+    </div>
+    <p><strong>The only reason to reconsider:</strong> clinical findings suggesting pneumonia instead — HR&gt;100, RR&gt;24, temp&gt;38°C, or focal exam findings — at which point this is no longer "bronchitis," it's suspected CAP (next section) and should be worked up/treated as such, ideally with a CXR to distinguish the two.</p>
+  </section>
+
+  <section id="cap" class="cond">
+    <h3 class="cond-title">Community-Acquired Pneumonia <span class="pill mid">IDSA/ATS 2019</span></h3>
+    <div class="box">
+      <div class="box-title">Site-of-care decision drives route — use a validated score, not gestalt alone</div>
+      <p>IDSA/ATS 2019 prefers the <strong>Pneumonia Severity Index (PSI)</strong> over CURB-65 for outpatient-vs-inpatient decisions (PSI was validated with a larger, more granular derivation cohort), though CURB-65 remains far more practical for quick bedside use. Neither score determines ICU-level need directly — for that, use the <strong>2007 ATS/IDSA severe CAP criteria</strong> (1 major criterion — septic shock needing vasopressors, or respiratory failure needing mechanical ventilation — OR ≥3 minor criteria), which predicts ICU need with 84% sensitivity/78% specificity using the major criterion alone, or 56%/91% using ≥3 minor criteria without a major one.</p>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Setting</th><th>Regimen (no comorbidities/resistance risk)</th><th>Route</th></tr></thead>
+        <tbody>
+          <tr><td>Outpatient</td><td>Amoxicillin 1g TID, or doxycycline 100mg BID (first-line per 2019 guideline — macrolide monotherapy no longer recommended in most of the US due to &gt;25% pneumococcal macrolide resistance)</td><td><span class="pill hi">PO</span></td></tr>
+          <tr><td>Outpatient, comorbidities</td><td>Amoxicillin-clavulanate + macrolide, or monotherapy respiratory fluoroquinolone (levofloxacin/moxifloxacin)</td><td><span class="pill hi">PO</span></td></tr>
+          <tr><td>Inpatient, non-severe</td><td>Beta-lactam (ceftriaxone/ampicillin-sulbactam) + macrolide, or respiratory fluoroquinolone monotherapy</td><td><span class="pill iv">IV → PO switch</span> once stable/tolerating oral, per Section 1 criteria</td></tr>
+          <tr><td>Inpatient, severe/ICU</td><td>Beta-lactam + macrolide or fluoroquinolone; add anti-MRSA/antipseudomonal coverage only with specific risk factors (prior isolation, locally validated risk factors) — not routinely</td><td><span class="pill lo">IV</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subnote">Procalcitonin should NOT be used to withhold antibiotics when CAP is clinically suspected and radiographically confirmed — its sensitivity for bacterial infection (38–91% across studies) isn't reliable enough for that decision in this specific context, even though PCT has more established roles elsewhere (see Sepsis Atlas Vol. 2).</p>
+  </section>
+
+  <section id="copd" class="cond">
+    <h3 class="cond-title">COPD Exacerbation <span class="pill mid">Anthonisen Criteria</span></h3>
+    <div class="box">
+      <div class="box-title">Antibiotics only with the right symptom combination — not every exacerbation</div>
+      <p>The classic Anthonisen criteria: <strong>increased dyspnea, increased sputum volume, increased sputum purulence.</strong> Antibiotics are most clearly beneficial with <strong>all three</strong> (Type 1) or with <strong>increased purulence plus one other criterion</strong> (Type 2). Patients with only one criterion (Type 3), or requiring mechanical ventilation, generally derive less clear benefit from antibiotics unless mechanically ventilated (where they're recommended regardless). <strong>Route:</strong> oral (azithromycin, doxycycline, or amoxicillin-clavulanate depending on local resistance/severity) suffices for the large majority; IV is reserved for those requiring hospitalization who can't tolerate oral intake or have severe/decompensated presentations.</p>
+    </div>
+  </section>
+
+  <!-- ================= SKIN ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 04</div>
+    <h2>Skin &amp; Soft Tissue</h2>
+  </div>
+
+  <section id="purulent" class="cond">
+    <h3 class="cond-title">Purulent SSTI / Abscess <span class="pill mid">IDSA 2014</span></h3>
+    <div class="box danger">
+      <div class="box-title">Incision and drainage is the treatment — antibiotics are the adjunct, not the default</div>
+      <p>For cutaneous abscesses, furuncles, carbuncles, and inflamed epidermoid cysts: <strong>I&amp;D is primary therapy</strong>, and systemic antibiotics are <strong>unnecessary for mild, uncomplicated cases — even MRSA</strong> — once adequately drained. This surprises people trained to reflexively add antibiotics to every I&amp;D.</p>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Severity</th><th>Definition</th><th>Antibiotics?</th></tr></thead>
+        <tbody>
+          <tr><td>Mild</td><td>No systemic signs of infection</td><td><span class="pill lo">No</span> — I&amp;D alone</td></tr>
+          <tr><td>Moderate</td><td>Purulent infection + systemic signs of infection</td><td><span class="pill mid">Yes, oral</span> — TMP-SMX or doxycycline (anti-MRSA coverage)</td></tr>
+          <tr><td>Severe</td><td>Failed I&amp;D + oral antibiotics, OR SIRS/temp&gt;38°C/HR&gt;90/RR&gt;24/abnormal WBC, OR immunocompromised</td><td><span class="pill iv">Yes, IV</span> — vancomycin, daptomycin, linezolid, telavancin, or ceftaroline</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subnote">The decision to add antibiotics at all should be driven by the presence/absence of SIRS criteria (Sepsis Atlas Vol. 1 callback) or impaired host defenses — not reflexively for every abscess regardless of size or systemic findings.</p>
+  </section>
+
+  <section id="nonpurulent" class="cond">
+    <h3 class="cond-title">Nonpurulent Cellulitis <span class="pill mid">IDSA 2014</span></h3>
+    <p>The opposite logic from purulent SSTI: with no drainable focus, <strong>antimicrobial therapy is the primary treatment</strong> — there's nothing to drain.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Severity</th><th>Definition</th><th>Regimen</th><th>Route</th></tr></thead>
+        <tbody>
+          <tr><td>Mild</td><td>Typical cellulitis/erysipelas, no systemic signs</td><td>Cephalexin, dicloxacillin, or clindamycin — strep/MSSA coverage; empiric MRSA coverage not routinely needed</td><td><span class="pill hi">PO</span></td></tr>
+          <tr><td>Moderate</td><td>Systemic signs of infection present</td><td>Same spectrum as mild; some clinicians add MSSA-focused coverage per local guidance</td><td><span class="pill hi">PO</span> outpatient course reasonable if reliable follow-up</td></tr>
+          <tr><td>Severe</td><td>Failed oral treatment, SIRS, immunocompromised, or signs of deeper infection (bullae, skin sloughing, hypotension, organ dysfunction)</td><td>Vancomycin or another MRSA/strep-active IV agent</td><td><span class="pill lo">IV</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box warn">
+      <div class="box-title">When to add empiric MRSA coverage even for nonpurulent disease</div>
+      <p>Penetrating trauma, evidence of MRSA infection elsewhere, known MRSA nasal colonization, injection drug use, purulent drainage from an otherwise nonpurulent-appearing lesion, or SIRS in severe disease.</p>
+    </div>
+  </section>
+
+  <section id="necfasc" class="cond">
+    <h3 class="cond-title">Necrotizing Fasciitis <span class="pill lo">Surgical Emergency</span></h3>
+    <p>Brief flag since it's the one skin/soft-tissue diagnosis where the framework above doesn't apply: this is <strong>never</strong> an antibiotics-alone or outpatient-oral decision. Emergent surgical debridement is the definitive treatment; <span class="pill lo">IV</span> broad-spectrum coverage (e.g., vancomycin/piperacillin-tazobactam or a carbapenem, PLUS clindamycin for its antitoxin/protein-synthesis-inhibition effect against toxin-producing strains) is started immediately but does not substitute for surgery. Rapidly progressive pain out of proportion to exam findings, bullae, skin necrosis, or crepitus should trigger surgical consultation before imaging delays intervention.</p>
+  </section>
+
+  <!-- ================= ENT ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 05</div>
+    <h2>ENT / Oral</h2>
+  </div>
+
+  <section id="sinusitis" class="cond">
+    <h3 class="cond-title">Acute Bacterial Sinusitis <span class="pill mid">IDSA 2012</span></h3>
+    <div class="box danger">
+      <div class="box-title">Most "sinusitis" is viral rhinosinusitis — these three criteria define when it's not</div>
+      <p>IDSA diagnostic criteria for acute bacterial rhinosinusitis (ABRS), any ONE of which supports antibiotics: <strong>(1)</strong> persistent symptoms ≥10 days without improvement, <strong>(2)</strong> severe symptoms/signs — fever ≥39°C plus purulent nasal discharge or facial pain — lasting ≥3-4 consecutive days at illness onset, or <strong>(3)</strong> "double sickening" — new fever, headache, or worsening nasal discharge after initial improvement of a typical viral URI lasting 5-6 days.</p>
+    </div>
+    <p><strong>Regimen:</strong> amoxicillin-clavulanate (preferred over amoxicillin alone per this guideline, due to beta-lactamase-producing organisms) 500/125mg TID or 875/125mg BID for 5-7 days (adults); high-dose (2g BID) for severe illness, age &gt;65, recent hospitalization, recent antibiotic use, or immunocompromise. Doxycycline or a respiratory fluoroquinolone for penicillin allergy. <strong>Route: oral only</strong> — this is never an IV-indicated diagnosis outside of a complication (orbital or intracranial extension), which is a different, far more serious presentation.</p>
+  </section>
+
+  <section id="aom" class="cond">
+    <h3 class="cond-title">Acute Otitis Media <span class="pill mid">AAP</span></h3>
+    <div class="box good">
+      <div class="box-title">Watchful waiting is guideline-supported in specific age/severity combinations</div>
+      <p>AAP guidance supports observation without antibiotics (with a safety-net prescription or clear return-precautions) for: children <strong>6mo-2yr with unilateral AOM and non-severe symptoms</strong>, and children <strong>≥2yr with unilateral or bilateral AOM and non-severe symptoms</strong> (mild otalgia &lt;48h, temp &lt;39°C). Non-severe, reliable follow-up, and shared decision-making with caregivers are the operative conditions. Severe symptoms (moderate-severe otalgia, otalgia ≥48h, temp ≥39°C), otorrhea, bilateral disease in children &lt;2yr, or an unreliable follow-up situation all favor immediate antibiotics.</p>
+    </div>
+    <p><strong>First-line:</strong> amoxicillin 80-90mg/kg/day divided BID (high-dose, for resistant pneumococcus coverage); amoxicillin-clavulanate if amoxicillin in the past 30 days, concurrent purulent conjunctivitis, or history of recurrent AOM unresponsive to amoxicillin. <strong>Route: oral</strong> — AOM is essentially never an IV-antibiotic diagnosis in an immunocompetent child; IM ceftriaxone is a historical option for a child who can't tolerate oral medication, not a routine choice.</p>
+  </section>
+
+  <section id="pharyngitis" class="cond">
+    <h3 class="cond-title">Pharyngitis <span class="pill mid">Centor / McIsaac</span></h3>
+    <div class="box warn">
+      <div class="box-title">Test before you treat — don't empirically cover strep on gestalt alone</div>
+      <p>Centor/McIsaac criteria (1 point each): fever &gt;38°C, tonsillar exudate, tender anterior cervical lymphadenopathy, absence of cough, plus an age adjustment (+1 if 3-14yr, -1 if ≥45yr). <strong>Score 0-1:</strong> no testing/antibiotics — viral cause overwhelmingly likely. <strong>Score 2-3:</strong> rapid strep test or culture, treat only if positive. <strong>Score ≥4:</strong> empiric treatment reasonable while awaiting confirmation, or test-and-treat depending on local practice. The whole point of the score is preventing exactly the reflexive "sore throat + fever = amoxicillin" pattern that drives unnecessary prescribing.</p>
+    </div>
+    <p><strong>If confirmed GAS pharyngitis:</strong> penicillin V or amoxicillin ×10 days remains first-line (no resistance reported to date); a single dose of IM benzathine penicillin is an option for adherence concerns. <strong>Route: oral</strong> (or single-dose IM) — never an IV-indicated diagnosis absent a suppurative complication (see peritonsillar abscess, below).</p>
+  </section>
+
+  <section id="ptabscess" class="cond">
+    <h3 class="cond-title">Peritonsillar Abscess</h3>
+    <p>Unlike simple pharyngitis, this is a drainage-plus-antibiotics diagnosis — needle aspiration, incision and drainage, or (for recurrent/severe cases) tonsillectomy, combined with antibiotics covering GAS and oral anaerobes: <strong>ampicillin-sulbactam or clindamycin</strong> initially. <strong>Route:</strong> <span class="pill iv">IV</span> is reasonable for the initial dose(s) if the patient has trismus/odynophagia limiting oral intake, transitioning to <span class="pill hi">oral</span> amoxicillin-clavulanate or clindamycin once drained and tolerating intake — most cases can complete therapy orally as an outpatient after drainage, reserving admission for airway concern, dehydration, or diabetic/immunocompromised patients.</p>
+  </section>
+
+  <section id="dental" class="cond">
+    <h3 class="cond-title">Dental / Oral Infections</h3>
+    <div class="box">
+      <div class="box-title">Drainage (extraction, incision, root canal access) is definitive — antibiotics are adjunctive, not primary</div>
+      <p>A localized dental abscess without spreading infection or systemic signs is primarily a <strong>dental procedural problem</strong>, not an antibiotic problem — antibiotics without source control (drainage/extraction) frequently fail and simply delay definitive care. Antibiotics are indicated as an adjunct when there's <strong>spreading infection</strong> (facial swelling extending beyond the immediate tooth, trismus), <strong>systemic signs</strong> (fever, malaise), or when definitive dental procedural care isn't immediately available and needs to be bridged.</p>
+    </div>
+    <p><strong>Regimen:</strong> penicillin VK or amoxicillin first-line; amoxicillin-clavulanate or clindamycin (penicillin-allergic, or if anaerobic coverage needs broadening) for more extensive infections; add metronidazole to a penicillin for severe/spreading infection. <strong>Route:</strong> oral for the large majority; <span class="pill lo">IV</span> reserved for <strong>Ludwig's angina, deep neck space extension, or airway compromise</strong> — these are surgical-emergency-adjacent presentations requiring admission, not routine dental infection management.</p>
+  </section>
+
+  <!-- ================= STEROIDS ================= -->
+  <div class="sys-header">
+    <div class="sys-kicker">System 06</div>
+    <h2>Adjunctive Corticosteroids</h2>
+  </div>
+
+  <section id="steroid-philosophy" class="cond">
+    <h3 class="cond-title">When Steroids Actually Help</h3>
+    <div class="box danger">
+      <div class="box-title">The organizing principle, mirroring Section 1's antibiotic philosophy</div>
+      <p>Steroids help when the harm comes from the <strong>host's own inflammatory response</strong> — cerebral edema in meningitis, airway edema in croup/asthma, cytokine-driven lung injury in severe pneumonia, cord edema from tumor — not simply because a patient "looks sick." The evidence below ranges from strongly positive (meningitis, croup, COPD) to genuinely negative-by-default (anaphylaxis) — this section is deliberately honest about where the data doesn't support the reflex.</p>
+    </div>
+  </section>
+
+  <section id="steroid-cap" class="cond">
+    <h3 class="cond-title">Severe CAP <span class="pill mid">CAPE COD Trial, 2023</span></h3>
+    <div class="box good">
+      <div class="box-title">A genuine practice-changer, still catching up in US guidelines</div>
+      <p>CAPE COD (NEJM 2023, n=795, 31 French ICUs): adults with <strong>severe</strong> CAP (PSI &gt;130, P/F ratio &lt;300, or need for mechanical/noninvasive ventilation with PEEP≥5) randomized to <strong>hydrocortisone 200mg/day continuous infusion</strong> (tapered from day 4) vs. placebo. <strong>28-day mortality: 6.2% vs. 11.9% (p=0.006)</strong> — a striking absolute risk reduction, with reduced need for intubation and no increase in major adverse events (hyperglycemia was the most consistent side effect; no increase in GI bleed or secondary infection).</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Why this isn't universally adopted yet</div>
+      <p>The 2022 <strong>ESCAPe</strong> trial (VA, methylprednisolone) was negative — but underpowered (586 of a planned 1,420 patients) and treated later in the illness course (median ~1.5–2 days from admission vs. much earlier in CAPE COD). A 2023 meta-analysis combining both found an overall mortality benefit, with a dose-response relationship above ~6mg dexamethasone-equivalent (~160mg hydrocortisone) — suggesting dose and timing, not the CAPE COD result itself, explain the discrepancy. As of this writing, <strong>SCCM (2024) and ERS recommend steroids for severe CAP; ATS/IDSA guidance is still pending formal update</strong> — worth knowing you're currently practicing ahead of the slower-moving US pulmonary society guideline, not behind it.</p>
+    </div>
+    <p><strong>Not indicated</strong> for non-severe/outpatient CAP — this is specifically a severe-disease, ICU-level intervention.</p>
+  </section>
+
+  <section id="steroid-copd" class="cond">
+    <h3 class="cond-title">COPD Exacerbation <span class="pill mid">REDUCE Trial</span></h3>
+    <div class="box good">
+      <div class="box-title">Short courses work as well as long ones — and oral beats IV</div>
+      <p>REDUCE trial: <strong>5 days of prednisone was noninferior to 14 days</strong> for re-exacerbation within 6 months, while cutting cumulative glucocorticoid exposure roughly in half (379mg vs. 793mg). A pooled analysis of REDUCE and CORTICO-COP found the <strong>short-course (2–5 day) group had more days alive and out of hospital</strong> than the 14-day group, with no difference in death/ICU admission. GOLD/ATS: <strong>prednisone 40mg PO daily ×5 days</strong> is now standard — no taper needed for a course this short.</p>
+    </div>
+    <p><strong>Oral, not IV, by default</strong> — a large observational study (~80,000 non-ICU patients) found IV corticosteroids associated with longer hospital stays and higher costs with no outcome benefit over oral dosing; no significant difference in mortality, rehospitalization, or treatment failure between routes. Reserve IV for patients who can't tolerate oral intake, not as an automatic inpatient default.</p>
+  </section>
+
+  <section id="steroid-meningitis" class="cond">
+    <h3 class="cond-title">Bacterial Meningitis <span class="pill mid">de Gans Trial</span></h3>
+    <div class="box danger">
+      <div class="box-title">Timing is not a minor detail here — it's the entire mechanism</div>
+      <p>de Gans &amp; van de Beek (NEJM 2002, n=301 adults): <strong>dexamethasone 10mg IV given 15–20 minutes before or with the first dose of antibiotic</strong>, then every 6 hours for 4 days. Rationale: antibiotic-induced bacterial lysis triggers subarachnoid inflammation — steroids given <em>after</em> that cascade has started lose most of their benefit. Giving dexamethasone after antibiotics have already been running is a documented, common timing error worth actively avoiding.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">What the evidence actually shows, honestly</div>
+      <p>A 2013 Cochrane review (25 studies, 4,121 patients) found steroids <strong>significantly reduced hearing loss</strong> (RR 0.67, 95% CI 0.51–0.88) with a trend toward reduced neurological sequelae; overall mortality reduction was non-significant (17.8% vs 19.9%, p=0.07) except in a pre-specified <strong>pneumococcal meningitis subgroup</strong> (RR 0.84, 95% CI 0.72–0.98). A separate individual-patient-data meta-analysis (2,029 patients, mixed pediatric/adult, high HIV-prevalence settings included) found <strong>no significant mortality benefit overall</strong> but did find reduced hearing loss among survivors (24.1% vs 29.5%, p=0.04) — the benefit is real but concentrated in specific outcomes (hearing) and populations (pneumococcal, non-HIV, developed-world settings), not a uniform mortality effect everywhere it's been studied.</p>
+    </div>
+  </section>
+
+  <section id="steroid-croup" class="cond">
+    <h3 class="cond-title">Croup <span class="pill hi">Well-Established, Any Severity</span></h3>
+    <p>Single-dose oral <strong>dexamethasone 0.6mg/kg</strong> is standard for croup of any severity. Two separate noninferiority RCTs found <strong>low-dose dexamethasone (0.15mg/kg)</strong> and <strong>oral prednisolone (1mg/kg)</strong> both performed equivalently to the standard 0.6mg/kg dose on Westley Croup Score and re-attendance rates — meaning the historically "standard" higher dose isn't required for effect, useful to know when dexamethasone concentration/formulation is limited. Nebulized epinephrine is added for moderate-severe cases, but the corticosteroid dose is a <strong>single dose</strong> regardless — no multi-day course needed for typical croup.</p>
+  </section>
+
+  <section id="steroid-asthma" class="cond">
+    <h3 class="cond-title">Asthma Exacerbation</h3>
+    <div class="box good">
+      <div class="box-title">Reduces relapse and admission — and single-dose dexamethasone is now a reasonable alternative to multi-day prednisone</div>
+      <p>Systemic corticosteroids are standard of care for moderate-severe asthma exacerbations, reducing relapse, subsequent admission, and beta-agonist requirement. Adult ED data (Rehrer et al., <em>Ann Emerg Med</em> 2016): <strong>single-dose oral dexamethasone was noninferior to 5 days of prednisone</strong>. Pediatric protocols show the same pattern comparing single-dose dexamethasone (0.3–0.6mg/kg) against 3–5 day prednisolone courses — the appeal being avoidance of the compliance problems (taste, vomiting, multi-day adherence) that come with prednisolone in children.</p>
+    </div>
+  </section>
+
+  <section id="steroid-ent" class="cond">
+    <h3 class="cond-title">Sinusitis &amp; Pharyngitis — Adjunctive, Not Primary</h3>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Sinusitis</div>
+        <p><strong>Intranasal corticosteroids</strong> (not oral) are IDSA-recommended as an adjunct to antibiotics for ABRS, particularly in patients with an allergic-rhinitis history — oral systemic steroids are not part of the standard ABRS regimen and shouldn't be reached for as a primary intervention here.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Pharyngitis / severe odynophagia</div>
+        <p>A single dose of oral dexamethasone modestly shortens time-to-pain-resolution in acute sore throat (Cochrane review) — a reasonable adjunct for severe odynophagia (including peritonsillar cellulitis/early PTA) alongside, never instead of, appropriate antibiotics when GAS is confirmed. Effect size is modest — this is a comfort adjunct, not a disease-modifying intervention the way it is in croup or meningitis.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="steroid-anaphylaxis" class="cond">
+    <h3 class="cond-title">Anaphylaxis <span class="pill lo">Not Routinely Indicated</span></h3>
+    <div class="box danger">
+      <div class="box-title">The clearest "don't" in this entire steroid section</div>
+      <p>Epinephrine is the only proven, first-line treatment for anaphylaxis. Corticosteroids have been reflexively co-administered for decades on the theoretical premise that they prevent <strong>biphasic reactions</strong> (recurrence of symptoms 1+ hours after apparent resolution, occurring in roughly 1–20% of cases depending on the study). <strong>The evidence does not support this.</strong> A 2022 JHM "Things We Do For No Reason" review, a 2017 systematic review (22 human studies), and multiple ED cohort studies (including Grunau et al., <em>Ann Emerg Med</em> 2015) consistently found <strong>no reduction in relapse/biphasic reactions</strong> associated with steroid use; steroids have a slow onset of action that doesn't match the acute pathophysiology, and current <strong>European Resuscitation Council guidance explicitly recommends against routine use</strong>. Steroids may modestly shorten hospital length of stay in some observational data, but that's a different (and much weaker) justification than "preventing a dangerous rebound."</p>
+    </div>
+  </section>
+
+  <section id="steroid-cord" class="cond">
+    <h3 class="cond-title">Malignant Spinal Cord Compression <span class="pill lo">Oncologic Emergency</span></h3>
+    <p>Suspected malignant epidural spinal cord compression (new severe back pain + malignancy history + any neuro deficit) warrants <strong>immediate high-dose dexamethasone</strong> while urgent MRI and radiation oncology/neurosurgery are arranged — steroids reduce cord edema and can preserve neurologic function during the window before definitive therapy (radiation or surgical decompression). An evidence-based guideline review found <strong>good evidence for high-dose dexamethasone (96mg/day)</strong> but only inconclusive evidence for moderate-dose (16mg/day) regimens — many centers now use moderate dosing given similar functional outcomes with fewer steroid-related complications in more recent practice, but the strongest trial evidence specifically backs the high-dose regimen. <strong>Not indicated</strong> in patients who are neurologically intact and ambulatory pretreatment with only subclinical/imaging-only compression — steroids there add toxicity without a demonstrated benefit.</p>
+  </section>
+
+  <section id="steroid-gout" class="cond">
+    <h3 class="cond-title">Gout Flare</h3>
+    <p>NSAIDs and colchicine remain first-line for acute gout. Corticosteroids (<strong>oral prednisone ~30-40mg daily, tapered over 5-10 days, or intra-articular injection for a mono-articular flare</strong>) are an equally effective alternative specifically for patients where NSAIDs/colchicine are contraindicated or high-risk — renal impairment, active GI bleeding or PUD history, therapeutic anticoagulation, or colchicine intolerance/drug interactions. This is a "use when the usual first-line is unsafe" indication, not a routine substitute.</p>
+  </section>
+
+  <section id="steroid-ibd" class="cond">
+    <h3 class="cond-title">IBD Flare (Ulcerative Colitis / Crohn's)</h3>
+    <p>Systemic corticosteroids (oral prednisone for moderate flares; IV methylprednisolone or hydrocortisone for severe/hospitalized flares) are standard induction therapy for <strong>moderate-to-severe</strong> flares — but explicitly <strong>not for maintenance</strong>; steroids induce remission, they don't sustain it, and prolonged use should trigger a bridge to a steroid-sparing agent (biologic, immunomodulator) rather than repeated steroid courses. Mild flares are generally managed with 5-ASA agents alone, without steroids.</p>
+  </section>
+
+  <section id="steroid-summary" class="cond" style="border-top:3px solid var(--accent); padding-top:1.5rem;">
+    <h3 class="cond-title" style="font-size:1.3rem;">Steroid Comparison Table</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Condition</th><th>Steroid indicated?</th><th>Key evidence</th><th>Critical detail</th></tr></thead>
+        <tbody>
+          <tr><td>Severe CAP</td><td class="num"><span class="pill hi">Yes</span></td><td>CAPE COD: 6.2% vs 11.9% 28-day mortality</td><td>Severe disease only — not outpatient CAP</td></tr>
+          <tr><td>COPD exacerbation</td><td class="num"><span class="pill hi">Yes</span></td><td>REDUCE: 5d noninferior to 14d</td><td>Oral preferred over IV; 5 days, no taper needed</td></tr>
+          <tr><td>Bacterial meningitis</td><td class="num"><span class="pill hi">Yes</span></td><td>de Gans: RR 0.67 hearing loss (Cochrane)</td><td>Must be before or with first antibiotic dose — timing is the mechanism</td></tr>
+          <tr><td>Croup</td><td class="num"><span class="pill hi">Yes</span></td><td>0.15mg/kg noninferior to 0.6mg/kg</td><td>Single dose, any severity</td></tr>
+          <tr><td>Asthma exacerbation</td><td class="num"><span class="pill hi">Yes</span></td><td>Single-dose dexamethasone noninferior to 5d prednisone</td><td>Reduces relapse/admission — moderate-severe episodes</td></tr>
+          <tr><td>Sinusitis (bacterial)</td><td class="num"><span class="pill mid">Adjunct only</span></td><td>Intranasal, not oral</td><td>Not a primary treatment component</td></tr>
+          <tr><td>Pharyngitis, severe pain</td><td class="num"><span class="pill mid">Modest adjunct</span></td><td>Cochrane: modest pain-duration benefit</td><td>Comfort measure, not disease-modifying</td></tr>
+          <tr><td>Anaphylaxis</td><td class="num"><span class="pill lo">No, not routinely</span></td><td>No relapse/biphasic reduction shown (multiple reviews)</td><td>Epinephrine is the only proven treatment</td></tr>
+          <tr><td>Malignant cord compression</td><td class="num"><span class="pill hi">Yes</span></td><td>Good evidence for 96mg/day high-dose</td><td>Not indicated if neurologically intact/ambulatory</td></tr>
+          <tr><td>Gout flare</td><td class="num"><span class="pill mid">Alternative agent</span></td><td>Equivalent efficacy to NSAIDs/colchicine</td><td>Use specifically when first-line agents are contraindicated</td></tr>
+          <tr><td>IBD flare</td><td class="num"><span class="pill mid">Moderate-severe only</span></td><td>Standard induction, not maintenance</td><td>Bridge to steroid-sparing therapy, don't repeat courses</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="summary" class="cond" style="border-top:3px solid var(--accent); padding-top:2rem;">
+    <h2 class="sec-title" style="font-size:1.5rem;">Master Comparison Table</h2>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Condition</th><th>Antibiotics default?</th><th>Typical route</th><th>The "don't" or key threshold</th></tr></thead>
+        <tbody>
+          <tr><td>Diverticulitis, uncomplicated</td><td class="num"><span class="pill mid">Selective</span></td><td>PO if used</td><td>AVOD/DIABOLO/STAND: observation non-inferior in reliable outpatients</td></tr>
+          <tr><td>Diverticulitis, complicated</td><td class="num"><span class="pill hi">Yes</span></td><td><span class="pill lo">IV</span></td><td>Hinchey II-IV needs drainage/surgery + antibiotics</td></tr>
+          <tr><td><em>C. diff</em> colitis, any severity</td><td class="num"><span class="pill hi">Yes</span></td><td>Oral vanc/fidaxomicin; add IV metronidazole only if fulminant</td><td>Oral vancomycin works locally — don't reach for IV vancomycin</td></tr>
+          <tr><td>Infectious colitis (non-C.diff)</td><td class="num"><span class="pill lo">Usually no</span></td><td>PO if treating</td><td>Never treat suspected STEC/O157 — HUS risk</td></tr>
+          <tr><td>Cholecystitis/cholangitis</td><td class="num"><span class="pill hi">Yes</span></td><td><span class="pill lo">IV</span></td><td>Source control (surgery/ERCP) is definitive, not antibiotics alone</td></tr>
+          <tr><td>Appendicitis, uncomplicated</td><td class="num"><span class="pill mid">Either</span></td><td>IV if treating medically</td><td>CODA: antibiotics-alone avoids surgery in ~70% at 90 days</td></tr>
+          <tr><td>Asymptomatic bacteriuria</td><td class="num"><span class="pill lo">No</span></td><td>—</td><td>Except pregnancy or pre-urologic-procedure — that's it</td></tr>
+          <tr><td>Uncomplicated cystitis</td><td class="num"><span class="pill hi">Yes</span></td><td><span class="pill hi">PO only</span></td><td>Nitrofurantoin/TMP-SMX/fosfomycin — never needs IV</td></tr>
+          <tr><td>Pyelonephritis</td><td class="num"><span class="pill hi">Yes</span></td><td>PO often adequate</td><td>IV reserved for instability, intolerance, obstruction</td></tr>
+          <tr><td>Acute bronchitis</td><td class="num"><span class="pill lo">No</span></td><td>—</td><td>&gt;95% of purulent sputum here is NOT pneumonia</td></tr>
+          <tr><td>CAP</td><td class="num"><span class="pill hi">Yes</span></td><td>PSI/CURB-65-guided</td><td>PSI preferred over CURB-65 for site-of-care per 2019 IDSA/ATS</td></tr>
+          <tr><td>COPD exacerbation</td><td class="num"><span class="pill mid">Anthonisen-guided</span></td><td>PO usually</td><td>Need purulence + 1 other criterion, not just dyspnea alone</td></tr>
+          <tr><td>Purulent SSTI/abscess</td><td class="num"><span class="pill lo">Often no</span></td><td>PO if used</td><td>I&amp;D alone sufficient for mild disease, even MRSA</td></tr>
+          <tr><td>Nonpurulent cellulitis</td><td class="num"><span class="pill hi">Yes</span></td><td>PO unless severe</td><td>Nothing to drain — antibiotics ARE the primary treatment here</td></tr>
+          <tr><td>Necrotizing fasciitis</td><td class="num"><span class="pill hi">Yes</span></td><td><span class="pill lo">IV</span></td><td>Surgical emergency — antibiotics never substitute for debridement</td></tr>
+          <tr><td>Acute bacterial sinusitis</td><td class="num"><span class="pill mid">Criteria-based</span></td><td><span class="pill hi">PO only</span></td><td>10 days / severe 3-4 days / double-sickening — not "any sinus pressure"</td></tr>
+          <tr><td>Acute otitis media</td><td class="num"><span class="pill mid">Age/severity-based</span></td><td><span class="pill hi">PO only</span></td><td>Watchful waiting valid for non-severe, age-appropriate cases</td></tr>
+          <tr><td>Pharyngitis</td><td class="num"><span class="pill mid">Test-based</span></td><td>PO/IM</td><td>Centor/McIsaac before treating — don't cover strep on gestalt</td></tr>
+          <tr><td>Peritonsillar abscess</td><td class="num"><span class="pill hi">Yes</span></td><td>Drain + PO/IV bridge</td><td>Drainage is co-equal with antibiotics, not optional</td></tr>
+          <tr><td>Dental/oral infection, localized</td><td class="num"><span class="pill mid">Adjunct only</span></td><td>PO; IV only if airway/deep-space risk</td><td>Extraction/drainage is definitive — antibiotics alone often fail</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="refs" class="cond">
+    <h2 class="sec-title" style="font-size:1.4rem;">References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Stollman N, Smalley W, Hirano I. AGA Institute Guideline on the Management of Acute Diverticulitis. <em>Gastroenterology.</em> 2015;149:1944–1949.</li>
+      <li><span class="rn">2</span>Chabok A, Påhlman L, Hjern F, et al. (AVOD Trial). <em>Br J Surg.</em> 2012;99(4):532–539; long-term follow-up <em>Br J Surg.</em> 2019;106(11):1542–1548.</li>
+      <li><span class="rn">3</span>Daniels L, Ünlü Ç, de Korte N, et al. (DIABOLO Trial). <em>Br J Surg.</em> 2017;104(1):52–61.</li>
+      <li><span class="rn">4</span>Jaung R, Nisbet S, Gosselink MP, et al. (STAND Trial). <em>Clin Gastroenterol Hepatol.</em> 2020.</li>
+      <li><span class="rn">5</span>Johnson S, Lavergne V, Skinner AM, et al. SHEA/IDSA 2021 Focused Update: <em>C. difficile</em> Infection in Adults. <em>Clin Infect Dis.</em> 2021;73(5):e1029–e1044.</li>
+      <li><span class="rn">6</span>Nicolle LE, Gupta K, Bradley SF, et al. IDSA 2019 Clinical Practice Guideline for Asymptomatic Bacteriuria. <em>Clin Infect Dis.</em> 2019;68(10):e83–e110.</li>
+      <li><span class="rn">7</span>Gupta K, Hooton TM, Naber KG, et al. International Clinical Practice Guidelines for Uncomplicated Cystitis and Pyelonephritis, IDSA/ESMID 2010. <em>Clin Infect Dis.</em> 2011;52(5):e103–e120.</li>
+      <li><span class="rn">8</span>Metlay JP, Waterer GW, Long AC, et al. IDSA/ATS 2019 CAP Guideline. <em>Am J Respir Crit Care Med.</em> 2019;200(7):e45–e67.</li>
+      <li><span class="rn">9</span>Anthonisen NR, Manfreda J, Warren CP, et al. Antibiotic therapy in exacerbations of COPD. <em>Ann Intern Med.</em> 1987;106(2):196–204.</li>
+      <li><span class="rn">10</span>Stevens DL, Bisno AL, Chambers HF, et al. IDSA 2014 Practice Guidelines for Skin and Soft Tissue Infections. <em>Clin Infect Dis.</em> 2014;59(2):e10–e52.</li>
+      <li><span class="rn">11</span>Chow AW, Benninger MS, Brook I, et al. IDSA 2012 Clinical Practice Guideline for Acute Bacterial Rhinosinusitis. <em>Clin Infect Dis.</em> 2012;54(8):e72–e112.</li>
+      <li><span class="rn">12</span>Lieberthal AS, Carroll AE, Chonmaitree T, et al. AAP Clinical Practice Guideline: Diagnosis and Management of AOM. <em>Pediatrics.</em> 2013;131(3):e964–e999.</li>
+      <li><span class="rn">13</span>Shulman ST, Bisno AL, Clegg HW, et al. IDSA Clinical Practice Guideline for Group A Streptococcal Pharyngitis. <em>Clin Infect Dis.</em> 2012;55(10):e86–e102.</li>
+      <li><span class="rn">14</span>CODA Collaborative. A Randomized Trial Comparing Antibiotics with Appendectomy for Appendicitis. <em>N Engl J Med.</em> 2020;383:1907–1919.</li>
+      <li><span class="rn">15</span>Tokyo Guidelines 2018 (TG18) for Acute Cholecystitis and Cholangitis. <em>J Hepatobiliary Pancreat Sci.</em> 2018.</li>
+      <li><span class="rn">16</span>Dequin PF, Meziani F, Quenot JP, et al. Hydrocortisone in Severe Community-Acquired Pneumonia (CAPE COD). <em>N Engl J Med.</em> 2023;388(21):1931–1941.</li>
+      <li><span class="rn">17</span>Leuppi JD, Schuetz P, Bingisser R, et al. Short-Term vs Conventional Glucocorticoid Therapy in Acute COPD Exacerbations (REDUCE Trial). <em>JAMA.</em> 2013;309(21):2223–2231.</li>
+      <li><span class="rn">18</span>de Gans J, van de Beek D. Dexamethasone in Adults with Bacterial Meningitis. <em>N Engl J Med.</em> 2002;347(20):1549–1556.</li>
+      <li><span class="rn">19</span>Brouwer MC, McIntyre P, Prasad K, van de Beek D. Corticosteroids for Acute Bacterial Meningitis (Cochrane Review). <em>Cochrane Database Syst Rev.</em> 2013.</li>
+      <li><span class="rn">20</span>Fitzgerald DA, et al. Prednisolone versus Dexamethasone for Croup: A Randomized Controlled Trial. <em>Pediatrics.</em> 2019;144(3):e20183772.</li>
+      <li><span class="rn">21</span>Rehrer MW, Liu B, Rodriguez M, Lam J, Alter HJ. A Randomized Controlled Noninferiority Trial of Single Dose Oral Dexamethasone versus 5 Days of Oral Prednisone in Acute Adult Asthma. <em>Ann Emerg Med.</em> 2016;68(5):608–613.</li>
+      <li><span class="rn">22</span>Auth J, et al. Things We Do for No Reason: Routine Use of Corticosteroids for the Treatment of Anaphylaxis. <em>J Hosp Med.</em> 2022.</li>
+      <li><span class="rn">23</span>Grunau BE, Wiens MO, Rowe BH, et al. Emergency Department Corticosteroid Use for Allergy or Anaphylaxis Is Not Associated with Decreased Relapses. <em>Ann Emerg Med.</em> 2015;66(4):381–389.</li>
+      <li><span class="rn">24</span>Loblaw DA, Laperriere NJ. Emergency Treatment of Malignant Extradural Spinal Cord Compression: An Evidence-Based Guideline. <em>J Clin Oncol.</em> 1998.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Antibiotic Indications Atlas · Built for bedside/offline use, no external dependencies beyond typeface loading · Local antibiogram and resistance patterns should always modify empiric choices — this atlas gives the guideline default, not a substitute for institution-specific stewardship guidance.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

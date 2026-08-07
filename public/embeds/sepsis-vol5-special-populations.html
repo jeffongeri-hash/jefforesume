@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 5 — Special Populations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c; --accent-dim:#7a0c1e; --accent-tint:#fdecee;
+  --bg:#faf8f6; --bg-panel:#ffffff; --bg-raised:#f4f0ee;
+  --text:#1c1917; --text-dim:#57534e; --text-faint:#8b8681;
+  --border:#e4dfdb; --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72; --accent-dim:#ff8a99; --accent-tint:#2b1215;
+  --bg:#141210; --bg-panel:#1c1917; --bg-raised:#242020;
+  --text:#f2ede9; --text-dim:#b8b0a9; --text-faint:#7d766f;
+  --border:#332e2b; --border-strong:#453f3b;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1215; --danger-border:#7a2c35;
+  --good-bg:#122a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:290px; padding:.4rem; z-index:200; max-height:75vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.87rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S5</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 5</div>
+      <div class="sub">SPECIAL POPULATIONS</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <a href="#pregnancy">Pregnancy</a>
+        <a href="#heartfailure">Heart Failure</a>
+        <a href="#neutropenic">Immunocompromised / Neutropenic Fever</a>
+        <a href="#renal">Renal Impairment / ESRD</a>
+        <a href="#pediatric">Pediatric</a>
+        <a href="#cirrhosis">Cirrhosis / ESLD</a>
+        <a href="#elderly">Elderly / Frail</a>
+        <a href="#summary">Cross-Population Summary</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 5 of 6</div>
+    <h1>Special Populations</h1>
+    <p class="lede">Where the standard SIRS/qSOFA/SOFA framework, fluid targets, and empiric regimens from Volumes 1–4 need real adjustment — not just a footnote. Seven populations, each with the specific number or threshold that changes management.</p>
+  </div>
+
+  <section id="pregnancy">
+    <h2 class="sec-title"><span class="num">01</span> Pregnancy</h2>
+    <div class="box danger">
+      <div class="box-title">Scale of the problem</div>
+      <p>Sepsis is the <strong>leading cause of pregnancy-related mortality</strong> in the most recent CDC reporting, and the majority of these deaths are considered preventable through earlier recognition. In one review, <strong>63% of maternal sepsis mortality</strong> was attributed to delays in treatment initiation — and the same 7.6%-mortality-per-hour-of-delay figure from general sepsis literature applies directly.</p>
+    </div>
+    <h3>Why the standard tools mislead</h3>
+    <p>Pregnancy physiology overlaps directly with SIRS/SOFA abnormal ranges: <strong>blood volume increases 40–50%</strong> above pre-pregnancy baseline (peaking ~32 weeks), cardiac output rises, and a degree of vasodilation is normal. Practically: SOFA flags MAP &gt;70 as abnormal, but a normal MAP in the second/third trimester often runs lower than that non-pregnant reference. Platelets &lt;150k triggers SOFA points, but mild gestational thrombocytopenia is a normal incidental finding in pregnancy. <strong>None of the standard sepsis definitions (SIRS, qSOFA, SOFA) were derived in or adjusted for pregnant populations</strong> — apply them with that limitation explicitly in mind.</p>
+    <div class="box">
+      <div class="box-title">Use a pregnancy-specific screening tool</div>
+      <p>Obstetric-specific early warning systems — <strong>MEOWS</strong> (Modified Early Obstetric Warning System), <strong>MEWC</strong> (Maternal Early Warning Criteria), and <strong>MEWT</strong> (Maternal Early Warning Trigger) — outperform non-pregnancy-adjusted screening tools from 20 weeks gestation through 3 days postpartum. If your institution has one embedded in the OB triage workflow, trust it over adult SIRS/qSOFA in this population.</p>
+    </div>
+    <div class="cols2">
+      <div class="box warn">
+        <div class="box-title">Antibiotics to avoid</div>
+        <p><strong>Fluoroquinolones</strong> and <strong>tetracyclines</strong> — teratogenic/fetal risk concerns; avoid unless no reasonable alternative exists for a resistant organism.</p>
+        <p>Most beta-lactams (penicillins, cephalosporins) and <strong>azithromycin</strong> are considered relatively safe in pregnancy and remain first-line for most obstetric and non-obstetric maternal sepsis sources.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Common sources to keep on the differential</div>
+        <p>Chorioamnionitis/intra-amniotic infection, endometritis, septic abortion, pyelonephritis (more common and more severe in pregnancy due to physiologic ureteral dilation), and <em>E. coli</em>/Group A <em>Streptococcus</em> as the two most frequently implicated organisms.</p>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title">Resuscitation specifics</div>
+      <p><strong>Left lateral decubitus positioning</strong> beyond ~20 weeks to relieve aortocaval compression and improve venous return during fluid resuscitation. <strong>Norepinephrine</strong> remains the reasonable first-line vasopressor choice (historical concerns about uteroplacental vasoconstriction have not borne out as a reason to withhold it in maternal septic shock — untreated maternal hypotension is the greater fetal risk). Early maternal-fetal medicine and critical care involvement is standard given the dual-patient nature of the resuscitation.</p>
+    </div>
+  </section>
+
+  <section id="heartfailure">
+    <h2 class="sec-title"><span class="num">02</span> Heart Failure</h2>
+    <div class="box danger">
+      <div class="box-title">The core problem: two shock states that look alike and get worse with the wrong treatment</div>
+      <p>A patient with known HF and suspected sepsis may be septic, cardiogenic, or — commonly — both (mixed shock). Reflexive 30 mL/kg bolusing (Volume 3) in a patient with reduced EF or significant diastolic dysfunction risks rapidly precipitating pulmonary edema and respiratory failure. This is precisely the population IDSA's 2018 statement referenced when it warned about "adverse effects of over-resuscitation of non-hypotensive elderly patients, often with impaired diastolic function or renal insufficiency" leading to BiPAP or intubation from iatrogenic pulmonary edema.</p>
+    </div>
+    <div class="cols2">
+      <div class="box good">
+        <div class="box-title">Practical adjustments</div>
+        <p><strong>Smaller, more frequent boluses</strong> (e.g., 250–500 mL aliquots) with reassessment between each, rather than a single large weight-based bolus run wide open.</p>
+        <p><strong>Dynamic fluid responsiveness assessment is not optional here</strong> — it's the primary safeguard. POCUS (IVC, lung B-lines), passive leg raise response, is far more valuable in this population than in a patient with a normal heart.</p>
+        <p>Lower threshold to involve cardiology/critical care early given the mixed-shock complexity.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Vasopressor/inotrope considerations</div>
+        <p>Norepinephrine remains reasonable first-line even with HF, but persistent hypoperfusion with cardiac dysfunction despite adequate fluids/pressure is the specific SSC 2026 indication for <strong>adding dobutamine to norepinephrine, or using epinephrine alone</strong> (Volume 3, Section 5) — this population is exactly who that recommendation targets.</p>
+      </div>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Don't forget the Volume 1 callback</div>
+      <p>Beta-blockers (near-universal in HFrEF) blunt the compensatory tachycardic response to sepsis — a HF patient decompensating into septic shock may never mount an obviously elevated heart rate. Watch for <em>relative</em> tachycardia against their documented baseline, and weight mentation/lactate/urine output more heavily than heart rate in this population specifically.</p>
+    </div>
+  </section>
+
+  <section id="neutropenic">
+    <h2 class="sec-title"><span class="num">03</span> Immunocompromised / Neutropenic Fever <span class="pill mid">IDSA</span></h2>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Definition — fever</div>
+        <div class="val">≥38.3°C once, or ≥38.0°C for 1h</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Definition — neutropenia</div>
+        <div class="val">ANC &lt;500/µL<br><span class="subnote">(or &lt;1000 with expected decline to &lt;500)</span></div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Timing</div>
+        <div class="val">Antibiotics immediately</div>
+        <div class="detail">Treat as a true emergency — no meaningful IDSA-vs-SSC timing tension here; both mandate urgency.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Atypical presentation warning</div>
+        <div class="val">Blunted inflammatory response</div>
+        <div class="detail">Without neutrophils to mount the response, SIRS criteria (Volume 1) can be falsely reassuring — a neutropenic patient can be profoundly septic with minimal exam findings.</div>
+      </div>
+    </div>
+    <div class="box danger">
+      <div class="box-title">IDSA-recommended empiric monotherapy — deliberately different from Volume 4's unknown-source regimen</div>
+      <p>IDSA guidance for high-risk febrile neutropenia (2010, still the operative framework): <strong>monotherapy</strong> with an antipseudomonal beta-lactam — <strong>cefepime</strong>, a carbapenem (<strong>meropenem</strong> or <strong>imipenem-cilastatin</strong>), or <strong>piperacillin-tazobactam</strong>. <strong>Vancomycin is explicitly NOT recommended as standard initial therapy</strong> — this is a deliberate departure from the "always add MRSA coverage" instinct from Volume 4, driven by stewardship: unnecessary vancomycin in this population drives resistance without proven benefit when there's no specific indication.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">Specific indications to add vancomycin</div>
+      <p>Hemodynamic instability/septic shock · suspected catheter-related infection · skin or soft-tissue infection · pneumonia on imaging · known MRSA/resistant-pneumococcus colonization · Gram-positive organisms on blood culture Gram stain. <strong>Mucositis alone is explicitly NOT an indication</strong> if using cefepime monotherapy — a commonly over-applied justification worth correcting in teaching.</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Antifungal timing</div>
+      <p>Consider empiric antifungal coverage in high-risk patients with persistent fever after <strong>4–7 days</strong> of broad-spectrum antibacterial therapy without an identified source — not on day one.</p>
+    </div>
+  </section>
+
+  <section id="renal">
+    <h2 class="sec-title"><span class="num">04</span> Renal Impairment / ESRD</h2>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Dosing adjustments that matter most in the first 24 hours</div>
+        <p><strong>Vancomycin</strong>: loading dose is typically unchanged (25–30mg/kg still applies — renal clearance affects maintenance dosing, not the load), but maintenance interval extends significantly; on hemodialysis, dosing is often deferred to post-HD with level-guided redosing rather than a fixed q12h schedule.</p>
+        <p><strong>Cefepime</strong>: CrCl &lt;10 or on HD → reduce to roughly 500mg–1g q24h range (institution-specific — verify against your pharmacy's renal dosing reference); on CVVHD, dosing needs upward adjustment from standard HD dosing (e.g., ~1g q12h) since continuous renal replacement clears more drug than intermittent HD.</p>
+        <p><strong>Piperacillin-tazobactam and meropenem</strong> both require significant interval extension or dose reduction in CrCl &lt;20–40 depending on institutional protocol.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Nephrotoxicity stacking risk</div>
+        <p>ESRD/CKD patients are exactly the population where the vancomycin+pip-tazo AKI signal (Volume 4) matters most if there's any residual renal function to protect, and where aminoglycoside use should be minimized or level-guided closely if used at all. Avoid unnecessary nephrotoxin stacking (NSAIDs, IV contrast without clear indication) during the acute resuscitation.</p>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title">Fluid resuscitation in anuric/oliguric ESRD</div>
+      <p>The 30 mL/kg bolus target (Volume 3) still applies as a starting point for hypotension — don't withhold resuscitation fluid from a genuinely hypotensive dialysis patient out of reflexive fluid-restriction habit — but the margin for error is much narrower, and early nephrology involvement for possible urgent/emergent dialysis (rather than waiting for the next scheduled session) should be considered explicitly if volume overload or refractory hyperkalemia/acidosis complicate the picture.</p>
+      <p><strong>Lactate interpretation caveat:</strong> impaired renal clearance can elevate baseline lactate independent of perfusion status in ESRD — trend it, and weight it slightly less heavily as a stand-alone resuscitation endpoint than you would in a patient with normal renal function.</p>
+    </div>
+  </section>
+
+  <section id="pediatric">
+    <h2 class="sec-title"><span class="num">05</span> Pediatric</h2>
+    <div class="box">
+      <div class="box-title">Definitions differ from adult Sepsis-3</div>
+      <p>Pediatric sepsis still largely uses the <strong>Goldstein criteria</strong> (International Pediatric Sepsis Consensus Conference, 2005) — age-adjusted SIRS-like thresholds plus organ dysfunction, rather than adult SOFA. Vital sign normal ranges are age-stratified and change substantially from infancy through adolescence — an adult HR&gt;90 threshold is meaningless in a toddler with a normal resting HR well above that. Use age-based pediatric vital sign references, not adult cutoffs, for every criterion in Volume 1.</p>
+    </div>
+    <div class="box danger">
+      <div class="box-title">The FEAST trial — critical context, not a blanket rule</div>
+      <p>The landmark FEAST trial (NEJM 2011, sub-Saharan Africa, n=3,141) found fluid boluses <strong>significantly increased 48-hour mortality</strong> in critically ill febrile children with impaired perfusion (RR 1.45, 95% CI 1.13–1.86) — stopped early for harm. This finding gets cited constantly and is frequently over-generalized. <strong>Critical context: this was a resource-limited setting</strong> without routine access to mechanical ventilation or inotropic support, a population with high rates of malaria/severe anemia, and it does not directly translate to fluid resuscitation in a well-resourced US PICU/ED with full critical care backup. Current PALS/pediatric SSC guidance in high-income settings still supports <strong>20 mL/kg boluses, reassessed</strong>, rather than withholding fluid — but FEAST is exactly why "reassess after each bolus" (not "run 60mL/kg wide open") is now the standard teaching, and why the historical aggressive-bolus dogma has softened.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">Practical resuscitation adjustments</div>
+      <p>20 mL/kg isotonic crystalloid boluses over 5–10 minutes, reassessing perfusion after each — not a single large-volume bolus. A pediatric RCT comparing 15–20 minute vs. 5–10 minute infusion rates for these boluses found no mortality difference but raised some concern about fluid-overload signals with faster infusion in certain subgroups — reinforcing reassessment between every bolus rather than a fire-and-forget approach. Involve PICU/pediatric critical care early; antibiotic dosing throughout is weight-based, not the fixed adult doses used elsewhere in this atlas.</p>
+    </div>
+  </section>
+
+  <section id="cirrhosis">
+    <h2 class="sec-title"><span class="num">06</span> Cirrhosis / ESLD</h2>
+    <div class="box">
+      <div class="box-title">Spontaneous bacterial peritonitis — the sepsis-mimic and sepsis-source unique to this population</div>
+      <p>Diagnostic threshold: ascitic fluid <strong>PMN ≥250 cells/mm³</strong>, or clinical signs of infection (fever, abdominal pain/tenderness, altered mentation) in a patient with ascites. Empiric antibiotics <strong>after</strong> diagnostic paracentesis (don't delay the tap to start antibiotics first if it's readily obtainable) — first-line <strong>ceftriaxone 2g IV q24h</strong> or cefotaxime 2g IV q8h in low-resistance settings; pip-tazo or carbapenem ± vancomycin if nosocomial/recent hospitalization/ICU exposure or high local resistance (North American SBP resistance rates run ~17.8%, MRSA most common).</p>
+    </div>
+    <div class="box danger">
+      <div class="box-title">Albumin — an SBP-specific intervention worth knowing cold</div>
+      <p>IV albumin <strong>1.5 g/kg on day 1, 1 g/kg on day 3</strong>, given within 6 hours of SBP diagnosis, reduces renal impairment and mortality — NNT of <strong>6 to prevent one death</strong> and <strong>4 to prevent one case of renal failure</strong> in the landmark Sort et al. NEJM trial. Current AASLD guidance specifically recommends this in patients with BUN &gt;30, creatinine &gt;1.3, or bilirubin &gt;4 — i.e., targeted at those with the renal-impairment risk the albumin is protecting against, though many centers give it to all SBP patients regardless per the most recent guideline language.</p>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Altered pharmacokinetics</div>
+        <p>Hypoalbuminemia increases free-drug fraction for highly protein-bound antibiotics; hepatic synthetic dysfunction affects drugs with significant hepatic metabolism/clearance. Coordinate dosing adjustments with pharmacy for anything beyond the standard renally-cleared beta-lactams.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Coagulopathy &amp; source control</div>
+        <p>Elevated INR in cirrhosis often reflects synthetic dysfunction rather than true anticoagulation — don't assume it's protective or that it precludes necessary invasive source control (paracentesis, drain placement); correct symptomatic bleeding risk with the procedural team rather than reflexively withholding a needed intervention.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="elderly">
+    <h2 class="sec-title"><span class="num">07</span> Elderly / Frail</h2>
+    <div class="box danger">
+      <div class="box-title">Atypical presentation is the rule, not the exception</div>
+      <p>Building on Volume 1: a meaningful proportion of elderly patients with serious bacterial infection present <strong>afebrile</strong>, without leukocytosis, and without a clearly localizing exam — the classic teaching triad (fever, elevated WBC, localized findings) is unreliable in this population specifically. Altered mentation, new falls, generalized weakness, or "just not himself" from a caregiver may be the only presenting complaint of sepsis in a frail elderly patient — treat these as sepsis-equivalent red flags warranting a workup, not vague complaints to defer.</p>
+    </div>
+    <div class="cols2">
+      <div class="box warn">
+        <div class="box-title">Compounding confounders</div>
+        <p>Polypharmacy (beta-blockers, antihypertensives blunting compensatory tachycardia/hypertensive response — Volume 1 again), higher baseline prevalence of CKD and HF (the fluid-overload caution from this volume's HF and renal sections applies disproportionately to this population), and baseline cognitive impairment complicating the mental-status component of both qSOFA and clinical assessment.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Practical approach</div>
+        <p>Anchor vital sign interpretation to the patient's own documented baseline wherever available. Favor smaller, reassessed fluid boluses by default given the higher comorbidity burden, without under-resuscitating a genuinely hypotensive patient. Goals-of-care conversations belong early in the visit, not as an afterthought — frailty and baseline functional status meaningfully affect both prognosis and what level of intervention (ICU, vasopressors, intubation) aligns with the patient's own wishes, and these conversations are far better had proactively than as a crisis decision at 3am.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2 class="sec-title"><span class="num">08</span> Cross-Population Summary</h2>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Population</th><th>#1 thing that changes</th><th>Common failure mode</th></tr></thead>
+        <tbody>
+          <tr><td>Pregnancy</td><td>Use MEOWS/MEWC/MEWT, not adult SIRS/SOFA cutoffs</td><td>Dismissing tachycardia/mild hypotension as "normal pregnancy" when it's early sepsis</td></tr>
+          <tr><td>Heart failure</td><td>Small reassessed boluses; dynamic assessment mandatory</td><td>Reflexive 30mL/kg → iatrogenic pulmonary edema</td></tr>
+          <tr><td>Neutropenic</td><td>Monotherapy beta-lactam; vancomycin only for specific indications</td><td>Reflexive vancomycin add for mucositis alone</td></tr>
+          <tr><td>Renal impairment/ESRD</td><td>Renal-dose every agent; watch nephrotoxin stacking</td><td>Standard adult dosing → drug accumulation/toxicity</td></tr>
+          <tr><td>Pediatric</td><td>Age-based vitals, Goldstein criteria, weight-based dosing</td><td>Applying adult HR&gt;90/SIRS thresholds to a toddler</td></tr>
+          <tr><td>Cirrhosis/ESLD</td><td>SBP diagnostic threshold + albumin 1.5g/kg-then-1g/kg</td><td>Treating SBP without albumin; missing the diagnosis in "just" ascites</td></tr>
+          <tr><td>Elderly/frail</td><td>Afebrile/normal-WBC sepsis is common; anchor to baseline vitals</td><td>Ruling out sepsis because "no fever, normal WBC"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box good">
+      <div class="box-title">Series roadmap</div>
+      <p>This is Volume 5 of 6. Final volume: <strong>Volume 6 — Prevention &amp; QI</strong> (post-sepsis syndrome/PICS, failure-to-rescue and early warning systems, and medicolegal/documentation fallout) — completing the full prevention spectrum you scoped.</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">09</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Antibiotic Considerations in the Treatment of Maternal Sepsis. <em>Antibiotics (Basel).</em> 2025;14(4):387.</li>
+      <li><span class="rn">2</span>Sepsis and Septic Shock During Pregnancy and Postpartum. <em>Obstet Gynecol.</em> (ACOG/SMFM-aligned review).</li>
+      <li><span class="rn">3</span>Physiologic Changes of Pregnancy and Considerations for Screening and Diagnosis of Sepsis. <em>Semin Perinatol</em> (ScienceDirect).</li>
+      <li><span class="rn">4</span>Kalil AC, et al. IDSA Position Statement — over-resuscitation harms in HF/renal insufficiency, referenced from Volume 4. <em>Clin Infect Dis.</em> 2018.</li>
+      <li><span class="rn">5</span>Freifeld AG, et al. Clinical Practice Guideline for the Use of Antimicrobial Agents in Neutropenic Patients with Cancer: 2010 Update. IDSA. <em>Clin Infect Dis.</em> 2011;52(4):e56–e93.</li>
+      <li><span class="rn">6</span>Febrile Neutropenia Institutional Guidelines (representative examples), Einstein/Montefiore and Children's Minnesota.</li>
+      <li><span class="rn">7</span>Maitland K, et al. (FEAST Trial Group). Mortality after Fluid Bolus in African Children with Severe Infection. <em>N Engl J Med.</em> 2011;364:2483–2495.</li>
+      <li><span class="rn">8</span>Goldstein B, Giroir B, Randolph A. International Pediatric Sepsis Consensus Conference: Definitions for Sepsis and Organ Dysfunction in Pediatrics. <em>Pediatr Crit Care Med.</em> 2005;6:2–8.</li>
+      <li><span class="rn">9</span>Sort P, et al. Effect of Intravenous Albumin on Renal Impairment and Mortality in Patients with Cirrhosis and SBP. <em>N Engl J Med.</em> 1999;341:403–409.</li>
+      <li><span class="rn">10</span>Spontaneous Bacterial Peritonitis in Cirrhosis. <em>CMAJ.</em> 2023;195(3):E120.</li>
+      <li><span class="rn">11</span>AASLD Practice Guidance — albumin dosing thresholds in SBP (BUN/creatinine/bilirubin criteria).</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 5 of 6 — Special Populations · Built for bedside/offline use, no external dependencies beyond typeface loading · Renal/hepatic dosing figures are teaching reference points — verify against your institution's pharmacy-approved renal/hepatic dosing tool before ordering.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

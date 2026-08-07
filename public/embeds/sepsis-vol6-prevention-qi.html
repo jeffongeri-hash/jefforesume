@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 6 — Prevention &amp; QI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c; --accent-dim:#7a0c1e; --accent-tint:#fdecee;
+  --bg:#faf8f6; --bg-panel:#ffffff; --bg-raised:#f4f0ee;
+  --text:#1c1917; --text-dim:#57534e; --text-faint:#8b8681;
+  --border:#e4dfdb; --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72; --accent-dim:#ff8a99; --accent-tint:#2b1215;
+  --bg:#141210; --bg-panel:#1c1917; --bg-raised:#242020;
+  --text:#f2ede9; --text-dim:#b8b0a9; --text-faint:#7d766f;
+  --border:#332e2b; --border-strong:#453f3b;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1215; --danger-border:#7a2c35;
+  --good-bg:#122a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:290px; padding:.4rem; z-index:200; max-height:75vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.87rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S6</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 6</div>
+      <div class="sub">PREVENTION &amp; QI</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">After Survival</div>
+        <a href="#pics">Post-Sepsis Syndrome (PICS)</a>
+        <a href="#readmission">Readmission Prevention</a>
+        <div class="grp">Before Deterioration</div>
+        <a href="#ftr">Failure-to-Rescue &amp; Early Warning Systems</a>
+        <div class="grp">After the Fact</div>
+        <a href="#legal">Medicolegal &amp; Documentation Fallout</a>
+        <a href="#checklist">Documentation Checklist</a>
+        <a href="#wrap">Series Complete</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 6 of 6 — Final Volume</div>
+    <h1>Prevention &amp; QI</h1>
+    <p class="lede">The full prevention spectrum: what happens to survivors after discharge, what catches deterioration before it becomes a code, and what protects both patients and providers when things are reviewed after the fact.</p>
+  </div>
+
+  <section id="pics">
+    <h2 class="sec-title"><span class="num">01</span> Post-Sepsis Syndrome (PICS)</h2>
+    <div class="box danger">
+      <div class="box-title">This is not a minor asterisk on "survival"</div>
+      <p>Up to <strong>50% of sepsis survivors</strong> are left with physical and/or psychological long-term effects — post-sepsis syndrome. In one prospective ICU cohort, PICS was present in <strong>70% of survivors at 3 months, 60% at 6 months, and 35% at 12 months</strong> — declining over time but far from resolving. A separate 3-year follow-up cohort found <strong>91.2% of survivors had new physical impairments</strong>, with new cognitive impairment in 57.9% and new psychological impairment in 40.9% — and only about 30% of the original cohort had regained full functional independence by 3 years (45% had died, ~25% remained functionally dependent).</p>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">The three PICS domains</div>
+        <p><strong>Physical</strong> — ICU-acquired weakness, deconditioning, new disability in activities of daily living.</p>
+        <p><strong>Cognitive</strong> — impaired memory, executive function, processing speed; strongly associated with in-ICU delirium duration.</p>
+        <p><strong>Psychological</strong> — anxiety, depression, and PTSD-spectrum symptoms; extends to family members as "PICS-F."</p>
+      </div>
+      <div class="box good">
+        <div class="box-title">The ABCDEF bundle — the mitigation framework worth knowing</div>
+        <p><strong>A</strong>ssess/manage pain · <strong>B</strong>oth spontaneous awakening and breathing trials · <strong>C</strong>hoice of sedation (minimize benzodiazepines) · <strong>D</strong>elirium monitoring/management · <strong>E</strong>arly mobility · <strong>F</strong>amily engagement. This isn't a post-discharge intervention — it's ICU-stay decisions (sedation depth, delirium screening, how early PT/OT gets involved) that measurably shape the survivorship trajectory. Worth reinforcing with critical care colleagues as directly protective against the numbers above, not just a comfort measure.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="readmission">
+    <h2 class="sec-title"><span class="num">02</span> Readmission Prevention</h2>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Readmission at 1 year</div>
+        <div class="val">44.0%</div>
+        <div class="detail">Pooled meta-analysis, 76 studies — readmission risk climbs over time rather than plateauing quickly.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Readmission within 3 months</div>
+        <div class="val">~1/3 overall; &gt;40% elderly</div>
+        <div class="detail">Most commonly due to recurrent sepsis or a related complication, not an unrelated new problem.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Long-term mortality</div>
+        <div class="val">15% at 1mo → 42.3% at 5yr</div>
+        <div class="detail">Sepsis mortality risk does not end at hospital discharge — it's a chronic-disease-like trajectory.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Why the excess readmission risk</div>
+        <div class="val">Post-sepsis immunosuppression</div>
+        <div class="detail">Immune dysregulation persists for weeks to months after the acute episode, raising vulnerability to new infection — plus elevated risk of HF exacerbation, AKI/CKD progression, and aspiration.</div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title">Practical discharge-planning implications</div>
+      <p>Sepsis survivors — especially those with an ICU stay or prolonged delirium — warrant explicit anticipatory guidance at discharge: expect possible new cognitive/physical limitations, know the specific reasons to return (recurrent infection symptoms, HF/volume overload signs, new confusion), and ideally get connected to post-ICU/post-sepsis follow-up clinics where they exist. This is squarely a "the ED/inpatient team's discharge instructions matter" finding, not just an ICU survivorship-clinic problem.</p>
+    </div>
+  </section>
+
+  <section id="ftr">
+    <h2 class="sec-title"><span class="num">03</span> Failure-to-Rescue &amp; Early Warning Systems</h2>
+    <div class="box warn">
+      <div class="box-title">Definition</div>
+      <p>AHRQ defines failure-to-rescue (FTR) as failure or delay in recognizing and responding to a hospitalized patient experiencing complications from a disease process or intervention — typically operationalized as mortality following a complication, though no single definition is universal across institutions. The physiologic rationale for early warning systems: patients typically show <strong>signs of deterioration for a median of ~6 hours</strong> before cardiac arrest — theoretically enough time to intervene if the signs are caught and acted on.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">Does the intervention actually work? Honest evidence grading</div>
+      <p>A meta-analysis pooling 15 studies (2000–2016) found rapid response systems reduced hospital mortality by <strong>15%</strong> (RR 0.85, 95% CI 0.76–0.94) — directionally consistent with the SCREEN trial data from Volume 4 (electronic alerting + education + feedback, aRR 0.85 for 90-day mortality across 60,055 patients). But AHRQ's own more recent evidence synthesis grades this as <strong>low-to-moderate quality evidence</strong> due to heterogeneity — some hospitals see substantial reductions, others see none, and at least one large prospective study of 232 hospitals found no measurable change in an already-declining mortality trend after RRT implementation. Take the "RRTs work" narrative as directionally true but not settled science, and know that implementation quality (composition, activation criteria, afferent-limb design) likely matters more than simply having a team on paper.</p>
+    </div>
+    <div class="box good">
+      <div class="box-title">This ties directly back to Volumes 1 and 4</div>
+      <p>NEWS2 (Volume 1) is one of the most common afferent-limb triggers feeding rapid response/escalation systems, and it isn't sepsis-specific — it flags any deteriorating patient, which is exactly the point: your sepsis screening and your hospital's general failure-to-rescue infrastructure should be the same system, not two competing ones. If your institution's sepsis alert and its general deterioration/RRT alert fire independently and inconsistently, that's a systems gap worth flagging to your QI committee — the SCREEN trial's success came specifically from combining alerting with staff education and feedback, not the alert algorithm alone.</p>
+    </div>
+  </section>
+
+  <section id="legal">
+    <h2 class="sec-title"><span class="num">04</span> Medicolegal &amp; Documentation Fallout</h2>
+    <div class="box danger">
+      <div class="box-title">Sepsis is not a hypothetical malpractice risk — it's a documented top driver</div>
+      <p>The most rigorous published analysis (Newman-Toker et al., Johns Hopkins/CRICO, <em>Diagnosis</em> 2019), examining 55,377 closed malpractice claims from CRICO's Comparative Benchmarking System (representing ~29% of all US malpractice claims, 2006–2015), found that <strong>vascular events, infections, and cancer — the "Big Three" — account for 74.1% of high-severity diagnosis-related harm claims</strong> (53.0% of which resulted in death). Within the infection category specifically, <strong>sepsis was the most frequently missed diagnosis</strong>. A separate CRICO analysis of inpatient closed claims specifically named infections/sepsis, MI/cardiac events, and failure-to-rescue complications as the top three inpatient diagnostic-error categories — meaning Volume 6's three topics (PICS, failure-to-rescue, and medicolegal risk) aren't three unrelated concerns, they're describing the same underlying vulnerability from three different angles.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">What actually drives these claims, per the same body of literature</div>
+      <p>Failure to order appropriate tests when infection symptoms are present · misinterpreting or failing to follow up on abnormal results (the SIRS-positive-but-uninvestigated scenario from Volume 1) · inadequate documentation of monitoring, assessment, and clinical reasoning · communication breakdowns at shift change or between departments (a classic failure point for a patient trending toward sepsis over several hours across multiple providers).</p>
+    </div>
+  </section>
+
+  <section id="checklist">
+    <h2 class="sec-title"><span class="num">05</span> Documentation Checklist — Synthesizing the Whole Series</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="stepnum">VOL 1</span> — If a SIRS/qSOFA criterion is positive but you're not pursuing a sepsis workup, document the specific reasoning (e.g., the HR&gt;90-from-pain-resolved-with-analgesia scenario) — don't leave a positive screening criterion unaddressed in the chart.</div>
+      <div class="flow-step"><span class="stepnum">VOL 2</span> — Document SEP-1 timestamps explicitly: time-zero, culture draw time, antibiotic administration time, fluid initiation time — regardless of which way the clinical decision goes.</div>
+      <div class="flow-step"><span class="stepnum">VOL 3</span> — Document the actual weight-based fluid volume given, the reassessment method used, and the specific decision point that triggered vasopressor initiation or escalation.</div>
+      <div class="flow-step"><span class="stepnum">VOL 4</span> — Document the empiric regimen rationale (source suspected, resistance risk factors considered) and the planned de-escalation/reassessment point.</div>
+      <div class="flow-step"><span class="stepnum">VOL 5</span> — For special populations, document explicitly which population-specific adjustment you made and why (e.g., "reduced initial bolus given known HFrEF, reassessed with POCUS after 500mL aliquot").</div>
+      <div class="flow-step"><span class="stepnum">VOL 6</span> — At discharge for sepsis survivors, document anticipatory guidance given and any post-sepsis follow-up arranged — this closes the loop between acute care documentation and the readmission-prevention data above.</div>
+    </div>
+    <div class="box good">
+      <div class="box-title">The single unifying principle across all six volumes</div>
+      <p>Every volume in this series has converged on the same point from a different direction: <strong>reasoning documented in real time is both better medicine and better protection than a good outcome alone.</strong> A patient can do well despite an undocumented decision, or poorly despite a well-reasoned one — but the chart is what gets reconstructed months or years later, by you, by a colleague, or by a reviewer who wasn't in the room.</p>
+    </div>
+  </section>
+
+  <section id="wrap">
+    <h2 class="sec-title"><span class="num">06</span> Series Complete</h2>
+    <div class="box">
+      <p>This completes the 6-volume Sepsis Atlas: <strong>Vol. 1</strong> Recognition &amp; Screening · <strong>Vol. 2</strong> Cultures &amp; Diagnostics · <strong>Vol. 3</strong> Hemodynamics &amp; Fluid Resuscitation · <strong>Vol. 4</strong> Empiric Antibiotics &amp; Source Control · <strong>Vol. 5</strong> Special Populations · <strong>Vol. 6</strong> Prevention &amp; QI. All six are anchored to SSC 2026 (verified against the primary source where possible, explicitly flagged where not) and cross-reference each other throughout, so they function as one atlas across six self-contained files.</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">07</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Sepsis Alliance. Life After Sepsis Fact Sheet.</li>
+      <li><span class="rn">2</span>Prevalence and Long-Term Prognosis of Post-Intensive Care Syndrome after Sepsis: A Single-Center Prospective Observational Study. <em>PMC9505847.</em></li>
+      <li><span class="rn">3</span>Functional Dependence Following ICU-Treated Sepsis: 3-Year Follow-Up, Mid-German Sepsis Cohort. <em>Lancet Reg Health Eur.</em> 2024.</li>
+      <li><span class="rn">4</span>From Resuscitation to Rehabilitation: The PICS Continuum in Sepsis Care (ABCDEF bundle review). <em>PMC12693302.</em></li>
+      <li><span class="rn">5</span>Long-Term Prognosis of Sepsis Survivors After Hospital Discharge: Systematic Review and Meta-Analysis. <em>ScienceDirect,</em> 2026.</li>
+      <li><span class="rn">6</span>Failure To Rescue – Rapid Response Systems. Making Healthcare Safer IV. AHRQ/NCBI Bookshelf, <em>NBK603026.</em></li>
+      <li><span class="rn">7</span>Rapid Response Systems: A Systematic Review and Meta-Analysis. <em>Crit Care.</em> 2015.</li>
+      <li><span class="rn">8</span>The Use of Rapid Response Teams to Reduce Failure to Rescue Events: A Systematic Review. <em>J Patient Saf.</em> 2020.</li>
+      <li><span class="rn">9</span>Newman-Toker DE, Schaffer AC, Yu-Moe CW, et al. Serious Misdiagnosis-Related Harms in Malpractice Claims: The "Big Three." <em>Diagnosis (Berl).</em> 2019;6(3):227–240.</li>
+      <li><span class="rn">10</span>CRICO Strategies. 2014 Annual Benchmarking Report: Malpractice Risks in the Diagnostic Process.</li>
+      <li><span class="rn">11</span>Overview of Diagnostic Error in Health Care. Improving Diagnosis in Health Care. <em>NCBI Bookshelf NBK338594.</em></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 6 of 6 — Prevention &amp; QI · Series complete · Built for bedside/offline use, no external dependencies beyond typeface loading · Verify any SSC 2026 statement number against the primary source (Crit Care Med 2026;54:725–812) before citing it in a formal document.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

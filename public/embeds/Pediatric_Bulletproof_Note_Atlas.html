@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pediatric Bulletproof Note — Deposition-Proof Peds Charting</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{
+  --bg:#0e1114; --bg2:#151a20; --panel:#191f26; --panel2:#1f262e;
+  --ink:#e9eef3; --ink-soft:#adb8c3; --ink-faint:#76818d;
+  --line:#28313b; --line-soft:#212932;
+  --accent:#c76a4a;            /* deposition steel-teal */
+  --accent-soft:#e08a63;
+  --harm:#d5544a; --harm-bg:rgba(213,84,74,.09);
+  --help:#4f9d6f; --help-bg:rgba(79,157,111,.10);
+  --caution:#d38a3c; --caution-bg:rgba(211,138,60,.10);
+  --neutral:#5b7a9d; --neutral-bg:rgba(91,122,157,.10);
+  --shadow:0 1px 0 rgba(255,255,255,.02),0 12px 40px rgba(0,0,0,.45);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+}
+html[data-theme="light"]{
+  --bg:#eef1f3; --bg2:#e4e9ec; --panel:#fbfcfd; --panel2:#eef2f5;
+  --ink:#1e252b; --ink-soft:#47535d; --ink-faint:#78838d;
+  --line:#d4dce1; --line-soft:#e0e6ea;
+  --accent:#b0532f; --accent-soft:#8f4021;
+  --harm:#b23b34; --harm-bg:rgba(178,59,52,.07);
+  --help:#2f7a52; --help-bg:rgba(47,122,82,.08);
+  --caution:#a9691c; --caution-bg:rgba(169,105,28,.09);
+  --neutral:#3d5a7a; --neutral-bg:rgba(61,90,122,.08);
+  --shadow:0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(90,110,120,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased;font-size:15px;min-height:100vh;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%, rgba(199,106,74,.07), transparent 60%);
+}
+::selection{background:var(--accent);color:#fff}
+
+header.masthead{border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--bg2),var(--bg));padding:34px 24px 26px;position:relative}
+.masthead-inner{max-width:1160px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-soft);font-weight:500;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"❤";font-size:14px;color:var(--accent)}
+h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,52px);line-height:1.02;letter-spacing:-.02em;margin:12px 0 6px}
+h1.title em{font-style:italic;color:var(--accent-soft);font-weight:500}
+.subtitle{color:var(--ink-soft);font-size:16px;max-width:680px}
+.masthead-meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.04em}
+.masthead-meta b{color:var(--ink-soft);font-weight:500}
+.theme-btn{position:absolute;top:24px;right:24px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:8px 13px;border-radius:8px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent-soft)}
+
+/* dropdown nav */
+nav.domtabs{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.domtabs-inner{max-width:1160px;margin:0 auto;padding:10px 16px;position:relative}
+.dom-trigger{width:100%;display:flex;align-items:center;gap:12px;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 16px;color:var(--ink);font-family:var(--sans);font-size:15px;font-weight:600;text-align:left;transition:border-color .15s}
+.dom-trigger:hover{border-color:var(--accent)}
+.dom-trigger .dt-num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:3px 8px;flex-shrink:0}
+.dom-trigger .dt-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dom-trigger .dt-caret{font-family:var(--mono);font-size:13px;color:var(--ink-faint);transition:transform .25s;flex-shrink:0}
+nav.domtabs.open .dom-trigger{border-color:var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+nav.domtabs.open .dom-trigger .dt-caret{transform:rotate(180deg)}
+.domtabs-menu{display:none;position:absolute;left:16px;right:16px;top:calc(100% - 11px);background:var(--panel);border:1px solid var(--accent);border-top:none;border-radius:0 0 11px 11px;box-shadow:var(--shadow);z-index:50;max-height:70vh;overflow-y:auto}
+nav.domtabs.open .domtabs-menu{display:block}
+.domtab{display:flex;align-items:center;gap:11px;width:100%;background:none;border:none;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);cursor:pointer;font-family:var(--sans);font-size:14.5px;font-weight:500;padding:14px 16px;text-align:left;transition:background .12s,color .12s}
+.domtab:last-child{border-bottom:none}
+.domtab .tnum{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;border:1px solid var(--line);border-radius:6px;padding:2px 7px;flex-shrink:0}
+.domtab:hover{background:var(--panel2);color:var(--ink)}
+.domtab.active{color:var(--ink);background:var(--panel2)}
+.domtab.active .tnum{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+main{max-width:1160px;margin:0 auto;padding:38px 24px 90px}
+.dom{display:none;animation:fade .35s ease}
+.dom.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dom-head{margin-bottom:30px;max-width:780px}
+.dom-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-soft);font-weight:500;margin-bottom:10px}
+.dom-head h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.015em;line-height:1.1;margin-bottom:12px}
+.dom-head p{color:var(--ink-soft);font-size:15.5px}
+
+section.block{margin-bottom:34px}
+.block-title{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:11px}
+.block-title .bt-num{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:22px 24px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h4{font-family:var(--serif);font-weight:600;font-size:17px;margin-bottom:9px;letter-spacing:-.01em}
+.card p{color:var(--ink-soft);font-size:14.5px;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.card ul{list-style:none;margin:8px 0}
+.card li{color:var(--ink-soft);font-size:14px;padding:5px 0 5px 22px;position:relative}
+.card li::before{content:"";position:absolute;left:4px;top:12px;width:6px;height:6px;border-radius:1px;background:var(--accent);transform:rotate(45deg)}
+.card strong{color:var(--ink);font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin:6px 0 22px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:17px 16px;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.stat .num{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--accent-soft);line-height:1;letter-spacing:-.02em}
+.stat .lbl{font-size:12.5px;color:var(--ink-soft);margin-top:7px;line-height:1.4}
+.stat .src{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);margin-top:8px;letter-spacing:.03em}
+
+/* deposition trap block */
+.trap{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:18px;background:var(--panel);box-shadow:var(--shadow)}
+.trap-head{padding:15px 20px;display:flex;align-items:center;gap:13px;cursor:pointer;border-left:4px solid var(--harm);transition:background .15s}
+.trap-head:hover{background:var(--panel2)}
+.trap-q{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:4px 9px;border-radius:20px;white-space:nowrap;background:var(--harm-bg);color:var(--harm);border:1px solid var(--harm)}
+.trap-title{flex:1;min-width:0;font-family:var(--serif);font-weight:600;font-size:16px;letter-spacing:-.01em}
+.trap-chev{color:var(--ink-faint);font-size:13px;transition:transform .25s;font-family:var(--mono)}
+.trap.open .trap-chev{transform:rotate(90deg)}
+.trap-body{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.trap.open .trap-body{max-height:2600px;border-top:1px solid var(--line)}
+.trap-inner{padding:20px 22px 22px}
+.trap-row{margin-bottom:15px}
+.trap-row:last-child{margin-bottom:0}
+.trap-row .tr-label{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin-bottom:5px}
+.trap-row.attack .tr-label{color:var(--harm)}
+.trap-row.why .tr-label{color:var(--caution)}
+.trap-row .tr-text{color:var(--ink-soft);font-size:14.5px}
+.trap-row .tr-text b{color:var(--ink);font-weight:600}
+.tr-quote{font-family:var(--serif);font-style:italic;color:var(--ink);font-size:14.5px;padding:10px 15px;border-left:3px solid var(--harm);background:var(--harm-bg);border-radius:0 8px 8px 0;margin:2px 0}
+.fix{background:var(--help-bg);border-radius:9px;padding:14px 16px;margin-top:6px;border-left:3px solid var(--help)}
+.fix .tr-label{color:var(--help)!important}
+
+/* specimen note */
+.specimen{font-family:var(--mono);font-size:12.5px;line-height:1.7;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;color:var(--ink-soft);margin:12px 0;white-space:pre-wrap;position:relative}
+.specimen .sp-tag{position:absolute;top:-9px;left:14px;color:#fff;font-size:9px;font-weight:600;letter-spacing:.1em;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.specimen.good .sp-tag{background:var(--help)}
+.specimen.bad .sp-tag{background:var(--harm)}
+.specimen.good{border-color:color-mix(in srgb,var(--help) 40%,var(--line))}
+.specimen.bad{border-color:color-mix(in srgb,var(--harm) 40%,var(--line))}
+.specimen b{color:var(--accent-soft);font-weight:600}
+.specimen .hl{color:var(--help);font-weight:600}
+.specimen .bad-hl{color:var(--harm);font-weight:600}
+
+/* lexicon */
+.lex{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+@media(max-width:720px){.lex{grid-template-columns:1fr}}
+.lex-col.harm{background:var(--harm-bg)}
+.lex-col.help{background:var(--help-bg)}
+.lex-hd{padding:12px 18px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.lex-col.harm .lex-hd{color:var(--harm)}
+.lex-col.help .lex-hd{color:var(--help)}
+.lex-col.harm{border-right:1px solid var(--line)}
+@media(max-width:720px){.lex-col.harm{border-right:none;border-bottom:1px solid var(--line)}}
+.lex-item{padding:13px 18px;border-bottom:1px solid var(--line-soft);font-size:14px}
+.lex-item:last-child{border-bottom:none}
+.lex-item .quote{color:var(--ink);font-style:italic;font-family:var(--serif);font-size:14.5px}
+.lex-item .why{color:var(--ink-faint);font-size:12.5px;margin-top:5px}
+
+.callout{border-radius:11px;padding:16px 20px;margin:16px 0;border:1px solid;display:flex;gap:14px;align-items:flex-start}
+.callout .co-icon{font-family:var(--mono);font-weight:700;font-size:15px;flex-shrink:0;margin-top:1px;width:18px;text-align:center}
+.callout .co-body{font-size:14px}
+.callout .co-body b{font-weight:600}
+.callout.warn{background:var(--harm-bg);border-color:var(--harm)}
+.callout.warn .co-icon,.callout.warn .co-body b{color:var(--harm)}
+.callout.warn .co-body{color:var(--ink-soft)}
+.callout.tip{background:var(--help-bg);border-color:var(--help)}
+.callout.tip .co-icon,.callout.tip .co-body b{color:var(--help)}
+.callout.tip .co-body{color:var(--ink-soft)}
+.callout.note{background:var(--neutral-bg);border-color:var(--neutral)}
+.callout.note .co-icon,.callout.note .co-body b{color:var(--neutral)}
+.callout.note .co-body{color:var(--ink-soft)}
+.callout.verify{background:var(--caution-bg);border-color:var(--caution)}
+.callout.verify .co-icon,.callout.verify .co-body b{color:var(--caution)}
+.callout.verify .co-body{color:var(--ink-soft)}
+
+table.reg{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 4px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table.reg th{background:var(--panel2);text-align:left;padding:11px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-soft);font-weight:600;border-bottom:1px solid var(--line)}
+table.reg td{padding:11px 14px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);vertical-align:top}
+table.reg tr:last-child td{border-bottom:none}
+table.reg td b{color:var(--ink)}
+table.reg .rowh{color:var(--ink);font-weight:600}
+
+.pearl-list{counter-reset:pearl}
+.pearl{display:flex;gap:15px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.pearl:last-child{border-bottom:none}
+.pearl::before{counter-increment:pearl;content:counter(pearl,decimal-leading-zero);font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);flex-shrink:0;padding-top:2px}
+.pearl .p-text{font-size:14.5px;color:var(--ink-soft)}
+.pearl .p-text b{color:var(--ink);font-weight:600}
+
+.checklist{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 4px;margin-bottom:16px}
+.check{display:flex;gap:13px;padding:11px 18px;border-bottom:1px solid var(--line-soft);align-items:flex-start}
+.check:last-child{border-bottom:none}
+.check .cbox{width:19px;height:19px;border:1.5px solid var(--accent);border-radius:5px;flex-shrink:0;margin-top:1px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent}
+.check .cbox.on{background:var(--accent);color:#fff}
+.check .ctext{font-size:14px;color:var(--ink-soft)}
+.check .ctext b{color:var(--ink);font-weight:600}
+
+.statebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.state-pill{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;padding:6px 13px;border-radius:20px;border:1px solid var(--accent);color:var(--accent-soft);background:var(--panel)}
+
+footer.foot{border-top:1px solid var(--line);margin-top:40px;padding:26px 24px;max-width:1160px;margin-left:auto;margin-right:auto}
+.foot-inner{font-size:12.5px;color:var(--ink-faint);font-family:var(--mono);line-height:1.7;letter-spacing:.02em}
+.foot-inner b{color:var(--ink-soft);font-weight:500}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <button class="theme-btn" id="themeBtn">◐ Light</button>
+  <div class="masthead-inner">
+    <div class="eyebrow">Pediatric Emergency Medicine · Deposition-Proof Charting</div>
+    <h1 class="title">The Pediatric Bulletproof Note</h1>
+    <p class="subtitle">Charting the febrile infant, the &ldquo;just a virus&rdquo; visit, and the peds discharge so the note holds under oath &mdash; where the child can't give a history, the exam is the whole case, and the parent is a second witness.</p>
+    <div class="masthead-meta">
+      <span><b>Why peds is different:</b> silent history · subtle exam · rapid decompensation · weight-based everything</span>
+      <span><b>#1 peds ED malpractice dx:</b> meningitis / sepsis</span>
+      <span><b>Companion to:</b> The Bulletproof Note (adult)</span>
+    </div>
+  </div>
+</header>
+
+<nav class="domtabs" id="domNav">
+  <div class="domtabs-inner">
+    <button class="dom-trigger" id="domTrigger" aria-expanded="false">
+      <span class="dt-num" id="dtNum">01</span>
+      <span class="dt-label" id="dtLabel">Why Peds Is Different</span>
+      <span class="dt-caret">▾</span>
+    </button>
+    <div class="domtabs-menu" id="domMenu">
+      <button class="domtab active" data-dom="dom-why"><span class="tnum">01</span>Why Peds Is Different</button>
+      <button class="domtab" data-dom="dom-febrile"><span class="tnum">02</span>The Febrile Infant</button>
+      <button class="domtab" data-dom="dom-exam"><span class="tnum">03</span>The Peds Exam &amp; History</button>
+      <button class="domtab" data-dom="dom-cantmiss"><span class="tnum">04</span>Peds Cannot-Miss Atlas</button>
+      <button class="domtab" data-dom="dom-dispo"><span class="tnum">05</span>The Peds Discharge</button>
+      <button class="domtab" data-dom="dom-worked"><span class="tnum">06</span>Worked Examples</button>
+      <button class="domtab" data-dom="dom-check"><span class="tnum">07</span>Bulletproof Checklist</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 01 WHY PEDS ============ -->
+<section class="dom active" id="dom-why">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 01</div>
+    <h2>Why pediatric charting carries different risk</h2>
+    <p>The same &ldquo;findings not conclusions&rdquo; doctrine from the adult atlas applies &mdash; but pediatrics raises the stakes on every axis. The child often can't give a history, the exam is subtle and the entire case, deterioration is fast, and the parent becomes a co-witness whose recollection and instructions matter as much as yours.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">#1</div><div class="lbl">Meningitis is the most common dx in US pediatric ED malpractice claims</div><div class="src">Peds malpractice case literature</div></div>
+    <div class="stat"><div class="num">$1M+</div><div class="lbl">Peds meningitis judgments routinely exceed policy limits; catastrophic-outcome awards</div><div class="src">Clinician.com peds meningitis review</div></div>
+    <div class="stat"><div class="num">&lt;60 d</div><div class="lbl">Age below which the febrile infant is highest-risk &mdash; the PECARN tool population</div><div class="src">AAP 2021 / PECARN</div></div>
+    <div class="stat"><div class="num">12&ndash;24h</div><div class="lbl">Follow-up window that documentation must arrange for the concerning febrile child</div><div class="src">Peds sepsis/meningitis guidance</div></div>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The five structural differences</div>
+    <div class="card">
+      <ul>
+        <li><strong>The history is secondhand.</strong> The historian is a parent, not the patient. Every element must be attributed (&ldquo;per mother&rdquo;), and the parent's <em>concern level</em> is itself data worth charting &mdash; a worried parent who says &ldquo;this isn't like her&rdquo; is a documented red flag.</li>
+        <li><strong>The exam is the case.</strong> With no reliable subjective report, your objective findings &mdash; appearance, activity, hydration, perfusion, tone, interaction &mdash; carry the entire diagnostic weight. Vague exams are far more damaging in peds.</li>
+        <li><strong>Vital signs are age-specific and easily normalized-away.</strong> Tachycardia and tachypnea are the earliest sepsis signs and are frequently attributed to fever or crying. An abnormal age-adjusted vital discharged without a documented recheck is a peds plaintiff magnet.</li>
+        <li><strong>Deterioration is fast and non-linear.</strong> A well-appearing infant can be bacteremic; meningeal signs may be absent in early meningitis. The chart must reflect that you knew reassuring findings <em>now</em> don't exclude serious illness <em>later</em> &mdash; hence the safety net.</li>
+        <li><strong>The parent is your discharge partner and a witness.</strong> Written, specific return precautions and documented parental understanding are load-bearing. In a bad outcome, the parent testifies to what they were &mdash; or weren't &mdash; told.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>The peds documentation doctrine</div>
+    <div class="callout note"><span class="co-icon">❤</span><div class="co-body"><b>Meticulous documentation of the febrile child may itself prevent the lawsuit.</b> The peds literature is explicit: because early serious infection can be clinically silent and there is no foolproof rule, the defensibility of a bad outcome rests almost entirely on whether the chart shows a careful, appearance-based assessment, an age-appropriate vital-sign review, honest acknowledgment that early illness can't be fully excluded, and a concrete follow-up/return plan the parent understood.</div></div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>Carry over the core rule:</b> name the cannot-miss dx, chart objective findings + the validated tool, use probabilistic language (never &ldquo;ruled out&rdquo;), and build the safety net. In peds, add two: <b>attribute the history to the caregiver</b>, and <b>document the child's appearance in observable terms</b> (&ldquo;smiling, reaching for toy, consolable&rdquo;) rather than the conclusion (&ldquo;well-appearing&rdquo;) alone.</div></div>
+  </section>
+</section>
+
+<!-- ============ 02 FEBRILE INFANT ============ -->
+<section class="dom" id="dom-febrile">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 02</div>
+    <h2>The febrile infant &mdash; the highest-stakes chart in peds</h2>
+    <p>Misdiagnosis of sepsis and meningitis in the febrile child is among the most common and most costly sources of EM malpractice. The evaluation is protocolized precisely because the outcome is catastrophic and the early presentation is subtle. Your chart must show which framework you applied and why.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The age-stratified framework</div>
+    <div class="card">
+      <p>Document the age band, the framework used, and the findings that place the infant in a risk category. The exact thresholds and lab criteria are institution- and guideline-specific &mdash; cite which one you followed.</p>
+      <table class="reg">
+        <thead><tr><th>Age band</th><th>General approach (verify local protocol)</th><th>What to chart</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh">0&ndash;28 days</td><td>Full sepsis workup (blood, urine, CSF), empiric antibiotics, admit &mdash; regardless of appearance in most protocols</td><td>That full workup was pursued or the explicit reasoning + consult if deviating</td></tr>
+          <tr><td class="rowh">29&ndash;60 days</td><td>Risk-stratify (e.g., PECARN febrile infant tool) in <b>well-appearing</b> infants; labs (procal/CRP/ANC, UA); LP per risk</td><td>Appearance, the tool applied, each criterion's result, LP decision + rationale</td></tr>
+          <tr><td class="rowh">61&ndash;90 days</td><td>Risk-stratify; many well-appearing low-risk infants managed without LP per current guidance</td><td>Appearance, risk criteria, shared decision + follow-up plan</td></tr>
+          <tr><td class="rowh">&gt;90 days</td><td>Clinical assessment, source evaluation, appearance-driven</td><td>Appearance, source found/not, vitals reassessed, return plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Verify before relying:</b> the <b>PECARN Febrile Infant tool applies only to well-appearing infants &lt;60 days</b> who meet <b>strict exclusion criteria</b>, and it <b>does not apply when HSV is a concern</b> (seizures, focal neuro findings, vesicular rash, hypothermia, maternal/household vesicular rash, or toxic appearance). Age thresholds, lab cutoffs, and LP recommendations differ across the AAP 2021 guideline and local protocols and change over time &mdash; confirm your institution's current pathway before charting it.</div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>The deposition traps &mdash; febrile infant</div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">&ldquo;Well-appearing&rdquo; with nothing behind it</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;You charted &lsquo;well-appearing&rsquo; and sent this baby home. She had bacterial meningitis within hours. What did you actually observe that made her well-appearing?&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">&ldquo;Well-appearing&rdquo; is a conclusion. If the child later declares serious illness, a bare conclusory label looks like it was never earned &mdash; and you can't reconstruct the specific observations years later.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Chart the observable behaviors that <em>define</em> well-appearing: <b>&ldquo;Alert, smiling, reaching for toy, consolable in mother's arms, vigorous suck, normal color and perfusion, cap refill &lt;2s, no resp distress.&rdquo;</b> The findings prove the conclusion.</div></div>
+      </div></div>
+    </div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">The normalized-away tachycardia</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;This infant's heart rate was above the normal range for her age at discharge. You wrote it off as fever. That tachycardia was early sepsis, wasn't it?&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">Tachycardia/tachypnea are the earliest sepsis signs. Discharging on an unaddressed age-abnormal vital, attributed to fever without a documented post-antipyretic recheck, is a clean liability.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Recheck after antipyretic and document the trend: <b>&ldquo;HR 180 at triage (T 39.4); repeat HR 140 at 15:20 after defervescence, age-appropriate; RR normal, well-perfused.&rdquo;</b> Never discharge on the abnormal number alone.</div></div>
+      </div></div>
+    </div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">The dismissed parental concern</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;The mother told you three times the baby &lsquo;wasn't acting right.&rsquo; Your note doesn't mention it once. You ignored the one person who knows this child.&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">Parental instinct is a recognized warning sign. A chart silent on a voiced concern reads as dismissiveness &mdash; and feeds the &ldquo;didn't listen / didn't care&rdquo; narrative that drives families to sue.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Chart the concern and your response to it: <b>&ldquo;Mother concerned infant less active than baseline; reassessed appearance, obtained [workup], discussed findings and specific return precautions.&rdquo;</b> Addressed, not ignored.</div></div>
+      </div></div>
+    </div>
+  </section>
+
+  <div class="callout warn"><span class="co-icon">!</span><div class="co-body"><b>The HSV footgun:</b> a &ldquo;low-risk&rdquo; label on a neonate is indefensible if HSV red flags were present and undocumented. If the chart doesn't affirmatively address seizures, focal neuro signs, vesicular rash, hypothermia, or maternal/household lesions, a plaintiff will argue you applied a rule outside its validated population. Chart the HSV pertinent negatives explicitly.</div></div>
+</section>
+
+<!-- ============ 03 PEDS EXAM & HISTORY ============ -->
+<section class="dom" id="dom-exam">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 03</div>
+    <h2>The peds exam &amp; history &mdash; observable behaviors, attributed history</h2>
+    <p>Because the child can't narrate symptoms, two things carry the chart: a history explicitly <strong>attributed to the caregiver</strong>, and an exam written in <strong>observable behaviors</strong> rather than conclusions. &ldquo;Consolable and playful&rdquo; defends; &ldquo;well-appearing&rdquo; alone does not.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>Charting the peds history</div>
+    <div class="card">
+      <ul>
+        <li><strong>Attribute everything to the caregiver</strong> &mdash; &ldquo;per mother,&rdquo; &ldquo;per grandmother who is primary caregiver.&rdquo; If the history changes later, the source is on record.</li>
+        <li><strong>Chart the caregiver's baseline comparison</strong> &mdash; &ldquo;mother reports feeding at 50% of normal,&rdquo; &ldquo;fewer wet diapers than usual.&rdquo; Deviation-from-baseline is the most useful peds history there is.</li>
+        <li><strong>Document the concern level and address it</strong> &mdash; a worried experienced caregiver is a red flag; a reassured one after your assessment is defensible when charted.</li>
+        <li><strong>Quantify intake/output</strong> &mdash; wet diapers, PO intake, vomiting/diarrhea frequency. Hydration status is a peds cornerstone and a common causation battleground.</li>
+        <li><strong>Record immunization status and sick contacts</strong> &mdash; pertinent to the differential and to your risk stratification.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Charting the peds exam &mdash; observable, not conclusory</div>
+    <div class="lex">
+      <div class="lex-col harm"><div class="lex-hd">✕ Conclusory (won't defend)</div>
+        <div class="lex-item"><div class="quote">&ldquo;Well-appearing.&rdquo;</div><div class="why">No observation behind it. Can't be reconstructed at deposition.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Non-toxic.&rdquo;</div><div class="why">Conclusion; the plaintiff asks what specifically you saw.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;No signs of meningitis.&rdquo;</div><div class="why">Absolute + a dx that can be silent early &mdash; overstates the exam.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Well-hydrated.&rdquo;</div><div class="why">Conclusion with no supporting findings.</div></div>
+      </div>
+      <div class="lex-col help"><div class="lex-hd">✓ Observable (defends)</div>
+        <div class="lex-item"><div class="quote">&ldquo;Alert, smiling, tracks and reaches for toy, consolable, vigorous suck.&rdquo;</div><div class="why">The behaviors that define a reassuring appearance.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Normal color/perfusion, cap refill &lt;2s, no resp distress, no retractions.&rdquo;</div><div class="why">Concrete perfusion/respiratory findings.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Neck supple, no nuchal rigidity, moves all extremities, fontanelle soft/flat.&rdquo;</div><div class="why">Specific meningeal/neuro findings &mdash; with the caveat charted.</div></div>
+        <div class="lex-item"><div class="quote">&ldquo;Moist mucous membranes, tears present, 2 wet diapers in ED.&rdquo;</div><div class="why">Objective hydration markers.</div></div>
+      </div>
+    </div>
+    <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>The peds exam rule:</b> write what a stranger could picture. &ldquo;Reaching for the otoscope and babbling&rdquo; tells a jury the child looked well far better than &ldquo;well-appearing&rdquo; ever could &mdash; and it can't be impeached, because it's an observation, not a verdict.</div></div>
+  </section>
+</section>
+
+<!-- ============ 04 PEDS CANNOT-MISS ============ -->
+<section class="dom" id="dom-cantmiss">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 04</div>
+    <h2>The peds cannot-miss atlas</h2>
+    <p>The diagnoses that generate peds ED litigation, with the objective findings to chart and the defensible phrase &mdash; never a conclusory &ldquo;ruled out.&rdquo; All thresholds carry verify-before-relying caveats.</p>
+  </div>
+
+  <table class="reg">
+    <thead><tr><th>Cannot-miss dx</th><th>Anchor / tool</th><th>Objective findings to chart</th><th>Defensible phrase</th></tr></thead>
+    <tbody>
+      <tr><td class="rowh">Bacterial meningitis / sepsis</td><td>Age framework + appearance</td><td>Appearance (behaviors), fontanelle, meningismus, perfusion, age-adjusted vitals, rash</td><td>&ldquo;Well-appearing per above findings; low probability, LP deferred per [protocol]; strict return plan&rdquo;</td></tr>
+      <tr><td class="rowh">Non-accidental trauma</td><td>Mandatory screen</td><td>Injury pattern vs. stated mechanism, developmental plausibility, bruising in non-mobile infant, exam for other injuries</td><td>&ldquo;Mechanism consistent with injury and development; no concern for NAT&rdquo; / documented report if concern</td></tr>
+      <tr><td class="rowh">Intussusception</td><td>US</td><td>Intermittent pain/drawing up legs, currant-jelly stool, lethargy, abdominal mass, US result</td><td>&ldquo;No intermittent colic/lethargy, soft abdomen; low suspicion&rdquo;</td></tr>
+      <tr><td class="rowh">Testicular torsion</td><td>Doppler US</td><td>Onset, cremasteric reflex, position/lie, US flow</td><td>&ldquo;Cremasteric present, normal lie, US flow normal; torsion low probability&rdquo;</td></tr>
+      <tr><td class="rowh">Malrotation / volvulus (bilious vomiting)</td><td>Upper GI</td><td>Bilious emesis, abdominal exam, appearance, imaging</td><td>&ldquo;Non-bilious emesis, benign abdomen; volvulus low probability&rdquo; / urgent imaging if bilious</td></tr>
+      <tr><td class="rowh">Myocarditis (viral mimic)</td><td>ECG ± trop</td><td>Tachycardia out of proportion, poor perfusion, hepatomegaly, resp effort, ECG</td><td>&ldquo;HR proportionate to fever &amp; normalized post-antipyretic, well-perfused; myocarditis low suspicion&rdquo;</td></tr>
+      <tr><td class="rowh">Epiglottitis / airway</td><td>Clinical</td><td>Drooling, tripod, stridor, voice, distress, toxic appearance</td><td>&ldquo;No drooling/stridor/tripod, comfortable, voice normal; airway low concern&rdquo;</td></tr>
+      <tr><td class="rowh">DKA (new-onset diabetes)</td><td>Glucose/ketones</td><td>Polyuria/polydipsia, weight loss, tachypnea (Kussmaul), glucose, mental status</td><td>&ldquo;Glucose normal, no Kussmaul/dehydration; DKA excluded by POC glucose&rdquo;</td></tr>
+      <tr><td class="rowh">Head injury (ICH)</td><td>PECARN head</td><td>GCS/behavior, mechanism, LOC, vomiting, scalp hematoma, age criteria</td><td>&ldquo;PECARN low-risk (no criteria met); observation over CT, shared decision with parent&rdquo;</td></tr>
+      <tr><td class="rowh">Ingestion / toxic exposure</td><td>Hx + tox</td><td>Access to substance, timing, symptoms, exam, Poison Control contact</td><td>&ldquo;No known ingestion, asymptomatic; Poison Control consulted, observation plan&rdquo;</td></tr>
+      <tr><td class="rowh">Appendicitis</td><td>Serial exam ± US/PAS</td><td>Migration, focal RLQ, rebound, gait/hop, serial re-exam time-stamped</td><td>&ldquo;No focal RLQ/rebound, hops without pain, reassessed 90 min &mdash; improved&rdquo;</td></tr>
+    </tbody>
+  </table>
+  <div class="callout verify"><span class="co-icon">!</span><div class="co-body"><b>Verify before relying:</b> PECARN head-injury and febrile-infant tools, PAS, and all thresholds have <b>strict inclusion criteria and age caveats</b>; applying one outside its validated population is indefensible. Bilious vomiting in an infant and any non-mobile infant with bruising warrant a low threshold for imaging/escalation regardless of a &ldquo;low-risk&rdquo; label. Confirm current guidance before charting.</div></div>
+</section>
+
+<!-- ============ 05 PEDS DISCHARGE ============ -->
+<section class="dom" id="dom-dispo">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 05</div>
+    <h2>The peds discharge &mdash; the parent is the safety net</h2>
+    <p>In peds the discharge is a two-party act: you and the caregiver. The bad outcome happens at home, so the chart must prove the parent left knowing exactly what to watch for, could execute it, and had timely follow-up arranged. Written, specific, and understood.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>The defensible peds discharge</div>
+    <div class="card">
+      <ul>
+        <li><strong>Appearance at discharge, in behaviors</strong> &mdash; &ldquo;playful, tolerated PO challenge in ED, 1 wet diaper, afebrile after antipyretic.&rdquo; Document a PO trial for the vomiting/dehydration-risk child.</li>
+        <li><strong>Abnormal age-adjusted vitals resolved and rechecked</strong> &mdash; never discharge on the abnormal number; chart the recheck and trend.</li>
+        <li><strong>Specific, written return precautions tied to the differential</strong> &mdash; not &ldquo;return if worse.&rdquo; &ldquo;Return for lethargy, poor feeding, fewer wet diapers, stiff neck, rash that doesn't blanch, difficulty breathing, persistent vomiting.&rdquo;</li>
+        <li><strong>Timely follow-up arranged</strong> &mdash; the concerning febrile child needs a documented 12&ndash;24h recheck plan; chart who and when.</li>
+        <li><strong>Documented caregiver understanding</strong> &mdash; &ldquo;mother verbalized understanding of return precautions and follow-up; able to teach back.&rdquo; The parent is a witness; make the record show comprehension.</li>
+      </ul>
+    </div>
+    <div class="specimen good"><span class="sp-tag">Model peds discharge</span><b>Appearance at d/c:</b> Alert, smiling, took 4 oz PO in ED without emesis, 1 wet diaper, afebrile (T 37.2) after acetaminophen; <b>HR 128 (was 178 febrile), age-appropriate</b>, well-perfused, no distress.
+<b>Cannot-miss addressed:</b> Well-appearing per findings above; low probability serious bacterial infection; source likely viral URI.
+<b>Return precautions</b> (mother verbalized understanding, teach-back done): lethargy/hard to wake, poor feeding, &lt;3 wet diapers/day, stiff neck, non-blanching rash, fast/labored breathing, persistent vomiting, fever &gt;5 days or rising.
+<b>Follow-up:</b> PCP recheck within 24h, arranged; ED return anytime.</div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>The deposition traps &mdash; peds discharge</div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">The generic return precautions</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;Your discharge said &lsquo;return if not improving.&rsquo; You never told these parents that a non-blanching rash meant meningococcemia. They didn't know what they were looking at.&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">Boilerplate precautions don't equip a parent to catch the specific deterioration. If you &ldquo;considered&rdquo; meningitis but the precautions never name its warning signs, the consideration looks hollow.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Name the specific red flags of the killers you considered: <b>lethargy, non-blanching rash, stiff neck, poor feeding, decreased wet diapers, labored breathing.</b> Document teach-back.</div></div>
+      </div></div>
+    </div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">No PO trial before discharging the vomiting child</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;You diagnosed gastroenteritis and discharged, but never watched this child drink. He couldn't keep anything down and was severely dehydrated by morning.&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">Discharging a vomiting/dehydration-risk child without a documented PO challenge leaves no evidence you confirmed they could tolerate the home plan.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Document the trial: <b>&ldquo;Tolerated 4 oz oral rehydration over 30 min without emesis; 1 wet diaper prior to d/c.&rdquo;</b> The objective PO trial is the defense.</div></div>
+      </div></div>
+    </div>
+
+    <div class="trap">
+      <div class="trap-head"><span class="trap-q">Trap</span><span class="trap-title">No follow-up arranged for the concerning febrile child</span><span class="trap-chev">▸</span></div>
+      <div class="trap-body"><div class="trap-inner">
+        <div class="trap-row attack"><div class="tr-label">The attack</div><div class="tr-text tr-quote">&ldquo;This baby had a fever workup and you sent her home with &lsquo;follow up with your doctor&rsquo; &mdash; no appointment, no timeframe. Nobody ever saw her again until she coded.&rdquo;</div></div>
+        <div class="trap-row why"><div class="tr-label">Why it lands</div><div class="tr-text">The guidance calls for a 12&ndash;24h recheck when a febrile infant warranted a workup. A vague follow-up instruction doesn't discharge that duty.</div></div>
+        <div class="fix"><div class="tr-label">The fix</div><div class="tr-text">Arrange and document a concrete recheck: <b>&ldquo;PCP recheck within 24h, appointment confirmed for [time]; return to ED sooner for [precautions].&rdquo;</b> A phone-call check-in the next day is a documented bonus.</div></div>
+      </div></div>
+    </div>
+  </section>
+</section>
+
+<!-- ============ 06 WORKED EXAMPLES ============ -->
+<section class="dom" id="dom-worked">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 06</div>
+    <h2>Worked examples &mdash; weak vs. bulletproof</h2>
+    <p>Same clinical decision, different defensibility. The weak note is what loses in deposition; the bulletproof note holds.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">A</span>6-week-old with fever</div>
+    <div class="specimen bad"><span class="sp-tag">Weak — loses</span>6 wk, fever. <span class="bad-hl">Well-appearing, non-toxic</span>. <span class="bad-hl">No signs of meningitis</span>. Likely viral. D/C, <span class="bad-hl">f/u with pediatrician</span>.</div>
+    <div class="specimen good"><span class="sp-tag">Bulletproof</span><b>HPI (per mother):</b> 6-wk-old, T 38.6 at home ×1 day, feeding ~70% baseline, normal activity, no vomiting, 4 wet diapers today. No sick contacts w/ vesicular rash; <b>no maternal/household HSV lesions</b>; no seizure.
+<b>Exam:</b> Alert, consolable, vigorous suck, tracks face; fontanelle soft/flat, neck supple, no rash; well-perfused, cap refill &lt;2s, no distress. HR/RR age-appropriate after antipyretic.
+<b>MDM:</b> Febrile infant 29&ndash;60 day band, <b>well-appearing</b> per findings. Applied [institutional febrile-infant pathway/PECARN]; UA/labs [results]; <b>HSV red flags absent</b>. LP decision: [done / deferred per protocol + shared decision]. Cannot fully exclude early IBI; low probability by criteria.
+<b>Dispo:</b> [Admit for obs / discharge with strict plan]. <b>Return precautions</b> (mother teach-back): lethargy, poor feeding, &lt;3 wet diapers, stiff neck, non-blanching rash, labored breathing. <b>PCP recheck within 24h confirmed.</b></div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">B</span>Toddler vomiting &mdash; &ldquo;just a virus&rdquo;</div>
+    <div class="specimen bad"><span class="sp-tag">Weak</span>2yo vomiting. <span class="bad-hl">Benign abdomen</span>. Gastroenteritis. <span class="bad-hl">Well-hydrated</span>. D/C.</div>
+    <div class="specimen good"><span class="sp-tag">Bulletproof</span><b>HPI (per father):</b> 2yo, <b>non-bilious</b> vomiting ×6 over 1 day, +diarrhea, taking sips, 3 wet diapers, sick contacts at daycare. No blood/bile in emesis, no drawing-up of legs, no lethargy.
+<b>Exam:</b> Playful, reaching for toys; abdomen soft, non-distended, no focal RLQ tenderness, no mass, no guarding. Moist MM, tears present, cap refill &lt;2s.
+<b>MDM:</b> DDx viral gastroenteritis, appendicitis, intussusception, malrotation/volvulus. <b>Appendicitis</b> &mdash; no migration/focal RLQ, hops without pain; low probability. <b>Intussusception</b> &mdash; no colicky drawing-up/lethargy, no currant-jelly stool; low probability. <b>Volvulus</b> &mdash; emesis non-bilious; low probability. Mild illness, mild dehydration.
+<b>Dispo:</b> <b>Tolerated 5 oz ORT over 30 min without emesis</b>, 1 wet diaper before d/c. <b>Return precautions</b> (verbalized): bilious/green vomiting, blood in stool, drawing up legs w/ inconsolable pain, lethargy, no wet diaper &times;8h, worsening abdominal pain. PCP f/u 24h.</div>
+  </section>
+</section>
+
+<!-- ============ 07 CHECKLIST ============ -->
+<section class="dom" id="dom-check">
+  <div class="dom-head">
+    <div class="dom-kicker">Domain 07</div>
+    <h2>The pediatric bulletproof checklist</h2>
+    <p>Tap to check. Run before signing any peds chart on a febrile infant, a vomiting child, or any concerning presentation.</p>
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">1</span>History &amp; appearance</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext">History <b>attributed to the caregiver</b>; baseline comparison charted (feeding, activity, wet diapers).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Any <b>parental concern documented and addressed</b>, not omitted.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Appearance charted in <b>observable behaviors</b> (&ldquo;smiling, reaching, consolable&rdquo;), not just &ldquo;well-appearing.&rdquo;</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Hydration documented objectively (MM, tears, wet diapers, cap refill).</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">2</span>Febrile infant / cannot-miss</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Age band + framework named</b> (which protocol/tool), each risk criterion's result charted.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>HSV red flags addressed</b> explicitly in any low-risk neonate label.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext">Cannot-miss dx <b>named + reasoned down</b> with findings; <b>probabilistic language</b>, no &ldquo;ruled out.&rdquo;</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Age-adjusted vitals</b> reviewed; any abnormal value rechecked post-antipyretic and documented.</div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span class="bt-num">3</span>Before discharge</div>
+    <div class="checklist">
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>PO trial documented</b> for the vomiting / dehydration-risk child.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>No abnormal age-adjusted vital</b> goes home unaddressed.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Specific written return precautions</b> tied to the differential (lethargy, non-blanching rash, poor feeding, decreased wet diapers, resp distress).</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Timely follow-up arranged</b> (12&ndash;24h for concerning febrile child) &mdash; who and when.</div></div>
+      <div class="check"><div class="cbox"></div><div class="ctext"><b>Caregiver understanding documented</b> (verbalized / teach-back).</div></div>
+    </div>
+  </section>
+
+  <div class="callout tip"><span class="co-icon">✓</span><div class="co-body"><b>The peds atlas in one sentence:</b> attribute the history, chart the appearance in behaviors a stranger could picture, name and reason-down the killers with probabilistic language, review age-adjusted vitals, and arm the parent with specific precautions and timely follow-up they understood &mdash; then the chart reflects the careful assessment the standard of care protects.</div></div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <b>THE PEDIATRIC BULLETPROOF NOTE</b> &mdash; Deposition-Proof Peds Charting · Companion to The Bulletproof Note (adult) &amp; The Charting Atlas.<br>
+    <b>Not legal advice.</b> Pediatric decision tools and age thresholds are guideline- and institution-specific and change over time. The <b>PECARN febrile-infant tool applies only to well-appearing infants &lt;60 days meeting strict exclusion criteria and does not apply when HSV is a concern</b>; PECARN head-injury, PAS, and all lab thresholds carry inclusion caveats. Verify your institution's current pathway and every threshold before relying on it in a chart.<br>
+    Grounded via: AAP 2021 febrile-infant guideline (Pantell, Pediatrics 2021;148(2)) &amp; PECARN febrile-infant prediction tool · pediatric meningitis/sepsis malpractice literature (Selbst; Clinician.com peds meningitis review) · &ldquo;Charting Practices to Protect Against Malpractice&rdquo; (PMC9183775) · pediatric sepsis warning-sign literature. <b>Reviewed against sources current to July 2026.</b>
+  </div>
+</footer>
+<script>
+(function(){
+  const btn=document.getElementById('themeBtn');const root=document.documentElement;
+  btn.addEventListener('click',()=>{const c=root.getAttribute('data-theme');const n=c==='dark'?'light':'dark';root.setAttribute('data-theme',n);btn.textContent=n==='dark'?'◐ Light':'◑ Dark';});
+})();
+(function(){
+  const tabs=document.querySelectorAll('.domtab');const doms=document.querySelectorAll('.dom');
+  const nav=document.getElementById('domNav');const trigger=document.getElementById('domTrigger');
+  const dtNum=document.getElementById('dtNum');const dtLabel=document.getElementById('dtLabel');
+  function close(){nav.classList.remove('open');trigger.setAttribute('aria-expanded','false');}
+  function open(){nav.classList.add('open');trigger.setAttribute('aria-expanded','true');}
+  trigger.addEventListener('click',e=>{e.stopPropagation();nav.classList.contains('open')?close():open();});
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));doms.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');document.getElementById(t.dataset.dom).classList.add('active');
+    const num=t.querySelector('.tnum').textContent.trim();const label=t.textContent.replace(num,'').trim();
+    dtNum.textContent=num;dtLabel.textContent=label;close();window.scrollTo({top:0,behavior:'smooth'});
+  }));
+  document.addEventListener('click',e=>{if(nav.classList.contains('open')&&!nav.contains(e.target))close();});
+})();
+(function(){document.querySelectorAll('.trap-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));})();
+(function(){document.querySelectorAll('.cbox').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'✓':'';}));})();
+</script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 1 — Recognition &amp; Screening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c;
+  --accent-dim:#7a0c1e;
+  --accent-tint:#fdecee;
+  --bg:#faf8f6;
+  --bg-panel:#ffffff;
+  --bg-raised:#f4f0ee;
+  --text:#1c1917;
+  --text-dim:#57534e;
+  --text-faint:#8b8681;
+  --border:#e4dfdb;
+  --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5;
+  --warn-border:#f0b854;
+  --warn-text:#7a4a08;
+  --danger-bg:#fdecee;
+  --danger-border:#e88a95;
+  --good-bg:#eaf6ee;
+  --good-border:#8fd0a4;
+  --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72;
+  --accent-dim:#ff8a99;
+  --accent-tint:#2b1215;
+  --bg:#141210;
+  --bg-panel:#1c1917;
+  --bg-raised:#242020;
+  --text:#f2ede9;
+  --text-dim:#b8b0a9;
+  --text-faint:#7d766f;
+  --border:#332e2b;
+  --border-strong:#453f3b;
+  --warn-bg:#2e2410;
+  --warn-border:#8a6a1f;
+  --warn-text:#f0c165;
+  --danger-bg:#2b1215;
+  --danger-border:#7a2c35;
+  --good-bg:#122a1a;
+  --good-border:#2f6b47;
+  --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,sans-serif; line-height:1.6;
+  font-size:16px; transition:background .2s,color .2s;
+}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+mono, .mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+
+/* ---- Header ---- */
+header.top{
+  position:sticky; top:0; z-index:100;
+  background:var(--bg-panel); border-bottom:1px solid var(--border);
+  padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between;
+  gap:1rem; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{
+  width:34px; height:34px; border-radius:8px; background:var(--accent);
+  display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;
+}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{
+  background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text);
+  padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600;
+  cursor:pointer; display:flex; align-items:center; gap:.4rem;
+}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{
+  display:none; position:absolute; right:0; top:calc(100% + 6px);
+  background:var(--bg-panel); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:280px; padding:.4rem; z-index:200;
+  max-height:75vh; overflow-y:auto;
+}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{
+  display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text);
+  text-decoration:none; font-size:.87rem; font-weight:500;
+}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{
+  background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text);
+  width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ---- Layout ---- */
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+
+/* ---- Callout boxes ---- */
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;}
+.box p:last-child{margin-bottom:0;}
+
+/* ---- Tables ---- */
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+
+/* ---- Criteria cards ---- */
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+
+/* ---- Two column ---- */
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+
+/* ---- Ref list ---- */
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+
+/* ---- Algorithm ---- */
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{
+  border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem;
+  background:var(--bg-panel); box-shadow:var(--shadow); position:relative;
+}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+.flow-arrow{align-self:center; color:var(--text-faint); font-size:1.1rem;}
+
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S1</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 1</div>
+      <div class="sub">RECOGNITION &amp; SCREENING</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">Foundations</div>
+        <a href="#currency">Guideline Currency &amp; Scope</a>
+        <a href="#definitions">Sepsis-3 Definitions</a>
+        <div class="grp">Screening Tools</div>
+        <a href="#sirs">SIRS Criteria</a>
+        <a href="#hr90">The HR&gt;90 Problem</a>
+        <a href="#qsofa">qSOFA</a>
+        <a href="#sofa">SOFA Score (Full)</a>
+        <a href="#news2">NEWS2 &amp; Other Tools</a>
+        <div class="grp">Synthesis</div>
+        <a href="#compare">Comparative Performance</a>
+        <a href="#algorithm">Bedside Algorithm</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 1 of 6</div>
+    <h1>Sepsis Recognition &amp; Screening</h1>
+    <p class="lede">SIRS, qSOFA, and SOFA — what each tool actually catches, what it misses, and why a single vital sign should never carry the diagnosis. Anchored to the Surviving Sepsis Campaign International Guidelines, with every point-of-care sensitivity/specificity figure sourced to its original cohort.</p>
+  </div>
+
+  <section id="currency">
+    <h2 class="sec-title"><span class="num">01</span> Guideline Currency &amp; Scope</h2>
+
+    <div class="box danger">
+      <div class="box-title">⚠ Read before relying on this volume</div>
+      <p>The Surviving Sepsis Campaign published an <strong>entirely new international guideline in 2026</strong> — Prescott HC, Antonelli M, Alhazzani W, et al. <em>Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026.</em> Crit Care Med 2026;54:725–812 (epub Mar 23, 2026) — superseding the 2021 version that most current pocket references and app-based calculators are still built on. This document contains <strong>129 statements</strong>; of the 39 statements revisited from 2021, 7 are unchanged and 29 keep the 2021 recommendation but with revised wording or a new clarifying remark. The remainder are genuinely new.</p>
+      <p>This volume was built with real-time verification against the 2026 executive summary and primary literature — not from training memory, which predates this release. Where I am citing the 2026 document directly, it's flagged <span class="pill mid">SSC 2026</span>. Where content is unchanged, longstanding physiology or Sepsis-3 definitional framework, it's flagged <span class="pill hi">STABLE</span>. Full-text access to all 129 statements was not verified line-by-line — for any specific numbered recommendation you plan to defend in a chart or M&amp;M, pull the primary source (Crit Care Med 2026;54:725–812) directly.</p>
+    </div>
+
+    <p><strong>On "IDSA guidelines" for sepsis:</strong> IDSA does not publish an independent sepsis management guideline. The master document is the Surviving Sepsis Campaign (SCCM/ESICM-led, multi-society consensus). IDSA <em>endorsed</em> the 2021 SSC guidelines — notably, after declining to endorse the 2016 revision over concerns about antibiotic stewardship and the balance between speed-of-antibiotics and antimicrobial overuse. That tension — IDSA's stewardship lens versus SSC's time-to-antibiotic mandates — is real and gets its own callout in Volume 3 (Empiric Antibiotics). For this volume (recognition/screening), the relevant anchor is Sepsis-3 (Singer et al., JAMA 2016) as operationalized by SSC 2021/2026.</p>
+
+    <div class="box">
+      <div class="box-title">What this volume covers</div>
+      <p>Sepsis-3 definitions · SIRS criteria and their true test characteristics across care settings · the specific confounders behind an isolated HR&gt;90 (both false positives like pain/anxiety and false negatives like beta-blockade) · qSOFA and why SSC discourages using it alone · the full SOFA scoring table · NEWS2 · a synthesized comparison table · a practical bedside algorithm.</p>
+    </div>
+  </section>
+
+  <section id="definitions">
+    <h2 class="sec-title"><span class="num">02</span> Sepsis-3 Definitions <span class="pill hi">STABLE</span></h2>
+    <p>The Third International Consensus Definitions (Sepsis-3, Singer et al., JAMA 2016) remain the conceptual backbone carried forward into SSC 2021 and 2026. Two terms matter operationally:</p>
+
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Sepsis</div>
+        <p><strong>Life-threatening organ dysfunction caused by a dysregulated host response to infection.</strong></p>
+        <p>Operationalized as: suspected or confirmed infection + an acute increase in <strong>SOFA score ≥ 2 points</strong> from baseline (baseline assumed 0 if no known preexisting organ dysfunction).</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Septic Shock</div>
+        <p><strong>A subset of sepsis with profound circulatory, cellular, and metabolic abnormalities associated with a greater risk of mortality.</strong></p>
+        <p>Clinically: sepsis + vasopressor requirement to maintain <strong>MAP ≥ 65 mmHg</strong> + <strong>lactate &gt; 2 mmol/L</strong> despite adequate fluid resuscitation. In-hospital mortality in the derivation cohorts exceeded 40%.</p>
+      </div>
+    </div>
+
+    <h3>Why "severe sepsis" disappeared</h3>
+    <p>Sepsis-2 (2001) required SIRS ≥2 + infection + organ dysfunction to reach "severe sepsis." Sepsis-3 retired that tier entirely: sepsis now <em>is</em> what used to be called severe sepsis, and SIRS was demoted from a diagnostic requirement to an optional screening aid. If you trained before ~2017 or still hear "severe sepsis" on rounds, that terminology is deprecated — it will not appear in current SSC-based order sets or CMS SEP-1-adjacent quality metrics as a distinct category.</p>
+
+    <div class="box warn">
+      <div class="box-title">Practical tension you'll feel at the bedside</div>
+      <p>Sepsis-3's SOFA-based definition is precise for research and mortality-risk stratification but requires labs (creatinine, bilirubin, platelets, PaO2/FiO2) that aren't back at triage. That's the entire reason SIRS and qSOFA persist clinically — they're what you have <em>before</em> the SOFA-relevant data returns. Section 3 onward is about the tradeoffs each screening tool makes to fill that gap.</p>
+    </div>
+  </section>
+
+  <section id="sirs">
+    <h2 class="sec-title"><span class="num">03</span> SIRS Criteria</h2>
+    <p>Bone et al., 1992 ACCP/SCCM consensus. ≥2 of 4 criteria = SIRS positive. It was never designed to diagnose sepsis specifically — it was designed to flag physiologic stress broadly, sepsis included.</p>
+
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Temperature</div>
+        <div class="val">&gt;38.0°C or &lt;36.0°C</div>
+        <div class="detail">Core or equivalent. Note: many septic elderly and immunocompromised patients never mount fever — see box below.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Heart rate</div>
+        <div class="val">&gt;90 bpm</div>
+        <div class="detail">The single most confounded criterion in the set. Full breakdown in Section 4.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Respiratory rate</div>
+        <div class="val">&gt;20/min or PaCO₂ &lt;32 mmHg</div>
+        <div class="detail">Often the earliest abnormal vital sign and the most under-documented by triage staff.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">White blood cell count</div>
+        <div class="val">&gt;12,000 or &lt;4,000/mm³, or &gt;10% bands</div>
+        <div class="detail">The original 1992 criterion includes the band/immature-neutrophil clause — most EHR-embedded SIRS calculators drop it because differentials with band counts are inconsistently resulted, which quietly inflates measured SIRS-negative rates in database studies (see NEJM 2015;373:879 correspondence, Section 8).</div>
+      </div>
+    </div>
+
+    <h3>What the sensitivity data actually shows</h3>
+    <p>"How sensitive is SIRS?" doesn't have one number — sensitivity is population- and outcome-dependent, and this is where a lot of oversimplified teaching goes wrong. Three landmark data points, each in a different setting:</p>
+
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Study / setting</th><th>Population</th><th>SIRS sensitivity</th><th>What it was measuring</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Kaukonen et al., NEJM 2015</strong><br><span class="subnote">172 ICUs, Australia/NZ, n&gt;109,000</span></td>
+            <td>ICU patients with infection + organ dysfunction (severe sepsis by 2001 criteria)</td>
+            <td class="num"><span class="pill hi">~87.9%</span></td>
+            <td>Requiring SIRS ≥2 excluded <strong>1 in 8</strong> otherwise-identical infected patients with organ failure and substantial mortality — this is the paper that broke SIRS's monopoly on the sepsis definition and directly motivated Sepsis-3.</td>
+          </tr>
+          <tr>
+            <td><strong>Kim et al. (burn cohort), PMC9810178</strong><br><span class="subnote">Single center, n=1,391, suspected infection</span></td>
+            <td>Burn patients with suspected infection</td>
+            <td class="num"><span class="pill hi">98.9%</span><br><span class="subnote">(95% CI 98.2–99.4)</span></td>
+            <td>Specificity was the tradeoff: only <strong>46.1%</strong> — nearly half of SIRS-positive burn patients did not have Sepsis-3-defined sepsis. Burn injury itself is a profound SIRS trigger independent of infection.</td>
+          </tr>
+          <tr>
+            <td><strong>Tusgul et al., Scand J Trauma 2017</strong><br><span class="subnote">Prehospital + ED triage, n=886</span></td>
+            <td>Prehospital/ED patients with suspected infection</td>
+            <td class="num"><span class="pill mid">64–75%</span><br><span class="subnote">(varies by outcome: ICU admission, LOS≥3d, 48h mortality)</span></td>
+            <td>In the undifferentiated ED/prehospital population — where you actually work — SIRS sensitivity drops meaningfully below the ICU-cohort numbers above. This is the figure most relevant to triage decision-making.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <div class="box-title">Bottom line for chart defensibility</div>
+      <p>SIRS is <strong>high-sensitivity, low-specificity</strong> — it is built to over-trigger. That's a feature for a screening tool (you don't want to silently walk past sepsis), but it means a SIRS-positive patient is not thereby "septic" — pancreatitis, trauma, post-op state, PE, and simple dehydration all trigger SIRS routinely. Conversely, do <strong>not</strong> chart "SIRS-negative, sepsis excluded" as a stand-alone rule-out — in the ED/undifferentiated population, roughly a quarter to a third of patients who go on to need ICU-level care or die at 48h were SIRS-negative on the numbers above.</p>
+    </div>
+
+    <h3>Fever absence is not sepsis absence</h3>
+    <p>Elderly patients (blunted febrile response, up to ~20–30% present afebrile with serious bacterial infection in several geriatric cohorts), immunocompromised/neutropenic patients, patients on antipyretics or chronic NSAIDs, and patients with CKD/ESRD (impaired thermoregulation) can all be profoundly septic while normothermic or hypothermic. Hypothermic sepsis (&lt;36°C) is itself an independent marker of higher mortality — it is not a reassuring finding.</p>
+  </section>
+
+  <section id="hr90">
+    <h2 class="sec-title"><span class="num">04</span> The HR&gt;90 Problem</h2>
+    <p>You asked specifically how to think about a patient who's tachycardic "from pain or something" — this is worth its own section because heart rate is simultaneously the most sensitive-feeling vital sign at triage and the least specific SIRS criterion in practice. There isn't a single published "sensitivity of HR&gt;90 for sepsis when confounded by pain" statistic — that's a clinical-reasoning problem, not a validated instrument — so what follows is the physiology and the differential, framed explicitly as clinical reasoning rather than a cited trial finding.</p>
+
+    <div class="cols2">
+      <div class="box danger">
+        <div class="box-title">Causes tachycardia — mimics sepsis (false positive)</div>
+        <p><strong>Acute pain</strong> — sympathetic surge from nociception alone can push HR well past 90–100; typically improves within 15–30 min of adequate analgesia if pain was the sole driver.</p>
+        <p><strong>Anxiety / agitation / panic</strong> — catecholamine-driven, usually resolves with reassurance or brief observation.</p>
+        <p><strong>Non-septic hypovolemia</strong> — GI losses, poor PO intake, diuretic overuse.</p>
+        <p><strong>New arrhythmia</strong> — afib/aflutter with RVR, SVT — check the rhythm, not just the rate.</p>
+        <p><strong>Non-infectious fever</strong> — drug fever, thyroid storm, heat illness, malignant hyperthermia, serotonin syndrome/NMS.</p>
+        <p><strong>Physiologic states</strong> — pregnancy (baseline HR runs 10–20 bpm above non-pregnant norms by the 3rd trimester — see Volume 5), pediatric age-based norms, deconditioning.</p>
+        <p><strong>Stimulants / withdrawal</strong> — sympathomimetics, caffeine, alcohol or benzodiazepine withdrawal, albuterol/beta-agonist nebs just given in the ED.</p>
+        <p><strong>PE</strong> — tachycardia without fever; keep on the differential when SIRS-positive but source-negative.</p>
+        <p><strong>Anemia</strong> — compensatory tachycardia, especially acute GI bleed.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Masks tachycardia — false reassurance (false negative)</div>
+        <p><strong>Beta-blockers</strong> — the single most important one to actively check the med list for. A septic patient on metoprolol may sit at HR 78–85 despite hemodynamic compromise; the chronotropic response is blunted, not absent — look for a relative tachycardia (20+ bpm above their documented baseline) instead of an absolute threshold.</p>
+        <p><strong>Non-dihydropyridine CCBs</strong> (diltiazem, verapamil) — same principle.</p>
+        <p><strong>Chronotropic incompetence</strong> — elderly patients, sinus node dysfunction, permanent pacemakers programmed to a fixed or narrow-range rate.</p>
+        <p><strong>High-level spinal cord injury</strong> — impaired sympathetic outflow.</p>
+        <p><strong>Hypothyroidism</strong> — blunts the expected tachycardic response.</p>
+        <p><strong>Highly conditioned athletes</strong> — high resting vagal tone; their "90" may already represent a significant relative rise from a baseline of 50–55.</p>
+      </div>
+    </div>
+
+    <div class="box good">
+      <div class="box-title">Practical approach</div>
+      <p><strong>1. Trend it, don't snapshot it.</strong> A single triage HR of 96 in a patient rating pain 8/10 is low-yield in isolation. Recheck after analgesia — persistent tachycardia despite adequate pain control and fluids is far more concerning than an isolated number.</p>
+      <p><strong>2. Anchor to the patient's own baseline</strong>, not the population threshold, whenever prior vitals are available in the chart — especially for beta-blocked or elderly patients.</p>
+      <p><strong>3. Never let HR carry the decision alone.</strong> SIRS requires ≥2 criteria for a reason; combine with RR, temperature trend, WBC, mentation, and lactate before committing to (or excluding) a sepsis workup.</p>
+      <p><strong>4. Document the confounder explicitly</strong> if you're deliberately not pursuing a sepsis workup despite a positive criterion — "HR 104, improved to 78 after 1000mg IV acetaminophen and pain control, no other SIRS criteria, reassuring against sepsis" is a defensible chart note; a silent SIRS-positive vital sign with no documented reasoning is not.</p>
+    </div>
+  </section>
+
+  <section id="qsofa">
+    <h2 class="sec-title"><span class="num">05</span> qSOFA</h2>
+    <p>Introduced alongside Sepsis-3 (Seymour et al., JAMA 2016) as a bedside prompt — deliberately <em>not</em> a diagnostic tool — to flag infected patients at higher risk of a poor outcome <strong>outside the ICU</strong>, where full SOFA labs aren't readily available.</p>
+
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Respiratory rate</div>
+        <div class="val">≥ 22/min</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Systolic BP</div>
+        <div class="val">≤ 100 mmHg</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Altered mentation</div>
+        <div class="val">GCS &lt; 15</div>
+      </div>
+    </div>
+    <p><strong>≥2 of 3 = qSOFA positive</strong> — associated with higher risk of mortality/prolonged ICU stay in the derivation and multiple validation cohorts.</p>
+
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Study / setting</th><th>qSOFA sensitivity</th><th>qSOFA specificity</th></tr></thead>
+        <tbody>
+          <tr><td>Burn cohort (PMC9810178), n=1,391</td><td class="num"><span class="pill lo">84.1%</span> (95% CI 81.9–86.1)</td><td class="num"><span class="pill hi">92.9%</span> (95% CI 87.6–96.4)</td></tr>
+          <tr><td>Tusgul et al., prehospital, n=886</td><td class="num"><span class="pill lo">17.4–68.0%</span> (outcome-dependent)</td><td class="subnote">not reported in abstract</td></tr>
+          <tr><td>Tusgul et al., ED triage, n=886</td><td class="num"><span class="pill lo">30.5–60.0%</span> (outcome-dependent)</td><td class="subnote">not reported in abstract</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box danger">
+      <div class="box-title">SSC explicitly discourages qSOFA as a stand-alone screen</div>
+      <p>Across the ED/prehospital validation literature, qSOFA's specificity is consistently strong but its sensitivity is consistently the weakest of the three major tools — in some ED triage cohorts as low as ~30% for predicting ICU admission. SSC 2021 guidance (carried into 2026) is to <strong>not</strong> rely on qSOFA alone; use it alongside SIRS, NEWS/MEWS, and lactate rather than as a replacement screening gate. A qSOFA-negative patient can absolutely still be septic — treat a negative qSOFA as "does not rule out," not "ruled out."</p>
+    </div>
+  </section>
+
+  <section id="sofa">
+    <h2 class="sec-title"><span class="num">06</span> SOFA Score — Full Table <span class="pill hi">STABLE</span></h2>
+    <p>The reference standard for the Sepsis-3 definition. Six organ systems, 0–4 points each (max 24). An acute rise of <strong>≥2 points</strong> from baseline in the setting of infection = sepsis by definition.</p>
+
+    <div class="twrap">
+      <table>
+        <thead><tr><th>System</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Respiration</strong><br><span class="subnote">PaO₂/FiO₂ (mmHg)</span></td>
+            <td class="num">≥400</td><td class="num">&lt;400</td><td class="num">&lt;300</td>
+            <td class="num">&lt;200<br><span class="subnote">+ resp. support</span></td>
+            <td class="num">&lt;100<br><span class="subnote">+ resp. support</span></td>
+          </tr>
+          <tr>
+            <td><strong>Coagulation</strong><br><span class="subnote">Platelets, ×10³/µL</span></td>
+            <td class="num">≥150</td><td class="num">&lt;150</td><td class="num">&lt;100</td><td class="num">&lt;50</td><td class="num">&lt;20</td>
+          </tr>
+          <tr>
+            <td><strong>Liver</strong><br><span class="subnote">Bilirubin, mg/dL</span></td>
+            <td class="num">&lt;1.2</td><td class="num">1.2–1.9</td><td class="num">2.0–5.9</td><td class="num">6.0–11.9</td><td class="num">&gt;12.0</td>
+          </tr>
+          <tr>
+            <td><strong>Cardiovascular</strong></td>
+            <td class="num">MAP ≥70</td>
+            <td class="num">MAP &lt;70</td>
+            <td class="num">Dopamine &lt;5<br>or dobutamine (any)</td>
+            <td class="num">Dopamine 5.1–15<br>or Epi/Norepi ≤0.1</td>
+            <td class="num">Dopamine &gt;15<br>or Epi/Norepi &gt;0.1</td>
+          </tr>
+          <tr>
+            <td><strong>CNS</strong><br><span class="subnote">Glasgow Coma Scale</span></td>
+            <td class="num">15</td><td class="num">13–14</td><td class="num">10–12</td><td class="num">6–9</td><td class="num">&lt;6</td>
+          </tr>
+          <tr>
+            <td><strong>Renal</strong><br><span class="subnote">Creatinine, mg/dL (or UOP)</span></td>
+            <td class="num">&lt;1.2</td><td class="num">1.2–1.9</td><td class="num">2.0–3.4</td>
+            <td class="num">3.5–4.9<br><span class="subnote">or UOP &lt;500 mL/d</span></td>
+            <td class="num">&gt;5.0<br><span class="subnote">or UOP &lt;200 mL/d</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subnote">Vasopressor doses in µg/kg/min. Baseline SOFA is assumed 0 unless the patient has documented preexisting organ dysfunction (e.g., known baseline creatinine 2.5 in ESRD — use their true baseline, not 0, when calculating the delta).</p>
+  </section>
+
+  <section id="news2">
+    <h2 class="sec-title"><span class="num">07</span> NEWS2 &amp; Other Early Warning Tools</h2>
+    <p>SSC guidance (2021, carried into 2026) lists NEWS/NEWS2 and MEWS as acceptable adjuncts alongside or instead of SIRS/qSOFA for hospital-wide early warning, particularly because NEWS2 is already embedded in many EHR vitals-based alerting systems in the UK/NHS and increasingly in US systems.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Scored range</th></tr></thead>
+        <tbody>
+          <tr><td>Respiratory rate</td><td>0–3 points across bands from ≤8 to ≥25/min</td></tr>
+          <tr><td>SpO₂ (Scale 1 &amp; Scale 2 for hypercapnic COPD)</td><td>0–3 points</td></tr>
+          <tr><td>Supplemental O₂</td><td>0 or 2 points</td></tr>
+          <tr><td>Temperature</td><td>0–3 points, both hyper- and hypothermia scored</td></tr>
+          <tr><td>Systolic BP</td><td>0–3 points across bands</td></tr>
+          <tr><td>Heart rate</td><td>0–3 points across bands</td></tr>
+          <tr><td>Level of consciousness / new confusion</td><td>0 or 3 points</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A meta-analysis comparing qSOFA, SIRS, and NEWS for mortality prediction in suspected sepsis (Fernando et al.-type pooled analyses; see references) consistently finds the same pattern across tools: <strong>no single score achieves both high sensitivity and high specificity</strong> — each trades one for the other, which is the unifying lesson of this entire volume.</p>
+  </section>
+
+  <section id="compare">
+    <h2 class="sec-title"><span class="num">08</span> Comparative Performance — Synthesized</h2>
+    <div class="box warn">
+      <div class="box-title">Read this table correctly</div>
+      <p>These are point estimates pulled from the specific cited cohorts above, not a pooled meta-analytic truth applicable to every population. Sensitivity/specificity for all three tools shift substantially with case mix (ICU vs. ED vs. prehospital), the reference outcome chosen (mortality vs. ICU admission vs. LOS), and the underlying infection source. Use this as a teaching comparison, not a citable universal number — pull the specific cohort that matches your use case (chart defense, protocol design, teaching) from Section 10.</p>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Typical sensitivity</th><th>Typical specificity</th><th>Best use</th><th>Key weakness</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>SIRS</strong></td>
+            <td class="num"><span class="pill hi">Higher</span><br><span class="subnote">65–99% depending on setting</span></td>
+            <td class="num"><span class="pill lo">Lower</span><br><span class="subnote">as low as ~46% in high-SIRS-trigger populations</span></td>
+            <td>Initial screen — don't want to miss anyone</td>
+            <td>Massively over-triggers in trauma, post-op, pancreatitis, burns</td>
+          </tr>
+          <tr>
+            <td><strong>qSOFA</strong></td>
+            <td class="num"><span class="pill lo">Lower</span><br><span class="subnote">as low as ~17–36% in prehospital/ED cohorts</span></td>
+            <td class="num"><span class="pill hi">Higher</span><br><span class="subnote">up to ~93%</span></td>
+            <td>Rapid mortality-risk flag once infection already suspected</td>
+            <td>Misses a large share of patients who will deteriorate — not a rule-out tool</td>
+          </tr>
+          <tr>
+            <td><strong>SOFA</strong></td>
+            <td class="subnote">Reference standard by definition</td>
+            <td class="subnote">Reference standard by definition</td>
+            <td>Definitive diagnosis, severity stratification, research/quality metrics</td>
+            <td>Requires labs not available at triage; not a screening tool</td>
+          </tr>
+          <tr>
+            <td><strong>NEWS2</strong></td>
+            <td class="subnote">Comparable to or modestly better than SIRS/qSOFA in several pooled analyses</td>
+            <td class="subnote">Intermediate</td>
+            <td>Hospital-wide continuous monitoring, ward deterioration/failure-to-rescue systems (see Vol. 6)</td>
+            <td>Not sepsis-specific — flags any deteriorating patient</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="algorithm">
+    <h2 class="sec-title"><span class="num">09</span> Bedside Algorithm</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="stepnum">STEP 1</span> — Suspected infection (clinical gestalt, source symptoms, or incidental finding) — this is the trigger. No score replaces suspicion.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 2</span> — Calculate SIRS <em>and</em> qSOFA in parallel, not sequentially. Check the med list for beta-blockers/CCBs and the chart for the patient's own vital sign baseline before interpreting either.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 3</span> — Any positive screen (SIRS ≥2 <em>or</em> qSOFA ≥2 <em>or</em> strong clinical gestalt despite a negative score) → send lactate, blood cultures per Volume 2 thresholds, CBC with differential, BMP/LFTs for SOFA-relevant data, and begin the source workup.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 4</span> — Isolated single abnormal vital sign (e.g., HR&gt;90 alone) with a plausible non-infectious explanation → treat the confounder (analgesia, anxiolysis, volume for non-septic hypovolemia), then <strong>recheck vitals</strong> before deciding to stand down. Document the reasoning either way.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 5</span> — Labs return → calculate true SOFA delta from baseline. Infection + SOFA rise ≥2 = sepsis by definition → proceed to Volume 3 (antibiotics/source control) and Volume 4 (hemodynamics) on the SSC 1-hour bundle clock.</div>
+    </div>
+    <div class="box good">
+      <div class="box-title">Series roadmap</div>
+      <p>This is Volume 1 of 6. Next up, per your scoping: <strong>Volume 2 — Cultures &amp; Diagnostics</strong> (blood culture timing/thresholds, is there a WBC cutoff, lactate, procalcitonin), followed by Volume 3 (Empiric Antibiotics &amp; Source Control — including the unknown-source regimens), Volume 4 (Hemodynamics &amp; Vasopressors), Volume 5 (Special Populations: pregnancy, heart failure, immunocompromised/neutropenic, renal impairment, pediatric, cirrhosis/ESLD, elderly/frail), and Volume 6 (Prevention &amp; QI: post-sepsis syndrome, failure-to-rescue systems, and documentation/medicolegal fallout). Delivered iteratively, same as your other series.</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">10</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026. <em>Crit Care Med.</em> 2026;54:725–812.</li>
+      <li><span class="rn">2</span>Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. <em>Crit Care Med.</em> 2021;49(11):e1063–e1143. Endorsed by IDSA and 23 other societies.</li>
+      <li><span class="rn">3</span>Singer M, Deutschman CS, Seymour CW, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). <em>JAMA.</em> 2016;315(8):801–810.</li>
+      <li><span class="rn">4</span>Seymour CW, Liu VX, Iwashyna TJ, et al. Assessment of Clinical Criteria for Sepsis: For the Sepsis-3 Definitions. <em>JAMA.</em> 2016;315(8):762–774.</li>
+      <li><span class="rn">5</span>Kaukonen KM, Bailey M, Pilcher D, Cooper DJ, Bellomo R. Systemic Inflammatory Response Syndrome Criteria in Defining Severe Sepsis. <em>N Engl J Med.</em> 2015;372(17):1629–1638.</li>
+      <li><span class="rn">6</span>Freebairn R, Park MAJ. Systemic Inflammatory Response Syndrome Criteria for Severe Sepsis [Correspondence]. <em>N Engl J Med.</em> 2015;373(9):879–881.</li>
+      <li><span class="rn">7</span>Tusgul S, Carron PN, Yersin B, Calandra T, Dami F. Low sensitivity of qSOFA, SIRS criteria and sepsis definition to identify infected patients at risk of complication in the prehospital setting and at ED triage. <em>Scand J Trauma Resusc Emerg Med.</em> 2017;25:108.</li>
+      <li><span class="rn">8</span>Validation of Sepsis-3 using survival analysis and clinical evaluation of qSOFA, SIRS, and burn-specific SIRS in burn patients with suspected infection. <em>PMC9810178.</em></li>
+      <li><span class="rn">9</span>Raith EP, Udy AA, Bailey M, et al. Prognostic Accuracy of the SOFA Score, SIRS Criteria, and qSOFA Score for In-Hospital Mortality Among Adults With Suspected Infection Admitted to the ICU. <em>JAMA.</em> 2017;317(3):290–300.</li>
+      <li><span class="rn">10</span>Bone RC, Balk RA, Cerra FB, et al. Definitions for sepsis and organ failure and guidelines for the use of innovative therapies in sepsis. <em>Chest.</em> 1992;101(6):1644–1655.</li>
+      <li><span class="rn">11</span>Royal College of Physicians. National Early Warning Score (NEWS2). 2017 (with ongoing implementation updates).</li>
+      <li><span class="rn">12</span>A comparison of qSOFA, SIRS and NEWS in predicting the accuracy of mortality in patients with suspected sepsis: a meta-analysis. <em>PLoS One</em> (PubMed ID 35427367).</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 1 of 6 — Recognition &amp; Screening · Built for bedside/offline use, no external dependencies beyond typeface loading · Verify any SSC 2026 statement number against the primary source (Crit Care Med 2026;54:725–812) before citing it in a formal document.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body;
+  const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){
+    body.setAttribute('data-theme','light'); btn.textContent='🌙';
+  } else {
+    body.setAttribute('data-theme','dark'); btn.textContent='☀️';
+  }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

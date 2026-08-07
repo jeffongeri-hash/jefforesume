@@ -817,6 +817,76 @@ const AllPosts = () => {
       tags: ["Procedures", "Wound Care", "Clinical Education"]
     },
     {
+      title: "Sepsis Atlas Vol. 1 — Recognition & Screening",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Sepsis recognition and screening: SIRS vs qSOFA vs SOFA, screening tools, lactate thresholds, and time-zero definitions.",
+      image: businessPost,
+      slug: "sepsis-vol1-recognition-screening",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Sepsis Atlas Vol. 2 — Cultures & Diagnostics",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Blood cultures, source-specific sampling, biomarkers, and rapid molecular diagnostics in suspected sepsis.",
+      image: businessPost,
+      slug: "sepsis-vol2-cultures-diagnostics",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Sepsis Atlas Vol. 3 — Hemodynamics & Fluid Resuscitation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Fluid strategy, responsiveness assessment, vasopressor selection and titration, and MAP targets in septic shock.",
+      image: businessPost,
+      slug: "sepsis-vol3-hemodynamics-fluid-resuscitation",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Sepsis Atlas Vol. 4 — Empiric Antibiotics & Source Control",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Empiric antibiotic selection by source, timing, dosing in sepsis, de-escalation, and source-control priorities.",
+      image: businessPost,
+      slug: "sepsis-vol4-empiric-antibiotics-source-control",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Sepsis Atlas Vol. 5 — Special Populations",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Sepsis in pregnancy, neutropenia, cirrhosis, ESRD, immunosuppression, elderly, and pediatric patients.",
+      image: businessPost,
+      slug: "sepsis-vol5-special-populations",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Sepsis Atlas Vol. 6 — Prevention & QI",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "Sepsis bundles, SEP-1 compliance, quality improvement metrics, and prevention strategies.",
+      image: businessPost,
+      slug: "sepsis-vol6-prevention-qi",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
+      title: "Antibiotic & Steroid Indications Atlas — When They're Actually Warranted",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "June 20, 2026",
+      excerpt: "When antibiotics and steroids are truly indicated by condition — evidence thresholds, stewardship, and avoiding reflex prescribing.",
+      image: businessPost,
+      slug: "antibiotic-indications-atlas",
+      tags: ["Infectious Disease", "Emergency Medicine", "Clinical Education"]
+    },
+    {
       title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1194,6 +1264,13 @@ const AllPosts = () => {
     "pediatric-em-atlas": "Pediatrics",
     // Infectious Disease
     "antimicrobial-atlas": "Infectious Disease",
+    "sepsis-vol1-recognition-screening": "Infectious Disease",
+    "sepsis-vol2-cultures-diagnostics": "Infectious Disease",
+    "sepsis-vol3-hemodynamics-fluid-resuscitation": "Infectious Disease",
+    "sepsis-vol4-empiric-antibiotics-source-control": "Infectious Disease",
+    "sepsis-vol5-special-populations": "Infectious Disease",
+    "sepsis-vol6-prevention-qi": "Infectious Disease",
+    "antibiotic-indications-atlas": "Infectious Disease",
     // MSK
     "msk-neuromuscular-atlas": "Musculoskeletal",
     "msk-physical-exam-atlas": "Musculoskeletal",

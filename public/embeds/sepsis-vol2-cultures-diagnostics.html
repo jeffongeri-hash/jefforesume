@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 2 — Cultures &amp; Diagnostics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c; --accent-dim:#7a0c1e; --accent-tint:#fdecee;
+  --bg:#faf8f6; --bg-panel:#ffffff; --bg-raised:#f4f0ee;
+  --text:#1c1917; --text-dim:#57534e; --text-faint:#8b8681;
+  --border:#e4dfdb; --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72; --accent-dim:#ff8a99; --accent-tint:#2b1215;
+  --bg:#141210; --bg-panel:#1c1917; --bg-raised:#242020;
+  --text:#f2ede9; --text-dim:#b8b0a9; --text-faint:#7d766f;
+  --border:#332e2b; --border-strong:#453f3b;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1215; --danger-border:#7a2c35;
+  --good-bg:#122a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:280px; padding:.4rem; z-index:200; max-height:75vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.87rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+.flow-arrow{align-self:center; color:var(--text-faint); font-size:1.1rem;}
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S2</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 2</div>
+      <div class="sub">CULTURES &amp; DIAGNOSTICS</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">The Core Question</div>
+        <a href="#core">Is There a Universal Trigger?</a>
+        <a href="#shapiro">Shapiro Rule &amp; the WBC Answer</a>
+        <div class="grp">Technique &amp; Timing</div>
+        <a href="#timing">Timing: Before Antibiotics</a>
+        <a href="#sets">How Many Sets, How Much Volume</a>
+        <a href="#lowyield">Where Cultures Are Low-Yield</a>
+        <div class="grp">Adjunct Diagnostics</div>
+        <a href="#lactate">Lactate</a>
+        <a href="#pct">Procalcitonin &amp; Other Biomarkers</a>
+        <a href="#sep1">CMS SEP-1 Bundle Timing</a>
+        <a href="#algorithm">Bedside Algorithm</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 2 of 6</div>
+    <h1>Cultures &amp; Diagnostics</h1>
+    <p class="lede">When the literature actually supports drawing blood cultures, whether a WBC number should trigger the order, and what to do with lactate and procalcitonin while you wait. Anchored to SSC 2026, the Shapiro/mShapiro clinical decision rule, and the biomarker literature.</p>
+  </div>
+
+  <section id="core">
+    <h2 class="sec-title"><span class="num">01</span> Is There a Universal Trigger? <span class="pill mid">HONEST ANSWER: NO</span></h2>
+    <div class="box warn">
+      <div class="box-title">The uncomfortable truth</div>
+      <p>An ACEP Standard of Care Review Panel looking at this exact question found "no studies providing definitive guidelines regarding when blood cultures should be ordered," and explicitly noted that <strong>published guidelines do not clearly state a numeric threshold</strong> for when to draw cultures. SSC guidance says blood cultures should be obtained for patients with sepsis or septic shock, and for patients at moderate-to-high risk of bacteremia — but "moderate-to-high risk" is a clinical judgment, not a lab cutoff. This is genuinely unresolved in the literature, not a gap in your training.</p>
+    </div>
+    <p>What exists instead is a set of <strong>validated clinical decision rules</strong> that combine several variables — including but not limited to WBC — into a risk score. The best-studied of these is the Shapiro rule, which is the closest thing to a real answer to "is there a WBC count."</p>
+    <div class="box">
+      <div class="box-title">Scale of the problem</div>
+      <p>Bacteremia affects an estimated <strong>200,000 patients/year</strong> in the U.S. Despite that, ED blood cultures are <strong>positive only ~10%</strong> of the time overall, and in one VA-based ordering-practice audit, only <strong>53% of cultures drawn met appropriateness criteria</strong> by a structured risk algorithm — the rest were drawn for low-yield indications like uncomplicated cellulitis and cystitis. In febrile ambulatory outpatients specifically, pretest probability of true bacteremia runs as low as <strong>~2%</strong>. Over-ordering isn't free: false-positive (contaminated) cultures are independently associated with longer length of stay and higher cost.</p>
+    </div>
+  </section>
+
+  <section id="shapiro">
+    <h2 class="sec-title"><span class="num">02</span> The Shapiro Rule — and the WBC Answer</h2>
+    <p>Shapiro et al. (<em>J Emerg Med</em> 2008) derived and validated the most widely cited bacteremia-prediction rule from 3,730 ED patients (8.2% true bacteremia prevalence). It is the direct answer to your WBC question: <strong>yes, there is a WBC threshold in the literature — but it functions as one minor criterion in a weighted rule, never as a stand-alone trigger.</strong></p>
+
+    <div class="cols2">
+      <div class="box danger">
+        <div class="box-title">Major criteria — any ONE is sufficient</div>
+        <p>Temperature &gt; 39.5°C (103.0°F)</p>
+        <p>Indwelling vascular catheter</p>
+        <p>Clinical suspicion of endocarditis</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Minor criteria — need TWO</div>
+        <p>Temperature 38.3–39.4°C (101–102.9°F)</p>
+        <p>Age &gt; 65 years</p>
+        <p>Chills</p>
+        <p>Vomiting</p>
+        <p>Hypotension (SBP &lt; 90 mmHg)</p>
+        <p>Neutrophil % &gt; 80</p>
+        <p><strong>WBC &gt; 18,000/µL</strong></p>
+        <p>Bands &gt; 5% <span class="subnote">(modified Shapiro substitutes neutrophil % &gt;80 for bands, since band counts are often unavailable in real time)</span></p>
+        <p>Platelets &lt; 150,000/µL</p>
+        <p>Creatinine &gt; 2.0 mg/dL</p>
+      </div>
+    </div>
+
+    <div class="box good">
+      <div class="box-title">Rule performance</div>
+      <p><strong>≥1 major OR ≥2 minor criteria → draw blood cultures.</strong> Below that → classified "low risk," cultures may reasonably be omitted.</p>
+      <p>Derivation sensitivity: <strong>98%</strong> (95% CI 96–100%) · Validation sensitivity: <strong>97%</strong> (95% CI 94–100%) · Negative predictive value: <strong>99%</strong>. In an external Danish validation cohort, NPV was <strong>96%</strong> with an AUROC of <strong>0.83</strong>.</p>
+    </div>
+
+    <div class="box">
+      <div class="box-title">So — is there "a WBC count"?</div>
+      <p><strong>&gt;18,000/µL</strong> is the number that appears in the validated literature — but it only counts toward the decision when paired with at least one other minor criterion (or on its own alongside a major criterion). A WBC of 19,000 in an otherwise well-appearing, afebrile, normotensive 30-year-old with no other minor criteria does not, by this rule, mandate a blood culture. Leukocytosis or leukopenia (&lt;4,000, per SIRS) in the context of fever, hypotension, tachypnea, or altered mentation absolutely should push you toward cultures — but WBC alone was never validated as a solo trigger, and shouldn't be charted as one.</p>
+    </div>
+
+    <h3>Shapiro vs. SIRS as the ordering trigger</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Rule</th><th>Sensitivity</th><th>Specificity</th><th>Take</th></tr></thead>
+        <tbody>
+          <tr><td>Shapiro / mShapiro</td><td class="num"><span class="pill hi">97–98%</span></td><td class="num"><span class="pill lo">~29%</span></td><td>Best-validated bacteremia-specific rule; low specificity means it still over-orders, but far fewer negative cultures than "order on everyone."</td></tr>
+          <tr><td>SIRS ≥2 (as ordering trigger)</td><td class="subnote">Comparable or slightly lower in head-to-head ED cohorts</td><td class="subnote">Similarly low</td><td>Not purpose-built for bacteremia prediction — designed for broader physiologic stress, so it over-triggers in the same populations described in Volume 1.</td></tr>
+          <tr><td>Newer ML-based scores (BactoRisk/BactoScore, etc.)</td><td class="num">~90–95% at tunable thresholds</td><td class="subnote">Better than Shapiro/SIRS in early validation cohorts</td><td>Promising but not yet in mainstream guideline-embedded order sets — worth watching, not yet standard of care.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <div class="box-title">Combining a clinical rule with a biomarker beats either alone</div>
+      <p>The BACT cohort study (1,083 patients, 9.8% culture-positive) found Shapiro alone had AUC 0.733; procalcitonin alone AUC 0.796; <strong>Shapiro + PCT combined reached AUC 0.822</strong>. Restricting cultures to Shapiro ≥4 points OR PCT &gt;0.11 µg/L would have cut unnecessary (negative) cultures by <strong>25.6%</strong> while still catching <strong>100%</strong> of true positives in that cohort. A tighter cutoff (Shapiro ≥3 or PCT &gt;0.25) cut negative sampling by <strong>42.1%</strong> but missed <strong>3.8%</strong> of true positives — illustrating the real sensitivity/specimen-stewardship tradeoff you're actually making at the bedside.</p>
+    </div>
+  </section>
+
+  <section id="timing">
+    <h2 class="sec-title"><span class="num">03</span> Timing: Before Antibiotics <span class="pill mid">SSC 2026</span></h2>
+    <div class="box danger">
+      <div class="box-title">The number that should change practice</div>
+      <p>A multicenter ED study of 325 patients with sepsis-induced hypotension or hypoperfusion (SBP &lt; 90 mmHg or lactate ≥ 4 mmol/L), cited directly in the SSC 2026 guideline, found blood culture positivity fell from <strong>31.4% pre-antimicrobial to 19.4%</strong> at a median of just <strong>70 minutes</strong> post-antimicrobial (IQR 50–110 min) — a <strong>12.0% absolute</strong> and <strong>38.2% relative</strong> reduction in sensitivity. That's a substantial yield loss from a delay most clinicians would consider trivial. The guideline's directive: wherever possible, draw cultures <em>before</em> the first antimicrobial dose — but never let culture logistics delay antibiotics beyond the bundle window in a patient who is unstable (see Section 8, SEP-1).</p>
+    </div>
+    <p>Practical sequencing in a busy resuscitation: cultures first if the line is already in and the bottles are at bedside; if IV access is being obtained under time pressure and antibiotics are ready to push, don't let the culture draw meaningfully delay drug administration in septic shock — a few minutes' difference between "cultures then antibiotics" and "simultaneous" is far less costly than the 70-minute delay described above.</p>
+  </section>
+
+  <section id="sets">
+    <h2 class="sec-title"><span class="num">04</span> How Many Sets, How Much Volume</h2>
+    <div class="cols2">
+      <div class="box good">
+        <div class="box-title">Standard practice</div>
+        <p><strong>Two sets, from two separate peripheral sites</strong> (or one peripheral + one existing line if drawn simultaneously with a peripheral stick), each set containing an aerobic and anaerobic bottle, <strong>~8–10 mL per bottle</strong> — under-filling is one of the most common technical errors and directly reduces sensitivity.</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">SSC 2026 update — low-resource settings</div>
+        <p>A <strong>2025 systematic review</strong> cited in the SSC 2026 guideline found similar diagnostic yield between single and multiple blood culture sets, and the guideline states a <strong>single set can be justified in low-resource settings</strong>. This is a meaningful departure from the "always draw 2–3 sets" teaching — but it's explicitly scoped to resource-limited contexts, not a blanket downgrade of the two-site standard in a well-resourced U.S. ED or ICU.</p>
+      </div>
+    </div>
+    <p>Two sets from two sites also serves a second purpose beyond yield: it helps distinguish true bacteremia from contamination (a organism growing in both sets is far more likely pathogenic than one isolated coagulase-negative <em>Staph</em> in a single bottle). Typical contamination rates run in the <strong>2–3%</strong> range with good technique (chlorhexidine skin prep, new needle for bottle inoculation if using a syringe-and-transfer technique); contamination drives unnecessary repeat cultures, prolonged antibiotics, and increased length of stay.</p>
+  </section>
+
+  <section id="lowyield">
+    <h2 class="sec-title"><span class="num">05</span> Where Cultures Are Low-Yield</h2>
+    <div class="box">
+      <div class="box-title">Diagnoses where routine blood cultures are generally NOT recommended</div>
+      <p>A structured ED literature review (<em>J Emerg Med</em>/ACEP "Best Clinical Practice" series) concluded blood cultures are not routinely indicated for <strong>uncomplicated cellulitis</strong>, <strong>simple (uncomplicated) pyelonephritis</strong>, and <strong>community-acquired pneumonia</strong> in patients who are not otherwise high-risk — in each, the false-positive/contamination rate exceeds the true bacteremia prevalence, so the test is more likely to mislead than inform. This doesn't mean "never" — a patient with pyelonephritis who also meets Shapiro or SIRS criteria for systemic illness is a different question — but reflexively culturing every UTI or cellulitis is low-value care.</p>
+    </div>
+  </section>
+
+  <section id="lactate">
+    <h2 class="sec-title"><span class="num">06</span> Lactate <span class="pill hi">STABLE</span></h2>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Sepsis</div>
+        <div class="val">Measure at presentation</div>
+        <div class="detail">Elevated lactate reflects tissue hypoperfusion/anaerobic metabolism (and, in sepsis, also impaired clearance and cellular metabolic dysfunction — it isn't purely a hypoperfusion marker).</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Septic shock threshold</div>
+        <div class="val">&gt; 2 mmol/L</div>
+        <div class="detail">Required (alongside vasopressor need despite adequate fluids) to meet the Sepsis-3 septic shock definition.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Severely elevated</div>
+        <div class="val">≥ 4 mmol/L</div>
+        <div class="detail">Used as an enrollment/severity threshold in multiple sepsis trials (including the culture-timing study above) — a marker of high-risk hypoperfusion regardless of blood pressure.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Trend, not snapshot</div>
+        <div class="val">Remeasure at 2–4h</div>
+        <div class="detail">Guide resuscitation to lactate clearance/normalization rather than a single value — a downtrending lactate is reassuring even if the first number was alarming.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pct">
+    <h2 class="sec-title"><span class="num">07</span> Procalcitonin &amp; Other Biomarkers</h2>
+    <div class="box warn">
+      <div class="box-title">No single universal cutoff — same honesty as Volume 1</div>
+      <p>Published PCT cutoffs for predicting bacteremia or bacterial (vs. viral/fungal) infection range widely by study population and outcome measured — reported optimal cutoffs cluster anywhere from <strong>~0.11 ng/mL</strong> (culture-reduction threshold in the BACT cohort) up through <strong>2.0–3.6 ng/mL</strong> (bacterial-vs-nonbacterial discrimination, gram-negative prediction) depending on the comparator group. Treat any single "the PCT cutoff is X" claim with the same skepticism you'd apply to a single SIRS number — check what outcome and population the cutoff was derived against before applying it.</p>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Biomarker</th><th>Reported AUC range</th><th>Practical role</th></tr></thead>
+        <tbody>
+          <tr><td>Procalcitonin (PCT)</td><td class="num">0.67–0.96</td><td>Consistently outperforms CRP and WBC/TLC for predicting bacteremia and bacterial vs. non-bacterial etiology across the cited cohorts; best used to <em>increase or decrease</em> pretest probability alongside a clinical rule, not as a stand-alone rule-in/rule-out test.</td></tr>
+          <tr><td>C-reactive protein (CRP)</td><td class="num">0.46–0.62</td><td>Consistently the weakest performer of the three in head-to-head comparisons in these cohorts; a point-of-care CRP has been studied specifically to help physicians <em>avoid</em> unnecessary blood cultures.</td></tr>
+          <tr><td>Neutrophil-lymphocyte ratio (NLR)</td><td class="num">~0.67–0.74</td><td>Cheap, available on any CBC with differential; comparable to modified Shapiro in at least one direct comparison, but combining the two didn't improve on either alone.</td></tr>
+          <tr><td>Presepsin</td><td class="num">~0.60–0.72</td><td>Emerging marker; in one cross-sectional cohort PCT still outperformed it for bacteremia/culture-proven infection, though presepsin tracked mortality slightly better.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="sep1">
+    <h2 class="sec-title"><span class="num">08</span> CMS SEP-1 Bundle Timing</h2>
+    <div class="box">
+      <p>The CMS SEP-1 core measure — the quality metric most EDs are actually graded against — requires, within the relevant time-zero window: <strong>blood cultures drawn before antibiotic administration</strong>, <strong>lactate measured</strong> (repeat lactate if initial &gt;2 mmol/L), <strong>broad-spectrum antibiotics</strong>, and for septic shock, <strong>30 mL/kg crystalloid</strong> initiated within 3 hours, with reassessment of volume status/perfusion. This is a documentation and process measure, not itself a clinical guideline — but because it's what triggers chart audits and (per your notes on medicolegal fallout) is often what a plaintiff's expert reconstructs a timeline against, it's worth knowing the exact sequence it expects: cultures → lactate → antibiotics → fluids, all clocked from time-zero, with the specific timestamps documented.</p>
+    </div>
+  </section>
+
+  <section id="algorithm">
+    <h2 class="sec-title"><span class="num">09</span> Bedside Algorithm</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="stepnum">STEP 1</span> — Suspected infection + any SIRS/qSOFA positivity (Volume 1) → calculate Shapiro/mShapiro in parallel with your clinical gestalt.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 2</span> — ≥1 major or ≥2 minor Shapiro criteria (temp &gt;39.5°C, indwelling catheter, endocarditis concern, or ≥2 of: age&gt;65, chills, vomiting, SBP&lt;90, neutrophil%&gt;80, WBC&gt;18k, bands&gt;5%, platelets&lt;150k, Cr&gt;2.0) → draw 2 sets/2 sites, 8–10mL/bottle, <strong>before</strong> antibiotics if it won't delay the SEP-1 clock.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 3</span> — Low-risk by Shapiro AND low-yield source (uncomplicated cellulitis/simple pyelo/CAP without sepsis criteria) → cultures likely low-value; reserve for patients who don't improve as expected or who have other risk factors (immunocompromise, indwelling hardware, IVDU).</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 4</span> — Send lactate on every patient meeting a sepsis screen; repeat at 2–4h if initial &gt;2 mmol/L. Consider PCT as an adjunct pretest-probability shifter where available, not as a stand-alone gate.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 5</span> — Document the SEP-1 timestamps (time-zero, culture draw time, antibiotic administration time, fluid initiation time) explicitly in the chart regardless of which way the clinical decision goes.</div>
+    </div>
+    <div class="box good">
+      <div class="box-title">Series roadmap</div>
+      <p>This is Volume 2 of 6. Next: <strong>Volume 3 — Empiric Antibiotics &amp; Source Control</strong>, including your unknown-source regimen question and the IDSA-stewardship-vs-SSC-timing tension flagged in Volume 1.</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">10</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2026. <em>Crit Care Med.</em> 2026;54:725–812.</li>
+      <li><span class="rn">2</span>Shapiro NI, Wolfe RE, Wright SB, Moore R, Bates DW. Who needs a blood culture? A prospectively derived and validated prediction rule. <em>J Emerg Med.</em> 2008;35(3):255–264.</li>
+      <li><span class="rn">3</span>External validation of the Shapiro bacteremia prediction rule, Aarhus University Hospital cohort. <em>PMC3953242.</em></li>
+      <li><span class="rn">4</span>Evaluating Clinical Prediction Rules for Bacteremia Detection in the Emergency Department: A Retrospective Review (modified-Shapiro vs. SIRS). <em>J Emerg Med</em> 2023 (in press/online).</li>
+      <li><span class="rn">5</span>Clinical scores and blood biomarkers for prediction of bacteremia: Bacteremia Assessment in Clinical Triage (BACT) study. <em>PMC4472276.</em></li>
+      <li><span class="rn">6</span>Coburn B, Morris AM, Tomlinson G, Detsky AS. Best Clinical Practice: Blood Culture Utility in the Emergency Department. <em>J Emerg Med</em> (ScienceDirect summary).</li>
+      <li><span class="rn">7</span>ACEP Standard of Care Review: Treatment of Patients with Pending Blood Cultures in the Emergency Department.</li>
+      <li><span class="rn">8</span>P-1589: Characterization of Blood Culture Ordering Practices at a Single VA Medical Center. <em>PMC11778869.</em></li>
+      <li><span class="rn">9</span>Deficits in blood culture collection in the ED if sepsis is suspected: retrospective cohort, 3 German EDs. <em>Infection</em> 2024.</li>
+      <li><span class="rn">10</span>Procalcitonin as a marker of gram-negative bacteremia in sepsis; multiple procalcitonin diagnostic-accuracy cohorts cited in Section 7.</li>
+      <li><span class="rn">11</span>CMS Sepsis Bundle (SEP-1) core measure specifications, QualityNet.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 2 of 6 — Cultures &amp; Diagnostics · Built for bedside/offline use, no external dependencies beyond typeface loading · Verify any SSC 2026 statement number against the primary source (Crit Care Med 2026;54:725–812) before citing it in a formal document.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiothoracic Surgery Atlas · Vol. 2 — Thoracic Surgery</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-pneumo: #4fc3f7;
+  --accent-esoph: #ef5350;
+  --accent-mediastinal: #ba68c8;
+  --accent-trauma: #ff8a65;
+  --accent-resection: #aed581;
+  --accent-pleural: #ffb74d;
+  --accent: #4fc3f7;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-pneumo: #0d6d8f;
+  --accent-esoph: #b3261e;
+  --accent-mediastinal: #7b3f96;
+  --accent-trauma: #c85a2e;
+  --accent-resection: #5a7d1f;
+  --accent-pleural: #a25b00;
+  --accent: #0d6d8f;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#pneumo { --sec-accent: var(--accent-pneumo); }
+#esoph { --sec-accent: var(--accent-esoph); }
+#mediastinal { --sec-accent: var(--accent-mediastinal); }
+#trauma { --sec-accent: var(--accent-trauma); }
+#resection { --sec-accent: var(--accent-resection); }
+#pleural { --sec-accent: var(--accent-pleural); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiothoracic Surgery Atlas</span>
+    <span class="title">Vol. 2 — Thoracic Surgery</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#pneumo">Pneumothorax &amp; Chest Tubes</option>
+      <option value="#esoph">Esophageal Emergencies</option>
+      <option value="#mediastinal">Mediastinal Disease</option>
+      <option value="#trauma">Thoracic Trauma</option>
+      <option value="#resection">Lung Resection Complications</option>
+      <option value="#pleural">Pleural Space Disease</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Thoracic Surgery</h1>
+  <p class="lede">The non-cardiac side of cardiothoracic practice — built to the 2023 British Thoracic Society Pleural Disease Guideline (a genuine paradigm shift away from size-based pneumothorax management) and standard esophageal/mediastinal/trauma surgical principles, with animated diagrams and interactive decision tools throughout.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-pneumo)" href="#pneumo">
+      <div class="n">01</div><div class="t">Pneumothorax &amp; Chest Tubes</div>
+      <div class="d">2023 BTS symptom-based approach, animated tension physiology</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-esoph)" href="#esoph">
+      <div class="n">02</div><div class="t">Esophageal Emergencies</div>
+      <div class="d">Boerhaave's syndrome, perforation, anastomotic leaks</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-mediastinal)" href="#mediastinal">
+      <div class="n">03</div><div class="t">Mediastinal Disease</div>
+      <div class="d">Compartments, masses, mediastinitis</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-trauma)" href="#trauma">
+      <div class="n">04</div><div class="t">Thoracic Trauma</div>
+      <div class="d">Flail chest, tracheobronchial injury, interactive triage</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-resection)" href="#resection">
+      <div class="n">05</div><div class="t">Lung Resection Complications</div>
+      <div class="d">Bronchopleural fistula, persistent air leak, post-pneumonectomy syndrome</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-pleural)" href="#pleural">
+      <div class="n">06</div><div class="t">Pleural Space Disease</div>
+      <div class="d">Empyema staging, chylothorax</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: PNEUMO -->
+
+<section class="section" id="pneumo">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Thoracic Surgery</div>
+  <h2 class="section-title">Pneumothorax &amp; Chest Tubes</h2>
+  <p class="section-sub">The 2023 British Thoracic Society guideline is a genuine paradigm shift — read this even if pneumothorax management feels like settled knowledge from your training.</p>
+
+  <h3 class="sub-title">Tension Physiology (animated)</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_tension" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_tension" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_tension" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_tension" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-pneumo)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Tension pneumothorax mechanism (animated)</text>
+<rect x="60" y="50" width="380" height="280" rx="20" fill="var(--surface)" stroke="var(--border)" stroke-width="2"/>
+<rect x="540" y="50" width="380" height="280" rx="20" fill="var(--surface)" stroke="var(--border)" stroke-width="2"/>
+<text x="250" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">AFFECTED SIDE</text>
+<text x="730" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">UNAFFECTED SIDE</text>
+<circle cx="250" cy="190" r="60" fill="var(--danger)" opacity="0.15" stroke="var(--danger)" stroke-width="2"/>
+<text x="250" y="185" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">Air enters on</text>
+<text x="250" y="202" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">inspiration, trapped</text>
+<text x="250" y="219" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">(one-way valve)</text>
+<line x1="490" y1="50" x2="490" y2="330" stroke="var(--warn)" stroke-width="5">
+  <animate attributeName="x1" values="490;580;580;490" keyTimes="0;0.4;0.8;1" dur="4s" repeatCount="indefinite"/>
+  <animate attributeName="x2" values="490;580;580;490" keyTimes="0;0.4;0.8;1" dur="4s" repeatCount="indefinite"/>
+</line>
+<text x="490" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="var(--warn)" font-family="Inter, sans-serif">
+  <animate attributeName="x" values="490;580;580;490" keyTimes="0;0.4;0.8;1" dur="4s" repeatCount="indefinite"/>
+  MEDIASTINUM
+</text>
+<rect x="70" y="60" width="20" height="260" fill="var(--danger)" opacity="0.35">
+  <animate attributeName="width" values="20;170;170;20" keyTimes="0;0.4;0.8;1" dur="4s" repeatCount="indefinite"/>
+</rect>
+<line x1="20" y1="360" x2="960" y2="360" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="384" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">As trapped air accumulates under pressure, the mediastinum shifts away from the affected side -- compressing the contralateral lung, kinking the great veins</text>
+<text x="20" y="402" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">(reducing venous return/preload), and eventually causing obstructive shock. This is a clinical diagnosis -- treat immediately, do not wait for imaging confirmation.</text>
+</svg>
+    <div class="diagram-caption">A one-way valve mechanism lets air enter the pleural space on inspiration but prevents its escape — pressure accumulates, the mediastinum shifts, venous return falls, and obstructive shock follows.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Tension pneumothorax is a clinical diagnosis</span>
+    <p>Hypotension, tracheal deviation, absent breath sounds, and distended neck veins in the right clinical context (trauma, positive-pressure ventilation, recent central line attempt) should prompt immediate needle or finger thoracostomy decompression — do not wait for a chest X-ray to confirm what the clinical picture already tells you. The time cost of imaging confirmation is exactly the time that can't be afforded in true tension physiology.</p>
+  </div>
+
+  <h3 class="sub-title">The 2023 BTS Paradigm Shift</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_pneumo_bts" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_pneumo_bts" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_pneumo_bts" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_pneumo_bts" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-pneumo)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2023 BTS pathway: symptoms drive management, not size</text>
+<text x="20" y="52" font-size="12" fill="var(--text-mute)" font-family="Inter, sans-serif">This is a genuine paradigm shift from older size-based (e.g., "&gt;2-3cm") teaching -- read this section even if you learned pneumothorax management years ago.</text>
+<rect x="20" y="76" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="170.0" y="94" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">Minimally symptomatic or asymptomatic</text>
+<text x="170.0" y="172.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Conservative management can be considered REGARDLESS OF SIZE -- this is the headline change from 2023</text>
+<rect x="340" y="76" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="490.0" y="94" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Symptomatic, good support available</text>
+<text x="490.0" y="172.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ambulatory management (e.g., a one-way valve device) should be considered for initial treatment of primary spontaneous pneumothorax</text>
+<rect x="660" y="76" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="94" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Not suitable for conservative/ambulatory care</text>
+<text x="810.0" y="172.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Needle aspiration or tube drainage for initial treatment -- reserved for those who don't fit the categories above</text>
+<line x1="20" y1="270" x2="960" y2="270" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="294" font-size="12.5" font-weight="700" fill="var(--accent-pneumo)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Secondary spontaneous pneumothorax -- still more cautious</text>
+<rect x="20" y="310" width="920" height="80" rx="12" fill="var(--surface)" stroke="var(--accent-pneumo)" stroke-width="1.6"/>
+<text x="480.0" y="339.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Underlying lung disease (COPD, ILD) means less physiologic reserve to tolerate even a small pneumothorax --</text>
+<text x="480.0" y="353.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">these patients generally still warrant a lower threshold for intervention than primary spontaneous pneumothorax,</text>
+<text x="480.0" y="367.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">and chemical pleurodesis can be considered to prevent recurrence in appropriate candidates (e.g., severe COPD with decompensation).</text>
+<line x1="20" y1="410" x2="960" y2="410" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="434" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Size still matters for procedural SAFETY (a very large pneumothorax changes needle/tube insertion technique) -- it just no longer independently dictates WHETHER to intervene.</text>
+</svg>
+    <div class="diagram-caption">The headline change: pneumothorax size is no longer the deciding factor for whether to intervene — symptom burden is. A large but minimally symptomatic primary spontaneous pneumothorax can now reasonably be managed conservatively.</div>
+  </div>
+
+  <h4 class="micro-title">What This Means in Practice</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Conservative management, regardless of size</span><p>An asymptomatic or minimally symptomatic primary spontaneous pneumothorax — even a large one — can be observed rather than automatically drained, provided appropriate follow-up is arranged. This directly overturns older teaching that used a fixed size threshold (commonly 2-3cm) as an automatic trigger for intervention.</p></div>
+    <div class="callout"><span class="callout-label">Ambulatory management as a first-line option</span><p>For symptomatic primary spontaneous pneumothorax in patients with good support and access to follow-up, a one-way ambulatory valve device (allowing the patient to be treated and often discharged rather than admitted for traditional tube drainage) should be considered as initial therapy — a meaningfully different default than "everyone symptomatic gets an admission and a chest tube."</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Secondary spontaneous pneumothorax is still handled more cautiously</span>
+    <p>Underlying lung disease (COPD, interstitial lung disease) means less physiologic reserve — these patients generally still warrant a lower threshold for intervention than the primary spontaneous pneumothorax pathway above, and chemical pleurodesis is a reasonable consideration to prevent recurrence in patients who've already decompensated significantly from a secondary pneumothorax.</p>
+  </div>
+
+  <h4 class="micro-title">Chest Tube Basics Worth Reinforcing</h4>
+  <p>Size still matters for procedural safety even though it no longer independently dictates whether to intervene — a very large pneumothorax changes insertion technique considerations and raises awareness for re-expansion pulmonary edema risk with rapid large-volume drainage. Standard triangle-of-safety landmarks (5th intercostal space, anterior to mid-axillary line) remain the standard insertion site regardless of the size-vs-symptom management question above.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Immediate intervention</dt><dd>Any tension physiology — needle/finger decompression now, do not wait for confirmation or transfer.</dd>
+      <dt>Consult now</dt><dd>Thoracic surgery/pulmonology for any pneumothorax requiring drainage, persistent air leak, or recurrent pneumothorax being considered for pleurodesis or surgical intervention.</dd>
+      <dt>Transfer if no thoracic surgery on-site</dt><dd>Any pneumothorax with a persistent air leak beyond several days, recurrent pneumothorax, or secondary spontaneous pneumothorax in a patient with limited pulmonary reserve who may need surgical intervention.</dd>
+      <dt>Transport considerations</dt><dd>Any patient being transported with a chest tube in place needs a functioning, properly secured drainage system throughout transport, with a plan for what to do if the system is disrupted en route; needle decompression equipment should be immediately available for any patient at risk of tension physiology during transport.</dd>
+      <dt>Who to call</dt><dd>Thoracic surgery for procedural intervention beyond simple tube drainage, or for any persistent/complex air leak; pulmonology for ambulatory valve management and outpatient follow-up planning.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: ESOPH -->
+
+<section class="section" id="esoph">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Thoracic Surgery</div>
+  <h2 class="section-title">Esophageal Emergencies</h2>
+  <p class="section-sub">Mortality in esophageal perforation is driven almost entirely by time to diagnosis — this is a condition where the differential needs to come to mind early, since the classic triad often doesn't fully present.</p>
+
+  <h3 class="sub-title">Boerhaave Syndrome vs. Iatrogenic Perforation</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_esoph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_esoph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_esoph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_esoph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Boerhaave syndrome vs. iatrogenic perforation</text>
+<rect x="20" y="40" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">BOERHAAVE SYNDROME</text>
+<text x="250.0" y="71.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Spontaneous full-thickness esophageal</text>
+<text x="250.0" y="84.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">rupture from a sudden rise in intraluminal</text>
+<text x="250.0" y="97.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pressure against a closed glottis --</text>
+<text x="250.0" y="109.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">classically after forceful vomiting/retching</text>
+<text x="250.0" y="122.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="135.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: left posterolateral distal</text>
+<text x="250.0" y="148.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">esophagus (area of relative wall weakness)</text>
+<text x="250.0" y="161.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="173.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">MACKLER'S TRIAD: vomiting, chest pain,</text>
+<text x="250.0" y="186.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">subcutaneous emphysema -- present</text>
+<text x="250.0" y="199.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">together in only a minority of cases,</text>
+<text x="250.0" y="212.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">don't wait for all three</text>
+<text x="250.0" y="225.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="237.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Mortality rises sharply with any diagnostic</text>
+<text x="250.0" y="250.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">delay beyond 24 hours</text>
+<rect x="500" y="40" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-esoph)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase">IATROGENIC PERFORATION</text>
+<text x="730.0" y="71.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Far more common overall than Boerhaave's --</text>
+<text x="730.0" y="84.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">endoscopy (especially therapeutic:</text>
+<text x="730.0" y="97.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">dilation, stenting, EMR/ESD) is the leading</text>
+<text x="730.0" y="109.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cause</text>
+<text x="730.0" y="122.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="135.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: varies by procedure -- often</text>
+<text x="730.0" y="148.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cervical esophagus with rigid</text>
+<text x="730.0" y="161.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">instrumentation, or at a stricture/tumor</text>
+<text x="730.0" y="173.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">site during therapeutic dilation</text>
+<text x="730.0" y="186.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="199.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Often recognized immediately during the</text>
+<text x="730.0" y="212.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">procedure itself -- earlier recognition</text>
+<text x="730.0" y="225.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">generally means better outcomes than</text>
+<text x="730.0" y="237.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the delayed presentation typical of</text>
+<text x="730.0" y="250.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">spontaneous rupture</text>
+<line x1="20" y1="284" x2="960" y2="284" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="308" font-size="12.5" font-weight="700" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Diagnosis &amp; management principles</text>
+<rect x="20" y="324" width="300" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-esoph)" stroke-width="1.6"/>
+<text x="170.0" y="342" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase">CT with oral contrast</text>
+<text x="170.0" y="395.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">First-line imaging -- identifies extraluminal air/fluid, contrast leak, and mediastinal involvement</text>
+<rect x="340" y="324" width="300" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-esoph)" stroke-width="1.6"/>
+<text x="490.0" y="342" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Esophagram</text>
+<text x="490.0" y="395.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Water-soluble contrast swallow study can localize the leak precisely if CT is equivocal or surgical planning needs detail</text>
+<rect x="660" y="324" width="300" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-esoph)" stroke-width="1.6"/>
+<text x="810.0" y="342" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-esoph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Treatment stratification</text>
+<text x="810.0" y="395.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Small, contained leak in a stable patient may be managed with endoscopic stent/vacuum therapy + drainage; larger or uncontained leaks need surgical repair</text>
+</svg>
+    <div class="diagram-caption">Both mechanisms produce the same downstream emergency — esophageal contents contaminating the mediastinum — but differ in typical location, mechanism, and how quickly they're usually recognized.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Don't wait for Mackler's triad</span>
+    <p>Vomiting, chest pain, and subcutaneous emphysema together are present in only a minority of Boerhaave syndrome cases at presentation. A patient with severe chest/epigastric pain after forceful vomiting or retching deserves esophageal perforation on the differential even without the full triad — waiting for subcutaneous emphysema to develop before considering the diagnosis costs valuable time in a condition where every hour of delay measurably worsens outcomes.</p>
+  </div>
+
+  <h4 class="micro-title">Expandable: Working Through Suspected Perforation</h4>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Clinical suspicion based on history and exam</summary>
+    <div class="algo-body">
+      <p>Severe chest/epigastric/back pain after vomiting, retching, forceful straining, or recent esophageal instrumentation should trigger this diagnosis as a real consideration, not an exotic afterthought. Physical exam findings (subcutaneous emphysema, Hamman's crunch — a crunching sound synchronous with heartbeat from mediastinal air) support but their absence doesn't exclude the diagnosis.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — CT chest/abdomen with oral contrast</summary>
+    <div class="algo-body">
+      <p>First-line imaging in most centers — identifies extraluminal air, fluid collections, mediastinal widening, and often the contrast leak itself. Faster and more readily available than a formal esophagram in most emergency settings, and provides additional information about the surrounding mediastinum and pleural spaces.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Esophagram if CT is equivocal or precise localization is needed</summary>
+    <div class="algo-body">
+      <p>A water-soluble contrast swallow study (not barium, which causes significant mediastinal inflammation if it extravasates) can precisely localize the leak site — useful information for surgical or endoscopic planning even after CT has established the diagnosis.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Stratify management by leak characteristics and stability</summary>
+    <div class="algo-body">
+      <p>A small, well-contained leak in a clinically stable patient (increasingly the case with earlier iatrogenic recognition during endoscopy) may be managed with endoscopic therapy — covered stent placement or endoscopic vacuum therapy — plus adequate drainage and broad-spectrum antibiotics, avoiding open surgery entirely. A larger, uncontained leak, or any hemodynamically unstable patient, needs surgical repair, typically with wide mediastinal drainage regardless of whether primary repair is feasible.</p>
+    </div>
+  </details>
+
+  <div class="callout pearl">
+    <span class="callout-label">Broad-spectrum coverage from the start</span>
+    <p>Esophageal perforation contaminates the mediastinum with a mixed oral/gastric flora — broad-spectrum antibiotics covering gram-positive, gram-negative, and anaerobic organisms (plus antifungal coverage in many protocols, given the frequency of Candida in esophageal flora) should start empirically as soon as the diagnosis is suspected, not held pending culture results or definitive source control.</p>
+  </div>
+
+  <h4 class="micro-title">Anastomotic Leaks — A Related But Distinct Problem</h4>
+  <p>Post-esophagectomy anastomotic leaks share the same "contamination of the mediastinum/pleural space" endpoint but occur in a different clinical context (recent major surgery, often with surrounding fibrosis and altered anatomy from the reconstruction). Similar diagnostic principles apply (CT with oral contrast, esophagram), but management planning benefits enormously from direct involvement of the original surgical team given the altered post-esophagectomy anatomy.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Thoracic surgery emergently for any confirmed or strongly suspected esophageal perforation — time to source control is the single biggest modifiable factor in outcome.</dd>
+      <dt>ICU admission</dt><dd>Any confirmed perforation, given the risk of rapid progression to mediastinitis and sepsis, regardless of initial management approach (endoscopic vs. surgical).</dd>
+      <dt>Transfer if no thoracic surgery/advanced endoscopy on-site</dt><dd>Any suspected esophageal perforation at a facility without thoracic surgical capability — this is a true surgical emergency and should be transferred with the same urgency as other immediately life-threatening thoracic conditions.</dd>
+      <dt>Transport considerations</dt><dd>NPO status maintained strictly during transport; broad-spectrum antibiotics started before or during transport, not delayed until arrival; hemodynamic monitoring given the risk of rapid septic decompensation.</dd>
+      <dt>Who to call</dt><dd>Thoracic surgery directly and urgently; gastroenterology in parallel if endoscopic stent/vacuum therapy is being considered as the management approach.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: MEDIASTINAL -->
+
+<section class="section" id="mediastinal">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Thoracic Surgery</div>
+  <h2 class="section-title">Mediastinal Disease</h2>
+  <p class="section-sub">Compartment location is the organizing principle for the mediastinal mass differential — and mediastinitis is the acute emergency that ties this section to two others in this atlas series.</p>
+
+  <h3 class="sub-title">The Three Compartments</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_mediastinal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_mediastinal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_mediastinal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_mediastinal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-mediastinal)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Mediastinal compartments &amp; the differential by location</text>
+<rect x="20" y="40" width="300" height="240" rx="12" fill="var(--surface)" stroke="var(--accent-mediastinal)" stroke-width="1.6"/>
+<text x="170.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-mediastinal)" font-family="Inter, sans-serif" style="text-transform:uppercase">ANTERIOR</text>
+<text x="170.0" y="104.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">The "4 Ts" (classic mnemonic):</text>
+<text x="170.0" y="117.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="170.0" y="130.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thymoma</text>
+<text x="170.0" y="144.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Teratoma (germ cell tumor)</text>
+<text x="170.0" y="157.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thyroid (retrosternal goiter)</text>
+<text x="170.0" y="171.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">"Terrible" lymphoma</text>
+<text x="170.0" y="184.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="170.0" y="198.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thymoma specifically associated</text>
+<text x="170.0" y="211.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with myasthenia gravis -- consider</text>
+<text x="170.0" y="225.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">screening for MG symptoms in any</text>
+<text x="170.0" y="238.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">newly found thymoma</text>
+<rect x="340" y="40" width="300" height="240" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="490.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">MIDDLE</text>
+<text x="490.0" y="104.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Contains the heart, great vessels,</text>
+<text x="490.0" y="117.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">trachea, main bronchi, lymph nodes</text>
+<text x="490.0" y="130.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="144.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lymphadenopathy (sarcoidosis,</text>
+<text x="490.0" y="157.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">lymphoma, metastatic disease,</text>
+<text x="490.0" y="171.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">granulomatous infection)</text>
+<text x="490.0" y="184.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="198.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bronchogenic and pericardial cysts</text>
+<text x="490.0" y="211.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="225.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Vascular masses (aneurysm --</text>
+<text x="490.0" y="238.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">see Vascular Vol. 1)</text>
+<rect x="660" y="40" width="300" height="240" rx="12" fill="var(--surface)" stroke="var(--accent-resection)" stroke-width="1.6"/>
+<text x="810.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-resection)" font-family="Inter, sans-serif" style="text-transform:uppercase">POSTERIOR</text>
+<text x="810.0" y="110.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Predominantly NEUROGENIC tumors</text>
+<text x="810.0" y="124.2" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(schwannoma, neurofibroma,</text>
+<text x="810.0" y="137.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ganglioneuroma) -- most common</text>
+<text x="810.0" y="151.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">posterior mediastinal mass overall</text>
+<text x="810.0" y="164.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="810.0" y="178.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Esophageal pathology (see prior</text>
+<text x="810.0" y="191.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">section)</text>
+<text x="810.0" y="204.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="810.0" y="218.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Extramedullary hematopoiesis</text>
+<text x="810.0" y="231.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(in chronic severe anemia states)</text>
+<line x1="20" y1="304" x2="960" y2="304" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="328" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Mediastinitis -- the acute emergency of this section</text>
+<rect x="20" y="344" width="920" height="110" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="374.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Most commonly post-surgical (post-sternotomy, see Vol. 1's Post-Cardiac Surgery Complications section) or from</text>
+<text x="480.0" y="388.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">esophageal perforation (see prior section) -- less commonly from descending necrotizing infection spreading from</text>
+<text x="480.0" y="402.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">an oropharyngeal/dental source along fascial planes into the mediastinum.</text>
+<text x="480.0" y="416.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Presentation: fever, chest pain, and (if post-sternotomy) wound instability/drainage. Requires aggressive surgical</text>
+<text x="480.0" y="430.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">debridement plus broad-spectrum antibiotics -- this is not a condition managed with antibiotics alone regardless of source.</text>
+</svg>
+    <div class="diagram-caption">The "4 Ts" mnemonic organizes the anterior compartment differential; middle and posterior compartments have their own characteristic lesions driven by the structures that actually live there.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Thymoma and myasthenia gravis — a two-way relationship worth remembering</span>
+    <p>Roughly 10-15% of myasthenia gravis patients have a thymoma, and conversely a meaningful proportion of thymoma patients have or will develop myasthenia gravis — any newly identified anterior mediastinal mass consistent with thymoma warrants at least screening questions about fatigable weakness, ptosis, or diplopia, since the finding changes both surgical planning (anesthesia considerations in myasthenic patients) and long-term follow-up.</p>
+  </div>
+
+  <h4 class="micro-title">Neurogenic Tumors — The Posterior Compartment Default</h4>
+  <p>Schwannomas, neurofibromas, and ganglioneuromas arising from the sympathetic chain or intercostal nerves make up the majority of posterior mediastinal masses. Most are benign and slow-growing, often discovered incidentally on imaging obtained for unrelated reasons — but any posterior mediastinal mass still warrants tissue characterization, since malignant peripheral nerve sheath tumors and metastatic disease remain on the differential.</p>
+
+  <h3 class="sub-title">Mediastinitis</h3>
+  <p>This is the section's acute emergency, and it connects directly to two other parts of this atlas series: post-sternotomy mediastinitis (see Vol. 1's Post-Cardiac Surgery Complications) and esophageal-perforation-associated mediastinitis (see the prior section in this volume). A third, less common pathway — descending necrotizing mediastinitis — deserves its own attention here.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Descending necrotizing mediastinitis starts in the mouth</span>
+    <p>A deep neck or dental infection (Ludwig's angina, retropharyngeal abscess, odontogenic infection) can track along cervical fascial planes directly into the mediastinum — a rapidly progressive, high-mortality infection that's easy to underestimate if the initial presentation looks like "just" a dental or neck infection. Any deep neck space infection with systemic toxicity, chest pain, or imaging findings suggesting mediastinal extension needs emergent surgical involvement (typically both ENT/oral surgery for the primary source and thoracic surgery for mediastinal drainage) — this is not a condition for antibiotics and observation alone.</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Surgical debridement, not just antibiotics</span>
+    <p>Regardless of the underlying cause (post-surgical, esophageal, or descending infection), mediastinitis requires aggressive surgical debridement of infected/necrotic tissue alongside broad-spectrum antibiotics — this is one of the clearest examples in thoracic surgery where source control is not optional, and antibiotic therapy alone without debridement carries very high mortality.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Thoracic surgery for any suspected mediastinitis regardless of source; cardiac surgery specifically if post-sternotomy; ENT/oral surgery in parallel for descending necrotizing mediastinitis given the primary neck source.</dd>
+      <dt>Emergent evaluation</dt><dd>Any deep neck infection with systemic toxicity or chest symptoms — treat as potential descending mediastinitis until proven otherwise given how rapidly this can progress.</dd>
+      <dt>ICU admission</dt><dd>Any confirmed mediastinitis given sepsis risk and the need for close monitoring around surgical debridement.</dd>
+      <dt>Transfer if no thoracic surgery on-site</dt><dd>Any mediastinitis requiring surgical debridement capability not available locally — emergent transfer given the mortality risk of delayed source control.</dd>
+      <dt>Who to call</dt><dd>Thoracic surgery for mediastinal drainage/debridement; ENT/oral surgery for descending necrotizing mediastinitis source control; infectious disease for antibiotic optimization in complex or resistant organisms.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: TRAUMA -->
+
+<section class="section" id="trauma">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Thoracic Surgery</div>
+  <h2 class="section-title">Thoracic Trauma</h2>
+  <p class="section-sub">A short list of immediately life-threatening injuries to identify in the primary survey, and a second list of easily-missed injuries that kill just as effectively if overlooked in the secondary survey.</p>
+
+  <h3 class="sub-title">Immediately Life-Threatening vs. Easily Missed</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_trauma2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_trauma2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_trauma2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_trauma2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-trauma)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Immediately life-threatening thoracic injuries</text>
+<rect x="20" y="44" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="125.0" y="62" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Tension pneumothorax</text>
+<text x="125.0" y="145.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">One-way valve air leak -- see the animated diagram above. Clinical diagnosis, treat immediately with needle/finger decompression.</text>
+<rect x="260" y="44" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="365.0" y="62" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Open ("sucking") chest wound</text>
+<text x="365.0" y="145.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Defect &gt;2/3 tracheal diameter preferentially draws air through the wound -- three-sided occlusive dressing prevents tension physiology while still allowing egress.</text>
+<rect x="500" y="44" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="605.0" y="62" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Massive hemothorax</text>
+<text x="605.0" y="145.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Initial output &gt;1500mL or &gt;200mL/hr for several hours indicates likely need for surgical (thoracotomy) control -- chest tube alone often insufficient.</text>
+<rect x="740" y="44" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="845.0" y="62" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Flail chest</text>
+<text x="845.0" y="145.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">3+ contiguous ribs fractured in 2+ places -- paradoxical chest wall motion. Underlying pulmonary contusion is usually the primary driver of respiratory failure, not the flail segment itself.</text>
+<line x1="20" y1="250" x2="960" y2="250" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="274" font-size="12.5" font-weight="700" fill="var(--accent-trauma)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Potentially lethal, easier to miss</text>
+<rect x="20" y="290" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="170.0" y="308" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Tracheobronchial injury</text>
+<text x="170.0" y="371.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Suspect with massive/persistent air leak after chest tube placement, or pneumomediastinum out of proportion to visible lung injury -- bronchoscopy for diagnosis.</text>
+<rect x="340" y="290" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="490.0" y="308" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Blunt cardiac injury</text>
+<text x="490.0" y="371.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Suspect with sternal fracture or significant anterior chest trauma -- ECG plus troponin; echo if abnormal or hemodynamically unstable.</text>
+<rect x="660" y="290" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="810.0" y="308" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Traumatic aortic injury</text>
+<text x="810.0" y="371.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Deceleration mechanism (high-speed MVC, fall) -- widened mediastinum on CXR is a screening clue, but CT angiography is the definitive study (see Vascular Vol. 1's dissection section for imaging caveats).</text>
+</svg>
+    <div class="diagram-caption">Top row: injuries that should be identified and addressed during the primary survey itself. Bottom row: injuries that require a higher index of suspicion since they don't always announce themselves as clearly.</div>
+  </div>
+
+  <h4 class="micro-title">Interactive: Thoracic Trauma Triage Checklist</h4>
+  <p>Check any findings present on your primary/secondary survey to see the corresponding urgency flag.</p>
+
+  <div class="calc-card" id="traumaCalc">
+    <div class="calc-title">Immediately Life-Threatening (Primary Survey)</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="immediate-finding" id="t_tension"><label for="t_tension">Tracheal deviation, absent breath sounds, hypotension (tension pneumothorax)</label></div>
+      <div class="calc-item"><input type="checkbox" class="immediate-finding" id="t_sucking"><label for="t_sucking">Open chest wound with air movement through it</label></div>
+      <div class="calc-item"><input type="checkbox" class="immediate-finding" id="t_hemothorax"><label for="t_hemothorax">Massive hemothorax (&gt;1500mL initial output or &gt;200mL/hr)</label></div>
+      <div class="calc-item"><input type="checkbox" class="immediate-finding" id="t_flail"><label for="t_flail">Paradoxical chest wall movement (flail segment)</label></div>
+      <div class="calc-item"><input type="checkbox" class="immediate-finding" id="t_tamponade"><label for="t_tamponade">Muffled heart sounds + JVD + hypotension (cardiac tamponade)</label></div>
+    </div>
+    <div class="calc-title" style="margin-top:18px;">Potentially Lethal, Easily Missed (Secondary Survey)</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="missed-finding" id="t_trachbronch"><label for="t_trachbronch">Massive/persistent air leak after chest tube, or extensive pneumomediastinum</label></div>
+      <div class="calc-item"><input type="checkbox" class="missed-finding" id="t_cardiac"><label for="t_cardiac">Sternal fracture or significant anterior chest trauma (possible blunt cardiac injury)</label></div>
+      <div class="calc-item"><input type="checkbox" class="missed-finding" id="t_aorta"><label for="t_aorta">High-deceleration mechanism with widened mediastinum on CXR</label></div>
+      <div class="calc-item"><input type="checkbox" class="missed-finding" id="t_diaphragm"><label for="t_diaphragm">Diaphragmatic injury suspected (bowel sounds in chest, abnormal NG tube position on CXR)</label></div>
+      <div class="calc-item"><input type="checkbox" class="missed-finding" id="t_esoph"><label for="t_esoph">Penetrating injury near the esophagus, or unexplained pneumomediastinum</label></div>
+    </div>
+    <div class="calc-result" id="traumaResult">
+      <div class="score-interp" id="traumaInterp" style="text-align:left; flex:1;">No findings selected.</div>
+    </div>
+    <div class="calc-note">This checklist is not exhaustive and does not replace ATLS primary/secondary survey protocol. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Pulmonary contusion, not the flail segment, usually drives respiratory failure</span>
+    <p>The paradoxical motion of a flail chest segment looks dramatic, but the underlying pulmonary contusion (the lung tissue injury beneath the fractured ribs) is typically the actual driver of hypoxemia and respiratory failure — management focuses on pain control (enabling adequate ventilation and cough), pulmonary toilet, and judicious fluid management to avoid worsening the contusion, rather than fixating on stabilizing the flail segment mechanically in most cases.</p>
+  </div>
+
+  <h4 class="micro-title">Blunt Cardiac Injury Workup</h4>
+  <p>A normal ECG plus a normal troponin has a high negative predictive value for clinically significant blunt cardiac injury — this combination reasonably excludes the need for further cardiac-specific workup in most patients. An abnormal ECG or elevated troponin, or hemodynamic instability without another clear source, warrants echocardiography to evaluate for wall motion abnormalities, valve injury, or pericardial effusion.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Immediate intervention</dt><dd>Any immediately life-threatening finding from the checklist above gets addressed in the primary survey itself — needle/tube decompression, occlusive dressing, or pericardiocentesis as indicated, before further workup.</dd>
+      <dt>Consult now</dt><dd>Trauma surgery and thoracic surgery jointly for any significant thoracic trauma; cardiothoracic surgery specifically for suspected tracheobronchial injury, traumatic aortic injury, or significant blunt cardiac injury.</dd>
+      <dt>Emergent evaluation</dt><dd>Any suspected tracheobronchial injury (bronchoscopy) or traumatic aortic injury (CT angiography) — both carry high mortality if the diagnosis is delayed.</dd>
+      <dt>Transfer if no thoracic/trauma surgery on-site</dt><dd>Any of the immediately life-threatening or easily-missed injuries above requiring surgical capability not available locally — stabilize what can be stabilized locally (tube thoracostomy, occlusive dressing) and transfer emergently with clear communication of findings.</dd>
+      <dt>Transport considerations</dt><dd>Continuous monitoring for any thoracic trauma patient given the risk of evolving tension physiology or hemodynamic decompensation en route; ensure any chest tube in place has a properly functioning, secured drainage system for the duration of transport.</dd>
+      <dt>Who to call</dt><dd>Trauma surgery as the primary contact, with cardiothoracic/vascular surgery involved directly for the specific injury pattern (tracheobronchial, cardiac, or aortic) once identified.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  var card = document.getElementById('traumaCalc');
+  if (!card) return;
+  var immediateBoxes = card.querySelectorAll('.immediate-finding');
+  var missedBoxes = card.querySelectorAll('.missed-finding');
+  var resultDiv = document.getElementById('traumaResult');
+  var interpSpan = document.getElementById('traumaInterp');
+
+  function recalc() {
+    var immediateChecked = Array.from(immediateBoxes).filter(function(cb){ return cb.checked; });
+    var missedChecked = Array.from(missedBoxes).filter(function(cb){ return cb.checked; });
+    if (immediateChecked.length > 0) {
+      resultDiv.style.background = 'color-mix(in srgb, var(--danger) 18%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--danger)';
+      interpSpan.textContent = 'IMMEDIATE INTERVENTION NEEDED (' + immediateChecked.length + ' finding(s)) — address in the primary survey before further workup.';
+    } else if (missedChecked.length > 0) {
+      resultDiv.style.background = 'color-mix(in srgb, var(--warn) 16%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--warn)';
+      interpSpan.textContent = 'HIGH-SUSPICION FINDING(S) PRESENT (' + missedChecked.length + ') — pursue targeted workup (bronchoscopy, CTA, echo as appropriate) before ruling these out.';
+    } else {
+      resultDiv.style.background = 'color-mix(in srgb, var(--good) 14%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--good)';
+      interpSpan.textContent = 'No findings selected.';
+    }
+  }
+  immediateBoxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+  missedBoxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+  recalc();
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: RESECTION -->
+
+<section class="section" id="resection">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Thoracic Surgery</div>
+  <h2 class="section-title">Lung Resection Complications</h2>
+  <p class="section-sub">From the routine (persistent air leak) to the catastrophic (bronchopleural fistula) — and a late complication that only makes sense once you understand how much the mediastinum shifts after a pneumonectomy.</p>
+
+  <h3 class="sub-title">Bronchopleural Fistula &amp; Post-Pneumonectomy Syndrome</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_resection" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_resection" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_resection" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_resection" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="240" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">BRONCHOPLEURAL FISTULA</text>
+<text x="250.0" y="50.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Abnormal connection between the</text>
+<text x="250.0" y="63.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">bronchial stump/airway and the pleural</text>
+<text x="250.0" y="75.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">space -- most feared post-lobectomy/</text>
+<text x="250.0" y="88.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pneumonectomy complication</text>
+<text x="250.0" y="100.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="113.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Presents as: new/increasing air leak,</text>
+<text x="250.0" y="125.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">subcutaneous emphysema, new</text>
+<text x="250.0" y="138.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pleural effusion with air, or --</text>
+<text x="250.0" y="151.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">classically -- sudden expectoration of</text>
+<text x="250.0" y="163.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">serous/serosanguinous fluid when the</text>
+<text x="250.0" y="176.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">patient changes position (fluid from</text>
+<text x="250.0" y="188.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the post-resection space draining</text>
+<text x="250.0" y="201.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">through the fistula into the airway)</text>
+<text x="250.0" y="213.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="226.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Management: drainage + often</text>
+<text x="250.0" y="238.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">surgical repair; high morbidity/</text>
+<text x="250.0" y="251.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">mortality especially post-pneumonectomy</text>
+<rect x="500" y="20" width="460" height="240" rx="12" fill="var(--surface)" stroke="var(--accent-resection)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-resection)" font-family="Inter, sans-serif" style="text-transform:uppercase">POST-PNEUMONECTOMY SYNDROME</text>
+<text x="730.0" y="46.5" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Late complication, more common after</text>
+<text x="730.0" y="58.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">RIGHT pneumonectomy -- mediastinal</text>
+<text x="730.0" y="71.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">shift and rotation causes airway</text>
+<text x="730.0" y="83.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(usually left mainstem/distal trachea)</text>
+<text x="730.0" y="95.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">compression against the spine or</text>
+<text x="730.0" y="108.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">great vessels</text>
+<text x="730.0" y="120.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="132.5" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Presents as: progressive dyspnea,</text>
+<text x="730.0" y="144.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">stridor -- can occur months to years</text>
+<text x="730.0" y="157.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">after the original surgery</text>
+<text x="730.0" y="169.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="181.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Diagnosis requires a high index of</text>
+<text x="730.0" y="194.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">suspicion in anyone with a</text>
+<text x="730.0" y="206.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pneumonectomy history and new</text>
+<text x="730.0" y="218.6" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">unexplained dyspnea</text>
+<text x="730.0" y="230.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="243.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Management: surgical mediastinal</text>
+<text x="730.0" y="255.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">repositioning in symptomatic cases</text>
+<line x1="20" y1="284" x2="960" y2="284" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="308" font-size="12.5" font-weight="700" fill="var(--accent-pneumo)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Persistent air leak (the common, less dramatic problem)</text>
+<rect x="20" y="324" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--accent-pneumo)" stroke-width="1.6"/>
+<text x="480.0" y="358.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">An air leak persisting beyond 5-7 days after lobectomy/wedge resection is the most common reason for prolonged</text>
+<text x="480.0" y="372.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">chest tube duration and hospital stay after lung resection -- most resolve with continued drainage and time; a small</text>
+<text x="480.0" y="386.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">subset require pleurodesis, endobronchial valve placement, or surgical revision if truly refractory.</text>
+</svg>
+    <div class="diagram-caption">Bronchopleural fistula is an early-to-intermediate complication with a dramatic presentation; post-pneumonectomy syndrome is a late complication that requires remembering a surgical history from months to years prior.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The positional-drainage clue for bronchopleural fistula</span>
+    <p>A classic (though not universal) presentation is sudden expectoration of serous or serosanguinous fluid when the patient changes position — fluid that has accumulated in the post-resection pleural space drains through the fistula into the airway and gets coughed up. This finding in a post-lobectomy or post-pneumonectomy patient should prompt urgent evaluation rather than being attributed to a more benign respiratory process.</p>
+  </div>
+
+  <h4 class="micro-title">Why Right Pneumonectomy Specifically Predisposes to Post-Pneumonectomy Syndrome</h4>
+  <p>After a pneumonectomy, the remaining lung and mediastinum shift to fill the empty hemithorax over time. Following a right pneumonectomy, this shift and rotation can compress the distal trachea or left mainstem bronchus against the spine or aorta — the anatomy specifically predisposes right-sided resections to this compression pattern more than left-sided ones. The result is a slowly progressive airway obstruction that can take months to years to become symptomatic, which is exactly why the diagnosis is easy to miss if the surgical history isn't specifically elicited.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Think of it in anyone with unexplained dyspnea and a pneumonectomy history</span>
+    <p>New, progressive dyspnea or stridor in a patient with a pneumonectomy history — regardless of how long ago the surgery occurred — deserves consideration of post-pneumonectomy syndrome, particularly if the timeline doesn't fit better with more common explanations (recurrent malignancy, new cardiac disease, or a new pulmonary process). Cross-sectional imaging demonstrating the mediastinal shift and airway compression confirms the diagnosis.</p>
+  </div>
+
+  <h4 class="micro-title">Persistent Air Leak — The Everyday Problem</h4>
+  <p>Far more common than either complication above: an air leak that persists beyond roughly 5-7 days after a lobectomy or wedge resection is the leading cause of prolonged chest tube duration and extended hospital stay following lung resection. Most eventually resolve with continued drainage, ambulation, and time as the visceral pleural defect heals. A genuinely refractory leak may be managed with chemical pleurodesis, endobronchial valve placement (blocking airflow to the leaking segment to allow it to seal), or surgical revision in persistent cases.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Thoracic surgery for any suspected bronchopleural fistula or post-pneumonectomy syndrome — both require surgical expertise for definitive diagnosis and management planning.</dd>
+      <dt>Emergent evaluation</dt><dd>Suspected bronchopleural fistula with any respiratory compromise or signs of empyema/mediastinal contamination — this can progress to a life-threatening infectious process quickly.</dd>
+      <dt>Urgent evaluation</dt><dd>New or progressive dyspnea/stridor in any patient with a pneumonectomy history, regardless of how remote the surgery — don't let time since surgery lower your suspicion for post-pneumonectomy syndrome.</dd>
+      <dt>Transfer if no thoracic surgery on-site</dt><dd>Confirmed or strongly suspected bronchopleural fistula, or post-pneumonectomy syndrome requiring surgical mediastinal repositioning.</dd>
+      <dt>Who to call</dt><dd>Thoracic surgery directly — ideally the original surgical team if available, given their specific knowledge of the original resection and any technical factors relevant to the current complication.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: PLEURAL -->
+
+<section class="section" id="pleural">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Thoracic Surgery</div>
+  <h2 class="section-title">Pleural Space Disease</h2>
+  <p class="section-sub">Closing this volume with empyema's staged progression and a distinctive milky effusion that points to one specific injury — the thoracic duct.</p>
+
+  <h3 class="sub-title">Empyema Staging</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_pleural" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_pleural" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_pleural" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_pleural" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-pleural)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Empyema staging (progression if untreated)</text>
+<rect x="20" y="44" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="170.0" y="62" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 1: EXUDATIVE</text>
+<text x="170.0" y="140.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Simple parapneumonic effusion -- thin, free-flowing fluid. Antibiotics +/- simple drainage often sufficient at this stage.</text>
+<rect x="340" y="44" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="490.0" y="62" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 2: FIBRINOPURULENT</text>
+<text x="490.0" y="140.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fibrin deposition creates loculations; fluid becomes frankly purulent. Chest tube drainage often needed; intrapleural fibrinolytics/DNase can help break down loculations.</text>
+<rect x="660" y="44" width="300" height="170" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="62" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 3: ORGANIZING</text>
+<text x="810.0" y="140.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thick fibrous peel encases the lung ("trapped lung"), preventing re-expansion. Often requires surgical decortication (VATS or open) rather than drainage alone.</text>
+<line x1="320" y1="130" x2="340" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pleural)"/>
+<line x1="640" y1="130" x2="660" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pleural)"/>
+<line x1="20" y1="234" x2="960" y2="234" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="258" font-size="12.5" font-weight="700" fill="var(--accent-pleural)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Light&#39;s criteria -- exudate vs. transudate</text>
+<rect x="20" y="274" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--accent-pleural)" stroke-width="1.6"/>
+<text x="480.0" y="308.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">An effusion is exudative if ANY of: pleural fluid/serum protein ratio &gt;0.5, pleural fluid/serum LDH ratio &gt;0.6, or</text>
+<text x="480.0" y="322.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pleural fluid LDH &gt;2/3 the upper limit of normal serum LDH. Exudates need a broader workup (infection, malignancy,</text>
+<text x="480.0" y="336.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">inflammatory causes); transudates point toward systemic causes (heart failure, cirrhosis, nephrotic syndrome).</text>
+<line x1="20" y1="384" x2="960" y2="384" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="408" font-size="12.5" font-weight="700" fill="var(--accent-mediastinal)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Chylothorax</text>
+<text x="20" y="430" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Milky-appearing pleural fluid from thoracic duct injury (esophagectomy and other mediastinal/thoracic surgery are leading causes) -- confirm with pleural fluid</text>
+<text x="20" y="448" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">triglyceride level (&gt;110 mg/dL is diagnostic). Initial management is dietary (medium-chain triglyceride diet or NPO with TPN); persistent high-output leaks need surgical thoracic duct ligation.</text>
+</svg>
+    <div class="diagram-caption">Each stage narrows toward the same endpoint (infected pleural fluid) but requires progressively more invasive management as fibrin deposition and eventual organization make simple drainage insufficient.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Catching the transition from Stage 1 to Stage 2 matters</span>
+    <p>The window for successful treatment with antibiotics and simple drainage alone narrows considerably once loculations form (Stage 2) — this is why parapneumonic effusions of any significant size generally warrant sampling rather than watchful waiting, since identifying and draining a Stage 1 exudative effusion early can prevent progression to the more invasive management Stage 2-3 disease requires.</p>
+  </div>
+
+  <h4 class="micro-title">Light's Criteria — Getting the Basic Workup Right</h4>
+  <p>Any new pleural effusion of unclear etiology should be sampled (thoracentesis) and classified using Light's criteria before assuming a systemic cause. An exudate (any one of: pleural/serum protein ratio &gt;0.5, pleural/serum LDH ratio &gt;0.6, or pleural fluid LDH &gt;2/3 the upper limit of normal serum LDH) points toward a local process requiring its own workup — infection, malignancy, or an inflammatory condition — while a transudate points back toward a systemic driver (heart failure, cirrhosis, nephrotic syndrome) where the pleural fluid itself isn't the primary problem to chase.</p>
+
+  <h4 class="micro-title">Intrapleural Fibrinolytics and DNase</h4>
+  <p>For Stage 2 (fibrinopurulent) empyema with loculations that impair adequate drainage, intrapleural instillation of a fibrinolytic (tPA) combined with DNase has become a well-established strategy to break down loculations and improve drainage without proceeding directly to surgery — this combination therapy has meaningfully reduced the proportion of empyema cases that ultimately require surgical decortication.</p>
+
+  <h3 class="sub-title">Chylothorax</h3>
+  <p>A milky-appearing pleural effusion should immediately raise suspicion for chylothorax from thoracic duct injury — esophagectomy and other extensive mediastinal or thoracic surgery are the leading causes given the thoracic duct's course through this territory, though trauma and malignant lymphatic obstruction are also recognized causes.</p>
+
+  <div class="callout warn">
+    <span class="callout-label">Confirm with a triglyceride level, not just appearance</span>
+    <p>A pleural fluid triglyceride level above 110 mg/dL is diagnostic of chylothorax; levels below 50 mg/dL make it unlikely, and intermediate values warrant lipoprotein electrophoresis to look for chylomicrons directly. Don't rely on visual appearance alone — a milky effusion can occasionally represent a pseudochylothorax (cholesterol-rich fluid from a different chronic process) rather than true chyle, and the distinction changes the entire management approach.</p>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Management escalation</span>
+    <p>Initial management is typically dietary — a medium-chain triglyceride diet (which bypasses lymphatic absorption) or complete bowel rest with total parenteral nutrition, allowing the thoracic duct injury time to heal spontaneously while drainage continues. A persistently high-output leak (thresholds vary by protocol, but sustained high volume despite conservative measures) that doesn't respond to dietary management within roughly 1-2 weeks warrants surgical thoracic duct ligation.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Thoracic surgery for any empyema requiring drainage beyond simple thoracentesis, or any confirmed chylothorax to establish a management plan.</dd>
+      <dt>Urgent evaluation</dt><dd>Any new significant pleural effusion in a septic or systemically unwell patient — sample promptly rather than deferring, since early identification of empyema changes the management trajectory substantially.</dd>
+      <dt>Transfer if no thoracic surgery on-site</dt><dd>Stage 2-3 empyema requiring intrapleural fibrinolytic/DNase therapy or surgical decortication capability not available locally; persistent high-output chylothorax requiring surgical duct ligation.</dd>
+      <dt>Transport considerations</dt><dd>Any patient with an active chest tube for empyema or chylothorax drainage needs a properly functioning, secured drainage system maintained throughout transport.</dd>
+      <dt>Who to call</dt><dd>Thoracic surgery for both empyema requiring advanced intervention and chylothorax requiring surgical management; interventional radiology as an alternative for image-guided drainage procedures depending on local practice patterns.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiothoracic Surgery Atlas Vol. 2 — Thoracic Surgery · Built for clinical education and bedside reference. Interactive calculators are teaching aids, not a substitute for clinical judgment or institutional protocol. Verify thresholds and dosing against current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>

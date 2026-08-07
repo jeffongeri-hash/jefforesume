@@ -228,6 +228,160 @@ const blogPosts = {
       <p><a href="/embeds/fluid-dynamics-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "sepsis-vol1-recognition-screening": {
+    title: "Sepsis Atlas Vol. 1 — Recognition & Screening",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Sepsis recognition and screening: SIRS vs qSOFA vs SOFA, screening tools, lactate thresholds, and time-zero definitions.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol1-recognition-screening.html"
+          title="Sepsis Atlas Vol. 1 — Recognition & Screening"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol1-recognition-screening.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sepsis-vol2-cultures-diagnostics": {
+    title: "Sepsis Atlas Vol. 2 — Cultures & Diagnostics",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Blood cultures, source-specific sampling, biomarkers, and rapid molecular diagnostics in suspected sepsis.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol2-cultures-diagnostics.html"
+          title="Sepsis Atlas Vol. 2 — Cultures & Diagnostics"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol2-cultures-diagnostics.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sepsis-vol3-hemodynamics-fluid-resuscitation": {
+    title: "Sepsis Atlas Vol. 3 — Hemodynamics & Fluid Resuscitation",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Fluid strategy, responsiveness assessment, vasopressor selection and titration, and MAP targets in septic shock.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol3-hemodynamics-fluid-resuscitation.html"
+          title="Sepsis Atlas Vol. 3 — Hemodynamics & Fluid Resuscitation"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol3-hemodynamics-fluid-resuscitation.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sepsis-vol4-empiric-antibiotics-source-control": {
+    title: "Sepsis Atlas Vol. 4 — Empiric Antibiotics & Source Control",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Empiric antibiotic selection by source, timing, dosing in sepsis, de-escalation, and source-control priorities.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol4-empiric-antibiotics-source-control.html"
+          title="Sepsis Atlas Vol. 4 — Empiric Antibiotics & Source Control"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol4-empiric-antibiotics-source-control.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sepsis-vol5-special-populations": {
+    title: "Sepsis Atlas Vol. 5 — Special Populations",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Sepsis in pregnancy, neutropenia, cirrhosis, ESRD, immunosuppression, elderly, and pediatric patients.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol5-special-populations.html"
+          title="Sepsis Atlas Vol. 5 — Special Populations"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol5-special-populations.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "sepsis-vol6-prevention-qi": {
+    title: "Sepsis Atlas Vol. 6 — Prevention & QI",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Sepsis bundles, SEP-1 compliance, quality improvement metrics, and prevention strategies.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/sepsis-vol6-prevention-qi.html"
+          title="Sepsis Atlas Vol. 6 — Prevention & QI"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/sepsis-vol6-prevention-qi.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "antibiotic-indications-atlas": {
+    title: "Antibiotic & Steroid Indications Atlas — When They're Actually Warranted",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    readTime: "16 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>When antibiotics and steroids are truly indicated by condition — evidence thresholds, stewardship, and avoiding reflex prescribing.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/antibiotic-indications-atlas.html"
+          title="Antibiotic & Steroid Indications Atlas — When They're Actually Warranted"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/antibiotic-indications-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "antimicrobial-atlas": {
     title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
     category: "HEALTHCARE",
@@ -4688,6 +4842,55 @@ const popularPosts = [
     date: "June 19, 2026",
     image: businessPost,
     slug: "fluid-dynamics-atlas"
+  },
+  {
+    title: "Sepsis Atlas Vol. 1 — Recognition & Screening",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol1-recognition-screening"
+  },
+  {
+    title: "Sepsis Atlas Vol. 2 — Cultures & Diagnostics",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol2-cultures-diagnostics"
+  },
+  {
+    title: "Sepsis Atlas Vol. 3 — Hemodynamics & Fluid Resuscitation",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol3-hemodynamics-fluid-resuscitation"
+  },
+  {
+    title: "Sepsis Atlas Vol. 4 — Empiric Antibiotics & Source Control",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol4-empiric-antibiotics-source-control"
+  },
+  {
+    title: "Sepsis Atlas Vol. 5 — Special Populations",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol5-special-populations"
+  },
+  {
+    title: "Sepsis Atlas Vol. 6 — Prevention & QI",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "sepsis-vol6-prevention-qi"
+  },
+  {
+    title: "Antibiotic & Steroid Indications Atlas — When They're Actually Warranted",
+    category: "HEALTHCARE",
+    date: "June 20, 2026",
+    image: businessPost,
+    slug: "antibiotic-indications-atlas"
   },
   {
     title: "Antimicrobial Atlas — Antibacterials, Antivirals & Antifungals",
