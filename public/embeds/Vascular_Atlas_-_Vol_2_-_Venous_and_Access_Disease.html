@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vascular Atlas · Vol. 2 — Venous &amp; Access Disease</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-cvi: #4dd0e1;
+  --accent-vte: #ef5350;
+  --accent-access: #ba68c8;
+  --accent-avm: #ffb74d;
+  --accent-lymph: #aed581;
+  --accent-trauma: #ff8a65;
+  --accent: #4dd0e1;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-cvi: #007680;
+  --accent-vte: #b3261e;
+  --accent-access: #7b3f96;
+  --accent-avm: #a25b00;
+  --accent-lymph: #5a7d1f;
+  --accent-trauma: #c85a2e;
+  --accent: #007680;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#cvi { --sec-accent: var(--accent-cvi); }
+#vte { --sec-accent: var(--accent-vte); }
+#access { --sec-accent: var(--accent-access); }
+#avm { --sec-accent: var(--accent-avm); }
+#lymph { --sec-accent: var(--accent-lymph); }
+#trauma { --sec-accent: var(--accent-trauma); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Vascular Atlas</span>
+    <span class="title">Vol. 2 — Venous &amp; Access Disease</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#cvi">Chronic Venous Insufficiency &amp; Varicose Veins</option>
+      <option value="#vte">Venous Thromboembolism</option>
+      <option value="#access">Vascular Access (AV Fistulas/Grafts)</option>
+      <option value="#avm">Vascular Malformations</option>
+      <option value="#lymph">Lymphedema &amp; Differentiating Edema</option>
+      <option value="#trauma">Vascular Trauma &amp; Compartment Syndrome</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Venous &amp; Access Disease</h1>
+  <p class="lede">The venous side of vascular medicine, plus the access and structural concerns that round out the specialty — built to the 2021 CHEST Antithrombotic Therapy Guideline and the 2019 KDOQI Vascular Access Guideline.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-cvi)" href="#cvi">
+      <div class="n">01</div><div class="t">Chronic Venous Insufficiency &amp; Varicose Veins</div>
+      <div class="d">CEAP classification, venous ulcers, treatment</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-vte)" href="#vte">
+      <div class="n">02</div><div class="t">Venous Thromboembolism</div>
+      <div class="d">DVT, superficial thrombophlebitis, duration of therapy</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-access)" href="#access">
+      <div class="n">03</div><div class="t">Vascular Access</div>
+      <div class="d">AV fistulas/grafts, the ESKD Life-Plan, steal syndrome</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-avm)" href="#avm">
+      <div class="n">04</div><div class="t">Vascular Malformations</div>
+      <div class="d">ISSVA classification — high-flow vs. low-flow</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-lymph)" href="#lymph">
+      <div class="n">05</div><div class="t">Lymphedema &amp; Differentiating Edema</div>
+      <div class="d">Primary vs. secondary, staging, distinguishing mimics</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-trauma)" href="#trauma">
+      <div class="n">06</div><div class="t">Vascular Trauma &amp; Compartment Syndrome</div>
+      <div class="d">Hard/soft signs, the 6 Ps revisited, fasciotomy</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: CVI -->
+
+<section class="section" id="cvi">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Chronic Venous Insufficiency &amp; Varicose Veins</h2>
+  <p class="section-sub">Valve failure, not blockage, is the core mechanism — and the venous-vs-arterial ulcer distinction is one of the highest-yield discriminations in all of vascular medicine.</p>
+
+  <h3 class="sub-title">CEAP Classification &amp; Ulcer Differentiation</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 520" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_cvi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_cvi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_cvi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_cvi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-cvi)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">CEAP classification (Clinical-Etiology-Anatomy-Pathophysiology)</text>
+<rect x="20" y="40" width="165" height="150" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="102.5" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">C0-C1</text>
+<text x="102.5" y="125.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No visible disease / telangiectasias, reticular veins</text>
+<rect x="200" y="40" width="165" height="150" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="282.5" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">C2</text>
+<text x="282.5" y="125.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Varicose veins</text>
+<rect x="380" y="40" width="165" height="150" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="462.5" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">C3</text>
+<text x="462.5" y="125.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Edema</text>
+<rect x="560" y="40" width="165" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="642.5" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">C4</text>
+<text x="642.5" y="125.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Skin changes (pigmentation, eczema, lipodermatosclerosis)</text>
+<rect x="740" y="40" width="165" height="150" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="822.5" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">C5-C6</text>
+<text x="822.5" y="125.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Healed (C5) or active (C6) venous ulcer</text>
+<line x1="185" y1="115" x2="200" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_cvi)"/>
+<line x1="365" y1="115" x2="380" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_cvi)"/>
+<line x1="545" y1="115" x2="560" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_cvi)"/>
+<line x1="725" y1="115" x2="740" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_cvi)"/>
+<text x="20" y="216" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Full CEAP also records Etiology (congenital/primary/secondary), Anatomy (superficial/deep/perforator), and Pathophysiology (reflux/obstruction/both) -- the clinical (C) grade is what drives most day-to-day management decisions.</text>
+<line x1="20" y1="240" x2="960" y2="240" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="264" font-size="12.5" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Venous vs. arterial ulcer -- do not confuse these</text>
+<rect x="20" y="280" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-cvi)" stroke-width="1.6"/>
+<text x="250.0" y="298" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cvi)" font-family="Inter, sans-serif" style="text-transform:uppercase">VENOUS ULCER</text>
+<text x="250.0" y="324.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: medial malleolus ("gaiter" region)</text>
+<text x="250.0" y="337.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Appearance: irregular borders, shallow,</text>
+<text x="250.0" y="349.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  ruddy/red granulation base, often with</text>
+<text x="250.0" y="362.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  surrounding hemosiderin staining/</text>
+<text x="250.0" y="375.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  lipodermatosclerosis</text>
+<text x="250.0" y="388.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pain: mild-moderate, IMPROVES with leg</text>
+<text x="250.0" y="401.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  elevation</text>
+<text x="250.0" y="413.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pulses: normal (this is a venous, not</text>
+<text x="250.0" y="426.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  arterial, perfusion problem)</text>
+<text x="250.0" y="439.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Treatment: compression therapy is the</text>
+<text x="250.0" y="452.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  cornerstone -- but MUST rule out</text>
+<text x="250.0" y="465.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  significant arterial disease first (ABI)</text>
+<text x="250.0" y="477.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  since compression can harm an ischemic limb</text>
+<rect x="500" y="280" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="730.0" y="298" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">ARTERIAL ULCER</text>
+<text x="730.0" y="330.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Location: distal (toes, foot, pressure points,</text>
+<text x="730.0" y="343.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  lateral malleolus)</text>
+<text x="730.0" y="356.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Appearance: well-demarcated ("punched</text>
+<text x="730.0" y="369.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  out"), deep, pale/necrotic base, minimal</text>
+<text x="730.0" y="381.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  granulation tissue</text>
+<text x="730.0" y="394.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pain: severe, WORSENS with elevation,</text>
+<text x="730.0" y="407.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  improves with dependent positioning</text>
+<text x="730.0" y="420.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pulses: diminished or absent</text>
+<text x="730.0" y="433.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Treatment: revascularization is the priority --</text>
+<text x="730.0" y="445.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  compression is CONTRAINDICATED with</text>
+<text x="730.0" y="458.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  significant arterial insufficiency (ABI</text>
+<text x="730.0" y="471.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  typically &lt;0.5-0.8 depending on protocol)</text>
+</svg>
+    <div class="diagram-caption">Top: the clinical (C) grade of CEAP, which drives most day-to-day treatment decisions. Bottom: venous vs. arterial ulcers — getting this distinction right or wrong directly determines whether compression therapy helps or harms the patient.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Check the ABI before compressing</span>
+    <p>Compression therapy is the cornerstone of venous ulcer treatment — but applying firm compression to a limb with significant coexisting arterial insufficiency can precipitate critical limb ischemia. Any leg ulcer being considered for compression therapy warrants an ABI first; a low ABI (thresholds vary by protocol, commonly &lt;0.8) should prompt vascular surgery involvement before compression is applied, and modified/reduced compression protocols exist for mixed arterial-venous disease.</p>
+  </div>
+
+  <h4 class="micro-title">Pathophysiology in Brief</h4>
+  <p>Venous valve incompetence — whether from primary valve weakness, post-thrombotic damage after prior DVT, or chronic venous hypertension from other causes — allows retrograde blood flow (reflux) during calf muscle relaxation. Over time, sustained venous hypertension damages capillaries and skin, producing the characteristic pigmentation (hemosiderin deposition from red blood cell extravasation), lipodermatosclerosis (fibrotic skin/subcutaneous changes), and eventually ulceration seen in advanced CEAP stages.</p>
+
+  <h4 class="micro-title">Treatment Escalation</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Conservative measures</span><p>Leg elevation, compression stockings, weight management, and regular exercise (activating the calf muscle pump) form the foundation for most C1-C3 disease and are appropriate first steps even for more advanced disease pending further workup.</p></div>
+    <div class="callout"><span class="callout-label">Procedural options</span><p>Endovenous thermal ablation (laser or radiofrequency) has largely replaced traditional vein stripping for symptomatic great/small saphenous vein reflux — outpatient procedure, faster recovery, comparable efficacy. Sclerotherapy remains useful for smaller varicosities and telangiectasias.</p></div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Superficial venous reflux and recurrent cellulitis</span>
+    <p>Chronic venous stasis creates a local environment prone to recurrent cellulitis — a patient with recurrent lower extremity cellulitis limited to a CVI-affected limb may benefit as much from definitive venous treatment (addressing the underlying stasis) as from repeated antibiotic courses treating each individual episode.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery/vascular medicine for any non-healing venous ulcer (generally beyond 4-6 weeks of appropriate conservative therapy), or for CEAP C4-C6 disease being considered for procedural intervention.</dd>
+      <dt>Urgent evaluation</dt><dd>Any ulcer with equivocal or unclear arterial status before compression is initiated, or any suspicion of superimposed cellulitis/infection in a venous ulcer.</dd>
+      <dt>Transfer if no vascular specialty care on-site</dt><dd>Complex mixed arterial-venous disease requiring nuanced compression protocols, or advanced CEAP disease being considered for ablation/surgical intervention.</dd>
+      <dt>Transport considerations</dt><dd>Standard transport is generally adequate for CVI — this is rarely an acute transport scenario unless acute superimposed infection or unclear arterial status raises urgency.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery or vascular medicine for procedural evaluation; wound care specialists for complex or non-healing ulcers requiring advanced dressing/debridement management.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: VTE -->
+
+<section class="section" id="vte">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Venous Thromboembolism</h2>
+  <p class="section-sub">Virchow's triad organizes the risk factors; the 2021 CHEST Antithrombotic Therapy Guideline organizes the treatment duration decision — built around the same "provoked vs. unprovoked" framework as your CV risk conversations elsewhere in this project.</p>
+
+  <h3 class="sub-title">Risk Factors &amp; Duration of Therapy</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_vte" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_vte" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_vte" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_vte" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Virchow's triad</text>
+<rect x="20" y="40" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="170.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">STASIS</text>
+<text x="170.0" y="121.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Immobility, long travel, surgery, pregnancy, venous obstruction/compression</text>
+<rect x="340" y="40" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="490.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">HYPERCOAGULABILITY</text>
+<text x="490.0" y="121.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Malignancy, pregnancy, OCPs/HRT, inherited thrombophilia (Factor V Leiden, prothrombin gene mutation), antiphospholipid syndrome</text>
+<rect x="660" y="40" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="810.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">ENDOTHELIAL INJURY</text>
+<text x="810.0" y="121.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Trauma, surgery, central venous catheters, prior DVT (damaged valves/endothelium)</text>
+<line x1="20" y1="204" x2="960" y2="204" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="228" font-size="12.5" font-weight="700" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2021 CHEST guideline: anticoagulation duration framework</text>
+<rect x="20" y="244" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="125.0" y="262" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">Provoked by transient risk factor</text>
+<text x="125.0" y="335.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">3 months of anticoagulation is generally sufficient -- the provoking factor has resolved</text>
+<rect x="260" y="244" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="365.0" y="262" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">Provoked by chronic risk factor (e.g., active cancer)</text>
+<text x="365.0" y="335.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Indefinite anticoagulation is favored while the risk factor persists</text>
+<rect x="500" y="244" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="605.0" y="262" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">Unprovoked (first event)</text>
+<text x="605.0" y="335.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Indefinite anticoagulation is generally favored over stopping after primary treatment, pending individualized bleeding-risk assessment</text>
+<rect x="740" y="244" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-vte)" stroke-width="1.6"/>
+<text x="845.0" y="262" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-vte)" font-family="Inter, sans-serif" style="text-transform:uppercase">Recurrent unprovoked VTE</text>
+<text x="845.0" y="335.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Indefinite anticoagulation is recommended over stopping, given the demonstrated recurrence risk</text>
+<line x1="20" y1="424" x2="960" y2="424" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="448" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Acute DVT: anticoagulation alone is preferred over routine catheter-directed thrombolysis or other interventional therapy (2021 CHEST) -- reserve interventional</text>
+<text x="20" y="466" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">approaches for limb-threatening phlegmasia or extensive iliofemoral DVT with severe symptoms. Superficial thrombophlebitis at risk of progression: anticoagulate 45 days.</text>
+</svg>
+    <div class="diagram-caption">The provoked/unprovoked distinction is the single most important branch point in the entire VTE treatment pathway — it determines whether anticoagulation has a natural endpoint or continues indefinitely.</div>
+  </div>
+
+  <h4 class="micro-title">Expandable: Working Through a Suspected DVT</h4>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Pretest probability (Wells score or clinical gestalt)</summary>
+    <div class="algo-body">
+      <p>Low pretest probability with a negative high-sensitivity D-dimer effectively rules out DVT without imaging. Moderate-to-high pretest probability, or any positive D-dimer, warrants compression ultrasound regardless of D-dimer result — D-dimer's value is almost entirely in its negative predictive value in low-risk patients, not as a rule-in test.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — Compression ultrasound confirms or excludes DVT</summary>
+    <div class="algo-body">
+      <p>Lack of vein compressibility on ultrasound is the diagnostic finding. If the initial study is negative but suspicion remains high (or if only the proximal veins were studied and calf vein thrombosis is a concern), a repeat study in 5-7 days is a reasonable strategy to catch early or distal clot that might propagate.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Confirmed DVT: anticoagulate, and decide on interventional therapy</summary>
+    <div class="algo-body">
+      <p>Standard anticoagulation alone is preferred over routine thrombolytic or mechanical intervention per the 2021 CHEST guideline. Reserve interventional approaches for limb-threatening phlegmasia cerulea dolens or extensive iliofemoral DVT with severe, refractory symptoms where the risk of post-thrombotic syndrome or limb loss justifies the added bleeding risk of intervention.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Determine duration using the provoked/unprovoked framework</summary>
+    <div class="algo-body">
+      <p>Apply the framework from the diagram above. For patients continuing anticoagulation long-term with a DOAC for secondary prevention, standard-dose or reduced-dose DOAC are both reasonable options per 2020 ASH guidance — reduced dose may offer a bleeding-risk advantage with preserved efficacy in appropriately selected patients.</p>
+    </div>
+  </details>
+
+  <h4 class="micro-title">Superficial Thrombophlebitis — Not Always Benign</h4>
+  <p>Superficial venous thrombosis of the lower limb, when it carries risk factors for progression (proximity to the saphenofemoral junction, extensive length of vein involved, or other DVT risk factors present), warrants 45 days of anticoagulation (commonly prophylactic-dose fondaparinux) rather than the reflexive "just use NSAIDs and warm compresses" approach many clinicians default to. Superficial thrombophlebitis close to the saphenofemoral or saphenopopliteal junction carries meaningful risk of extension into the deep system.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Phlegmasia cerulea dolens is a limb-threatening emergency</span>
+    <p>Massive iliofemoral DVT can occlude venous outflow so completely that arterial inflow is eventually compromised too — a swollen, painful, cyanotic limb with threatened viability. This is one of the few DVT presentations where urgent intervention (thrombolysis, thrombectomy) genuinely changes the limb-salvage outcome and shouldn't wait for standard anticoagulation alone to work.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery/interventional radiology for phlegmasia cerulea dolens or extensive iliofemoral DVT with severe symptoms; hematology for complex anticoagulation decisions (recurrent VTE on therapeutic anticoagulation, suspected thrombophilia in a young patient with unprovoked VTE).</dd>
+      <dt>ICU admission</dt><dd>Any hemodynamically significant PE (see Vol. 6's AFE section for the pregnancy-specific context), or phlegmasia with threatened limb viability.</dd>
+      <dt>Transfer if no interventional capability on-site</dt><dd>Phlegmasia cerulea dolens or massive/submassive PE potentially requiring catheter-directed thrombolysis or surgical embolectomy.</dd>
+      <dt>Transport considerations</dt><dd>Continue anticoagulation uninterrupted during transport; keep the affected limb elevated (for standard DVT, unlike arterial disease) to reduce swelling; continuous monitoring for any patient with hemodynamically significant PE.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery/interventional radiology for limb-threatening presentations; hematology for complex or recurrent VTE requiring specialized anticoagulation management.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: ACCESS -->
+
+<section class="section" id="access">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Vascular Access</h2>
+  <p class="section-sub">The 2019 KDOQI update replaced the old "fistula first, no exceptions" mandate with something more useful: an individualized ESKD Life-Plan built around each patient's actual anatomy, prognosis, and preferences.</p>
+
+  <h3 class="sub-title">AVF vs. AVG vs. CVC</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_access" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_access" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_access" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_access" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="300" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-access)" stroke-width="1.6"/>
+<text x="170.0" y="38" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-access)" font-family="Inter, sans-serif" style="text-transform:uppercase">AV FISTULA (AVF)</text>
+<text x="170.0" y="98.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Autologous vein-to-artery anastomosis</text>
+<text x="170.0" y="110.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (e.g., radiocephalic "Brescia-Cimino")</text>
+<text x="170.0" y="122.5" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">First-line per KDOQI when anatomy is</text>
+<text x="170.0" y="134.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  suitable and duration on HD &gt;1 year</text>
+<text x="170.0" y="147.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  expected</text>
+<text x="170.0" y="159.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Requires 1.5-3 months to mature before</text>
+<text x="170.0" y="171.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  reliable cannulation -- plan referral early</text>
+<text x="170.0" y="184.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Best long-term patency, lowest infection risk</text>
+<rect x="340" y="20" width="300" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-avm)" stroke-width="1.6"/>
+<text x="490.0" y="38" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-avm)" font-family="Inter, sans-serif" style="text-transform:uppercase">AV GRAFT (AVG)</text>
+<text x="490.0" y="104.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Synthetic conduit bridging artery to vein</text>
+<text x="490.0" y="116.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Used when native vein anatomy is</text>
+<text x="490.0" y="128.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  unsuitable for a fistula</text>
+<text x="490.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Matures faster than AVF (can often be</text>
+<text x="490.0" y="153.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  used within 2-3 weeks)</text>
+<text x="490.0" y="165.6" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Higher infection and thrombosis risk than</text>
+<text x="490.0" y="177.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  AVF, but lower than a catheter</text>
+<rect x="660" y="20" width="300" height="220" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="38" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">CENTRAL VENOUS CATHETER (CVC)</text>
+<text x="810.0" y="104.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Tunneled or non-tunneled central line</text>
+<text x="810.0" y="116.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Highest infection and central venous</text>
+<text x="810.0" y="128.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  stenosis risk of the three access types</text>
+<text x="810.0" y="141.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Used when AVF/AVG isn't feasible, or as a</text>
+<text x="810.0" y="153.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bridge while a fistula/graft matures</text>
+<text x="810.0" y="165.6" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">KDOQI: minimize CVC duration/use as part</text>
+<text x="810.0" y="177.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  of the individualized ESKD Life-Plan</text>
+<line x1="20" y1="264" x2="960" y2="264" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="288" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Complications to recognize</text>
+<rect x="20" y="304" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="170.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Steal syndrome</text>
+<text x="170.0" y="390.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Arterial blood diverted through the low-resistance access, causing distal hand/limb ischemia -- pain, coolness, numbness distal to the access. Severe cases need distal revascularization/interval ligation (DRIL) or access closure.</text>
+<rect x="340" y="304" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="490.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Access thrombosis</text>
+<text x="490.0" y="390.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sudden loss of thrill/bruit -- most often from an underlying stenosis (venous outflow most common location). Declot procedure (thrombectomy) plus treat the underlying stenosis, or it recurs.</text>
+<rect x="660" y="304" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">High-output heart failure</text>
+<text x="810.0" y="390.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">A large, long-standing fistula can create enough of a left-to-right shunt to precipitate or worsen heart failure in a susceptible patient -- consider access flow reduction if this is suspected.</text>
+</svg>
+    <div class="diagram-caption">Each access type trades maturation time against long-term durability and infection risk — the right choice depends on the patient's anticipated dialysis duration and vascular anatomy, not a one-size-fits-all hierarchy.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">The ESKD Life-Plan concept</span>
+    <p>Rather than defaulting every patient to "fistula first," the 2019 KDOQI guideline explicitly recommends individualizing the access decision to the patient's overall trajectory — anticipated dialysis duration, comorbidity burden, vascular anatomy, and personal preferences all factor into the plan. A patient with a short life expectancy or very poor vascular anatomy may reasonably be better served by a graft or even a well-managed catheter than by pursuing a fistula that's unlikely to mature successfully or be needed for long.</p>
+  </div>
+
+  <h4 class="micro-title">Plan Access Timing Early</h4>
+  <p>AVF maturation (1.5-3 months) means referral for surgical creation needs to happen well before dialysis is anticipated to start — late nephrology referral is one of the most common preventable reasons patients end up starting dialysis with a catheter rather than a matured permanent access. This is a systems and timing issue as much as a technical one.</p>
+
+  <h4 class="micro-title">Complications — Recognize Early</h4>
+  <div class="pearl-grid two">
+    <div class="callout warn"><span class="callout-label">Steal syndrome</span><p>Distal ischemia from arterial blood diversion through the access — pain, coolness, numbness, or weakness in the hand distal to the fistula/graft. Mild cases may be monitored, but progressive or severe steal (tissue loss, significant functional impairment) requires surgical intervention (distal revascularization-interval ligation, or access closure).</p></div>
+    <div class="callout warn"><span class="callout-label">Thrombosis</span><p>Sudden loss of the palpable thrill or audible bruit signals thrombosis, almost always from an underlying stenosis (most often at the venous outflow). Declotting alone without addressing the underlying stenosis leads to prompt rethrombosis — angioplasty of the culprit lesion is part of definitive management.</p></div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">No pre-emptive intervention on asymptomatic stenosis</span>
+    <p>The 2019 KDOQI guideline specifically recommends against pre-emptive angioplasty of AVF/AVG stenosis that has no associated clinical indicators (reduced flow on surveillance, difficulty with cannulation, elevated venous pressures) — intervening on an asymptomatic stenosis has not been shown to improve access survival and exposes the patient to unnecessary procedural risk.</p>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">High-output heart failure from a mature fistula</span>
+    <p>A large, long-standing AV fistula can create a clinically significant left-to-right shunt, precipitating or worsening heart failure in a susceptible patient — a dialysis patient with new or worsening heart failure symptoms and a large, high-flow fistula deserves consideration of access-related high-output physiology, not just standard cardiorenal explanations. Access flow reduction procedures exist specifically for this scenario.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Vascular surgery/interventional nephrology for any access dysfunction (thrombosis, stenosis with clinical indicators, infection) or for initial access planning as part of the ESKD Life-Plan.</dd>
+      <dt>Urgent evaluation</dt><dd>Any acute access thrombosis (dialysis-dependent patients need timely re-establishment of functional access), or signs of access infection (redness, warmth, drainage, systemic symptoms) which can rapidly become bacteremia in a dialysis-dependent patient.</dd>
+      <dt>Transfer if no vascular access program on-site</dt><dd>Complex steal syndrome requiring surgical revision, access infection requiring source control, or any access failure in a patient without alternative dialysis access readily available.</dd>
+      <dt>Transport considerations</dt><dd>Protect the access limb from blood pressure cuffs, venipuncture, and IV placement during any transport or hospitalization — this is a standing instruction that too often gets overlooked outside of nephrology-focused care.</dd>
+      <dt>Who to call</dt><dd>Vascular surgery or interventional nephrology/radiology for access creation, revision, or declotting; infectious disease involvement for access-related bacteremia given the challenges of source control with an infected access.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: AVM -->
+
+<section class="section" id="avm">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Vascular Malformations</h2>
+  <p class="section-sub">The ISSVA classification organizes these congenital lesions by flow characteristics — a distinction that predicts both natural history and the right specialist to involve.</p>
+
+  <h3 class="sub-title">Low-Flow vs. High-Flow</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_avm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_avm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_avm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_avm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-avm)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">ISSVA classification -- vascular malformations by flow characteristics</text>
+<rect x="20" y="40" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-cvi)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cvi)" font-family="Inter, sans-serif" style="text-transform:uppercase">LOW-FLOW MALFORMATIONS</text>
+<text x="250.0" y="87.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VENOUS MALFORMATION: soft, compressible,</text>
+<text x="250.0" y="99.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bluish, enlarges with dependent position</text>
+<text x="250.0" y="112.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  or Valsalva -- most common type</text>
+<text x="250.0" y="124.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="137.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LYMPHATIC MALFORMATION: macrocystic</text>
+<text x="250.0" y="149.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (larger cysts) or microcystic (diffuse,</text>
+<text x="250.0" y="162.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  infiltrative); can cause disfigurement and</text>
+<text x="250.0" y="174.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  recurrent infection (cellulitis) of overlying</text>
+<text x="250.0" y="187.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  skin</text>
+<text x="250.0" y="199.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="212.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">CAPILLARY MALFORMATION ("port-wine stain"):</text>
+<text x="250.0" y="224.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  flat, pink-to-red patch present at birth,</text>
+<text x="250.0" y="237.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  grows proportionally with the child --</text>
+<text x="250.0" y="250.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  associated with Sturge-Weber syndrome</text>
+<text x="250.0" y="262.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  when involving the ophthalmic trigeminal</text>
+<text x="250.0" y="275.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  distribution</text>
+<rect x="500" y="40" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">HIGH-FLOW MALFORMATIONS</text>
+<text x="730.0" y="80.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ARTERIOVENOUS MALFORMATION (AVM):</text>
+<text x="730.0" y="93.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  direct arterial-to-venous connection</text>
+<text x="730.0" y="105.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bypassing the capillary bed -- warm,</text>
+<text x="730.0" y="118.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pulsatile, may have an audible bruit/</text>
+<text x="730.0" y="130.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  palpable thrill</text>
+<text x="730.0" y="143.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="155.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Risk of high-output cardiac failure if large</text>
+<text x="730.0" y="168.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (similar mechanism to a large surgical AV</text>
+<text x="730.0" y="181.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  fistula -- see prior section)</text>
+<text x="730.0" y="193.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="206.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Can bleed dramatically and be difficult to</text>
+<text x="730.0" y="218.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  control given high-pressure arterial inflow</text>
+<text x="730.0" y="231.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="243.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Management: embolization (often staged,</text>
+<text x="730.0" y="256.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  sometimes pre-surgical) +/- surgical</text>
+<text x="730.0" y="268.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  resection -- multidisciplinary vascular</text>
+<text x="730.0" y="281.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  anomaly team approach is standard</text>
+<line x1="20" y1="320" x2="960" y2="320" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="344" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Key distinction from infantile hemangioma: malformations are present at birth and grow proportionally with the child (no spontaneous involution),</text>
+<text x="20" y="362" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">whereas hemangiomas are true vascular TUMORS -- often absent at birth, proliferate rapidly in infancy, then spontaneously involute over years. This distinction changes counseling and management entirely.</text>
+</svg>
+    <div class="diagram-caption">Flow characteristics on exam (compressible and soft vs. warm and pulsatile with a bruit) often distinguish these categories before imaging even confirms the specific subtype.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Malformation vs. hemangioma — a distinction worth getting right</span>
+    <p>Vascular malformations (all types above) are structural anomalies present at birth that grow proportionally with the child and never spontaneously resolve — they represent abnormal vessel architecture, not abnormal cell proliferation. Infantile hemangiomas are genuinely different: true vascular tumors, often not visible at birth, that proliferate rapidly over the first several months of life before spontaneously involuting over subsequent years. Confusing the two leads to mismanaged expectations — a family told to "wait for it to go away" is being given hemangioma counseling, which is actively wrong advice for a true malformation.</p>
+  </div>
+
+  <h4 class="micro-title">Syndromic Associations Worth Knowing</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Sturge-Weber syndrome</span><p>A facial capillary malformation ("port-wine stain") in the ophthalmic division of the trigeminal nerve distribution is associated with leptomeningeal vascular malformations, seizures, and glaucoma — this specific distribution warrants neurologic and ophthalmologic evaluation, not just dermatologic/cosmetic consideration.</p></div>
+    <div class="callout"><span class="callout-label">Klippel-Trénaunay syndrome</span><p>The triad of capillary malformation, venous/lymphatic malformation, and limb overgrowth — a combined low-flow malformation syndrome requiring multidisciplinary management given the combination of vascular, orthopedic, and functional considerations.</p></div>
+  </div>
+
+  <h4 class="micro-title">Management Approach</h4>
+  <p>Low-flow malformations are often managed conservatively (compression garments for venous/lymphatic malformations, laser therapy for capillary malformations) unless causing functional impairment, disfigurement, or complications like recurrent thrombosis within a venous malformation (which can occur and cause localized pain — sometimes with associated coagulopathy in extensive lesions). High-flow AVMs are managed by a multidisciplinary vascular anomalies team, typically with staged embolization (sometimes as a pre-surgical adjunct to reduce intraoperative bleeding risk) and surgical resection when feasible.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Large AVMs can precipitate high-output heart failure</span>
+    <p>The same mechanism as a large surgical AV fistula (see the Vascular Access section) applies here — a sufficiently large arteriovenous malformation creates a significant left-to-right shunt that can produce or worsen heart failure, particularly relevant in pediatric patients with large AVMs where cardiac output demands are proportionally greater.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>A multidisciplinary vascular anomalies team (typically based at pediatric or specialized vascular centers) for any high-flow AVM or complex/syndromic low-flow malformation; interventional radiology for embolization planning.</dd>
+      <dt>Urgent evaluation</dt><dd>Sudden pain or swelling in a known venous malformation (possible localized thrombosis), or any AVM with new or worsening bleeding, rapid growth, or signs of high-output cardiac strain.</dd>
+      <dt>Transfer if no vascular anomalies program on-site</dt><dd>Any high-flow malformation requiring embolization/surgical planning, or complex syndromic malformations (Sturge-Weber, Klippel-Trénaunay) needing coordinated multi-specialty management.</dd>
+      <dt>Transport considerations</dt><dd>Avoid unnecessary manipulation or pressure on a known AVM given bleeding risk; standard transport is adequate for most stable malformations without acute complications.</dd>
+      <dt>Who to call</dt><dd>A vascular anomalies team/interventional radiology for high-flow lesions; dermatology or plastic surgery for cosmetic/functional management of low-flow lesions; neurology and ophthalmology specifically for Sturge-Weber-associated findings.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: LYMPH -->
+
+<section class="section" id="lymph">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Lymphedema &amp; Differentiating Edema</h2>
+  <p class="section-sub">Primary vs. secondary tells you the cause; staging tells you the severity — but the highest-yield skill in this section is distinguishing lymphedema from its mimics in the first place.</p>
+
+  <h3 class="sub-title">Primary vs. Secondary, and Staging</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_lymph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_lymph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_lymph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_lymph" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-lymph)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase">PRIMARY LYMPHEDEMA</text>
+<text x="250.0" y="61.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Congenital (present at birth) or developing</text>
+<text x="250.0" y="74.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">later (praecox: puberty; tarda: after age 35)</text>
+<text x="250.0" y="86.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="99.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Result of lymphatic system maldevelopment --</text>
+<text x="250.0" y="112.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">hypoplasia, aplasia, or lymphatic valve</text>
+<text x="250.0" y="125.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">dysfunction</text>
+<text x="250.0" y="138.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="150.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Much less common than secondary lymphedema</text>
+<rect x="500" y="20" width="460" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">SECONDARY LYMPHEDEMA</text>
+<text x="730.0" y="67.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Far more common overall</text>
+<text x="730.0" y="80.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="93.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Causes: lymph node dissection/radiation</text>
+<text x="730.0" y="106.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(esp. breast cancer axillary dissection),</text>
+<text x="730.0" y="118.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">malignant lymphatic obstruction, recurrent</text>
+<text x="730.0" y="131.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cellulitis/infection damaging lymphatics,</text>
+<text x="730.0" y="144.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">filariasis (leading global cause worldwide)</text>
+<line x1="20" y1="190" x2="960" y2="190" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="214" font-size="12.5" font-weight="700" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Staging</text>
+<rect x="20" y="230" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-lymph)" stroke-width="1.6"/>
+<text x="125.0" y="248" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Stage 0 (latent)</text>
+<text x="125.0" y="301.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Impaired lymphatic transport without visible swelling -- subclinical</text>
+<rect x="260" y="230" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-lymph)" stroke-width="1.6"/>
+<text x="365.0" y="248" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Stage I</text>
+<text x="365.0" y="301.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Swelling that IMPROVES with limb elevation, pitting present</text>
+<rect x="500" y="230" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-lymph)" stroke-width="1.6"/>
+<text x="605.0" y="248" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Stage II</text>
+<text x="605.0" y="301.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Swelling that does NOT resolve with elevation alone; tissue fibrosis develops (non-pitting)</text>
+<rect x="740" y="230" width="210" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-lymph)" stroke-width="1.6"/>
+<text x="845.0" y="248" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-lymph)" font-family="Inter, sans-serif" style="text-transform:uppercase">Stage III</text>
+<text x="845.0" y="301.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lymphostatic elephantiasis -- severe fibrosis, skin changes (papillomatosis, hyperkeratosis), largest volume</text>
+<line x1="20" y1="374" x2="960" y2="374" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="398" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Differentiating unilateral leg swelling</text>
+<rect x="20" y="414" width="920" height="74" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="440.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Unilateral, acute onset, pitting, tender -&gt; think DVT first (see VTE section). Unilateral, chronic, non-pitting in later</text>
+<text x="480.0" y="454.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">stages, associated skin thickening -&gt; think lymphedema. Bilateral, pitting, associated with dyspnea/orthopnea -&gt;</text>
+<text x="480.0" y="468.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">think systemic causes (heart failure, renal/hepatic disease, venous insufficiency) rather than a focal lymphatic problem.</text>
+</svg>
+    <div class="diagram-caption">Secondary lymphedema dominates clinical practice — lymph node dissection and radiation for cancer treatment (breast cancer axillary dissection being the classic example) are far more common causes than primary lymphatic maldevelopment.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">The pitting-to-non-pitting transition marks a real biological shift</span>
+    <p>Early lymphedema (Stage I) is protein-rich fluid accumulation that still resolves with elevation — genuinely reversible. As disease progresses to Stage II, chronic lymphatic congestion triggers tissue fibrosis and adipose deposition, and swelling no longer resolves with elevation alone. This isn't just a severity marker — it reflects a shift from a primarily fluid problem to a primarily structural tissue problem, which is why late-stage lymphedema responds much less completely to conservative measures like elevation and even compression.</p>
+  </div>
+
+  <h4 class="micro-title">Differentiating Unilateral Leg Swelling — A Common Bedside Task</h4>
+  <p>Acute unilateral pitting edema with tenderness should prompt DVT evaluation first (see the VTE section) — this is the diagnosis with the most time-sensitive consequences if missed. Chronic unilateral swelling that has progressed to non-pitting character, especially with skin thickening or a history of lymph node dissection/radiation/recurrent cellulitis, points toward lymphedema. Bilateral pitting edema, especially with other systemic symptoms (dyspnea, orthopnea, weight gain), should redirect the workup toward systemic causes (heart failure, renal disease, hepatic disease, or — less commonly — bilateral chronic venous insufficiency) rather than a primary lymphatic problem.</p>
+
+  <div class="callout warn">
+    <span class="callout-label">Recurrent cellulitis is both a cause and a consequence</span>
+    <p>Lymphedema impairs local immune surveillance, predisposing to recurrent cellulitis in the affected limb — and each infection episode can further damage lymphatic channels, worsening the underlying lymphedema in a self-perpetuating cycle. Patients with lymphedema benefit from clear education on skin care and early treatment of any cellulitis, and some patients with very frequent recurrent infections are considered for prophylactic antibiotic strategies.</p>
+  </div>
+
+  <h4 class="micro-title">Management</h4>
+  <p>Complete decongestive therapy (manual lymphatic drainage, multilayer compression bandaging, exercise, and meticulous skin care) delivered by a certified lymphedema therapist is the standard conservative approach, followed by long-term maintenance with compression garments. Surgical options (lymphaticovenous anastomosis, vascularized lymph node transfer, or debulking procedures for severe disease) exist for refractory cases and have expanded considerably as microsurgical technique has advanced, but conservative therapy remains first-line for most patients.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Lymphedema therapy/rehabilitation medicine for complete decongestive therapy referral; vascular surgery or plastic surgery with microsurgical expertise for refractory disease being considered for surgical management.</dd>
+      <dt>Urgent evaluation</dt><dd>Any acute worsening of chronic lymphedema (rule out superimposed cellulitis or DVT before assuming simple lymphedema progression), or new unilateral swelling in a patient with a history of malignancy (consider malignant lymphatic obstruction).</dd>
+      <dt>Transfer if no lymphedema program on-site</dt><dd>Severe or refractory lymphedema being considered for surgical intervention, or diagnostic uncertainty requiring lymphoscintigraphy or specialized lymphatic imaging not available locally.</dd>
+      <dt>Transport considerations</dt><dd>Standard transport is generally adequate; avoid blood pressure cuffs and venipuncture in a lymphedematous limb where possible, similar to precautions taken with a dialysis access limb.</dd>
+      <dt>Who to call</dt><dd>Certified lymphedema therapy services for conservative management; vascular/plastic surgery for surgical candidacy evaluation in refractory cases; oncology involvement if malignant lymphatic obstruction is suspected as the underlying cause.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: TRAUMA -->
+
+<section class="section" id="trauma">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Venous &amp; Access Disease</div>
+  <h2 class="section-title">Vascular Trauma &amp; Compartment Syndrome</h2>
+  <p class="section-sub">Closing this volume with the hard/soft sign framework for penetrating vascular injury, and the compartment syndrome pattern that applies whether the inciting injury was vascular, orthopedic, or reperfusion-related.</p>
+
+  <h3 class="sub-title">Hard Signs vs. Soft Signs</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_trauma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_trauma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_trauma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_trauma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-trauma)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Vascular trauma: hard vs. soft signs</text>
+<rect x="20" y="40" width="460" height="190" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">HARD SIGNS</text>
+<text x="250.0" y="98.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pulsatile bleeding</text>
+<text x="250.0" y="112.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Expanding or pulsatile hematoma</text>
+<text x="250.0" y="125.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Palpable thrill / audible bruit over the injury</text>
+<text x="250.0" y="139.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Signs of distal ischemia (the 6 Ps -- see</text>
+<text x="250.0" y="153.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  Vascular Vol. 1's Acute Limb Ischemia section)</text>
+<text x="250.0" y="166.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="180.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ANY hard sign -&gt; mandates immediate surgical</text>
+<text x="250.0" y="193.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">exploration -- does not wait for imaging</text>
+<rect x="500" y="40" width="460" height="190" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">SOFT SIGNS</text>
+<text x="730.0" y="80.9" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">History of hemorrhage at the scene (now</text>
+<text x="730.0" y="93.9" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  controlled)</text>
+<text x="730.0" y="107.0" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Proximity of the wound to a major vessel</text>
+<text x="730.0" y="120.1" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Small, non-expanding hematoma</text>
+<text x="730.0" y="133.1" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Diminished (but present) distal pulse</text>
+<text x="730.0" y="146.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Peripheral nerve deficit in a nerve that</text>
+<text x="730.0" y="159.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  runs near a major vessel</text>
+<text x="730.0" y="172.3" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="185.3" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Soft signs alone -&gt; further workup (CT</text>
+<text x="730.0" y="198.4" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  angiography, ABI, or observation) rather</text>
+<text x="730.0" y="211.4" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  than automatic exploration</text>
+<line x1="20" y1="250" x2="960" y2="250" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="274" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Compartment syndrome</text>
+<rect x="20" y="290" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="125.0" y="308" text-anchor="middle" font-size="10.8" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Injury/reperfusion</text>
+<text x="125.0" y="391.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fracture, crush injury, or reperfusion after prolonged ischemia (including post-vascular-repair) increases compartment pressure</text>
+<rect x="260" y="290" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="365.0" y="308" text-anchor="middle" font-size="10.8" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Rising compartment pressure</text>
+<text x="365.0" y="391.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">A fixed fascial compartment cannot expand -- pressure rises and eventually exceeds capillary perfusion pressure</text>
+<rect x="500" y="290" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="605.0" y="308" text-anchor="middle" font-size="10.8" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">The Ps, compartment-specific</text>
+<text x="605.0" y="391.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pain out of proportion + pain with passive stretch are the EARLIEST and most reliable findings -- pulselessness is a LATE finding, don't wait for it</text>
+<rect x="740" y="290" width="210" height="180" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="845.0" y="308" text-anchor="middle" font-size="10.8" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Fasciotomy</text>
+<text x="845.0" y="391.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Definitive treatment -- this is a clinical diagnosis; don't wait for compartment pressure measurement to confirm if the clinical picture is convincing and evolving</text>
+<line x1="230" y1="380" x2="260" y2="380" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_trauma)"/>
+<line x1="470" y1="380" x2="500" y2="380" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_trauma)"/>
+<line x1="710" y1="380" x2="740" y2="380" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_trauma)"/>
+</svg>
+    <div class="diagram-caption">Top: the hard/soft sign framework that determines whether a penetrating extremity injury goes straight to the OR or gets further workup first. Bottom: compartment syndrome's progression and the clinical findings that matter most.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">A single hard sign overrides everything else</span>
+    <p>Even a hemodynamically stable patient with a reassuring overall exam should go for immediate surgical exploration if any hard sign (pulsatile bleeding, expanding hematoma, palpable thrill/bruit, or distal ischemia) is present — these findings have a high enough association with a vascular injury requiring repair that imaging delay is not justified. Soft signs alone allow for a more measured workup (CT angiography, ABI comparison to the uninjured side, or a period of observation) without mandating immediate exploration.</p>
+  </div>
+
+  <h4 class="micro-title">The ABI as a Screening Tool in Trauma</h4>
+  <p>An injured-extremity ABI below 0.9 (compared to the uninjured side) in a patient with only soft signs raises suspicion for a vascular injury and generally warrants CT angiography — this is a quick, low-cost screening step that can appropriately triage which soft-sign patients need further imaging versus safe observation.</p>
+
+  <h3 class="sub-title">Compartment Syndrome</h3>
+  <p>Whether the inciting event is a fracture, crush injury, or reperfusion after a period of arterial occlusion (including after successful vascular repair for acute limb ischemia — see Vascular Vol. 1), the underlying problem is the same: pressure within a fixed fascial compartment rises high enough to compromise capillary perfusion, and without prompt decompression, muscle and nerve tissue within that compartment become ischemic and eventually necrotic.</p>
+
+  <div class="callout warn">
+    <span class="callout-label">Pain out of proportion and pain with passive stretch are the earliest, most reliable findings</span>
+    <p>Don't wait for the classic "5 Ps" of compartment syndrome to all appear — pulselessness in particular is a late finding that indicates the pressure has already exceeded arterial pressure, by which point significant tissue damage has likely already occurred. Severe pain disproportionate to the apparent injury, and pain reproduced or worsened by passive stretch of the muscles within the affected compartment, should prompt urgent compartment pressure measurement or, if the clinical picture is sufficiently convincing and evolving, proceeding directly to fasciotomy without waiting for pressure confirmation.</p>
+  </div>
+
+  <h4 class="micro-title">Fasciotomy — When in Doubt, Cut</h4>
+  <p>This is a clinical diagnosis at its core — compartment pressure measurements can support the decision, but a convincing clinical picture in a high-risk setting (post-revascularization, high-energy fracture, crush injury) shouldn't be overridden by a borderline pressure reading. The consequences of a delayed fasciotomy (permanent muscle/nerve damage, contracture, potential limb loss) substantially outweigh the morbidity of a fasciotomy performed on a limb that, in retrospect, might not have absolutely required it.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Trauma surgery and vascular surgery jointly for any penetrating extremity injury with hard signs; orthopedic surgery and/or vascular surgery for suspected compartment syndrome, whichever is more immediately available.</dd>
+      <dt>Emergent surgical evaluation</dt><dd>Any hard sign of vascular injury (straight to OR); any clinically convincing compartment syndrome (straight to fasciotomy) — both are true "don't wait for imaging" surgical emergencies.</dd>
+      <dt>Transfer if no trauma/vascular surgery on-site</dt><dd>Any vascular injury with hard signs, or any compartment syndrome requiring fasciotomy, needs emergent transfer with pre-arrival notification if not immediately available locally — time to intervention directly predicts limb salvage in both scenarios.</dd>
+      <dt>Transport considerations</dt><dd>Continuous monitoring of distal perfusion and neurologic status throughout transport for any extremity injury with soft signs; a physician-level or critical care transport team for any patient with hard signs or evolving compartment syndrome given the risk of rapid deterioration en route.</dd>
+      <dt>Who to call</dt><dd>Trauma surgery as the primary contact for penetrating extremity trauma, with vascular surgery involved for the specific repair; orthopedic surgery for fracture-associated compartment syndrome, with vascular surgery involved if there's any associated vascular injury.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Vascular Atlas Vol. 2 — Venous &amp; Access Disease · Built for clinical education and bedside reference. Verify thresholds and dosing against institutional protocol and current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>

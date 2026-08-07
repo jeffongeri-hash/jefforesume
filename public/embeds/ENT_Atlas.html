@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENT Atlas &mdash; Ear, Nose, Throat &amp; Ocular Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --ear: #e0a458;
+  --ear-soft: rgba(224,164,88,.13);
+  --nose: #4fb3a9;
+  --nose-soft: rgba(79,179,169,.13);
+  --throat: #d4685f;
+  --throat-soft: rgba(212,104,95,.13);
+  --ocular: #8e7dd1;
+  --ocular-soft: rgba(142,125,209,.13);
+  --doc: #6ea8d8;
+  --doc-soft: rgba(110,168,216,.13);
+
+  --accent: #e0a458;
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:var(--font-display); font-size:1.15rem; font-weight:600;
+  display:flex; align-items:baseline; gap:8px; white-space:nowrap;
+}
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; }
+.navdrop{
+  position:relative;
+}
+.navdrop > button{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.03em;
+  background:var(--bg-elev); color:var(--ink); border:1px solid var(--line);
+  padding:9px 16px; border-radius:999px; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+  transition:border-color .15s ease;
+}
+.navdrop > button:hover{ border-color:var(--accent); }
+.navdrop .chev{ font-size:.7em; opacity:.6; transition:transform .15s ease;}
+.navdrop.open .chev{ transform:rotate(180deg); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  background:var(--bg-elev-2); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  min-width:340px; max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .22s ease, opacity .18s ease;
+  padding:0; z-index:50;
+}
+.navdrop.open .navmenu{ max-height:70vh; opacity:1; overflow-y:auto; padding:8px; }
+.navmenu button{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  background:transparent; border:none; color:var(--ink); font-family:var(--font-body);
+  font-size:.88rem; padding:9px 10px; border-radius:7px; cursor:pointer;
+}
+.navmenu button:hover{ background:var(--bg-elev); }
+.navmenu .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+.navmenu .num{ font-family:var(--font-mono); font-size:.7rem; color:var(--ink-faint); width:1.4em; flex:none;}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink);
+  border-radius:999px; width:36px; height:36px; cursor:pointer; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+}
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:980px; margin:0 auto; padding:0 20px 120px; }
+.hero{ padding:48px 0 28px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+.hero .eyebrow{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;}
+.hero h1{ font-size:2.3rem; }
+.hero .lede{ color:var(--ink-dim); font-size:1.02rem; max-width:60ch; }
+.source-strip{
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;
+}
+.source-chip{
+  font-family:var(--font-mono); font-size:.68rem; color:var(--ink-dim);
+  border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+}
+
+.domain{ display:none; padding-top:36px; }
+.domain.active{ display:block; }
+.domain-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+.domain-head .icon{ font-size:1.6rem; }
+.domain-head h2{ margin:0; font-size:1.7rem; }
+.domain-desc{ color:var(--ink-dim); max-width:68ch; margin-bottom:28px; }
+
+.domtab{ display:none; }
+.domtab.active{ display:block; }
+
+/* ---------- Section blocks ---------- */
+.section{ margin-bottom:34px; }
+.section > h3{
+  font-size:1.15rem; display:flex; align-items:center; gap:10px;
+  padding-bottom:8px; border-bottom:1px solid var(--line-soft); margin-bottom:16px;
+}
+.section > h3 .tag{
+  font-family:var(--font-mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--bg); background:var(--accent); padding:2px 8px; border-radius:5px; font-weight:600;
+}
+
+.card{
+  background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px; margin-bottom:14px;
+}
+.card h4{ font-size:1rem; margin-bottom:8px; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+
+/* callouts */
+.callout{ border-radius:var(--radius); padding:16px 18px; margin:14px 0; border:1px solid; }
+.callout h4{ display:flex; align-items:center; gap:8px; font-size:.92rem; margin-bottom:6px; font-family:var(--font-body); font-weight:700;}
+.callout.pearl{ background:var(--good-soft); border-color:var(--good); }
+.callout.pearl h4{ color:var(--good); }
+.callout.miss{ background:var(--danger-soft); border-color:var(--danger); }
+.callout.miss h4{ color:var(--danger); }
+.callout.warn{ background:var(--warn-soft); border-color:var(--warn); }
+.callout.warn h4{ color:var(--warn); }
+.callout.guideline{ background:var(--doc-soft); border-color:var(--doc); }
+.callout.guideline h4{ color:var(--doc); }
+
+/* accordion */
+.acc{ border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; overflow:hidden; background:var(--bg-elev); }
+.acc-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:13px 18px; cursor:pointer; user-select:none;
+}
+.acc-head h4{ margin:0; font-size:.98rem; }
+.acc-head .meta{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); }
+.acc-head .plus{ font-size:1.1rem; color:var(--ink-faint); transition:transform .18s ease; }
+.acc.open .plus{ transform:rotate(45deg); }
+.acc-body{ max-height:0; overflow:hidden; transition:max-height .25s ease; padding:0 18px; }
+.acc.open .acc-body{ padding:0 18px 16px; }
+
+/* tables */
+table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+th{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:600;}
+tr:last-child td{ border-bottom:none; }
+.tbl-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-elev); padding:4px 14px; }
+
+/* badges */
+.badge{ display:inline-block; font-family:var(--font-mono); font-size:.66rem; padding:2px 8px; border-radius:999px; font-weight:600; letter-spacing:.02em;}
+.badge.miss{ background:var(--danger-soft); color:var(--danger); }
+.badge.b-ear{ background:var(--ear-soft); color:var(--ear); }
+.badge.b-nose{ background:var(--nose-soft); color:var(--nose); }
+.badge.b-throat{ background:var(--throat-soft); color:var(--throat); }
+.badge.b-ocular{ background:var(--ocular-soft); color:var(--ocular); }
+
+/* documentation compare */
+.doc-compare{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:12px 0; }
+@media (max-width:720px){ .doc-compare{ grid-template-columns:1fr; } }
+.doc-block{ border-radius:var(--radius); padding:14px 16px; font-family:var(--font-mono); font-size:.79rem; line-height:1.55; border:1px solid; }
+.doc-block.weak{ background:var(--danger-soft); border-color:var(--danger); }
+.doc-block.strong{ background:var(--good-soft); border-color:var(--good); }
+.doc-label{ font-family:var(--font-body); font-weight:700; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; display:block;}
+.doc-block.weak .doc-label{ color:var(--danger); }
+.doc-block.strong .doc-label{ color:var(--good); }
+
+/* diagrams */
+.diagram-wrap{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:18px; margin:16px 0; text-align:center; }
+.diagram-wrap svg{ max-width:100%; height:auto; }
+.diagram-cap{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); margin-top:10px; }
+
+/* misconceptions */
+.myth-card{ border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-elev); padding:18px 20px; margin-bottom:14px; }
+.myth-claim{ font-family:var(--font-display); font-style:italic; font-size:1.05rem; color:var(--ink); padding-left:16px; border-left:3px solid var(--danger); margin-bottom:10px; }
+.myth-truth{ font-size:.92rem; }
+.myth-explain{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line-soft); font-size:.86rem; color:var(--ink-dim); }
+.myth-explain b{ color:var(--ink); }
+
+/* diff dx explorer */
+.dx-controls{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.dx-filter{
+  font-family:var(--font-mono); font-size:.72rem; padding:7px 14px; border-radius:999px;
+  border:1px solid var(--line); background:var(--bg-elev); color:var(--ink-dim); cursor:pointer;
+}
+.dx-filter.active{ background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600;}
+.dx-row{ display:none; }
+.dx-row.show{ display:table-row; }
+
+/* footer */
+.foot{ margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:.78rem; }
+
+/* misc typography */
+ul.tight{ margin:0 0 1em 1.1em; padding:0; }
+ul.tight li{ margin-bottom:5px; }
+.small{ font-size:.85rem; color:var(--ink-dim); }
+.verify{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:8px; margin-top:10px;}
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="brand">ENT Atlas <span class="sub">Clinical Reference</span></div>
+  <div class="navwrap">
+    <div class="navdrop" id="navdrop">
+      <button id="navbtn"><span class="navlabel">👂 Ear</span><span class="chev">▼</span></button>
+      <div class="navmenu"><button data-dom="ear"><span class="dot" style="background:var(--ear)"></span><span class="num">01</span>👂 Ear</button><button data-dom="sinus"><span class="dot" style="background:var(--nose)"></span><span class="num">02</span>👃 Nose & Sinus</button><button data-dom="throat"><span class="dot" style="background:var(--throat)"></span><span class="num">03</span>👄 Throat / Oropharynx</button><button data-dom="ocular"><span class="dot" style="background:var(--ocular)"></span><span class="num">04</span>👁️ Ocular-ENT Overlap</button><button data-dom="ddx"><span class="dot" style="background:var(--accent)"></span><span class="num">05</span>🗂️ 40-Item Differential</button><button data-dom="docs"><span class="dot" style="background:var(--doc)"></span><span class="num">06</span>🛡️ Documentation & Misconceptions</button></div>
+    </div>
+  </div>
+  <button class="themetoggle" id="themeBtn" aria-label="Toggle theme">☀️</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Otolaryngology &middot; Emergency &amp; Outpatient Reference</div>
+    <h1>ENT Atlas</h1>
+    <p class="lede">Ear, nose/sinus, throat, and ocular-overlap sources of infection &mdash; exam
+    documentation, AAO-HNSF guideline-based antibiotic stewardship, a 40-item combined differential,
+    and the misconceptions worth correcting for patients and colleagues.</p>
+    <div class="source-strip">
+      <span class="source-chip">AAO-HNSF Adult Sinusitis CPG (2025 update)</span>
+      <span class="source-chip">AAO-HNSF Acute Otitis Externa CPG (2014)</span>
+      <span class="source-chip">AAO-HNSF Otitis Media w/ Effusion CPG (2016)</span>
+      <span class="source-chip">AAP Otitis Media CPG (2013)</span>
+      <span class="source-chip">Centor / McIsaac criteria</span>
+    </div>
+  </div>
+
+  
+<div class="domain active" id="dom-ear">
+<div class="domain-head"><span class="icon">👂</span><h2>Ear</h2></div>
+<p class="domain-desc">Full anatomical landmarks, otoscopic exam technique and documentation, and the
+three ear infections that account for nearly every ear-related ED and outpatient visit: acute otitis
+media, otitis media with effusion, and acute otitis externa — plus the mastoiditis and cholesteatoma
+red flags you cannot miss.</p>
+
+<div class="section">
+<h3><span class="tag">Anatomy</span> Ear Landmarks — Outer, Middle &amp; Inner Ear</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Full ear anatomy cross-section diagram">
+  <defs>
+    <radialGradient id="skinshade" cx="40%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#f3e2cf"/>
+      <stop offset="100%" stop-color="#d9b98f"/>
+    </radialGradient>
+  </defs>
+
+  <!-- pinna (auricle) -->
+  <path d="M 60 200 C 20 140 40 60 110 50 C 170 42 210 90 200 150 C 235 145 260 175 250 210
+           C 275 220 280 255 255 270 C 260 300 235 315 205 305 C 200 335 165 345 140 320
+           C 100 330 60 300 60 250 Z"
+        fill="url(#skinshade)" stroke="#a9805a" stroke-width="2.5"/>
+  <!-- helix rim -->
+  <path d="M 110 55 C 165 48 200 90 195 145" fill="none" stroke="#a9805a" stroke-width="2" opacity="0.7"/>
+  <!-- tragus -->
+  <path d="M 210 230 Q 235 220 245 245 Q 235 268 210 260 Z" fill="#e8caa4" stroke="#a9805a" stroke-width="2"/>
+  <!-- lobule -->
+  <ellipse cx="150" cy="305" rx="34" ry="26" fill="#eed3ae" stroke="#a9805a" stroke-width="2"/>
+
+  <!-- external auditory canal (cartilaginous outer 1/3, bony inner 2/3) -->
+  <path d="M 255 245 L 420 240 L 420 275 L 255 270 Z" fill="#e0c39a" stroke="#a9805a" stroke-width="2"/>
+  <line x1="335" y1="238" x2="335" y2="278" stroke="#a9805a" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- TM -->
+  <ellipse cx="425" cy="257" rx="10" ry="34" fill="#efdcb8" stroke="#8a6a42" stroke-width="3" transform="rotate(-8 425 257)"/>
+
+  <!-- middle ear cavity -->
+  <rect x="435" y="205" width="110" height="105" rx="10" fill="#f6ece0" stroke="#c9a877" stroke-width="2"/>
+
+  <!-- ossicles: malleus, incus, stapes -->
+  <g stroke="#8a6a42" stroke-width="2" fill="#d9d2c2">
+    <line x1="432" y1="245" x2="465" y2="230" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="465" cy="228" r="6"/>
+    <path d="M 465 230 L 495 235 L 500 255" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M 500 255 L 520 262 L 525 275" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="528" cy="278" rx="6" ry="9"/>
+  </g>
+  <text x="435" y="195" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#e0a458">Malleus</text>
+  <text x="495" y="212" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#e0a458">Incus</text>
+  <text x="520" y="300" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#e0a458">Stapes</text>
+
+  <!-- oval / round window -->
+  <ellipse cx="545" cy="270" rx="6" ry="12" fill="#8e7dd1" opacity="0.6"/>
+
+  <!-- eustachian tube going down-medially to nasopharynx -->
+  <path d="M 480 300 Q 550 360 640 400" fill="none" stroke="#4fb3a9" stroke-width="10" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- mastoid air cells (behind/above middle ear) -->
+  <g fill="#e0a458" opacity="0.35" stroke="#e0a458" stroke-width="1.5">
+    <circle cx="470" cy="150" r="16"/>
+    <circle cx="500" cy="145" r="14"/>
+    <circle cx="490" cy="175" r="13"/>
+    <circle cx="520" cy="170" r="15"/>
+  </g>
+
+  <!-- inner ear: cochlea (spiral) + semicircular canals -->
+  <path d="M 610 190 
+           m 0 25
+           a 25 25 0 1 1 20 -22
+           a 15 15 0 1 1 -12 14
+           a 7 7 0 1 1 6 -6"
+        fill="none" stroke="#d4685f" stroke-width="5" stroke-linecap="round"/>
+  <text x="600" y="150" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#d4685f">Cochlea</text>
+
+  <g fill="none" stroke="#8e7dd1" stroke-width="6" stroke-linecap="round">
+    <path d="M 640 230 Q 670 190 705 220"/>
+    <path d="M 645 245 Q 690 235 715 265"/>
+    <path d="M 635 260 Q 660 300 700 295"/>
+  </g>
+  <text x="700" y="195" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#8e7dd1">Semicircular canals</text>
+
+  <!-- facial nerve pathway (schematic, dashed) through temporal bone -->
+  <path d="M 460 210 Q 500 230 520 280 Q 540 330 570 360" fill="none" stroke="#d9b64e" stroke-width="3" stroke-dasharray="6 4"/>
+  <text x="555" y="345" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#d9b64e">CN VII (facial n.)</text>
+
+  <!-- Section brackets -->
+  <text x="150" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">OUTER EAR</text>
+  <text x="490" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">MIDDLE EAR</text>
+  <text x="690" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">INNER EAR</text>
+  <line x1="330" y1="15" x2="330" y2="440" stroke="#4b5566" stroke-width="1" stroke-dasharray="2 4" opacity="0.4"/>
+  <line x1="580" y1="15" x2="580" y2="440" stroke="#4b5566" stroke-width="1" stroke-dasharray="2 4" opacity="0.4"/>
+
+  <g font-family="Inter, sans-serif" font-size="13" fill="currentColor" font-weight="600">
+    <line x1="130" y1="55" x2="90" y2="20" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="20" y="18" fill="#e0a458">Helix</text>
+
+    <line x1="225" y1="245" x2="235" y2="205" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="180" y="195" fill="#d4685f">Tragus</text>
+    <text x="150" y="212" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">(pain here = otitis externa)</text>
+
+    <line x1="150" y1="330" x2="130" y2="370" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="60" y="390" fill="#8e7dd1">Lobule</text>
+
+    <line x1="300" y1="255" x2="220" y2="410" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="90" y="428" fill="#4fb3a9">External auditory canal</text>
+    <text x="70" y="445" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">outer 1/3 cartilaginous → inner 2/3 bony</text>
+
+    <line x1="425" y1="292" x2="470" y2="420" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="430" y="438" fill="#d9b64e">Tympanic membrane</text>
+
+    <line x1="640" y1="400" x2="700" y2="430" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="600" y="450" fill="#4fb3a9">Eustachian tube → nasopharynx</text>
+
+    <line x1="500" y1="155" x2="440" y2="105" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="380" y="98" fill="#e0a458">Mastoid air cells</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Full lateral cross-section. The eustachian tube is the anatomic link between
+middle ear and nasopharynx — why a URI so often precedes AOM/OME, and why children (shorter, more
+horizontal tubes) get more middle ear disease than adults.</div>
+<div class="grid2">
+<div class="card">
+<h4>Outer ear</h4>
+<p>Pinna (auricle) landmarks: helix (outer rim), tragus (cartilage anterior to canal — pain on
+palpation/traction here is the hallmark of otitis externa), and lobule. The external auditory canal
+is cartilaginous in its outer third and bony in its inner two-thirds — the bony portion is thin-skinned
+and exquisitely sensitive, which is why deep canal instrumentation hurts disproportionately.</p>
+</div>
+<div class="card">
+<h4>Middle &amp; inner ear</h4>
+<p>The ossicular chain (malleus → incus → stapes) transmits sound from the TM to the oval window.
+The facial nerve (CN VII) runs through the temporal bone in close proximity to the middle ear — the
+anatomic reason cholesteatoma erosion or severe AOM/mastoiditis can produce facial palsy, and why
+Ramsay Hunt (CN VII + vesicles) is a "same building" diagnosis. The cochlea and semicircular canals
+sit posteromedial to the middle ear, explaining why inner-ear structures are ordinarily protected from
+external/middle ear infection unless there's erosion or spread.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Exam</span> Otoscopic Exam &amp; Documentation</h3>
+<div class="card">
+<p>Pneumatic otoscopy (with an insufflation bulb) is the single highest-yield addition to a routine
+otoscopic exam — TM <b>mobility</b> is more sensitive for effusion than color or position alone. Use the
+largest speculum that comfortably fits the canal to get a good seal for insufflation.</p>
+<p><b>Document four things every time:</b> position, color, translucency, and mobility of the TM, plus
+the canal itself.</p>
+<ul class="tight">
+<li><b>Position:</b> neutral / retracted / bulging</li>
+<li><b>Color:</b> pearly-gray (normal) / erythematous / amber or yellow / dull white / blue-gray (hemotympanum)</li>
+<li><b>Translucency:</b> translucent (normal) / opacified / visible air-fluid level or bubbles</li>
+<li><b>Mobility:</b> normal / reduced / absent (pneumatic otoscopy)</li>
+<li><b>Canal:</b> patent / edematous / debris / discharge (color, odor) / foreign body</li>
+</ul>
+</div>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Labeled tympanic membrane diagram, right ear">
+  <defs>
+    <radialGradient id="tmshade" cx="42%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#f3e6c9"/>
+      <stop offset="55%" stop-color="#e6cfa3"/>
+      <stop offset="100%" stop-color="#c9a877"/>
+    </radialGradient>
+    <radialGradient id="canalshade" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3a2a20"/>
+      <stop offset="100%" stop-color="#1c130d"/>
+    </radialGradient>
+  </defs>
+  <!-- ear canal ring -->
+  <circle cx="230" cy="180" r="150" fill="url(#canalshade)"/>
+  <circle cx="230" cy="180" r="128" fill="url(#tmshade)" stroke="#8a6a42" stroke-width="2"/>
+
+  <!-- pars flaccida (upper, Shrapnell membrane) -->
+  <path d="M 140 90 Q 230 55 320 90 Q 300 130 230 130 Q 160 130 140 90 Z" fill="#efdcb8" stroke="#a9895c" stroke-width="1.5"/>
+
+  <!-- malleus -->
+  <line x1="230" y1="70" x2="230" y2="215" stroke="#d9d2c2" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="230" cy="72" r="7" fill="#e7e0cf"/>
+  <!-- umbo -->
+  <circle cx="230" cy="215" r="6" fill="#6b5638"/>
+
+  <!-- annulus -->
+  <circle cx="230" cy="180" r="128" fill="none" stroke="#8a6a42" stroke-width="3"/>
+
+  <!-- cone of light (anteroinferior, 5 o'clock for right ear) -->
+  <path d="M 230 215 L 320 275 L 300 300 Z" fill="#fff8e6" opacity="0.85"/>
+
+  <!-- quadrant divider lines -->
+  <line x1="230" y1="52" x2="230" y2="308" stroke="#8a6a42" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>
+  <line x1="102" y1="180" x2="358" y2="180" stroke="#8a6a42" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>
+
+  <!-- LABELS with leader lines -->
+  <g font-family="Inter, sans-serif" font-size="15" fill="currentColor">
+    <line x1="230" y1="60" x2="230" y2="20" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="230" y="14" text-anchor="middle" fill="#e0a458" font-weight="600">Pars flaccida</text>
+
+    <line x1="250" y1="90" x2="470" y2="60" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="478" y="65" fill="#4fb3a9" font-weight="600">Malleus (lateral process)</text>
+
+    <line x1="235" y1="150" x2="470" y2="150" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="478" y="155" fill="#4fb3a9" font-weight="600">Manubrium of malleus</text>
+
+    <line x1="236" y1="215" x2="470" y2="230" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="478" y="235" fill="#d4685f" font-weight="600">Umbo</text>
+
+    <line x1="300" y1="285" x2="470" y2="300" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="478" y="305" fill="#d9b64e" font-weight="600">Cone of light</text>
+    <text x="478" y="322" fill="#8a93a3" font-size="12">(anteroinferior, ~5 o'clock)</text>
+
+    <line x1="130" y1="180" x2="20" y2="180" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="15" y="176" text-anchor="end" fill="#8e7dd1" font-weight="600">Pars tensa</text>
+
+    <line x1="358" y1="180" x2="470" y2="180" stroke="#8a6a42" stroke-width="1.5"/>
+    <text x="478" y="185" fill="#8a6a42" font-weight="600">Annulus fibrosus</text>
+  </g>
+  <text x="20" y="345" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a93a3">R = anterior-superior (12) is anatomic reference; light reflex points anteroinferior</text>
+</svg>
+</div>
+<div class="diagram-cap">Right TM at rest. Note the light reflex is anteroinferior on the right (mirror image on the left)
+— a light reflex in the wrong quadrant, or one that's diffuse/absent, is itself a documentable finding.</div>
+
+<div class="doc-compare">
+<div class="doc-block weak">
+<span class="doc-label">Weak documentation</span>
+Ear exam: TM looks infected. Started on antibiotics.
+</div>
+<div class="doc-block strong">
+<span class="doc-label">Bulletproof documentation</span>
+R TM: moderately bulging, erythematous, opacified, immobile on pneumatic insufflation.
+Landmarks obscured. L TM: normal position/color/mobility. Canals clear bilaterally.
+Findings consistent with acute otitis media, right, per AAP criteria (moderate-severe bulging).
+Amoxicillin 90mg/kg/day started; return precautions given.
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">AOM</span> Acute Otitis Media</h3>
+<div class="callout guideline">
+<h4>⚑ Guideline note</h4>
+<p>AAO-HNSF's own ear-infection guidelines are <b>otitis media with effusion (OME)</b> and
+<b>tympanostomy tubes</b>. The primary acute otitis media (AOM) diagnostic/treatment guideline is the
+<b>AAP 2013 clinical practice guideline</b> (endorsed alongside AAFP), which AAO-HNS references and
+aligns with. Worth knowing which society owns which guideline when you're asked in a chart review or deposition.</p>
+</div>
+<div class="card">
+<h4>Diagnostic criteria (AAP 2013)</h4>
+<p>Diagnose AOM with any of the following:</p>
+<ul class="tight">
+<li>Moderate-to-severe bulging of the TM, <b>or</b> new-onset otorrhea not due to otitis externa</li>
+<li>Mild bulging <b>and</b> recent (&lt;48h) onset of ear pain or intense TM erythema</li>
+</ul>
+<p class="small">Erythema or pain <i>alone</i>, without bulging, is not sufficient — a red TM from crying,
+fever, or URI-associated hyperemia is a classic overdiagnosis trap.</p>
+</div>
+<div class="callout pearl">
+<h4>💡 Pearl — watchful waiting is guideline-supported</h4>
+<p>For children ≥6 months with unilateral, non-severe AOM (mild otalgia &lt;48h, temp &lt;39°C) and
+reliable follow-up, observation with analgesia and a safety-net antibiotic prescription is an AAP-endorsed
+option — this mirrors the same antibiotic-stewardship logic AAO-HNS uses for adult sinusitis.</p>
+</div>
+<div class="card">
+<h4>First-line therapy</h4>
+<p>Amoxicillin 80–90 mg/kg/day divided q12h is first-line. Use amoxicillin-clavulanate if amoxicillin in
+the past 30 days, concurrent purulent conjunctivitis (suggests <i>H. influenzae</i>), or history of
+recurrent AOM unresponsive to amoxicillin. Penicillin allergy: cefdinir, cefuroxime, or cefpodoxime
+(cross-reactivity with penicillin is low); azithromycin as a non-cephalosporin fallback.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">OME</span> Otitis Media with Effusion</h3>
+<div class="card">
+<p>Middle ear fluid <i>without</i> signs of acute infection — TM neutral or retracted (not bulging),
+dull/amber/gray, reduced mobility, ± air-fluid level or bubbles visible through the TM, and critically:
+<b>no</b> otalgia, fever, or bulging.</p>
+</div>
+<div class="callout warn">
+<h4>⚠ Common practice gap</h4>
+<p>AAO-HNS 2016 guideline: do <b>not</b> treat OME with antihistamines, decongestants, or systemic/topical
+steroids — none improve resolution and all carry side-effect burden. Most OME resolves spontaneously
+within 3 months. Tympanostomy tubes are reserved for effusion persisting ≥3 months (bilateral) or
+sooner in an at-risk child (speech/language delay, craniofacial anomaly, Down syndrome, etc.).</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">AOE</span> Acute Otitis Externa ("Swimmer's Ear")</h3>
+<div class="card">
+<p><b>Diffuse</b> ear canal inflammation: rapid-onset otalgia, itching, or fullness, with tenderness on
+tragal pressure or auricle traction, and canal edema/erythema ± otorrhea. Canal edema can be severe
+enough that the TM is not visualizable — document this explicitly rather than guessing at TM status.</p>
+</div>
+<div class="callout guideline">
+<h4>⚑ AAO-HNSF 2014 guideline — topical, not oral, is first-line</h4>
+<ul class="tight">
+<li>Topical therapy alone for uncomplicated diffuse AOE — <b>not</b> systemic antibiotics</li>
+<li>Oral antibiotics reserved for extension beyond the ear canal (cellulitis, adenopathy), or in
+diabetes/immunocompromise where risk of necrotizing (malignant) otitis externa is higher</li>
+<li>If TM perforation or tympanostomy tube is known/suspected: use a <b>non-ototoxic</b> topical (e.g.
+ofloxacin or ciprofloxacin-based) rather than aminoglycoside/acidifying drops</li>
+<li>Address pain proactively — AOE pain is frequently underestimated</li>
+<li>Reassess at 48–72h if refractory to initial therapy</li>
+</ul>
+</div>
+<div class="callout miss">
+<h4>🚩 Can't miss — necrotizing (malignant) otitis externa</h4>
+<p>Consider in diabetics or immunocompromised patients with AOE that is disproportionately painful,
+refractory to topical therapy, or accompanied by granulation tissue at the bony-cartilaginous junction
+of the canal floor. This is skull-base osteomyelitis (typically <i>Pseudomonas</i>) — needs imaging and
+IV therapy, not another course of drops.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Pearls</span> Additional Ear Findings &amp; Can't-Miss Diagnoses</h3>
+<div class="grid2">
+<div class="card">
+<h4>Cholesteatoma</h4>
+<p>Attic retraction pocket (superior/pars flaccida) with keratin debris, ± foul-smelling chronic
+otorrhea unresponsive to topical therapy. This is a surgical referral, not a "try another antibiotic"
+finding — erosive and can cause conductive hearing loss, facial nerve injury, or intracranial spread.</p>
+</div>
+<div class="card">
+<h4>Mastoiditis</h4>
+<p>Postauricular erythema, swelling, and tenderness with the auricle displaced anteriorly/inferiorly —
+usually in the setting of untreated or undertreated AOM. This is a same-day imaging and IV-antibiotic
+diagnosis, not an outpatient one.</p>
+</div>
+<div class="card">
+<h4>Hemotympanum</h4>
+<p>Blue-gray or dark TM after trauma — think temporal bone fracture. Pair with a exam for CSF otorrhea,
+hearing loss, facial nerve function, and Battle sign / raccoon eyes.</p>
+</div>
+<div class="card">
+<h4>Bullous myringitis</h4>
+<p>Hemorrhagic or clear bullae on the TM surface itself, intensely painful. Historically linked to
+<i>Mycoplasma</i>, though evidence for a distinct etiology is mixed — treat the pain and manage as AOM
+if effusion/bulging present.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="domain" id="dom-sinus">
+<div class="domain-head"><span class="icon">👃</span><h2>Nose &amp; Sinus</h2></div>
+<p class="domain-desc">Full sagittal and coronal anatomical landmarks, rhinoscopy exam technique and
+documentation, the AAO-HNSF 2025 Adult Sinusitis antibiotic-stewardship framework, and the
+distinguishing factors — bilateral vs. unilateral pain, discharge character — that separate routine
+viral rhinosinusitis from something that needs a different workup entirely.</p>
+
+<div class="section">
+<h3><span class="tag">Anatomy</span> Nasal Cavity Landmarks — Sagittal View</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 820 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sagittal nasal cavity anatomy diagram">
+  <defs>
+    <radialGradient id="faceshade2" cx="45%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#f5ecdf"/>
+      <stop offset="100%" stop-color="#ddc4a3"/>
+    </radialGradient>
+  </defs>
+
+  <!-- head/face silhouette (sagittal, facing left) -->
+  <path d="M 60 260 C 40 180 90 90 190 60 C 260 40 340 55 400 90
+           L 470 100 C 520 105 560 130 590 175
+           L 610 230 C 630 260 630 300 605 330
+           L 560 370 L 520 400 C 480 430 400 440 330 435
+           C 220 428 120 400 80 340 C 60 310 55 285 60 260 Z"
+        fill="url(#faceshade2)" stroke="#b8956a" stroke-width="2"/>
+
+  <!-- nasal bridge/dorsum + tip + columella (external nose profile carved from face) -->
+  <path d="M 190 90 L 245 105 Q 275 130 270 165 Q 285 190 265 210 Q 240 222 210 210"
+        fill="none" stroke="#a9805a" stroke-width="3"/>
+  <text x="300" y="105" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#e0a458">Nasal dorsum (bridge)</text>
+  <line x1="298" y1="110" x2="250" y2="118" stroke="#e0a458" stroke-width="1.5"/>
+
+  <!-- nostril / ala -->
+  <path d="M 265 208 Q 255 225 225 220" fill="none" stroke="#a9805a" stroke-width="3"/>
+
+  <!-- septum (medial wall, shown as central plate since sagittal cut is through nasal cavity) -->
+  <path d="M 235 130 C 300 140 360 160 420 190 C 460 210 480 240 480 270"
+        fill="none" stroke="#c98a7a" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- turbinates (superior, middle, inferior) - stacked shelves on lateral wall -->
+  <path d="M 380 150 Q 440 140 450 165 Q 435 185 390 180 Q 375 165 380 150 Z" fill="#f0c4b6" stroke="#c07568" stroke-width="2"/>
+  <path d="M 400 195 Q 470 185 480 215 Q 462 240 410 232 Q 392 215 400 195 Z" fill="#e8a89c" stroke="#c07568" stroke-width="2"/>
+  <path d="M 420 250 Q 500 240 510 275 Q 490 305 430 295 Q 408 275 420 250 Z" fill="#dd8f80" stroke="#c07568" stroke-width="2"/>
+
+  <!-- nasopharynx / choana / adenoid -->
+  <ellipse cx="560" cy="230" rx="55" ry="60" fill="#eee5d5" stroke="#b8956a" stroke-width="2"/>
+  <path d="M 540 185 Q 575 175 595 195 Q 590 210 560 208 Q 545 198 540 185 Z" fill="#e0a458" opacity="0.5" stroke="#e0a458" stroke-width="2"/>
+
+  <!-- eustachian tube opening (torus tubarius) -->
+  <ellipse cx="600" cy="240" rx="12" ry="18" fill="#4fb3a9" opacity="0.6" stroke="#4fb3a9" stroke-width="2"/>
+
+  <!-- hard/soft palate + uvula (floor) -->
+  <path d="M 300 320 Q 420 335 520 320" fill="none" stroke="#a9805a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 520 320 Q 560 335 575 365" fill="none" stroke="#c98a7a" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- sphenoid sinus (posterior superior) -->
+  <ellipse cx="530" cy="150" rx="22" ry="16" fill="#d9b64e" opacity="0.55" stroke="#d9b64e" stroke-width="2"/>
+
+  <g font-family="Inter, sans-serif" font-size="13" fill="currentColor" font-weight="600">
+    <line x1="350" y1="150" x2="330" y2="70" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="230" y="60" fill="#d4685f">Septum</text>
+    <text x="230" y="76" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">cartilaginous ant. → bony post.</text>
+
+    <line x1="425" y1="163" x2="640" y2="90" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="648" y="88" fill="#e0a458">Superior turbinate</text>
+
+    <line x1="450" y1="215" x2="650" y2="150" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="658" y="148" fill="#4fb3a9">Middle turbinate</text>
+    <text x="658" y="166" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">middle meatus below = OMC drainage</text>
+
+    <line x1="465" y1="275" x2="650" y2="330" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="658" y="328" fill="#8e7dd1">Inferior turbinate</text>
+    <text x="658" y="346" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">largest; most affected by decongestants</text>
+
+    <line x1="555" y1="200" x2="500" y2="130" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="440" y="120" fill="#d9b64e">Sphenoid sinus ostium</text>
+
+    <line x1="562" y1="200" x2="640" y2="180" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="648" y="178" fill="#e0a458">Adenoid (nasopharyngeal tonsil)</text>
+
+    <line x1="600" y1="255" x2="720" y2="270" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="728" y="268" fill="#4fb3a9">Eustachian tube opening</text>
+    <text x="728" y="286" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">(torus tubarius) → middle ear</text>
+
+    <line x1="555" y1="330" x2="480" y2="418" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="330" y="436" fill="#d4685f">Soft palate / choana</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Sagittal section, lateral wall. All three turbinates and their meatuses stack
+vertically; the middle meatus (below the middle turbinate) is where the ostiomeatal complex drains.</div>
+<div class="grid2">
+<div class="card">
+<h4>Septum &amp; external landmarks</h4>
+<p>Anteriorly cartilaginous (quadrangular cartilage), posteriorly bony (perpendicular plate of ethmoid
+above, vomer below) — the junction is a common site of both deviation and perforation. Kiesselbach's
+plexus, the most common anterior epistaxis source, sits on the anteroinferior septum.</p>
+</div>
+<div class="card">
+<h4>Nasopharynx</h4>
+<p>The adenoid (pharyngeal tonsil) sits on the nasopharyngeal roof — prominent in children, involutes
+with age, and is a common cause of pediatric nasal obstruction/mouth-breathing when hypertrophied. The
+eustachian tube opening (torus tubarius) sits on the lateral nasopharyngeal wall — the direct anatomic
+link explaining why nasal/sinus congestion so often travels with ear symptoms.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Anatomy</span> Sinus Anatomy &amp; Drainage</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paranasal sinus anatomy diagram, coronal view">
+  <defs>
+    <radialGradient id="faceshade" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#f4ecdf"/>
+      <stop offset="100%" stop-color="#dfc9a8"/>
+    </radialGradient>
+  </defs>
+  <path d="M 320 20 C 460 20 540 130 520 260 C 505 350 420 400 320 400 C 220 400 135 350 120 260 C 100 130 180 20 320 20 Z"
+        fill="url(#faceshade)" stroke="#b8956a" stroke-width="2"/>
+
+  <!-- frontal sinuses -->
+  <ellipse cx="270" cy="90" rx="55" ry="34" fill="#e0a458" opacity="0.55" stroke="#e0a458" stroke-width="2"/>
+  <ellipse cx="370" cy="90" rx="55" ry="34" fill="#e0a458" opacity="0.55" stroke="#e0a458" stroke-width="2"/>
+
+  <!-- ethmoid air cells -->
+  <g fill="#4fb3a9" opacity="0.55" stroke="#4fb3a9" stroke-width="1.5">
+    <rect x="288" y="140" width="26" height="26" rx="4"/>
+    <rect x="316" y="140" width="26" height="26" rx="4"/>
+    <rect x="288" y="168" width="26" height="26" rx="4"/>
+    <rect x="316" y="168" width="26" height="26" rx="4"/>
+  </g>
+
+  <!-- orbits -->
+  <ellipse cx="235" cy="150" rx="48" ry="40" fill="#8e7dd1" opacity="0.25" stroke="#8e7dd1" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <ellipse cx="405" cy="150" rx="48" ry="40" fill="#8e7dd1" opacity="0.25" stroke="#8e7dd1" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- maxillary sinuses -->
+  <path d="M 175 230 Q 175 300 235 320 Q 280 300 270 235 Q 230 210 175 230 Z" fill="#d4685f" opacity="0.5" stroke="#d4685f" stroke-width="2"/>
+  <path d="M 465 230 Q 465 300 405 320 Q 360 300 370 235 Q 410 210 465 230 Z" fill="#d4685f" opacity="0.5" stroke="#d4685f" stroke-width="2"/>
+
+  <!-- nasal cavity / septum -->
+  <line x1="320" y1="120" x2="320" y2="340" stroke="#8a6a42" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- sphenoid (deep, small) -->
+  <ellipse cx="320" cy="230" rx="24" ry="18" fill="#d9b64e" opacity="0.6" stroke="#d9b64e" stroke-width="2"/>
+
+  <g font-family="Inter, sans-serif" font-size="14" fill="currentColor" font-weight="600">
+    <line x1="270" y1="65" x2="150" y2="40" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="20" y="38" fill="#e0a458">Frontal sinus</text>
+
+    <line x1="330" y1="150" x2="480" y2="60" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="488" y="58" fill="#4fb3a9">Ethmoid air cells</text>
+    <text x="488" y="76" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">closest to orbit —</text>
+    <text x="488" y="92" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">route to orbital cellulitis</text>
+
+    <line x1="235" y1="290" x2="90" y2="330" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="20" y="335" fill="#d4685f">Maxillary sinus</text>
+
+    <line x1="320" y1="248" x2="480" y2="260" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="488" y="258" fill="#d9b64e">Sphenoid sinus</text>
+    <text x="488" y="276" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">deep; pain often vertex/retro-orbital</text>
+
+    <line x1="405" y1="150" x2="500" y2="150" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="508" y="155" fill="#8e7dd1">Orbit</text>
+  </g>
+  <text x="320" y="365" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a93a3">Middle meatus = ostiomeatal complex (OMC) — final common drainage pathway for frontal, maxillary &amp; anterior ethmoid</text>
+</svg>
+</div>
+<div class="diagram-cap">Coronal schematic. The ostiomeatal complex (middle meatus) is the final common
+drainage pathway for the frontal, maxillary, and anterior ethmoid sinuses — obstruction here is the
+final common pathway of most rhinosinusitis, regardless of which sinus started it.</div>
+<div class="card">
+<p><b>Why the ethmoid matters most in the ED:</b> the ethmoid sinuses are separated from the orbit only
+by the paper-thin lamina papyracea. Ethmoid sinusitis is the most common source of pediatric orbital
+and preseptal cellulitis — see the Ocular-ENT Overlap domain.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Exam</span> Rhinoscopy Exam &amp; Documentation</h3>
+<div class="card">
+<p>Anterior rhinoscopy: nasal speculum (or the largest otoscope speculum) with a headlamp or otoscope
+light, tilting the head back slightly. Document:</p>
+<ul class="tight">
+<li><b>Septum:</b> midline vs. deviated, perforation, active bleeding point (classically Kiesselbach's
+plexus, anteroinferior septum)</li>
+<li><b>Turbinates:</b> size (normal/hypertrophied), color/character — <b>pale, boggy, edematous</b>
+turbinates point toward allergic rhinitis; <b>erythematous, engorged</b> turbinates point toward
+infectious/viral rhinitis</li>
+<li><b>Discharge:</b> location (anterior vs. posterior/post-nasal), character (clear/mucoid/purulent),
+and laterality (unilateral vs. bilateral) — see below, this is the single most useful discriminator</li>
+<li><b>Mucosa:</b> polyps (pale, mobile, insensate grape-like masses — distinct from turbinates, which
+are tender and fixed), masses, crusting</li>
+</ul>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anterior rhinoscopy view diagram">
+  <defs>
+    <radialGradient id="nasalshade" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#f6ece0"/>
+      <stop offset="100%" stop-color="#e0c9ad"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="260" cy="190" rx="230" ry="175" fill="url(#nasalshade)" stroke="#b89670" stroke-width="2"/>
+
+  <!-- septum -->
+  <path d="M 260 30 C 250 100 270 160 258 350" fill="none" stroke="#c98a7a" stroke-width="10" stroke-linecap="round"/>
+  <text x="150" y="60" font-family="Inter, sans-serif" font-size="15" fill="#d4685f" font-weight="600">Nasal septum</text>
+  <line x1="200" y1="65" x2="255" y2="90" stroke="#d4685f" stroke-width="1.5"/>
+
+  <!-- inferior turbinate -->
+  <path d="M 320 260 Q 420 250 430 300 Q 410 340 330 320 Q 300 300 320 260 Z" fill="#e8a89c" stroke="#c07568" stroke-width="2"/>
+  <!-- middle turbinate -->
+  <path d="M 300 150 Q 400 130 410 180 Q 390 220 320 210 Q 290 190 300 150 Z" fill="#f0c4b6" stroke="#c07568" stroke-width="2"/>
+
+  <!-- nasal floor / meatus shading -->
+  <path d="M 330 300 Q 380 330 440 320" fill="none" stroke="#a9754f" stroke-width="2" stroke-dasharray="4 3" opacity="0.6"/>
+
+  <g font-family="Inter, sans-serif" font-size="15" fill="currentColor" font-weight="600">
+    <line x1="400" y1="175" x2="520" y2="120" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="528" y="118" fill="#4fb3a9">Middle turbinate</text>
+    <text x="528" y="136" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">boggy/pale = allergic</text>
+
+    <line x1="410" y1="295" x2="530" y2="255" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="538" y="253" fill="#e0a458">Inferior turbinate</text>
+    <text x="538" y="271" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">erythematous = infectious</text>
+
+    <line x1="360" y1="210" x2="530" y2="200" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="538" y="198" fill="#d9b64e">Middle meatus</text>
+    <text x="538" y="216" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">ostiomeatal complex drains here</text>
+
+    <line x1="335" y1="335" x2="480" y2="360" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="488" y="365" fill="#8e7dd1">Nasal floor</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Anterior rhinoscopy view, right nasal cavity.</div>
+
+<div class="doc-compare">
+<div class="doc-block weak">
+<span class="doc-label">Weak documentation</span>
+Nose: congested, thick green drainage. Sinus infection, started antibiotics.
+</div>
+<div class="doc-block strong">
+<span class="doc-label">Bulletproof documentation</span>
+Anterior rhinoscopy: septum midline, no active bleeding. Bilateral turbinate edema, erythematous
+(not boggy/pale). Bilateral purulent discharge, no unilateral predominance. No polyps/masses.
+Symptom onset 12 days ago, no improvement (meets 10-day criterion). No facial swelling, no visual
+symptoms. Consistent with ABRS per AAO-HNSF criteria; discussed watchful waiting vs. antibiotics,
+shared decision made to treat given occupational travel next week — amoxicillin 875mg BID x5-7 days.
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">AAO-HNSF 2025</span> Antibiotic Stewardship for Sinusitis</h3>
+<div class="callout guideline">
+<h4>⚑ The core diagnostic question: is this even bacterial?</h4>
+<p>Most acute rhinosinusitis is viral and self-limited. AAO-HNSF's updated Adult Sinusitis Clinical
+Practice Guideline (published August 2025, superseding the 2015 version) defines <b>acute bacterial
+rhinosinusitis (ABRS)</b> only when one of these is present:</p>
+<ul class="tight">
+<li>Purulent nasal drainage + nasal obstruction and/or facial pain-pressure-fullness, persisting
+<b>≥10 days</b> beyond onset of upper respiratory symptoms <b>without improvement</b>, <b>or</b></li>
+<li>Symptoms <b>worsen within 10 days</b> after an initial period of improvement ("double worsening"), <b>or</b></li>
+<li>Severe onset: high fever (≥39°C/102.2°F) with purulent discharge or facial pain for at least
+3–4 consecutive days at the start of illness</li>
+</ul>
+<p class="small">Radiographic imaging is <b>not recommended</b> for patients who meet these clinical
+criteria unless a complication or alternative diagnosis is suspected.</p>
+</div>
+
+<div class="callout warn">
+<h4>⚠ What changed between 2015 and 2025 — know both if you rotate across sites</h4>
+<div class="tbl-wrap">
+<table>
+<tr><th></th><th>2015 guideline</th><th>2025 update</th></tr>
+<tr><td>Initial management</td><td>Antibiotics <i>or</i> watchful waiting offered as equal options, even for mild-moderate disease</td><td>Watchful waiting is the <b>preferred</b> initial approach for most uncomplicated ABRS; antibiotics as initial management for mild-moderate disease was removed as a default option</td></tr>
+<tr><td>Watchful-waiting follow-up window</td><td>~7 days</td><td>3–5 days</td></tr>
+<tr><td>Antibiotic duration if treating</td><td>5–10 days</td><td>5–7 days</td></tr>
+<tr><td>Reassessment after treatment failure</td><td>7 days</td><td>3–5 days</td></tr>
+<tr><td>Modifying factors for CRS/RARS</td><td>Asthma, cystic fibrosis, immunocompromise, ciliary dyskinesia</td><td>Adds aspirin-exacerbated respiratory disease (AERD)</td></tr>
+</table>
+</div>
+<p class="verify">Verify against the current CPG at entnet.org/CPG before applying — guideline language
+evolves and your local antibiogram/formulary may modify first-line choice.</p>
+</div>
+
+<div class="card">
+<h4>First-line antibiotic (when treatment is chosen)</h4>
+<p>Amoxicillin, with or without clavulanate, for 5–7 days in most adults. Add clavulanate for
+recent antibiotic exposure, daycare-attending children, recent hospitalization, or regions/patients with
+higher resistant-pneumococcus prevalence. Penicillin-allergic: doxycycline or a respiratory
+fluoroquinolone (levofloxacin/moxifloxacin) as alternatives — reserve fluoroquinolones per antibiotic
+stewardship given tendon/CNS/QT risk profile.</p>
+</div>
+
+<div class="callout pearl">
+<h4>💡 Pearl — safety numbers worth knowing</h4>
+<p>Sinusitis affects roughly 1 in 8 US adults yearly (30+ million diagnoses), costs over $11 billion/year
+to manage, and accounts for <b>more than 1 in 5</b> antibiotic prescriptions in adults — the fifth most
+common antibiotic-driving diagnosis in the country. That's the scale of the overprescribing problem this
+guideline is built to address, and it's a useful number to have on hand for a shared-decision-making
+conversation with a patient expecting a prescription.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Pearl</span> Bilateral vs. Unilateral Pain — A Key Distinguisher</h3>
+<div class="card">
+<p><b>Bilateral</b> facial pain/pressure with bilateral congestion is the expected pattern for routine
+viral URI, allergic rhinitis, and most typical ABRS (which is often still bilateral, just meeting the
+bacterial criteria above).</p>
+<p><b>Unilateral</b>, focal, or asymmetric sinus pain — especially with a unilateral predominance of
+purulent discharge — should broaden your differential rather than confirm "worse sinusitis." Consider:</p>
+</div>
+<div class="grid2">
+<div class="card">
+<h4>Odontogenic sinusitis</h4>
+<p>Unilateral maxillary pain/pressure with foul odor, worse with chewing/percussion of upper molars.
+Ask about recent dental work, ask the patient to point to the tooth. CT or dental referral, not another
+course of amoxicillin.</p>
+</div>
+<div class="card">
+<h4>Invasive fungal sinusitis</h4>
+<p><b>Emergency</b> in DKA, neutropenia, or other immunocompromise: unilateral facial pain, black/necrotic
+turbinate or palate eschar, cranial neuropathy. This is mucormycosis until proven otherwise — surgical
+and ID emergency, do not delay for outpatient follow-up.</p>
+</div>
+<div class="card">
+<h4>Foreign body (especially pediatric)</h4>
+<p>Unilateral foul-smelling purulent discharge in a child is a foreign body until proven otherwise —
+button battery is a same-day removal emergency given rapid mucosal necrosis.</p>
+</div>
+<div class="card">
+<h4>Unilateral mass/polyp/tumor</h4>
+<p>A unilateral polyp (as opposed to the bilateral polyps typical of CRSwNP) warrants imaging to exclude
+an inverted papilloma or malignancy before assuming "just sinusitis."</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Pearl</span> Discharge Character — What It Does and Doesn't Tell You</h3>
+<div class="callout warn">
+<h4>⚠ The single most corrected misconception in this atlas</h4>
+<p>Colored (yellow/green) nasal discharge does <b>not</b>, by itself, indicate bacterial infection.
+Color comes from neutrophil myeloperoxidase, which shows up in viral URIs too as the immune response
+ramps up — most people with colored discharge on day 3-4 of a cold have a virus, not a bacterial
+infection. What actually distinguishes ABRS is the <b>time course</b> (≥10 days, no improvement) and
+<b>pattern</b> (double worsening, or severe onset) — not the color you see on the tissue.</p>
+</div>
+<div class="grid2">
+<div class="card">
+<h4>Clear, thin discharge</h4>
+<p>Typical of early viral URI or allergic rhinitis. If unilateral and watery after head trauma —
+think CSF rhinorrhea (halo/ring sign on gauze, send for beta-2 transferrin) before calling it allergies.</p>
+</div>
+<div class="card">
+<h4>Thick, colored discharge</h4>
+<p>Common in both viral and bacterial disease. Only diagnostic for ABRS in combination with the
+10-day/double-worsening/severe-onset criteria above — never in isolation.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Chronicity</span> Acute, Subacute, Chronic, Recurrent</h3>
+<div class="tbl-wrap">
+<table>
+<tr><th>Category</th><th>Duration</th><th>Key point</th></tr>
+<tr><td>Acute rhinosinusitis (ARS)</td><td>&lt;4 weeks</td><td>Most viral; apply ABRS criteria above before treating as bacterial</td></tr>
+<tr><td>Subacute</td><td>4–12 weeks</td><td>Transitional; same principles as acute apply</td></tr>
+<tr><td>Chronic rhinosinusitis (CRS)</td><td>&gt;12 weeks</td><td>Requires <b>objective</b> confirmation of sinonasal inflammation (anterior rhinoscopy, nasal endoscopy, or CT) — symptoms alone are not sufficient for diagnosis</td></tr>
+<tr><td>Recurrent acute (RARS)</td><td>≥4 discrete episodes/year, symptom-free between</td><td>Assess for modifying conditions: asthma, cystic fibrosis, immunocompromise, ciliary dyskinesia, AERD; consider allergy/immune testing</td></tr>
+</table>
+</div>
+</div>
+</div>
+<div class="domain" id="dom-throat">
+<div class="domain-head"><span class="icon">👄</span><h2>Throat / Oropharynx</h2></div>
+<p class="domain-desc">Full pharynx and larynx anatomical landmarks, oropharyngeal exam documentation,
+viral-vs-strep distinguishing factors, and the three can't-miss deep-space and airway emergencies that
+hide behind "just a sore throat."</p>
+
+<div class="section">
+<h3><span class="tag">Anatomy</span> Pharynx &amp; Larynx Landmarks — Sagittal View</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sagittal pharynx and larynx anatomy diagram">
+  <defs>
+    <radialGradient id="throatshade" cx="40%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#f5ecdf"/>
+      <stop offset="100%" stop-color="#ddc4a3"/>
+    </radialGradient>
+  </defs>
+
+  <path d="M 50 40 C 250 20 420 40 480 90 C 520 120 520 160 500 190
+           L 520 260 C 540 300 545 350 520 400
+           L 500 460 C 480 500 420 510 360 505
+           C 250 495 130 460 90 400
+           C 60 350 55 300 60 250
+           C 40 180 40 100 50 40 Z"
+        fill="url(#throatshade)" stroke="#b8956a" stroke-width="2"/>
+
+  <!-- soft palate / uvula, separating naso from oropharynx -->
+  <path d="M 90 130 Q 180 100 260 140" fill="none" stroke="#c98a7a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M 250 140 Q 245 175 258 200 Q 270 175 262 140 Z" fill="#e08d7d" stroke="#b9685a" stroke-width="2"/>
+
+  <!-- tongue base -->
+  <path d="M 100 220 Q 220 210 320 250 Q 340 280 300 300 Q 200 290 110 260 Z" fill="#e8a89c" stroke="#c07568" stroke-width="2"/>
+
+  <!-- epiglottis -->
+  <path d="M 330 260 Q 380 250 400 290 Q 395 330 355 335 Q 320 310 330 260 Z" fill="#e0a458" stroke="#a9754f" stroke-width="2.5"/>
+
+  <!-- vallecula (space between tongue base & epiglottis) -->
+  <ellipse cx="325" cy="260" rx="14" ry="10" fill="#8e7dd1" opacity="0.4"/>
+
+  <!-- hyoid + thyroid cartilage (laryngeal framework) -->
+  <path d="M 355 335 Q 420 340 440 390 Q 430 430 380 440 Q 340 420 345 380 Q 340 350 355 335 Z"
+        fill="#f0e6d2" stroke="#a9805a" stroke-width="2"/>
+
+  <!-- vocal cords (true) -->
+  <path d="M 370 390 Q 400 385 420 392" fill="none" stroke="#d4685f" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 372 402 Q 400 408 418 402" fill="none" stroke="#d4685f" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- arytenoids -->
+  <circle cx="418" cy="396" r="7" fill="#c07568"/>
+
+  <!-- piriform sinus (hypopharynx, lateral to larynx) -->
+  <path d="M 400 300 Q 460 310 470 370 Q 450 410 415 400 Q 400 350 400 300 Z" fill="#4fb3a9" opacity="0.25" stroke="#4fb3a9" stroke-width="2" stroke-dasharray="4 3"/>
+
+  <!-- trachea -->
+  <path d="M 380 440 Q 385 470 390 500" fill="none" stroke="#a9805a" stroke-width="26" stroke-linecap="round" opacity="0.5"/>
+  <!-- esophagus (posterior, behind larynx) -->
+  <path d="M 460 400 Q 475 450 470 500" fill="none" stroke="#c98a7a" stroke-width="18" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- Region brackets -->
+  <text x="130" y="25" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">NASOPHARYNX</text>
+  <text x="280" y="70" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">OROPHARYNX</text>
+  <text x="420" y="270" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#8a93a3">HYPOPHARYNX</text>
+  <text x="470" y="440" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8a93a3">LARYNX</text>
+
+  <g font-family="Inter, sans-serif" font-size="13" fill="currentColor" font-weight="600">
+    <line x1="200" y1="115" x2="130" y2="60" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="20" y="52" fill="#e0a458">Soft palate</text>
+
+    <line x1="255" y1="175" x2="130" y2="200" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="20" y="205" fill="#d9b64e">Uvula</text>
+
+    <line x1="200" y1="245" x2="70" y2="290" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="15" y="305" fill="#4fb3a9">Tongue base</text>
+    <text x="15" y="322" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">± lingual tonsil</text>
+
+    <line x1="370" y1="290" x2="540" y2="260" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="548" y="258" fill="#d4685f">Epiglottis</text>
+    <text x="548" y="276" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">NOT seen on routine oropharynx exam</text>
+
+    <line x1="325" y1="260" x2="200" y2="360" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="130" y="378" fill="#8e7dd1">Vallecula</text>
+
+    <line x1="440" y1="350" x2="560" y2="330" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="568" y="328" fill="#4fb3a9">Piriform sinus</text>
+    <text x="568" y="346" font-family="Inter" font-size="11" font-weight="400" fill="#8a93a3">FB/fishbone lodges here</text>
+
+    <line x1="395" y1="392" x2="560" y2="400" stroke="#d4685f" stroke-width="1.5"/>
+    <text x="568" y="398" fill="#d4685f">True vocal cords</text>
+
+    <line x1="418" y1="396" x2="560" y2="440" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="568" y="438" fill="#d9b64e">Arytenoid cartilage</text>
+
+    <line x1="382" y1="470" x2="270" y2="470" stroke="#8a6a42" stroke-width="1.5"/>
+    <text x="150" y="474" fill="#8a6a42">Trachea</text>
+
+    <line x1="468" y1="470" x2="640" y2="490" stroke="#c98a7a" stroke-width="1.5"/>
+    <text x="648" y="488" fill="#c98a7a">Esophagus (posterior)</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Sagittal section showing all three pharyngeal subdivisions plus the larynx.
+This is the diagram that explains the epiglottitis pearl below: the epiglottis and vocal cords sit
+well below and posterior to what a tongue depressor and light show you in a routine oropharyngeal exam.</div>
+<div class="grid2">
+<div class="card">
+<h4>Three pharyngeal subdivisions</h4>
+<ul class="tight">
+<li><b>Nasopharynx:</b> posterior to the nasal cavity, above the soft palate — adenoid, eustachian tube openings</li>
+<li><b>Oropharynx:</b> soft palate to hyoid bone — tonsils, tongue base, what a routine tongue-depressor exam actually shows</li>
+<li><b>Hypopharynx (laryngopharynx):</b> hyoid to cricoid cartilage — piriform sinuses (classic foreign-body/fish-bone lodging point), not visualized without laryngoscopy</li>
+</ul>
+</div>
+<div class="card">
+<h4>Larynx</h4>
+<p>The epiglottis guards the airway inlet, with the vallecula (tongue base–epiglottis space) anterior
+to it. True vocal cords sit below, flanked by the arytenoid cartilages posteriorly. None of this is
+visible on a standard oropharyngeal exam — direct or video laryngoscopy is required, which is exactly
+why a "normal-looking throat" cannot exclude epiglottitis.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Exam</span> Oropharynx Exam &amp; Documentation</h3>
+<div class="card">
+<p>Tongue depressor technique: press firmly on the mid-posterior tongue (not the tip) to elicit a
+gag-free view of the oropharynx; have the patient say "ahh" to elevate the soft palate. Document:</p>
+<ul class="tight">
+<li><b>Tonsils:</b> size (grade 1 = within pillars, to grade 4 = touching midline), color, presence and
+character of exudate</li>
+<li><b>Uvula:</b> midline vs. deviated (and which direction) — deviation is a peritonsillar space finding, not a tonsillitis finding</li>
+<li><b>Soft palate:</b> symmetric bulge vs. asymmetric bulge, petechiae (classic for strep or
+mono, not specific to either)</li>
+<li><b>Posterior pharyngeal wall:</b> erythema, cobblestoning (lymphoid hyperplasia from chronic
+post-nasal drip), exudate/discharge tracking down from the nasopharynx</li>
+</ul>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Oropharynx exam diagram">
+  <defs>
+    <radialGradient id="mouthshade" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#f5e2d8"/>
+      <stop offset="100%" stop-color="#dcb6a8"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="270" cy="200" rx="240" ry="185" fill="url(#mouthshade)" stroke="#b98a78" stroke-width="2"/>
+
+  <!-- soft palate arch -->
+  <path d="M 90 130 Q 270 40 450 130" fill="none" stroke="#c98a7a" stroke-width="14" stroke-linecap="round"/>
+  <!-- uvula -->
+  <path d="M 265 130 Q 258 175 268 200 Q 280 175 275 130 Z" fill="#e08d7d" stroke="#b9685a" stroke-width="2"/>
+
+  <!-- tonsils L/R -->
+  <ellipse cx="140" cy="205" rx="42" ry="58" fill="#eec3b3" stroke="#c07568" stroke-width="2"/>
+  <ellipse cx="400" cy="205" rx="42" ry="58" fill="#eec3b3" stroke="#c07568" stroke-width="2"/>
+
+  <!-- posterior pharyngeal wall -->
+  <path d="M 200 260 Q 270 300 340 260" fill="none" stroke="#c07568" stroke-width="6" opacity="0.7"/>
+
+  <!-- tongue depressor -->
+  <rect x="150" y="330" width="240" height="34" rx="10" fill="#efe7d8" stroke="#a9895c" stroke-width="2"/>
+
+  <g font-family="Inter, sans-serif" font-size="15" fill="currentColor" font-weight="600">
+    <line x1="270" y1="60" x2="270" y2="20" stroke="#e0a458" stroke-width="1.5"/>
+    <text x="270" y="14" text-anchor="middle" fill="#e0a458">Soft palate</text>
+
+    <line x1="270" y1="180" x2="270" y2="240" stroke="#d9b64e" stroke-width="1.5"/>
+    <text x="270" y="260" text-anchor="middle" fill="#d9b64e">Uvula</text>
+    <text x="270" y="278" text-anchor="middle" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">note midline vs. deviated</text>
+
+    <line x1="112" y1="205" x2="20" y2="150" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="15" y="140" text-anchor="start" fill="#4fb3a9">L tonsil</text>
+    <text x="15" y="158" text-anchor="start" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">grade 1-4, exudate?</text>
+
+    <line x1="428" y1="205" x2="520" y2="150" stroke="#4fb3a9" stroke-width="1.5"/>
+    <text x="528" y="140" fill="#4fb3a9">R tonsil</text>
+
+    <line x1="270" y1="280" x2="270" y2="315" stroke="#8e7dd1" stroke-width="1.5"/>
+    <text x="270" y="305" text-anchor="middle" fill="#8e7dd1" transform="translate(90,0)">Posterior pharyngeal wall</text>
+    <text x="360" y="323" text-anchor="middle" font-family="Inter" font-size="12" font-weight="400" fill="#8a93a3">cobblestoning = post-nasal drip</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Normal oropharynx landmarks via tongue depressor exam.</div>
+
+<div class="callout miss">
+<h4>🚩 The exam finding that isn't there — epiglottitis</h4>
+<p>The single most important pearl in this domain: the standard oropharyngeal exam is often
+<b>completely normal</b> in epiglottitis, because the epiglottis sits below what a tongue depressor
+view shows you. A patient with a severe sore throat, muffled voice, and drooling but a "benign-looking"
+throat on your exam is not reassuring — it's a red flag. See below.</p>
+</div>
+
+<div class="doc-compare">
+<div class="doc-block weak">
+<span class="doc-label">Weak documentation</span>
+Throat: red, tonsils swollen. Rapid strep negative. Viral, supportive care.
+</div>
+<div class="doc-block strong">
+<span class="doc-label">Bulletproof documentation</span>
+Oropharynx: tonsils 2+ bilaterally, no exudate, uvula midline, no palatal petechiae, no trismus,
+voice normal, no drooling. Centor criteria 1/4 (fever only; no exudate, no tender anterior
+cervical adenopathy, cough present). RADT negative. Low pretest probability for GAS pharyngitis;
+supportive care and return precautions for worsening pain, trismus, drooling, or voice change
+discussed and documented.
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Pharyngitis</span> Viral vs. Strep</h3>
+<div class="card">
+<h4>Centor / McIsaac criteria</h4>
+<p>One point each for: fever &gt;38°C, tonsillar exudate, tender anterior cervical adenopathy, absence of
+cough. McIsaac modification adds age (+1 if 3–14y, -1 if ≥45y). Higher score raises pretest probability
+of group A strep (GAS) but does not replace RADT/culture for diagnosis.</p>
+</div>
+<div class="callout warn">
+<h4>⚠ Common misconception</h4>
+<p>Exudate is neither required for strep nor specific to it. EBV (mono) and adenovirus both commonly
+produce exudative tonsillitis that looks identical to strep on inspection alone — this is exactly why
+Centor/McIsaac scoring plus RADT/culture matters more than the gestalt "looks strep-y" impression.</p>
+</div>
+<div class="callout pearl">
+<h4>💡 Pearl — mono lookalike</h4>
+<p>Exudative tonsillitis + posterior cervical or diffuse lymphadenopathy + fatigue ± splenomegaly in an
+adolescent/young adult should raise infectious mononucleosis on your differential. Avoid amoxicillin
+empirically in this population when mono is a real possibility — the amoxicillin/EBV rash is classic and
+avoidable.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Can't miss</span> Peritonsillar Abscess</h3>
+<div class="card">
+<p>Progression from tonsillitis → cellulitis → abscess. Classic tetrad: severe <b>unilateral</b> sore
+throat, muffled "hot potato" voice, trismus, and uvular deviation <b>away</b> from the affected side with
+a bulging soft palate/anterior tonsillar pillar on the affected side. Often with ipsilateral otalgia and
+tender cervical adenopathy.</p>
+</div>
+<div class="grid2">
+<div class="card">
+<h4>Distinguishing from peritonsillar cellulitis</h4>
+<p>Cellulitis causes diffuse swelling without a discrete, fluctuant bulge or marked uvular deviation.
+Abscess causes a more discrete, asymmetric bulge — POCUS (intraoral probe) can confirm a drainable
+fluid collection before you commit to needle aspiration.</p>
+</div>
+<div class="card">
+<h4>Management framework</h4>
+<p>Airway assessment first, then needle aspiration or I&amp;D, antibiotics covering GAS and oral
+anaerobes, and analgesia/hydration. Most patients are managed as outpatients after drainage; refer to
+ENT for recurrent or complicated cases.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Can't miss</span> Epiglottitis &amp; Deep Neck Space Infections</h3>
+<div class="callout miss">
+<h4>🚩 Epiglottitis</h4>
+<p>Acute dysphagia, odynophagia, drooling, muffled voice, high fever, and anxious/tripod positioning —
+progressing to stridor if untreated. <b>The oropharyngeal exam is frequently normal</b> since the
+epiglottis isn't visualized without laryngoscopy. Avoid agitating the patient or instrumenting the
+airway/throat outside a controlled setting (OR/resuscitation bay with airway backup) if this is on your
+differential — direct visualization should happen with anesthesia/ENT present, not with a tongue
+depressor in a busy exam room.</p>
+</div>
+<div class="callout miss">
+<h4>🚩 Retropharyngeal abscess</h4>
+<p>More common in young children: neck stiffness/torticollis, refusal to extend the neck, muffled voice,
+worsening over several days, and inability to swallow secretions. Lateral neck imaging or CT
+neck with contrast; this is an airway and surgical-consult emergency, not an outpatient antibiotic
+trial.</p>
+</div>
+</div>
+</div>
+<div class="domain" id="dom-ocular">
+<div class="domain-head"><span class="icon">👁️</span><h2>Ocular-ENT Overlap</h2></div>
+<p class="domain-desc">Where sinus and ear infections spill into the orbit. The exam findings that
+separate a same-day-outpatient problem from a sight- and life-threatening one.</p>
+
+<div class="section">
+<h3><span class="tag">Can't miss</span> Preseptal vs. Orbital Cellulitis</h3>
+<div class="callout miss">
+<h4>🚩 This distinction is the whole game</h4>
+<p>Preseptal (periorbital) cellulitis is anterior to the orbital septum and generally an outpatient
+problem. Orbital (postseptal) cellulitis is posterior to the septum, involves the orbital contents
+themselves, and is a true emergency — risk of vision loss, cavernous sinus thrombosis, and intracranial
+spread. A recent or concurrent sinusitis (especially ethmoid) is the classic antecedent for orbital
+cellulitis, via spread through the lamina papyracea.</p>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Preseptal versus orbital cellulitis diagram">
+  <defs>
+    <radialGradient id="orbitshade" cx="45%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#f5ece0"/>
+      <stop offset="100%" stop-color="#ddc4a3"/>
+    </radialGradient>
+  </defs>
+  <rect x="20" y="20" width="600" height="300" rx="16" fill="url(#orbitshade)" stroke="#b8956a" stroke-width="2"/>
+
+  <!-- orbital septum line -->
+  <path d="M 250 40 Q 235 170 250 300" fill="none" stroke="#8a6a42" stroke-width="4" stroke-dasharray="9 5"/>
+  <text x="250" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a6a42" font-weight="600">ORBITAL SEPTUM</text>
+
+  <!-- eyelid / preseptal zone -->
+  <path d="M 130 150 Q 190 110 250 150 Q 190 195 130 150 Z" fill="#e0a458" opacity="0.45" stroke="#e0a458" stroke-width="2"/>
+  <text x="90" y="240" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#e0a458">PRESEPTAL</text>
+  <text x="90" y="258" font-family="Inter, sans-serif" font-size="12" fill="#8a93a3">(anterior to septum)</text>
+
+  <!-- globe -->
+  <circle cx="340" cy="150" r="55" fill="#ffffff" stroke="#8a6a42" stroke-width="2"/>
+  <circle cx="340" cy="150" r="24" fill="#6ea8d8"/>
+  <circle cx="340" cy="150" r="10" fill="#1c130d"/>
+
+  <!-- orbital fat / muscle zone (posterior) -->
+  <path d="M 400 90 Q 470 100 480 150 Q 470 205 400 215 Q 420 150 400 90 Z" fill="#d4685f" opacity="0.4" stroke="#d4685f" stroke-width="2"/>
+  <text x="430" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#d4685f">ORBITAL</text>
+  <text x="430" y="268" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#8a93a3">(posterior to septum)</text>
+
+  <!-- optic nerve -->
+  <line x1="400" y1="150" x2="600" y2="150" stroke="#6b5638" stroke-width="8" stroke-linecap="round"/>
+  <text x="605" y="145" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#8a6a42">Optic n.</text>
+
+  <g font-family="Inter, sans-serif" font-size="13" fill="currentColor">
+    <text x="90" y="285" fill="#e0a458" font-weight="600">Eyelid edema/erythema only</text>
+    <text x="90" y="302" fill="#8a93a3" font-size="12">Vision, EOM, pupils normal</text>
+
+    <text x="410" y="290" text-anchor="middle" fill="#d4685f" font-weight="600">Proptosis + ophthalmoplegia</text>
+    <text x="410" y="307" text-anchor="middle" fill="#8a93a3" font-size="12">± RAPD, pain with EOM — emergency</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">The orbital septum is the anatomic and clinical dividing line.</div>
+
+<div class="tbl-wrap">
+<table>
+<tr><th>Finding</th><th>Preseptal</th><th>Orbital</th></tr>
+<tr><td>Eyelid edema/erythema</td><td>Yes</td><td>Yes (often more severe)</td></tr>
+<tr><td>Proptosis</td><td>No</td><td><b>Yes</b> — cardinal sign</td></tr>
+<tr><td>Ophthalmoplegia / pain with EOM</td><td>No</td><td><b>Yes</b> — cardinal sign</td></tr>
+<tr><td>Visual acuity</td><td>Normal</td><td>May be decreased</td></tr>
+<tr><td>Chemosis (conjunctival edema)</td><td>Rare</td><td>Common</td></tr>
+<tr><td>RAPD</td><td>Absent</td><td>May be present — optic nerve compromise</td></tr>
+<tr><td>Fever / toxic appearance</td><td>Less common</td><td>More common</td></tr>
+<tr><td>Antecedent sinusitis</td><td>Less specific</td><td>Classic association (ethmoid)</td></tr>
+<tr><td>Workup</td><td>Usually clinical diagnosis</td><td>CT orbits/sinus with contrast, ophtho + ENT consult, IV antibiotics, admission</td></tr>
+</table>
+</div>
+
+<div class="callout pearl">
+<h4>💡 Pearl — the bedside exam that separates them</h4>
+<p>Ask the patient to look in all directions and ask specifically about pain with eye movement, then
+check visual acuity and pupillary response (RAPD). If eye findings are otherwise entirely normal aside
+from eyelid swelling, preseptal cellulitis is likely. Any proptosis, ophthalmoplegia, decreased vision,
+or RAPD changes the diagnosis — and the disposition — immediately.</p>
+</div>
+
+<div class="doc-compare">
+<div class="doc-block weak">
+<span class="doc-label">Weak documentation</span>
+Eye swollen and red, looks infected. Started antibiotics, f/u with PCP.
+</div>
+<div class="doc-block strong">
+<span class="doc-label">Bulletproof documentation</span>
+L periorbital edema/erythema, no proptosis, EOM full and painless in all directions, visual acuity
+20/20 OU, pupils equal/round/reactive, no RAPD, no chemosis. Afebrile. No antecedent sinus symptoms.
+Findings consistent with preseptal cellulitis; orbital involvement specifically excluded on exam.
+Oral antibiotics with 24h recheck arranged; explicit return precautions for vision change, eye pain
+with movement, or new swelling given verbally and in writing.
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Overlap</span> Dacryocystitis</h3>
+<div class="card">
+<p>Infection of the lacrimal sac: swelling, erythema, and tenderness centered over the <b>medial canthus</b>
+(distinguishing it from a more diffuse preseptal process), with epiphora (excess tearing) and often
+purulent discharge expressible from the punctum with gentle sac compression. Usually from nasolacrimal
+duct obstruction; can extend to preseptal or, less commonly, orbital cellulitis if untreated.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Complications</span> Intracranial &amp; Vascular Spread</h3>
+<div class="card">
+<p>Orbital cellulitis and sinusitis share a final common complication pathway worth keeping in mind:
+subperiosteal abscess, cavernous sinus thrombosis (bilateral eye findings, cranial nerve III/IV/VI palsies,
+rapidly progressive), meningitis, and epidural/subdural/brain abscess. Any orbital cellulitis patient with
+worsening exam despite therapy, bilateral findings, or new neurologic signs needs escalation and imaging,
+not a medication change.</p>
+</div>
+</div>
+</div>
+<div class="domain" id="dom-ddx">
+<div class="domain-head"><span class="icon">🗂️</span><h2>ENT Differential Diagnosis — 40 Diagnoses</h2></div>
+<p class="domain-desc">One combined differential spanning ear, nose/sinus, throat, and ocular-overlap
+sources of infection, with the single exam or history finding that discriminates each — and a flag on
+the ones you cannot afford to miss.</p>
+
+<div class="dx-controls"><button class="dx-filter active" data-cat="All">All</button><button class="dx-filter" data-cat="Ear">Ear</button><button class="dx-filter" data-cat="Nose/Sinus">Nose/Sinus</button><button class="dx-filter" data-cat="Throat">Throat</button><button class="dx-filter" data-cat="Ocular">Ocular</button></div>
+<div class="tbl-wrap">
+<table>
+<tr><th>#</th><th>Category</th><th>Diagnosis</th><th>Key distinguishing feature</th></tr>
+<tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">1</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Acute otitis media</b> </td>
+        <td>Bulging, opacified, immobile TM ± otalgia <48h</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">2</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Otitis media with effusion</b> </td>
+        <td>Retracted/neutral TM, reduced mobility, NO acute signs (no bulge, no pain)</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">3</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Acute otitis externa (diffuse)</b> </td>
+        <td>Tragal/pinna traction pain, canal edema/erythema, TM often not visualizable</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">4</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Necrotizing (malignant) otitis externa</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Diabetic/immunocompromised, disproportionate pain, granulation tissue at bony-cartilaginous junction</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">5</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Mastoiditis</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Postauricular erythema/tenderness, auricle displaced anteroinferiorly, usually after AOM</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">6</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Cholesteatoma</b> </td>
+        <td>Attic retraction pocket, keratin debris, chronic foul otorrhea unresponsive to drops</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">7</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Bullous myringitis</b> </td>
+        <td>Hemorrhagic/clear bullae on TM surface, severe pain</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">8</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Traumatic TM perforation</b> </td>
+        <td>History of trauma/barotrauma, visible perforation, check hearing & facial nerve</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">9</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Herpes zoster oticus (Ramsay Hunt)</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Vesicles on auricle/canal + ipsilateral facial palsy ± hearing loss/vertigo</td>
+        </tr><tr class="dx-row show" data-cat="Ear">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">10</td>
+        <td><span class="badge b-ear">Ear</span></td>
+        <td><b>Cerumen impaction / FB canal</b> </td>
+        <td>Conductive symptoms or visualized object/wax; irrigate or instrument-remove</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">11</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Viral acute rhinosinusitis</b> </td>
+        <td>Bilateral, improving by day 7-10, discharge color alone not diagnostic</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">12</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Acute bacterial rhinosinusitis</b> </td>
+        <td>≥10 days no improvement, OR double worsening, OR severe onset (fever ≥39°C + purulent d/c ≥3-4d)</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">13</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Chronic rhinosinusitis</b> </td>
+        <td>&gt;12 weeks + objective confirmation (rhinoscopy/endoscopy/CT), not symptoms alone</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">14</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Allergic rhinitis</b> </td>
+        <td>Pale/boggy turbinates, clear discharge, itching/sneezing, seasonal or perennial pattern</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">15</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Odontogenic sinusitis</b> </td>
+        <td>Unilateral maxillary pain, foul odor, worse with chewing/molar percussion, recent dental work</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">16</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Invasive fungal sinusitis (mucormycosis)</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>DKA/neutropenia, unilateral pain, black/necrotic eschar, cranial neuropathy — surgical emergency</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">17</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Allergic fungal rhinosinusitis</b> </td>
+        <td>Unilateral or asymmetric nasal polyposis, thick allergic mucin, atopic history</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">18</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Nasal foreign body (pediatric)</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Unilateral foul purulent discharge in a child; button battery = same-day removal</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">19</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Epistaxis (anterior vs posterior)</b> </td>
+        <td>Anterior: Kiesselbach's plexus, visible/controllable. Posterior: brisk, bilateral, harder to control — higher-risk</td>
+        </tr><tr class="dx-row show" data-cat="Nose/Sinus">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">20</td>
+        <td><span class="badge b-nose">Nose/Sinus</span></td>
+        <td><b>Septal hematoma/abscess (post-trauma)</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Boggy, fluctuant, bilateral septal swelling after trauma — drain urgently to prevent cartilage necrosis</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">21</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Viral pharyngitis</b> </td>
+        <td>Cough, rhinorrhea, low Centor score, exudate can still be present (esp. EBV/adenovirus)</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">22</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Group A strep pharyngitis</b> </td>
+        <td>Higher Centor/McIsaac score, confirm with RADT/culture — exudate not required or specific</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">23</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Infectious mononucleosis (EBV)</b> </td>
+        <td>Exudative tonsillitis + posterior cervical/diffuse adenopathy + fatigue ± splenomegaly; avoid amoxicillin</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">24</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Peritonsillar abscess</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Unilateral throat pain, muffled voice, trismus, uvula deviated AWAY from affected side</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">25</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Peritonsillar cellulitis</b> </td>
+        <td>Similar but diffuse swelling, no discrete bulge, less uvular deviation, no drainable fluid on POCUS</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">26</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Epiglottitis</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Drooling, muffled voice, tripod position, toxic — oropharyngeal exam often NORMAL</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">27</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Retropharyngeal abscess</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Neck stiffness/torticollis, refusal to extend neck, worsening over days, more common in young children</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">28</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Ludwig angina</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Bilateral submandibular/sublingual swelling, tongue elevation, floor-of-mouth induration — airway emergency</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">29</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Laryngitis</b> </td>
+        <td>Hoarseness predominates, minimal pharyngeal findings, usually viral and self-limited</td>
+        </tr><tr class="dx-row show" data-cat="Throat">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">30</td>
+        <td><span class="badge b-throat">Throat</span></td>
+        <td><b>Croup (laryngotracheobronchitis)</b> </td>
+        <td>Barky cough, stridor, steeple sign on neck XR, typically ages 6mo-3y</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">31</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Preseptal (periorbital) cellulitis</b> </td>
+        <td>Eyelid edema/erythema only; vision, EOM, pupils normal</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">32</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Orbital (postseptal) cellulitis</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Proptosis + ophthalmoplegia ± RAPD/vision loss; often follows ethmoid sinusitis</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">33</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Dacryocystitis</b> </td>
+        <td>Medial canthus swelling/erythema, epiphora, expressible purulence from punctum</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">34</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Dacryoadenitis</b> </td>
+        <td>Swelling of the lateral (not medial) upper eyelid over the lacrimal gland, S-shaped lid</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">35</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Cavernous sinus thrombosis</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Bilateral eye findings, CN III/IV/VI palsies, rapid progression — neurosurgical/ID emergency</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">36</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Viral conjunctivitis</b> </td>
+        <td>Watery discharge, often bilateral, preauricular adenopathy, highly contagious</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">37</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Bacterial conjunctivitis</b> </td>
+        <td>Purulent discharge, lids matted shut on waking, usually no adenopathy</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">38</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Herpes zoster ophthalmicus</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Vesicular rash in V1 distribution, Hutchinson sign (nasal tip) predicts ocular involvement</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">39</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Chalazion / hordeolum (stye)</b> </td>
+        <td>Localized eyelid nodule, chalazion=painless/chronic, hordeolum=painful/acute, both benign</td>
+        </tr><tr class="dx-row show" data-cat="Ocular">
+        <td class="mono" style="width:2ch;color:var(--ink-faint)">40</td>
+        <td><span class="badge b-ocular">Ocular</span></td>
+        <td><b>Subperiosteal orbital abscess</b> <span class="badge miss">CAN'T MISS</span></td>
+        <td>Complication of orbital cellulitis; medial orbital wall collection, may need surgical drainage</td>
+        </tr>
+</table>
+</div>
+<p class="verify">Distinguishing features are the highest-yield single clue, not the complete diagnostic
+picture — always confirm against current literature and your own clinical judgment before applying.</p>
+</div>
+<div class="domain" id="dom-docs">
+<div class="domain-head"><span class="icon">🛡️</span><h2>Documentation &amp; Misconceptions</h2></div>
+<p class="domain-desc">The same bulletproof-documentation doctrine from the ED charting atlas, applied
+to ENT: conclusory language is an impeachment target when the test or exam you named cannot actually
+exclude the diagnosis. Followed by a running list of ENT misconceptions worth correcting — for
+patients and colleagues alike.</p>
+
+<div class="section">
+<h3><span class="tag">Doctrine</span> The Bulletproof Pattern, Applied to ENT</h3>
+<div class="card">
+<p>The same core doctrine applies here as elsewhere in this reference: avoid conclusory verbs like
+"ruled out" or "no infection" when the exam finding you're citing cannot actually exclude the diagnosis.
+The defensible pattern: <b>name the diagnosis you're considering, rest on objective exam findings,
+cite a validated tool or guideline criterion where one exists, use probabilistic language, and close
+with an explicit safety net.</b> Every documentation example in this atlas follows that structure —
+scroll back through Ear, Nose/Sinus, Throat, and Ocular for worked examples.</p>
+</div>
+<div class="callout warn">
+<h4>⚠ ENT-specific version of the CXR-can't-exclude-dissection trap</h4>
+<p>"Oropharynx clear, no epiglottitis" is a conclusory statement your standard exam cannot actually
+support — you didn't visualize the epiglottis. If epiglottitis is genuinely on your differential,
+document the actual findings (voice quality, drooling, positioning, willingness to lie flat) and your
+reasoning, rather than a diagnosis-by-negation you didn't have the view to make.</p>
+</div>
+</div>
+
+<div class="section">
+<h3><span class="tag">Myths</span> Common ENT Misconceptions — Public &amp; Clinician-Facing</h3>
+<div class="myth-card">
+        <div class="myth-claim">“Green or yellow nasal discharge means it's bacterial and needs an antibiotic.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> Discharge color reflects neutrophil myeloperoxidase activity, not the organism. Viral URIs routinely turn colored by day 3-4 as the immune response ramps up.</div>
+        <div class="myth-explain"><b>To a patient:</b> “Color tells us your immune system is working, not what's causing the infection. What matters is how long it's lasted and whether it's getting better or worse.” <b>To a colleague:</b> lead with the AAO-HNSF ABRS criteria (≥10 days no improvement, double worsening, or severe onset) rather than debating discharge color.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“Any ear infection needs antibiotics right away.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> OME (fluid without acute signs) does not benefit from antibiotics, antihistamines, decongestants, or steroids per AAO-HNSF. Even AOM has an AAP-endorsed watchful-waiting pathway for non-severe, unilateral cases with reliable follow-up.</div>
+        <div class="myth-explain">The distinguishing exam finding is bulging — OME is retracted or neutral, not bulging, and has no acute otalgia or fever. That's the difference between an antibiotic conversation and a reassurance conversation.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“Strep throat always has white patches; if there's no exudate, it's viral.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> Exudate is neither required for strep pharyngitis nor specific to it — EBV and adenovirus commonly produce exudative tonsillitis indistinguishable from strep on inspection alone.</div>
+        <div class="myth-explain">This is exactly why Centor/McIsaac scoring plus RADT/culture exists — gestalt “looks strep-y” assessment is not reliable enough on its own, in either direction.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“Swimmer's ear needs an oral antibiotic.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> AAO-HNSF's guideline is explicit: topical therapy alone is first-line for uncomplicated diffuse otitis externa. Oral antibiotics are reserved for infection extending beyond the canal or specific risk factors (diabetes, immunocompromise).</div>
+        <div class="myth-explain">Oral antibiotics for routine AOE add systemic side-effect risk without added benefit over topical drops for the localized canal infection most patients actually have.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“If sinus symptoms last more than a week, that means it's bacterial.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> The guideline threshold is ≥10 days without improvement, or a double-worsening pattern, or severe onset — not a flat one-week cutoff. And even once ABRS is diagnosed, watchful waiting is the preferred initial approach for most uncomplicated cases per the 2025 update.</div>
+        <div class="myth-explain">“Bacterial” and “needs antibiotics right now” are two different questions — the guideline separates them deliberately.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“A normal-looking throat exam rules out epiglottitis.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> The oropharyngeal exam frequently looks entirely normal in epiglottitis, because the epiglottis sits below what a tongue depressor view shows. Muffled voice, drooling, and tripod positioning with a benign-looking oropharynx is a red flag, not reassurance.</div>
+        <div class="myth-explain">This is the single most dangerous documentation trap in this atlas — charting “oropharynx clear, no exudate, reassuring” in a patient with drooling and stridor risk is itself a liability if the diagnosis is missed.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“You need a CT scan to diagnose a sinus infection.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> Acute rhinosinusitis meeting clinical diagnostic criteria should NOT be imaged per AAO-HNSF, unless a complication (orbital/intracranial extension) or an alternative diagnosis is suspected. Imaging is reserved for those specific scenarios, and for objectively confirming chronic rhinosinusitis.</div>
+        <div class="myth-explain">Over-imaging exposes patients to radiation and cost without changing management in uncomplicated cases — the clinical criteria are the diagnostic test here.</div>
+        </div><div class="myth-card">
+        <div class="myth-claim">“Unilateral sinus pain is just a worse version of regular sinusitis.”</div>
+        <div class="myth-truth"><b>What's actually true:</b> Unilateral predominance of pain or discharge should broaden, not narrow, your differential: odontogenic source, invasive or allergic fungal sinusitis, foreign body (pediatric), or a unilateral mass/polyp.</div>
+        <div class="myth-explain">Bilateral symmetric pain fits the routine viral/bacterial rhinosinusitis pattern; asymmetry is the signal that something else may be going on.</div>
+        </div>
+</div>
+</div>
+
+
+  <div class="foot">
+    Built as a personal clinical reference. Guideline content reflects the cited publications at time
+    of writing &mdash; verify against current AAO-HNSF CPGs (entnet.org/CPG) and local protocols before
+    applying clinically. Not a substitute for clinical judgment.
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---- Theme toggle ----
+  var root = document.documentElement;
+  var stored = 'dark';
+  root.setAttribute('data-theme', stored);
+  function paintToggle(){
+    var btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = root.getAttribute('data-theme') === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+  }
+  paintToggle();
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    paintToggle();
+  });
+
+  // ---- Dropdown nav ----
+  var navdrop = document.getElementById('navdrop');
+  var navbtn = document.getElementById('navbtn');
+  navbtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    navdrop.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!navdrop.contains(e.target)) navdrop.classList.remove('open');
+  });
+
+  var domains = document.querySelectorAll('.domain');
+  var menuBtns = document.querySelectorAll('.navmenu button');
+  menuBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.getAttribute('data-dom');
+      domains.forEach(function(d){ d.classList.toggle('active', d.id === 'dom-' + target); });
+      navdrop.classList.remove('open');
+      navbtn.querySelector('.navlabel').textContent = btn.textContent.trim();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Accordions ----
+  document.querySelectorAll('.acc-head').forEach(function(head){
+    head.addEventListener('click', function(){
+      var acc = head.closest('.acc');
+      var body = acc.querySelector('.acc-body');
+      var isOpen = acc.classList.contains('open');
+      if(isOpen){
+        body.style.maxHeight = null;
+        acc.classList.remove('open');
+      } else {
+        acc.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // ---- Differential diagnosis filter ----
+  var filters = document.querySelectorAll('.dx-filter');
+  filters.forEach(function(f){
+    f.addEventListener('click', function(){
+      filters.forEach(function(x){ x.classList.remove('active'); });
+      f.classList.add('active');
+      var cat = f.getAttribute('data-cat');
+      document.querySelectorAll('.dx-row').forEach(function(row){
+        if(cat === 'All' || row.getAttribute('data-cat') === cat){
+          row.classList.add('show');
+        } else {
+          row.classList.remove('show');
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

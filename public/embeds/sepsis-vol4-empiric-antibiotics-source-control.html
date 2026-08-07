@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 4 — Empiric Antibiotics &amp; Source Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c; --accent-dim:#7a0c1e; --accent-tint:#fdecee;
+  --bg:#faf8f6; --bg-panel:#ffffff; --bg-raised:#f4f0ee;
+  --text:#1c1917; --text-dim:#57534e; --text-faint:#8b8681;
+  --border:#e4dfdb; --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72; --accent-dim:#ff8a99; --accent-tint:#2b1215;
+  --bg:#141210; --bg-panel:#1c1917; --bg-raised:#242020;
+  --text:#f2ede9; --text-dim:#b8b0a9; --text-faint:#7d766f;
+  --border:#332e2b; --border-strong:#453f3b;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1215; --danger-border:#7a2c35;
+  --good-bg:#122a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:290px; padding:.4rem; z-index:200; max-height:75vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.87rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+.flow-arrow{align-self:center; color:var(--text-faint); font-size:1.1rem;}
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S4</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 4</div>
+      <div class="sub">EMPIRIC ANTIBIOTICS &amp; SOURCE CONTROL</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">The Tension</div>
+        <a href="#tension">SSC Timing vs. IDSA Stewardship</a>
+        <a href="#timing">Risk-Stratified Timing (1h vs 3h)</a>
+        <div class="grp">Your Question</div>
+        <a href="#unknown">Unknown-Source Empiric Regimen</a>
+        <a href="#mrsa">MRSA Risk Factors</a>
+        <a href="#betalactam">Choosing the Beta-Lactam</a>
+        <a href="#allergy">Penicillin Allergy</a>
+        <div class="grp">Follow-Through</div>
+        <a href="#sourcecontrol">Source Control Timing</a>
+        <a href="#deescalation">De-escalation &amp; Duration</a>
+        <a href="#algorithm">Bedside Algorithm</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 4 of 6</div>
+    <h1>Empiric Antibiotics &amp; Source Control</h1>
+    <p class="lede">What to hang when someone is clearly septic and you can't find the source — plus the real tension between SSC's timing mandates and IDSA's stewardship concerns, and what to do after the first dose.</p>
+  </div>
+
+  <section id="tension">
+    <h2 class="sec-title"><span class="num">01</span> SSC Timing vs. IDSA Stewardship — the Tension Flagged in Vol. 1</h2>
+    <div class="box warn">
+      <div class="box-title">Why IDSA declined to endorse (2016 guidelines, and this shaped everything since)</div>
+      <p>IDSA's formal 2018 position statement (Kalil, Gilbert, Winslow, Masur, Klompas — <em>Clin Infect Dis</em> 2018;66:1631–1635) laid out specific, still-relevant concerns: the guidelines' <strong>one-size-fits-all 1-hour antibiotic mandate didn't distinguish septic shock from less-certain "possible sepsis,"</strong> risking antibiotic overuse and overdiagnosis in patients where there's often time to gather more data first. IDSA's core position: <strong>if there is no infection, there is no indication for antibiotic therapy</strong> — and rigid time-to-antibiotic quality metrics can push clinicians toward treating uninfected patients to hit a clock. IDSA also flagged unclear guidance on catheter-related infection management, confusing combination-vs-multidrug therarpy terminology, and insufficiently justified blanket 7–10 day duration recommendations.</p>
+      <p>This wasn't obstruction for its own sake — the concern was concrete: unnecessary broad-spectrum antibiotics drive <em>C. difficile</em>, select for resistant organisms, and cause direct harm (nephrotoxicity, allergic reactions) in patients who turn out not to have been infected at all.</p>
+    </div>
+    <div class="box good">
+      <div class="box-title">How SSC 2021/2026 actually responded</div>
+      <p>This is the resolution worth knowing: SSC 2021 <strong>adopted a risk-stratified timing approach</strong> that substantially addresses IDSA's core objection — 1-hour urgency is now reserved for probable/definite sepsis or shock, while "possible sepsis without shock" gets a <strong>time-limited rapid assessment</strong> (up to 3 hours) rather than a blanket 1-hour mandate. This is functionally IDSA's stewardship concern, incorporated into the SSC framework rather than rejected. The tension didn't disappear, but the two societies' positions converged substantially over the 2016→2021→2026 revisions.</p>
+    </div>
+  </section>
+
+  <section id="timing">
+    <h2 class="sec-title"><span class="num">02</span> Risk-Stratified Timing: 1 Hour vs. 3 Hours <span class="pill mid">SSC 2021/2026</span></h2>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Category</th><th>Target</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Septic shock, or probable/definite sepsis</td><td class="num"><span class="pill lo">≤1 hour</span></td><td>Strong recommendation — every hour of delay carries a well-replicated mortality signal (see below).</td></tr>
+          <tr><td>Possible sepsis, no shock</td><td class="num"><span class="pill mid">≤3 hours</span>, with a rapid time-limited assessment first</td><td>Room to distinguish infectious from non-infectious causes before committing to broad-spectrum therapy — this is the IDSA-influenced compromise.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box">
+      <div class="box-title">The evidence, including what's new in 2026</div>
+      <p>A 2024 retrospective cohort (166,559 ED patients, 12 Southeastern US hospitals) provided <strong>empirical support that clinicians and hospitals should not be held to 1-hour targets for patients without shock and only possible sepsis</strong> — directly validating the risk-stratified approach. A 2025 multicenter deep-learning risk-stratification study found <strong>patients at low risk of shock had similar mortality whether antibiotics were given within 1h or 3h</strong>, while patients with probable sepsis had significantly lower mortality with 1-hour administration <em>regardless of shock risk</em> — reinforcing that the "probable vs. possible" distinction is doing the real work, not the shock/no-shock split alone.</p>
+      <p>New in the 2026 SSC guideline: an RCT of 872 ED patients found hour-1 bundle implementation got antibiotics <strong>73 minutes faster</strong> (95% CI 53–93 min) with an uncertain but potentially large mortality benefit (aRR 0.81, 95% CI 0.48–1.39 — wide CI crossing 1, so not definitive). The large SCREEN stepped-wedge trial (60,055 patients) found electronic alerting + staff education + feedback was associated with <strong>lower 90-day mortality</strong> (aRR 0.85, 95% CI 0.77–0.93) — supporting systems-level QI over blunt time-target enforcement, which is closer to what IDSA originally argued for.</p>
+    </div>
+  </section>
+
+  <section id="unknown">
+    <h2 class="sec-title"><span class="num">03</span> Your Question: Unknown-Source Empiric Regimen</h2>
+    <div class="box danger">
+      <div class="box-title">Standard broad-spectrum backbone</div>
+      <p>For a patient who is clearly septic with no identified source, the standard empiric approach pairs an <strong>antipseudomonal beta-lactam</strong> with an agent providing <strong>MRSA coverage</strong>:</p>
+      <p><strong>Beta-lactam (choose one):</strong> piperacillin-tazobactam 4.5g IV q6–8h (extended infusion preferred once stable), OR cefepime 2g IV q8h, OR meropenem 1g IV q8h (favor meropenem if there's concern for ESBL-producing organisms or prior resistant Gram-negative colonization).</p>
+      <p><strong>PLUS MRSA coverage:</strong> vancomycin — loading dose 25–30 mg/kg (a commonly used institutional convention is 2g if &gt;70kg, 1.5g if &lt;70kg) IV ×1, then 15 mg/kg IV q12h with troughs/AUC-guided dosing to follow.</p>
+      <p><strong>Administration order matters:</strong> give the <strong>beta-lactam first</strong> — broader initial spectrum and typically shorter infusion time for the first dose — then vancomycin, rather than delaying broad-spectrum coverage while a slower vancomycin infusion runs.</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">If concern for highly resistant Gram-negatives (Acinetobacter, Pseudomonas with prior resistance, ESBL)</div>
+      <p>Consider adding a second Gram-negative agent: <strong>ciprofloxacin 400mg IV q8h</strong> or <strong>tobramycin 7mg/kg IV ×1</strong>, particularly with prior resistant-organism colonization, recent broad-spectrum antibiotic exposure, or known local antibiogram concerns. This double-coverage approach buys empiric breadth while cultures are pending; de-escalate promptly once susceptibilities return (Section 8).</p>
+    </div>
+    <p class="subnote">Tailor within 48 hours as culture data returns — this regimen is intentionally broad and is not meant to be the definitive multi-day therapy.</p>
+  </section>
+
+  <section id="mrsa">
+    <h2 class="sec-title"><span class="num">04</span> MRSA Risk Factors — When to Add Coverage</h2>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Risk factors favoring empiric MRSA coverage</div>
+        <p>Recent hospitalization · Long-term care facility residence · Recent surgery · Hemodialysis · Prior antibiotic treatment · High APACHE/severity score · Known MRSA colonization or prior MRSA infection</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Agent options if vancomycin isn't ideal</div>
+        <p><strong>Linezolid</strong> — good tissue penetration, oral bioavailability, but drug interactions (serotonergic agents) and myelosuppression with prolonged use.</p>
+        <p><strong>Daptomycin</strong> — inactivated by pulmonary surfactant, do not use for pneumonia.</p>
+        <p><strong>Ceftaroline</strong> — a cephalosporin with anti-MRSA activity, useful in specific scenarios.</p>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title">Scale of the problem</div>
+      <p>Roughly <strong>7% of all US patients</strong> are colonized with MRSA at any given time, and <strong>~8.8% of ICU patients</strong> are colonized with VRE — background rates worth knowing when you're deciding how aggressively to cover empirically in a sick, source-unclear patient. Failure to cover MRSA/VRE empirically in a truly resistant infection is associated with increased mortality — this is the core argument for erring broad up front and de-escalating fast once data returns, rather than starting narrow.</p>
+    </div>
+  </section>
+
+  <section id="betalactam">
+    <h2 class="sec-title"><span class="num">05</span> Choosing the Beta-Lactam: The Nephrotoxicity Debate</h2>
+    <div class="box warn">
+      <div class="box-title">Vancomycin + piperacillin-tazobactam AKI signal — real but contested</div>
+      <p>Multiple observational studies have associated the vancomycin + pip-tazo combination with higher rates of acute kidney injury compared with vancomycin + cefepime, driving many institutions toward cefepime as the default partner agent. However, in patients who <em>already</em> have sepsis-associated AKI at admission, a dedicated cohort study (n=480) found <strong>no difference</strong> in AKI trajectory (max creatinine, progression, need for dialysis) between vanc/pip-tazo and vanc/cefepime — suggesting the signal may be more about a marker of illness severity/confounding than a direct causal nephrotoxic interaction. The NIH-funded <strong>ACORN trial</strong> was specifically designed to resolve this question with randomized data — check current results before treating either "side" as settled.</p>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">Cefepime tradeoffs</div>
+        <p>Associated with adverse neurologic effects (encephalopathy, especially with renal impairment/inadequate dose adjustment) and an increased incidence of hospital-acquired <em>C. difficile</em> in some analyses. Comparable antipseudomonal activity to pip-tazo.</p>
+      </div>
+      <div class="box">
+        <div class="box-title">Nephrotoxicity risk factors worth knowing regardless of agent chosen</div>
+        <p>Vancomycin daily dose &gt;4g, trough &gt;15 mg/mL, and duration &gt;7 days are the factors most consistently tied to increased AKI/nephrotoxicity risk in the critically ill — arguably more actionable than which beta-lactam partner you choose.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="allergy">
+    <h2 class="sec-title"><span class="num">06</span> Penicillin Allergy</h2>
+    <div class="box">
+      <p>For a <strong>significant</strong> penicillin allergy (anaphylaxis, airway compromise, Stevens-Johnson/TEN history) — as opposed to a vague childhood rash history, which does not usually preclude cephalosporins/carbapenems — consult allergy for evaluation/possible skin testing when time allows, and in the acute unknown-source setting, replace the beta-lactam (meropenem, ceftazidime, cefepime, or pip-tazo) with <strong>ciprofloxacin 400mg IV q8h</strong> for most sources — with the specific exception of hospital-acquired intra-abdominal infection, which needs anaerobic coverage a fluoroquinolone alone doesn't provide (add metronidazole).</p>
+    </div>
+  </section>
+
+  <section id="sourcecontrol">
+    <h2 class="sec-title"><span class="num">07</span> Source Control Timing</h2>
+    <div class="box danger">
+      <div class="box-title">The number that matters</div>
+      <p>SSC recommends initiating source control (drainage, debridement, device removal) <strong>as soon as medically and logistically practical</strong> after diagnosis. A prospective multicenter observational study found source control delayed beyond <strong>6 hours</strong> from onset of organ dysfunction was associated with significantly higher 28-day mortality (<strong>42.9% vs. 26.7%</strong>, p&lt;0.001) compared with earlier control — one of the clearer dose-response findings in the sepsis literature. In that same cohort, median time to source control was 3 hours (IQR −0.1 to 13.7h) — wide variability reflecting real-world logistics (OR availability, IR staffing, transfer delays).</p>
+    </div>
+    <p><strong>Promptly remove intravascular access devices</strong> that are a possible source once alternative access is established — this is explicit 2021/2026 SSC guidance and one of the most commonly missed source-control steps in a busy ED/ICU handoff.</p>
+  </section>
+
+  <section id="deescalation">
+    <h2 class="sec-title"><span class="num">08</span> De-escalation &amp; Duration</h2>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Daily reassessment</div>
+        <div class="val">Suggested over fixed duration</div>
+        <div class="detail">SSC 2021: daily assessment for de-escalation over using fixed durations without daily reassessment.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Duration with adequate source control</div>
+        <div class="val">Shorter preferred over longer</div>
+        <div class="detail">Very low quality evidence, but consistent direction across both 2021 and 2026 versions.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Stopping point when unclear</div>
+        <div class="val">Procalcitonin + clinical eval</div>
+        <div class="detail">Preferred over clinical evaluation alone when optimal duration is ambiguous — see Volume 2 for PCT cutoff heterogeneity caveats.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">New in SSC 2026</div>
+        <div class="val">De-escalate even with negative final cultures</div>
+        <div class="detail">SSC 2026 suggests de-escalation over no de-escalation when no pathogen is identified on final culture results — an explicit move against "cultures are negative so I'll just keep everything running."</div>
+      </div>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Real-world de-escalation is inconsistent — worth auditing your own practice</div>
+      <p>A large US multicenter analysis found that among patients started on both empiric anti-MRSA and anti-pseudomonal therapy who had <em>no</em> resistant organism identified by day 4, actual de-escalation rates varied substantially by hospital — this is a documented, common practice gap, not a rare failure. The DETOURS trial tested an opt-out de-escalation protocol for exactly this scenario (non-ICU patients, negative cultures at 48–96h) as a structured way to close that gap.</p>
+    </div>
+  </section>
+
+  <section id="algorithm">
+    <h2 class="sec-title"><span class="num">09</span> Bedside Algorithm</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="stepnum">STEP 1</span> — Classify: septic shock/probable-definite sepsis → antibiotics within 1h. Possible sepsis, no shock → rapid assessment, antibiotics within 3h.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 2</span> — Source unknown, patient clearly septic → cultures drawn (Vol. 2) → start beta-lactam (pip-tazo/cefepime/meropenem, choice guided by local resistance/nephrotoxicity considerations) <strong>first</strong>, then vancomycin.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 3</span> — MRSA risk factors present (recent hospitalization, LTC, hemodialysis, prior antibiotics, known colonization) → confirm vancomycin (or alternative) is included. Highly-resistant Gram-negative concern → add second agent (cipro or tobramycin).</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 4</span> — Identify and pursue source control in parallel — target initiation well within 6 hours of organ dysfunction onset where a controllable source exists (abscess, empyema, infected device, perforated viscus).</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 5</span> — Daily reassessment starting ~48–72h: narrow based on culture data, de-escalate even if cultures are negative but the patient is clinically improved, target shortest effective duration, use procalcitonin trend as an adjunct if the stopping point is unclear.</div>
+    </div>
+    <div class="box good">
+      <div class="box-title">Series roadmap</div>
+      <p>This is Volume 4 of 6. Next: <strong>Volume 5 — Special Populations</strong> (pregnancy, heart failure, immunocompromised/neutropenic, renal impairment, pediatric, cirrhosis/ESLD, elderly/frail), followed by <strong>Volume 6 — Prevention &amp; QI</strong> (post-sepsis syndrome, failure-to-rescue, medicolegal documentation).</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">10</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines 2026. <em>Crit Care Med.</em> 2026;54:725–812.</li>
+      <li><span class="rn">2</span>Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines 2021. <em>Crit Care Med.</em> 2021;49(11):e1063–e1143.</li>
+      <li><span class="rn">3</span>Kalil AC, Gilbert DN, Winslow DL, Masur H, Klompas M. IDSA Position Statement: Why IDSA Did Not Endorse the Surviving Sepsis Campaign Guidelines. <em>Clin Infect Dis.</em> 2018;66(10):1631–1635.</li>
+      <li><span class="rn">4</span>Klompas M, Rhee C. Victories and Opportunities in the Surviving Sepsis Campaign's Antibiotic Timing Guidance. <em>Crit Care Med.</em> 2024;52:1138–1141.</li>
+      <li><span class="rn">5</span>Kowalkowski MA, Taylor SP, et al. Real-World Implications of Updated Surviving Sepsis Campaign Antibiotic Timing Recommendations. <em>Crit Care Med</em> 2024 (PubMed 38385751).</li>
+      <li><span class="rn">6</span>Gross BJ, Donahue A, Ford JS, et al. Mortality and Antibiotic Timing in Deep Learning-Derived Surviving Sepsis Campaign Risk Groups. 2025 (PMC11998778 / PMC12257722).</li>
+      <li><span class="rn">7</span>Considerations for Empiric Antimicrobial Therapy in Sepsis and Septic Shock in an Era of Antimicrobial Resistance. <em>J Infect Dis.</em> 2020;222(Suppl 2):S119.</li>
+      <li><span class="rn">8</span>Empiric Antibiotic Guidance for Sepsis, Site Unknown (institutional protocol example). UW Medicine.</li>
+      <li><span class="rn">9</span>Progression of Kidney Injury with Vancomycin + Pip-Tazo or Cefepime in Sepsis-Associated AKI. <em>PMC9730318.</em></li>
+      <li><span class="rn">10</span>A Comparison Between Cefepime and Piperacillin-Tazobactam in the Management of Septic Shock. <em>PMC8587520.</em></li>
+      <li><span class="rn">11</span>ACORN Trial Protocol — Antibiotic Choice on Renal Outcomes.</li>
+      <li><span class="rn">12</span>Impact of Compliance with Infection Management Guidelines on Outcome in Severe Sepsis — source control timing data. <em>PMC4057316.</em></li>
+      <li><span class="rn">13</span>Epidemiology and Outcomes of Broad-Spectrum Antibiotic De-escalation in Suspected Sepsis, US Hospitals. <em>PMC11776815.</em></li>
+      <li><span class="rn">14</span>DETOURS Trial — Opt-Out Protocol for Antibiotic De-escalation in Suspected Sepsis. <em>PMC8643792.</em></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 4 of 6 — Empiric Antibiotics &amp; Source Control · Built for bedside/offline use, no external dependencies beyond typeface loading · Verify any SSC 2026 statement number, drug dosing, and local antibiogram guidance before formal adoption — this is a teaching reference, not a substitute for your institution's antibiogram-informed order sets.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>GI Atlas · Volume 6 — IBD Management, Malignancy & Viral Hepatitis</title>
+<style>
+/* ============================================================
+   GI ATLAS — VOLUME 6: IBD MANAGEMENT, MALIGNANCY & VIRAL HEPATITIS
+   Design system: Fraunces (display) / Inter (body) / JetBrains Mono (data)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #FAF9F6;
+  --bg-elevated: #FFFFFF;
+  --bg-inset: #F1EFEA;
+  --text-primary: #1C1A17;
+  --text-secondary: #423D37;
+  --text-tertiary: #6B6559;
+  --border: #E3DFD6;
+  --border-strong: #C9C2B4;
+
+  --accent: #A13D64;
+  --accent-bg: #FBEBF1;
+  --danger: #A13D3D;
+  --danger-bg: #FBEBEA;
+  --info: #2C5F8A;
+  --info-bg: #EAF1F8;
+
+  --ibdc: #A13D64;         /* IBD clinical management — rose */
+  --ibdc-bg: #FBEBF1;
+  --crc: #4A7C3C;           /* colorectal cancer screening — green */
+  --crc-bg: #EEF5EA;
+  --tumor: #6B4E9C;          /* tumor markers/staging — violet */
+  --tumor-bg: #F1EBF7;
+  --hepv: #B8783E;            /* viral hepatitis — amber/liver */
+  --hepv-bg: #FBF1E6;
+  --peds: #2C7A72;             /* pediatric GI emergencies — teal */
+  --peds-bg: #E9F5F3;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #171512;
+  --bg-elevated: #211E1A;
+  --bg-inset: #1C1916;
+  --text-primary: #F2EFE9;
+  --text-secondary: #D8D2C7;
+  --text-tertiary: #A39D8F;
+  --border: #33302A;
+  --border-strong: #45413A;
+
+  --accent: #D687A3;
+  --accent-bg: #2C1B22;
+  --danger: #D98787;
+  --danger-bg: #2E1D1C;
+  --info: #7FAAD4;
+  --info-bg: #182430;
+
+  --ibdc: #D687A3;
+  --ibdc-bg: #2C1B22;
+  --crc: #8CBE7A;
+  --crc-bg: #1B2818;
+  --tumor: #A98FD1;
+  --tumor-bg: #241C33;
+  --hepv: #D4966F;
+  --hepv-bg: #2A1E15;
+  --peds: #5FBBB0;
+  --peds-bg: #16292A;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-size: 17px;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.brand-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.header-controls { display: flex; align-items: center; gap: 10px; }
+
+.nav-select {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 9px 32px 9px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23423D37' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  color: var(--text-primary);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  max-width: 62vw;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+.domain { display: none; animation: fadeIn 0.3s ease; }
+.domain.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.domain-hero { padding: 32px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+.domain-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.domain-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+.domain-sub { font-size: 16px; color: var(--text-secondary); max-width: 640px; }
+
+.section { margin-bottom: 36px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.section-title .tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  vertical-align: middle;
+}
+.subsection-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+  color: var(--text-primary);
+}
+
+p { margin: 0 0 12px; color: var(--text-secondary); }
+strong { color: var(--text-primary); font-weight: 650; }
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.card-accent {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-bg);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.pathway {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 12px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.pw-node {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pw-node.final { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.pw-arrow {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+.pw-enzyme { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: none; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border-strong);
+}
+td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+td strong, th strong { color: var(--text-primary); }
+.mono { font-family: var(--font-mono); font-size: 14px; }
+
+.alert { border-radius: var(--radius-md); padding: 14px 16px; margin: 14px 0; font-size: 15px; border-left: 4px solid; }
+.alert-verify { background: var(--info-bg); border-color: var(--info); color: var(--text-secondary); }
+.alert-danger { background: var(--danger-bg); border-color: var(--danger); }
+.alert-title { font-weight: 700; color: var(--text-primary); margin-bottom: 4px; font-size: 14.5px; }
+
+.gene-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--bg-elevated);
+}
+.gene-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.gene-name { font-weight: 700; font-size: 15.5px; }
+.gene-locus {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  background: var(--bg-inset);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+.gene-inheritance { font-size: 12px; font-weight: 600; color: var(--accent); }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+.chip { font-size: 13px; font-weight: 600; padding: 5px 11px; border-radius: 20px; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text-secondary); }
+
+.loop-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin: 2px 4px 2px 0;
+}
+.loop-neg { background: var(--info-bg); color: var(--info); }
+.loop-pos { background: var(--danger-bg); color: var(--danger); }
+
+.diagram-frame {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  margin: 16px 0;
+  text-align: center;
+}
+.diagram-frame img, .diagram-frame svg { max-width: 100%; height: auto; }
+.diagram-caption { font-size: 13px; color: var(--text-tertiary); margin-top: 8px; font-family: var(--font-mono); }
+
+.hquick { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
+.hquick-item { background: var(--bg-inset); border-radius: var(--radius-sm); padding: 10px 12px; }
+.hquick-label { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 3px; }
+.hquick-val { font-size: 14px; font-weight: 650; color: var(--text-primary); }
+
+ul.plain, ol.plain { margin: 8px 0 14px; padding-left: 20px; }
+ul.plain li, ol.plain li { margin-bottom: 6px; color: var(--text-secondary); }
+
+.divider-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.site-footer { text-align: center; padding: 30px 20px 60px; font-size: 13px; color: var(--text-tertiary); font-family: var(--font-mono); }
+
+@media print {
+  .site-header, .theme-toggle { display: none; }
+  .domain { display: block !important; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-eyebrow">Clinical Reference Atlas</div>
+    <div class="brand-title">GI Atlas — Vol. 6</div>
+  </div>
+  <div class="header-controls">
+    <select id="domainNav" class="nav-select" aria-label="Navigate sections">
+      <option value="ibdc">◆ IBD Clinical Management</option>
+<option value="crc">◆ Colorectal Cancer Screening</option>
+<option value="tumor">◆ GI Tumor Markers & Staging</option>
+<option value="hepv">◆ Viral Hepatitis</option>
+<option value="peds">◆ Pediatric GI Emergencies</option>
+    </select>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">☾</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="ibdc" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--ibdc)">GI Atlas · Vol. 6</div>
+    <h1 class="domain-title">IBD Clinical Management</h1>
+    <p class="domain-sub">GI Atlas Vol. 4 covered the drugs — this section covers the disease itself: how severity is actually scored, the extraintestinal disease that can be the presenting feature, and when surveillance colonoscopy starts.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ibdc-bg);color:var(--ibdc)">Severity Scoring</span></h2>
+    <table>
+      <tr><th>Score</th><th>Disease</th><th>Key components</th></tr>
+      <tr><td><strong>Truelove-Witts criteria</strong></td><td>Ulcerative colitis</td><td>Stool frequency, blood in stool, fever, tachycardia, anemia, ESR — classifies mild/moderate/severe; "severe" (≥6 bloody stools/day plus systemic toxicity) approaches the toxic megacolon risk threshold covered in the GI Emergencies &amp; Hepatology Atlas</td></tr>
+      <tr><td><strong>Mayo score</strong></td><td>Ulcerative colitis</td><td>Stool frequency, rectal bleeding, endoscopic findings, physician global assessment — widely used in clinical trials and increasingly in practice to standardize response/remission definitions</td></tr>
+      <tr><td><strong>Harvey-Bradshaw Index</strong></td><td>Crohn's disease</td><td>General well-being, abdominal pain, stool frequency, abdominal mass, complications — a simplified bedside alternative to the more research-oriented Crohn's Disease Activity Index</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ibdc-bg);color:var(--ibdc)">Extraintestinal Manifestations</span>Sometimes the Presenting Feature</h2>
+    <table>
+      <tr><th>System</th><th>Manifestation</th><th>Note</th></tr>
+      <tr><td>Musculoskeletal</td><td>Peripheral arthritis, sacroiliitis, ankylosing spondylitis</td><td>Peripheral arthritis tends to track with intestinal disease activity; axial disease (sacroiliitis/AS) often runs an independent course, not reliably improving with gut-directed therapy alone</td></tr>
+      <tr><td>Dermatologic</td><td>Erythema nodosum, pyoderma gangrenosum</td><td>Erythema nodosum tends to parallel intestinal disease activity; pyoderma gangrenosum can behave independently and may need its own targeted immunosuppressive therapy</td></tr>
+      <tr><td>Ocular</td><td>Episcleritis, uveitis</td><td>Episcleritis tends to track with gut activity; uveitis is more often independent and needs prompt ophthalmology referral given vision-threatening potential</td></tr>
+      <tr><td>Hepatobiliary</td><td>Primary sclerosing cholangitis</td><td>Associated predominantly with ulcerative colitis (though also seen in Crohn's colitis); runs a course largely independent of intestinal disease activity, and can precede the bowel diagnosis — a genuinely important pattern-recognition link, since PSC found first should prompt IBD screening even without GI symptoms yet</td></tr>
+      <tr><td>Hematologic</td><td>Anemia (iron deficiency from chronic blood loss, or anemia of chronic disease), venous thromboembolism</td><td>IBD is an independent VTE risk factor even outside of active flares — a genuinely underappreciated point relevant to prophylaxis decisions during hospitalization</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ibdc-bg);color:var(--ibdc)">Colorectal Cancer Surveillance in IBD</span>A Different Schedule From Average-Risk Screening</h2>
+    <div class="alert alert-verify">
+      <div class="alert-title">Surveillance starts earlier and runs more frequently than average-risk screening</div>
+      Chronic colitis (ulcerative colitis, or Crohn's colitis involving a substantial portion of the colon) raises colorectal cancer risk independent of the average-risk factors covered in this volume's Colorectal Cancer Screening section — surveillance colonoscopy typically begins <strong>8–10 years after diagnosis</strong> of colitis (not from age 45 the way average-risk screening does), with repeat surveillance every 1–3 years depending on risk factors (extent of colitis, concurrent PSC, family history, prior dysplasia). Concurrent PSC specifically shortens this interval further given the compounded risk.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--ibdc-bg);color:var(--ibdc)">Flare Management Principles</span></h2>
+    <div class="chip-row">
+      <span class="chip">Always exclude infection first — <em>C. difficile</em> testing in particular, given IBD patients' elevated baseline risk and the identical clinical presentation (GI Atlas Vol. 4/5b)</span>
+      <span class="chip">Fecal calprotectin helps distinguish a true inflammatory flare from a functional (IBS-like) symptom overlay in a patient with known IBD — a genuinely common diagnostic dilemma in practice</span>
+      <span class="chip">Severe flares require inpatient management with the toxic megacolon vigilance covered in the GI Emergencies &amp; Hepatology Atlas</span>
+      <span class="chip">Corticosteroids remain the mainstay of acute flare induction even though they're not appropriate for maintenance therapy (Endocrine Atlas Vol. 3a's dosing/tapering principles apply directly)</span>
+    </div>
+  </div>
+</section>
+
+
+<section id="crc" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--crc)">GI Atlas · Vol. 6</div>
+    <h1 class="domain-title">Colorectal Cancer Screening</h1>
+    <p class="domain-sub">The age threshold dropped from 50 to 45 in 2021 — worth confirming this is reflected in any older personal framework, since it changes who's actually "average risk and under-screened."</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--crc-bg);color:var(--crc)">Current USPSTF Guidance</span></h2>
+    <div class="alert alert-verify">
+      <div class="alert-title">Average-risk screening now starts at 45, not 50</div>
+      The USPSTF updated its recommendation in 2021, extending screening to ages <strong>45–75</strong> (previously 50–75) given rising CRC incidence in younger adults — roughly 13% of new colorectal cancer cases now occur in people under 50. This is a genuinely important update if working from older training, and it doesn't change the equally important point that concerning symptoms (unexplained bleeding, anemia, change in bowel habit) in <em>any</em> age, including under 45, warrant prompt evaluation rather than being dismissed as too young for CRC.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--crc-bg);color:var(--crc)">Screening Modalities &amp; Intervals</span></h2>
+    <table>
+      <tr><th>Test</th><th>Interval</th><th>Note</th></tr>
+      <tr><td><strong>Colonoscopy</strong></td><td>Every 10 years</td><td>Only modality that is both diagnostic and therapeutic (polypectomy) in the same procedure — the reference standard others are validated against</td></tr>
+      <tr><td><strong>FIT (fecal immunochemical test)</strong></td><td>Annual</td><td>Detects human hemoglobin specifically — more sensitive and specific than older guaiac-based testing, with less dietary interference</td></tr>
+      <tr><td><strong>FIT-DNA (stool DNA test)</strong></td><td>Every 1–3 years</td><td>Combines FIT with DNA markers for colorectal neoplasia-associated mutations — higher sensitivity than FIT alone but a higher false-positive rate</td></tr>
+      <tr><td><strong>CT colonography</strong></td><td>Every 5 years</td><td>Non-invasive direct visualization; a positive finding still requires follow-up colonoscopy</td></tr>
+      <tr><td><strong>Flexible sigmoidoscopy</strong></td><td>Every 5 years (or every 10 years combined with annual FIT)</td><td>Visualizes only the distal colon/rectum — misses proximal lesions, a genuine limitation relative to full colonoscopy</td></tr>
+    </table>
+    <p>Any positive non-colonoscopy screening result requires <strong>follow-up colonoscopy</strong> to complete the screening episode — a FIT-positive patient who never gets the follow-up colonoscopy is not meaningfully screened, a distinction that matters for both clinical practice and quality metrics.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--crc-bg);color:var(--crc)">Elevated-Risk Screening</span>Starts Earlier, Runs More Often</h2>
+    <table>
+      <tr><th>Risk factor</th><th>Recommendation</th></tr>
+      <tr><td>First-degree relative with CRC or advanced polyp before age 60, or ≥2 first-degree relatives at any age</td><td>Colonoscopy starting at age 40, or 10 years before the youngest affected relative's diagnosis (whichever is earlier) — repeated every 5 years</td></tr>
+      <tr><td>Lynch syndrome (hereditary non-polyposis colorectal cancer)</td><td>Colonoscopy starting in the early 20s, repeated every 1–2 years given markedly accelerated adenoma-to-carcinoma progression</td></tr>
+      <tr><td>Familial adenomatous polyposis (FAP)</td><td>Annual flexible sigmoidoscopy/colonoscopy starting in the early teens — untreated FAP carries near-100% lifetime CRC risk, and prophylactic colectomy is often planned once polyp burden becomes unmanageable</td></tr>
+      <tr><td>IBD/chronic colitis</td><td>A distinct surveillance schedule (8–10 years after diagnosis, then every 1–3 years) — covered in this volume's IBD Clinical Management section rather than repeated here, since it isn't age-triggered the way average-risk and most hereditary-syndrome screening is</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--crc-bg);color:var(--crc)">Why the Modality Choice Matters Less Than Actually Completing Screening</span></h2>
+    <p>Current guidance deliberately avoids designating one single "best" test — the strongest predictor of population-level benefit is <strong>completion</strong> of whichever appropriately-sensitive test a patient will actually do, not universal adoption of the single most sensitive option. This is why FIT mailer outreach programs and shared decision-making conversations about modality preference are now considered legitimate, evidence-supported parts of a screening strategy rather than a compromise on rigor.</p>
+  </div>
+</section>
+
+
+<section id="tumor" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--tumor)">GI Atlas · Vol. 6</div>
+    <h1 class="domain-title">GI Tumor Markers &amp; Cancer Staging Basics</h1>
+    <p class="domain-sub">The staging framework behind the cancer surgeries already covered across this atlas series — Whipple, esophagectomy, gastrectomy, colectomy — assembled here as the diagnostic/oncologic layer underneath them.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--tumor-bg);color:var(--tumor)">Tumor Markers</span>Monitoring Tools, Not Screening Tests</h2>
+    <table>
+      <tr><th>Marker</th><th>Associated cancer</th><th>Primary use</th></tr>
+      <tr><td><strong>CEA</strong> (carcinoembryonic antigen)</td><td>Colorectal cancer</td><td>Not sensitive/specific enough for screening (this volume's Colorectal Cancer Screening section covers the actual screening tools) — its real value is as a <strong>baseline and surveillance</strong> marker after diagnosis/resection, where a rising trend can signal recurrence before it's otherwise clinically apparent</td></tr>
+      <tr><td><strong>CA 19-9</strong></td><td>Pancreatic cancer (also biliary tract cancers)</td><td>Similarly not a screening test — used for prognosis and monitoring treatment response/recurrence after diagnosis (relevant directly to the Whipple procedure population, GI Atlas Vol. 5). Falsely elevated in any cause of biliary obstruction (GI Atlas Vol. 5/6), so an elevated level in a jaundiced patient doesn't necessarily mean malignancy until obstruction is relieved and the level is rechecked. Also undetectable in the ~5–10% of the population who are Lewis antigen-negative and structurally unable to produce it — a genuine false-negative trap in exactly the patients it would otherwise be most useful for</td></tr>
+      <tr><td><strong>AFP</strong> (alpha-fetoprotein)</td><td>Hepatocellular carcinoma</td><td>Used alongside imaging for HCC surveillance in cirrhotic patients (GI Emergencies &amp; Hepatology Atlas's Cirrhosis section) — sensitivity is imperfect enough that imaging surveillance (ultrasound ± AFP, per society guidance) remains necessary rather than relying on the marker alone</td></tr>
+      <tr><td><strong>CA 125</strong></td><td>Not GI-specific (ovarian cancer), but can be elevated in any peritoneal carcinomatosis</td><td>Occasionally relevant in a GI oncology workup when peritoneal spread is suspected, despite its primary association lying outside the GI tract</td></tr>
+    </table>
+    <div class="alert alert-verify">
+      <div class="alert-title">The universal caveat for every marker on this list</div>
+      None of these markers are validated or recommended as standalone <strong>screening</strong> tests in an asymptomatic average-risk population — each is used for prognosis, treatment response monitoring, or recurrence surveillance <em>after</em> a diagnosis is already established by tissue/imaging. Ordering one to "screen" for cancer in an asymptomatic patient is a common and avoidable misapplication.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--tumor-bg);color:var(--tumor)">Staging Basics — TNM Framework</span></h2>
+    <p>Every GI cancer in this atlas series is staged using the same underlying <strong>TNM</strong> logic (Tumor depth/extent, Node involvement, Metastasis) — the specific depth/nodal thresholds differ by organ, but the framework is shared.</p>
+    <table>
+      <tr><th>Cancer</th><th>T-stage logic</th><th>Relevant surgery (this atlas series)</th></tr>
+      <tr><td>Esophageal</td><td>Depth of invasion through mucosa/submucosa/muscularis propria/adventitia — depth correlates strongly with nodal metastasis risk, part of why even small, superficial lesions get careful depth assessment (endoscopic ultrasound) before deciding between endoscopic and surgical therapy</td><td>Esophagectomy (GI Atlas Vol. 5)</td></tr>
+      <tr><td>Gastric</td><td>Similar depth-based logic through the gastric wall layers</td><td>Gastrectomy (GI Atlas Vol. 5)</td></tr>
+      <tr><td>Pancreatic</td><td>Primarily driven by size and, critically, <strong>vascular involvement</strong> (superior mesenteric artery/vein, portal vein) — this is what determines resectability more than size alone, directly tied to the preoperative imaging assessment in GI Atlas Vol. 5's Whipple section</td><td>Whipple procedure (GI Atlas Vol. 5)</td></tr>
+      <tr><td>Colorectal</td><td>Depth through the bowel wall layers (mucosa → submucosa → muscularis propria → serosa/pericolic tissue) — T-stage here directly predicts nodal involvement risk, part of why a T1 lesion confined to the submucosa may be managed endoscopically while deeper invasion triggers formal oncologic resection</td><td>Colectomy (GI Atlas Vol. 5)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--tumor-bg);color:var(--tumor)">Why Staging Determines the Surgery, Not the Reverse</span></h2>
+    <p>Every resection covered in this atlas series' surgical volumes is planned around a staging assessment completed beforehand — the Whipple procedure's preoperative vascular imaging (GI Atlas Vol. 5) is a direct staging exercise, determining resectability before the operating room is ever booked. Neoadjuvant chemoradiation for esophageal/gastric/pancreatic cancer, when used, is itself a stage-dependent decision — locally advanced disease often gets treated before surgery specifically to downstage the tumor and improve resection margins, while early-stage disease may proceed directly to surgery. Staging, in this sense, is the diagnostic layer that determines which of this atlas series' surgical chapters actually applies to a given patient.</p>
+  </div>
+</section>
+
+
+<section id="hepv" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--hepv)">GI Atlas · Vol. 6</div>
+    <h1 class="domain-title">Viral Hepatitis</h1>
+    <p class="domain-sub">Five distinct viruses, one shared clinical picture — the serology panel is what actually tells them apart, and Hepatitis B's panel is the one genuinely worth memorizing cold.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hepv-bg);color:var(--hepv)">The Five Viruses, Quickly</span></h2>
+    <table>
+      <tr><th>Virus</th><th>Transmission</th><th>Chronicity</th></tr>
+      <tr><td><strong>Hepatitis A</strong></td><td>Fecal-oral (contaminated food/water)</td><td>Never chronic — self-limited, though can rarely cause fulminant hepatitis</td></tr>
+      <tr><td><strong>Hepatitis B</strong></td><td>Blood, sexual contact, perinatal</td><td>Chronic in a minority of adult infections (much higher rate if acquired perinatally/in early childhood, given immature immune clearance at that age)</td></tr>
+      <tr><td><strong>Hepatitis C</strong></td><td>Blood (injection drug use predominant route currently), less commonly sexual</td><td>Chronic in the majority of infections (~75–85%) — the reverse pattern from Hepatitis A</td></tr>
+      <tr><td><strong>Hepatitis D</strong></td><td>Blood — but <strong>only occurs with concurrent Hepatitis B</strong>, since it's a defective virus requiring HBsAg for its own viral envelope</td><td>Coinfection (simultaneous with acute HBV) tends toward spontaneous clearance alongside HBV; superinfection (HDV acquired on top of established chronic HBV) tends toward more severe, more often chronic disease</td></tr>
+      <tr><td><strong>Hepatitis E</strong></td><td>Fecal-oral (contaminated water, undercooked pork/game in some regions)</td><td>Typically self-limited like Hepatitis A, but carries a distinctly elevated fulminant hepatitis/mortality risk specifically in <strong>pregnant women</strong> — a genuinely important exception to the "enteric hepatitis viruses are generally mild" pattern</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hepv-bg);color:var(--hepv)">Hepatitis B Serology</span>The Panel Worth Knowing Cold</h2>
+    <table>
+      <tr><th>Pattern</th><th>HBsAg</th><th>Anti-HBs</th><th>Anti-HBc IgM</th><th>Anti-HBc IgG</th><th>HBeAg</th><th>Interpretation</th></tr>
+      <tr><td>Acute infection</td><td>+</td><td>−</td><td>+</td><td>−/+</td><td>Often +</td><td>Active acute infection — IgM anti-HBc is the marker specifically distinguishing acute from chronic</td></tr>
+      <tr><td><strong>Window period</strong></td><td>−</td><td>−</td><td>+</td><td>−/+</td><td>−</td><td>HBsAg has cleared but anti-HBs hasn't yet risen — <strong>IgM anti-HBc is the only positive marker</strong> and is diagnostic during this gap; missing this pattern is how an acute infection gets mislabeled as "no evidence of hepatitis B"</td></tr>
+      <tr><td>Chronic infection</td><td>+</td><td>−</td><td>−</td><td>+</td><td>Variable</td><td>HBsAg persisting &gt;6 months defines chronicity; HBeAg positivity within this pattern indicates high viral replication/infectivity</td></tr>
+      <tr><td>Resolved infection (natural immunity)</td><td>−</td><td>+</td><td>−</td><td>+</td><td>−</td><td>Past infection, now cleared — total anti-HBc (IgG) is the marker distinguishing this from vaccination, since vaccination never generates a core antibody response</td></tr>
+      <tr><td>Vaccination</td><td>−</td><td>+</td><td>−</td><td>−</td><td>−</td><td>Anti-HBs alone, with a completely negative anti-HBc — the vaccine contains only surface antigen, never core antigen, which is exactly why this pattern is the one clean way to confirm vaccine-induced rather than infection-induced immunity</td></tr>
+    </table>
+    <div class="alert alert-verify">
+      <div class="alert-title">The single highest-yield distinction on this whole panel</div>
+      <strong>Anti-HBc (core antibody) is never produced by the vaccine</strong> — only real infection generates it. This is the one fact that resolves almost every confusing HBV serology pattern: if anti-HBc is present in any form, the patient has been infected at some point, regardless of what the surface antigen/antibody results show.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hepv-bg);color:var(--hepv)">Hepatitis A &amp; C Serology, Briefly</span></h2>
+    <table>
+      <tr><th>Virus</th><th>Acute marker</th><th>Past exposure/immunity marker</th></tr>
+      <tr><td>Hepatitis A</td><td>Anti-HAV IgM</td><td>Anti-HAV IgG (from past infection or vaccination — unlike HBV, there's no separate core-antibody-equivalent distinction needed since HAV never becomes chronic)</td></tr>
+      <tr><td>Hepatitis C</td><td>Anti-HCV screens for exposure; <strong>HCV RNA</strong> confirms active/current infection</td><td>Anti-HCV alone, with a negative HCV RNA, indicates past infection that has been spontaneously or treatment-cleared — a genuinely important distinction now that direct-acting antivirals cure the large majority of treated HCV, making "anti-HCV positive" no longer synonymous with "currently infected" the way it once reliably was</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--hepv-bg);color:var(--hepv)">Clinical Pattern — Acute Viral Hepatitis, Any Cause</span></h2>
+    <p>Regardless of which virus, acute hepatitis shares a common biochemical signature: markedly elevated transaminases (often &gt;1000 in acute viral hepatitis, typically ALT ≥ AST — the reverse of the AST-predominant pattern seen in alcoholic hepatitis), with bilirubin and INR tracking disease severity. A rising INR with worsening mental status in this setting raises concern for acute liver failure, a distinct emergency from the chronic decompensation processes covered in the GI Emergencies &amp; Hepatology Atlas's cirrhosis sections, given the previously healthy liver's different failure trajectory and transplant-listing urgency.</p>
+  </div>
+</section>
+
+
+<section id="peds" class="domain">
+  <div class="domain-hero">
+    <div class="domain-eyebrow" style="color:var(--peds)">GI Atlas · Vol. 6</div>
+    <h1 class="domain-title">Pediatric GI Emergencies</h1>
+    <p class="domain-sub">Three age-specific presentations where the vomiting pattern (bilious vs. non-bilious, timing, and the specific exam/imaging finding) does almost all of the diagnostic work.</p>
+  </div>
+
+  <div class="alert alert-verify">
+    <div class="alert-title">A note on scope</div>
+    These three entities may already be covered in more depth in a dedicated pediatric emergency medicine atlas — they're included here briefly for completeness within the GI series, cross-referenced to that resource for the fuller pediatric-specific workup and management detail where one exists.
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--peds-bg);color:var(--peds)">Pyloric Stenosis</span></h2>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Typical age</td><td>2–8 weeks — presentation outside this window should prompt reconsidering the diagnosis</td></tr>
+      <tr><td>Presentation</td><td><strong>Non-bilious, projectile</strong> vomiting, classically immediately after feeding, with a hungry infant eager to re-feed afterward — the non-bilious character reflects the obstruction being proximal to the ampulla of Vater (GI Atlas Vol. 5's Whipple section covers this same anatomic landmark from the adult surgical side)</td></tr>
+      <tr><td>Classic exam finding</td><td>A palpable "olive"-shaped mass in the right upper quadrant/epigastrium, representing the hypertrophied pylorus — best felt after the stomach has been emptied by vomiting or a test feed</td></tr>
+      <tr><td>Metabolic pattern</td><td><strong>Hypochloremic, hypokalemic metabolic alkalosis</strong> from persistent vomiting of gastric (acidic, chloride-rich) contents — the same proximal-obstruction electrolyte pattern covered for adult bowel obstruction in GI Atlas Vol. 5b, here in its classic pediatric form</td></tr>
+      <tr><td>Diagnosis</td><td>Abdominal ultrasound — measuring pyloric muscle thickness and canal length against established cutoffs</td></tr>
+      <tr><td>Treatment</td><td>Fluid/electrolyte correction first (correcting the alkalosis before anesthesia reduces perioperative apnea risk), then <strong>pyloromyotomy</strong> — surgically splitting the hypertrophied muscle without entering the mucosa, conceptually similar in spirit to the myotomy principle used for achalasia in GI Atlas Vol. 1/3, though a distinct muscle and mechanism</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--peds-bg);color:var(--peds)">Intussusception</span></h2>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Typical age</td><td>3 months to 3 years, peak incidence 6–18 months</td></tr>
+      <tr><td>Mechanism</td><td>A proximal bowel segment telescopes into a distal segment — most commonly ileocolic — often triggered by a lymphoid tissue lead point (e.g., post-viral Peyer's patch hypertrophy) in this age group; an identifiable pathologic lead point (Meckel's diverticulum, polyp) becomes proportionally more likely outside the classic age range</td></tr>
+      <tr><td>Presentation</td><td>Intermittent, severe colicky abdominal pain with the classic (but not universal) <strong>"currant jelly" stool</strong> — blood and mucus reflecting mucosal ischemia at the telescoped segment; a palpable sausage-shaped abdominal mass is sometimes appreciated on exam</td></tr>
+      <tr><td>Diagnosis</td><td>Ultrasound — the <strong>"target" or "doughnut" sign</strong> on cross-section is the classic finding</td></tr>
+      <tr><td>Treatment</td><td><strong>Air or contrast enema</strong> is both diagnostic and therapeutic in the large majority of cases — reducing the intussusception non-operatively; surgery is reserved for enema reduction failure, perforation, or peritonitis</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--peds-bg);color:var(--peds)">Malrotation with Midgut Volvulus</span></h2>
+    <table>
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td>Typical age</td><td>Most present within the first month of life, though later presentation is possible</td></tr>
+      <tr><td>Mechanism</td><td>Incomplete embryologic intestinal rotation leaves the small bowel mesentery on a narrow pedicle rather than its normal broad attachment — predisposing to the entire midgut twisting around the superior mesenteric artery, a true vascular emergency threatening the whole small bowel's blood supply at once</td></tr>
+      <tr><td>Presentation</td><td><strong>Bilious vomiting in a neonate is malrotation/volvulus until proven otherwise</strong> — the single most important teaching point in this section, given how rapidly this can progress to catastrophic bowel loss</td></tr>
+      <tr><td>Diagnosis</td><td>Upper GI contrast study is the gold standard, looking for an abnormally positioned duodenojejunal junction (normally should cross the midline at the ligament of Treitz); a <strong>"whirlpool sign"</strong> on ultrasound/Doppler (the mesenteric vessels twisting around each other) is a supportive finding where available. The classic neonatal "double bubble" sign (stomach + proximal duodenum distension, no distal gas) more specifically indicates duodenal atresia/obstruction rather than volvulus itself, though both can coexist and both are frequently discussed together</td></tr>
+      <tr><td>Treatment</td><td>Emergent surgery (Ladd's procedure) — untwisting the volvulus, dividing the abnormal peritoneal bands (Ladd's bands) causing duodenal compression, and widening the mesenteric base — <strong>true minutes-matter urgency</strong>, on par with the acute mesenteric ischemia emergency covered in GI Atlas Vol. 5b, since delay directly costs bowel length in an already anatomically vulnerable, narrow-pedicled mesentery</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="tag" style="background:var(--peds-bg);color:var(--peds)">The One-Line Summary of All Three</span></h2>
+    <div class="chip-row">
+      <span class="chip">Non-bilious projectile vomiting, 2–8 weeks, hungry after → pyloric stenosis</span>
+      <span class="chip">Colicky pain + currant jelly stool, 6–18 months → intussusception</span>
+      <span class="chip">Bilious vomiting in a neonate → malrotation/volvulus until proven otherwise, emergent workup</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  GI ATLAS · VOLUME 6 — IBD MANAGEMENT, MALIGNANCY &amp; VIRAL HEPATITIS<br>
+  Vol. 1–5b: Hormones/Neurotransmitters, Secretory/Absorptive Physiology, Motility, Pharmacology, Surgery<br>
+  Verify all screening intervals, serology interpretation, and clinical thresholds against current guidelines before clinical use.
+</footer>
+
+<script>
+(function() {
+  "use strict";
+
+  // ---------- Theme toggle ----------
+  var THEME_KEY_FALLBACK = null; // no localStorage per artifact rules; in-memory only
+  var root = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    if (toggleBtn) toggleBtn.textContent = t === 'dark' ? '☀' : '☾';
+  }
+
+  // default to light on load
+  applyTheme('light');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      var current = root.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // ---------- Dropdown navigation ----------
+  var navSelect = document.getElementById('domainNav');
+  var domains = document.querySelectorAll('.domain');
+
+  function showDomain(id) {
+    for (var i = 0; i < domains.length; i++) {
+      domains[i].classList.toggle('active', domains[i].id === id);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  if (navSelect) {
+    navSelect.addEventListener('change', function() {
+      showDomain(this.value);
+    });
+    // activate first option on load
+    if (navSelect.options.length > 0) {
+      showDomain(navSelect.options[0].value);
+    }
+  }
+})();
+
+</script>
+</body>
+</html>

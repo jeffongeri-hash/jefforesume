@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiothoracic Surgery Atlas · Vol. 1 — Cardiac Surgery &amp; Devices</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-cabg: #ef5350;
+  --accent-pci: #4fc3f7;
+  --accent-valve: #aed581;
+  --accent-aortic: #ffb74d;
+  --accent-lvad: #4dd0e1;
+  --accent-transplant: #ba68c8;
+  --accent-postop: #ff8a65;
+  --accent: #4dd0e1;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-cabg: #b3261e;
+  --accent-pci: #0d6d8f;
+  --accent-valve: #5a7d1f;
+  --accent-aortic: #a25b00;
+  --accent-lvad: #007680;
+  --accent-transplant: #7b3f96;
+  --accent-postop: #c85a2e;
+  --accent: #007680;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#cabg { --sec-accent: var(--accent-cabg); }
+#pci { --sec-accent: var(--accent-pci); }
+#valve { --sec-accent: var(--accent-valve); }
+#aortic { --sec-accent: var(--accent-aortic); }
+#lvad { --sec-accent: var(--accent-lvad); }
+#transplant { --sec-accent: var(--accent-transplant); }
+#postop { --sec-accent: var(--accent-postop); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiothoracic Surgery Atlas</span>
+    <span class="title">Vol. 1 — Cardiac Surgery &amp; Devices</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#cabg">CABG</option>
+      <option value="#pci">PCI &amp; Stent Placement</option>
+      <option value="#valve">Valve Surgery</option>
+      <option value="#aortic">Aortic Surgery</option>
+      <option value="#lvad">LVAD &amp; Mechanical Circulatory Support</option>
+      <option value="#transplant">Heart Transplant</option>
+      <option value="#postop">Post-Cardiac Surgery Complications</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Cardiac Surgery &amp; Devices</h1>
+  <p class="lede">From bypass to transplant — built to the 2021 ACC/AHA/SCAI Coronary Revascularization Guideline, the 2020 ACC/AHA Valvular Heart Disease Guideline, and current INTERMACS/ISHLT device and transplant data — with an animated LVAD flow circuit and interactive troubleshooting tools.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-cabg)" href="#cabg">
+      <div class="n">01</div><div class="t">CABG</div>
+      <div class="d">SYNTAX score, conduits, on- vs. off-pump</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-pci)" href="#pci">
+      <div class="n">02</div><div class="t">PCI &amp; Stent Placement</div>
+      <div class="d">BMS vs. DES, stent thrombosis timing, no-reflow</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-valve)" href="#valve">
+      <div class="n">03</div><div class="t">Valve Surgery</div>
+      <div class="d">Interactive mechanical vs. bioprosthetic calculator</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-aortic)" href="#aortic">
+      <div class="n">04</div><div class="t">Aortic Surgery</div>
+      <div class="d">Open repair, TEVAR, circulatory arrest</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-lvad)" href="#lvad">
+      <div class="n">05</div><div class="t">LVAD &amp; Mechanical Circulatory Support</div>
+      <div class="d">Animated flow circuit, interactive alarm troubleshooting</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-transplant)" href="#transplant">
+      <div class="n">06</div><div class="t">Heart Transplant</div>
+      <div class="d">Rejection types, immunosuppression, vasculopathy</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-postop)" href="#postop">
+      <div class="n">07</div><div class="t">Post-Cardiac Surgery Complications</div>
+      <div class="d">Timing framework, interactive differential tool</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: CABG -->
+
+<section class="section" id="cabg">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">CABG</h2>
+  <p class="section-sub">The 2021 ACC/AHA/SCAI guideline consolidated a decade of separate PCI and CABG guidance into one anatomy-driven, patient-centered framework — built around the SYNTAX score and a mandatory Heart Team conversation.</p>
+
+  <h3 class="sub-title">Anatomic Complexity Drives the Decision</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_cabg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_cabg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_cabg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_cabg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2021 ACC/AHA/SCAI: CABG vs. PCI by anatomic complexity</text>
+<rect x="20" y="40" width="300" height="160" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="170.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">LOW COMPLEXITY</text>
+<text x="170.0" y="97.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">1-2 vessel disease without</text>
+<text x="170.0" y="111.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">proximal LAD involvement</text>
+<text x="170.0" y="124.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="170.0" y="138.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">PCI and CABG both reasonable --</text>
+<text x="170.0" y="151.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">PCI often preferred given lower</text>
+<text x="170.0" y="164.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">periprocedural morbidity</text>
+<rect x="340" y="40" width="300" height="160" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="490.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">INTERMEDIATE COMPLEXITY</text>
+<text x="490.0" y="90.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Multivessel disease with</text>
+<text x="490.0" y="104.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">proximal LAD involvement, or</text>
+<text x="490.0" y="117.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">moderate SYNTAX score</text>
+<text x="490.0" y="131.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="144.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Heart Team discussion; CABG</text>
+<text x="490.0" y="158.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">historically preferred but</text>
+<text x="490.0" y="171.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">individualized to patient factors</text>
+<rect x="660" y="40" width="300" height="160" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="810.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">HIGH COMPLEXITY</text>
+<text x="810.0" y="90.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SYNTAX score &gt;33, left main</text>
+<text x="810.0" y="104.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">disease, or complex 3-vessel</text>
+<text x="810.0" y="117.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">disease with reduced EF</text>
+<text x="810.0" y="131.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="810.0" y="144.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">CABG has a 2a recommendation</text>
+<text x="810.0" y="158.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for survival benefit over PCI</text>
+<text x="810.0" y="171.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">in this group</text>
+<line x1="20" y1="224" x2="960" y2="224" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="248" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Notable 2021 change: isolated proximal LAD stenosis with normal EF was DOWNGRADED from Class 1 (2011) to Class 2b -- reflecting evidence that</text>
+<text x="20" y="266" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">CABG did not show a clear survival advantage over medical therapy/PCI alone in this specific, more limited anatomic scenario.</text>
+<line x1="20" y1="290" x2="960" y2="290" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="314" font-size="12.5" font-weight="700" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Conduit choice &amp; long-term patency</text>
+<rect x="20" y="330" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="170.0" y="348" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">LIMA (left internal mammary artery)</text>
+<text x="170.0" y="416.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Gold standard, typically to the LAD. &gt;90% patency at 10 years -- by far the best long-term conduit. Almost always used when technically feasible.</text>
+<rect x="340" y="330" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="490.0" y="348" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">Radial artery</text>
+<text x="490.0" y="416.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Second-best patency, especially to high-grade stenoses. Prone to vasospasm -- perioperative calcium channel blocker or nitrate therapy is standard to protect the graft.</text>
+<rect x="660" y="330" width="300" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="810.0" y="348" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">Saphenous vein graft (SVG)</text>
+<text x="810.0" y="416.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Most commonly used given availability/ease of harvest, but lowest long-term patency (~50-60% at 10 years) -- accelerated atherosclerosis within the graft itself over time.</text>
+</svg>
+    <div class="diagram-caption">Top: how anatomic complexity (SYNTAX score, left main involvement, proximal LAD status) shifts the CABG-vs-PCI balance. Bottom: conduit choice and why it matters for decades, not just the index hospitalization.</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">A genuinely surprising downgrade</span>
+    <p>Isolated proximal LAD stenosis with preserved LV function was downgraded from a Class 1 recommendation for CABG (2011 guideline) to Class 2b in 2021 — reflecting accumulated evidence that CABG didn't demonstrate a clear survival advantage over PCI or medical therapy alone in this specific, more limited anatomic scenario. This is a good example of guidelines moving in the opposite direction from what older training might suggest.</p>
+  </div>
+
+  <h4 class="micro-title">Why the LIMA Is Worth Protecting</h4>
+  <p>The dramatic difference in 10-year patency between the LIMA (&gt;90%) and saphenous vein grafts (~50-60%) isn't a minor technical detail — it's the single biggest predictor of long-term graft-related outcomes after CABG. This is why the LIMA is preferentially placed to the most important target (almost always the LAD), and why radial artery grafts are increasingly favored over additional vein grafts for second and third targets when feasible.</p>
+
+  <h4 class="micro-title">On-Pump vs. Off-Pump</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">On-pump (with cardiopulmonary bypass)</span><p>The traditional approach — the heart is arrested and the patient supported by CPB while grafts are constructed on a still field. Allows precise anastomoses but carries the systemic inflammatory and embolic risks of bypass itself.</p></div>
+    <div class="callout"><span class="callout-label">Off-pump ("beating heart")</span><p>Grafts constructed on the beating heart using stabilization devices, avoiding CPB entirely. Appeals particularly in patients with heavily calcified/atherosclerotic aortas (avoiding aortic cross-clamping reduces embolic stroke risk) — though outcomes data comparing the two approaches remain a genuinely debated area, with surgeon/center experience mattering considerably.</p></div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">The Heart Team isn't just a formality</span>
+    <p>The 2021 guideline's emphasis on multidisciplinary Heart Team discussion (interventional cardiology + cardiac surgery, ideally with the patient's input on values and preferences) reflects genuine equipoise in many intermediate-complexity cases — this is one of the clearer examples in cardiology of a guideline explicitly building shared decision-making into the recommendation structure rather than dictating a single "correct" answer.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiac surgery and interventional cardiology jointly (Heart Team) for any multivessel disease where the revascularization strategy isn't already obvious from anatomy alone.</dd>
+      <dt>Urgent surgical evaluation</dt><dd>Left main disease, especially with hemodynamic compromise or ongoing ischemia — this often needs expedited surgical timing rather than routine scheduling.</dd>
+      <dt>Transfer if no cardiac surgery on-site</dt><dd>Any patient where CABG is the preferred or only reasonable revascularization option and local surgical capability doesn't exist.</dd>
+      <dt>Transport considerations</dt><dd>Standard ACS/ischemia transport precautions apply while awaiting definitive revascularization — see Vol. 4 (ACS Deep Dive) for the acute management framework that applies until the surgical/interventional decision is made.</dd>
+      <dt>Who to call</dt><dd>Cardiac surgery and interventional cardiology together for genuine Heart Team discussion — avoid a single-specialty referral pattern for complex multivessel disease where the guideline explicitly calls for joint input.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: PCI -->
+
+<section class="section" id="pci">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">PCI &amp; Stent Placement</h2>
+  <p class="section-sub">The percutaneous counterpart to CABG — same underlying goal of restoring coronary flow, completely different mechanism, complication profile, and long-term surveillance needs.</p>
+
+  <h3 class="sub-title">Stent Evolution &amp; Thrombosis Timing</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_pci" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_pci" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_pci" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_pci" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-pci)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Stent evolution: BMS vs. DES</text>
+<rect x="20" y="40" width="460" height="160" rx="12" fill="var(--surface)" stroke="var(--text-mute)" stroke-width="1.6"/>
+<text x="250.0" y="58" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase">BARE METAL STENT (BMS)</text>
+<text x="250.0" y="60.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bare metal stent -- plain metallic</text>
+<text x="250.0" y="73.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">scaffold, no drug coating</text>
+<text x="250.0" y="86.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="99.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Higher in-stent restenosis rate</text>
+<text x="250.0" y="111.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(neointimal hyperplasia overgrows</text>
+<text x="250.0" y="124.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the stent) -- largely superseded</text>
+<text x="250.0" y="137.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">by DES for most indications</text>
+<text x="250.0" y="150.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="163.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Shorter mandatory DAPT duration</text>
+<text x="250.0" y="175.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">historically favored it when bleeding</text>
+<text x="250.0" y="188.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">risk was very high or urgent non-</text>
+<text x="250.0" y="201.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cardiac surgery was anticipated soon</text>
+<rect x="500" y="40" width="460" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-pci)" stroke-width="1.6"/>
+<text x="730.0" y="58" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-pci)" font-family="Inter, sans-serif" style="text-transform:uppercase">DRUG-ELUTING STENT (DES)</text>
+<text x="730.0" y="54.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Drug-eluting stent -- scaffold coated</text>
+<text x="730.0" y="67.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with an antiproliferative agent</text>
+<text x="730.0" y="79.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(e.g., everolimus, zotarolimus)</text>
+<text x="730.0" y="92.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="105.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Markedly lower in-stent restenosis</text>
+<text x="730.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">than BMS -- now the default choice</text>
+<text x="730.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for the large majority of PCI</text>
+<text x="730.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="156.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Delayed endothelialization compared</text>
+<text x="730.0" y="169.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">to BMS is why DAPT duration</text>
+<text x="730.0" y="182.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">recommendations exist (see Vol. 4) --</text>
+<text x="730.0" y="195.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">modern-generation DES have narrowed</text>
+<text x="730.0" y="207.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">this gap considerably vs. early DES</text>
+<line x1="20" y1="224" x2="960" y2="224" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="248" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Stent thrombosis -- timing classification (ARC criteria)</text>
+<rect x="20" y="264" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="125.0" y="282" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">ACUTE</text>
+<text x="125.0" y="342.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">0-24 hours</text>
+<text x="125.0" y="354.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="125.0" y="366.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Usually a technical/procedural issue -- dissection, malapposition, inadequate antiplatelet loading</text>
+<rect x="260" y="264" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="365.0" y="282" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">SUBACUTE</text>
+<text x="365.0" y="342.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">1-30 days</text>
+<text x="365.0" y="354.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="365.0" y="366.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Similar mechanisms to acute, plus early antiplatelet non-adherence or resistance</text>
+<rect x="500" y="264" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="605.0" y="282" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">LATE</text>
+<text x="605.0" y="342.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">31 days-1 year</text>
+<text x="605.0" y="354.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="605.0" y="366.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Delayed healing/endothelialization over the stent struts -- DAPT discontinuation is a major precipitant</text>
+<rect x="740" y="264" width="210" height="160" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="845.0" y="282" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">VERY LATE</text>
+<text x="845.0" y="342.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">&gt;1 year</text>
+<text x="845.0" y="354.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="845.0" y="366.9" text-anchor="middle" font-size="9.4" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Neoatherosclerosis within the stented segment itself, or very late DAPT discontinuation</text>
+<line x1="20" y1="444" x2="960" y2="444" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="468" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Stent thrombosis presents as abrupt, complete vessel occlusion -- typically a STEMI, with 20-45% mortality reported across series. This is why DAPT adherence counseling matters as much as the procedure itself.</text>
+</svg>
+    <div class="diagram-caption">Top: why drug-eluting stents became the default choice for most PCI. Bottom: the ARC (Academic Research Consortium) timing classification for stent thrombosis — timing directly points toward the likely mechanism.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Stent thrombosis is not the same thing as in-stent restenosis</span>
+    <p>These are frequently confused but represent opposite-tempo problems. <strong>Stent thrombosis</strong> is abrupt, complete vessel occlusion — it presents as a STEMI, develops over minutes, and carries 20-45% mortality. <strong>In-stent restenosis</strong> is gradual neointimal overgrowth narrowing the stented segment over months — it presents as recurrent, often exertional angina, developing slowly enough to be caught electively in most cases. Don't let the similar-sounding names blur two completely different acuity levels.</p>
+  </div>
+
+  <h4 class="micro-title">Indications — When PCI Is Chosen Over CABG</h4>
+  <p>See the CABG section for the full 2021 ACC/AHA/SCAI anatomic-complexity framework — the short version: PCI is generally preferred for lower-complexity disease (1-2 vessel, no proximal LAD involvement), is a reasonable alternative in intermediate-complexity disease pending Heart Team discussion, and is generally favored over CABG in the acute STEMI/culprit-vessel setting given the time-sensitivity of reperfusion (see Vol. 4's Reperfusion Strategy section).</p>
+
+  <h4 class="micro-title">Procedural Complications Worth Knowing</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Coronary dissection/perforation</span><p>Guidewire or balloon-related vessel injury during the procedure itself — small dissections are often successfully sealed with additional stenting, but perforation (especially with pericardial extension) can produce acute tamponade requiring emergent pericardiocentesis and sometimes surgical repair.</p></div>
+    <div class="callout"><span class="callout-label">No-reflow phenomenon</span><p>Restoration of flow in the epicardial artery without corresponding improvement in myocardial perfusion — from distal microembolization and microvascular dysfunction, most common with large thrombus burden. Intracoronary vasodilators (adenosine, nitroprusside, verapamil) are used to try to restore microvascular flow.</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Access site complications</span>
+    <p>Radial access has become the preferred default over femoral in most contemporary practice specifically because it substantially reduces access-site bleeding and vascular complications — though radial artery occlusion (usually asymptomatic given dual hand blood supply, but not universally so) is its own recognized complication. Femoral access carries the more classically taught complications: retroperitoneal hemorrhage, pseudoaneurysm, and arteriovenous fistula formation (see Vascular Vol. 2's Vascular Trauma section for the general hard-sign/soft-sign framework that applies to any access-site vascular injury).</p>
+  </div>
+
+  <h4 class="micro-title">DAPT — Cross-Reference, Don't Duplicate</h4>
+  <p>The full antiplatelet selection and duration framework (ticagrelor/prasugrel vs. clopidogrel, the 2025 guideline's specific recommendations, CABG hold times) lives in Vol. 4's Antiplatelet Therapy section — it applies identically whether the stent was placed electively for stable disease or emergently for ACS. The one stent-specific addition worth emphasizing here: <strong>DAPT discontinuation is one of the strongest modifiable risk factors for late and very late stent thrombosis</strong> — any elective procedure or medication change being considered for a recent stent recipient needs a specific conversation about whether and how DAPT can be safely interrupted, rather than a default assumption that it's fine to hold for a few days.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Surveillance is symptom-driven, not routine-imaging-driven</span>
+    <p>Unlike some surgical valve/graft scenarios with defined surveillance imaging intervals, stented coronary segments are generally not re-imaged on a fixed schedule — recurrent angina or a positive stress test prompts repeat angiography, rather than routine periodic angiography in an asymptomatic patient. This makes patient education about recognizing recurrent anginal symptoms genuinely important, not just a formality.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Interventional cardiology for any suspected stent thrombosis (treat as STEMI — see Vol. 4) or in-stent restenosis (recurrent angina in a prior PCI patient).</dd>
+      <dt>Emergent evaluation</dt><dd>Any suspected coronary perforation with hemodynamic compromise — this needs immediate pericardiocentesis capability and cardiac surgery backup on standby.</dd>
+      <dt>Urgent evaluation</dt><dd>New access-site complications (expanding hematoma, new bruit/thrill suggesting pseudoaneurysm or AV fistula, or limb ischemia from radial occlusion) — see Vascular Vol. 2 for the general vascular access complication framework.</dd>
+      <dt>Transfer if no interventional cardiology on-site</dt><dd>Suspected stent thrombosis (emergent, same urgency as any STEMI) or in-stent restenosis requiring repeat angiography/intervention.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology directly for any stent-related complication; cardiac surgery on standby for suspected perforation with tamponade physiology.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: VALVE -->
+
+<section class="section" id="valve">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">Valve Surgery</h2>
+  <p class="section-sub">Durability without anticoagulation, or anticoagulation without reoperation — the mechanical-vs-bioprosthetic decision is one of the clearest "there is no free lunch" conversations in all of cardiac surgery.</p>
+
+  <h3 class="sub-title">Mechanical vs. Bioprosthetic</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_valve2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_valve2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_valve2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_valve2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-valve)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-valve)" font-family="Inter, sans-serif" style="text-transform:uppercase">MECHANICAL VALVE</text>
+<text x="250.0" y="65.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Durability: excellent -- rarely need</text>
+<text x="250.0" y="77.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  reoperation for structural failure</text>
+<text x="250.0" y="90.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="103.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">REQUIRES lifelong therapeutic</text>
+<text x="250.0" y="116.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  anticoagulation (warfarin -- NOT DOACs,</text>
+<text x="250.0" y="129.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  which are contraindicated with</text>
+<text x="250.0" y="141.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  mechanical valves per trial data)</text>
+<text x="250.0" y="154.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="167.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Best for: younger patients (per 2020</text>
+<text x="250.0" y="180.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  guideline, generally &lt;50 depending on</text>
+<text x="250.0" y="193.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  valve position) who can safely manage</text>
+<text x="250.0" y="205.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  lifelong anticoagulation and want to</text>
+<text x="250.0" y="218.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  avoid future reoperation</text>
+<text x="250.0" y="231.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="244.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bleeding risk from anticoagulation is the</text>
+<text x="250.0" y="257.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  major long-term tradeoff</text>
+<rect x="500" y="20" width="460" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-aortic)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-aortic)" font-family="Inter, sans-serif" style="text-transform:uppercase">BIOPROSTHETIC VALVE</text>
+<text x="730.0" y="52.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Durability: LIMITED -- structural</text>
+<text x="730.0" y="65.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  degeneration over 10-15+ years,</text>
+<text x="730.0" y="77.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  faster in younger/higher-metabolic-</text>
+<text x="730.0" y="90.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  turnover patients</text>
+<text x="730.0" y="103.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="116.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No long-term anticoagulation required</text>
+<text x="730.0" y="129.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (beyond a short post-op course)</text>
+<text x="730.0" y="141.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="154.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Best for: older patients (per 2020</text>
+<text x="730.0" y="167.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  guideline, generally &gt;65-70 depending</text>
+<text x="730.0" y="180.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  on valve position), those who cannot</text>
+<text x="730.0" y="193.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  safely anticoagulate, or those who</text>
+<text x="730.0" y="205.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  strongly prioritize avoiding lifelong</text>
+<text x="730.0" y="218.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  anticoagulation</text>
+<text x="730.0" y="231.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="244.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Valve-in-valve TAVR is a reasonable</text>
+<text x="730.0" y="257.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  option for future degeneration in</text>
+<text x="730.0" y="269.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  appropriately selected patients</text>
+<line x1="20" y1="304" x2="960" y2="304" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="328" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">The DOAC trap -- mechanical valves specifically</text>
+<rect x="20" y="344" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="378.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DOACs (apixaban, rivaroxaban, dabigatran, edoxaban) are CONTRAINDICATED in patients with mechanical heart</text>
+<text x="480.0" y="392.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">valves -- the RE-ALIGN trial showed increased thromboembolic AND bleeding events with dabigatran vs. warfarin</text>
+<text x="480.0" y="406.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">in this population. Warfarin (target INR individualized to valve type/position, typically 2.5-3.5) remains mandatory.</text>
+</svg>
+    <div class="diagram-caption">The core tradeoff: mechanical valves last essentially forever but demand lifelong anticoagulation; bioprosthetic valves need no long-term anticoagulation but will eventually degenerate and may require reoperation (or valve-in-valve TAVR).</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">DOACs are contraindicated with mechanical valves — full stop</span>
+    <p>This is one of the few absolute DOAC contraindications in cardiology. The RE-ALIGN trial specifically tested dabigatran against warfarin in mechanical valve patients and stopped early due to excess thromboembolic <em>and</em> bleeding events in the dabigatran arm. Warfarin remains mandatory for mechanical valves regardless of how appealing a DOAC's ease-of-use profile is elsewhere in a patient's regimen.</p>
+  </div>
+
+  <h4 class="micro-title">Interactive: Valve Choice Considerations</h4>
+  <p>Select the options that best describe the patient's situation. This reflects general 2020 ACC/AHA guideline factors, not a substitute for the actual shared decision-making conversation with the patient and Heart Team.</p>
+
+  <div class="calc-card" id="valveCalc">
+    <div class="calc-radio-group">
+      <span class="group-label">Age</span>
+      <div class="calc-item"><input type="radio" name="v_age" id="va0" data-mech="2" data-bio="0" checked><label for="va0">Under 50</label></div>
+      <div class="calc-item"><input type="radio" name="v_age" id="va1" data-mech="1" data-bio="1"><label for="va1">50-65</label></div>
+      <div class="calc-item"><input type="radio" name="v_age" id="va2" data-mech="0" data-bio="2"><label for="va2">Over 65-70</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Ability/willingness to manage lifelong anticoagulation</span>
+      <div class="calc-item"><input type="radio" name="v_anticoag" id="vc0" data-mech="2" data-bio="0" checked><label for="vc0">Yes, reliably</label></div>
+      <div class="calc-item"><input type="radio" name="v_anticoag" id="vc1" data-mech="0" data-bio="2"><label for="vc1">No / high bleeding risk / unreliable follow-up</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Priority if forced to choose</span>
+      <div class="calc-item"><input type="radio" name="v_priority" id="vp0" data-mech="1" data-bio="0" checked><label for="vp0">Avoid future reoperation</label></div>
+      <div class="calc-item"><input type="radio" name="v_priority" id="vp1" data-mech="0" data-bio="1"><label for="vp1">Avoid lifelong anticoagulation</label></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Planning future pregnancy</span>
+      <div class="calc-item"><input type="radio" name="v_preg" id="vpr0" data-mech="0" data-bio="0" checked><label for="vpr0">No / not applicable</label></div>
+      <div class="calc-item"><input type="radio" name="v_preg" id="vpr1" data-mech="0" data-bio="2"><label for="vpr1">Yes — planning pregnancy</label></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Leans toward</div><div class="score-num" id="valveResult" style="font-size:22px;">—</div></div>
+      <div class="score-interp" id="valveInterp" style="text-align:right; flex:1;">Select options above.</div>
+    </div>
+    <div class="calc-note">Pregnancy planning adds complexity beyond this simplified tool — warfarin carries embryopathy risk (see Vol. 6), and this decision needs a Pregnancy Heart Team conversation regardless of which valve type is chosen. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Valve-in-Valve TAVR — Changing the Calculus</h4>
+  <p>The growing availability of transcatheter valve-in-valve procedures for degenerated bioprosthetic valves has meaningfully shifted this conversation over the past decade — a bioprosthetic valve no longer necessarily means an open reoperation when it eventually degenerates. This has pushed some centers toward a lower age threshold for bioprosthetic valve selection than was traditional, since the "reoperation" penalty of a bioprosthetic choice is now often a catheter-based procedure rather than repeat open-heart surgery.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiac surgery and cardiology jointly for any valve replacement decision — this conversation benefits from both perspectives, plus the patient's own values around anticoagulation and reoperation risk.</dd>
+      <dt>Urgent evaluation</dt><dd>Suspected prosthetic valve dysfunction (new murmur change, new heart failure symptoms, or hemolysis suggesting paravalvular leak) in any valve replacement patient — this needs prompt echocardiographic evaluation.</dd>
+      <dt>Transfer if no cardiac surgery/structural heart program on-site</dt><dd>Suspected prosthetic valve thrombosis or endocarditis, or any valve-in-valve candidacy evaluation for degenerated bioprosthetic valves.</dd>
+      <dt>Transport considerations</dt><dd>For suspected prosthetic valve thrombosis with hemodynamic compromise, treat with the same urgency as any other acute valvular emergency (see Vol. 1b) — this can deteriorate rapidly.</dd>
+      <dt>Who to call</dt><dd>Cardiac surgery for valve-related surgical questions; cardiology/structural heart specifically for valve-in-valve TAVR candidacy.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  var card = document.getElementById('valveCalc');
+  if (!card) return;
+  var groups = ['v_age','v_anticoag','v_priority','v_preg'];
+  function recalc() {
+    var mech = 0, bio = 0;
+    groups.forEach(function(g) {
+      var radios = card.querySelectorAll('input[name="' + g + '"]');
+      radios.forEach(function(r) {
+        if (r.checked) {
+          mech += parseInt(r.getAttribute('data-mech'), 10);
+          bio += parseInt(r.getAttribute('data-bio'), 10);
+        }
+      });
+    });
+    var resultEl = document.getElementById('valveResult');
+    var interpEl = document.getElementById('valveInterp');
+    if (mech > bio) {
+      resultEl.textContent = 'Mechanical';
+      resultEl.style.color = 'var(--accent-valve)';
+      interpEl.textContent = 'Factors favor durability + anticoagulation tolerance over reoperation avoidance.';
+    } else if (bio > mech) {
+      resultEl.textContent = 'Bioprosthetic';
+      resultEl.style.color = 'var(--accent-aortic)';
+      interpEl.textContent = 'Factors favor avoiding lifelong anticoagulation over long-term durability.';
+    } else {
+      resultEl.textContent = 'Either reasonable';
+      resultEl.style.color = 'var(--text)';
+      interpEl.textContent = 'Factors are balanced — this is a genuine shared decision-making conversation.';
+    }
+  }
+  groups.forEach(function(g) {
+    card.querySelectorAll('input[name="' + g + '"]').forEach(function(r) {
+      r.addEventListener('change', recalc);
+    });
+  });
+  recalc();
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: AORTIC -->
+
+<section class="section" id="aortic">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">Aortic Surgery</h2>
+  <p class="section-sub">Where the pathology lives on the aorta determines the entire surgical approach — building directly on the pathophysiology from Vascular Vol. 1's aortic aneurysm and dissection sections.</p>
+
+  <h3 class="sub-title">Open Repair vs. TEVAR</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_aorticsurg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_aorticsurg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_aorticsurg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_aorticsurg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-aortic)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-aortic)" font-family="Inter, sans-serif" style="text-transform:uppercase">OPEN SURGICAL REPAIR</text>
+<text x="250.0" y="64.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Median sternotomy (ascending/arch) or</text>
+<text x="250.0" y="77.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  thoracotomy (descending) -- direct</text>
+<text x="250.0" y="89.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  surgical graft replacement</text>
+<text x="250.0" y="102.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="115.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Required for ascending aorta/root</text>
+<text x="250.0" y="128.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  involvement, or when the valve/</text>
+<text x="250.0" y="141.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  arch branches need concurrent repair</text>
+<text x="250.0" y="153.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="166.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">May require cardiopulmonary bypass</text>
+<text x="250.0" y="179.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  and, for arch involvement, deep</text>
+<text x="250.0" y="192.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  hypothermic circulatory arrest (see</text>
+<text x="250.0" y="205.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  below) -- higher physiologic burden</text>
+<text x="250.0" y="217.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  but definitive, durable repair</text>
+<rect x="500" y="20" width="460" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-lvad)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase">TEVAR (ENDOVASCULAR)</text>
+<text x="730.0" y="70.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Endovascular stent-graft deployed via</text>
+<text x="730.0" y="83.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  femoral access -- no sternotomy/</text>
+<text x="730.0" y="96.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  thoracotomy required</text>
+<text x="730.0" y="109.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="121.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Primary option for DESCENDING</text>
+<text x="730.0" y="134.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  thoracic aorta (Stanford B dissection</text>
+<text x="730.0" y="147.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  with complications, descending TAA)</text>
+<text x="730.0" y="160.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="173.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lower perioperative morbidity than</text>
+<text x="730.0" y="185.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  open repair, but requires suitable</text>
+<text x="730.0" y="198.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  landing zone anatomy and longer-term</text>
+<text x="730.0" y="211.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  surveillance for endoleak</text>
+<line x1="20" y1="264" x2="960" y2="264" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="288" font-size="12.5" font-weight="700" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Circulatory arrest for arch involvement</text>
+<rect x="20" y="304" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="170.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">Cool the patient</text>
+<text x="170.0" y="385.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Deep hypothermia (typically 18-22C core) reduces cerebral metabolic demand to tolerate the arrest period</text>
+<rect x="340" y="304" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="490.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">Circulatory arrest</text>
+<text x="490.0" y="385.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bypass is stopped entirely for the period needed to perform the open arch anastomosis without a cannula/clamp in the field</text>
+<rect x="660" y="304" width="300" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-cabg)" stroke-width="1.6"/>
+<text x="810.0" y="322" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cabg)" font-family="Inter, sans-serif" style="text-transform:uppercase">Cerebral protection adjuncts</text>
+<text x="810.0" y="385.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Antegrade or retrograde cerebral perfusion techniques extend the safe arrest window and reduce neurologic injury risk</text>
+<text x="20" y="470" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Post-op neurologic exam changes take on outsized importance after any circulatory arrest case -- a new deficit needs urgent neurology involvement and imaging, not just observation.</text>
+</svg>
+    <div class="diagram-caption">Ascending/arch disease still generally requires open surgical repair; descending disease is increasingly managed endovascularly. Arch involvement adds the unique physiologic challenge of circulatory arrest.</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Endoleak — the price of avoiding open surgery</span>
+    <p>TEVAR trades the morbidity of open surgery for a different long-term surveillance burden: endoleak, where blood continues to flow into the aneurysm sac around or through the stent-graft despite exclusion. Type I (attachment site) and Type III (graft component) endoleaks generally require reintervention given ongoing aneurysm pressurization risk; Type II (retrograde flow from branch vessels) is often observed unless the sac is enlarging. Lifelong surveillance imaging is a real commitment for any TEVAR patient, not a one-time procedure with no further follow-up.</p>
+  </div>
+
+  <h4 class="micro-title">Circulatory Arrest — What to Watch For Post-Op</h4>
+  <p>Any patient who underwent deep hypothermic circulatory arrest for arch repair carries meaningfully elevated risk of neurologic injury (stroke, delirium, or more subtle cognitive changes) proportional to the arrest duration — cerebral perfusion adjuncts (antegrade or retrograde) extend the safe window but don't eliminate the risk entirely. A new or worsening neurologic exam finding in this population deserves urgent neurology involvement and imaging; don't attribute it reflexively to routine post-operative sedation or delirium without a more complete evaluation.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Bentall procedure — when root and valve both need replacement</span>
+    <p>When aortic root dilation coexists with aortic valve disease (common in Marfan syndrome and other aortopathies — see Vascular Vol. 1), a Bentall procedure replaces the aortic root, valve, and reimplants the coronary ostia into the new graft in a single composite operation — a more complex undertaking than isolated valve or isolated root replacement, reflecting the combined pathology.</p>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Post-op aortic surgery patients presenting with new pain</span>
+    <p>New or recurrent chest/back pain in a patient with a history of aortic surgery (open or endovascular) should prompt urgent imaging to evaluate for graft-related complications — anastomotic pseudoaneurysm, graft infection, or a new dissection at a different aortic segment. Don't assume "they already had their aorta fixed" means the aorta is no longer a consideration in the differential.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiothoracic surgery for any ascending/arch pathology requiring repair; vascular surgery or cardiothoracic surgery (per local practice) for descending pathology being considered for TEVAR.</dd>
+      <dt>Emergent evaluation</dt><dd>Any new pain in a patient with prior aortic surgery, or any suspected graft infection (fever, positive blood cultures, imaging findings of perigraft fluid/air) — graft infection is a genuine surgical emergency with high mortality if untreated.</dd>
+      <dt>Transfer if no cardiothoracic/vascular surgery on-site</dt><dd>Any acute aortic pathology requiring surgical or endovascular intervention, following the same urgency framework as native aortic dissection/aneurysm (see Vascular Vol. 1).</dd>
+      <dt>Transport considerations</dt><dd>Blood pressure control during transport for any suspected acute graft complication, similar to native aortic emergencies; avoid unnecessary Valsalva or straining.</dd>
+      <dt>Who to call</dt><dd>Cardiothoracic surgery for ascending/arch disease; vascular surgery or cardiothoracic surgery for descending disease depending on local program structure; infectious disease co-management for any suspected graft infection.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: LVAD -->
+
+<section class="section" id="lvad">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">LVAD &amp; Mechanical Circulatory Support</h2>
+  <p class="section-sub">These patients present to your ED whether or not you've cared for one before — a continuous-flow LVAD changes nearly every reflexive assumption in a standard cardiovascular assessment.</p>
+
+  <h3 class="sub-title">The Continuous Flow Circuit (animated)</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_lvad_flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_lvad_flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_lvad_flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_lvad_flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">LVAD continuous flow circuit (animated)</text>
+<rect x="20" y="80" width="180" height="80" rx="12" fill="var(--surface)" stroke="var(--accent-lvad)" stroke-width="1.6"/>
+<text x="110.0" y="98" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase">LV APEX</text>
+<text x="110.0" y="124.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Blood drawn from</text>
+<text x="110.0" y="138.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the LV apex</text>
+<rect x="260" y="80" width="180" height="80" rx="12" fill="var(--surface)" stroke="var(--accent-lvad)" stroke-width="1.6"/>
+<text x="350.0" y="98" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase">INFLOW CANNULA</text>
+<text x="350.0" y="124.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Rigid conduit into</text>
+<text x="350.0" y="138.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the pump housing</text>
+<rect x="500" y="80" width="180" height="80" rx="12" fill="var(--surface)" stroke="var(--accent-lvad)" stroke-width="1.6"/>
+<text x="590.0" y="98" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase">PUMP</text>
+<text x="590.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Magnetically levitated</text>
+<text x="590.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">centrifugal rotor</text>
+<text x="590.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(HeartMate 3)</text>
+<rect x="740" y="80" width="220" height="80" rx="12" fill="var(--surface)" stroke="var(--accent-lvad)" stroke-width="1.6"/>
+<text x="850.0" y="98" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-lvad)" font-family="Inter, sans-serif" style="text-transform:uppercase">OUTFLOW GRAFT</text>
+<text x="850.0" y="124.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Graft anastomosed to</text>
+<text x="850.0" y="138.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the ascending aorta</text>
+<path id="lvadFlowPath" d="M110,160 L110,190 L850,190 L850,120" fill="none" stroke="var(--text-mute)" stroke-width="2" stroke-dasharray="5,4" opacity="0.6"/>
+<path id="lvadMainPath" d="M110,120 L850,120" fill="none" stroke="var(--text-mute)" stroke-width="2.5"/>
+<circle r="8" fill="var(--accent-lvad)">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.0s">
+    <mpath href="#lvadMainPath" xlink:href="#lvadMainPath"/>
+  </animateMotion>
+</circle>
+<circle r="8" fill="var(--accent-lvad)">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.6s">
+    <mpath href="#lvadMainPath" xlink:href="#lvadMainPath"/>
+  </animateMotion>
+</circle>
+<circle r="8" fill="var(--accent-lvad)">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.2s">
+    <mpath href="#lvadMainPath" xlink:href="#lvadMainPath"/>
+  </animateMotion>
+</circle>
+<text x="480" y="215" text-anchor="middle" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Driveline exits percutaneously to an external controller + battery -- the site most vulnerable to infection</text>
+<line x1="590" y1="160" x2="590" y2="280" stroke="var(--danger)" stroke-width="3" stroke-dasharray="3,3"/>
+<circle cx="590" cy="280" r="7" fill="var(--danger)"/>
+<text x="590" y="304" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">Driveline exit site</text>
+<line x1="20" y1="340" x2="960" y2="340" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="364" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Continuous (non-pulsatile) flow means many LVAD patients have a weak or absent palpable pulse and an unmeasurable blood pressure by standard cuff --</text>
+<text x="20" y="382" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">use a Doppler over the brachial artery with a manual cuff to obtain a mean arterial pressure instead, and do not assume "no pulse" means cardiac arrest in this population.</text>
+</svg>
+    <div class="diagram-caption">Blood is continuously drawn from the LV apex, driven through a magnetically levitated centrifugal pump (HeartMate 3 is the current dominant device), and returned to the ascending aorta — with a percutaneous driveline as the connection to the external controller and batteries.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">No pulse does not mean no perfusion</span>
+    <p>Continuous-flow physiology means many LVAD patients have a weak or entirely absent palpable pulse and an unreadable blood pressure by standard automated cuff — this is expected, not a sign of cardiac arrest. Use a Doppler probe over the brachial artery with a manual blood pressure cuff to obtain a mean arterial pressure (the "Doppler opening pressure" approximates MAP in continuous-flow physiology) rather than assuming hemodynamic collapse from an unreadable standard vital sign.</p>
+  </div>
+
+  <h4 class="micro-title">Interactive: Working Through an LVAD Alarm</h4>
+  <p>Every LVAD program has its own specific protocol and 24/7 coordinator line — call it early. This is a general framework for thinking through the most common alarm scenario, not a substitute for that call.</p>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Is this a low-flow alarm?</summary>
+    <div class="algo-body">
+      <p>Low flow can result from hypovolemia/dehydration (the most common benign cause — the pump can't draw adequate volume from an underfilled LV), a suction event (the inflow cannula abutting the septum or LV wall, often positional and resolves with fluid or repositioning), pump thrombosis, or true cardiogenic causes (tamponade, worsening RV failure). Check the pump parameters (flow, power, pulsatility index) alongside the clinical picture rather than treating the alarm in isolation.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — Check power consumption alongside flow</summary>
+    <div class="algo-body">
+      <p>Rising power with rising or unstable flow patterns raises concern for pump thrombosis — the rotor is working harder against an obstruction. Falling flow with normal or low power more often reflects a volume/preload problem (hypovolemia, suction event, tamponade) than a mechanical pump problem. This power-flow relationship is the single most useful piece of data for narrowing the differential before the LVAD coordinator arrives.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Suspected pump thrombosis: what changes management</summary>
+    <div class="algo-body">
+      <p>Rising LDH and plasma-free hemoglobin support the diagnosis alongside the power/flow pattern above. Pump exchange is the definitive treatment for confirmed thrombosis — this is a conversation for the LVAD/cardiac surgery team, not an ED-level intervention, but recognizing the pattern early and calling appropriately matters enormously for outcome.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Suspected hypovolemia/suction event</summary>
+    <div class="algo-body">
+      <p>Cautious fluid administration is often the correct initial response — but remember these patients frequently have concurrent heart failure physiology and impaired RV function, so this isn't unlimited volume resuscitation. Reassess flow parameters after a modest fluid challenge rather than repeatedly bolusing without reassessment.</p>
+    </div>
+  </details>
+
+  <h4 class="micro-title">GI Bleeding — The Complication You'll See Most Often</h4>
+  <div class="callout warn">
+    <span class="callout-label">Acquired von Willebrand syndrome</span>
+    <p>The shear stress of continuous-flow pumps mechanically cleaves high-molecular-weight von Willebrand factor multimers — virtually all LVAD patients develop this acquired coagulopathy, and it combines with mandatory anticoagulation, reduced arterial pulsatility (promoting intestinal angiodysplasia/AVM formation), and antiplatelet therapy to produce GI bleeding rates as high as 24.5% at five years in contemporary HeartMate 3 data (MOMENTUM 3 trial). This is the most common reason for LVAD-related hospital readmission — expect to see it.</p>
+  </div>
+  <p>Management follows standard GI bleeding principles (endoscopic evaluation, transfusion as needed) with the added wrinkle of balancing anticoagulation reduction against pump thrombosis risk — this balance is worked out jointly with the LVAD team and hematology, not unilaterally in the ED. Octreotide has some evidence for reducing rebleeding in refractory LVAD-associated GI bleeding from angiodysplasia specifically.</p>
+
+  <h4 class="micro-title">Driveline Infection</h4>
+  <p>The percutaneous driveline exit site is a permanent breach in the skin barrier and the most common site of LVAD-related infection — redness, drainage, or pain at the exit site warrants cultures and often prolonged antibiotic therapy, since driveline infections can be difficult to fully eradicate without removing the device (not generally an option) and can seed the pump itself if untreated.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Call the LVAD coordinator immediately</dt><dd>For any LVAD alarm, suspected malfunction, or significant clinical change — every program has a 24/7 line, and this call should happen in parallel with, not after, initial ED evaluation.</dd>
+      <dt>Consult now</dt><dd>Cardiac surgery/advanced heart failure for suspected pump thrombosis, significant GI bleeding requiring anticoagulation adjustment decisions, or any driveline infection.</dd>
+      <dt>ICU admission</dt><dd>Any hemodynamic instability, suspected pump thrombosis, or significant GI bleeding in an LVAD patient — these patients decompensate along a different physiologic pathway than standard cardiac patients and need LVAD-experienced critical care.</dd>
+      <dt>Transfer if no LVAD program on-site</dt><dd>Essentially any significant LVAD complication should prompt early discussion with the implanting center, even if initial stabilization happens locally — LVAD management genuinely benefits from program-specific familiarity with the exact device and the patient's baseline parameters.</dd>
+      <dt>Transport considerations</dt><dd>Ensure backup batteries and controller accompany the patient; a transport team with LVAD-specific training is strongly preferred; never disconnect or silence an alarming device without understanding the cause — troubleshoot per protocol or with the coordinator on the line.</dd>
+      <dt>Who to call</dt><dd>The patient's LVAD coordinator/implanting center first and always — they know the specific device, baseline parameters, and recent trends that make remote troubleshooting far more effective than starting from scratch.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: TRANSPLANT -->
+
+<section class="section" id="transplant">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">Heart Transplant</h2>
+  <p class="section-sub">A denervated heart breaks nearly every reflexive teaching point about cardiac symptoms and pharmacology — silent ischemia is the rule, and atropine simply doesn't work.</p>
+
+  <h3 class="sub-title">Rejection: Three Types by Timing and Mechanism</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_transplant" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_transplant" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_transplant" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_transplant" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-transplant)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Rejection: three types by timing and mechanism</text>
+<rect x="20" y="40" width="300" height="190" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="170.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">HYPERACUTE</text>
+<text x="170.0" y="133.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Minutes to hours</text>
+<text x="170.0" y="146.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="170.0" y="158.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Preformed recipient antibodies against donor antigens -- essentially eliminated by modern pre-transplant crossmatch testing</text>
+<rect x="340" y="40" width="300" height="190" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="490.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">ACUTE (CELLULAR)</text>
+<text x="490.0" y="133.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Days to months, esp. year 1</text>
+<text x="490.0" y="146.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="158.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">T-cell mediated. Screened via routine surveillance endomyocardial biopsy per ISHLT grading; may be asymptomatic or present with new arrhythmia/HF symptoms</text>
+<rect x="660" y="40" width="300" height="190" rx="12" fill="var(--surface)" stroke="var(--accent-transplant)" stroke-width="1.6"/>
+<text x="810.0" y="58" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-transplant)" font-family="Inter, sans-serif" style="text-transform:uppercase">CHRONIC (VASCULOPATHY)</text>
+<text x="810.0" y="133.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Years</text>
+<text x="810.0" y="146.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="810.0" y="158.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Cardiac allograft vasculopathy -- diffuse, concentric intimal proliferation throughout the coronary tree. Denervated heart means NO angina warning symptom -- silent ischemia is the rule, not the exception</text>
+<line x1="20" y1="254" x2="960" y2="254" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="278" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">The denervated heart -- what changes clinically</text>
+<rect x="20" y="294" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="328.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No anginal warning symptom with ischemia (silent MI risk) -- surveillance angiography/biopsy substitutes for symptom-</text>
+<text x="480.0" y="342.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">based screening. Blunted heart rate response to exercise, hypotension, and atropine (vagal blockade has no effect on</text>
+<text x="480.0" y="356.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">a denervated SA node) -- use direct-acting agents (isoproterenol, epinephrine, or pacing) for symptomatic bradycardia instead.</text>
+<line x1="20" y1="404" x2="960" y2="404" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="428" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Standard immunosuppression: a calcineurin inhibitor (tacrolimus or cyclosporine) + an antiproliferative agent (mycophenolate) +/- corticosteroids.</text>
+<text x="20" y="446" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Any transplant patient with fever or infection risk needs a broader differential (opportunistic infections: CMV, PJP, fungal) given chronic immunosuppression.</text>
+</svg>
+    <div class="diagram-caption">Hyperacute rejection is now rare given modern crossmatch testing; acute cellular rejection is screened for via surveillance biopsy in the first year; chronic rejection (cardiac allograft vasculopathy) is the long-term threat that silently limits graft survival.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The denervated heart has no angina warning system</span>
+    <p>Afferent sympathetic fibers are severed during transplantation and typically don't meaningfully reinnervate — a transplant recipient having a significant coronary event from cardiac allograft vasculopathy usually feels nothing resembling classic angina. This is why surveillance coronary angiography (often annual) substitutes for symptom-triggered workup in this population, and why any transplant recipient with dyspnea, fatigue, or new heart failure symptoms deserves a lower threshold for cardiac workup than the absence of chest pain might otherwise suggest.</p>
+  </div>
+
+  <h4 class="micro-title">Pharmacology Changes Too</h4>
+  <div class="pearl-grid two">
+    <div class="callout warn"><span class="callout-label">Atropine doesn't work</span><p>Atropine acts by blocking vagal (parasympathetic) tone on the SA node — but the denervated transplanted heart has no vagal innervation to block. Symptomatic bradycardia in a transplant recipient needs direct-acting agents (isoproterenol, epinephrine) or pacing, not atropine, which will simply fail.</p></div>
+    <div class="callout"><span class="callout-label">Blunted exercise response</span><p>Heart rate rises during exercise in a transplanted heart via circulating catecholamines rather than direct sympathetic neural input — the response is slower to onset and slower to recover than in an innervated heart, which is a normal finding in this population rather than a sign of chronotropic incompetence requiring intervention.</p></div>
+  </div>
+
+  <h4 class="micro-title">Immunosuppression &amp; Infection Risk</h4>
+  <p>Standard maintenance immunosuppression combines a calcineurin inhibitor (tacrolimus or cyclosporine), an antiproliferative agent (mycophenolate mofetil), with or without corticosteroids — each with its own toxicity profile (nephrotoxicity and neurotoxicity with calcineurin inhibitors, GI and hematologic effects with mycophenolate). Any transplant recipient presenting with fever needs a broadened infectious differential reflecting chronic immunosuppression: CMV reactivation, Pneumocystis jirovecii pneumonia, invasive fungal infection, and atypical presentations of otherwise-common infections given blunted immune response.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Drug interactions are a constant background consideration</span>
+    <p>Calcineurin inhibitors are metabolized through CYP3A4 — a huge range of commonly prescribed medications (many antibiotics, antifungals, and even some over-the-counter supplements) can meaningfully raise or lower tacrolimus/cyclosporine levels. Any new medication being added to a transplant recipient's regimen deserves a quick interaction check, and involving the transplant program before making changes is generally the safer default.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>The transplant cardiology program for essentially any acute presentation in a heart transplant recipient — they maintain detailed knowledge of the patient's rejection history, current immunosuppression regimen, and recent biopsy/surveillance results that meaningfully change management.</dd>
+      <dt>Urgent evaluation</dt><dd>New heart failure symptoms, new arrhythmia, or unexplained fatigue/malaise in a transplant recipient — remember these often represent silent rejection or silent ischemia given denervation, not the more obvious presentations expected in a native heart.</dd>
+      <dt>ICU admission</dt><dd>Any hemodynamic instability, suspected acute rejection with graft dysfunction, or significant opportunistic infection in a transplant recipient.</dd>
+      <dt>Transfer if no transplant cardiology program on-site</dt><dd>Essentially any significant acute presentation — transplant recipients benefit enormously from care coordinated with their specific transplant program given the complexity of immunosuppression management and rejection surveillance history.</dd>
+      <dt>Who to call</dt><dd>The patient's transplant cardiology program directly and early — most programs have a dedicated coordinator line specifically for this purpose, similar to LVAD program structure.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: POSTOP -->
+
+<section class="section" id="postop">
+  <div class="section-eyebrow"><span class="dot"></span>07 / Cardiac Surgery &amp; Devices</div>
+  <h2 class="section-title">Post-Cardiac Surgery Complications</h2>
+  <p class="section-sub">Closing this volume with a timing framework — much like Vol. 5's post-MI complications timeline, knowing what postoperative day it is dramatically narrows the differential for a new symptom.</p>
+
+  <h3 class="sub-title">The Postoperative Timeline</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_postop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_postop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_postop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_postop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="13" font-weight="700" fill="var(--accent-postop)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Post-cardiac surgery complication timeline</text>
+<rect x="20" y="50" width="224.5" height="340" rx="12" fill="var(--surface)" stroke="var(--accent-postop)" stroke-width="1.6"/>
+<text x="132.25" y="68" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-postop)" font-family="Inter, sans-serif" style="text-transform:uppercase">HOURS-DAY 1</text>
+<text x="132.25" y="175.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Bleeding/tamponade</text>
+<text x="132.25" y="188.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(watch chest tube</text>
+<text x="132.25" y="200.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">output, hemodynamics)</text>
+<text x="132.25" y="212.5" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="132.25" y="224.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Post-op atrial</text>
+<text x="132.25" y="237.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">fibrillation begins</text>
+<text x="132.25" y="249.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(peaks day 2-4)</text>
+<text x="132.25" y="261.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="132.25" y="274.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Low cardiac output</text>
+<text x="132.25" y="286.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">syndrome</text>
+<rect x="258.5" y="50" width="224.5" height="340" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="370.75" y="68" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">DAYS 2-5</text>
+<text x="370.75" y="181.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Post-op AFib peak</text>
+<text x="370.75" y="194.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">incidence (~30% of</text>
+<text x="370.75" y="206.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cardiac surgery</text>
+<text x="370.75" y="218.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">patients)</text>
+<text x="370.75" y="231.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="370.75" y="243.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sternal wound</text>
+<text x="370.75" y="255.6" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">concerns begin</text>
+<text x="370.75" y="267.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(early superficial</text>
+<text x="370.75" y="280.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">infection)</text>
+<rect x="497.0" y="50" width="224.5" height="340" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="609.25" y="68" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">WEEK 1-2</text>
+<text x="609.25" y="181.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Deep sternal wound</text>
+<text x="609.25" y="194.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">infection /</text>
+<text x="609.25" y="206.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">mediastinitis --</text>
+<text x="609.25" y="218.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">fever, wound</text>
+<text x="609.25" y="231.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">drainage, sternal</text>
+<text x="609.25" y="243.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">instability</text>
+<text x="609.25" y="255.6" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="609.25" y="267.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Delirium common</text>
+<text x="609.25" y="280.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">in this window</text>
+<rect x="735.5" y="50" width="224.5" height="340" rx="12" fill="var(--surface)" stroke="var(--accent-transplant)" stroke-width="1.6"/>
+<text x="847.75" y="68" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-transplant)" font-family="Inter, sans-serif" style="text-transform:uppercase">WEEKS-MONTHS</text>
+<text x="847.75" y="175.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Post-pericardiotomy</text>
+<text x="847.75" y="188.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">syndrome (autoimmune,</text>
+<text x="847.75" y="200.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">similar to Dressler's</text>
+<text x="847.75" y="212.5" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-- see Vol. 5)</text>
+<text x="847.75" y="224.8" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="847.75" y="237.1" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Late pericardial</text>
+<text x="847.75" y="249.4" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">effusion</text>
+<text x="847.75" y="261.7" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="847.75" y="274.0" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Graft occlusion</text>
+<text x="847.75" y="286.3" text-anchor="middle" font-size="9.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(SVG &gt; radial &gt; LIMA)</text>
+</svg>
+    <div class="diagram-caption">Post-operative atrial fibrillation affects roughly 30% of cardiac surgery patients and peaks days 2-4 — it's common enough that it should be anticipated and monitored for, not treated as a surprising complication.</div>
+  </div>
+
+  <h4 class="micro-title">Expandable: New Symptom by Postoperative Day</h4>
+
+  <details class="algo-step" open>
+    <summary>Hours to Day 1 — hemodynamic instability or high chest tube output</summary>
+    <div class="algo-body">
+      <p>Bleeding is the dominant early concern — track chest tube output closely (a sudden decrease in a previously draining tube can indicate clot obstruction and tamponade physiology developing, not necessarily reassurance that bleeding has stopped). Sudden hemodynamic deterioration with low or absent tube output should raise immediate suspicion for tamponade — urgent bedside echo and surgical involvement, don't wait.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Days 2-4 — new arrhythmia (usually AFib)</summary>
+    <div class="algo-body">
+      <p>Post-operative AFib is common enough (~30% incidence) that most programs have a standard protocol (typically beta-blockade continuation/initiation, with rate or rhythm control individualized). It's generally self-limited and resolves as post-operative inflammation settles, but still warrants standard AFib stroke-risk and anticoagulation consideration if it persists beyond the immediate post-operative window (see Vol. 3's Atrial Fibrillation section for the full framework).</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Week 1-2 — fever, wound changes, or sternal instability</summary>
+    <div class="algo-body">
+      <p>Superficial sternal wound infections are more common and less concerning than deep sternal wound infection/mediastinitis — but any sternal click, instability, or deep/purulent drainage with fever needs urgent surgical evaluation. Mediastinitis is a serious, potentially life-threatening infection requiring aggressive surgical debridement and prolonged antibiotics, not outpatient oral antibiotic management.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Weeks to months — pericardial symptoms or graft concerns</summary>
+    <div class="algo-body">
+      <p>Post-pericardiotomy syndrome (an autoimmune pericarditis analogous to Dressler's syndrome after MI — see Vol. 5) can present with pleuritic chest pain, fever, and a new or recurrent pericardial effusion weeks after surgery. Late graft occlusion (saphenous vein grafts most vulnerable, given their lower long-term patency compared to arterial conduits) can present as recurrent angina or a new ACS — the timeline and graft type both inform how strongly to suspect this versus native disease progression.</p>
+    </div>
+  </details>
+
+  <div class="callout danger">
+    <span class="callout-label">Post-pericardiotomy syndrome can progress to tamponade</span>
+    <p>Though generally self-limited and managed like other pericarditis (NSAIDs, colchicine — see Vol. 1b), a significant pericardial effusion from post-pericardiotomy syndrome can occasionally progress to tamponade physiology, particularly if missed or undertreated. Any recent cardiac surgery patient with recurrent chest pain, new dyspnea, or hemodynamic changes deserves an echo to assess effusion size, not just symptomatic anti-inflammatory treatment.</p>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Delirium is common and usually multifactorial</span>
+    <p>Post-cardiac surgery delirium, particularly in the first 1-2 weeks, is common and typically reflects a combination of factors — sleep disruption, medication effects, underlying cognitive vulnerability, and the physiologic stress of major surgery (amplified further by cardiopulmonary bypass or circulatory arrest when used). Standard delirium management principles apply, but a new or worsening neurologic exam finding should still prompt consideration of a focal neurologic event rather than being reflexively attributed to "ICU delirium" without at least a basic evaluation.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiac surgery for any suspected surgical complication (bleeding, tamponade, wound concerns, sternal instability) — these patients should generally have a low threshold for direct surgical team involvement given the recency of their operation.</dd>
+      <dt>Emergent evaluation</dt><dd>Suspected tamponade at any postoperative timepoint, or any hemodynamic instability with unclear cause in a recent cardiac surgery patient.</dd>
+      <dt>ICU admission</dt><dd>Any hemodynamic instability, significant arrhythmia requiring active management, or suspected mediastinitis/deep sternal wound infection.</dd>
+      <dt>Transfer if no cardiac surgery on-site</dt><dd>Any suspected surgical complication in a patient no longer at the original surgical center — coordinate with the original surgical team when possible given their direct knowledge of the operative details, even if immediate stabilization happens locally.</dd>
+      <dt>Who to call</dt><dd>The original cardiac surgery team when feasible, given their specific knowledge of the operative course; local cardiac surgery/cardiology for immediate stabilization needs when the original team isn't readily reachable.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiothoracic Surgery Atlas Vol. 1 — Cardiac Surgery &amp; Devices · Built for clinical education and bedside reference. Interactive calculators are teaching aids, not a substitute for clinical judgment or institutional protocol. Verify thresholds and dosing against current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>

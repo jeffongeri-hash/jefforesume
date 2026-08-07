@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiology Atlas · Vol. 4 — ACS Deep Dive</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-stemi: #ef5350;
+  --accent-risk: #ba68c8;
+  --accent-reperf: #4dd0e1;
+  --accent-antiplt: #ff8a65;
+  --accent-anticoag: #7986cb;
+  --accent-rvmi: #ffb74d;
+  --accent-special: #aed581;
+  --accent: #ef5350;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-stemi: #b3261e;
+  --accent-risk: #7b3f96;
+  --accent-reperf: #007680;
+  --accent-antiplt: #c85a2e;
+  --accent-anticoag: #3949ab;
+  --accent-rvmi: #a25b00;
+  --accent-special: #5a7d1f;
+  --accent: #b3261e;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#stemi { --sec-accent: var(--accent-stemi); }
+#risk { --sec-accent: var(--accent-risk); }
+#reperf { --sec-accent: var(--accent-reperf); }
+#antiplt { --sec-accent: var(--accent-antiplt); }
+#anticoag { --sec-accent: var(--accent-anticoag); }
+#rvmi { --sec-accent: var(--accent-rvmi); }
+#special { --sec-accent: var(--accent-special); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-radio-group { margin: 6px 0 12px; }
+.calc-radio-group .group-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text); font-weight: 700; margin-bottom: 6px; display: block; }
+.calc-item select {
+  font-family: var(--font-body); font-size: 13.5px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; flex-shrink: 0; cursor: pointer;
+}
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiology Atlas</span>
+    <span class="title">Vol. 4 — ACS Deep Dive</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#stemi">STEMI Equivalents &amp; Mimics</option>
+      <option value="#risk">Risk Stratification Calculators</option>
+      <option value="#reperf">Reperfusion Strategy</option>
+      <option value="#antiplt">Antiplatelet Therapy</option>
+      <option value="#anticoag">Anticoagulation Strategy</option>
+      <option value="#rvmi">Right Ventricular MI</option>
+      <option value="#special">Special Populations</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>ACS Deep Dive</h1>
+  <p class="lede">Beyond the Vol. 1a spectrum overview: STEMI equivalents that don't look like STEMI, interactive TIMI/GRACE/HEART calculators, reperfusion decision-making, and the 2025 ACC/AHA/ACEP/NAEMSP/SCAI antiplatelet and anticoagulation specifics.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-stemi)" href="#stemi">
+      <div class="n">01</div><div class="t">STEMI Equivalents &amp; Mimics</div>
+      <div class="d">Posterior MI, de Winter, Wellens, Sgarbossa criteria</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-risk)" href="#risk">
+      <div class="n">02</div><div class="t">Risk Stratification</div>
+      <div class="d">Interactive TIMI, GRACE, and HEART score calculators</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-reperf)" href="#reperf">
+      <div class="n">03</div><div class="t">Reperfusion Strategy</div>
+      <div class="d">PCI vs. fibrinolysis, interactive contraindication checklist</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-antiplt)" href="#antiplt">
+      <div class="n">04</div><div class="t">Antiplatelet Therapy</div>
+      <div class="d">P2Y12 selection, CABG timing, de-escalation</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-anticoag)" href="#anticoag">
+      <div class="n">05</div><div class="t">Anticoagulation Strategy</div>
+      <div class="d">UFH, enoxaparin, fondaparinux, bivalirudin, triple therapy</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-rvmi)" href="#rvmi">
+      <div class="n">06</div><div class="t">Right Ventricular MI</div>
+      <div class="d">Preload-dependent physiology, management pitfalls</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-special)" href="#special">
+      <div class="n">07</div><div class="t">Special Populations</div>
+      <div class="d">Women, diabetics, cocaine-associated, CKD dosing</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: STEMI -->
+
+<section class="section" id="stemi">
+  <div class="section-eyebrow"><span class="dot"></span>01 / ACS Deep Dive</div>
+  <h2 class="section-title">STEMI Equivalents &amp; Mimics</h2>
+  <p class="section-sub">The patterns that deserve a cath lab activation despite not meeting textbook ST-elevation criteria — and the conduction abnormalities that hide ischemia from a standard read.</p>
+
+  <h3 class="sub-title">ECG Lead–to–Coronary Territory Map (animated)</h3>
+  <p>Before pattern recognition, the foundation: which leads correspond to which artery. This matters as much for reciprocal changes as for the primary findings.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 440" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_territory" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_territory" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_territory" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_territory" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect id="leadbox_I" x="60" y="60" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="2" opacity="0.55"/>
+<text x="140.0" y="109.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">I</text>
+<animate xlink:href="#leadbox_I" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_I" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<rect id="leadbox_aVR" x="240" y="60" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--text-mute)" stroke-width="2" opacity="0.55"/>
+<text x="320.0" y="109.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">aVR</text>
+<rect id="leadbox_V1" x="420" y="60" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-risk)" stroke-width="2" opacity="0.55"/>
+<text x="500.0" y="109.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V1</text>
+<animate xlink:href="#leadbox_V1" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V1" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<rect id="leadbox_V4" x="600" y="60" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="2" opacity="0.55"/>
+<text x="680.0" y="109.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V4</text>
+<animate xlink:href="#leadbox_V4" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V4" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<rect id="leadbox_II" x="60" y="160" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="2" opacity="0.55"/>
+<text x="140.0" y="209.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">II</text>
+<animate xlink:href="#leadbox_II" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_II" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<rect id="leadbox_aVL" x="240" y="160" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="2" opacity="0.55"/>
+<text x="320.0" y="209.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">aVL</text>
+<animate xlink:href="#leadbox_aVL" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_aVL" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<rect id="leadbox_V2" x="420" y="160" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-risk)" stroke-width="2" opacity="0.55"/>
+<text x="500.0" y="209.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V2</text>
+<animate xlink:href="#leadbox_V2" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V2" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<rect id="leadbox_V5" x="600" y="160" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="2" opacity="0.55"/>
+<text x="680.0" y="209.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V5</text>
+<animate xlink:href="#leadbox_V5" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V5" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<rect id="leadbox_III" x="60" y="260" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="2" opacity="0.55"/>
+<text x="140.0" y="309.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">III</text>
+<animate xlink:href="#leadbox_III" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_III" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<rect id="leadbox_aVF" x="240" y="260" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="2" opacity="0.55"/>
+<text x="320.0" y="309.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">aVF</text>
+<animate xlink:href="#leadbox_aVF" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_aVF" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<rect id="leadbox_V3" x="420" y="260" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="2" opacity="0.55"/>
+<text x="500.0" y="309.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V3</text>
+<animate xlink:href="#leadbox_V3" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V3" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<rect id="leadbox_V6" x="600" y="260" width="160" height="84" rx="10" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="2" opacity="0.55"/>
+<text x="680.0" y="309.0" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="JetBrains Mono, monospace">V6</text>
+<animate xlink:href="#leadbox_V6" attributeName="opacity" values="0.55;1;1;0.55;0.55" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<animate xlink:href="#leadbox_V6" attributeName="stroke-width" values="2;4;4;2;2" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<rect x="770" y="50" width="200" height="140" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1"/>
+<text id="label_inferior" x="870" y="90" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" opacity="0">INFERIOR</text>
+<animate xlink:href="#label_inferior" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<text x="870" y="116" text-anchor="middle" font-size="11" fill="var(--text-dim)" font-family="Inter, sans-serif" opacity="0" id="artery_inferior">RCA (or dominant LCx)</text>
+<animate xlink:href="#artery_inferior" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="0s" repeatCount="indefinite"/>
+<text id="label_lateral" x="870" y="90" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-antiplt)" font-family="Inter, sans-serif" opacity="0">LATERAL</text>
+<animate xlink:href="#label_lateral" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<text x="870" y="116" text-anchor="middle" font-size="11" fill="var(--text-dim)" font-family="Inter, sans-serif" opacity="0" id="artery_lateral">LCx (or diagonal/OM branches)</text>
+<animate xlink:href="#artery_lateral" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="2s" repeatCount="indefinite"/>
+<text id="label_septal" x="870" y="90" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-risk)" font-family="Inter, sans-serif" opacity="0">SEPTAL</text>
+<animate xlink:href="#label_septal" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<text x="870" y="116" text-anchor="middle" font-size="11" fill="var(--text-dim)" font-family="Inter, sans-serif" opacity="0" id="artery_septal">LAD (septal perforators)</text>
+<animate xlink:href="#artery_septal" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="4s" repeatCount="indefinite"/>
+<text id="label_anterior" x="870" y="90" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-stemi)" font-family="Inter, sans-serif" opacity="0">ANTERIOR</text>
+<animate xlink:href="#label_anterior" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<text x="870" y="116" text-anchor="middle" font-size="11" fill="var(--text-dim)" font-family="Inter, sans-serif" opacity="0" id="artery_anterior">LAD (distal to septals)</text>
+<animate xlink:href="#artery_anterior" attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.2;0.22;1" dur="8s" begin="6s" repeatCount="indefinite"/>
+<text x="870" y="160" text-anchor="middle" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Territory cycles every 2s</text>
+<text x="870" y="178" text-anchor="middle" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">(static view: see legend below)</text>
+<text x="60" y="380" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">aVR (gray) rarely localizes ischemia directly, but diffuse ST-depression with ST-elevation in aVR suggests left main or proximal LAD occlusion / severe multivessel disease.</text>
+<circle cx="60" cy="400" r="6" fill="var(--accent-anticoag)"/>
+<text x="74" y="404" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Inferior: II, III, aVF</text>
+<circle cx="290" cy="400" r="6" fill="var(--accent-antiplt)"/>
+<text x="304" y="404" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lateral: I, aVL, V5-V6</text>
+<circle cx="520" cy="400" r="6" fill="var(--accent-risk)"/>
+<text x="534" y="404" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Septal: V1-V2</text>
+<circle cx="750" cy="400" r="6" fill="var(--accent-stemi)"/>
+<text x="764" y="404" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Anterior: V3-V4</text>
+</svg>
+    <div class="diagram-caption">Animated highlight cycles through each territory in sequence (inferior → lateral → septal → anterior). The static legend below shows the same grouping if animation doesn't render in your viewer.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Reciprocal changes confirm the diagnosis</span>
+    <p>Inferior STEMI (II, III, aVF) classically shows reciprocal ST-depression in I and aVL; anterior STEMI shows reciprocal changes in the inferior leads. The presence of appropriate reciprocal change increases confidence that you're looking at true infarction rather than a mimic like pericarditis (which characteristically shows diffuse concave ST-elevation <em>without</em> reciprocal depression, except aVR).</p>
+  </div>
+
+  <h3 class="sub-title">Patterns That Don't Show Frank ST-Elevation</h3>
+  <p>Each of these represents either an active STEMI-equivalent (treat exactly like STEMI) or a critical warning sign of impending infarction (Wellens) — recognizing them prevents a dangerous discharge.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 640" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_stemi_equiv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_stemi_equiv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_stemi_equiv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_stemi_equiv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="280" height="270" rx="12" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="1.6"/>
+<text x="160.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-stemi)" font-family="Inter, sans-serif" style="text-transform:uppercase">Posterior MI</text>
+<text x="160.0" y="113.5" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Isolated posterior STEMI often shows NO</text>
+<text x="160.0" y="126.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  anterior ST-elevation at all</text>
+<text x="160.0" y="139.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Look instead for: ST-DEPRESSION V1-V3</text>
+<text x="160.0" y="153.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (mirror image of posterior elevation),</text>
+<text x="160.0" y="166.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  tall/broad R wave V1-V2, upright T waves</text>
+<text x="160.0" y="179.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Confirm with posterior leads V7-V9</text>
+<text x="160.0" y="192.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (ST-elevation &gt;=0.5mm there)</text>
+<text x="160.0" y="205.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Usually a posterolateral circumflex/RCA</text>
+<text x="160.0" y="218.9" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  culprit -- treat as STEMI equivalent</text>
+<rect x="340" y="20" width="280" height="270" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="480.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">de Winter Pattern</text>
+<text x="480.0" y="113.5" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">STEMI EQUIVALENT for proximal LAD</text>
+<text x="480.0" y="126.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  occlusion -- no ST-elevation present</text>
+<text x="480.0" y="139.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Upsloping ST-depression at the J-point</text>
+<text x="480.0" y="153.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  in precordial leads, continuing into</text>
+<text x="480.0" y="166.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  tall, symmetric, peaked T waves</text>
+<text x="480.0" y="179.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Often seen in younger patients with</text>
+<text x="480.0" y="192.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  a clearly ongoing acute LAD occlusion</text>
+<text x="480.0" y="205.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Activate the cath lab as for STEMI --</text>
+<text x="480.0" y="218.9" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  don't wait for elevation to develop</text>
+<rect x="660" y="20" width="280" height="270" rx="12" fill="var(--surface)" stroke="var(--accent-risk)" stroke-width="1.6"/>
+<text x="800.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-risk)" font-family="Inter, sans-serif" style="text-transform:uppercase">Wellens Syndrome</text>
+<text x="800.0" y="113.5" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">A WARNING pattern, not an active STEMI --</text>
+<text x="800.0" y="126.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  seen during the PAIN-FREE interval</text>
+<text x="800.0" y="139.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Biphasic (Type A) or deeply symmetric</text>
+<text x="800.0" y="153.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  inverted (Type B) T waves in V2-V3</text>
+<text x="800.0" y="166.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Indicates critical proximal LAD stenosis</text>
+<text x="800.0" y="179.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  at high near-term risk of anterior MI</text>
+<text x="800.0" y="192.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Minimal/no troponin elevation at the time</text>
+<text x="800.0" y="205.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  -- do NOT stress test these patients</text>
+<text x="800.0" y="218.9" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Early angiography, not provocative testing</text>
+<line x1="20" y1="314" x2="960" y2="314" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="338" font-size="12.5" font-weight="700" fill="var(--accent-stemi)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">LBBB / ventricular-paced rhythm -- modified Sgarbossa criteria</text>
+<rect x="20" y="354" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="1.6"/>
+<text x="170.0" y="372" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-stemi)" font-family="Inter, sans-serif" style="text-transform:uppercase">CRITERION 1 (3 pts)</text>
+<text x="170.0" y="413.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Concordant ST-elevation &gt;=1mm</text>
+<text x="170.0" y="427.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">in any lead with a positive</text>
+<text x="170.0" y="441.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(upright) QRS</text>
+<text x="170.0" y="455.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="170.0" y="469.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">This alone is highly specific</text>
+<text x="170.0" y="483.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for acute MI even in the</text>
+<text x="170.0" y="497.7" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">presence of LBBB/pacing</text>
+<rect x="340" y="354" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="1.6"/>
+<text x="490.0" y="372" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-stemi)" font-family="Inter, sans-serif" style="text-transform:uppercase">CRITERION 2 (3 pts)</text>
+<text x="490.0" y="413.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Concordant ST-depression</text>
+<text x="490.0" y="427.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">&gt;=1mm in V1, V2, or V3</text>
+<text x="490.0" y="441.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="490.0" y="455.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Also highly specific --</text>
+<text x="490.0" y="469.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the ST segment should never</text>
+<text x="490.0" y="483.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">go the same direction as a</text>
+<text x="490.0" y="497.7" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">discordant baseline in these leads</text>
+<rect x="660" y="354" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="810.0" y="372" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">CRITERION 3 (Modified, ratio-based)</text>
+<text x="810.0" y="402.5" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Discordant ST-elevation with</text>
+<text x="810.0" y="415.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ratio ST/S &gt;= -0.25 (i.e.</text>
+<text x="810.0" y="428.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">excessively discordant relative</text>
+<text x="810.0" y="442.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">to the preceding S wave depth)</text>
+<text x="810.0" y="455.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="810.0" y="468.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">This is the MODIFIED criterion</text>
+<text x="810.0" y="481.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(Smith modification) -- more</text>
+<text x="810.0" y="494.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">sensitive than the original</text>
+<text x="810.0" y="507.9" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">fixed &gt;=5mm discordant cutoff</text>
+<text x="20" y="560" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Total score >=3 (original Sgarbossa) is specific but insensitive; the modified (Smith) criterion 3 meaningfully improves sensitivity without sacrificing much specificity --</text>
+<text x="20" y="580" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">use the modified version when evaluating chest pain with LBBB or a paced rhythm rather than assuming the baseline conduction abnormality "hides" ischemia entirely.</text>
+</svg>
+    <div class="diagram-caption">Top: three patterns that don't show classic ST-elevation but carry STEMI-equivalent or pre-infarction urgency. Bottom: modified Sgarbossa criteria for identifying acute MI in the presence of LBBB or ventricular pacing.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Wellens syndrome — the discharge that kills</span>
+    <p>Patients with Wellens pattern are frequently pain-free and have normal or minimally elevated troponin <em>at the time you're looking at the ECG</em> — because the pattern represents a critical stenosis that hasn't yet fully occluded, not an ongoing infarction. The trap is treating a pain-free patient with a "reassuring" troponin as low-risk. Do not exercise stress test these patients — provoking ischemia in a critically stenosed proximal LAD can precipitate an acute anterior STEMI on the treadmill. These patients need early angiography.</p>
+  </div>
+
+  <h4 class="micro-title">Other Mimics Worth Distinguishing</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Pericarditis vs. STEMI</span><p>Diffuse (not territorial) concave ST-elevation, PR depression, and absence of reciprocal changes (except aVR) favor pericarditis. Localized convex ("tombstone") ST-elevation with reciprocal depression favors STEMI. When genuinely ambiguous, treat as STEMI and get emergent cardiology input rather than risk missing an infarction.</p></div>
+    <div class="callout"><span class="callout-label">Benign early repolarization</span><p>J-point elevation with a notch/slur at the QRS-ST junction, concave ST-elevation, and a stable pattern on prior ECGs favor this benign variant — but "benign early repol" should be a diagnosis of exclusion in a patient with concerning symptoms, not a default read.</p></div>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Activate cath lab now</dt><dd>Any de Winter pattern, posterior MI confirmed on posterior leads, or modified Sgarbossa-positive LBBB/paced rhythm with a compatible clinical picture — treat identically to a standard STEMI activation, don't wait for elevation to "declare" itself.</dd>
+      <dt>Urgent (same-admission) cardiology consult</dt><dd>Wellens syndrome — this needs early angiography during the same encounter, not outpatient follow-up, even though it may not meet formal STEMI activation criteria at your institution.</dd>
+      <dt>Transfer if no cath lab on-site</dt><dd>Any of the above patterns at a non-PCI-capable facility — activate your STEMI transfer protocol exactly as you would for standard ST-elevation, including pre-notification of the receiving cath lab.</dd>
+      <dt>Transport considerations</dt><dd>Continuous 12-lead monitoring en route; repeat ECG if symptoms change; have defibrillator pads placed given the risk of malignant arrhythmia with ongoing ischemia.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology directly for cath lab activation; general cardiology is appropriate for Wellens syndrome if same-day angiography can be arranged without a formal STEMI activation.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: RISK -->
+
+<section class="section" id="risk">
+  <div class="section-eyebrow"><span class="dot"></span>02 / ACS Deep Dive</div>
+  <h2 class="section-title">Risk Stratification Calculators</h2>
+  <p class="section-sub">Three scores, three different jobs: TIMI and GRACE stratify NSTE-ACS patients for invasive-strategy timing; HEART stratifies undifferentiated chest pain for safe disposition. Using the wrong tool for the wrong question is a common error.</p>
+
+  <h4 class="micro-title">Interactive: TIMI Risk Score (UA/NSTEMI)</h4>
+  <p>Seven criteria, one point each. Originally derived and validated for unstable angina/NSTEMI, not for undifferentiated chest pain — that's HEART's job (below).</p>
+
+  <div class="calc-card" id="timiCalc">
+    <div class="calc-title">TIMI Risk Score</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" id="timi_age" data-pts="1"><label for="timi_age">Age ≥ 65</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_rf" data-pts="1"><label for="timi_rf">≥3 CAD risk factors (HTN, DM, smoking, hyperlipidemia, family history)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_cad" data-pts="1"><label for="timi_cad">Known CAD (stenosis ≥50% on prior angiography)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_asa" data-pts="1"><label for="timi_asa">Aspirin use in prior 7 days</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_angina" data-pts="1"><label for="timi_angina">Severe angina (≥2 episodes in prior 24h)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_st" data-pts="1"><label for="timi_st">ST deviation ≥0.5mm on presenting ECG</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="timi_marker" data-pts="1"><label for="timi_marker">Elevated cardiac biomarkers</label><span class="pts">+1</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="timiScore">0</div></div>
+      <div class="score-interp" id="timiInterp">0-1: ~5% risk of death/MI/urgent revascularization at 14 days.</div>
+    </div>
+    <div class="calc-note">Higher scores (5-7) approach ~26-41% 14-day event risk and favor an early invasive strategy. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: HEART Score (Undifferentiated Chest Pain)</h4>
+  <p>Select one option in each of the five categories. HEART was derived specifically for ED chest pain patients to guide safe early discharge — it is the right tool when the diagnosis is not yet established, unlike TIMI/GRACE which assume ACS is already suspected or confirmed.</p>
+
+  <div class="calc-card" id="heartCalc">
+    <div class="calc-title">HEART Score</div>
+    <div class="calc-radio-group">
+      <span class="group-label">History</span>
+      <div class="calc-item"><input type="radio" name="h_hist" id="hh0" data-pts="0" checked><label for="hh0">Slightly suspicious</label><span class="pts">0</span></div>
+      <div class="calc-item"><input type="radio" name="h_hist" id="hh1" data-pts="1"><label for="hh1">Moderately suspicious</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="radio" name="h_hist" id="hh2" data-pts="2"><label for="hh2">Highly suspicious</label><span class="pts">+2</span></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">ECG</span>
+      <div class="calc-item"><input type="radio" name="h_ecg" id="he0" data-pts="0" checked><label for="he0">Normal</label><span class="pts">0</span></div>
+      <div class="calc-item"><input type="radio" name="h_ecg" id="he1" data-pts="1"><label for="he1">Non-specific repolarization disturbance</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="radio" name="h_ecg" id="he2" data-pts="2"><label for="he2">Significant ST deviation</label><span class="pts">+2</span></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Age</span>
+      <div class="calc-item"><input type="radio" name="h_age" id="ha0" data-pts="0" checked><label for="ha0">&lt; 45</label><span class="pts">0</span></div>
+      <div class="calc-item"><input type="radio" name="h_age" id="ha1" data-pts="1"><label for="ha1">45–65</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="radio" name="h_age" id="ha2" data-pts="2"><label for="ha2">&gt; 65</label><span class="pts">+2</span></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Risk factors (HTN, hyperlipidemia, DM, obesity, smoking, family history, known atherosclerotic disease)</span>
+      <div class="calc-item"><input type="radio" name="h_rf" id="hr0" data-pts="0" checked><label for="hr0">No known risk factors</label><span class="pts">0</span></div>
+      <div class="calc-item"><input type="radio" name="h_rf" id="hr1" data-pts="1"><label for="hr1">1-2 risk factors</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="radio" name="h_rf" id="hr2" data-pts="2"><label for="hr2">≥3 risk factors, or known atherosclerotic disease</label><span class="pts">+2</span></div>
+    </div>
+    <div class="calc-radio-group">
+      <span class="group-label">Initial troponin</span>
+      <div class="calc-item"><input type="radio" name="h_trop" id="ht0" data-pts="0" checked><label for="ht0">≤ normal limit</label><span class="pts">0</span></div>
+      <div class="calc-item"><input type="radio" name="h_trop" id="ht1" data-pts="1"><label for="ht1">1-3x normal limit</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="radio" name="h_trop" id="ht2" data-pts="2"><label for="ht2">&gt; 3x normal limit</label><span class="pts">+2</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="heartScore">0</div></div>
+      <div class="score-interp" id="heartInterp">Low risk (0-3): ~1-2% 6-week MACE — early discharge reasonable.</div>
+    </div>
+    <div class="calc-note">4-6 = moderate risk (~12-17% MACE, admit for further workup); 7-10 = high risk (~50-65% MACE, early invasive strategy). <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: GRACE Score (In-Hospital Mortality)</h4>
+  <p>The most complex but most validated tool for NSTE-ACS risk stratification — GRACE directly informs the 2025 guideline's invasive-strategy timing tiers (see Vol. 1a). Select the closest band for each continuous variable.</p>
+
+  <div class="calc-card" id="graceCalc">
+    <div class="calc-title">GRACE Score (simplified)</div>
+    <div class="calc-grid">
+      <div class="calc-item"><label for="g_age">Age</label>
+        <select id="g_age">
+          <option value="0">&lt;30</option><option value="8">30-39</option><option value="25">40-49</option>
+          <option value="41" selected>50-59</option><option value="58">60-69</option><option value="75">70-79</option>
+          <option value="91">80-89</option><option value="100">≥90</option>
+        </select>
+      </div>
+      <div class="calc-item"><label for="g_hr">Heart rate (bpm)</label>
+        <select id="g_hr">
+          <option value="0">&lt;50</option><option value="3" selected>50-69</option><option value="9">70-89</option>
+          <option value="15">90-109</option><option value="24">110-149</option><option value="38">150-199</option><option value="46">≥200</option>
+        </select>
+      </div>
+      <div class="calc-item"><label for="g_sbp">Systolic BP (mmHg)</label>
+        <select id="g_sbp">
+          <option value="58">&lt;80</option><option value="53">80-99</option><option value="43">100-119</option>
+          <option value="34" selected>120-139</option><option value="24">140-159</option><option value="10">160-199</option><option value="0">≥200</option>
+        </select>
+      </div>
+      <div class="calc-item"><label for="g_cr">Creatinine (mg/dL)</label>
+        <select id="g_cr">
+          <option value="1" selected>0-0.39</option><option value="4">0.4-0.79</option><option value="7">0.8-1.19</option>
+          <option value="10">1.2-1.59</option><option value="13">1.6-1.99</option><option value="21">2.0-3.99</option><option value="28">≥4.0</option>
+        </select>
+      </div>
+      <div class="calc-item"><label for="g_killip">Killip class</label>
+        <select id="g_killip">
+          <option value="0" selected>I — no CHF signs</option><option value="20">II — rales/JVD</option>
+          <option value="39">III — pulmonary edema</option><option value="59">IV — cardiogenic shock</option>
+        </select>
+      </div>
+      <div class="calc-item"><input type="checkbox" id="g_arrest" data-pts="39"><label for="g_arrest">Cardiac arrest at admission</label><span class="pts">+39</span></div>
+      <div class="calc-item"><input type="checkbox" id="g_stdev" data-pts="28"><label for="g_stdev">ST-segment deviation present</label><span class="pts">+28</span></div>
+      <div class="calc-item"><input type="checkbox" id="g_enzyme" data-pts="14"><label for="g_enzyme">Elevated cardiac enzymes</label><span class="pts">+14</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="graceScore">0</div></div>
+      <div class="score-interp" id="graceInterp">Low risk (≤108): &lt;1% in-hospital mortality.</div>
+    </div>
+    <div class="calc-note">Approximate bands: ≤108 low (&lt;1%), 109-140 intermediate (1-3%), &gt;140 high (&gt;3%) in-hospital mortality. GRACE 2.0 online/app calculators use exact continuous inputs rather than these bands — use this as a teaching approximation only. <span class="verify-tag">verify point values against current GRACE 2.0 nomogram before clinical use</span></div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">Which score, when</span>
+    <p>Undifferentiated chest pain, diagnosis not yet established → HEART, to decide who can be safely discharged after a negative workup. ACS already diagnosed or strongly suspected, deciding on invasive strategy timing → TIMI or GRACE (GRACE has better discrimination and is what the 2025 guideline's risk tiers are built around, but TIMI is simpler to calculate at the bedside without a reference tool).</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  function wireCheckboxCalc(cardId, scoreId, interpId, interpFn) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+    var checkboxes = card.querySelectorAll('input[type="checkbox"]');
+    function recalc() {
+      var total = 0;
+      checkboxes.forEach(function(cb) { if (cb.checked) total += parseInt(cb.getAttribute('data-pts'), 10); });
+      document.getElementById(scoreId).textContent = total;
+      document.getElementById(interpId).textContent = interpFn(total);
+    }
+    checkboxes.forEach(function(cb) { cb.addEventListener('change', recalc); });
+    recalc();
+  }
+
+  wireCheckboxCalc('timiCalc', 'timiScore', 'timiInterp', function(s) {
+    if (s <= 1) return "0-1: ~5% risk of death/MI/urgent revascularization at 14 days.";
+    if (s === 2) return "2: ~8% 14-day event risk.";
+    if (s === 3) return "3: ~13% 14-day event risk.";
+    if (s === 4) return "4: ~20% 14-day event risk.";
+    if (s === 5) return "5: ~26% 14-day event risk — early invasive strategy favored.";
+    return "6-7: ~41% 14-day event risk — early invasive strategy favored.";
+  });
+
+  function wireHeart() {
+    var card = document.getElementById('heartCalc');
+    if (!card) return;
+    var radios = card.querySelectorAll('input[type="radio"]');
+    function recalc() {
+      var total = 0;
+      var groups = {};
+      radios.forEach(function(r) { groups[r.name] = groups[r.name] || []; groups[r.name].push(r); });
+      Object.keys(groups).forEach(function(g) {
+        var checked = groups[g].find(function(r){ return r.checked; });
+        if (checked) total += parseInt(checked.getAttribute('data-pts'), 10);
+      });
+      document.getElementById('heartScore').textContent = total;
+      var interp;
+      if (total <= 3) interp = "Low risk (0-3): ~1-2% 6-week MACE — early discharge reasonable.";
+      else if (total <= 6) interp = "Moderate risk (4-6): ~12-17% 6-week MACE — admit for further workup.";
+      else interp = "High risk (7-10): ~50-65% 6-week MACE — early invasive strategy.";
+      document.getElementById('heartInterp').textContent = interp;
+    }
+    radios.forEach(function(r) { r.addEventListener('change', recalc); });
+    recalc();
+  }
+  wireHeart();
+
+  function wireGrace() {
+    var card = document.getElementById('graceCalc');
+    if (!card) return;
+    var selects = card.querySelectorAll('select');
+    var checkboxes = card.querySelectorAll('input[type="checkbox"]');
+    function recalc() {
+      var total = 0;
+      selects.forEach(function(s) { total += parseInt(s.value, 10); });
+      checkboxes.forEach(function(cb) { if (cb.checked) total += parseInt(cb.getAttribute('data-pts'), 10); });
+      document.getElementById('graceScore').textContent = total;
+      var interp;
+      if (total <= 108) interp = "Low risk (≤108): <1% in-hospital mortality.";
+      else if (total <= 140) interp = "Intermediate risk (109-140): 1-3% in-hospital mortality.";
+      else interp = "High risk (>140): >3% in-hospital mortality — favors early invasive strategy.";
+      document.getElementById('graceInterp').textContent = interp;
+    }
+    selects.forEach(function(s) { s.addEventListener('change', recalc); });
+    checkboxes.forEach(function(cb) { cb.addEventListener('change', recalc); });
+    recalc();
+  }
+  wireGrace();
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: REPERF -->
+
+<section class="section" id="reperf">
+  <div class="section-eyebrow"><span class="dot"></span>03 / ACS Deep Dive</div>
+  <h2 class="section-title">Reperfusion Strategy</h2>
+  <p class="section-sub">Primary PCI vs. fibrinolysis is fundamentally a time-and-geography decision — the contraindication checklist below only matters once fibrinolysis is actually on the table.</p>
+
+  <h4 class="micro-title">Interactive: PCI vs. Fibrinolysis Decision</h4>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Can primary PCI be performed within 90 minutes of first medical contact?</summary>
+    <div class="algo-body">
+      <p>If yes at a PCI-capable facility, or achievable via transfer, primary PCI is preferred — it has superior outcomes to fibrinolysis when performed promptly. If the anticipated delay to PCI exceeds 120 minutes total (accounting for transfer time), fibrinolysis becomes the preferred initial strategy if no contraindication exists.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — If fibrinolysis is being considered, are there contraindications? (see checklist below)</summary>
+    <div class="algo-body">
+      <p>Any absolute contraindication rules out fibrinolysis entirely — arrange emergent transfer for primary PCI regardless of door-to-balloon delay, since fibrinolysis carries unacceptable risk. Relative contraindications require an individualized risk-benefit discussion, generally favoring transfer for PCI when feasible in a reasonable timeframe.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — After fibrinolysis: assess for reperfusion at 60-90 minutes</summary>
+    <div class="algo-body">
+      <p>Resolution of ST-elevation by ≥50%, resolution of chest pain, and reperfusion arrhythmias (accelerated idioventricular rhythm) suggest successful reperfusion — plan the pharmacoinvasive strategy (angiography within 2-24 hours even if apparently successful). Failure to meet these signs at 60-90 minutes indicates failed fibrinolysis → emergent rescue PCI is indicated, not a repeat dose of lytic.</p>
+    </div>
+  </details>
+
+  <h4 class="micro-title">Interactive: Fibrinolytic Contraindication Checklist</h4>
+  <p>Check any that apply to see the flag update in real time.</p>
+
+  <div class="calc-card" id="lyticCalc">
+    <div class="calc-title">Absolute Contraindications</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_ich"><label for="l_ich">Any prior intracranial hemorrhage</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_lesion"><label for="l_lesion">Known structural cerebral vascular lesion (AVM) or malignant intracranial neoplasm</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_stroke3m"><label for="l_stroke3m">Ischemic stroke within 3 months (excluding acute stroke within 4.5h)</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_dissect"><label for="l_dissect">Suspected aortic dissection</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_bleed"><label for="l_bleed">Active bleeding or bleeding diathesis (excluding menses)</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_head"><label for="l_head">Significant closed head or facial trauma within 3 months</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_ichsurg"><label for="l_ichsurg">Intracranial or intraspinal surgery within 2 months</label></div>
+      <div class="calc-item"><input type="checkbox" class="abs-contra" id="l_htn"><label for="l_htn">Severe uncontrolled hypertension (unresponsive to emergency therapy)</label></div>
+    </div>
+    <div class="calc-title" style="margin-top:18px;">Relative Contraindications</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_htnhx"><label for="l_htnhx">History of chronic severe/poorly-controlled hypertension</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_strokeold"><label for="l_strokeold">Ischemic stroke more than 3 months prior</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_dementia"><label for="l_dementia">Dementia or known intracranial pathology not otherwise excluded</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_cpr"><label for="l_cpr">Traumatic or prolonged (&gt;10 min) CPR, or major surgery within 3 weeks</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_bleedrecent"><label for="l_bleedrecent">Internal bleeding within 2-4 weeks</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_puncture"><label for="l_puncture">Noncompressible vascular puncture</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_pregnant"><label for="l_pregnant">Pregnancy</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_pud"><label for="l_pud">Active peptic ulcer disease</label></div>
+      <div class="calc-item"><input type="checkbox" class="rel-contra" id="l_anticoag"><label for="l_anticoag">Current therapeutic anticoagulation (e.g., warfarin with elevated INR)</label></div>
+    </div>
+    <div class="calc-result" id="lyticResult">
+      <div class="score-interp" id="lyticInterp" style="text-align:left; flex:1;">No contraindications selected — fibrinolysis is not contraindicated on this checklist.</div>
+    </div>
+    <div class="calc-note">This checklist is not exhaustive; always cross-reference your institutional fibrinolytic protocol. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Rescue PCI ≠ repeat lytic</span>
+    <p>If fibrinolysis fails (persistent ST-elevation, ongoing pain, hemodynamic/electrical instability at 60-90 minutes), the answer is emergent rescue PCI, not a second dose of fibrinolytic — repeat lytic administration substantially increases bleeding risk without reliably improving reperfusion in this setting.</p>
+  </div>
+
+  <h4 class="micro-title">Fibrinolytic Agent Notes</h4>
+  <p>Tenecteplase has become the most commonly used agent given its single weight-based IV bolus dosing (versus the more complex weight-based infusion regimens of older agents), simplifying administration in the field and reducing dosing errors — an important practical consideration for EMS-administered fibrinolysis.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Immediate cath lab activation</dt><dd>Any STEMI (or equivalent) at a PCI-capable facility, or any patient who can reach one within the guideline-recommended window.</dd>
+      <dt>Immediate transfer</dt><dd>STEMI at a non-PCI-capable facility when transfer can achieve first-medical-contact-to-balloon time within the guideline window, or any absolute fibrinolytic contraindication regardless of transfer time (fibrinolysis is off the table, so PCI — however delayed — becomes the only reperfusion option).</dd>
+      <dt>Fibrinolysis + transfer (pharmacoinvasive)</dt><dd>When PCI transfer delay would clearly exceed the acceptable window and no contraindication exists — give the lytic, then transfer for angiography within 2-24 hours (sooner if reperfusion fails).</dd>
+      <dt>Transport considerations</dt><dd>Continuous ECG monitoring, defibrillator immediately available (reperfusion arrhythmias are common and usually benign but should be monitored), and a clear plan communicated to the receiving cath lab team before departure — including exact lytic agent, dose, and time given if fibrinolysis was administered.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology at the receiving facility as early as possible — ideally with prehospital ECG transmission to allow direct-to-cath-lab routing, bypassing the emergency department entirely when protocols allow.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  var card = document.getElementById('lyticCalc');
+  if (!card) return;
+  var absBoxes = card.querySelectorAll('.abs-contra');
+  var relBoxes = card.querySelectorAll('.rel-contra');
+  var resultDiv = document.getElementById('lyticResult');
+  var interpSpan = document.getElementById('lyticInterp');
+
+  function recalc() {
+    var absChecked = Array.from(absBoxes).some(function(cb){ return cb.checked; });
+    var relChecked = Array.from(relBoxes).some(function(cb){ return cb.checked; });
+    if (absChecked) {
+      resultDiv.style.background = 'color-mix(in srgb, var(--danger) 18%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--danger)';
+      interpSpan.textContent = 'ABSOLUTE CONTRAINDICATION PRESENT — fibrinolysis contraindicated. Pursue primary PCI (with transfer if needed) regardless of delay.';
+    } else if (relChecked) {
+      resultDiv.style.background = 'color-mix(in srgb, var(--warn) 16%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--warn)';
+      interpSpan.textContent = 'Relative contraindication(s) present — individualize risk/benefit; favor PCI transfer if feasible in a reasonable timeframe.';
+    } else {
+      resultDiv.style.background = 'color-mix(in srgb, var(--good) 14%, var(--surface))';
+      resultDiv.style.borderColor = 'var(--good)';
+      interpSpan.textContent = 'No contraindications selected — fibrinolysis is not contraindicated on this checklist.';
+    }
+  }
+  absBoxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+  relBoxes.forEach(function(cb){ cb.addEventListener('change', recalc); });
+  recalc();
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: ANTIPLT -->
+
+<section class="section" id="antiplt">
+  <div class="section-eyebrow"><span class="dot"></span>04 / ACS Deep Dive</div>
+  <h2 class="section-title">Antiplatelet Therapy</h2>
+  <p class="section-sub">The 2025 ACC/AHA/ACEP/NAEMSP/SCAI guideline sharpened P2Y12 selection considerably — this section is built directly from that document's specific recommendations.</p>
+
+  <h3 class="sub-title">P2Y12 Inhibitor Selection</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_p2y12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_p2y12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_p2y12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_p2y12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="280" height="220" rx="12" fill="var(--surface)" stroke="var(--text-mute)" stroke-width="1.6"/>
+<text x="160.0" y="38" text-anchor="middle" font-size="14" font-weight="700" letter-spacing="0.5" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase">Clopidogrel</text>
+<text x="160.0" y="101.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Prodrug -- requires hepatic CYP2C19</text>
+<text x="160.0" y="114.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bioactivation (variable/slow onset)</text>
+<text x="160.0" y="128.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Least potent, most inter-patient variability</text>
+<text x="160.0" y="141.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Preferred when: ticagrelor/prasugrel</text>
+<text x="160.0" y="154.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  contraindicated, not tolerated, unaffordable,</text>
+<text x="160.0" y="167.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  OR patient will need fibrinolysis (STEMI),</text>
+<text x="160.0" y="180.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  OR triple therapy with anticoagulation</text>
+<rect x="340" y="20" width="280" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="1.6"/>
+<text x="480.0" y="38" text-anchor="middle" font-size="14" font-weight="700" letter-spacing="0.5" fill="var(--accent-antiplt)" font-family="Inter, sans-serif" style="text-transform:uppercase">Prasugrel</text>
+<text x="480.0" y="101.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Prodrug, but more efficient/consistent</text>
+<text x="480.0" y="114.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bioactivation than clopidogrel</text>
+<text x="480.0" y="128.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">More potent, faster onset than clopidogrel</text>
+<text x="480.0" y="141.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">CONTRAINDICATED: prior stroke/TIA (Class 3)</text>
+<text x="480.0" y="154.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Dose reduction: age &gt;=75 or weight &lt;60kg</text>
+<text x="480.0" y="167.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Only given once anatomy known (post-PCI) --</text>
+<text x="480.0" y="180.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  avoid pre-angiography due to CABG bleed risk</text>
+<rect x="660" y="20" width="280" height="220" rx="12" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="1.6"/>
+<text x="800.0" y="38" text-anchor="middle" font-size="14" font-weight="700" letter-spacing="0.5" fill="var(--accent-stemi)" font-family="Inter, sans-serif" style="text-transform:uppercase">Ticagrelor</text>
+<text x="800.0" y="95.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">NOT a prodrug -- direct-acting, reversible</text>
+<text x="800.0" y="108.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  P2Y12 binding</text>
+<text x="800.0" y="121.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Faster onset/offset than clopidogrel</text>
+<text x="800.0" y="134.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Can be used pre-angiography (unlike prasugrel)</text>
+<text x="800.0" y="147.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Dyspnea and ventricular pauses are recognized,</text>
+<text x="800.0" y="161.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  usually benign side effects</text>
+<text x="800.0" y="174.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Preferred for ticagrelor monotherapy strategy</text>
+<text x="800.0" y="187.3" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  after 1 month of DAPT in eligible patients</text>
+<line x1="20" y1="264" x2="960" y2="264" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="288" font-size="12.5" font-weight="700" fill="var(--accent-antiplt)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2025 guideline preference &amp; CABG hold times</text>
+<rect x="20" y="304" width="460" height="130" rx="12" fill="var(--surface)" stroke="var(--accent-antiplt)" stroke-width="1.6"/>
+<text x="250.0" y="330.9" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ticagrelor or prasugrel preferred over clopidogrel</text>
+<text x="250.0" y="344.7" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for ACS patients undergoing PCI (Class 1, no</text>
+<text x="250.0" y="358.5" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">preference between the two). Clopidogrel reserved</text>
+<text x="250.0" y="372.3" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">for contraindication/intolerance/cost/availability</text>
+<text x="250.0" y="386.2" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">issues, fibrinolysis-treated STEMI (concurrent</text>
+<text x="250.0" y="400.0" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">clopidogrel specifically), or long-term anticoagulation</text>
+<text x="250.0" y="413.8" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">combinations (preferred P2Y12 for triple therapy).</text>
+<rect x="500" y="304" width="460" height="130" rx="12" fill="var(--surface)" stroke="var(--accent-stemi)" stroke-width="1.6"/>
+<text x="730.0" y="330.9" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hold before ELECTIVE CABG:</text>
+<text x="730.0" y="344.7" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  Clopidogrel: 5 days</text>
+<text x="730.0" y="358.5" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  Prasugrel: 7 days</text>
+<text x="730.0" y="372.3" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  Ticagrelor: 3-5 days</text>
+<text x="730.0" y="386.2" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hold before URGENT CABG: at least 24h for all three</text>
+<text x="730.0" y="400.0" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Resume post-op when bleeding risk is not excessive</text>
+<text x="730.0" y="413.8" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (typically 24-72h)</text>
+<text x="20" y="460" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">De-escalation (switching ticagrelor/prasugrel to clopidogrel) after the first 30 days may reduce bleeding risk in selected patients -- de-escalation in the first 30 days after ACS is not recommended.</text>
+</svg>
+    <div class="diagram-caption">All three inhibit the same receptor but differ in onset, reversibility, and contraindications. The 2025 guideline's core message: reach for ticagrelor or prasugrel first, not clopidogrel, for most PCI patients.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Prasugrel's hard contraindication</span>
+    <p>Prasugrel is Class 3 (contraindicated) in patients with a history of stroke or TIA — this is not a relative caution, it's a hard stop per the 2025 guideline. Ticagrelor remains an option in this population when a potent P2Y12 inhibitor is still preferred.</p>
+  </div>
+
+  <h4 class="micro-title">Situational Selection Logic</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">STEMI treated with fibrinolysis</span><p>Give clopidogrel specifically alongside the fibrinolytic — this is a distinct recommendation from PCI-treated ACS, where ticagrelor/prasugrel are preferred. Ticagrelor and prasugrel haven't been established as safe/effective in the fibrinolysis-treated population the way clopidogrel has.</p></div>
+    <div class="callout warn"><span class="callout-label">Delayed angiography &gt;24h (NSTE-ACS)</span><p>Upstream clopidogrel or ticagrelor may be considered to reduce MACE while awaiting angiography — this differs from the immediate-PCI scenario where the preference is more clearly stated toward ticagrelor/prasugrel.</p></div>
+  </div>
+
+  <h4 class="micro-title">Bleeding-Risk Mitigation Strategies (2025 Guideline)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Strategy</th></tr></thead>
+      <tbody>
+        <tr><td>GI bleeding risk</td><td>Proton pump inhibitor recommended alongside DAPT</td></tr>
+        <tr><td>Tolerated ticagrelor DAPT ≥1 month</td><td>Transition to ticagrelor monotherapy (drop aspirin) — reduces bleeding without a meaningful increase in ischemic events in appropriately selected patients</td></tr>
+        <tr><td>Requires long-term anticoagulation</td><td>Discontinue aspirin 1-4 weeks post-PCI, continue the P2Y12 inhibitor (preferably clopidogrel) plus anticoagulant — see Anticoagulation Strategy section for full triple-therapy discussion</td></tr>
+        <tr><td>High bleeding risk, selected patients</td><td>Shorter DAPT duration (1-3 months) with transition to P2Y12 monotherapy is reasonable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">De-escalation timing matters</span>
+    <p>Switching from ticagrelor/prasugrel down to clopidogrel is a reasonable bleeding-reduction strategy — but <em>not</em> in the first 30 days after the ACS event. Early de-escalation during the highest-risk window for recurrent ischemic events is specifically not recommended; this is a later (typically post-30-day) adjustment.</p>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Lipid-lowering runs alongside antiplatelet therapy</span>
+    <p>The 2025 guideline reinforces high-intensity statin for all ACS patients with the option to add ezetimibe concurrently at the outset — and explicitly supports adding a non-statin agent (ezetimibe, a PCSK9 inhibitor, inclisiran, or bempedoic acid) if LDL-C remains ≥70 mg/dL on maximally tolerated statin, with further intensification reasonable even in the 55-70 mg/dL range in this high-risk population. This aligns with the 2026 Dyslipidemia Guideline goals covered in Vol. 1a.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology for any complex antiplatelet decision — recent stroke/TIA with need for potent P2Y12 inhibition, concurrent anticoagulation requirement, or upcoming non-cardiac surgery requiring perioperative bridging decisions.</dd>
+      <dt>Involve cardiac surgery early</dt><dd>Any patient on DAPT who may need CABG — communicate exact agent and last dose time immediately so hold-time planning (5/7/3-5 days for clopidogrel/prasugrel/ticagrelor) can begin without unnecessary delay to revascularization.</dd>
+      <dt>Transfer considerations</dt><dd>Ensure the exact P2Y12 agent, loading dose, and administration time travel with the patient in written form — this materially changes downstream antiplatelet and surgical timing decisions at the receiving facility.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology for real-time agent selection during active PCI planning; general cardiology or the patient's outpatient cardiologist for long-term DAPT duration and de-escalation timing decisions.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: ANTICOAG -->
+
+<section class="section" id="anticoag">
+  <div class="section-eyebrow"><span class="dot"></span>05 / ACS Deep Dive</div>
+  <h2 class="section-title">Anticoagulation Strategy</h2>
+  <p class="section-sub">Four agents with overlapping but distinct roles — plus the single most consequential shift in ACS anticoagulation practice over the past decade: getting out from under prolonged triple therapy.</p>
+
+  <h3 class="sub-title">Choosing an Anticoagulant</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_anticoag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_anticoag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_anticoag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_anticoag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="220" height="200" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="130.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" style="text-transform:uppercase">Unfractionated Heparin</text>
+<text x="130.0" y="92.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Weight-based bolus + infusion,</text>
+<text x="130.0" y="105.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  titrated to aPTT</text>
+<text x="130.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fully reversible (protamine) --</text>
+<text x="130.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  preferred when invasive strategy</text>
+<text x="130.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  imminent or renal function unclear</text>
+<text x="130.0" y="156.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Short half-life -- easy to stop for</text>
+<text x="130.0" y="169.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  urgent procedures</text>
+<rect x="260" y="20" width="220" height="200" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="370.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" style="text-transform:uppercase">Enoxaparin (LMWH)</text>
+<text x="370.0" y="92.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Subcutaneous (or IV loading) dosing,</text>
+<text x="370.0" y="105.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  no routine monitoring needed</text>
+<text x="370.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">REQUIRES renal dose adjustment</text>
+<text x="370.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (CrCl &lt;30)</text>
+<text x="370.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AVOID crossover between UFH and</text>
+<text x="370.0" y="156.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  enoxaparin mid-treatment --</text>
+<text x="370.0" y="169.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  increases bleeding risk</text>
+<rect x="500" y="20" width="220" height="200" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="610.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" style="text-transform:uppercase">Fondaparinux</text>
+<text x="610.0" y="92.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pure factor Xa inhibitor,</text>
+<text x="610.0" y="105.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  lowest bleeding risk of the four</text>
+<text x="610.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Needs supplemental UFH at time of</text>
+<text x="610.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  PCI (catheter thrombosis risk</text>
+<text x="610.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  otherwise)</text>
+<text x="610.0" y="156.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ESC-preferred for conservatively-</text>
+<text x="610.0" y="169.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  managed NSTE-ACS</text>
+<rect x="740" y="20" width="220" height="200" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="850.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" style="text-transform:uppercase">Bivalirudin</text>
+<text x="850.0" y="92.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Direct thrombin inhibitor, used</text>
+<text x="850.0" y="105.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  primarily during PCI itself</text>
+<text x="850.0" y="118.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">HIT-safe alternative</text>
+<text x="850.0" y="131.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Alternative to UFH+GPIIb/IIIa in</text>
+<text x="850.0" y="143.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  high bleeding-risk patients</text>
+<text x="850.0" y="156.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Short half-life, no reversal agent</text>
+<text x="850.0" y="169.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  needed given rapid offset</text>
+<line x1="20" y1="244" x2="960" y2="244" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="268" font-size="12.5" font-weight="700" fill="var(--accent-anticoag)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Triple therapy: DAPT + anticoagulation (AFib + PCI)</text>
+<rect x="20" y="284" width="460" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="250.0" y="308.2" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Historical approach: aspirin + P2Y12 +</text>
+<text x="250.0" y="322.1" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">oral anticoagulant ("triple therapy") for</text>
+<text x="250.0" y="335.9" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">an extended period -- high bleeding risk</text>
+<text x="250.0" y="349.7" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">without proportional ischemic benefit</text>
+<text x="250.0" y="363.5" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="377.3" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Trial evidence (WOEST, PIONEER AF-PCI,</text>
+<text x="250.0" y="391.2" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">RE-DUAL PCI, AUGUSTUS) consistently</text>
+<text x="250.0" y="405.0" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">shows dropping aspirin early reduces</text>
+<text x="250.0" y="418.8" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">bleeding substantially without a</text>
+<text x="250.0" y="432.6" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">meaningful increase in stent thrombosis</text>
+<text x="250.0" y="446.5" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">or ischemic events in most patients</text>
+<rect x="500" y="284" width="460" height="180" rx="12" fill="var(--surface)" stroke="var(--accent-anticoag)" stroke-width="1.6"/>
+<text x="730.0" y="303.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Current standard: brief triple therapy</text>
+<text x="730.0" y="316.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(days, at most through hospitalization)</text>
+<text x="730.0" y="330.2" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; transition to DUAL therapy (oral</text>
+<text x="730.0" y="343.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">anticoagulant + single P2Y12 inhibitor,</text>
+<text x="730.0" y="357.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">preferably clopidogrel) for the remainder</text>
+<text x="730.0" y="370.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">of the intended DAPT duration</text>
+<text x="730.0" y="384.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="397.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DOAC (apixaban, rivaroxaban, dabigatran,</text>
+<text x="730.0" y="410.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">edoxaban) preferred over warfarin in this</text>
+<text x="730.0" y="424.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">combination per the trials above, absent</text>
+<text x="730.0" y="437.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">a specific indication for warfarin (e.g.</text>
+<text x="730.0" y="451.2" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">mechanical valve)</text>
+</svg>
+    <div class="diagram-caption">Top: the four anticoagulants used in ACS and their key differentiators. Bottom: the shift from prolonged triple therapy to early dual-therapy in AFib patients undergoing PCI.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Don't cross over between UFH and enoxaparin</span>
+    <p>Switching anticoagulant classes mid-treatment (starting UFH then switching to enoxaparin, or vice versa) is associated with increased bleeding risk without a clear offsetting benefit — pick one strategy at the outset and stay with it through the index hospitalization when possible.</p>
+  </div>
+
+  <h4 class="micro-title">Quick Selection Logic</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Planned early invasive strategy</span><p>UFH is often preferred — its short half-life and full reversibility with protamine make it easy to manage around an imminent catheterization, and it avoids the renal-adjustment complexity of enoxaparin in a patient whose renal function may still be in flux.</p></div>
+    <div class="callout"><span class="callout-label">Conservative/medical management</span><p>Enoxaparin or fondaparinux are reasonable — fondaparinux in particular carries the lowest bleeding risk of the four agents, which matters most in a patient not headed to the cath lab imminently.</p></div>
+  </div>
+
+  <h3 class="sub-title">Triple Therapy → Dual Therapy: What Changed</h3>
+  <p>For years, standard practice for a patient with AFib undergoing PCI was aspirin + P2Y12 inhibitor + oral anticoagulant, often continued for months. Four major trials changed that.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Trial</th><th>Key finding</th></tr></thead>
+      <tbody>
+        <tr><td>WOEST</td><td>Dropping aspirin (warfarin + clopidogrel only) reduced bleeding without increasing thrombotic events</td></tr>
+        <tr><td>PIONEER AF-PCI</td><td>Rivaroxaban-based dual/reduced-dose strategies reduced bleeding compared to standard triple therapy</td></tr>
+        <tr><td>RE-DUAL PCI</td><td>Dabigatran + P2Y12 (dual) reduced bleeding vs. warfarin-based triple therapy</td></tr>
+        <tr><td>AUGUSTUS</td><td>Apixaban + P2Y12 (no aspirin) had the lowest bleeding rates among the strategies tested, without excess ischemic events</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Practical takeaway</span>
+    <p>The current default: brief triple therapy (often just through the hospitalization), then drop aspirin and continue the anticoagulant plus a single P2Y12 inhibitor — preferably clopidogrel — for the remainder of the intended antiplatelet course. A DOAC is generally preferred over warfarin in this combination unless there's a specific reason warfarin is required (mechanical valve, certain antiphospholipid syndrome presentations).</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Individualize the exact aspirin discontinuation timing</span>
+    <p>The 1-4 week window for aspirin discontinuation after PCI isn't one-size-fits-all — a patient with a complex stenting result, recent stent thrombosis history, or very high thrombotic risk may warrant staying closer to the 4-week end (or occasionally longer per specialist judgment), while a straightforward PCI result in a patient at high bleeding risk may warrant stopping aspirin closer to the 1-week end.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology for any AFib+PCI patient to establish the anticoagulation/antiplatelet combination and duration plan before discharge — this should be an explicit, documented plan, not an implicit continuation of whatever was started acutely.</dd>
+      <dt>Pharmacy/cardiology co-management</dt><dd>Renal function trending in a patient on enoxaparin, or any complex multi-drug bleeding-risk assessment (anticoagulant + DAPT + additional risk factors like recent GI bleed) benefits from structured pharmacy involvement alongside cardiology.</dd>
+      <dt>Transfer considerations</dt><dd>Document the exact anticoagulant, dose, and last administration time clearly in transfer paperwork — timing relative to a planned procedure (PCI, surgery) at the receiving facility depends on this information being accurate and immediately available.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology for anticoagulant selection around active PCI; general cardiology or the patient's anticoagulation clinic for long-term triple-to-dual therapy transition planning.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: RVMI -->
+
+<section class="section" id="rvmi">
+  <div class="section-eyebrow"><span class="dot"></span>06 / ACS Deep Dive</div>
+  <h2 class="section-title">Right Ventricular MI</h2>
+  <p class="section-sub">Roughly one-third of inferior MIs involve meaningful RV infarction — and the standard ACS reflexes (nitrates for chest pain, diuretics for any hint of congestion) can actively harm these patients.</p>
+
+  <h3 class="sub-title">Preload-Dependent Physiology</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_rvmi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_rvmi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_rvmi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_rvmi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="12.5" font-weight="700" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Why RV MI behaves differently: preload-dependent physiology</text>
+<rect x="20" y="40" width="210" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="125.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase">RCA occlusion (proximal)</text>
+<text x="125.0" y="126.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">The RCA supplies the RV free wall in the large majority of people -- proximal occlusion threatens both inferior LV wall AND the RV</text>
+<rect x="260" y="40" width="210" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="365.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase">RV contractility falls</text>
+<text x="365.0" y="126.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">The thin-walled RV tolerates ischemia poorly -- contractile function drops disproportionately to the LV in the same occlusion</text>
+<rect x="500" y="40" width="210" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="605.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase">RV becomes a passive conduit</text>
+<text x="605.0" y="126.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Cardiac output becomes almost entirely dependent on adequate RV PRELOAD to passively fill the LV across a poorly-contracting RV</text>
+<rect x="740" y="40" width="210" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="845.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase">Preload-sensitive hypotension</text>
+<text x="845.0" y="126.2" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Anything that drops preload (nitrates, diuretics, opioids, positive-pressure ventilation) can precipitate profound hypotension</text>
+<line x1="230" y1="115" x2="260" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_rvmi)"/>
+<line x1="470" y1="115" x2="500" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_rvmi)"/>
+<line x1="710" y1="115" x2="740" y2="115" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_rvmi)"/>
+<line x1="20" y1="216" x2="960" y2="216" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="240" font-size="12.5" font-weight="700" fill="var(--accent-rvmi)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Diagnosis: always get right-sided leads with an inferior MI</text>
+<rect x="20" y="256" width="460" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="250.0" y="286.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Any inferior STEMI (II, III, aVF) warrants right-sided</text>
+<text x="250.0" y="300.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">leads (V4R most sensitive/specific) BEFORE giving</text>
+<text x="250.0" y="314.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">nitrates. ST-elevation &gt;=1mm in V4R indicates RV</text>
+<text x="250.0" y="328.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">involvement and should change your management</text>
+<text x="250.0" y="342.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">immediately, not after a hypotensive episode.</text>
+<rect x="500" y="256" width="460" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-rvmi)" stroke-width="1.6"/>
+<text x="730.0" y="286.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Classic triad: hypotension + clear lung fields</text>
+<text x="730.0" y="300.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(no pulmonary edema) + elevated JVP -- this</text>
+<text x="730.0" y="314.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">combination in the setting of inferior MI should</text>
+<text x="730.0" y="328.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">immediately raise suspicion even before V4R</text>
+<text x="730.0" y="342.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">confirmation is available.</text>
+<line x1="20" y1="386" x2="960" y2="386" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="410" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Management pitfalls -- what NOT to give</text>
+<rect x="20" y="426" width="460" height="100" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="250.0" y="451.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AVOID: nitrates, diuretics, morphine (all reduce</text>
+<text x="250.0" y="465.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">preload) -- can precipitate profound, hard-to-</text>
+<text x="250.0" y="479.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reverse hypotension in a preload-dependent</text>
+<text x="250.0" y="493.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">circulation. This is one of the highest-yield</text>
+<text x="250.0" y="507.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">"don't miss" teaching points in all of ACS management.</text>
+<rect x="500" y="426" width="460" height="100" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="730.0" y="451.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">INSTEAD: give IV fluid boluses to optimize preload</text>
+<text x="730.0" y="465.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">first-line; if hypotension persists despite adequate</text>
+<text x="730.0" y="479.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">preload, add inotropic support (dobutamine) --</text>
+<text x="730.0" y="493.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">and pursue emergent reperfusion, since restoring</text>
+<text x="730.0" y="507.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">flow is the definitive fix.</text>
+</svg>
+    <div class="diagram-caption">Top: why RV infarction creates a preload-dependent circulation. Middle: the diagnostic approach (right-sided leads, classic triad). Bottom: the management pitfalls that make this a genuine "don't miss."</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The single highest-yield teaching point in this section</span>
+    <p>A patient with an inferior STEMI who becomes hypotensive after receiving sublingual nitroglycerin has RV MI until proven otherwise. This is one of the most common preventable iatrogenic complications in ACS management — check right-sided leads <em>before</em> reaching for nitrates in any inferior MI, not after the patient crashes.</p>
+  </div>
+
+  <h4 class="micro-title">Putting It Together at the Bedside</h4>
+  <div class="pearl-grid two">
+    <div class="callout pearl"><span class="callout-label">Recognize early</span><p>Inferior STEMI + hypotension + clear lungs + elevated JVP is close to pathognomonic even before right-sided leads confirm it. Get V4R on every inferior MI as a reflexive habit, the same way you'd reflexively get a rhythm strip.</p></div>
+    <div class="callout warn"><span class="callout-label">Treat the physiology, not the reflex</span><p>Fluid boluses first, inotropes (dobutamine) if hypotension persists despite adequate preload, and emergent reperfusion as the definitive treatment — the same reperfusion pathway as any other STEMI, just with a very different supportive-care approach in the meantime.</p></div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">AV block co-travels with RV MI</span>
+    <p>Because the RCA also supplies the AV node in most people, proximal RCA occlusion causing RV MI frequently coexists with transient AV block — don't be surprised to see both, and remember that the AV block usually improves with reperfusion rather than requiring permanent pacing (see Vol. 3's Bradyarrhythmias section for the broader AV block framework).</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology/interventional cardiology immediately for any confirmed RV MI — this changes both hemodynamic management and reperfusion urgency framing.</dd>
+      <dt>ICU admission</dt><dd>Any RV MI with hypotension, need for fluid resuscitation titration, or inotropic support — these patients need closer hemodynamic monitoring than a routine STEMI.</dd>
+      <dt>Transfer if no cath lab on-site</dt><dd>RV MI at a non-PCI-capable facility follows the same STEMI transfer urgency as any other territory — communicate the RV involvement specifically so the receiving team anticipates the preload-dependent physiology.</dd>
+      <dt>Transport considerations</dt><dd>IV access for fluid administration secured before transport; avoid nitrates/opioids for pain control en route if RV MI is suspected (consider alternative analgesia); hemodynamic monitoring throughout given the risk of preload-sensitive decompensation with positioning changes or vibration/movement during transport.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology for emergent reperfusion — the definitive treatment is the same as any STEMI, but pre-notify the receiving team about the RV involvement so they're prepared for potential hemodynamic instability during and after the procedure.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: SPECIAL -->
+
+<section class="section" id="special">
+  <div class="section-eyebrow"><span class="dot"></span>07 / ACS Deep Dive</div>
+  <h2 class="section-title">Special Populations</h2>
+  <p class="section-sub">Four patterns that change either the recognition or the management of ACS meaningfully enough to warrant a reflexive mental checklist.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_special" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_special" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_special" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_special" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="220" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-special)" stroke-width="1.6"/>
+<text x="130.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-special)" font-family="Inter, sans-serif" style="text-transform:uppercase">Women</text>
+<text x="130.0" y="104.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Atypical presentation more common:</text>
+<text x="130.0" y="117.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  dyspnea, fatigue, nausea, back/jaw pain</text>
+<text x="130.0" y="129.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  without classic crushing chest pain</text>
+<text x="130.0" y="142.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Symptom onset-to-treatment delays are</text>
+<text x="130.0" y="154.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  well documented -- often from both</text>
+<text x="130.0" y="167.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  patient and system-level factors</text>
+<text x="130.0" y="179.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SCAD (spontaneous coronary artery</text>
+<text x="130.0" y="192.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  dissection): disproportionately affects</text>
+<text x="130.0" y="204.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  women, esp. peripartum/postpartum --</text>
+<text x="130.0" y="217.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  consider before assuming atherosclerotic ACS</text>
+<rect x="260" y="20" width="220" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-special)" stroke-width="1.6"/>
+<text x="370.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-special)" font-family="Inter, sans-serif" style="text-transform:uppercase">Diabetics</text>
+<text x="370.0" y="104.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Silent/painless ischemia is common</text>
+<text x="370.0" y="117.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (autonomic neuropathy blunts anginal</text>
+<text x="370.0" y="129.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  warning signals)</text>
+<text x="370.0" y="142.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Higher baseline risk -- treat as very high</text>
+<text x="370.0" y="154.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  risk ASCVD category by default for lipid</text>
+<text x="370.0" y="167.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  goals (see Vol. 1a)</text>
+<text x="370.0" y="179.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Worse outcomes overall -- lower threshold</text>
+<text x="370.0" y="192.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  for cardiac workup with vague symptoms</text>
+<text x="370.0" y="204.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (fatigue, malaise, unexplained</text>
+<text x="370.0" y="217.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  hyperglycemia) in this population</text>
+<rect x="500" y="20" width="220" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-special)" stroke-width="1.6"/>
+<text x="610.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-special)" font-family="Inter, sans-serif" style="text-transform:uppercase">Cocaine-Associated</text>
+<text x="610.0" y="98.3" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AVOID unopposed beta-blockade --</text>
+<text x="610.0" y="110.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  unopposed alpha-mediated coronary</text>
+<text x="610.0" y="123.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  vasospasm risk</text>
+<text x="610.0" y="135.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">First-line: benzodiazepines, nitrates,</text>
+<text x="610.0" y="148.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  aspirin; calcium channel blockers or</text>
+<text x="610.0" y="161.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  alpha-blockade for persistent</text>
+<text x="610.0" y="173.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  hypertension/vasospasm</text>
+<text x="610.0" y="186.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Consider coronary vasospasm even with</text>
+<text x="610.0" y="198.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  normal-appearing coronaries on</text>
+<text x="610.0" y="211.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  angiography -- provocative testing</text>
+<text x="610.0" y="223.8" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  may be needed</text>
+<rect x="740" y="20" width="220" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-special)" stroke-width="1.6"/>
+<text x="850.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-special)" font-family="Inter, sans-serif" style="text-transform:uppercase">CKD / Dialysis</text>
+<text x="850.0" y="110.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Enoxaparin requires dose reduction</text>
+<text x="850.0" y="123.4" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (CrCl &lt;30) -- UFH often preferred to</text>
+<text x="850.0" y="135.9" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  avoid accumulation/bleeding risk</text>
+<text x="850.0" y="148.5" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Contrast-induced nephropathy risk --</text>
+<text x="850.0" y="161.0" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  balance against benefit of angiography,</text>
+<text x="850.0" y="173.6" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  use lowest effective contrast volume</text>
+<text x="850.0" y="186.1" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Troponin baseline may be chronically</text>
+<text x="850.0" y="198.7" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  elevated -- rely on the RISE/FALL</text>
+<text x="850.0" y="211.2" text-anchor="middle" font-size="9.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pattern, not a single absolute value</text>
+<text x="20" y="320" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">These four categories are not exhaustive -- elderly patients, post-transplant patients, and those with prior CABG each carry their own special considerations worth a dedicated look</text>
+<text x="20" y="340" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">when they arise, but the four above are the highest-yield, most commonly encountered patterns to build reflexive recognition around.</text>
+</svg>
+    <div class="diagram-caption">Each population shifts either the presentation, the risk profile, or the treatment approach in a specific, actionable way — not just generically "higher risk."</div>
+  </div>
+
+  <h3 class="sub-title">Women — Presentation and SCAD</h3>
+  <p>Atypical presentation in women is well documented, but framing it purely as "women present atypically" undersells the actionable point: dyspnea, fatigue, nausea, and back or jaw pain <em>are</em> anginal equivalents, not atypical noise to be discounted. The other critical pattern to know: spontaneous coronary artery dissection (SCAD) disproportionately affects women, particularly in the peripartum/postpartum period, and represents a fundamentally different mechanism (an intimal tear within the coronary artery wall itself, not atherosclerotic plaque rupture) that changes the approach to revascularization — conservative management is often preferred over PCI in stable SCAD, since instrumentation can propagate the dissection.</p>
+
+  <h3 class="sub-title">Diabetics — Silent Ischemia</h3>
+  <p>Autonomic neuropathy blunts the anginal warning system in longstanding diabetes, so ischemia can present as nothing more than fatigue, malaise, or unexplained glycemic instability. Combined with diabetes automatically qualifying as very-high-risk for lipid goals (Vol. 1a), the practical message is a lower threshold for cardiac workup in a diabetic patient with vague symptoms than you'd apply to a non-diabetic patient with the same complaint.</p>
+
+  <h3 class="sub-title">Cocaine-Associated Chest Pain</h3>
+  <p>The pharmacology here directly changes first-line therapy. Cocaine causes both direct coronary vasospasm and accelerated atherosclerosis with chronic use — but the acute management pitfall is reaching for a beta-blocker the way you would for any other chest pain presentation.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">Why beta-blockers are dangerous here</span>
+    <p>Cocaine causes both alpha- and beta-adrenergic stimulation. Beta-blockade leaves the alpha-mediated vasoconstriction unopposed, which can worsen coronary vasospasm and paradoxically increase blood pressure and ischemia. Benzodiazepines (treating the underlying sympathetic surge), nitrates, and aspirin are first-line; calcium channel blockers or phentolamine (alpha-blockade) are reasonable for persistent hypertension or suspected ongoing vasospasm.</p>
+  </div>
+
+  <h3 class="sub-title">CKD / Dialysis Patients</h3>
+  <p>Two practical issues dominate: anticoagulant dosing and troponin interpretation. Enoxaparin requires renal dose adjustment below a CrCl of 30, and many clinicians default to UFH in this population specifically to avoid drug accumulation and unpredictable anticoagulation effect. Separately, chronically elevated baseline troponin (reduced renal clearance of the protein, not necessarily active cardiac injury) means the diagnostic emphasis shifts to a clear rise-and-fall pattern on serial measurement rather than any single absolute value — a stably elevated troponin without a dynamic change is a chronic renal finding, not evidence of acute MI.</p>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology for any suspected SCAD (imaging characteristics differ from atherosclerotic disease and may need a specific interventional approach or conservative management decision), and toxicology/cardiology jointly for cocaine-associated ACS with refractory hypertension or suspected ongoing vasospasm.</dd>
+      <dt>ICU admission</dt><dd>Any CKD/dialysis patient with ACS and hemodynamic instability, given the narrower margin for fluid and medication dosing errors in this population; cocaine-associated ACS with persistent hypertensive emergency features.</dd>
+      <dt>Transfer if no interventional cardiology on-site</dt><dd>Suspected SCAD needing specialized imaging interpretation and a nuanced revascularization-vs-conservative decision; any diabetic or CKD patient with ACS requiring emergent PCI at a facility without that capability, following standard STEMI/high-risk NSTE-ACS transfer criteria.</dd>
+      <dt>Transport considerations</dt><dd>For CKD/dialysis patients, communicate dialysis schedule and last session timing to the receiving facility — this affects both fluid management and timing of any contrast-requiring procedure. For cocaine-associated presentations, avoid beta-blockers throughout transport and ensure benzodiazepines are available if agitation or recurrent hypertension develops.</dd>
+      <dt>Who to call</dt><dd>Interventional cardiology for SCAD (specialized decision-making around intervention vs. conservative management) and for standard high-risk ACS in any of these populations; nephrology co-management for CKD/dialysis patients around contrast timing and anticoagulant dosing.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiology Atlas Vol. 4 — ACS Deep Dive · Built for clinical education and bedside reference. Interactive calculators are teaching aids, not a substitute for clinical judgment or institutional protocol. Verify thresholds and dosing against current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>

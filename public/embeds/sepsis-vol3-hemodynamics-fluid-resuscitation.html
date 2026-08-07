@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepsis Atlas · Vol. 3 — Hemodynamics &amp; Fluid Resuscitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b3122c; --accent-dim:#7a0c1e; --accent-tint:#fdecee;
+  --bg:#faf8f6; --bg-panel:#ffffff; --bg-raised:#f4f0ee;
+  --text:#1c1917; --text-dim:#57534e; --text-faint:#8b8681;
+  --border:#e4dfdb; --border-strong:#cfc8c2;
+  --warn-bg:#fff4e5; --warn-border:#f0b854; --warn-text:#7a4a08;
+  --danger-bg:#fdecee; --danger-border:#e88a95;
+  --good-bg:#eaf6ee; --good-border:#8fd0a4; --good-text:#1e6b3a;
+  --shadow:0 1px 3px rgba(28,25,23,.06), 0 1px 2px rgba(28,25,23,.08);
+  --radius:10px;
+}
+[data-theme="dark"]{
+  --accent:#ff5c72; --accent-dim:#ff8a99; --accent-tint:#2b1215;
+  --bg:#141210; --bg-panel:#1c1917; --bg-raised:#242020;
+  --text:#f2ede9; --text-dim:#b8b0a9; --text-faint:#7d766f;
+  --border:#332e2b; --border-strong:#453f3b;
+  --warn-bg:#2e2410; --warn-border:#8a6a1f; --warn-text:#f0c165;
+  --danger-bg:#2b1215; --danger-border:#7a2c35;
+  --good-bg:#122a1a; --good-border:#2f6b47; --good-text:#7fd69a;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; font-size:16px; transition:background .2s,color .2s;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; font-weight:600; color:var(--text); letter-spacing:-.01em;}
+.mono, code{font-family:'JetBrains Mono',monospace;}
+a{color:var(--accent);}
+header.top{position:sticky; top:0; z-index:100; background:var(--bg-panel); border-bottom:1px solid var(--border); padding:.75rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
+.brand{display:flex; align-items:center; gap:.65rem;}
+.brand-mark{width:34px; height:34px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; flex-shrink:0;}
+.brand-text .title{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; line-height:1.15;}
+.brand-text .sub{font-size:.72rem; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+.top-controls{display:flex; align-items:center; gap:.5rem;}
+.dropdown{position:relative;}
+.dropdown-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); padding:.5rem .9rem; border-radius:8px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:.4rem;}
+.dropdown-btn:hover{border-color:var(--accent);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.15); min-width:290px; padding:.4rem; z-index:200; max-height:75vh; overflow-y:auto;}
+.dropdown.open .dropdown-menu{display:block;}
+.dropdown-menu a{display:block; padding:.55rem .7rem; border-radius:7px; color:var(--text); text-decoration:none; font-size:.87rem; font-weight:500;}
+.dropdown-menu a:hover{background:var(--accent-tint); color:var(--accent);}
+.dropdown-menu .grp{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); padding:.6rem .7rem .2rem; font-family:'JetBrains Mono',monospace;}
+.theme-btn{background:var(--bg-raised); border:1px solid var(--border-strong); color:var(--text); width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;}
+main{max-width:920px; margin:0 auto; padding:1.75rem 1.25rem 6rem;}
+.hero{padding:1.5rem 0 .5rem;}
+.hero h1{font-size:2rem; margin:.2rem 0 .3rem;}
+.hero .kicker{font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-weight:700;}
+.hero p.lede{color:var(--text-dim); font-size:1.02rem; max-width:68ch;}
+section{padding:2.4rem 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+h2.sec-title{font-size:1.55rem; margin:0 0 .3rem; display:flex; align-items:center; gap:.55rem;}
+h2.sec-title .num{color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:1rem;}
+h3{font-size:1.15rem; margin:1.6rem 0 .6rem;}
+p{margin:.7rem 0;}
+.subnote{color:var(--text-faint); font-size:.85rem;}
+.box{border-radius:var(--radius); padding:1rem 1.15rem; margin:1.1rem 0; border:1px solid var(--border); background:var(--bg-panel); box-shadow:var(--shadow);}
+.box.warn{background:var(--warn-bg); border-color:var(--warn-border); color:var(--warn-text);}
+.box.danger{background:var(--danger-bg); border-color:var(--danger-border);}
+.box.good{background:var(--good-bg); border-color:var(--good-border); color:var(--good-text);}
+.box .box-title{font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; display:flex; align-items:center; gap:.4rem; font-family:'JetBrains Mono',monospace;}
+.box p{margin:.4rem 0;}
+.box p:first-child{margin-top:0;} .box p:last-child{margin-bottom:0;}
+.twrap{overflow-x:auto; margin:1.1rem 0; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);}
+table{width:100%; border-collapse:collapse; font-size:.88rem; background:var(--bg-panel);}
+th,td{padding:.6rem .75rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+th{background:var(--bg-raised); font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{font-family:'JetBrains Mono',monospace;}
+.pill{display:inline-block; padding:.12rem .55rem; border-radius:99px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace;}
+.pill.hi{background:var(--good-bg); color:var(--good-text); border:1px solid var(--good-border);}
+.pill.lo{background:var(--danger-bg); color:var(--accent-dim); border:1px solid var(--danger-border);}
+.pill.mid{background:var(--warn-bg); color:var(--warn-text); border:1px solid var(--warn-border);}
+.crit-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.75rem; margin:1.1rem 0;}
+.crit-card{border:1px solid var(--border); border-radius:var(--radius); padding:.9rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.crit-card .lbl{font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;}
+.crit-card .val{font-size:1.05rem; font-weight:600; margin:.25rem 0;}
+.crit-card .detail{font-size:.82rem; color:var(--text-dim);}
+.cols2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+.reflist{list-style:none; padding:0; margin:0; font-size:.85rem; color:var(--text-dim);}
+.reflist li{padding:.5rem 0; border-bottom:1px solid var(--border);}
+.reflist li:last-child{border-bottom:none;}
+.reflist .rn{color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; margin-right:.4rem;}
+.flow{display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0;}
+.flow-step{border:1px solid var(--border-strong); border-radius:var(--radius); padding:.85rem 1rem; background:var(--bg-panel); box-shadow:var(--shadow);}
+.flow-step .stepnum{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent); font-weight:700;}
+.flow-arrow{align-self:center; color:var(--text-faint); font-size:1.1rem;}
+footer{max-width:920px; margin:0 auto; padding:2rem 1.25rem 4rem; color:var(--text-faint); font-size:.8rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">S3</div>
+    <div class="brand-text">
+      <div class="title">Sepsis Atlas — Vol. 3</div>
+      <div class="sub">HEMODYNAMICS &amp; FLUID RESUSCITATION</div>
+    </div>
+  </div>
+  <div class="top-controls">
+    <div class="dropdown" id="navDrop">
+      <button class="dropdown-btn" onclick="document.getElementById('navDrop').classList.toggle('open')">Sections ▾</button>
+      <div class="dropdown-menu">
+        <div class="grp">Your Question, Answered</div>
+        <a href="#goal">"Met Its Goal" — Reframed</a>
+        <div class="grp">Fluids</div>
+        <a href="#bolus">The Initial Bolus: 30 mL/kg</a>
+        <a href="#clovers">CLOVERS &amp; CLASSIC — What the Trials Show</a>
+        <a href="#responsiveness">Assessing Fluid Responsiveness</a>
+        <div class="grp">Pressors</div>
+        <a href="#map">MAP Target &amp; First-Line Vasopressor</a>
+        <a href="#escalation">Escalation: Vasopressin, Refractory Shock</a>
+        <a href="#peripheral">Peripheral Vasopressor Administration</a>
+        <div class="grp">Disposition</div>
+        <a href="#disposition">Admission &amp; Escalation Criteria</a>
+        <a href="#algorithm">Bedside Algorithm</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle dark/light">🌙</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Emergency &amp; Critical Care Reference · Volume 3 of 6</div>
+    <h1>Hemodynamics &amp; Fluid Resuscitation</h1>
+    <p class="lede">When has volume resuscitation actually met its goal — and what "soft blood pressure despite fluids" should trigger. Built around CLOVERS, CLASSIC, and SSC 2021/2026 guidance on dynamic fluid responsiveness and vasopressor initiation.</p>
+  </div>
+
+  <section id="goal">
+    <h2 class="sec-title"><span class="num">01</span> "Met Its Goal" — Reframed</h2>
+    <p>Your instinct — 3L in, blood pressure still soft, this patient needs a higher level of care — is directionally correct, and the trial data actually backs the underlying logic. But the literature doesn't validate a flat "3 liters" cutoff; it validates a <strong>weight-based initial bolus</strong> followed by <strong>reassessment</strong>, not a fixed volume number that applies identically to a 55kg patient and a 130kg patient.</p>
+    <div class="box good">
+      <div class="box-title">The real answer</div>
+      <p>Resuscitation has "met its goal" — or rather, reached its decision point — when you've given the <strong>initial 30 mL/kg crystalloid bolus</strong> (SSC 1-hour/3-hour bundle target) and reassessed. If MAP remains &lt;65 mmHg, or perfusion markers (lactate, capillary refill, mentation) remain abnormal, the correct next move per the trial evidence is <strong>not</strong> reflexive additional large-volume boluses — it's starting norepinephrine while continuing smaller, dynamically-guided fluid challenges as indicated. That patient is, by definition, in septic shock requiring vasopressors — which is an ICU-level disposition, not a floor admission with orders for more IV fluid.</p>
+    </div>
+    <p>For a typical 70–100 kg adult, 30 mL/kg lands at <strong>2.1–3.0 liters</strong> — which is almost exactly your "3L" reference point. So the number you're using in practice is a reasonable population-level approximation of the guideline-based weight-adjusted target. The refinement worth building into your documentation and teaching: chart it as "30 mL/kg (≈X liters for this patient's weight) administered, reassessed, still hypotensive/hypoperfused → vasopressors initiated, ICU-level care" rather than a flat volume threshold — that's both more defensible and more accurate for patients well outside 70–100kg.</p>
+  </section>
+
+  <section id="bolus">
+    <h2 class="sec-title"><span class="num">02</span> The Initial Bolus: 30 mL/kg <span class="pill hi">STABLE</span></h2>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <div class="lbl">Trigger</div>
+        <div class="val">Hypotension or lactate ≥4</div>
+        <div class="detail">SSC bundle criterion for initiating the 30 mL/kg crystalloid bolus, carried through 2021 into 2026.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Volume</div>
+        <div class="val">30 mL/kg, weight-based</div>
+        <div class="detail">Use actual body weight per standard bundle definitions; balanced crystalloid (LR/Plasma-Lyte) generally preferred over 0.9% saline for large-volume resuscitation.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">Timing</div>
+        <div class="val">Within 3 hours</div>
+        <div class="detail">CMS SEP-1 bundle window — but in practice, most of this volume should be running well before the 3-hour mark in a patient with septic shock.</div>
+      </div>
+      <div class="crit-card">
+        <div class="lbl">This is a starting point, not a ceiling or a mandate</div>
+        <div class="val">Reassess, don't autopilot</div>
+        <div class="detail">SSC 2021/2026 both frame this as an initial bolus to be followed by reassessment — not a fixed total resuscitation volume to hit before considering pressors.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clovers">
+    <h2 class="sec-title"><span class="num">03</span> CLOVERS &amp; CLASSIC — What the Trials Actually Show</h2>
+    <div class="box">
+      <div class="box-title">CLOVERS (NEJM 2023) — the trial that should anchor this conversation</div>
+      <p>NHLBI-funded, 60 US centers, unblinded superiority trial. Patients with sepsis-induced hypotension who had already received <strong>1–3 liters</strong> of crystalloid were randomized to a <strong>restrictive strategy</strong> (vasopressor-predominant, minimize further fluid) vs. a <strong>liberal strategy</strong> (fluid-predominant, delay pressors). Primary outcome: all-cause mortality before discharge home by day 90.</p>
+      <p><strong>Result: no significant difference in mortality between strategies.</strong> The trial was stopped early for futility. Practical takeaway from the trial group itself: in a heterogeneous disease like sepsis, <strong>early vasopressor initiation is not an inferior strategy to continued fluid loading</strong> — it is, per this data, an equally valid path, and it avoids the fluid-overload downsides (pulmonary edema, worsened oxygenation, renal congestion) that come with pushing large volumes into a vasoplegic, capillary-leaky patient.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">CLASSIC (NEJM/Intensive Care Med) — the ICU-phase companion data</div>
+      <p>Compared a restrictive fluid protocol against standard (more liberal) fluid therapy in patients <strong>already admitted to the ICU</strong> after initial resuscitation — a slightly different population than CLOVERS (which enrolled almost exclusively from the ED). <strong>Also showed no difference in 90-day all-cause mortality</strong> between strategies. Together, CLOVERS and CLASSIC form the modern evidence base for "more fluid is not automatically better" across both the ED-resuscitation phase and the ICU-maintenance phase.</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">CENSER — early low-dose norepinephrine</div>
+      <p>Randomized, double-blind, placebo-controlled trial of early low-dose norepinephrine vs. standard care in septic shock. Norepinephrine was started at a median of <strong>93 minutes</strong> from ED arrival in the early-pressor arm vs. <strong>192 minutes</strong> in standard care — and early initiation improved shock control by 6 hours. This is direct supporting evidence for not delaying vasopressors while chasing a fluid volume target.</p>
+    </div>
+  </section>
+
+  <section id="responsiveness">
+    <h2 class="sec-title"><span class="num">04</span> Assessing Fluid Responsiveness</h2>
+    <p>SSC 2021 (unchanged in substance in 2026) explicitly moved away from static measures like CVP — a legacy of the Rivers EGDT era that ProCESS/ARISE/ProMISe all failed to replicate benefit for — toward <strong>dynamic</strong> parameters.</p>
+    <div class="cols2">
+      <div class="box good">
+        <div class="box-title">Dynamic measures — preferred</div>
+        <p><strong>Passive leg raise (PLR)</strong> with stroke volume, SVV, PP, or PPV response</p>
+        <p><strong>Fluid bolus response</strong> — small challenge, reassess SV/CO</p>
+        <p><strong>Capillary refill time</strong> — SSC 2021 suggests using CRT as an adjunct to guide resuscitation; low-tech, bedside, no equipment needed</p>
+        <p><strong>Point-of-care echo</strong> where available — IVC variation, LV filling</p>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Honest limitation of PLR</div>
+        <p>A CHEST-published cohort of septic shock patients already on vasopressors found <strong>PLR's positive predictive value was poor across every parameter tested</strong> — best PPV was stroke volume index at only 63%, followed by MAP (58%), CI (38%), PP (26%). <strong>Negative predictive value was more robust</strong> (HR 87%, CI 74%, SVI 73%). Clinical implication from that study: PLR is better used to <em>prevent inappropriate additional fluid</em> (ruling out responsiveness) than to confidently predict who will actually improve with more fluid.</p>
+      </div>
+    </div>
+    <p>A separate multicenter RCT of PLR-guided resuscitation vs. usual care in septic shock (124 patients) found the dynamic-assessment arm had a significantly <strong>lower net fluid balance</strong> (0.65L vs. 2.02L at 72h/ICU discharge) with numerically fewer renal and respiratory complications — reinforcing that guided reassessment, not volume-chasing, is the safer default.</p>
+  </section>
+
+  <section id="map">
+    <h2 class="sec-title"><span class="num">05</span> MAP Target &amp; First-Line Vasopressor <span class="pill mid">SSC 2021/2026</span></h2>
+    <div class="box danger">
+      <div class="box-title">MAP ≥ 65 mmHg</div>
+      <p>SSC recommends an initial MAP target of <strong>65 mmHg</strong> for adults with septic shock on vasopressors, over higher targets — moderate-quality evidence. This is the number that operationalizes "still soft" into an action threshold: once vasopressors are running, 65 is the target you're titrating to, not a normal-range blood pressure.</p>
+    </div>
+    <div class="cols2">
+      <div class="box">
+        <div class="box-title">First-line: norepinephrine</div>
+        <p>Norepinephrine remains first-line for septic shock. Where concomitant cardiac dysfunction is present, SSC 2026 suggests either <strong>norepinephrine or epinephrine</strong> — with a practical tiebreaker: <strong>norepinephrine preferred with tachyarrhythmia/significant sinus tachycardia</strong>; <strong>epinephrine preferred with bradyarrhythmia/significant sinus bradycardia.</strong></p>
+      </div>
+      <div class="box">
+        <div class="box-title">Inotropes are additive, not substitutive</div>
+        <p>SSC 2026: for patients requiring vasopressors to maintain MAP at target, inotropes should be <strong>added to, not used instead of</strong>, vasopressors. For persistent hypoperfusion with cardiac dysfunction despite adequate fluids and pressure, the guideline suggests <strong>adding dobutamine to norepinephrine, or using epinephrine alone</strong> — evidence certainty very low. Levosimendan is suggested <em>against</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="escalation">
+    <h2 class="sec-title"><span class="num">06</span> Escalation: Vasopressin &amp; Refractory Shock</h2>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Milestone</th><th>Threshold</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Add second agent</td><td class="num">Norepinephrine 0.25–0.5 µg/kg/min</td><td>SSC guidance: add <strong>vasopressin 0.03 units/min</strong> as an adjunct (catecholamine-sparing rationale; VASST trial showed benefit concentrated in patients with pre-randomization NE &lt;15 µg/min — i.e., earlier addition in less-severe shock, not as a last resort).</td></tr>
+          <tr><td>Refractory shock (formal definition)</td><td class="num">NE or epi ≥ 0.25 µg/kg/min for ≥ 4 hours</td><td>2021 SSC definition of refractory shock — persistent hypotension/hypoperfusion despite high-dose vasopressor support. This is the threshold worth flagging explicitly in your chart for escalation-of-care documentation.</td></tr>
+          <tr><td>Mortality-associated dose marker</td><td class="num">NE &gt; 0.3 µg/kg/min ≈ 40% mortality<br>NE &gt; 1.0 µg/kg/min ≈ &gt;90% mortality</td><td>Not a treatment threshold, but a severity marker worth knowing for family conversations and ICU triage discussions.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Emerging practice worth watching, not yet standard</div>
+      <p>2025 registry data (Melchers et al.) and the JAMA 2025 OVISS reinforcement-learning study both suggest <strong>earlier</strong> vasopressin initiation — before the traditional NE 0.25–0.5 µg/kg/min threshold — may associate with better hemodynamic response, though not yet clearly with shorter shock duration or survival. This is active research, not yet a guideline change; don't let it override current SSC-based order sets.</p>
+    </div>
+  </section>
+
+  <section id="peripheral">
+    <h2 class="sec-title"><span class="num">07</span> Peripheral Vasopressor Administration</h2>
+    <p>Historically, vasopressors were considered central-line-only due to extravasation/tissue necrosis risk. Current ED and critical care practice has shifted meaningfully: <strong>short-term peripheral norepinephrine</strong> (typically via a well-functioning proximal large-bore IV, for durations generally under 24 hours, with close site monitoring) is increasingly accepted and reflected in contemporary case discussions and institutional protocols — it should not delay vasopressor initiation while waiting for central access in a hypotensive patient. Central access remains preferred for prolonged or escalating requirements, and is necessary once a second agent (vasopressin) or higher doses are anticipated.</p>
+  </section>
+
+  <section id="disposition">
+    <h2 class="sec-title"><span class="num">08</span> Admission &amp; Escalation Criteria</h2>
+    <div class="box danger">
+      <div class="box-title">The disposition rule your question is really asking about</div>
+      <p><strong>Any patient requiring vasopressors to maintain MAP ≥65 is, by definition, septic shock and warrants ICU-level care</strong> — SSC guidance suggests ICU admission for adults with sepsis or septic shock who require ICU-level support. A patient who has received an appropriate weight-based bolus (≈30 mL/kg) and remains hypotensive or hypoperfused is not a "give more fluid on the floor and reassess in a few hours" patient — that's exactly the scenario CLOVERS/CLASSIC argue against, and it's the scenario where early vasopressor initiation (per CENSER) improves shock control. Persistent soft pressures after an adequate weight-based bolus should trigger vasopressor initiation and ICU-level disposition together, not sequentially.</p>
+    </div>
+    <div class="box">
+      <div class="box-title">What "adequate" fluid resuscitation means for documentation</div>
+      <p>Document: (1) the weight-based volume actually given, (2) the reassessment method used (dynamic measure, lactate trend, cap refill, MAP), (3) the explicit decision point — "persistent MAP &lt;65 despite 30 mL/kg (2.8L for 93kg) crystalloid, norepinephrine initiated, ICU accepting" is a complete, defensible resuscitation note. "Gave fluids, patient still hypotensive, admitted" is not.</p>
+    </div>
+  </section>
+
+  <section id="algorithm">
+    <h2 class="sec-title"><span class="num">09</span> Bedside Algorithm</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="stepnum">STEP 1</span> — Sepsis-induced hypotension (SBP&lt;90, MAP&lt;65, or lactate≥4) identified → begin 30 mL/kg balanced crystalloid, weight-based, targeting completion well within the 3-hour bundle window.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 2</span> — Reassess with a dynamic measure (PLR + SV/PP change, capillary refill trend, or POCUS) plus repeat lactate — not a static number, not "how many liters have gone in."</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 3</span> — MAP ≥65 and perfusion improving → continue monitoring, small additional boluses only if a dynamic measure predicts responsiveness.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 4</span> — MAP &lt;65 or hypoperfusion persists despite the initial bolus → <strong>start norepinephrine</strong> (peripheral acceptable short-term while central access obtained), target MAP≥65. Do not substitute ongoing large-volume boluses for pressor initiation — per CLOVERS/CLASSIC, this doesn't improve mortality and risks fluid overload.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 5</span> — NE reaching 0.25–0.5 µg/kg/min → add vasopressin 0.03 units/min. NE/epi ≥0.25 µg/kg/min for ≥4h → chart as refractory shock, escalate ICU communication accordingly.</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="stepnum">STEP 6</span> — Any vasopressor requirement → ICU-level disposition. Document the weight-based volume, the reassessment method, and the specific decision point that triggered escalation.</div>
+    </div>
+    <div class="box good">
+      <div class="box-title">Series roadmap</div>
+      <p>This is Volume 3 of 6. Next: <strong>Volume 4 — Empiric Antibiotics &amp; Source Control</strong> (the unknown-source regimen question from your original scope), followed by Volume 5 (Special Populations) and Volume 6 (Prevention &amp; QI).</p>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2 class="sec-title"><span class="num">10</span> References</h2>
+    <ul class="reflist">
+      <li><span class="rn">1</span>Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines 2026. <em>Crit Care Med.</em> 2026;54:725–812.</li>
+      <li><span class="rn">2</span>Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines 2021. <em>Crit Care Med.</em> 2021;49(11):e1063–e1143.</li>
+      <li><span class="rn">3</span>NHLBI PETAL Network. Early Restrictive or Liberal Fluid Management for Sepsis-Induced Hypotension (CLOVERS). <em>N Engl J Med.</em> 2023;388:499–510.</li>
+      <li><span class="rn">4</span>CLASSIC Trial Group. Restrictive vs. Liberal Fluid Therapy for Septic Shock. <em>N Engl J Med / Intensive Care Med</em> (CLASSIC and CLASSIC II).</li>
+      <li><span class="rn">5</span>Permpikul C, et al. Early Use of Norepinephrine in Septic Shock Resuscitation (CENSER). <em>Am J Respir Crit Care Med.</em> 2019.</li>
+      <li><span class="rn">6</span>Passive Leg Raise as a Predictor of Fluid Responsiveness in Septic Shock Requiring Vasopressor Support. <em>CHEST</em> 2018;154(4) Supplement.</li>
+      <li><span class="rn">7</span>Douglas IS, et al. Fluid Response Evaluation in Sepsis Hypotension and Shock (FRESH). <em>CHEST</em> 2020.</li>
+      <li><span class="rn">8</span>Russell JA, et al. Vasopressin versus Norepinephrine in Septic Shock (VASST). <em>N Engl J Med.</em> 2008.</li>
+      <li><span class="rn">9</span>Melchers M, et al. Hemodynamic effects of adjunct arginine vasopressin to norepinephrine in septic shock. <em>Ann Intensive Care.</em> 2025;15:59.</li>
+      <li><span class="rn">10</span>Kalimouttou A, Kennedy JN, et al. Optimal Vasopressin Initiation in Septic Shock (OVISS). <em>JAMA.</em> 2025;333(19):1688–1698.</li>
+      <li><span class="rn">11</span>ProCESS, ARISE, ProMISe Investigators. Early goal-directed therapy trials (2014–2015), motivating the shift away from static/CVP-guided resuscitation.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Sepsis Atlas · Volume 3 of 6 — Hemodynamics &amp; Fluid Resuscitation · Built for bedside/offline use, no external dependencies beyond typeface loading · Verify any SSC 2026 statement number against the primary source (Crit Care Med 2026;54:725–812) before citing it in a formal document.
+</footer>
+
+<script>
+function toggleTheme(){
+  const body=document.body; const btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='dark'){ body.setAttribute('data-theme','light'); btn.textContent='🌙'; }
+  else { body.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('navDrop');
+  if(!drop.contains(e.target)) drop.classList.remove('open');
+});
+</script>
+</body>
+</html>

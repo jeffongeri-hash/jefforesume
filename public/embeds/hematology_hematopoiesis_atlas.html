@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hematopoiesis &amp; Cellular Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #120e0b;
+  --panel: #1a1410;
+  --panel2: #221a14;
+  --ink: #f2ece3;
+  --sub: #b8aca0;
+  --line: #3a2f26;
+  --accent: #c24a4a;
+  --accent2: #c9a24a;
+  --hsc: #7a1f2b;
+  --card-radius: 14px;
+  --serif: 'Fraunces', serif;
+  --sans: 'Inter', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+[data-theme="light"] {
+  --bg: #f5f0e8;
+  --panel: #fffdfa;
+  --panel2: #eee6d8;
+  --ink: #241a12;
+  --sub: #5c4f42;
+  --line: #ddd0bd;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans);
+  line-height: 1.55; transition: background .25s, color .25s;
+}
+h1,h2,h3,h4 { font-family: var(--serif); font-weight: 700; margin: 0 0 .4em; }
+.lbl { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent2); display:block; margin-bottom:2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+header.top {
+  padding: 40px 24px 28px; border-bottom: 1px solid var(--line); position: relative;
+  background: radial-gradient(ellipse at top left, rgba(194,74,74,.12), transparent 60%);
+}
+header.top .inner { max-width: 1180px; margin: 0 auto; display:flex; justify-content: space-between; align-items:flex-end; flex-wrap: wrap; gap: 16px; }
+header.top h1 { font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.01em; }
+header.top p.tag { color: var(--sub); max-width: 640px; font-size: 15px; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing:.12em; text-transform:uppercase; margin-bottom: 10px; }
+#themeToggle {
+  background: var(--panel2); border: 1px solid var(--line); color: var(--ink); border-radius: 20px;
+  padding: 8px 16px; font-family: var(--mono); font-size: 12px; cursor:pointer;
+}
+nav.tabs {
+  display:flex; gap: 6px; flex-wrap: wrap; padding: 18px 24px; max-width:1180px; margin:0 auto;
+  border-bottom: 1px solid var(--line); position: sticky; top:0; background: var(--bg); z-index: 50;
+}
+nav.tabs button {
+  background: transparent; border: 1px solid var(--line); color: var(--sub); padding: 9px 16px;
+  border-radius: 10px; font-family: var(--sans); font-size: 13.5px; font-weight: 600; cursor: pointer;
+  transition: all .15s;
+}
+nav.tabs button:hover { color: var(--ink); border-color: var(--accent); }
+nav.tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+section.domtab { display:none; padding-top: 32px; }
+section.domtab.active { display:block; animation: fadein .3s ease; }
+@keyframes fadein { from {opacity:0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+.section-title { font-size: 26px; margin-bottom: 6px; }
+.section-sub { color: var(--sub); font-size: 14.5px; margin-bottom: 28px; max-width: 780px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 22px 24px; margin-bottom: 22px;
+}
+.svgwrap { background: var(--panel2); border-radius: 12px; padding: 12px; overflow-x:auto; }
+.svgwrap svg { width: 100%; height: auto; min-width: 640px; display:block; }
+.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+.lcard { background: var(--panel); border:1px solid var(--line); border-radius: var(--card-radius); padding: 18px 20px; margin-bottom: 16px; }
+.lcard-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 10px; flex-wrap:wrap; gap:8px;}
+.lcard-head h4 { font-size: 18px; }
+.lspan { font-family: var(--mono); color:#fff; background: var(--accent); padding: 4px 10px; border-radius: 20px; font-size: 12px; white-space:nowrap;}
+.lcard-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 10px; }
+.lcard-grid p { font-size: 13.2px; margin: 2px 0 0; }
+@media (max-width: 800px) { .lcard-grid { grid-template-columns: 1fr; } }
+.lnote { font-size: 13px; color: var(--sub); border-top:1px dashed var(--line); padding-top:10px; margin:8px 0 0; font-style:italic; }
+
+.wcard { background: var(--panel); border:1px solid var(--line); border-radius: var(--card-radius); padding:18px 20px; }
+.wcard-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.wcard-head h4 { font-size:17px; }
+.wpct { font-family: var(--mono); font-size:12px; color: var(--accent2); }
+.wcard p { font-size: 13.2px; margin: 6px 0; }
+.wcard p.pearl { background: var(--panel2); padding: 8px 10px; border-radius:8px; margin-top:10px; }
+
+.dcard { background: var(--panel); border:1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--card-radius); padding: 22px 24px; margin-bottom: 20px; }
+.dcard h4 { font-size: 19px; margin-bottom: 12px; }
+.drow { margin-bottom: 10px; }
+.drow p { font-size: 13.4px; margin: 2px 0 0; }
+.drow.stat p { color: var(--sub); font-style: italic; }
+
+.callout { background: var(--panel2); border-left: 4px solid var(--accent2); border-radius: 10px; padding: 14px 18px; font-size: 13.5px; margin: 16px 0; }
+.verify { font-size: 12px; color: var(--sub); font-family: var(--mono); margin-top: 6px; }
+footer.foot { text-align:center; color: var(--sub); font-size: 12.5px; padding: 40px 24px; border-top:1px solid var(--line); margin-top: 40px; }
+a.crossref { color: var(--accent2); }
+</style>
+</head>
+<body data-theme="dark">
+<header class="top">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">Hematology Atlas &middot; File 1 of 3</div>
+      <h1>Hematopoiesis &amp; Cellular Atlas</h1>
+      <p class="tag">Bone marrow to bedside: production, lifespan, and destruction of every formed blood element, EPO physiology and its relationship to blood flow, and the hereditary RBC/hemolytic disorders that hinge on this pathway.</p>
+    </div>
+    <button id="themeToggle">&#9788; Light mode</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabnav">
+  <button data-dom="d1" class="active">Hematopoiesis</button>
+  <button data-dom="d2">Erythrocytes &amp; EPO</button>
+  <button data-dom="d3">Leukocytes</button>
+  <button data-dom="d4">Platelets</button>
+  <button data-dom="d5">Hereditary RBC Disorders</button>
+</nav>
+
+<div class="wrap">
+
+<section class="domtab active" id="d1">
+  <h2 class="section-title">Bone Marrow &amp; the Hematopoietic Hierarchy</h2>
+  <p class="section-sub">Every circulating blood cell traces back to a single hematopoietic stem cell (HSC) pool residing in the marrow niche. Lineage commitment is a branching, transcription-factor-driven decision tree.</p>
+  <div class="panel">
+    <div class="svgwrap">
+<svg viewBox="0 0 1000 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="arrowh" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="var(--line,#8a8378)"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1000" height="640" fill="none"/>
+
+  <!-- HSC root -->
+  <g>
+    <rect x="410" y="14" width="180" height="56" rx="10" fill="var(--hsc,#7a1f2b)"/>
+    <text x="500" y="38" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Hematopoietic</text>
+    <text x="500" y="58" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Stem Cell (HSC)</text>
+  </g>
+  <line x1="500" y1="70" x2="500" y2="100" stroke="#8a8378" stroke-width="2" marker-end="url(#arrowh)"/>
+
+  <!-- Multipotent progenitor -->
+  <rect x="410" y="100" width="180" height="42" rx="10" fill="#5b4636"/>
+  <text x="500" y="126" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">Multipotent Progenitor</text>
+
+  <line x1="480" y1="142" x2="260" y2="180" stroke="#8a8378" stroke-width="2" marker-end="url(#arrowh)"/>
+  <line x1="520" y1="142" x2="740" y2="180" stroke="#8a8378" stroke-width="2" marker-end="url(#arrowh)"/>
+
+  <!-- CMP -->
+  <rect x="160" y="180" width="200" height="46" rx="10" fill="#8a5a2b"/>
+  <text x="260" y="200" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700">Common Myeloid</text>
+  <text x="260" y="217" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700">Progenitor (CMP)</text>
+
+  <!-- CLP -->
+  <rect x="640" y="180" width="200" height="46" rx="10" fill="#2b5a6b"/>
+  <text x="740" y="200" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700">Common Lymphoid</text>
+  <text x="740" y="217" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700">Progenitor (CLP)</text>
+
+  <!-- Myeloid branches -->
+  <line x1="200" y1="226" x2="90"  y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+  <line x1="240" y1="226" x2="230" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+  <line x1="280" y1="226" x2="360" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+  <line x1="320" y1="226" x2="490" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+
+  <rect x="20"  y="270" width="140" height="40" rx="8" fill="#a06a3a"/>
+  <text x="90" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Myeloblast</text>
+
+  <rect x="160" y="270" width="140" height="40" rx="8" fill="#a06a3a"/>
+  <text x="230" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Monoblast</text>
+
+  <rect x="300" y="270" width="140" height="40" rx="8" fill="#7a1f2b"/>
+  <text x="370" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Proerythroblast</text>
+
+  <rect x="420" y="270" width="150" height="40" rx="8" fill="#5b3a7a"/>
+  <text x="495" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Megakaryoblast</text>
+
+  <!-- Myeloblast -> granulocytes -->
+  <line x1="60"  y1="310" x2="40"  y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <line x1="90"  y1="310" x2="90"  y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <line x1="120" y1="310" x2="140" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+
+  <rect x="0"   y="350" width="82" height="36" rx="7" fill="#c98a4a"/>
+  <text x="41" y="373" text-anchor="middle" fill="#241a12" font-size="10.5" font-weight="700">Neutrophil</text>
+  <rect x="88"  y="350" width="82" height="36" rx="7" fill="#c98a4a"/>
+  <text x="129" y="373" text-anchor="middle" fill="#241a12" font-size="10.5" font-weight="700">Eosinophil</text>
+  <rect x="176" y="350" width="82" height="36" rx="7" fill="#c98a4a"/>
+  <text x="217" y="373" text-anchor="middle" fill="#241a12" font-size="10.5" font-weight="700">Basophil</text>
+
+  <!-- Monoblast -> monocyte -->
+  <line x1="230" y1="310" x2="230" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="185" y="350" width="90" height="36" rx="7" fill="#c9a24a"/>
+  <text x="230" y="373" text-anchor="middle" fill="#241a12" font-size="10.5" font-weight="700">Monocyte&#8594;Mac</text>
+
+  <!-- Proerythroblast -> RBC -->
+  <line x1="370" y1="310" x2="370" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="315" y="350" width="110" height="36" rx="7" fill="#c24a4a"/>
+  <text x="370" y="373" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="700">Reticulocyte&#8594;RBC</text>
+
+  <!-- Megakaryoblast -> platelets -->
+  <line x1="495" y1="310" x2="495" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="440" y="350" width="110" height="36" rx="7" fill="#8a5ac0"/>
+  <text x="495" y="373" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="700">Platelets</text>
+
+  <!-- Lymphoid branches -->
+  <line x1="700" y1="226" x2="650" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+  <line x1="740" y1="226" x2="770" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+  <line x1="780" y1="226" x2="900" y2="270" stroke="#8a8378" stroke-width="1.6" marker-end="url(#arrowh)"/>
+
+  <rect x="600" y="270" width="120" height="40" rx="8" fill="#2b6b6b"/>
+  <text x="660" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Pro-B cell</text>
+
+  <rect x="720" y="270" width="120" height="40" rx="8" fill="#2b6b6b"/>
+  <text x="780" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">Pro-T cell</text>
+
+  <rect x="850" y="270" width="130" height="40" rx="8" fill="#2b6b6b"/>
+  <text x="915" y="295" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="600">NK progenitor</text>
+
+  <line x1="660" y1="310" x2="660" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="605" y="350" width="110" height="36" rx="7" fill="#3a8a8a"/>
+  <text x="660" y="373" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="700">B lymphocyte</text>
+
+  <line x1="780" y1="310" x2="780" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="725" y="350" width="110" height="36" rx="7" fill="#3a8a8a"/>
+  <text x="780" y="373" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="700">T lymphocyte</text>
+
+  <line x1="915" y1="310" x2="915" y2="350" stroke="#8a8378" stroke-width="1.4" marker-end="url(#arrowh)"/>
+  <rect x="855" y="350" width="120" height="36" rx="7" fill="#3a8a8a"/>
+  <text x="915" y="373" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="700">NK cell</text>
+
+  <!-- Legend / niche note -->
+  <rect x="20" y="430" width="960" height="190" rx="12" fill="var(--panel2,#1c1712)" opacity="0.55"/>
+  <text x="40" y="460" font-size="13.5" font-weight="700" fill="var(--ink,#eee)">Marrow niche &amp; regulation</text>
+  <text x="40" y="484" font-size="11.8" fill="var(--sub,#bbb)">HSCs reside in the perivascular niche of red (hematopoietically active) marrow &#8212; axial skeleton, pelvis, sternum, proximal long bones in adults.</text>
+  <text x="40" y="504" font-size="11.8" fill="var(--sub,#bbb)">CXCL12-abundant reticular (CAR) cells and osteoblasts maintain quiescence; niche signals include SCF/c-Kit, CXCL12/CXCR4, Notch, and Wnt.</text>
+  <text x="40" y="524" font-size="11.8" fill="var(--sub,#bbb)">Lineage commitment is driven by transcription factor gradients: GATA-1 &#8594; erythroid/megakaryocytic; PU.1 &#8594; myeloid/monocytic; Ikaros/E2A &#8594; lymphoid.</text>
+  <text x="40" y="544" font-size="11.8" fill="var(--sub,#bbb)">Total marrow output: &#126;2.5 million RBCs/second, &#126;1 million platelets/second, and &#126;1 million WBCs/second at steady state &#8212; roughly 10&#178;&#178; cells daily.</text>
+  <text x="40" y="564" font-size="11.8" fill="var(--sub,#bbb)">Yellow (fatty) marrow is the quiescent reserve; under severe demand (hemolysis, marrow failure) it can revert to red marrow, and extramedullary hematopoiesis</text>
+  <text x="40" y="584" font-size="11.8" fill="var(--sub,#bbb)">(spleen, liver) can resume &#8212; seen in thalassemia major, myelofibrosis, and severe chronic hemolytic states.</text>
+</svg>
+</div>
+  </div>
+  <div class="callout">
+    <strong>Clinical relevance:</strong> Marrow failure syndromes (aplastic anemia, MDS) and marrow-toxic chemotherapy hit this entire tree simultaneously &mdash; hence the classic triad of anemia + neutropenia + thrombocytopenia (pancytopenia) rather than isolated cytopenias. Isolated cytopenias point away from a global marrow problem and toward peripheral destruction or a single-lineage process.
+  </div>
+</section>
+
+<section class="domtab" id="d2">
+  <h2 class="section-title">Erythrocytes: Production, Lifespan &amp; EPO</h2>
+  <p class="section-sub">The 120-day RBC lifecycle, and the renal oxygen-sensing feedback loop that sets the pace of production.</p>
+
+  <div class="panel">
+    <h3>The 120-day cycle</h3>
+    <div class="svgwrap">
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="arrowr" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#c24a4a"/>
+    </marker>
+  </defs>
+
+  <!-- circular flow -->
+  <circle cx="450" cy="280" r="210" fill="none" stroke="#3a332a" stroke-width="2" stroke-dasharray="2 6"/>
+
+  <!-- Bone marrow node -->
+  <g>
+    <circle cx="450" cy="70" r="58" fill="#7a1f2b"/>
+    <text x="450" y="64" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Bone Marrow</text>
+    <text x="450" y="82" text-anchor="middle" fill="#fff" font-size="11">Erythropoiesis</text>
+    <text x="450" y="97" text-anchor="middle" fill="#f2c9c9" font-size="9.5">&#126;7 days, EPO-driven</text>
+  </g>
+
+  <!-- Circulation node -->
+  <g>
+    <circle cx="720" cy="280" r="62" fill="#c24a4a"/>
+    <text x="720" y="270" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Circulation</text>
+    <text x="720" y="288" text-anchor="middle" fill="#fff" font-size="11">120-day lifespan</text>
+    <text x="720" y="304" text-anchor="middle" fill="#fbdada" font-size="9.5">&#126;2.4 million lost/sec</text>
+  </g>
+
+  <!-- Spleen node -->
+  <g>
+    <circle cx="450" cy="490" r="58" fill="#5b3a3a"/>
+    <text x="450" y="482" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Spleen &amp; Liver</text>
+    <text x="450" y="500" text-anchor="middle" fill="#fff" font-size="11">Macrophage phagocytosis</text>
+    <text x="450" y="514" text-anchor="middle" fill="#e6c9c9" font-size="9.5">(extravascular hemolysis, &#126;90%)</text>
+  </g>
+
+  <!-- Heme breakdown node -->
+  <g>
+    <circle cx="180" cy="280" r="62" fill="#8a6a2b"/>
+    <text x="180" y="266" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700">Heme Catabolism</text>
+    <text x="180" y="283" text-anchor="middle" fill="#fff" font-size="10.5">Biliverdin &#8594; bilirubin</text>
+    <text x="180" y="299" text-anchor="middle" fill="#f2e2b8" font-size="9.5">Iron recycled &#8594; transferrin</text>
+  </g>
+
+  <!-- arrows around the circle -->
+  <path d="M 500 100 A 210 210 0 0 1 668 230" fill="none" stroke="#c24a4a" stroke-width="2.4" marker-end="url(#arrowr)"/>
+  <path d="M 690 335 A 210 210 0 0 1 500 460" fill="none" stroke="#c24a4a" stroke-width="2.4" marker-end="url(#arrowr)"/>
+  <path d="M 400 460 A 210 210 0 0 1 232 330" fill="none" stroke="#c24a4a" stroke-width="2.4" marker-end="url(#arrowr)"/>
+  <path d="M 210 230 A 210 210 0 0 1 400 100" fill="none" stroke="#c24a4a" stroke-width="2.4" marker-end="url(#arrowr)"/>
+
+  <!-- iron recycle inner arrow back to marrow -->
+  <path d="M 210 250 C 280 130, 360 90, 400 78" fill="none" stroke="#c9a24a" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowr)"/>
+  <text x="270" y="150" font-size="10" fill="#c9a24a" font-weight="600">iron &#8594; reused</text>
+
+  <!-- bilirubin fate -->
+  <text x="60" y="360" font-size="10.5" fill="var(--sub,#bbb)">Unconjugated &#8594; liver</text>
+  <text x="60" y="376" font-size="10.5" fill="var(--sub,#bbb)">conjugation &#8594; bile &#8594;</text>
+  <text x="60" y="392" font-size="10.5" fill="var(--sub,#bbb)">urobilinogen / stercobilin</text>
+
+  <!-- center label -->
+  <text x="450" y="280" text-anchor="middle" font-size="12" fill="var(--sub,#999)" font-style="italic">120-day cycle</text>
+</svg>
+</div>
+    <p style="margin-top:14px; font-size:13.5px;">Erythropoiesis takes ~7 days from proerythroblast to reticulocyte release (nucleus is extruded just before release &mdash; mammalian RBCs are the only cells that shed their nucleus to maximize hemoglobin-carrying volume). Reticulocytes mature fully within 1&ndash;2 days in circulation. At steady state the marrow must replace ~1% of the total RBC mass daily just to keep up with senescent clearance.</p>
+  </div>
+
+  <div class="panel">
+    <h3>EPO physiology &amp; the relationship to blood flow</h3>
+    <div class="svgwrap">
+<svg viewBox="0 0 940 460" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="arrowe" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#4a90c2"/>
+    </marker>
+  </defs>
+
+  <!-- Kidney -->
+  <rect x="40" y="60" width="200" height="90" rx="14" fill="#2b4a6b"/>
+  <text x="140" y="92" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">Renal peritubular</text>
+  <text x="140" y="110" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">fibroblasts</text>
+  <text x="140" y="132" text-anchor="middle" fill="#cfe3f5" font-size="10.5">HIF-2&#945; stabilized by hypoxia</text>
+
+  <line x1="240" y1="105" x2="340" y2="105" stroke="#4a90c2" stroke-width="2.4" marker-end="url(#arrowe)"/>
+
+  <!-- EPO release -->
+  <rect x="340" y="60" width="180" height="90" rx="14" fill="#4a90c2"/>
+  <text x="430" y="98" text-anchor="middle" fill="#08202f" font-size="14" font-weight="800">EPO released</text>
+  <text x="430" y="118" text-anchor="middle" fill="#08202f" font-size="10.5">into circulation</text>
+  <text x="430" y="134" text-anchor="middle" fill="#0a2a3d" font-size="10">t&#189; &#126;5&#8211;6 hours</text>
+
+  <line x1="520" y1="105" x2="620" y2="105" stroke="#4a90c2" stroke-width="2.4" marker-end="url(#arrowe)"/>
+
+  <!-- Marrow -->
+  <rect x="620" y="60" width="260" height="90" rx="14" fill="#7a1f2b"/>
+  <text x="750" y="92" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">Marrow erythroid progenitors</text>
+  <text x="750" y="112" text-anchor="middle" fill="#fff" font-size="10.5">EPO-R signaling &#8594; JAK2/STAT5</text>
+  <text x="750" y="130" text-anchor="middle" fill="#f2c9c9" font-size="10">blocks apoptosis of CFU-E/proerythroblasts</text>
+
+  <line x1="750" y1="150" x2="750" y2="220" stroke="#4a90c2" stroke-width="2.4" marker-end="url(#arrowe)"/>
+
+  <!-- Output -->
+  <rect x="600" y="220" width="280" height="80" rx="14" fill="#c24a4a"/>
+  <text x="740" y="252" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">&#8593; RBC mass &amp; reticulocytes</text>
+  <text x="740" y="272" text-anchor="middle" fill="#fbdada" font-size="10.5">&#8593; O&#8322; carrying capacity of blood</text>
+
+  <line x1="600" y1="260" x2="340" y2="260" stroke="#4a90c2" stroke-width="2.4" marker-end="url(#arrowe)"/>
+
+  <!-- tissue oxygenation -->
+  <rect x="120" y="220" width="220" height="80" rx="14" fill="#3a8a5a"/>
+  <text x="230" y="252" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="700">Tissue O&#8322; delivery</text>
+  <text x="230" y="272" text-anchor="middle" fill="#d7f2e2" font-size="10.5">restored &#8594; viscosity/flow normalizes</text>
+
+  <line x1="230" y1="220" x2="150" y2="150" stroke="#4a90c2" stroke-width="2.4" stroke-dasharray="5 4" marker-end="url(#arrowe)"/>
+  <text x="60" y="185" font-size="10.5" fill="#4a90c2" font-weight="600">negative</text>
+  <text x="60" y="199" font-size="10.5" fill="#4a90c2" font-weight="600">feedback</text>
+
+  <!-- Blood flow / viscosity box -->
+  <rect x="20" y="340" width="900" height="105" rx="12" fill="var(--panel2,#1c1712)" opacity="0.55"/>
+  <text x="40" y="368" font-size="13.5" font-weight="700" fill="var(--ink,#eee)">EPO &#8596; blood flow relationship</text>
+  <text x="40" y="391" font-size="11.6" fill="var(--sub,#bbb)">Blood viscosity rises roughly exponentially with hematocrit above &#126;55&#8211;60% &#8212; this is why polycythemia (excess EPO/EPO-independent, e.g. PV) impairs flow and raises stroke/thrombosis risk despite &#8593; O&#8322; content.</text>
+  <text x="40" y="411" font-size="11.6" fill="var(--sub,#bbb)">Conversely, severe anemia lowers viscosity and increases cardiac output/flow velocity (high-output state) to compensate for &#8595; O&#8322; content &#8212; can precipitate high-output heart failure if severe/chronic.</text>
+  <text x="40" y="431" font-size="11.6" fill="var(--sub,#bbb)">Clinical lever: ESAs (epoetin alfa, darbepoetin) target Hgb &#126;10&#8211;11.5 g/dL in CKD &#8212; higher targets (normalization) increase stroke/MI/VTE risk without added survival benefit (TREAT, CHOIR trials).</text>
+</svg>
+</div>
+    <p style="margin-top:14px; font-size:13.5px;">EPO is the master regulator linking oxygen delivery to RBC mass. Renal peritubular interstitial fibroblasts sense local pO&#8322; via prolyl hydroxylases acting on HIF-2&#945; &mdash; under normoxia, HIF-2&#945; is hydroxylated and degraded; under hypoxia, it escapes degradation and drives EPO gene transcription. EPO then binds EPO-R on marrow erythroid progenitors (BFU-E/CFU-E), activating JAK2/STAT5 signaling that blocks apoptosis and drives proliferation &mdash; it is primarily a <em>survival</em> signal for cells already committed to the erythroid line, not a lineage-switch signal.</p>
+    <div class="callout">
+      <p><strong>Blood flow relationship:</strong> Hematocrit and blood viscosity relate roughly exponentially above Hct ~55&ndash;60% &mdash; this is why polycythemia vera and over-aggressive ESA dosing both raise thrombosis/stroke risk despite improving oxygen <em>content</em>. Conversely, anemia lowers viscosity and triggers a compensatory high-output state (&#8593; heart rate, &#8593; stroke volume, &#8593; 2,3-BPG shifting the oxygen dissociation curve right) to preserve tissue oxygen delivery &mdash; chronic severe anemia can precipitate high-output heart failure. This is the physiologic reason ESA trials (CHOIR, TREAT, CREATE) found normalizing hemoglobin in CKD patients (target &gt;13 g/dL) increased cardiovascular events versus a more conservative target (~10&ndash;11.5 g/dL) &mdash; current KDIGO-anchored practice avoids full normalization.</p>
+    </div>
+    <p class="verify">Verify current ESA hemoglobin targets and labeling against the latest KDIGO anemia-in-CKD guideline before using as a hard threshold in practice.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Hemoglobin O&#8322; delivery in one line</h3>
+    <p style="font-size:13.5px;">O&#8322; delivery (DO&#8322;) = cardiac output &times; arterial O&#8322; content, and arterial O&#8322; content &asymp; (1.34 &times; Hgb &times; SaO&#8322;) + dissolved O&#8322; (negligible clinically). This is why Hgb, not just SpO&#8322;, determines whether tissue oxygen delivery is adequate &mdash; a patient can be 100% saturated and still be inadequately oxygen-delivering if profoundly anemic.</p>
+  </div>
+</section>
+
+<section class="domtab" id="d3">
+  <h2 class="section-title">Leukocytes: The Five Lines</h2>
+  <p class="section-sub">Granulocytes (neutrophil, eosinophil, basophil), monocytes, and lymphocytes &mdash; each with distinct kinetics, tissue behavior, and clinical tells.</p>
+  <div class="grid2">
+    
+        <div class="wcard">
+          <div class="wcard-head"><h4>Neutrophil</h4><span class="wpct">40–75% of WBC</span></div>
+          <p><span class="lbl">Role</span> First responders — phagocytosis, NETs (neutrophil extracellular traps), respiratory burst (NADPH oxidase) for bacterial/fungal killing.</p>
+          <p><span class="lbl">Kinetics</span> Marrow maturation ~10–14 days (myeloblast → promyelocyte → myelocyte → metamyelocyte → band → segmented). Marrow reserve pool is ~10× the circulating pool — can be mobilized within hours during acute infection/stress (demargination), producing a rapid left shift without new production.</p>
+          <p class="pearl"><span class="lbl">Pearl</span> Bandemia (>10% bands) suggests marrow release under stress even before absolute count rises. Corticosteroids cause neutrophilia via demargination + reduced tissue migration — not true infection.</p>
+        </div>
+
+        <div class="wcard">
+          <div class="wcard-head"><h4>Lymphocyte</h4><span class="wpct">20–45% of WBC</span></div>
+          <p><span class="lbl">Role</span> Adaptive immunity — B cells (antibody production), T cells (CD4 helper, CD8 cytotoxic), NK cells (innate cytotoxicity, MHC-I “missing self” recognition).</p>
+          <p><span class="lbl">Kinetics</span> T-cell maturation requires thymic education (positive/negative selection) — thymic involution with age reduces naive T-cell output, part of immunosenescence.</p>
+          <p class="pearl"><span class="lbl">Pearl</span> Viral infections classically cause relative/absolute lymphocytosis (e.g., EBV, pertussis in children can cause striking lymphocytosis).</p>
+        </div>
+
+        <div class="wcard">
+          <div class="wcard-head"><h4>Monocyte</h4><span class="wpct">2–10% of WBC</span></div>
+          <p><span class="lbl">Role</span> Phagocytosis, antigen presentation, differentiate into tissue macrophages and dendritic cells; key in chronic inflammation and granuloma formation (TB, sarcoidosis).</p>
+          <p><span class="lbl">Kinetics</span> Circulate briefly (1–3 days) before extravasating into tissue and differentiating long-term.</p>
+          <p class="pearl"><span class="lbl">Pearl</span> Persistent monocytosis raises concern for CMML (chronic myelomonocytic leukemia) in older adults — warrants peripheral smear review.</p>
+        </div>
+
+        <div class="wcard">
+          <div class="wcard-head"><h4>Eosinophil</h4><span class="wpct">0–6% of WBC</span></div>
+          <p><span class="lbl">Role</span> Defense against helminths, mediates allergic/atopic inflammation, contains major basic protein and eosinophil cationic protein (tissue-damaging).</p>
+          <p><span class="lbl">Kinetics</span> IL-5 is the master regulator of eosinophil production and survival — target of mepolizumab/benralizumab in eosinophilic asthma.</p>
+          <p class="pearl"><span class="lbl">Pearl</span> Marked eosinophilia (>1,500/µL) triggers workup for parasitic infection, drug reaction (DRESS), hypereosinophilic syndrome, or malignancy (“NAACP” mnemonic: Neoplasm, Allergy/Asthma, Addison's, Collagen-vascular disease, Parasites).</p>
+        </div>
+
+        <div class="wcard">
+          <div class="wcard-head"><h4>Basophil</h4><span class="wpct">0–1% of WBC</span></div>
+          <p><span class="lbl">Role</span> IgE-mediated immediate hypersensitivity, releases histamine/heparin/leukotrienes; tissue counterpart is the mast cell (different lineage origin nuance debated).</p>
+          <p><span class="lbl">Kinetics</span> Least understood kinetically due to low numbers.</p>
+          <p class="pearl"><span class="lbl">Pearl</span> Basophilia is a classic feature of CML (chronic myeloid leukemia) and should prompt BCR-ABL testing when otherwise unexplained.</p>
+        </div>
+  </div>
+</section>
+
+<section class="domtab" id="d4">
+  <h2 class="section-title">Platelets: Production, Lifespan &amp; the Spleen</h2>
+  <p class="section-sub">Anucleate cytoplasmic fragments with an outsized role in primary hemostasis &mdash; full clotting-cascade interaction lives in the Coagulation &amp; Anticoagulation atlas.</p>
+  <div class="panel">
+    <h3>Megakaryopoiesis</h3>
+    <p style="font-size:13.5px;">Megakaryocytes undergo endomitosis (repeated DNA replication without cell division, reaching ploidy up to 64N) to build a massive cytoplasm, then extend long proplatelet processes into marrow sinusoids where shear forces fragment them into 2,000&ndash;5,000 platelets per megakaryocyte. The whole process from megakaryoblast to platelet release takes ~5 days and is driven primarily by thrombopoietin (TPO), made constitutively by the liver &mdash; platelet mass itself provides negative feedback by binding and clearing circulating TPO via the c-Mpl receptor (more platelets = less free TPO = less production signal).</p>
+  </div>
+  <div class="panel">
+    <h3>Lifespan &amp; splenic pooling</h3>
+    <p style="font-size:13.5px;">Platelets circulate 7&ndash;10 days before being cleared, primarily via desialylation-triggered hepatic clearance (Ashwell-Morell receptor) and splenic macrophage phagocytosis. At steady state, roughly one-third of total body platelet mass sits in the splenic pool at any moment &mdash; this is why splenomegaly (portal hypertension, myeloproliferative disease, storage disease) causes a dilutional thrombocytopenia even with normal marrow production, and why splenectomy transiently raises platelet counts (sometimes markedly, risking post-splenectomy thrombocytosis and VTE).</p>
+  </div>
+  <div class="callout">Thrombopoietin receptor agonists (romiplostim, eltrombopag, avatrombopag) exploit this axis directly for ITP and chemotherapy-induced thrombocytopenia by mimicking TPO signaling on marrow megakaryocytes.</div>
+</section>
+
+<section class="domtab" id="d5">
+  <h2 class="section-title">Hereditary RBC &amp; Hemolytic Disorders</h2>
+  <p class="section-sub">Structural membrane defects, enzymopathies, and hemoglobinopathies &mdash; organized by defect, mechanism, labs, complications, and management.</p>
+  <div class="svgwrap panel">
+<svg viewBox="0 0 980 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <!-- Normal biconcave -->
+  <g>
+    <ellipse cx="120" cy="120" rx="70" ry="46" fill="#c24a4a"/>
+    <ellipse cx="120" cy="120" rx="34" ry="22" fill="#9c3a3a" opacity="0.75"/>
+    <text x="120" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink,#eee)">Normal (biconcave)</text>
+    <text x="120" y="218" text-anchor="middle" font-size="10.5" fill="var(--sub,#999)">high SA:volume, deformable</text>
+  </g>
+
+  <!-- Sickle -->
+  <g>
+    <path d="M 300 130 C 280 90, 320 70, 350 90 C 380 100, 400 130, 390 160 C 380 185, 340 185, 320 165 C 300 150, 300 140, 300 130 Z" fill="#8a2b2b"/>
+    <text x="345" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink,#eee)">Sickle (HbS)</text>
+    <text x="345" y="218" text-anchor="middle" font-size="10.5" fill="var(--sub,#999)">polymerized, rigid, vaso-occlusive</text>
+  </g>
+
+  <!-- Spherocyte -->
+  <g>
+    <circle cx="540" cy="120" r="42" fill="#c2704a"/>
+    <text x="540" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink,#eee)">Spherocyte</text>
+    <text x="540" y="218" text-anchor="middle" font-size="10.5" fill="var(--sub,#999)">no central pallor, fragile</text>
+  </g>
+
+  <!-- Target cell (thalassemia) -->
+  <g>
+    <ellipse cx="720" cy="120" rx="46" ry="44" fill="#c9a24a"/>
+    <ellipse cx="720" cy="120" rx="28" ry="27" fill="#f2e6c9"/>
+    <ellipse cx="720" cy="120" rx="12" ry="11" fill="#c9a24a"/>
+    <text x="720" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink,#eee)">Target cell</text>
+    <text x="720" y="218" text-anchor="middle" font-size="10.5" fill="var(--sub,#999)">thalassemia, liver disease</text>
+  </g>
+
+  <!-- Elliptocyte -->
+  <g>
+    <ellipse cx="890" cy="120" rx="70" ry="30" fill="#4a8ac2" transform="rotate(-10 890 120)"/>
+    <text x="890" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink,#eee)">Elliptocyte</text>
+    <text x="890" y="218" text-anchor="middle" font-size="10.5" fill="var(--sub,#999)">cigar/oval, membrane skeleton defect</text>
+  </g>
+</svg>
+</div>
+  
+        <div class="dcard">
+          <h4>Sickle Cell Disease (HbSS)</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>Point mutation GAG→GTG at codon 6 of β-globin → Glu→Val substitution → HbS. Autosomal recessive; HbSS = disease, HbAS = trait (protective against P. falciparum malaria).</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>Deoxygenated HbS polymerizes into rigid fibers → RBC sickling → vaso-occlusion, hemolysis (both intra- and extravascular), and chronic endothelial activation/inflammation.</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>Hgb 6–9 g/dL baseline, reticulocytosis 10–25%, unconjugated hyperbilirubinemia, ↑LDH, ↓haptoglobin, Howell-Jolly bodies (functional asplenia), sickle cells + target cells on smear.</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>Vaso-occlusive pain crisis, acute chest syndrome (leading cause of death), splenic sequestration (pediatric), aplastic crisis (parvovirus B19), avascular necrosis, priapism, stroke (~11% by age 20 untreated), pulmonary hypertension, nephropathy.</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Hydroxyurea (↑HbF, first-line disease-modifying), L-glutamine, crizanlizumab (P-selectin inhibitor, reduces VOC frequency), voxelotor (Hb-oxygen affinity modulator, less used now after efficacy re-evaluation — verify current labeling), chronic transfusion for stroke prevention (abnormal TCD), hematopoietic stem cell transplant (curative), gene therapy (lovo-cel, exa-cel — FDA approved 2023, verify access/current status).</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>US incidence ~1 in 365 Black births; median survival historically 40s–50s but has improved substantially with hydroxyurea/comprehensive care — confirm current life-expectancy data before quoting to patients.</p></div>
+        </div>
+
+        <div class="dcard">
+          <h4>α-Thalassemia</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>Deletion (usually) of 1–4 of the 4 α-globin gene copies (chr 16). Severity scales directly with number of genes deleted.</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>↓α-globin → relative excess β-globin (or γ in fetal life) → unstable tetramers (HbH = β₄, Hb Barts = γ₄) → ineffective erythropoiesis + hemolysis.</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>1 gene del: silent carrier, normal CBC. 2 genes: thalassemia trait — microcytosis (MCV often 60s–70s) with normal/near-normal Hgb, normal RDW, normal Hb electrophoresis (key differentiator from iron deficiency, which has ↑RDW). 3 genes: HbH disease — moderate hemolytic anemia. 4 genes: Hb Barts hydrops fetalis — incompatible with life without in-utero transfusion.</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>HbH disease: splenomegaly, gallstones, folate demand, iron overload even without transfusion (ineffective erythropoiesis suppresses hepcidin → ↑ gut iron absorption).</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Trait: no treatment, genetic counseling. HbH: folate supplementation, avoid oxidant drugs, monitor for transfusion need, iron studies before ever giving iron (do NOT empirically treat microcytosis with iron without confirming deficiency).</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>Mentzer index (MCV/RBC count) <13 suggests thalassemia over iron deficiency (>13); definitive diagnosis by Hb electrophoresis/genetic testing.</p></div>
+        </div>
+
+        <div class="dcard">
+          <h4>β-Thalassemia</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>Point mutations (>200 described) reducing (β⁺) or abolishing (β⁰) β-globin synthesis (chr 11).</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>Unpaired α-globin chains precipitate in erythroid precursors → marked ineffective erythropoiesis → marrow expansion (“chipmunk facies,” frontal bossing) + extramedullary hematopoiesis + severe hemolysis.</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>Minor (trait, β⁺/β or β⁰/β): mild microcytic anemia, ↑HbA2 >3.5% (diagnostic), normal-ish RDW. Intermedia: moderate anemia, transfusion sometimes needed. Major (Cooley anemia, β⁰/β⁰): severe transfusion-dependent anemia presenting at 6–24 months as HbF declines.</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>Iron overload from both ineffective erythropoiesis and chronic transfusion → cardiomyopathy (leading cause of death if unchelated), cirrhosis, endocrinopathies (diabetes, hypothyroidism, hypogonadism, growth failure), extramedullary hematopoietic masses.</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Major: lifelong transfusion (goal pre-transfusion Hgb ~9–10.5 g/dL to suppress marrow drive) + iron chelation (deferasirox, deferoxamine, deferiprone) once ferritin threshold reached; monitor cardiac/hepatic iron via T2* MRI; luspatercept (activin receptor ligand trap, reduces transfusion burden); allogeneic HSCT and gene therapy (beti-cel) curative options.</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>Ferritin alone is an imperfect surrogate for organ iron — cardiac T2* MRI <20 ms signals high cardiac iron risk regardless of ferritin trend.</p></div>
+        </div>
+
+        <div class="dcard">
+          <h4>Hereditary Spherocytosis</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>Autosomal dominant (75%) defect in RBC membrane skeleton proteins — ankyrin, band 3, spectrin, or protein 4.2 — causing vertical membrane instability.</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>Loss of membrane surface area (not cytoplasm) → spherocytic shape → ↓ deformability → splenic sequestration and destruction (extravascular hemolysis).</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>↑MCHC (>36 g/dL, relatively specific), spherocytes on smear, ↑ osmotic fragility, ↑% reticulocytes, negative direct Coombs (distinguishes from autoimmune hemolytic anemia which also shows spherocytes), EMA-binding flow cytometry is current gold-standard confirmatory test.</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>Chronic hemolysis, pigment gallstones (even in children), aplastic crisis (parvovirus B19), splenomegaly.</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Folate supplementation. Splenectomy for moderate-severe disease (dramatically reduces hemolysis since spleen is the destruction site) — delay until age 5–6 if possible for immune maturation; partial splenectomy increasingly favored to preserve some immune function; ensure pneumococcal/meningococcal/Hib vaccination and penicillin prophylaxis given post-splenectomy sepsis risk.</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>Most common hereditary hemolytic anemia in people of Northern European descent (~1:2,000).</p></div>
+        </div>
+
+        <div class="dcard">
+          <h4>G6PD Deficiency</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>X-linked recessive enzyme deficiency — predominantly affects males; G6PD protects RBCs from oxidative stress via the pentose phosphate pathway/NADPH generation.</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>Oxidative stressors (infection, certain drugs, fava beans) deplete glutathione → hemoglobin oxidizes and precipitates as Heinz bodies → splenic “bite cell” formation and both intra- and extravascular hemolysis.</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>Acute episodic hemolysis (not chronic) — ↓Hgb, ↑retics, ↑LDH, ↓haptoglobin, hemoglobinuria if intravascular, Heinz bodies (supravital stain), bite/blister cells. G6PD enzyme activity assay is falsely normal during acute hemolysis (young RBCs have more enzyme) — recheck 2–3 months later.</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>Neonatal jaundice/kernicterus risk, acute hemolytic crisis with oxidant triggers, favism (severe hemolysis from fava bean ingestion, Mediterranean/A- variants).</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Avoid triggers: sulfonamides, dapsone, primaquine/tafenoquine, nitrofurantoin, rasburicase, fava beans, and during acute infection/DKA. Supportive care during hemolytic episodes (hydration, transfusion if severe); this is a key medication-safety atlas cross-check before prescribing any oxidant drug.</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>Most common human enzyme deficiency worldwide (~400 million people); confers partial malaria protection, explaining geographic distribution (Africa, Mediterranean, Middle East, Southeast Asia).</p></div>
+        </div>
+
+        <div class="dcard">
+          <h4>Hereditary Elliptocytosis</h4>
+          <div class="drow"><span class="lbl">Genetic defect</span><p>Autosomal dominant defects in spectrin self-association (α- or β-spectrin) or protein 4.1R — horizontal membrane skeleton connections.</p></div>
+          <div class="drow"><span class="lbl">Mechanism</span><p>Weakened horizontal membrane linkages → RBCs deform into ellipses under shear stress and cannot recover normal shape → variable hemolysis (most patients are asymptomatic carriers).</p></div>
+          <div class="drow"><span class="lbl">Labs / smear</span><p>Elliptocytes (cigar/oval cells) >25–50% on smear; most patients have normal Hgb and are diagnosed incidentally. Hereditary pyropoikilocytosis is a severe neonatal variant (thermal instability of spectrin).</p></div>
+          <div class="drow"><span class="lbl">Complications</span><p>Usually mild/asymptomatic; occasional chronic hemolytic anemia, gallstones; homozygous/compound heterozygous forms can be severe.</p></div>
+          <div class="drow"><span class="lbl">Management</span><p>Most require no treatment; folate supplementation and splenectomy reserved for symptomatic hemolytic variants.</p></div>
+          <div class="drow stat"><span class="lbl">Stats / pearls</span><p>~1:2,000–1:4,000; higher carrier frequency in malaria-endemic regions (West Africa, Southeast Asia) suggesting selective advantage.</p></div>
+        </div>
+  <div class="callout">
+    <strong>Quick differentiator on smear:</strong> Spherocytes + negative Coombs &rarr; hereditary spherocytosis. Spherocytes + positive Coombs &rarr; autoimmune hemolytic anemia. Sickle cells + target cells &rarr; sickle cell disease. Target cells alone, normal Hb electrophoresis, low-normal MCV, normal RDW &rarr; think thalassemia trait over iron deficiency (which has high RDW). Bite/blister cells + acute trigger &rarr; G6PD deficiency.
+  </div>
+  <p class="verify">All disease-modifying agent names, FDA approval status, and prognosis statistics should be re-verified against current product labeling and NHLBI/ASH guidance before clinical or patient-facing use &mdash; several (voxelotor, gene therapies) have evolving availability.</p>
+</section>
+
+</div>
+
+<footer class="foot">
+  Hematopoiesis &amp; Cellular Atlas &middot; Part of the clinical reference atlas series &middot; Full CBC-with-differential lab interpretation (numeric thresholds, high/low significance, intervention points) and coagulation studies live in the companion CBC & Coagulation Labs Interpretation atlas — this file focuses on production, lifespan, and hereditary structural/enzymatic disease.
+</footer>
+
+<script>
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const body = document.body;
+  function setTheme(t) {
+    body.setAttribute('data-theme', t);
+    btn.innerHTML = t === 'dark' ? '&#9788; Light mode' : '&#9789; Dark mode';
+    localStorage.setItem('hematoAtlasTheme', t);
+  }
+  const saved = localStorage.getItem('hematoAtlasTheme') || 'dark';
+  setTheme(saved);
+  btn.addEventListener('click', () => setTheme(body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+})();
+
+(function() {
+  const buttons = document.querySelectorAll('nav.tabs button');
+  const sections = document.querySelectorAll('section.domtab');
+  buttons.forEach(b => {
+    b.addEventListener('click', () => {
+      buttons.forEach(x => x.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById(b.dataset.dom).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OB/GYN &amp; Women's Health Atlas — Vol. 3: Complications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --acc-1: #B8863A; /* diabetes */
+  --acc-2: #C17A52; /* obesity */
+  --acc-3: #3A8A85; /* UTI/renal */
+  --acc-4: #C1442E; /* hypertensive disorders */
+  --acc-5: #A64560; /* cardiac disease */
+  --acc-6: #7C6FA6; /* mental health & substance use */
+}
+
+[data-theme="light"] {
+  --bg: #FAF7F4; --surface: #FFFFFF; --surface-2: #F1ECE5;
+  --border: #E2D8CC; --text: #292420; --text-secondary: #5C534A;
+  --text-tertiary: #7D7367; --shadow: rgba(41, 36, 32, 0.08);
+}
+[data-theme="dark"] {
+  --bg: #191510; --surface: #221D17; --surface-2: #2A241D;
+  --border: #3A3226; --text: #F2ECE3; --text-secondary: #C6BCAC;
+  --text-tertiary: #9C9284; --shadow: rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 17px; line-height: 1.65; transition: background 0.25s ease, color 0.25s ease; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; color: var(--text); margin: 0 0 0.5em; }
+p { margin: 0 0 1em; color: var(--text); }
+a { color: inherit; }
+.mono { font-family: var(--font-mono); }
+
+header.hero { padding: 3.5rem 1.5rem 3rem; background: linear-gradient(160deg, var(--surface) 0%, var(--bg) 70%); border-bottom: 1px solid var(--border); }
+.hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 0.9rem; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 600; line-height: 1.1; max-width: 18ch; margin-bottom: 0.6rem; }
+.hero h1 em { font-style: italic; font-weight: 500; color: var(--acc-4); }
+.hero-sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 60ch; margin-bottom: 0; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+.pill { font-family: var(--font-mono); font-size: 0.72rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface); }
+
+.controls-bar { position: sticky; top: 0; z-index: 50; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; box-shadow: 0 2px 12px var(--shadow); }
+.brand-mini { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.controls-right { display: flex; align-items: center; gap: 0.5rem; }
+select.nav-select { font-family: var(--font-body); font-size: 0.85rem; padding: 0.5rem 0.7rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); max-width: 46vw; }
+button.theme-toggle { border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 10px; padding: 0.5rem 0.65rem; font-size: 1rem; cursor: pointer; line-height: 1; }
+button.theme-toggle:focus-visible, select.nav-select:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--acc-4); outline-offset: 2px; }
+
+/* Prevalence bar — signature element: relative burden of the 6 modules among pregnancy complications */
+.prev-wrap { padding: 0 1.5rem 2.2rem; }
+.prev-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+.prev-bars { display: flex; flex-direction: column; gap: 0.55rem; }
+.prev-row { display: grid; grid-template-columns: 130px 1fr 56px; align-items: center; gap: 0.6rem; font-size: 0.78rem; }
+.prev-row .lbl { color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.72rem; }
+.prev-track { height: 10px; background: var(--surface-2); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.prev-fill { height: 100%; border-radius: 6px; }
+.prev-val { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); text-align: right; }
+
+main { max-width: 880px; margin: 0 auto; padding: 0 1.25rem 6rem; }
+section.vol-section { padding-top: 3.2rem; scroll-margin-top: 4.2rem; border-top: 1px solid var(--border); margin-top: 3.2rem; }
+section.vol-section:first-of-type { border-top: none; margin-top: 1rem; }
+.section-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.3rem; }
+.section-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--sec-accent, var(--acc-1)); }
+.section-head h2 { font-size: clamp(1.5rem, 4vw, 1.9rem); border-left: 4px solid var(--sec-accent, var(--acc-1)); padding-left: 0.7rem; margin: 0; }
+.section-intro { color: var(--text-secondary); margin: 0.8rem 0 1.8rem; max-width: 68ch; }
+h3.sub { font-size: 1.2rem; margin-top: 2.1rem; color: var(--sec-accent, var(--text)); }
+h4.sub-sub { font-size: 1.02rem; margin-top: 1.4rem; font-family: var(--font-body); font-weight: 700; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.3rem; margin: 1.1rem 0; }
+.callout { border-radius: 12px; padding: 1rem 1.2rem; margin: 1.2rem 0; border: 1px solid var(--border); border-left: 4px solid var(--c-color, var(--acc-1)); background: var(--surface); }
+.callout-title { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--c-color, var(--acc-1)); margin-bottom: 0.45rem; font-weight: 600; }
+.callout.evidence { --c-color: var(--acc-3); }
+.callout.escalate { --c-color: var(--acc-4); }
+.callout.verify { --c-color: var(--text-tertiary); }
+.callout.stat { --c-color: var(--acc-1); }
+.callout.rx { --c-color: var(--acc-5); }
+.callout.care { --c-color: var(--acc-6); }
+
+.tier { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap; }
+.tier.a { background: rgba(58,138,133,0.18); color: #276661; }
+.tier.b { background: rgba(184,134,58,0.2); color: #8A6221; }
+.tier.c { background: rgba(124,111,166,0.2); color: #5D4F87; }
+[data-theme="dark"] .tier.a { color: #9FCFC9; }
+[data-theme="dark"] .tier.b { color: #E0BC7E; }
+[data-theme="dark"] .tier.c { color: #C6B8E5; }
+
+.table-wrap { overflow-x: auto; margin: 1.2rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; min-width: 480px; }
+th, td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary); background: var(--surface-2); }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { font-family: var(--font-mono); }
+
+.tl { border-left: 2px solid var(--border); margin-left: 0.4rem; padding-left: 1.3rem; }
+.tl-item { position: relative; margin-bottom: 1.3rem; }
+.tl-item::before { content: ''; position: absolute; left: -1.62rem; top: 0.3rem; width: 10px; height: 10px; border-radius: 50%; background: var(--sec-accent, var(--acc-1)); }
+.tl-week { font-family: var(--font-mono); font-size: 0.78rem; color: var(--sec-accent, var(--acc-1)); font-weight: 600; }
+
+ul.clean { margin: 0.4rem 0 1em; padding-left: 1.2rem; }
+ul.clean li { margin-bottom: 0.35rem; }
+ul.tight li { margin-bottom: 0.15rem; }
+
+.stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; margin: 1.3rem 0; }
+.stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
+.stat-num { font-family: var(--font-mono); font-size: 1.35rem; font-weight: 600; color: var(--sec-accent, var(--acc-1)); display:block; }
+.stat-cap { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+.ladder { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.2rem 0; }
+.ladder-step { display: flex; gap: 0.9rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.8rem 1rem; }
+.ladder-num { font-family: var(--font-mono); font-weight: 700; color: var(--sec-accent, var(--acc-4)); flex-shrink: 0; min-width: 1.6rem; }
+
+footer { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: var(--text-tertiary); font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem;}
+strong { color: var(--text); }
+.src { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+@media (max-width: 560px) { .hero { padding: 2.4rem 1.1rem 2rem; } main { padding: 0 0.9rem 5rem; } select.nav-select { max-width: 58vw; } .prev-row { grid-template-columns: 96px 1fr 44px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body data-theme="light">
+
+<div class="controls-bar">
+  <div class="brand-mini">OB/GYN Atlas · Vol. 3</div>
+  <div class="controls-right">
+    <select class="nav-select" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to section…</option>
+      <option value="#s1">1 · Diabetes in Pregnancy</option>
+      <option value="#s2">2 · Obesity in Pregnancy</option>
+      <option value="#s3">3 · UTI, ASB &amp; Pyelonephritis</option>
+      <option value="#s4">4 · Hypertensive Disorders</option>
+      <option value="#s5">5 · Cardiac Disease &amp; Cardiomyopathy</option>
+      <option value="#s6">6 · Perinatal Mental Health &amp; Substance Use</option>
+    </select>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">◐</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-eyebrow">Women's Health Atlas · Volume 3 of 4</div>
+  <h1>Pregnancy <em>Complications</em></h1>
+  <p class="hero-sub">Full management depth on the conditions most likely to complicate an otherwise normal pregnancy — and, per the Vol. 1 mortality data, most likely to kill a mother if mismanaged. ACOG-anchored, with complete dosing and titration.</p>
+  <div class="hero-meta">
+    <span class="pill">ACOG-anchored</span>
+    <span class="pill">Full dosing &amp; titration</span>
+    <span class="pill">6 modules</span>
+    <span class="pill">Vol. 1 antepartum · Vol. 2 labor/delivery · Vol. 4 fertility</span>
+  </div>
+</header>
+
+<div class="prev-wrap">
+  <div class="prev-label">Approximate prevalence among pregnancies — why each module earns its depth</div>
+  <div class="prev-bars" id="prevBars"></div>
+</div>
+
+<main id="main-content">
+
+<section class="vol-section" id="s1" style="--sec-accent: var(--acc-1);">
+  <div class="section-head"><span class="section-num">01</span><h2>Diabetes in Pregnancy — Full Management</h2></div>
+  <p class="section-intro">Vol. 1 covered GDM screening. This is everything after the diagnosis: targets, when to add pharmacotherapy, which agent, and how pregestational diabetes changes the calculus.</p>
+
+  <h3 class="sub">Glycemic Targets (GDM &amp; Pregestational)</h3>
+  <div class="stat-strip">
+    <div class="stat-box"><span class="stat-num">&lt;95</span><div class="stat-cap">Fasting glucose, mg/dL</div></div>
+    <div class="stat-box"><span class="stat-num">&lt;140</span><div class="stat-cap">1-hour postprandial, mg/dL</div></div>
+    <div class="stat-box"><span class="stat-num">&lt;120</span><div class="stat-cap">2-hour postprandial, mg/dL</div></div>
+  </div>
+
+  <h3 class="sub">Step 1 — Medical Nutrition Therapy</h3>
+  <p>First-line for every GDM diagnosis: carbohydrate-controlled nutrition therapy plus 30 minutes/day of moderate exercise. This controls glucose adequately in roughly <strong>60–70%</strong> of women with GDM within 1–2 weeks. If fasting or postprandial targets are missed on self-monitoring with reasonable consistency during that window, move to pharmacotherapy.</p>
+
+  <h3 class="sub">Step 2 — Pharmacotherapy: Insulin vs. Oral Agents <span class="tier a">Tier A</span></h3>
+  <div class="callout rx">
+    <div class="callout-title">Where ACOG and SMFM genuinely disagree</div>
+    <p style="margin:0"><strong>ACOG</strong> (Practice Bulletin 190, reaffirmed) and the <strong>ADA</strong> designate <strong>insulin as first-line</strong> pharmacotherapy — it doesn't cross the placenta, and it has the longest safety track record. <strong>SMFM</strong>'s separate statement considers metformin a reasonable first-line alternative given comparable glycemic efficacy in trials. This is a genuine, acknowledged difference in expert interpretation of the same evidence, not a case of one body being "wrong" — know both positions and your own institution's default.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Agent</th><th>Key evidence points</th></tr></thead>
+      <tbody>
+        <tr><td>Insulin</td><td>Does not cross the placenta; ~100 years of safety experience; most flexible titration; downside is injections and cost/access</td></tr>
+        <tr><td>Metformin</td><td>Crosses the placenta; associated with less maternal weight gain and less neonatal hypoglycemia than insulin in trials; monotherapy <strong>fails in 14–46%</strong> of patients, requiring insulin supplementation; long-term offspring metabolic/neurodevelopmental data still limited</td></tr>
+        <tr><td>Glyburide</td><td>Crosses the placenta more than previously assumed; <strong>not found non-inferior to insulin</strong> on a composite of neonatal hypoglycemia, macrosomia, and hyperbilirubinemia in head-to-head data; ACOG/ADA state it should <em>not</em> be first-choice pharmacotherapy; ~23% monotherapy failure rate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">Starting Insulin — A Practical Regimen</h3>
+  <ul class="clean">
+    <li><strong>Isolated fasting hyperglycemia:</strong> bedtime intermediate-acting (NPH) or long-acting basal insulin, starting low (e.g., 0.2 units/kg) and titrating every few days against fasting values.</li>
+    <li><strong>Isolated postprandial hyperglycemia:</strong> rapid-acting insulin before the offending meal(s), dosed to the specific postprandial pattern.</li>
+    <li><strong>Both:</strong> basal-bolus regimen. Total daily dose requirements typically rise as pregnancy progresses due to increasing insulin resistance — expect to titrate upward through the third trimester, not just at initiation.</li>
+  </ul>
+
+  <h3 class="sub">Pregestational Diabetes — What's Different</h3>
+  <ul class="clean">
+    <li><strong>Preconception counseling</strong> is the single highest-yield intervention: periconceptional glycemic control correlates directly with congenital anomaly risk, since major organogenesis (weeks 3–8) often precedes the first prenatal visit.</li>
+    <li>Baseline retinopathy and nephropathy screening; retinopathy can progress during pregnancy and needs dilated exam each trimester in established disease.</li>
+    <li>Tighter targets and closer monitoring than GDM given higher baseline risk; earlier and more frequent antenatal surveillance.</li>
+    <li>Higher baseline risk of preeclampsia, macrosomia, and stillbirth compared with GDM — this population gets the earliest and most intensive antenatal testing protocols (Vol. 1, Module 3 concepts, applied earlier and more often).</li>
+  </ul>
+
+  <h3 class="sub">Delivery Timing</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Control status</th><th class="num">Recommended delivery window</th></tr></thead>
+      <tbody>
+        <tr><td>GDM, diet-controlled, well-managed</td><td class="num mono">39–40w6d</td></tr>
+        <tr><td>GDM, medication-controlled, well-managed</td><td class="num mono">39–39w6d</td></tr>
+        <tr><td>GDM, poorly controlled</td><td class="num mono">37–39w0d (individualized)</td></tr>
+        <tr><td>Pregestational diabetes with vascular complications</td><td class="num mono">Individualized, often earlier — MFM co-management</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Fetal surveillance (NST/BPP) typically begins around <strong>32 weeks</strong> for medication-requiring or poorly controlled GDM, and antenatal testing for suspected macrosomia informs — but does not by itself mandate — the mode of delivery discussion.</p>
+</section>
+
+<section class="vol-section" id="s2" style="--sec-accent: var(--acc-2);">
+  <div class="section-head"><span class="section-num">02</span><h2>Obesity in Pregnancy — Full Management</h2></div>
+  <p class="section-intro">Vol. 1 covered the risk profile and weight-gain targets. Here: what changes practically in how you manage the pregnancy.</p>
+
+  <h3 class="sub">Compounding Risk, Not Just Additive</h3>
+  <p>Obesity doesn't just add to GDM and preeclampsia risk independently — it interacts with them. A patient with obesity <em>and</em> GDM has materially higher macrosomia and cesarean risk than either factor alone, which is why obesity-plus-GDM patients typically get the most aggressive glycemic management and earliest surveillance in Module 1's framework.</p>
+
+  <h3 class="sub">Practical Management Adjustments</h3>
+  <ul class="clean">
+    <li><strong>Anesthesia planning:</strong> early antenatal anesthesia consultation is worth arranging proactively — difficult neuraxial access and airway considerations are better addressed before an emergent intrapartum need arises than during one.</li>
+    <li><strong>VTE prophylaxis dosing:</strong> standard fixed-dose LMWH prophylaxis under-doses higher body weights; weight-based dosing (or higher fixed doses at higher BMI tiers) is increasingly standard rather than a flat dose for everyone.</li>
+    <li><strong>Oxytocin dosing:</strong> emerging data suggest higher oxytocin doses may be needed to achieve adequate uterine contractility in patients with obesity, plausibly related to reduced myometrial contractile response — worth knowing if labor augmentation seems to be underperforming at standard doses.</li>
+    <li><strong>Ultrasound limitations:</strong> anatomic survey sensitivity for fetal structural anomalies decreases with increasing body habitus — this is a real imaging limitation, not just a documentation caveat, and is worth disclosing directly when counseling on scan results.</li>
+    <li><strong>Wound complications:</strong> higher post-cesarean wound infection and separation risk — meticulous closure technique and, in some protocols, subcutaneous closure/negative pressure dressings for higher BMI tiers.</li>
+  </ul>
+
+  <h3 class="sub">Prior Bariatric Surgery</h3>
+  <div class="callout evidence">
+    <div class="callout-title">A frequently missed detail <span class="tier b">Tier B</span></div>
+    <p style="margin:0">Patients with a history of malabsorptive bariatric surgery (Roux-en-Y gastric bypass in particular) may not tolerate a standard oral glucose tolerance test — the glucose load can trigger dumping syndrome (flushing, tachycardia, GI symptoms) that's uncomfortable and can produce misleading results. Alternative GDM screening approaches (home glucose monitoring profiles rather than a bolus OGTT) are reasonable in this population — worth asking about bariatric history specifically at intake rather than assuming a negative answer if unasked. Nutritional deficiency screening (B12, iron, folate, fat-soluble vitamins) is also warranted given malabsorption risk.</p>
+  </div>
+</section>
+
+<section class="vol-section" id="s3" style="--sec-accent: var(--acc-3);">
+  <div class="section-head"><span class="section-num">03</span><h2>UTI, Asymptomatic Bacteriuria &amp; Pyelonephritis</h2></div>
+  <p class="section-intro">Vol. 1 covered why pregnancy makes this different physiologically. Here: exact regimens, per the 2023 ACOG Clinical Consensus.</p>
+
+  <h3 class="sub">Asymptomatic Bacteriuria &amp; Acute Cystitis — Treatment</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Agent</th><th class="num">Dose</th><th class="num">Duration</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Nitrofurantoin</td><td class="num mono">100mg PO BID</td><td class="num mono">5–7 days</td><td>Avoid at term/labor/imminent delivery (neonatal hemolytic anemia risk); avoid in G6PD deficiency; reasonable in 1st trimester if no alternative, first-line in 2nd–3rd</td></tr>
+        <tr><td>Cephalexin</td><td class="num mono">500mg PO BID–QID</td><td class="num mono">7 days</td><td>Common empiric first choice across trimesters; broader tolerability profile</td></tr>
+        <tr><td>Fosfomycin trometamol</td><td class="num mono">3g PO</td><td class="num mono">Single dose</td><td>Only when culture-confirmed susceptibility given variable resistance; avoid if pyelonephritis is a possibility — inadequate renal tissue levels</td></tr>
+        <tr><td>Amoxicillin-clavulanate</td><td class="num mono">500/125mg PO TID</td><td class="num mono">7 days</td><td>Reasonable alternative; local <em>E. coli</em> resistance to plain amoxicillin/ampicillin is 20–40%, so plain amoxicillin alone is not a reliable empiric choice</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout escalate">
+    <div class="callout-title">Contraindicated / use with caution</div>
+    <ul class="clean" style="margin-bottom:0">
+      <li><strong>Fluoroquinolones</strong> — avoid at any point in pregnancy</li>
+      <li><strong>Trimethoprim-sulfamethoxazole</strong> — avoid in 1st trimester (neural tube defect signal) and 3rd trimester/near term (kernicterus risk via bilirubin displacement)</li>
+    </ul>
+  </div>
+  <p>Don't wait for culture results to start empiric therapy in a symptomatic patient — treat empirically, then adjust to sensitivities. Obtain a <strong>test-of-cure culture 1–2 weeks</strong> after completing treatment.</p>
+
+  <h3 class="sub">Recurrent UTI — Suppressive Prophylaxis</h3>
+  <p>After <strong>2 or more</strong> episodes of cystitis/ASB, or after a single episode of pyelonephritis, start daily suppressive prophylaxis for the remainder of pregnancy: <strong>nitrofurantoin 100mg</strong> or <strong>50mg nightly</strong>, or <strong>cephalexin 250–500mg nightly</strong> (stop cephalexin ~4 weeks before delivery per some protocols; stop nitrofurantoin as term approaches per the standard near-term contraindication above).</p>
+
+  <h3 class="sub">Pyelonephritis — Inpatient Management</h3>
+  <p>Pregnancy-specific severity: pyelonephritis in pregnancy carries a meaningfully higher risk of progressing to sepsis and ARDS than in non-pregnant patients — this is an inpatient, IV-antibiotic diagnosis, not an outpatient one.</p>
+  <ul class="clean">
+    <li><strong>Empiric IV options:</strong> ceftriaxone, cefepime, ampicillin + gentamicin, or aztreonam (penicillin allergy) — guided by local resistance patterns.</li>
+    <li>Transition to oral therapy once afebrile and clinically improved for 24–48 hours, completing a total 10–14 day course.</li>
+    <li>Suppressive prophylaxis for the remainder of pregnancy after any pyelonephritis episode (above).</li>
+  </ul>
+
+  <div class="callout stat">
+    <div class="callout-title">Don't forget the GBS connection</div>
+    <p style="margin:0">Any GBS bacteriuria detected at any point in pregnancy — regardless of colony count — requires treatment at diagnosis <em>and</em> intrapartum GBS antibiotic prophylaxis in labor, independent of the 36–37 week culture result from Vol. 1.</p>
+  </div>
+</section>
+
+<section class="vol-section" id="s4" style="--sec-accent: var(--acc-4);">
+  <div class="section-head"><span class="section-num">04</span><h2>Hypertensive Disorders of Pregnancy</h2></div>
+  <p class="section-intro">Vol. 1 covered how to recognize a hypertensive emergency. This is ongoing management — chronic hypertension, gestational hypertension, and the trial that overturned decades of "don't treat mild hypertension" teaching.</p>
+
+  <h3 class="sub">Classification</h3>
+  <ul class="clean">
+    <li><strong>Chronic hypertension</strong> — predates pregnancy or diagnosed before 20 weeks</li>
+    <li><strong>Gestational hypertension</strong> — new-onset after 20 weeks, without proteinuria or severe features</li>
+    <li><strong>Preeclampsia</strong> — new hypertension after 20 weeks plus proteinuria or end-organ dysfunction (full criteria in Vol. 1, Module 6)</li>
+    <li><strong>Chronic hypertension with superimposed preeclampsia</strong> — new proteinuria or end-organ dysfunction developing on top of pre-existing chronic hypertension</li>
+  </ul>
+
+  <h3 class="sub">The CHAP Trial — Chronic Hypertension and Pregnancy <span class="tier a">Tier A</span></h3>
+  <p>Tita et al. (NEJM, 2022) randomized 2,408 women with mild chronic hypertension (&lt;160/110) before 23 weeks to active treatment (BP goal &lt;140/90) versus control (treatment withheld until severe range, ≥160/105).</p>
+  <div class="stat-strip">
+    <div class="stat-box"><span class="stat-num">30.2% vs 37.0%</span><div class="stat-cap">Primary composite outcome (severe preeclampsia, medically indicated preterm birth &lt;35wk, abruption, fetal/neonatal death) — active vs control</div></div>
+    <div class="stat-box"><span class="stat-num">11.2% vs 10.4%</span><div class="stat-cap">Small-for-gestational-age — essentially no difference, addressing the old fear</div></div>
+    <div class="stat-box"><span class="stat-num">24.4% vs 31.1%</span><div class="stat-cap">Any preeclampsia — active vs control</div></div>
+  </div>
+  <div class="callout evidence">
+    <div class="callout-title">Why this overturned decades of practice</div>
+    <p style="margin:0">The old concern — that tighter BP control would reduce placental perfusion and cause growth restriction — was the entire rationale for "letting mild chronic hypertension ride" until it became severe. CHAP showed treating to <strong>&lt;140/90</strong> improved outcomes <em>without</em> increasing SGA. ACOG and SMFM now recommend <strong>140/90 as both the initiation threshold and treatment goal</strong> for chronic hypertension in pregnancy — a direct practice change from this single trial.</p>
+  </div>
+
+  <h3 class="sub">Antihypertensive Selection &amp; Dosing — Chronic/Non-Emergent Management</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Agent</th><th class="num">Starting dose</th><th class="num">Max dose</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Labetalol</td><td class="num mono">100–200mg PO BID</td><td class="num mono">2,400mg/day (divided BID–TID)</td><td>First-line; avoid in asthma, decompensated heart failure, or high-grade heart block</td></tr>
+        <tr><td>Nifedipine ER</td><td class="num mono">30mg PO daily</td><td class="num mono">120mg/day</td><td>First-line; do not divide the ER tablet; can move to BID dosing for symptom control</td></tr>
+        <tr><td>Methyldopa</td><td class="num mono">250mg PO BID–TID</td><td class="num mono">3,000mg/day (divided)</td><td>Second/third-line — long safety record but generally less effective than labetalol/nifedipine; avoid in active hepatic disease; watch for sedation/depression</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Typical approach: start one first-line agent, titrate to at least mid-to-high range dosing before adding a second agent from a different class, rather than combining two agents at low doses early.</p>
+
+  <div class="callout escalate">
+    <div class="callout-title">Absolutely contraindicated</div>
+    <p style="margin:0"><strong>ACE inhibitors and ARBs</strong> — teratogenic, associated with fetal renal dysgenesis, oligohydramnios, and skull ossification defects, particularly with 2nd/3rd trimester exposure. Stop and switch before conception when possible in a patient with chronic hypertension planning pregnancy.</p>
+  </div>
+
+  <h3 class="sub">Acute Severe Hypertension (≥160/110) — Emergency Treatment</h3>
+  <div class="ladder">
+    <div class="ladder-step"><span class="ladder-num">1</span><div><strong>IV labetalol</strong> 20mg, doubling every 10 min (20→40→80→80mg) up to a max cumulative dose, <em>or</em> <strong>IV hydralazine</strong> 5–10mg every 20 min.</div></div>
+    <div class="ladder-step"><span class="ladder-num">2</span><div><strong>Oral immediate-release nifedipine</strong> 10mg is an effective, fast-acting oral alternative when IV access is delayed — repeat in 20 min if needed.</div></div>
+    <div class="ladder-step"><span class="ladder-num">3</span><div>Goal: BP &lt;160/110 within 30–60 minutes to reduce stroke risk — severe hypertension is a genuine acute stabilization priority, not a "wait for the next scheduled reading" situation.</div></div>
+  </div>
+
+  <h3 class="sub">Magnesium Sulfate — Seizure Prophylaxis/Treatment</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Regimen (Zuspan-based, most common in the U.S.)</th></tr></thead>
+      <tbody>
+        <tr><td>Loading dose</td><td class="mono">4–6g IV over 20–30 minutes</td></tr>
+        <tr><td>Maintenance</td><td class="mono">1–2g/hour continuous IV infusion</td></tr>
+        <tr><td>Duration</td><td>Continue through delivery and typically 24 hours postpartum</td></tr>
+        <tr><td>IM alternative (low-resource/no IV access)</td><td class="mono">4g IV + 10g IM loading, then 5g IM q4h</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout escalate">
+    <div class="callout-title">Toxicity monitoring — check before every maintenance dose</div>
+    <ul class="clean" style="margin-bottom:0">
+      <li>Deep tendon reflexes present (loss of DTRs is an early toxicity sign)</li>
+      <li>Respiratory rate ≥12/min</li>
+      <li>Urine output ≥30mL/hour (magnesium is renally cleared — oliguria risks accumulation to toxic levels)</li>
+      <li><strong>Never combine with calcium channel blockers</strong> (especially nifedipine) — risk of severe hypotension and myocardial depression</li>
+      <li><strong>Antidote:</strong> calcium gluconate 1g IV, kept immediately available at bedside for the duration of the infusion</li>
+    </ul>
+  </div>
+</section>
+
+<section class="vol-section" id="s5" style="--sec-accent: var(--acc-5);">
+  <div class="section-head"><span class="section-num">05</span><h2>Cardiac Disease &amp; Peripartum Cardiomyopathy</h2></div>
+  <p class="section-intro">Cardiac conditions and cardiomyopathy together account for roughly a fifth of U.S. pregnancy-related deaths (Vol. 1). The core challenge: normal pregnancy physiology (Vol. 1, Module 1) mimics early heart failure symptom-for-symptom.</p>
+
+  <h3 class="sub">Peripartum Cardiomyopathy (PPCM)</h3>
+  <div class="stat-strip">
+    <div class="stat-box"><span class="stat-num">LVEF &lt;45%</span><div class="stat-cap">Diagnostic threshold, new-onset, no other identified cause</div></div>
+    <div class="stat-box"><span class="stat-num">1 in 900–4,000</span><div class="stat-cap">U.S. incidence — and rising, plausibly from increasing maternal age and multifetal pregnancy via ART</div></div>
+    <div class="stat-box"><span class="stat-num">4×</span><div class="stat-cap">Higher incidence in Black women vs. white women — a disparity that persists independent of socioeconomic factors</div></div>
+  </div>
+  <p>Onset window: classically the last month of pregnancy through 5 months postpartum, though earlier and later presentations are increasingly recognized. It's a diagnosis of exclusion — no cardiac history, no other identifiable cause of the systolic dysfunction.</p>
+
+  <h3 class="sub">The Diagnostic Challenge — Red Flags vs. Normal Pregnancy Discomfort</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Normal 3rd-trimester complaint</th><th>Red flag suggesting PPCM instead</th></tr></thead>
+      <tbody>
+        <tr><td>Mild dyspnea on significant exertion</td><td>Dyspnea at rest, or disproportionate to activity level</td></tr>
+        <tr><td>Positional discomfort lying flat</td><td>True <strong>orthopnea</strong> or <strong>paroxysmal nocturnal dyspnea</strong> — waking gasping for air</td></tr>
+        <tr><td>Mild dependent ankle edema</td><td>Rapid weight gain with edema, or edema disproportionate to gestational stage</td></tr>
+        <tr><td>Fatigue</td><td>New cough, hemoptysis, chest pain, palpitations, or syncope — none of these are "normal pregnancy"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Any combination of these red flags warrants an echocardiogram and NT-proBNP — a low threshold for cardiac workup in this population costs little and catches a condition that's otherwise missed until decompensation.</p>
+
+  <h3 class="sub">Management &amp; Prognosis</h3>
+  <ul class="clean">
+    <li>Multidisciplinary <strong>cardio-obstetric team</strong> management — obstetrics, cardiology, MFM, anesthesia — is the standard of care, not a nice-to-have.</li>
+    <li>Guideline-directed heart failure therapy adapted for pregnancy/lactation safety (ACE inhibitors/ARBs are avoided antepartum for the same fetal reasons as Module 4, but are generally compatible postpartum and with breastfeeding — a genuine antepartum/postpartum distinction worth knowing).</li>
+    <li><strong>Recovery is genuinely possible</strong> and not rare: roughly 50–70% of patients recover LVEF to &gt;50% within 6–12 months. Even patients presenting with a very low initial EF can fully recover — initial severity doesn't reliably predict the ceiling of recovery, which matters for how you counsel a newly diagnosed patient.</li>
+    <li>Mode of delivery is generally guided by obstetric indications, not cardiac status alone, in a hemodynamically stable patient — vaginal delivery with a well-managed second stage (to minimize the hemodynamic load of prolonged pushing) is often preferred over routine cesarean.</li>
+    <li><strong>Recurrence risk in a future pregnancy</strong> is directly tied to degree of LVEF recovery — patients with incomplete recovery face substantially higher recurrence and worse outcomes with subsequent pregnancy, making pre-conception cardiology counseling essential before any future pregnancy.</li>
+  </ul>
+</section>
+
+<section class="vol-section" id="s6" style="--sec-accent: var(--acc-6);">
+  <div class="section-head"><span class="section-num">06</span><h2>Perinatal Mental Health &amp; Substance Use Disorder</h2></div>
+  <p class="section-intro">The single largest underlying-cause category in the Vol. 1 maternal mortality data. Screening and appropriate treatment are genuinely protective interventions here — this module leans into both.</p>
+
+  <h3 class="sub">Universal Screening — ACOG Clinical Practice Guideline No. 4</h3>
+  <ul class="clean">
+    <li>Screen <strong>everyone</strong> receiving prepregnancy, prenatal, or postpartum care for depression and anxiety using a standardized, validated tool — at the initial prenatal visit, again later in pregnancy, and again postpartum.</li>
+    <li>Validated instruments: <strong>Edinburgh Postnatal Depression Scale (EPDS)</strong> — 10 items, validated across pregnancy and postpartum, score ≥10–13 (threshold varies by validation study) flags for further assessment — or <strong>PHQ-9</strong>.</li>
+    <li>Screen for <strong>bipolar disorder</strong> before starting pharmacotherapy for depression/anxiety if not previously assessed — starting an antidepressant alone in unrecognized bipolar disorder risks precipitating mania.</li>
+    <li><strong>Any affirmative answer to a self-harm or suicide item requires immediate assessment</strong> of acuity and severity, with risk-tailored management arranged before the patient leaves — this is not deferred to a follow-up appointment.</li>
+  </ul>
+
+  <div class="callout care">
+    <div class="callout-title">If a patient screens positive for suicidal ideation</div>
+    <p style="margin:0">Assess acuity directly (intent, plan, access to means) rather than avoiding the topic — direct questions do not increase risk and reliably improve your ability to triage appropriately. Arrange same-day psychiatric evaluation for anyone with an active plan or intent; for lower-acuity passive ideation, ensure close follow-up, safety planning, and a warm handoff to behavioral health rather than a referral slip alone. The 988 Suicide &amp; Crisis Lifeline is an appropriate resource to provide directly to any patient in this situation.</p>
+  </div>
+
+  <h3 class="sub">Pharmacotherapy for Perinatal Depression <span class="tier a">Tier A</span></h3>
+  <p>The most significant recent shift: earlier guidance reviewed medication safety data without firmly recommending pharmacotherapy; current guidance actively recommends it as an effective, appropriate first-line option — a real-world RCT found SSRI pharmacotherapy achieved EPDS score improvement below threshold in <strong>45%</strong> of patients at 4 weeks versus <strong>20%</strong> with supportive "listening visits" alone.</p>
+  <ul class="clean">
+    <li><strong>Sertraline</strong> is generally preferred first-line — most extensive safety data, favorable breastfeeding profile, high remission rates. <strong>Escitalopram</strong> is a reasonable alternative for patients with no prior antidepressant history.</li>
+    <li><strong>Paroxetine</strong> carries a signal for fetal cardiac malformation with first-trimester exposure in some studies — generally avoided as an initial choice in pregnancy, though the absolute risk increase is small and this is not an indication to stop it abruptly in someone already stable on it without a real discussion of relative risk.</li>
+    <li><strong>The risk/benefit framing that matters for counseling:</strong> untreated perinatal depression itself carries real risks — to bonding, to obstetric engagement, to the pregnancy, and to the mother directly — so "avoiding medication" is not a risk-free default option; it's a different risk profile, not a safer one.</li>
+    <li>New as of <strong>October 2025</strong>: ACOG issued specific clinical practice guidance on <strong>zuranolone and brexanolone</strong>, the newer rapid-acting neurosteroid-based treatments specifically approved for postpartum depression — worth reviewing directly given how recent this guidance is.</li>
+  </ul>
+
+  <h3 class="sub">Substance Use Disorder — Opioid Use Disorder in Pregnancy <span class="tier a">Tier A</span></h3>
+  <div class="callout evidence">
+    <div class="callout-title">The single most important principle in this section</div>
+    <p style="margin:0">For opioid use disorder in pregnancy, <strong>medication for opioid use disorder (buprenorphine or methadone) is the recommended treatment — not medically supervised withdrawal.</strong> Withdrawal is associated with relapse rates ranging from <strong>59% to over 90%</strong>, and relapse carries far higher maternal and fetal risk than continued, medically managed opioid agonist therapy. This reverses an intuitive but harmful instinct ("get her off opioids entirely") that remains common outside addiction-informed obstetric care.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Methadone</th><th>Buprenorphine</th></tr></thead>
+      <tbody>
+        <tr><td>Setting</td><td>Requires daily visits to a licensed opioid treatment program</td><td>Can be managed outpatient without daily visits — meaningfully lower burden</td></tr>
+        <tr><td>Neonatal abstinence syndrome</td><td>Standard comparator</td><td>Multiple trials show <strong>less severe</strong> NAS/NOWS than methadone</td></tr>
+        <tr><td>Induction risk</td><td>Lower precipitated-withdrawal risk</td><td>Risk of precipitated withdrawal during induction if timed incorrectly relative to last opioid use — requires careful induction protocol (often using COWS-guided titration)</td></tr>
+        <tr><td>Overdose risk profile</td><td>Full agonist</td><td>Partial agonist — inherently lower overdose potential ("ceiling effect")</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="clean">
+    <li>Both agents are ACOG-endorsed, safe in pregnancy and breastfeeding, and should be <strong>continued postpartum</strong> — the postpartum period is a documented higher-risk window for return to use given sleep deprivation, new caregiving demands, and (unfortunately) custody-related fear that can itself discourage disclosure and engagement.</li>
+    <li>Co-management with an addiction medicine-experienced provider is standard; appropriate 42 CFR Part 2-compliant consent is required to share information between obstetric and addiction treatment providers.</li>
+    <li>Universal screening (not just for patients who "look like" they use substances) plus brief intervention and referral to treatment (SBIRT) improves both maternal and infant outcomes — and a positive screen or drug test alone does not equal a diagnosis or mandate a particular response; approach and consent matter for keeping patients engaged in care rather than driving them away from it.</li>
+    <li>Depression, anxiety, bipolar disorder, and PTSD are all more common in patients with OUD — screen for co-occurring conditions rather than treating OUD in isolation.</li>
+  </ul>
+</section>
+</main>
+
+<footer>
+  <p>Volume 3 of the OB/GYN &amp; Women's Health Atlas. ACOG-grounded; reflects practice bulletins, clinical practice guidelines, obstetric care consensus statements, and primary literature current as of build date, including the CHAP trial (NEJM 2022), ACOG Clinical Practice Guideline No. 4 (perinatal mental health screening), and the October 2025 zuranolone/brexanolone guidance. Medication dosing is provided as a clinical reference and should be confirmed against current prescribing information and institutional protocol before use — this is an educational reference, not a substitute for clinical judgment.</p>
+</footer>
+
+<script>
+const root = document.body;
+const toggle = document.getElementById('themeToggle');
+function applyTheme(t) { root.setAttribute('data-theme', t); toggle.textContent = t === 'dark' ? '◑' : '◐'; }
+try {
+  const saved = localStorage.getItem('obgyn-atlas-theme');
+  applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+} catch(e) { applyTheme('light'); }
+toggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('obgyn-atlas-theme', next); } catch(e) {}
+});
+document.getElementById('navSelect').addEventListener('change', function() {
+  if (this.value) { document.querySelector(this.value).scrollIntoView({ behavior: 'smooth', block: 'start' }); this.value = ''; }
+});
+
+const prevData = [
+  { label: 'Obesity', pct: 55, color: 'var(--acc-2)', cap: '~55%' },
+  { label: 'Perinatal depression', pct: 20, color: 'var(--acc-6)', cap: '~20%' },
+  { label: 'UTI/ASB', pct: 8, color: 'var(--acc-3)', cap: '2–10%' },
+  { label: 'GDM', pct: 8, color: 'var(--acc-1)', cap: '6–9%' },
+  { label: 'Hypertensive disorders', pct: 8, color: 'var(--acc-4)', cap: '~8%' },
+  { label: 'Peripartum cardiomyopathy', pct: 0.3, color: 'var(--acc-5)', cap: '~1/1,000–4,000' },
+];
+const wrap = document.getElementById('prevBars');
+const maxPct = 55;
+prevData.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'prev-row';
+  const widthPct = Math.max((d.pct / maxPct) * 100, 3);
+  row.innerHTML = '<div class="lbl">' + d.label + '</div><div class="prev-track"><div class="prev-fill" style="width:' + widthPct + '%; background:' + d.color + ';"></div></div><div class="prev-val">' + d.cap + '</div>';
+  wrap.appendChild(row);
+});
+</script>
+</body>
+</html>

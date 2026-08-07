@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dermatology ER Atlas &mdash; Rash Differential Algorithm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #12161c;
+  --bg-elev: #1a2029;
+  --bg-elev-2: #212836;
+  --ink: #ece6da;
+  --ink-dim: #a9b0bd;
+  --ink-faint: #6b7280;
+  --line: #2b3241;
+  --line-soft: #232a37;
+
+  --face: #e0a458;
+  --face-soft: rgba(224,164,88,.13);
+  --trunk: #4fb3a9;
+  --trunk-soft: rgba(79,179,169,.13);
+  --extrem: #d4685f;
+  --extrem-soft: rgba(212,104,95,.13);
+  --palms: #8e7dd1;
+  --palms-soft: rgba(142,125,209,.13);
+  --mucosal: #cf7aa8;
+  --mucosal-soft: rgba(207,122,168,.13);
+  --generalized: #d9b64e;
+  --generalized-soft: rgba(217,182,78,.14);
+  --glossary: #6ea8d8;
+  --glossary-soft: rgba(110,168,216,.13);
+
+  --accent: #e0a458;
+  --danger: #e2574c;
+  --danger-soft: rgba(226,87,76,.14);
+  --good: #5fb488;
+  --good-soft: rgba(95,180,136,.14);
+  --warn: #d9b64e;
+  --warn-soft: rgba(217,182,78,.14);
+  --pruritic: #d9b64e;
+  --pruritic-soft: rgba(217,182,78,.14);
+  --nonpruritic: #6b7280;
+  --nonpruritic-soft: rgba(107,114,128,.16);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="light"]{
+  --bg: #f7f4ee;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #f0ece3;
+  --ink: #1f2430;
+  --ink-dim: #4b5566;
+  --ink-faint: #8a93a3;
+  --line: #ded7c8;
+  --line-soft: #e8e3d8;
+  --shadow: 0 8px 30px rgba(80,70,50,.12);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-body);
+  line-height:1.6; -webkit-font-smoothing:antialiased; transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; color:var(--ink); margin:0 0 .5em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+a{color:inherit;}
+code, .mono{ font-family:var(--font-mono); }
+::selection{ background: var(--accent); color:#12161c; }
+
+.topbar{
+  position:sticky; top:0; z-index:100; display:flex; align-items:center; gap:14px; padding:14px 20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom:1px solid var(--line);
+}
+.brand{ font-family:var(--font-display); font-size:1.15rem; font-weight:600; display:flex; align-items:baseline; gap:8px; white-space:nowrap; }
+.brand .sub{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase; }
+
+.navwrap{ position:relative; flex:1; display:flex; justify-content:center; }
+.navdrop{ position:relative; }
+.navdrop > button{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.03em; background:var(--bg-elev); color:var(--ink);
+  border:1px solid var(--line); padding:9px 16px; border-radius:999px; cursor:pointer; display:flex; align-items:center; gap:8px;
+  transition:border-color .15s ease;
+}
+.navdrop > button:hover{ border-color:var(--accent); }
+.navdrop .chev{ font-size:.7em; opacity:.6; transition:transform .15s ease;}
+.navdrop.open .chev{ transform:rotate(180deg); }
+.navmenu{
+  position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--bg-elev-2);
+  border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); min-width:320px; max-height:0;
+  overflow:hidden; opacity:0; transition:max-height .22s ease, opacity .18s ease; padding:0; z-index:50;
+}
+.navdrop.open .navmenu{ max-height:70vh; opacity:1; overflow-y:auto; padding:8px; }
+.navmenu button{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:transparent; border:none;
+  color:var(--ink); font-family:var(--font-body); font-size:.88rem; padding:9px 10px; border-radius:7px; cursor:pointer;
+}
+.navmenu button:hover{ background:var(--bg-elev); }
+.navmenu .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+.navmenu .num{ font-family:var(--font-mono); font-size:.7rem; color:var(--ink-faint); width:1.4em; flex:none;}
+
+.themetoggle{
+  background:var(--bg-elev); border:1px solid var(--line); color:var(--ink); border-radius:999px; width:36px; height:36px;
+  cursor:pointer; flex:none; display:flex; align-items:center; justify-content:center; font-size:1rem;
+}
+
+.wrap{ max-width:1000px; margin:0 auto; padding:0 20px 120px; }
+.hero{ padding:48px 0 28px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+.hero .eyebrow{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;}
+.hero h1{ font-size:2.3rem; }
+.hero .lede{ color:var(--ink-dim); font-size:1.02rem; max-width:66ch; }
+.source-strip{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.source-chip{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-dim); border:1px solid var(--line); padding:5px 10px; border-radius:999px; }
+
+.domain{ display:none; padding-top:36px; }
+.domain.active{ display:block; }
+.domain-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+.domain-head .icon{ font-size:1.6rem; }
+.domain-head h2{ margin:0; font-size:1.7rem; }
+.domain-desc{ color:var(--ink-dim); max-width:72ch; margin-bottom:20px; }
+
+.jumprow{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px; position:sticky; top:70px; z-index:20;
+  background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(6px); padding:10px 0; }
+.jumpchip{
+  font-family:var(--font-mono); font-size:.7rem; padding:6px 13px; border-radius:999px; border:1px solid var(--line);
+  background:var(--bg-elev); color:var(--ink-dim); cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+}
+.jumpchip .dot{ width:7px; height:7px; border-radius:50%; }
+
+.section{ margin-bottom:44px; scroll-margin-top:120px; }
+.section > h3{ font-size:1.25rem; display:flex; align-items:center; gap:10px; padding-bottom:9px; border-bottom:2px solid var(--line-soft); margin-bottom:6px; }
+.section > h3 .swatch{ width:12px; height:12px; border-radius:3px; flex:none; }
+.section .count{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); font-weight:400; margin-left:auto; }
+.section-intro{ color:var(--ink-dim); font-size:.9rem; margin:8px 0 18px; }
+
+.morph-group{ margin:20px 0 26px; }
+.morph-label{
+  font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
+  display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:6px; border-bottom:1px dashed var(--line);
+}
+
+.card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin-bottom:14px; }
+.card h4{ font-size:1rem; margin-bottom:8px; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+
+.callout{ border-radius:var(--radius); padding:16px 18px; margin:14px 0; border:1px solid; }
+.callout h4{ display:flex; align-items:center; gap:8px; font-size:.92rem; margin-bottom:6px; font-family:var(--font-body); font-weight:700;}
+.callout.pearl{ background:var(--good-soft); border-color:var(--good); }
+.callout.pearl h4{ color:var(--good); }
+.callout.miss{ background:var(--danger-soft); border-color:var(--danger); }
+.callout.miss h4{ color:var(--danger); }
+.callout.warn{ background:var(--warn-soft); border-color:var(--warn); }
+.callout.warn h4{ color:var(--warn); }
+
+.acc{ border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; overflow:hidden; background:var(--bg-elev); }
+.acc-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:13px 18px; cursor:pointer; user-select:none; }
+.acc-head-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.acc-head h4{ margin:0; font-size:.98rem; }
+.acc-head .plus{ font-size:1.1rem; color:var(--ink-faint); transition:transform .18s ease; flex:none; }
+.acc.open .plus{ transform:rotate(45deg); }
+.acc-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 18px; }
+.acc.open .acc-body{ padding:0 18px 16px; }
+.hallmark{ font-size:.92rem; margin-bottom:8px; padding:10px 12px; background:var(--bg-elev-2); border-radius:7px; border-left:3px solid var(--accent-line, var(--accent)); }
+.hallmark b{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px; color:var(--ink-faint); }
+.pearl-text{ font-size:.88rem; color:var(--ink-dim); }
+.pearl-text b{ color:var(--ink); }
+
+.badge{ display:inline-block; font-family:var(--font-mono); font-size:.62rem; padding:2px 8px; border-radius:999px; font-weight:600; letter-spacing:.02em; white-space:nowrap;}
+.badge.miss{ background:var(--danger-soft); color:var(--danger); }
+.badge.pruritic{ background:var(--pruritic-soft); color:var(--pruritic); }
+.badge.nonpruritic{ background:var(--nonpruritic-soft); color:var(--ink-dim); }
+.badge.morph{ background:var(--bg-elev-2); color:var(--ink-dim); border:1px solid var(--line); }
+
+.diagram-wrap{ background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--radius); padding:18px; margin:16px 0; text-align:center; }
+.diagram-wrap svg{ max-width:100%; height:auto; }
+.diagram-cap{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); margin-top:10px; }
+
+.foot{ margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:.78rem; }
+ul.tight{ margin:0 0 1em 1.1em; padding:0; }
+ul.tight li{ margin-bottom:5px; }
+.small{ font-size:.85rem; color:var(--ink-dim); }
+.verify{ font-family:var(--font-mono); font-size:.68rem; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:8px; margin-top:10px;}
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="brand">Derm ER Atlas <span class="sub">Clinical Reference</span></div>
+  <div class="navwrap">
+    <div class="navdrop" id="navdrop">
+      <button id="navbtn"><span class="navlabel">🔎 Morphology Glossary</span><span class="chev">▼</span></button>
+      <div class="navmenu"><button data-dom="glossary"><span class="dot" style="background:var(--glossary)"></span><span class="num">01</span>🔎 Morphology Glossary</button><button data-dom="algo"><span class="dot" style="background:var(--face)"></span><span class="num">02</span>🩹 ER Differential Algorithm</button><button data-dom="scary"><span class="dot" style="background:var(--good)"></span><span class="num">03</span>🙈 Scary-Looking but Benign</button><button data-dom="viral"><span class="dot" style="background:var(--generalized)"></span><span class="num">04</span>🦠 Viral Rashes</button></div>
+    </div>
+  </div>
+  <button class="themetoggle" id="themeBtn" aria-label="Toggle theme">☀️</button>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Dermatology &middot; Emergency Reference</div>
+    <h1>Dermatology ER Atlas</h1>
+    <p class="lede">A bedside rash differential built the way triage actually happens: location first,
+    then morphology, then pruritic vs. non-pruritic. Illustrated (non-photographic) morphology reference,
+    a differential algorithm spanning face, trunk, extremities, palms/soles, mucosal/intertriginous, and
+    generalized presentations, a dedicated page on conditions that look far more dangerous than they are,
+    and a standalone viral rashes reference led by the classic numbered pediatric exanthems.</p>
+    <div class="source-strip">
+      <span class="source-chip">Location-first, morphology-second</span>
+      <span class="source-chip">Pruritic / non-pruritic flags</span>
+      <span class="source-chip">Can't-miss diagnoses flagged</span>
+      <span class="source-chip">Scary-but-benign course timelines</span>
+      <span class="source-chip">Numbered pediatric exanthem table</span>
+      <span class="source-chip">105 diagnoses total</span>
+    </div>
+  </div>
+
+  
+<div class="domain active" id="dom-glossary">
+<div class="domain-head"><span class="icon">🔎</span><h2>Morphology Glossary</h2></div>
+<p class="domain-desc">The primary lesion vocabulary underneath every differential in this atlas —
+size, elevation, and contents are what separate a papule from a nodule, a vesicle from a bulla, and a
+petechia from a purpura. The blanching test is the single fastest bedside triage step, since it's what
+separates ordinary vascular dilation from blood that's actually left the vessels.</p>
+<div class="diagram-wrap">
+<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dermatology morphology glossary, cross-sectional lesion diagrams">
+  <defs>
+    <style>
+      .lbl{ font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:700; fill:currentColor; }
+      .def{ font-family:'Inter', sans-serif; font-size:11.5px; fill:#8a93a3; }
+    </style>
+  </defs>
+
+  <!-- Row 1: Macule / Patch -->
+  <g transform="translate(20,20)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="22" rx="30" ry="7" fill="#d4685f" opacity="0.75"/>
+    <text x="0" y="0" class="lbl" fill="#d4685f">MACULE</text>
+    <text x="0" y="128" class="def">Flat, &lt;1cm, color change only</text>
+    <text x="0" y="144" class="def">(e.g., freckle, petechiae precursor)</text>
+  </g>
+  <g transform="translate(240,20)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="24" rx="65" ry="10" fill="#d4685f" opacity="0.7"/>
+    <text x="0" y="0" class="lbl" fill="#d4685f">PATCH</text>
+    <text x="0" y="128" class="def">Flat, &gt;1cm, color change only</text>
+    <text x="0" y="144" class="def">(e.g., vitiligo, erythema migrans)</text>
+  </g>
+
+  <!-- Row 1b: Papule / Plaque -->
+  <g transform="translate(460,20)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <path d="M 65 14 Q 85 -8 105 14 Z" fill="#e0a458" stroke="#b8814a" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#e0a458">PAPULE</text>
+    <text x="0" y="128" class="def">Raised, solid, &lt;1cm</text>
+    <text x="0" y="144" class="def">(e.g., insect bite, molluscum)</text>
+  </g>
+  <g transform="translate(680,20)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <path d="M 30 14 Q 40 -10 85 -10 Q 130 -10 140 14 Z" fill="#e0a458" stroke="#b8814a" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#e0a458">PLAQUE</text>
+    <text x="0" y="128" class="def">Raised, solid, flat-topped, &gt;1cm</text>
+    <text x="0" y="144" class="def">(e.g., psoriasis)</text>
+  </g>
+
+  <!-- Row 2: Nodule / Vesicle -->
+  <g transform="translate(20,210)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <circle cx="85" cy="50" r="34" fill="#c9754f" stroke="#a05a38" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#c9754f">NODULE</text>
+    <text x="0" y="128" class="def">Raised, solid, &gt;1cm, extends</text>
+    <text x="0" y="144" class="def">deeper into dermis (e.g., erythema nodosum)</text>
+  </g>
+  <g transform="translate(240,210)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="10" rx="24" ry="20" fill="#a8d4d8" opacity="0.75" stroke="#5a9aa0" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#4fb3a9">VESICLE</text>
+    <text x="0" y="128" class="def">Raised, clear-fluid-filled, &lt;1cm</text>
+    <text x="0" y="144" class="def">(e.g., HSV, varicella, contact dermatitis)</text>
+  </g>
+
+  <!-- Row 2b: Bulla / Pustule -->
+  <g transform="translate(460,210)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="0" rx="50" ry="28" fill="#a8d4d8" opacity="0.7" stroke="#5a9aa0" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#4fb3a9">BULLA</text>
+    <text x="0" y="128" class="def">Raised, clear-fluid-filled, &gt;1cm</text>
+    <text x="0" y="144" class="def">(e.g., bullous pemphigoid, burns)</text>
+  </g>
+  <g transform="translate(680,210)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="10" rx="22" ry="18" fill="#d9d089" opacity="0.85" stroke="#a89a3f" stroke-width="1.5"/>
+    <text x="0" y="0" class="lbl" fill="#d9b64e">PUSTULE</text>
+    <text x="0" y="128" class="def">Raised, purulent-fluid-filled</text>
+    <text x="0" y="144" class="def">(e.g., folliculitis, acne)</text>
+  </g>
+
+  <!-- Row 3: Wheal / Petechiae -->
+  <g transform="translate(20,400)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <ellipse cx="85" cy="8" rx="55" ry="22" fill="#e8b8c4" opacity="0.6" stroke="#c47a90" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="0" y="0" class="lbl" fill="#cf7aa8">WHEAL</text>
+    <text x="0" y="128" class="def">Raised, edematous, transient</text>
+    <text x="0" y="144" class="def">(&lt;24h) &amp; blanching (e.g., urticaria)</text>
+  </g>
+  <g transform="translate(240,400)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <circle cx="60" cy="22" r="3" fill="#a02838"/>
+    <circle cx="85" cy="26" r="2.5" fill="#a02838"/>
+    <circle cx="105" cy="20" r="3" fill="#a02838"/>
+    <circle cx="120" cy="27" r="2" fill="#a02838"/>
+    <circle cx="70" cy="28" r="2" fill="#a02838"/>
+    <text x="0" y="0" class="lbl" fill="#a02838">PETECHIAE</text>
+    <text x="0" y="128" class="def">Flat, &lt;3mm, non-blanching</text>
+    <text x="0" y="144" class="def">(capillary hemorrhage — does NOT blanch)</text>
+  </g>
+
+  <!-- Row 3b: Purpura / Target lesion -->
+  <g transform="translate(460,400)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <path d="M 55 12 Q 75 4 95 14 Q 115 6 130 18 Q 120 28 100 24 Q 80 30 60 22 Z" fill="#8a2838" opacity="0.85"/>
+    <text x="0" y="0" class="lbl" fill="#8a2838">PURPURA</text>
+    <text x="0" y="128" class="def">Flat, &gt;3mm, non-blanching</text>
+    <text x="0" y="144" class="def">(larger hemorrhage; palpable = vasculitis)</text>
+  </g>
+  <g transform="translate(680,400)">
+    <rect x="0" y="34" width="170" height="76" fill="#e8cfa8" stroke="#b8956a" stroke-width="1.5"/>
+    <rect x="0" y="14" width="170" height="20" fill="#f0dcb8" stroke="#b8956a" stroke-width="1.5"/>
+    <circle cx="85" cy="10" r="26" fill="none" stroke="#d4685f" stroke-width="4"/>
+    <circle cx="85" cy="10" r="15" fill="#f0dcb8" stroke="#d4685f" stroke-width="2"/>
+    <circle cx="85" cy="10" r="6" fill="#d4685f"/>
+    <text x="0" y="0" class="lbl" fill="#d4685f">TARGET</text>
+    <text x="0" y="128" class="def">Concentric rings, 3 zones</text>
+    <text x="0" y="144" class="def">(e.g., erythema multiforme)</text>
+  </g>
+
+  <!-- Legend footer: epidermis/dermis key -->
+  <g transform="translate(20,610)" font-family="Inter, sans-serif" font-size="12" fill="#8a93a3">
+    <rect x="0" y="0" width="16" height="10" fill="#f0dcb8" stroke="#b8956a"/>
+    <text x="22" y="9">Epidermis</text>
+    <rect x="120" y="0" width="16" height="10" fill="#e8cfa8" stroke="#b8956a"/>
+    <text x="142" y="9">Dermis / subcutis</text>
+  </g>
+
+  <!-- Blanching test note -->
+  <g transform="translate(20,650)">
+    <rect x="0" y="0" width="830" height="90" rx="8" fill="none" stroke="#4b5566" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="16" y="26" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="currentColor">The blanching test — the single fastest bedside triage step</text>
+    <text x="16" y="48" font-family="Inter, sans-serif" font-size="12.5" fill="#8a93a3">Press a clear glass slide (or your finger) against the lesion. If it fades/blanches → vascular</text>
+    <text x="16" y="66" font-family="Inter, sans-serif" font-size="12.5" fill="#8a93a3">dilation (macules, papules, wheals, erythema). If it does NOT blanch → blood is outside the vessels</text>
+    <text x="16" y="84" font-family="Inter, sans-serif" font-size="12.5" fill="#8a93a3">(petechiae, purpura) — this is the finding that should trigger a sepsis/vasculitis/coagulopathy workup.</text>
+  </g>
+</svg>
+</div>
+<div class="diagram-cap">Cross-sectional schematic. Size thresholds (1cm, 3mm) are teaching conventions,
+not strict cutoffs — use them as anchors, not hard rules.</div>
+</div>
+<div class="domain" id="dom-algo">
+<div class="domain-head"><span class="icon">🩹</span><h2>ER Rash Differential Algorithm</h2></div>
+<p class="domain-desc">74 diagnoses organized first by body location, then by morphology —
+the way a real bedside decision actually unfolds: where is it, and what does it look like. Each entry
+carries a pruritic/non-pruritic flag and a hallmark + pearl. Can't-miss diagnoses are flagged explicitly.
+Start with the Morphology Glossary above if you need the primary-lesion vocabulary refreshed first.</p>
+
+<div class="jumprow"><a href="#loc-face" class="jumpchip"><span class="dot" style="background:var(--face)"></span>Face</a><a href="#loc-trunk" class="jumpchip"><span class="dot" style="background:var(--trunk)"></span>Trunk</a><a href="#loc-extrem" class="jumpchip"><span class="dot" style="background:var(--extrem)"></span>Extremities</a><a href="#loc-palms" class="jumpchip"><span class="dot" style="background:var(--palms)"></span>Palms & Soles</a><a href="#loc-mucosal" class="jumpchip"><span class="dot" style="background:var(--mucosal)"></span>Mucosal / Intertriginous</a><a href="#loc-generalized" class="jumpchip"><span class="dot" style="background:var(--generalized)"></span>Generalized / Diffuse</a></div>
+
+<div class="section" id="loc-face">
+          <h3><span class="swatch" style="background:var(--face)"></span>Face<span class="count">13 diagnoses</span></h3>
+          <p class="section-intro">Includes periorbital and perioral involvement — don't forget dermatomal (V1-V3) patterns here, which carry their own can't-miss logic.</p>
+          <div class="morph-group">
+              <div class="morph-label">Macular/Patch <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erysipelas</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Sharply demarcated, raised, tender, bright red plaque with a distinct border, classically over the cheeks/nose; fever and rapid onset.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The sharp demarcation is the key feature distinguishing this from ordinary cellulitis (which has an indistinct, fading border) — erysipelas involves more superficial dermis/lymphatics.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Malar rash (acute cutaneous lupus)</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Photosensitive erythematous rash over the malar eminences and nasal bridge, classically sparing the nasolabial folds.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The nasolabial sparing is the single most useful discriminator from other facial erythemas (rosacea, seborrheic dermatitis, photosensitivity from other causes) — ask about it specifically on exam.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Papular/Plaque <span style="opacity:.6">(5)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Acne vulgaris</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Comedones (open/closed), papules, pustules, and nodules/cysts in more severe disease; classic T-zone and jawline distribution.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Distinguish from acneiform drug eruptions (steroid acne, EGFR-inhibitor rash) by the abrupt onset and monomorphic (all-same-stage) lesion pattern of the latter — true acne shows lesions at multiple stages simultaneously.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Rosacea</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Central facial erythema, telangiectasias, and papules/pustules without comedones; flushing triggers (heat, alcohol, spicy food) are classic.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The absence of comedones is the key feature separating this from acne — treating rosacea like acne (harsh topical retinoids alone) often worsens the erythema.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Seborrheic dermatitis</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Greasy yellow scale over erythematous patches in the nasolabial folds, eyebrows, and scalp margin.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Worsens with stress and cold weather, improves in summer — a useful history clue distinguishing it from psoriasis, which doesn't follow the same seasonal pattern.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Molluscum contagiosum</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Dome-shaped, flesh-colored papules with a central umbilication; spread by direct contact/autoinoculation, common in children.</div>
+                    <div class="pearl-text"><b>Pearl:</b> In an adult with new widespread facial molluscum, consider HIV testing — extensive facial molluscum in adults is a recognized marker of immunosuppression.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Perioral dermatitis</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Grouped small papules/papulopustules around the mouth with a characteristic clear zone immediately bordering the vermillion lip border; almost exclusively young women.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask specifically about topical or inhaled corticosteroid use — it's a leading trigger, and treating it with more topical steroid (a common reflex when it's mistaken for eczema or acne) reliably makes it worse.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Herpes zoster ophthalmicus (V1)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Grouped vesicles on an erythematous base in a strict V1 (ophthalmic) dermatomal distribution; Hutchinson's sign (vesicles on the nasal tip) predicts ocular involvement.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Hutchinson's sign should trigger urgent ophthalmology involvement even before overt eye findings appear — nasociliary nerve involvement is what links the nose to the globe.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Herpes simplex (orofacial)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Grouped, painful vesicles on an erythematous base, classically perioral; prodromal tingling/burning is common.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Recurrent lesions in the same location are a strong clue — HSV reactivates at the same dermatomal site repeatedly, unlike most other vesicular eruptions.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Impetigo</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Honey-colored crusted erosions, classically perioral/perinasal in children; can be bullous (S. aureus) or non-bullous (strep or staph).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Highly contagious by direct contact — exclude from school/daycare until 24h of appropriate antibiotic therapy, and counsel on hand hygiene to prevent spread to household contacts.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Pustular <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Folliculitis</h4><span class="badge morph">Pustular</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Small follicular-based pustules, often after shaving, occlusion, or hot tub exposure.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Hot-tub folliculitis (Pseudomonas) classically appears 8–48h after exposure and is often self-limited — distinguishing exposure history avoids unnecessary antibiotics.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Nodular <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Epidermoid (sebaceous) cyst</h4><span class="badge morph">Nodular</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Firm, mobile, subcutaneous nodule, often with a central punctum; can become inflamed/infected causing acute tenderness.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Don't incise and drain an inflamed cyst expecting the same ease as an abscess — the cyst wall/capsule often needs to be addressed for definitive resolution, or it will recur.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Urticarial/Wheal <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Angioedema</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--face)"><b>Hallmark</b>Non-pitting, non-pruritic swelling of the lips, eyelids, or tongue, without a clear wheal border; can be allergic (with urticaria/anaphylaxis) or bradykinin-mediated (ACE-inhibitor, hereditary).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Isolated angioedema without urticaria/itching should raise bradykinin-mediated angioedema (ACE-inhibitor or hereditary C1-esterase inhibitor deficiency) — epinephrine and antihistamines are far less effective for this mechanism, and airway management takes priority.</div>
+                  </div>
+                </div>
+            </div>
+        </div><div class="section" id="loc-trunk">
+          <h3><span class="swatch" style="background:var(--trunk)"></span>Trunk<span class="count">17 diagnoses</span></h3>
+          <p class="section-intro">Central distribution is often the first clue to a systemic/exanthematous process rather than a localized contact or infectious process.</p>
+          <div class="morph-group">
+              <div class="morph-label">Macular/Patch <span style="opacity:.6">(6)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Cellulitis</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Poorly demarcated, spreading erythema with warmth, tenderness, and edema, without the sharp raised border of erysipelas; fever may or may not be present.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The indistinct, fading border (vs. erysipelas's sharp raised edge) reflects deeper dermal/subcutaneous involvement — mark the leading edge with a pen at the bedside so you can objectively assess progression or improvement on antibiotics.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Scarlet fever</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Diffuse, finely papular “sandpaper” rash with a sunburn-like erythematous background, accentuated in skin folds (Pastia's lines), circumoral pallor, and a “strawberry tongue”; follows streptococcal pharyngitis.</div>
+                    <div class="pearl-text"><b>Pearl:</b> This is the classic teaching exception in the numbered-exanthem list — it's caused by a bacterial (Group A strep) erythrogenic exotoxin, not a virus, despite historically being grouped with the viral exanthems as “second disease.” See the Viral Rashes page for the full comparison.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Pityriasis rosea</h4><span class="badge morph">Macular/Patch</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Herald patch (single larger oval scaly patch) precedes a generalized eruption of smaller oval patches following skin cleavage lines in a “Christmas tree” pattern on the back.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask specifically about a single larger patch appearing 1–2 weeks before the generalized eruption — patients often don't mention the herald patch unless asked directly.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Tinea versicolor</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Hypo- or hyperpigmented, finely scaly macules/patches on the trunk, more noticeable after sun exposure (affected areas fail to tan).</div>
+                    <div class="pearl-text"><b>Pearl:</b> A quick bedside potassium hydroxide (KOH) prep showing “spaghetti and meatballs” hyphae/spores confirms the diagnosis without needing to await culture.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythema migrans (early Lyme disease)</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Expanding annular erythematous patch, classically with central clearing (“bullseye”), at or near a tick bite site, typically appearing 3–30 days post-exposure.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Central clearing is present in a minority of cases — don't require it for the diagnosis; a single expanding annular lesion with an endemic-area tick exposure history is enough to treat empirically.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Viral exanthem (measles)</h4><span class="badge morph">Macular/Patch</span><span class="badge pruritic">PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Cephalocaudal spreading erythematous maculopapular rash, appearing 2–4 days after fever/cough/coryza/conjunctivitis onset; Koplik spots (buccal mucosa) precede the rash.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Koplik spots are pathognomonic and appear before the rash — look for them specifically in a compatible prodrome, and isolate/report per public health protocol given how contagious measles is.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Papular/Plaque <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Guttate psoriasis</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Sudden eruption of small (&lt;1cm), drop-like, scaly papules/plaques on the trunk, classically 2–3 weeks after streptococcal pharyngitis.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask about a recent sore throat — the post-streptococcal trigger is a distinguishing history point from other papulosquamous eruptions, and confirming/treating strep is part of management.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(4)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Varicella (chickenpox)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Crops of lesions in different stages simultaneously (“dew drops on a rose petal”) — papules, vesicles, and crusted lesions all present at once; centripetal distribution (trunk first, spreading outward).</div>
+                    <div class="pearl-text"><b>Pearl:</b> The “different stages at once” pattern is the key discriminator from other vesicular exanthems, which tend to be more uniform in stage — also highly contagious until all lesions are crusted.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Disseminated (generalized) zoster</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Widespread vesicular eruption crossing dermatomal boundaries, typically in an immunocompromised host, sometimes preceded by localized zoster.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Treat as systemic/disseminated disease requiring IV antiviral therapy and contact/airborne precautions — this is not simply “bad shingles.”</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Bullous pemphigoid</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Tense, intact bullae on erythematous or normal-appearing skin in an older adult; negative Nikolsky sign (bullae don't extend with lateral pressure).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Intensely pruritic urticarial plaques often precede the bullae by weeks — consider this diagnosis in an elderly patient with an itchy rash even before bullae appear.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Pemphigus vulgaris</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Flaccid bullae that rupture easily, leaving painful erosions; positive Nikolsky sign (gentle lateral pressure extends blister/sloughs skin); oral erosions frequently precede skin involvement.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask about oral pain/erosions specifically — they often precede cutaneous lesions by weeks to months and are frequently misattributed to aphthous ulcers before the skin findings clarify the diagnosis.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Petechial/Purpuric <span style="opacity:.6">(4)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Meningococcemia</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Petechiae/purpura (often starting on the trunk/extremities) in a febrile, toxic-appearing patient; can progress rapidly to purpura fulminans.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Petechiae plus fever plus a toxic appearance is sepsis until proven otherwise — don't wait for confirmatory testing to start empiric antibiotics; this is one of the fastest-moving true emergencies in this atlas.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>IgA vasculitis (Henoch-Schönlein purpura)</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Palpable purpura in dependent areas (buttocks, legs, sometimes trunk), often with abdominal pain, arthralgias, and hematuria; typically pediatric, often post-viral/post-strep.</div>
+                    <div class="pearl-text"><b>Pearl:</b> “Palpable” is the key exam word — palpable purpura signals vasculitis (inflammation in the vessel wall) rather than a simple thrombocytopenia/coagulopathy process, which is usually flat.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Rocky Mountain spotted fever</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Petechial/maculopapular rash classically starting on wrists and ankles before spreading centripetally to the trunk (including palms/soles); fever, headache, and a tick-exposure history.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Don't wait for the rash to start doxycycline if the clinical/exposure story fits — the rash is often absent or subtle in the first several days, and delayed treatment significantly increases mortality.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Immune thrombocytopenia (ITP)</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Petechiae and easy bruising with an isolated low platelet count, otherwise well-appearing patient, often following a viral illness in children.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The patient's overall well-appearing status and isolated thrombocytopenia (without other cytopenias or systemic toxicity) helps distinguish this from more dangerous causes of petechiae like meningococcemia.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Urticarial/Wheal <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Acute urticaria</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Well-circumscribed, blanching, intensely pruritic wheals that are individually transient (each lesion resolves within 24h, though new ones may continually appear).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Mark an individual lesion with a pen and recheck in a few hours — if it's still there unchanged beyond 24h, reconsider urticarial vasculitis rather than ordinary urticaria.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Urticarial vasculitis</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--trunk)"><b>Hallmark</b>Wheal-like lesions that persist &gt;24h, may be painful/burning rather than purely itchy, and can leave residual bruising/hyperpigmentation as they resolve.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The combination of lesions lasting &gt;24h plus residual bruising is what separates this from ordinary urticaria — it warrants a workup for an underlying autoimmune/inflammatory cause.</div>
+                  </div>
+                </div>
+            </div>
+        </div><div class="section" id="loc-extrem">
+          <h3><span class="swatch" style="background:var(--extrem)"></span>Extremities<span class="count">15 diagnoses</span></h3>
+          <p class="section-intro">Flexural vs. extensor surface, and proximal vs. distal, are both worth documenting — they narrow the differential fast.</p>
+          <div class="morph-group">
+              <div class="morph-label">Macular/Patch <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythema migrans (extremity presentation)</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Same expanding annular patch as the trunk presentation — extremities are a common tick-bite site, especially the lower legs.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Check for multiple lesions — disseminated early Lyme disease can produce several annular lesions simultaneously, not just one.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Fixed drug eruption</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Sharply demarcated, dusky red-to-violaceous round patch/plaque that recurs in the exact same location with each re-exposure to the causative drug.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask specifically about new or recently restarted medications and whether a similar spot has appeared before in the same spot — this recurrence-at-the-same-site pattern is essentially diagnostic.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Necrotizing fasciitis</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Pain dramatically out of proportion to visible skin findings early on; skin later shows dusky/violaceous discoloration, hemorrhagic bullae, and crepitus as the process progresses, with rapid spread despite antibiotics.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Early skin findings can look deceptively mild (just erythema and swelling) while the pain-out-of-proportion and rapid clinical deterioration are already present — this mismatch between exam and symptom severity is the single most important clue, and surgical exploration/debridement should not wait for imaging to “confirm” it.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Papular/Plaque <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Lichen planus</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>The “6 P's”: planar (flat-topped), pruritic, purple, polygonal, papules, and plaques, classically on the flexor wrists/forearms; fine white lines (Wickham striae) may be visible on the surface.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Check the oral mucosa (lacy white reticular pattern) and nails (longitudinal ridging) — mucosal and nail involvement support the diagnosis and help distinguish it from other papular eruptions.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Scabies</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Intensely pruritic papules, often with visible burrows, classically in finger web spaces, wrists, axillae, and groin; pruritus characteristically worsens at night.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Check close contacts — scabies spreads through prolonged skin contact, and treating only the index patient without treating household/close contacts simultaneously leads to reinfestation.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Guttate psoriasis (extremity involvement)</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Same drop-like scaly papules as trunk presentation, can extend onto the proximal extremities.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Same post-streptococcal history pearl applies — ask about a recent sore throat.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Allergic contact dermatitis (e.g., poison ivy/oak)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Pruritic vesicles/bullae often in linear or streaky configurations reflecting how the plant brushed against the skin; can weep and crust.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The linear/streaky pattern is the single best clue that this is external contact rather than an internal/systemic process — truly systemic eruptions don't respect a linear brush-contact pattern.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Dyshidrotic eczema</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Intensely pruritic, deep-seated “tapioca-like” vesicles on the lateral fingers and palms/soles.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Often flares with stress, seasonal humidity changes, or nickel exposure — ask about hand-jewelry or metal-object contact triggers.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Bullous impetigo</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Flaccid, fragile bullae that rupture leaving a thin varnish-like crust, from a localized staphylococcal exfoliative toxin effect.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Distinguish from more severe staphylococcal scalded skin syndrome by the localized (not diffuse) distribution and the child's otherwise well appearance.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Pustular <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Folliculitis (extremity)</h4><span class="badge morph">Pustular</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Follicular pustules, often after shaving (pseudofolliculitis) or hot tub exposure on the extremities.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Same hot-tub/Pseudomonas exposure-history pearl as the facial presentation applies here.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Nodular <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythema nodosum</h4><span class="badge morph">Nodular</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Tender, red-to-violaceous nodules, classically on the anterior shins bilaterally; lesions never ulcerate and resolve with a bruise-like color change over weeks.</div>
+                    <div class="pearl-text"><b>Pearl:</b> A reactive process, not a primary skin disease — always look for the trigger: streptococcal infection, sarcoidosis, inflammatory bowel disease, pregnancy, or certain medications (notably OCPs and sulfonamides).</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Cutaneous larva migrans</h4><span class="badge morph">Nodular</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Intensely pruritic, serpiginous, thread-like raised track that slowly migrates across the skin, classically on the feet after walking barefoot on contaminated sand/soil.</div>
+                    <div class="pearl-text"><b>Pearl:</b> A travel/exposure history (tropical beach, barefoot contact with sand) is the key clue — the larva is trapped in the epidermis and cannot complete its lifecycle in human skin, so it wanders visibly.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Petechial/Purpuric <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>IgA vasculitis (lower extremity predominant)</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Palpable purpura concentrated on the lower extremities and buttocks (dependent, gravity-affected areas), often with joint and abdominal symptoms.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The lower-extremity/dependent-area predominance reflects the vasculitis being worsened by hydrostatic pressure — encourage leg elevation as a simple adjunct while the underlying process is managed.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Rocky Mountain spotted fever (wrists/ankles)</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Classically starts specifically on the wrists and ankles before spreading centripetally — this is the textbook initial location.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Examine the wrists and ankles specifically in a febrile patient with a tick-exposure history, even before a widespread rash is visible — this is the earliest site of involvement.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Urticarial/Wheal <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Cold urticaria</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--extrem)"><b>Hallmark</b>Wheals appearing specifically at sites of cold exposure (cold water, cold air, holding a cold drink), resolving as the skin rewarms.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Screen for systemic cold-induced anaphylaxis risk before recommending activities like cold-water swimming — a simple ice-cube test on the forearm can support the diagnosis in clinic.</div>
+                  </div>
+                </div>
+            </div>
+        </div><div class="section" id="loc-palms">
+          <h3><span class="swatch" style="background:var(--palms)"></span>Palms & Soles<span class="count">8 diagnoses</span></h3>
+          <p class="section-intro">A short list of diagnoses truly favors palms/soles — which is exactly what makes involvement here so diagnostically useful.</p>
+          <div class="morph-group">
+              <div class="morph-label">Macular/Patch <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Secondary syphilis</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Copper-colored (reddish-brown), non-pruritic macules/papules specifically involving the palms and soles, often with a broader truncal papulosquamous rash.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Palm/sole involvement in an otherwise nonspecific rash should prompt syphilis serology — few common conditions produce a truly palm/sole-predominant eruption, which is exactly what makes this finding so valuable.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Rocky Mountain spotted fever (palms/soles)</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Petechial/maculopapular rash extending to palms and soles as it progresses centripetally — palm/sole involvement is a late but classic finding.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Palm/sole involvement is one of only a handful of conditions that produces this pattern — in a febrile patient with a tick exposure history, this finding should accelerate empiric doxycycline rather than await confirmatory serology.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Palmar erythema</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Symmetric, mottled redness of the palms (especially the thenar/hypothenar eminences), blanching with pressure, non-tender and non-pruritic.</div>
+                    <div class="pearl-text"><b>Pearl:</b> A benign-appearing but genuinely informative sign — seen in pregnancy (a normal variant) but also in chronic liver disease, hyperthyroidism, and rheumatoid arthritis, so ask about those before assuming it's incidental.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Hand-foot-and-mouth disease (coxsackievirus)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Small oval vesicles/papules on the palms, soles, and buttocks, plus painful oral ulcers, typically in a young child with mild fever.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The combination of oral ulcers plus palm/sole vesicles in an otherwise mildly ill child is essentially diagnostic — reassurance and supportive care are usually all that's needed.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Dyshidrotic eczema (palmar)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Deep-seated, intensely pruritic vesicles on the palms, often at the lateral finger margins.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Same nickel/metal-contact and stress-trigger pearl as the extremity presentation applies.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Target lesion <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythema multiforme</h4><span class="badge morph">Target lesion</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Classic target/iris lesions (three concentric zones of color) with acral (hands/feet, including palms) predominance; most commonly triggered by HSV infection, less often by mycoplasma or medications.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Distinguish from Stevens-Johnson syndrome/TEN by the acral-predominant distribution, minimal-to-absent mucosal involvement, and a generally well-appearing patient — EM is far less dangerous, but the two are frequently confused.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Desquamative <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Kawasaki disease</h4><span class="badge morph">Desquamative</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Fever ≥5 days plus at least 4 of: bilateral non-purulent conjunctivitis, oral mucosal changes (strawberry tongue, cracked lips), polymorphous rash, extremity changes (edema/erythema followed by periungual desquamation), and cervical lymphadenopathy.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Periungual desquamation is classically a finding of the subacute phase (week 2–3), not the initial presentation — don't wait for it to appear before considering the diagnosis, since coronary artery aneurysm risk is time-sensitive to treat (IVIG).</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Toxic shock syndrome</h4><span class="badge morph">Desquamative</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--palms)"><b>Hallmark</b>Diffuse macular “sunburn-like” erythema with fever, hypotension, and multi-organ involvement, followed by desquamation of the palms and soles 1–2 weeks later.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The desquamation is a late finding — don't wait for it; the acute diagnosis rests on the fever/hypotension/diffuse-erythema/multi-organ picture plus a source (retained tampon/nasal packing/wound).</div>
+                  </div>
+                </div>
+            </div>
+        </div><div class="section" id="loc-mucosal">
+          <h3><span class="swatch" style="background:var(--mucosal)"></span>Mucosal / Intertriginous<span class="count">8 diagnoses</span></h3>
+          <p class="section-intro">Oral, genital, and skin-fold involvement changes the differential substantially and often signals a more severe process.</p>
+          <div class="morph-group">
+              <div class="morph-label">Papular/Plaque <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Candidal intertrigo</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Moist, macerated, beefy-red erythema in skin folds (groin, under breasts, abdominal panniculus) with satellite papules/pustules just beyond the main plaque border.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The satellite lesions beyond the main border are the key distinguishing feature from simple intertriginous irritation/contact dermatitis, which doesn't produce true satellite lesions.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Tinea cruris</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Annular, scaling, pruritic plaque with a well-demarcated, slightly raised, active border in the groin, classically sparing the scrotum.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Scrotal sparing is the key discriminator from candidal intertrigo, which typically does involve the scrotum/genital skin more diffusely.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Oral candidiasis (thrush)</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>White, curd-like plaques on the tongue/buccal mucosa that scrape off with mild bleeding underneath, distinguishing it from leukoplakia (which does not scrape off).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Consider an underlying cause when it's unexpected — recent antibiotics/inhaled corticosteroids, dentures, diabetes, or immunocompromise (including undiagnosed HIV) in an adult without an obvious explanation.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(5)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Herpes simplex (oral/genital)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Grouped, painful vesicles/erosions on an erythematous base; recurrences favor the same site with a prodrome of tingling/burning.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Primary genital HSV can present with dramatic bilateral vesicles/erosions plus systemic symptoms (fever, malaise) mimicking a more diffuse process — don't let the severity of a primary outbreak throw off the diagnosis.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Pemphigus vulgaris (oral erosions)</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Painful oral erosions, often the presenting sign before skin involvement; positive Nikolsky sign on adjacent skin if present.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Persistent, unexplained oral erosions/pain lasting weeks (not the days-long course of aphthous ulcers or HSV) should prompt biopsy consideration rather than repeated symptomatic treatment.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Stevens-Johnson syndrome / toxic epidermal necrolysis</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Painful mucosal erosions (oral, ocular, genital — often at least 2 sites) plus skin dusky/targetoid macules that progress to epidermal detachment; positive Nikolsky sign; typically drug-induced, onset 1–4 weeks after the culprit medication.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Mucosal involvement at 2 or more sites plus skin sloughing is the hallmark that separates this from erythema multiforme — this is a dermatologic emergency requiring burn-unit-level care and immediate culprit drug discontinuation.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Aphthous ulcers</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Painful, shallow, round oral ulcers with a gray-white base and erythematous halo, typically resolving within 1–2 weeks without scarring.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Recurrent oral and genital ulcers together should raise Behçet's disease — a single-site, self-limited aphthous ulcer is common and benign, but a recurring bipolar (oral + genital) pattern is not.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Behçet's disease</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--mucosal)"><b>Hallmark</b>Recurrent, painful oral aphthous ulcers plus recurrent genital ulcers, often with ocular inflammation (uveitis) and a positive pathergy test (papule/pustule forming at a needle-prick site).</div>
+                    <div class="pearl-text"><b>Pearl:</b> The recurring bipolar (oral + genital) ulcer pattern is what should trigger this diagnosis rather than repeatedly treating each ulcer episode as an isolated aphthous ulcer or presumed HSV.</div>
+                  </div>
+                </div>
+            </div>
+        </div><div class="section" id="loc-generalized">
+          <h3><span class="swatch" style="background:var(--generalized)"></span>Generalized / Diffuse<span class="count">13 diagnoses</span></h3>
+          <p class="section-intro">Widespread rashes without a clear focal origin — this is where the true dermatologic emergencies concentrate.</p>
+          <div class="morph-group">
+              <div class="morph-label">Macular/Patch <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythroderma</h4><span class="badge morph">Macular/Patch</span><span class="badge pruritic">PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse erythema and scaling involving &gt;90% of the body surface area, from an underlying cause (psoriasis, atopic dermatitis, drug reaction, or cutaneous T-cell lymphoma).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Erythroderma itself is a medical emergency regardless of the underlying cause — patients lose thermoregulatory control and can develop high-output cardiac failure and significant fluid/protein losses through the skin.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Viral exanthem (roseola)</h4><span class="badge morph">Macular/Patch</span><span class="badge nonpruritic">NON-PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>High fever for 3–5 days that resolves abruptly, followed by the appearance of a diffuse pink macular/maculopapular rash as the fever breaks; typically infants/toddlers.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The rash appearing only after the fever resolves (not during) is the key sequence that distinguishes roseola from other childhood exanthems, which typically rash while still febrile.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Erythema infectiosum (fifth disease, parvovirus B19)</h4><span class="badge morph">Macular/Patch</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>“Slapped cheek” facial erythema followed by a lacy, reticular rash on the trunk and extremities; typically mild in children.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Ask about pregnancy exposure specifically — parvovirus B19 in a pregnant contact carries a risk of fetal hydrops and warrants obstetric follow-up, even though the illness itself is mild in the child.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Papular/Plaque <span style="opacity:.6">(3)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>DRESS syndrome (drug reaction with eosinophilia and systemic symptoms)</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse morbilliform rash plus facial edema, fever, and lymphadenopathy, with eosinophilia and internal organ involvement (liver most commonly); classically delayed onset 2–8 weeks after starting the culprit drug.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The delayed onset (weeks, not days) is what makes this easy to miss — patients and clinicians often don't connect the rash to a medication started over a month earlier; check LFTs and a CBC with differential in any diffuse drug rash with facial swelling.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Morbilliform drug eruption (simple)</h4><span class="badge morph">Papular/Plaque</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse, symmetric, blanching maculopapular rash, typically starting on the trunk and spreading outward, appearing 1‒2 weeks after starting a new medication.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The absence of facial edema, mucosal involvement, fever, or eosinophilia is what keeps this in the “simple” (self-limited, discontinue-the-drug) category rather than DRESS/SJS — actively screen for those red flags before reassuring the patient.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Crusted (Norwegian) scabies</h4><span class="badge morph">Papular/Plaque</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Thick, hyperkeratotic, crusted plaques teeming with thousands to millions of mites, seen almost exclusively in immunocompromised, institutionalized, or neurologically impaired patients; notably can have minimal or absent itching despite the massive mite burden.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Extremely contagious via casual contact (unlike ordinary scabies, which needs prolonged contact) — requires contact precautions and prompt treatment of all exposed staff/contacts, not just the index patient.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Vesicular/Bullous <span style="opacity:.6">(1)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Toxic epidermal necrolysis</h4><span class="badge morph">Vesicular/Bullous</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Widespread epidermal detachment (&gt;30% body surface area) with a positive Nikolsky sign and mucosal involvement at multiple sites; drug-induced, high mortality.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Calculate SCORTEN early and involve a burn center — fluid/thermoregulatory management mirrors burn care, and mortality correlates strongly with body surface area involved and delay to appropriate care.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Petechial/Purpuric <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Disseminated intravascular coagulation</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Widespread petechiae, purpura, and oozing from IV sites/mucosa in a critically ill patient, with concurrent lab evidence of consumptive coagulopathy (low platelets/fibrinogen, elevated D-dimer/PT/PTT).</div>
+                    <div class="pearl-text"><b>Pearl:</b> This is a laboratory-supported clinical diagnosis in the context of a systemic trigger (sepsis, trauma, malignancy, obstetric complication) — the skin findings are a marker of the underlying process, not the primary problem to treat.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Purpura fulminans</h4><span class="badge morph">Petechial/Purpuric</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Rapidly progressive, retiform (branching, angulated) purpura with hemorrhagic bullae, typically in a critically ill, septic, or DIC-affected patient; skin necrosis follows within hours if untreated.</div>
+                    <div class="pearl-text"><b>Pearl:</b> This is a skin finding that reflects a dying microcirculation — treat the underlying sepsis/DIC aggressively and involve surgery early for eventual demarcation/debridement; the skin change itself is a marker of severity, not a separate problem to treat topically.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Urticarial/Wheal <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Serum sickness-like reaction</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge pruritic">PRURITIC</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse urticarial/morbilliform rash with fever, arthralgias, and lymphadenopathy, typically 1–3 weeks after a triggering medication (classically certain antibiotics) or infection.</div>
+                    <div class="pearl-text"><b>Pearl:</b> Distinguish from true serum sickness (immune-complex mediated, involves complement consumption) — the “like” reaction is more common, generally milder, and resolves with removal of the trigger and supportive care.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Anaphylaxis (cutaneous findings)</h4><span class="badge morph">Urticarial/Wheal</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse urticaria and/or angioedema with flushing, appearing rapidly (minutes) after an exposure, accompanied by respiratory, cardiovascular, or GI symptoms.</div>
+                    <div class="pearl-text"><b>Pearl:</b> The skin finding alone doesn't define anaphylaxis — it's the combination with airway/breathing/circulation involvement that does, and skin findings can even be absent in up to 10-20% of cases, so don't wait for a rash to appear before treating a compatible systemic presentation with epinephrine.</div>
+                  </div>
+                </div>
+            </div><div class="morph-group">
+              <div class="morph-label">Desquamative <span style="opacity:.6">(2)</span></div>
+              <div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Toxic shock syndrome (diffuse)</h4><span class="badge morph">Desquamative</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse macular “sunburn-like” erythema, fever ≥39°C, hypotension, and involvement of ≥3 organ systems; classically associated with retained tampons, nasal packing, or wound infections.</div>
+                    <div class="pearl-text"><b>Pearl:</b> This is a clinical diagnosis made on the constellation of findings — don't wait for culture confirmation before starting aggressive resuscitation, source control, and antibiotics.</div>
+                  </div>
+                </div><div class="acc">
+                  <div class="acc-head">
+                    <div class="acc-head-left"><h4>Staphylococcal scalded skin syndrome</h4><span class="badge morph">Desquamative</span><span class="badge nonpruritic">NON-PRURITIC</span><span class="badge miss">CAN'T MISS</span></div>
+                    <span class="plus">+</span>
+                  </div>
+                  <div class="acc-body">
+                    <div class="hallmark" style="--accent-line: var(--generalized)"><b>Hallmark</b>Diffuse tender erythema followed by superficial desquamation/blistering from a circulating staphylococcal exfoliative toxin; positive Nikolsky sign; mucosa classically spared (unlike TEN).</div>
+                    <div class="pearl-text"><b>Pearl:</b> Mucosal sparing is the key feature distinguishing this from toxic epidermal necrolysis — SSSS is toxin-mediated and epidermolytic at a very superficial split, generally with a better prognosis than TEN when recognized early.</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+<p class="verify">Hallmarks and pearls are the highest-yield single clues, not the complete diagnostic
+picture for any of these — always confirm against current literature, local protocols, and your own
+clinical judgment before applying. Morphology and location guide the differential; they don't replace it.</p>
+</div>
+<div class="domain" id="dom-scary">
+<div class="domain-head"><span class="icon">🙈</span><h2>Scary-Looking but Benign</h2></div>
+<p class="domain-desc">The deliberate mirror image of the can't-miss flags elsewhere in this atlas:
+14 conditions whose <i>appearance</i> alarms patients and junior clinicians out of proportion to
+their actual risk. Each entry walks through what it's mistaken for, what it actually is, and — the
+piece that matters most for counseling — its full clinical course from onset to resolution.</p>
+
+<div class="callout warn">
+<h4>⚠ Why this page exists</h4>
+<p>Overcalling a benign, self-limited eruption as something dangerous drives unnecessary workups,
+antibiotics, and patient fear. Undercalling a genuinely dangerous one is the opposite failure. The
+skill this page builds is the same skill the can't-miss badges build elsewhere — just aimed at the
+other side of the error.</p>
+</div>
+
+<div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Dyshidrotic eczema</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A severe blistering disease or a contagious infection — the deep-seated, tense, “tapioca-like” vesicles on the palms and fingers look far more alarming than ordinary eczema.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>An intensely pruritic but benign eczema variant. It is not infectious, not a blistering autoimmune disease, and not dangerous — the depth and tension of the vesicles come from the unusually thick palmar/plantar skin, not from severity.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Vesicles erupt over several days, often with intense itching before they're even visible. They typically don't rupture (thick skin holds them intact) and instead dry up and desquamate over 2–3 weeks. It's chronic-relapsing — expect recurrent flares tied to stress, humidity/season changes, or nickel exposure — but never progresses to anything systemic.</div>
+            <div class="pearl-text"><b>Pearl:</b> Tell the patient plainly: this will not spread as an infection, will not scar, and will dry up and peel on its own over a few weeks even without treatment — topical steroids just speed up the itching relief.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Pityriasis rosea</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A dramatic new widespread eruption — patients (and sometimes clinicians) worry about a serious viral exanthem, a drug reaction, or even secondary syphilis given how quickly it covers the trunk.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign, self-limited eruption, likely triggered by reactivation of HHV-6/7. It carries no systemic risk in an immunocompetent patient.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>A single herald patch appears first, often mistaken for ringworm. Over the following 1–2 weeks, smaller patches spread across the trunk in the Christmas-tree pattern. The eruption plateaus, then fades spontaneously over a total course of 6–8 weeks. Temporary post-inflammatory pigment change (more noticeable in darker skin tones) can linger after the rash itself clears, but resolves without scarring.</div>
+            <div class="pearl-text"><b>Pearl:</b> The herald patch is the single most reassuring history point you can elicit — a patient who recalls one larger spot appearing a week or two before everything else fits a clean, benign timeline rather than something progressive.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Guttate psoriasis</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A sudden, violent-looking eruption of dozens to hundreds of scaly drops overnight — the abruptness alone makes it look infectious or allergic.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A reactive, post-streptococcal eruption in a psoriasis-prone patient. It is not infectious and not an allergic emergency.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Lesions erupt over just a few days, typically 2–3 weeks after a strep pharyngitis episode. Many cases spontaneously clear over weeks to a few months, especially with sunlight exposure and topical therapy; a minority go on to develop chronic plaque psoriasis.</div>
+            <div class="pearl-text"><b>Pearl:</b> Confirm and treat the strep trigger (throat culture, antibiotics if still active) as part of management — addressing the trigger is as relevant as treating the skin itself.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Erythema multiforme (minor)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>Stevens-Johnson syndrome — the classic target/iris lesions look dramatic enough that patients and trainees alike often jump straight to the most severe diagnosis on sight.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign, usually HSV-triggered hypersensitivity reaction. “Minor” EM has minimal-to-no mucosal involvement and does not carry SJS/TEN's mortality risk.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Lesions erupt over 3–5 days, favor the extremities (including palms), and each individual target lesion lasts about a week. The full episode resolves over 2–4 weeks without scarring. Because it's HSV-driven in most cases, it can recur with each HSV reactivation.</div>
+            <div class="pearl-text"><b>Pearl:</b> Check mucosal surfaces specifically — the presence or absence of significant oral/ocular/genital erosions is what separates this reassuring course from the SJS/TEN entry in the main algorithm, not the dramatic appearance of the skin lesions themselves.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Acute urticaria (extensive)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>Impending anaphylaxis — rapidly spreading, widespread wheals understandably frighten patients into thinking a severe allergic reaction is about to compromise their airway.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>Benign, histamine-mediated, and self-limited as long as there are no respiratory, GI, or cardiovascular symptoms accompanying it.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Individual wheals are transient by definition, resolving within 24 hours each (though new ones can keep appearing elsewhere). The overall episode typically runs its course within days and, by definition, is called “acute” if it resolves within 6 weeks.</div>
+            <div class="pearl-text"><b>Pearl:</b> Teach the pen-mark test: circle one wheal and recheck it in a few hours. If that specific lesion is gone or clearly changed, this is ordinary urticaria — and worth saying out loud to an anxious patient as objective reassurance.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Molluscum contagiosum with the “BOTE sign”</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A worsening skin infection needing antibiotics — when molluscum papules become red, crusted, and inflamed (the “Beginning Of The End”, or BOTE, sign), parents and patients read this as the infection spreading or turning septic.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>The opposite is true: this inflammatory change is the immune system finally recognizing and clearing the virus. It is a reassuring, not alarming, sign.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Individual lesions typically last 2–4 months; because autoinoculation seeds new lesions in the meantime, the overall condition in a child can persist 6–18 months before full spontaneous clearance. The BOTE sign, when it appears, usually predicts resolution within weeks.</div>
+            <div class="pearl-text"><b>Pearl:</b> This is one of the few times in dermatology where you can tell a worried parent that redness and crusting are good news — frame it that way explicitly, since the visual instinct is to assume the opposite.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Erythema infectiosum (fifth disease)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>An alarming new facial rash — the abrupt, bright “slapped cheek” appearance in an otherwise playing, active child often prompts urgent concern from parents.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A mild, self-limited parvovirus B19 infection in an immunocompetent child, with the child usually feeling better than the rash looks by the time it appears.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Slapped-cheek erythema lasts 2–4 days, followed by a lacy, reticular rash on the trunk/extremities that lingers 1–3 weeks — and can transiently flare with heat, sunlight, or exercise even after the child seems to have recovered, which itself often re-alarms parents.</div>
+            <div class="pearl-text"><b>Pearl:</b> Ask specifically about pregnant household contacts — the child's illness is mild, but a pregnant contact exposed during the child's contagious (pre-rash) period should follow up with obstetrics given the fetal hydrops risk.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Roseola infantum</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A concerning rash after several days of high fever — parents who were already anxious about the fever become newly alarmed when a rash appears just as the child seems to be improving.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign HHV-6/7 viral illness. The classic “fever-then-rash” sequence is itself the reassuring pattern, not a sign of a new complication.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>High fever (often 39–40°C) persists for 3–5 days, frequently with a child who looks less ill than the fever number suggests. The fever resolves abruptly, and a pink macular/maculopapular rash appears within 12–24 hours of defervescence, fading on its own within 1–3 days.</div>
+            <div class="pearl-text"><b>Pearl:</b> This sequence — rash appearing only after the fever breaks — is worth explaining to parents directly: it's the tail end of the illness, not the start of a new one.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Severe allergic contact dermatitis (e.g., facial poison ivy)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>Cellulitis, angioedema, or a severe infectious/allergic emergency — dramatic facial/eyelid swelling and weeping blisters look infectious or anaphylactic, especially when the eyes swell shut.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign (if uncomfortable) delayed-type hypersensitivity reaction, with no systemic threat unless there is true airway involvement, which is rare even with severe facial cases.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Onset is delayed 1–3 days after exposure (this is a T-cell-mediated reaction, not immediate), peaking around days 3–7, then gradually resolving over 2–3 weeks. New patches can appear at unexposed sites days into the course (autoeczematization/“id” spread) — which understandably makes patients think it's contagious or spreading internally.</div>
+            <div class="pearl-text"><b>Pearl:</b> Explain the delayed-onset mechanism up front — patients are often confused about why a rash “keeps spreading” days after they stopped touching anything, and the autoeczematization phenomenon is the answer, not worsening exposure.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Cutaneous larva migrans</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>An active parasite burrowing and spreading under the skin — which is, notably, literally true, making this one of the more legitimately unsettling-looking benign conditions in this list.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>Self-limited: the larva is trapped in human skin, cannot complete its lifecycle, and will eventually die on its own even without treatment.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Untreated, the track continues migrating for several weeks and resolves spontaneously within 4–8 weeks as the larva dies. A short course of an antiparasitic (e.g., albendazole or ivermectin) reliably shortens this considerably.</div>
+            <div class="pearl-text"><b>Pearl:</b> You can honestly tell a disturbed patient that the larva cannot survive long-term in human skin — humans are a dead-end host, which is exactly why this resolves rather than progressing to anything more invasive.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Mechanical (Valsalva-associated) petechiae</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>Meningococcemia or another dangerous petechial process — in a well-appearing, afebrile patient, petechiae still reflexively trigger sepsis-level concern given everything else in this atlas that petechiae can mean.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign, purely mechanical phenomenon from a transient spike in intrathoracic/venous pressure (forceful vomiting, coughing fits, prolonged crying, or the pushing phase of childbirth) rupturing superficial capillaries.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Petechiae appear immediately after the inciting event, are classically confined above the nipple line (face, neck, upper chest, periorbital area), and fade like an ordinary bruise over 1–2 weeks with no new lesions appearing elsewhere.</div>
+            <div class="pearl-text"><b>Pearl:</b> The distribution and the story do the differentiating work: a well-appearing, afebrile patient with petechiae confined to the face/neck after a clear forceful-Valsalva event does not need the same workup as the meningococcemia entry in the main algorithm — but any fever, toxicity, or petechiae below the chest should reopen that concern immediately.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Erythema toxicum neonatorum</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>An infected or allergic newborn rash — blotchy erythema studded with small pustules on a days-old infant is exactly the kind of finding that alarms new parents.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>One of the most common benign newborn skin findings there is (affecting roughly half of full-term infants), with no infectious or allergic significance whatsoever.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Appears within the first few days of life; individual lesions can come and go within hours, and the entire eruption resolves completely within 1–2 weeks without any treatment.</div>
+            <div class="pearl-text"><b>Pearl:</b> This is a genuinely reassuring newborn-exam finding — naming it confidently for anxious new parents (rather than hedging) is itself part of good care here.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Miliaria (heat rash)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>A viral exanthem, allergic reaction, or infection — especially when it appears on a febrile infant, parents often assume the rash IS the illness rather than a separate, incidental heat-related finding.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>A benign, mechanical obstruction of sweat ducts from heat and occlusion (overbundling, fever, humid weather), with no association to the underlying illness causing the fever.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Appears within hours to a few days of heat/occlusion exposure and resolves within hours to a couple of days once the skin is cooled and unoccluded — one of the fastest-resolving entries in this whole list.</div>
+            <div class="pearl-text"><b>Pearl:</b> Worth explicitly decoupling from the fever in your explanation to parents — “this is from being overheated/bundled up, not part of what's making them sick” prevents an unnecessary secondary workup.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Livedo reticularis (physiologic / cutis marmorata)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--danger)"><b>Looks like</b>Vascular occlusion, vasculitis, or poor perfusion — the lace-like, net-patterned mottling can look like an ischemic or inflammatory vascular process, especially to someone who hasn't seen the benign form before.</div>
+            <div class="hallmark" style="--accent-line: var(--good)"><b>Actually</b>In infants (cutis marmorata) and many young women (primary/physiologic livedo reticularis), this is simply an accentuated normal cutaneous vascular response to cold.</div>
+            <div class="hallmark" style="--accent-line: var(--glossary)"><b>Course</b>Appears with cold exposure and, critically, resolves completely with rewarming within minutes to about an hour. This rapid, complete reversibility with warming is the defining feature of the benign form.</div>
+            <div class="pearl-text"><b>Pearl:</b> This is the cleanest bedside test in the whole list: rewarm the limb and recheck. Complete resolution confirms the benign physiologic pattern; persistence despite rewarming is what should redirect you toward a pathologic cause (vasculitis, antiphospholipid syndrome, cholesterol emboli) instead.</div>
+          </div>
+        </div>
+
+<p class="verify">Course timelines are general teaching patterns, not guarantees — any lesion that
+deviates from its expected course (new systemic symptoms, mucosal involvement, failure to improve on
+schedule) should be re-evaluated rather than forced to fit the reassuring pattern.</p>
+</div>
+<div class="domain" id="dom-viral">
+<div class="domain-head"><span class="icon">🦠</span><h2>Viral Rashes</h2></div>
+<p class="domain-desc">Every viral-etiology eruption in this atlas pulled into one dedicated page for
+fast reference — 17 entries total, led by the classic “numbered” pediatric exanthems with a
+side-by-side comparison table, followed by the high-yield viral rashes seen daily in the ED that don't
+carry a historical number.</p>
+
+<div class="section">
+<h3><span class="swatch" style="background:var(--generalized)"></span>The Classic Numbered Childhood Exanthems<span class="count">6 entries</span></h3>
+<p class="section-intro">A well-worn teaching framework — useful as a quick-scan comparison, with the
+full detail in the accordions below. Note that 2nd disease is a deliberate exception: it's bacterial,
+not viral, and is included here only because of its historical place in this numbering.</p>
+
+<div class="tbl-wrap" style="overflow-x:auto">
+<table>
+<tr><th>#</th><th>Disease</th><th>Virus</th><th>Location / pattern</th><th>Other presentation</th></tr>
+<tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">1st</td>
+          <td><b>Measles (rubeola)</b></td>
+          <td>Measles virus (paramyxovirus)</td>
+          <td>Starts on the face/hairline, spreads cephalocaudally (head → trunk → extremities) over 3 days; lesions coalesce as they spread.</td>
+          <td>High fever, the “3 C's” (cough, coryza, conjunctivitis), and pathognomonic Koplik spots (buccal mucosa) 1–2 days before the rash.</td>
+        </tr><tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">2nd</td>
+          <td><b>Scarlet fever</b></td>
+          <td>Not viral — Group A Streptococcus (bacterial exotoxin)</td>
+          <td>Diffuse fine sandpaper-like papular rash starting on the trunk/neck, accentuated in flexural creases (Pastia's lines), with circumoral pallor.</td>
+          <td>Strawberry tongue, sore throat, fever — essentially strep pharyngitis plus a toxin-mediated rash.</td>
+        </tr><tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">3rd</td>
+          <td><b>Rubella (German measles)</b></td>
+          <td>Rubella virus (togavirus)</td>
+          <td>Starts on the face, spreads cephalocaudally like measles but faster (rash fully out within ~24h) and clears face-first as it spreads, unlike measles.</td>
+          <td>Mild fever, posterior auricular/suboccipital lymphadenopathy (a distinguishing feature from measles), and possible transient arthralgias in adults.</td>
+        </tr><tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">4th</td>
+          <td><b>“Duke's disease” (historical)</b></td>
+          <td>Contested / likely not a distinct entity</td>
+          <td>Historically described as a scarlatiniform rash distinct from scarlet fever and rubella.</td>
+          <td>No reliable distinguishing features — this is largely a historical/teaching footnote rather than an actionable diagnosis today.</td>
+        </tr><tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">5th</td>
+          <td><b>Erythema infectiosum (fifth disease)</b></td>
+          <td>Parvovirus B19</td>
+          <td>“Slapped cheek” facial erythema first, followed by a lacy, reticular (net-like) rash on the trunk and extremities.</td>
+          <td>Mild or absent fever, sometimes preceded by a nonspecific viral prodrome; can flare with heat/sun/exercise for weeks after the initial illness.</td>
+        </tr><tr>
+          <td class="mono" style="color:var(--generalized);font-weight:700">6th</td>
+          <td><b>Roseola infantum</b></td>
+          <td>HHV-6 (and sometimes HHV-7)</td>
+          <td>Pink macular/maculopapular rash on the trunk, spreading to the neck/face/extremities, appearing only after the fever breaks.</td>
+          <td>High fever (39–40°C) for 3–5 days in an otherwise not-especially-ill-appearing infant/toddler, sometimes with febrile seizure due to the rapid temperature rise.</td>
+        </tr>
+</table>
+</div>
+
+<div class="callout warn">
+<h4>⚠ 2nd disease is the exception that proves the rule</h4>
+<p>Scarlet fever is caused by a Group A streptococcal exotoxin, not a virus — it's grouped in this
+list purely for historical/teaching continuity. Worth saying out loud when teaching this framework so
+it doesn't get miscategorized as viral.</p>
+</div>
+
+<div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>1st disease — Measles (rubeola)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Measles virus (paramyxovirus)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Starts on the face/hairline, spreads cephalocaudally (head → trunk → extremities) over 3 days; lesions coalesce as they spread.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct cytopathic viral invasion of respiratory epithelium and skin capillary endothelium, with a T-cell-mediated immune response driving much of the rash itself.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>High fever, the “3 C's” (cough, coryza, conjunctivitis), and pathognomonic Koplik spots (buccal mucosa) 1–2 days before the rash.</div>
+            <div class="pearl-text"><b>Pearl:</b> Koplik spots appear before the rash and are essentially diagnostic — look for them specifically in a compatible prodrome, and treat as a public-health-reportable, airborne-precautions case.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>2nd disease — Scarlet fever</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Not viral — Group A Streptococcus (bacterial exotoxin)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Diffuse fine sandpaper-like papular rash starting on the trunk/neck, accentuated in flexural creases (Pastia's lines), with circumoral pallor.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Streptococcal erythrogenic (pyrogenic) exotoxin-mediated, not a direct viral effect — the classic teaching exception in this numbered list.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Strawberry tongue, sore throat, fever — essentially strep pharyngitis plus a toxin-mediated rash.</div>
+            <div class="pearl-text"><b>Pearl:</b> Worth flagging explicitly: this is bacterial, not viral, despite its historical place in the “numbered exanthem” teaching list — treat the strep, and the rash resolves as the infection clears.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>3rd disease — Rubella (German measles)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Rubella virus (togavirus)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Starts on the face, spreads cephalocaudally like measles but faster (rash fully out within ~24h) and clears face-first as it spreads, unlike measles.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection with a milder immune/inflammatory response than measles, producing a milder, faster-resolving illness.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Mild fever, posterior auricular/suboccipital lymphadenopathy (a distinguishing feature from measles), and possible transient arthralgias in adults.</div>
+            <div class="pearl-text"><b>Pearl:</b> The occipital/postauricular adenopathy is a useful discriminator from measles — and always ask about pregnancy exposure given the congenital rubella syndrome risk to a fetus.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>4th disease — “Duke's disease” (historical)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Contested / likely not a distinct entity</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Historically described as a scarlatiniform rash distinct from scarlet fever and rubella.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Modern consensus is that this was likely not a genuinely distinct disease — probably a mix of mild scarlet fever, staphylococcal toxin-mediated rashes, or other exanthems misclassified at the time.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>No reliable distinguishing features — this is largely a historical/teaching footnote rather than an actionable diagnosis today.</div>
+            <div class="pearl-text"><b>Pearl:</b> Worth knowing it exists as trivia for the numbered-exanthem list, but don't chase it as an actual diagnosis — most modern texts consider it obsolete.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>5th disease — Erythema infectiosum (fifth disease)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Parvovirus B19</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>“Slapped cheek” facial erythema first, followed by a lacy, reticular (net-like) rash on the trunk and extremities.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection of erythroid precursor cells; the rash itself is thought to be immune-complex mediated, appearing after viremia has already cleared — which is why the child is often no longer contagious by the time the rash appears.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Mild or absent fever, sometimes preceded by a nonspecific viral prodrome; can flare with heat/sun/exercise for weeks after the initial illness.</div>
+            <div class="pearl-text"><b>Pearl:</b> By the time the rash appears, the child is generally past the contagious viremic phase — but a pregnant contact exposed during the earlier prodrome should still follow up given the fetal hydrops risk.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>6th disease — Roseola infantum</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>HHV-6 (and sometimes HHV-7)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Pink macular/maculopapular rash on the trunk, spreading to the neck/face/extremities, appearing only after the fever breaks.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection with viremia during the febrile phase; the rash appears as the immune response clears the virus from the blood, which is why it coincides with defervescence.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>High fever (39–40°C) for 3–5 days in an otherwise not-especially-ill-appearing infant/toddler, sometimes with febrile seizure due to the rapid temperature rise.</div>
+            <div class="pearl-text"><b>Pearl:</b> The fever-then-rash sequence is the single most useful teaching point — a rash that appears as the fever resolves is reassuring, not a sign of a new complication.</div>
+          </div>
+        </div>
+</div>
+
+<div class="section">
+<h3><span class="swatch" style="background:var(--extrem)"></span>Other High-Yield Viral Rashes<span class="count">11 entries</span></h3>
+<p class="section-intro">Not part of the historical numbered list, but every bit as relevant to an ED
+shift — several of these also appear in the main location-based algorithm or the scary-but-benign
+page; they're repeated here in full so this page works as a true standalone viral reference.</p>
+<div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Varicella (chickenpox)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Varicella-zoster virus (VZV), primary infection</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Centripetal distribution (trunk and face first, then spreading outward to extremities, sparing palms/soles relatively).</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection of epidermal keratinocytes causing intraepidermal vesicle formation; crops appear in successive waves over several days.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Fever and malaise typically precede or accompany the rash; lesions appear in different stages simultaneously (papule, vesicle, crust) — the classic “dew drops on a rose petal” appearance.</div>
+            <div class="pearl-text"><b>Pearl:</b> Contagious from ~48h before rash onset until all lesions are crusted — this window matters for isolation guidance and school/daycare return timing.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Hand-foot-and-mouth disease</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Coxsackievirus A16 or Enterovirus 71 (classic); Coxsackievirus A6 (atypical, more severe/widespread variant)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Oval vesicles/papules on the palms, soles, and buttocks, plus painful oral ulcers/vesicles.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral cytopathic effect on oral and acral epidermis; the A6 strain variant can produce a more widespread, bullous, and even perianal/extremity-predominant eruption than classic HFM.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Painful mouth ulcers often drive poor oral intake and are frequently the chief complaint rather than the skin findings themselves; mild fever is common.</div>
+            <div class="pearl-text"><b>Pearl:</b> The A6 atypical variant can look more like a severe bullous drug eruption or even eczema herpeticum — know that it exists so a genuinely more dramatic-looking HFM doesn't get over-worked-up.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Herpangina</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Coxsackievirus A (various serotypes)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Small vesicles/ulcers confined to the posterior oropharynx (soft palate, tonsillar pillars, uvula) — no skin involvement, unlike hand-foot-mouth disease.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection of posterior oropharyngeal mucosa; the posterior-only location (versus HFM's anterior mouth plus acral involvement) reflects a distinct site of viral tropism.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>High fever, sore throat, and odynophagia are often more prominent than in HFM disease.</div>
+            <div class="pearl-text"><b>Pearl:</b> Posterior-only oral lesions without any skin/acral involvement is the key discriminator from hand-foot-mouth disease, even though both are Coxsackievirus-driven.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Infectious mononucleosis (EBV)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Epstein-Barr virus</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Trunk-predominant morbilliform or urticarial rash in a minority of patients — but appears in the large majority of cases if amoxicillin/ampicillin is given.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>The classic rash is thought to reflect a transient drug-specific T-cell hypersensitivity reaction triggered by aminopenicillins during active EBV infection, not a direct viral exanthem in most cases.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Exudative pharyngitis, posterior cervical/diffuse lymphadenopathy, fatigue, and splenomegaly are the dominant features — the rash is usually incidental to the actual clinical picture.</div>
+            <div class="pearl-text"><b>Pearl:</b> Avoid amoxicillin/ampicillin empirically in a patient with a mono-compatible presentation — the resulting rash is a classic, largely avoidable teaching-file finding.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Molluscum contagiosum</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Molluscum contagiosum virus (a poxvirus)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Dome-shaped, flesh-colored, umbilicated papules anywhere on the body, often clustered; spread by direct contact and autoinoculation (e.g., scratching then touching another site).</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct epidermal infection causing characteristic Henderson-Patterson bodies (viral inclusions) on histology; the virus stays confined to the epidermis without systemic spread.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Usually asymptomatic apart from occasional mild itching; surrounding eczematous dermatitis (“molluscum dermatitis”) can develop around individual lesions.</div>
+            <div class="pearl-text"><b>Pearl:</b> See the Scary-Looking-but-Benign page for the “BOTE sign” — inflammation around lesions usually signals immune clearance, not worsening infection.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Primary HSV gingivostomatitis / genital HSV</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Herpes simplex virus 1 (classically oral) or 2 (classically genital) — substantial overlap exists</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Grouped, painful vesicles on an erythematous base at the site of inoculation (oral mucosa/perioral skin, or genital/perigenital skin).</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct viral infection of epithelial cells with characteristic multinucleated giant cells and intranuclear inclusions; the virus then establishes latency in the regional sensory ganglion, enabling recurrence.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Primary infection can be dramatic — fever, malaise, and painful lesions severe enough to limit oral intake (gingivostomatitis) or urination (genital); recurrences are typically milder and preceded by a tingling/burning prodrome.</div>
+            <div class="pearl-text"><b>Pearl:</b> Latency and recurrence at the same site is the defining feature that separates HSV from every other vesicular viral eruption in this list, all of which are one-time (or reinfection-based) illnesses.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Herpes zoster (shingles)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Varicella-zoster virus, reactivation of latent infection</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Grouped vesicles on an erythematous base in a strict, unilateral dermatomal distribution that does not cross the midline.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Reactivation of VZV that has remained latent in a dorsal root or cranial nerve ganglion since the primary varicella infection, traveling down the sensory nerve to the corresponding dermatome.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Pain, burning, or paresthesia in the dermatome often precedes the rash by 1–5 days; postherpetic neuralgia can persist long after the rash resolves, especially in older adults.</div>
+            <div class="pearl-text"><b>Pearl:</b> V1 (ophthalmic) distribution with Hutchinson's sign (nasal tip vesicles) needs urgent ophthalmology involvement — covered in more depth on the main ER Differential Algorithm page.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Gianotti-Crosti syndrome (papular acrodermatitis of childhood)</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Historically Hepatitis B; now more often EBV, and a range of other viruses (Coxsackievirus, CMV, etc.) in vaccinated populations</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Symmetric, monomorphic (all lesions at the same stage) papules or papulovesicles on the face, buttocks, and extensor extremities, classically sparing the trunk.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Thought to represent an immune-complex-mediated reaction to an underlying viral infection rather than direct cutaneous viral invasion — the specific virus varies by region and era (hepatitis B historically, now more often EBV where HBV vaccination is widespread).</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Usually seen in young children, often with mild or no fever; can persist for several weeks, longer than most other viral exanthems on this list.</div>
+            <div class="pearl-text"><b>Pearl:</b> The trunk-sparing, extensor-predominant, monomorphic pattern is the key recognition point — and it's a useful cue to consider checking hepatitis B and EBV serologies depending on regional prevalence and vaccination history.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Asymmetric periflexural exanthem of childhood</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Presumed viral, no single pathogen consistently identified</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Begins unilaterally around one axilla or groin flexure, spreads to the same side of the trunk/extremity, and only later becomes more bilateral — the asymmetry is the defining feature.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Presumed to be a viral exanthem based on its seasonal clustering and prodromal symptoms, though no single causative virus has been consistently isolated.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Mild or absent fever, sometimes mild GI or respiratory prodromal symptoms; the child is otherwise well.</div>
+            <div class="pearl-text"><b>Pearl:</b> The one-sided-then-spreading pattern is genuinely distinctive — recognizing it as its own benign entity avoids an unnecessary workup for asymmetric rashes chasing a unifying diagnosis that doesn't exist here.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Papular-purpuric gloves and socks syndrome</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Parvovirus B19 (a distinct presentation from classic fifth disease)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Painful edema and erythema of the hands and feet with a sharp, glove-and-sock-like demarcation at the wrists/ankles, evolving into petechiae/purpura, plus oral lesions in many cases.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Direct parvovirus B19 infection with immune-complex deposition in the acral skin, distinct from the immune response pattern that produces classic fifth disease's facial/reticular rash.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Fever, malaise, and oral erosions/petechiae frequently accompany the acral findings.</div>
+            <div class="pearl-text"><b>Pearl:</b> The sharp wrist/ankle demarcation plus the acral petechial/purpuric quality can look alarming (superficially resembling a vasculitis or even a coagulopathy) — but in a well-appearing child/young adult with this specific pattern, it's a recognized, self-limited parvovirus presentation.</div>
+          </div>
+        </div><div class="acc">
+          <div class="acc-head">
+            <div class="acc-head-left"><h4>Pityriasis rosea</h4></div>
+            <span class="plus">+</span>
+          </div>
+          <div class="acc-body">
+            <div class="hallmark" style="--accent-line: var(--generalized)"><b>Virus / etiology</b>Presumed HHV-6/7 reactivation (not fully established)</div>
+            <div class="hallmark" style="--accent-line: var(--face)"><b>Location &amp; pattern</b>Herald patch first, then a generalized eruption following skin cleavage lines in a “Christmas tree” pattern on the back.</div>
+            <div class="hallmark" style="--accent-line: var(--trunk)"><b>Pathophysiology</b>Thought to represent a cutaneous response to HHV-6/7 reactivation, though the exact mechanism (direct infection vs. immune reaction to reactivation) remains debated.</div>
+            <div class="hallmark" style="--accent-line: var(--extrem)"><b>Other presentation</b>Usually minimal systemic symptoms; mild pruritus is common.</div>
+            <div class="pearl-text"><b>Pearl:</b> See the Scary-Looking-but-Benign page for the full course timeline and reassurance framing — it's grouped there because its dramatic spread is what alarms patients, but it's included here for its viral etiology.</div>
+          </div>
+        </div>
+</div>
+
+<p class="verify">Etiology and pathophysiology summaries reflect general teaching consensus — several
+(APEC, pityriasis rosea, Gianotti-Crosti's exact triggering virus) remain areas of ongoing study rather
+than settled fact. Verify against current literature before citing definitively.</p>
+</div>
+
+
+  <div class="foot">
+    Built as a personal clinical reference. Hallmarks and pearls reflect general teaching points at time
+    of writing &mdash; verify against current literature and local protocols before applying clinically.
+    Not a substitute for clinical judgment or in-person dermatologic examination.
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  root.setAttribute('data-theme', 'dark');
+  function paintToggle(){
+    var btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = root.getAttribute('data-theme') === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+  }
+  paintToggle();
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    paintToggle();
+  });
+
+  var navdrop = document.getElementById('navdrop');
+  var navbtn = document.getElementById('navbtn');
+  navbtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    navdrop.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!navdrop.contains(e.target)) navdrop.classList.remove('open');
+  });
+
+  var domains = document.querySelectorAll('.domain');
+  var menuBtns = document.querySelectorAll('.navmenu button');
+  menuBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.getAttribute('data-dom');
+      domains.forEach(function(d){ d.classList.toggle('active', d.id === 'dom-' + target); });
+      navdrop.classList.remove('open');
+      navbtn.querySelector('.navlabel').textContent = btn.textContent.trim();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.acc-head').forEach(function(head){
+    head.addEventListener('click', function(){
+      var acc = head.closest('.acc');
+      var body = acc.querySelector('.acc-body');
+      var isOpen = acc.classList.contains('open');
+      if(isOpen){
+        body.style.maxHeight = null;
+        acc.classList.remove('open');
+      } else {
+        acc.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

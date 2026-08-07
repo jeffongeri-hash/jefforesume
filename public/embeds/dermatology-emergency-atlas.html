@@ -1,477 +1,485 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ER Dermatology Atlas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Emergency Dermatology Atlas — Master Reference</title>
 <style>
-:root{
-  --bg:#0d1210; --bg2:#131a16; --panel:#161f1a; --panelhi:#1c261f; --line:#2a352d; --line2:#20291f;
-  --ink:#eef2ec; --soft:#a9b8ac; --muted:#7c8c7f; --faint:#586a5b;
-  --warn:#ff6b5e; --good:#4f9e6e; --shadow: 0 10px 30px rgba(0,0,0,.35); --grid:#0f1512;
-}
-html[data-theme="light"]{
-  --bg:#f3f1e6; --bg2:#eae6d6; --panel:#fffdf6; --panelhi:#f6f2e2; --line:#d9d2b8; --line2:#e3ddc4;
-  --ink:#1c2118; --soft:#454f3e; --muted:#68715f; --faint:#8b9280; --warn:#b5392b; --good:#2f7a4d; --grid:#e3ddc4;
-  --shadow: 0 10px 24px rgba(60,50,20,.12);
-}
-*{box-sizing:border-box;}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;
-  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0); background-size:26px 26px;}
-h1,h2,h3{font-family:'Fraunces',Georgia,serif; margin:0; font-weight:600;}
-.mono, .flabel, .pearl-tag, .lesion-name, .dg-label{font-family:'JetBrains Mono',monospace;}
-
-header.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
-.top-inner{max-width:1140px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
-.brand .eyebrow{font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--warn);}
-.brand h1{font-size:1.4rem;}
-.theme-toggle{background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:20px; padding:8px 14px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:.72rem;}
-nav.etabs{display:flex; gap:6px; flex-wrap:wrap; max-width:1140px; margin:14px auto 0; padding:0 22px 14px;}
-.etab{background:transparent; border:1px solid var(--line); color:var(--muted); padding:9px 15px; border-radius:9px; cursor:pointer; font-size:.8rem; font-weight:700;}
-.etab.active{background:var(--tabclr); color:#fff; border-color:var(--tabclr);}
-
-main{max-width:1140px; margin:0 auto; padding:22px;}
-.erpanel{display:none;}
-.erpanel.active{display:block;}
-.intro{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:20px;}
-.intro p{color:var(--soft); font-size:.9rem; margin:0; max-width:860px;}
-
-.stage-block{margin-bottom:24px;}
-.dg-h{font-size:.95rem; color:var(--soft); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; font-family:'JetBrains Mono',monospace;}
-.dg-grid{display:grid; gap:10px;}
-.dg-item{background:var(--panelhi); border-radius:9px; padding:10px 14px;}
-.dg-label{display:block; color:#8a9ba0; font-weight:700; font-size:.8rem; margin-bottom:3px;}
-.dg-item p{margin:0; font-size:.85rem; color:var(--soft);}
-
-.lesion-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
-.lesion-item{background:var(--panelhi); border-radius:9px; padding:10px 14px;}
-.lesion-name{display:block; color:var(--ink); font-weight:700; font-size:.82rem; margin-bottom:3px;}
-.lesion-item p{margin:0; font-size:.83rem; color:var(--soft);}
-
-.condcard-list{display:grid; gap:16px;}
-.condcard{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--tabclr); border-radius:14px; padding:18px 22px; box-shadow:var(--shadow);}
-.mcard-h{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
-.mcard-num{font-family:'JetBrains Mono',monospace; color:var(--tabclr); font-size:.85rem; border:1px solid var(--tabclr); border-radius:6px; padding:2px 7px; flex-shrink:0;}
-.mcard-h h3{font-size:1.1rem; color:var(--tabclr);}
-.se-field{margin-bottom:12px;}
-.se-field .flabel{display:block; font-size:.63rem; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
-.se-field p{margin:0; font-size:.87rem; color:var(--soft);}
-.se-field.mgmt p{color:var(--ink);}
-.se-field.doc{background:var(--bg2); border-radius:8px; padding:10px 14px;}
-.se-field.doc .flabel{color:#8a9ba0;}
-.se-field.doc p{font-style:italic; color:var(--ink);}
-.se-field.dur .flabel{color:var(--good);}
-.se-field.dur p{color:var(--ink);}
-
-.mpearl{background:var(--panelhi); border-left:3px solid var(--warn); border-radius:8px; padding:12px 16px; margin-bottom:12px;}
-.mpearl.warn-pearl{border-left-color:#e0a13c;}
-.pearl-tag{font-size:.63rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); font-weight:700;}
-.mpearl.warn-pearl .pearl-tag{color:#e0a13c;}
-.mpearl p{margin:4px 0 0; font-size:.87rem; color:var(--ink);}
-
-.pearls-list{margin:0; padding-left:22px; display:flex; flex-direction:column; gap:10px;}
-.pearls-list li{font-size:.88rem; color:var(--soft); padding-left:4px;}
-
-footer{max-width:1140px; margin:20px auto 60px; padding:0 22px; color:var(--faint); font-size:.75rem;}
+  :root{
+    --bg:#0d0f12;--bg2:#14171c;--panel:#161a20;--panelhi:#1d232b;--line:#28313c;--line2:#1b222a;
+    --ink:#ecf0f3;--soft:#a9b6c1;--muted:#7a8a98;--faint:#576677;
+    --emergent:#e0402e;--urgent:#d68a2e;--common:#3f9d6a;--peds:#3fa7d6;--primary:#9b6cd6;
+    --accent:#34b3bd;--warn:#ff6b5e;--good:#46c98a;--gold:#e0b341;
+    --skin:#caa07e;--skin2:#b88a66;--ery:#d65b52;--purp:#7a3b6e;--vesicle:#cfe3ea;--pus:#e8d9a0;--brown:#6e4a32;
+    --grid:#0f1217;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f5;--bg2:#e3eaee;--panel:#fff;--panelhi:#f1f6f8;--line:#ccd9e1;--line2:#dde6ec;
+    --ink:#0f1f29;--soft:#39505e;--muted:#5a6f7f;--faint:#7f93a1;
+    --emergent:#c4291a;--urgent:#b06f17;--common:#1f8d56;--peds:#1c7fb0;--primary:#7e4fc0;
+    --accent:#0d8c97;--warn:#c8442b;--good:#1f9d6f;--gold:#b3851f;
+    --skin:#e3c4a4;--skin2:#d2ab85;--ery:#c44a42;--purp:#8a3f7a;--vesicle:#bcd9e4;--pus:#d8c47a;--brown:#7a4a30;--grid:#dde6ec;
+  }
+  *{box-sizing:border-box;}html{color-scheme:dark light;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.56;font-size:16px;transition:background .25s,color .25s;background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);background-size:24px 24px;}
+  .mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .toggle{position:fixed;top:14px;right:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 13px;border-radius:8px;}
+  .toggle:hover{border-color:var(--accent);}.toggle svg{width:14px;height:14px;}
+  header.hero{max-width:1240px;margin:0 auto;padding:54px 40px 22px;}
+  .kick{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.02;margin:.16em 0 .12em;font-weight:800;letter-spacing:-.02em;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .hero p{max-width:72ch;color:var(--soft);font-size:1.04rem;margin:.3em 0 0;}
+  .disclaimer{max-width:1240px;margin:14px auto 0;padding:0 40px;}
+  .disclaimer div{background:color-mix(in srgb,var(--warn) 12%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-left:3px solid var(--warn);border-radius:8px;padding:9px 14px;font-size:.8rem;color:var(--soft);}
+  nav.jump{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:26px;}
+  nav.jump .inner{max-width:1240px;margin:0 auto;padding:10px 40px;display:flex;flex-wrap:wrap;gap:5px;}
+  nav.jump a{text-decoration:none;color:var(--muted);font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:7px;}
+  nav.jump a:hover{color:var(--ink);background:var(--panelhi);}
+  main{max-width:1240px;margin:0 auto;padding:24px 40px 100px;}
+  h2.sec{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin:40px 0 4px;scroll-margin-top:60px;}
+  p.seclead{color:var(--soft);margin:0 0 16px;max-width:84ch;font-size:.96rem;}
+  .legendbar{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px;font-size:.8rem;}
+  .legendbar span{display:inline-flex;align-items:center;gap:6px;color:var(--soft);}
+  .legendbar i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;}
+  .lcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;border-left:4px solid var(--muted);display:flex;flex-direction:column;}
+  .lcard.sev-emergent{border-left-color:var(--emergent);}
+  .lcard.sev-urgent{border-left-color:var(--urgent);}
+  .lcard.sev-common{border-left-color:var(--common);}
+  .lcard .lfig{background:var(--bg2);border-bottom:1px solid var(--line2);padding:12px;display:flex;align-items:center;justify-content:center;}
+  .lcard .lfig svg{display:block;width:100%;height:auto;max-width:230px;}
+  .lcard .lbody{padding:14px 16px;}
+  .lcard h3{margin:0 0 1px;font-size:1.05rem;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .sevtag{font-size:.58rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap;}
+  .sevtag.emergent{background:color-mix(in srgb,var(--emergent) 20%,transparent);color:var(--emergent);}
+  .sevtag.urgent{background:color-mix(in srgb,var(--urgent) 20%,transparent);color:var(--urgent);}
+  .sevtag.common{background:color-mix(in srgb,var(--common) 20%,transparent);color:var(--common);}
+  .lcard .tagline{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .blk{margin:7px 0;font-size:.84rem;}
+  .blk b{display:block;font-size:.61rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:1px;}
+  .blk.look b{color:var(--primary);}.blk.look{color:var(--soft);}
+  .blk.tx b{color:var(--good);}.blk.tx{color:var(--ink);}
+  .blk.dispo b{color:var(--accent);}
+  .blk.doc b{color:var(--gold);}.blk.doc{color:var(--soft);font-style:italic;}
+  .blk.miss b{color:var(--warn);}
+  .svgfig{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;}
+  .svgfig svg{display:block;width:100%;height:auto;}
+  .figcap{font-size:.8rem;color:var(--muted);text-align:center;padding:8px 10px 0;}
+  .note{font-size:.84rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);padding:9px 13px;border-radius:0 7px 7px 0;margin:12px 0;color:var(--soft);}
+  .note.warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);}
+  .note.crit{border-left-color:var(--emergent);background:color-mix(in srgb,var(--emergent) 10%,transparent);}
+  .note.good{border-left-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);}
+  .note.buzz{border-left-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent);}
+  .note b{color:var(--ink);}
+  footer{max-width:1240px;margin:0 auto;padding:30px 40px 60px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line2);}
+  @media(max-width:680px){header.hero,.disclaimer,nav.jump .inner,main,footer{padding-left:20px;padding-right:20px;}}
 </style>
 </head>
 <body>
+<button class="toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeTxt">Light</span></button>
 
-<header class="top">
-  <div class="top-inner">
-    <div class="brand">
-      <span class="eyebrow">Emergency Medicine · Dermatology</span>
-      <h1>ER Dermatology Atlas</h1>
-    </div>
-    <button class="theme-toggle" id="themeToggle">Light mode</button>
-  </div>
-  <nav class="etabs"><button class="etab active" data-target="morphology" style="--tabclr:#8a9ba0">Morphology Primer</button>
-<button class="etab" data-target="docguide" style="--tabclr:#8a9ba0">Documentation Guide</button>
-<button class="etab" data-target="lifethreat" style="--tabclr:#ff6b5e">Life-Threatening</button>
-<button class="etab" data-target="urgent" style="--tabclr:#e0a13c">Urgent</button>
-<button class="etab" data-target="pediatric" style="--tabclr:#4a90c9">Pediatric</button>
-<button class="etab" data-target="common" style="--tabclr:#4f9e6e">Common / Benign</button>
-<button class="etab" data-target="bites" style="--tabclr:#a3603a">Bites &amp; Infestations</button>
-<button class="etab" data-target="pearls" style="--tabclr:#d9b23c">Pearls</button></nav>
+<header class="hero">
+  <div class="kick">Emergency Dermatology · Master Atlas</div>
+  <h1>Read the skin, <em>rank the danger</em>.</h1>
+  <p>An emergency dermatology reference organized by category — primary lesion morphology, the can't-miss dangerous rashes, pediatric eruptions, and the common benign complaints — with a <b>severity flag on every lesion</b>, an original schematic of what it looks like, the morphology terms to <b>document</b> it, a teaching-level <b>starting treatment</b>, and the disposition. Built to teach the pattern recognition and the first move, not to replace dermatology or current guidelines.</p>
 </header>
+<div class="disclaimer"><div><b>Reference &amp; teaching tool for trained clinicians.</b> Schematics are stylized original morphology diagrams (color/shape/distribution), <b>not</b> clinical photographs or diagnostic images — real lesions vary and skin tone changes appearance (erythema is subtler/violaceous in darker skin). Starting treatments are teaching examples, not a guideline substitute; verify doses and management against current references and involve dermatology for serious disease. Educational synthesis, not a protocol.</div></div>
 
-<main>
-  
-  <section class="erpanel active" data-etab="morphology">
-    <div class="intro"><p>The 10 primary lesions, common secondary changes, and the single most important bedside test in dermatologic triage: the blanch test.</p></div>
-    <div class="stage-block">
-      <h3 class="dg-h">Primary Lesions</h3>
-      <div class="lesion-grid"><div class="lesion-item"><span class="lesion-name">Macule</span><p>Flat, non-palpable color change &amp;lt;1cm (e.g., a freckle, a petechia).</p></div><div class="lesion-item"><span class="lesion-name">Patch</span><p>Flat, non-palpable color change ≥1cm — the larger counterpart of a macule.</p></div><div class="lesion-item"><span class="lesion-name">Papule</span><p>Raised, palpable lesion &amp;lt;1cm (e.g., a closed comedone, an early insect bite).</p></div><div class="lesion-item"><span class="lesion-name">Plaque</span><p>Raised, palpable, flat-topped lesion ≥1cm, often formed by coalescing papules (e.g., a psoriatic plaque).</p></div><div class="lesion-item"><span class="lesion-name">Nodule</span><p>Raised lesion &amp;gt;1cm with significant depth/mass extending into the dermis or subcutis, distinct from a plaque's more superficial elevation.</p></div><div class="lesion-item"><span class="lesion-name">Vesicle</span><p>Small (&amp;lt;1cm), fluid-filled, raised lesion — clear or serous fluid (e.g., early HSV/VZV, early contact dermatitis).</p></div><div class="lesion-item"><span class="lesion-name">Bulla</span><p>Large (≥1cm), fluid-filled, raised lesion — the larger counterpart of a vesicle (e.g., bullous impetigo, bullous pemphigoid, a friction blister).</p></div><div class="lesion-item"><span class="lesion-name">Pustule</span><p>Raised lesion filled with visibly purulent (cloudy/yellow-white) fluid — implies neutrophilic content, not necessarily active infection (e.g., acne pustule vs. folliculitis).</p></div><div class="lesion-item"><span class="lesion-name">Wheal (Urticaria)</span><p>Raised, edematous, pink-to-red papule/plaque that is transient — an individual wheal should resolve within 24 hours (this timing is diagnostically important for distinguishing true urticaria from urticarial vasculitis, which persists &amp;gt;24h per lesion).</p></div><div class="lesion-item"><span class="lesion-name">Purpura</span><p>Non-blanching color change from blood extravasated into the skin/mucosa — &amp;lt;4mm is petechiae, ≥4mm is purpura by convention; the defining, must-check feature is that it does NOT blanch with pressure (see the blanch test below).</p></div><div class="lesion-item"><span class="lesion-name">Scale</span><p>Not a primary lesion but a common secondary finding — visible flaking/shedding of the stratum corneum, reflecting abnormal keratinization (e.g., psoriasis, tinea, seborrheic dermatitis).</p></div></div>
-    </div>
-    <div class="stage-block">
-      <h3 class="dg-h">Secondary Changes</h3>
-      <div class="lesion-grid"><div class="lesion-item"><span class="lesion-name">Crust</span><p>Dried serum, blood, or purulent exudate on the skin surface — forms after a vesicle/bulla/erosion dries (e.g., the honey-colored crust of impetigo).</p></div><div class="lesion-item"><span class="lesion-name">Excoriation</span><p>A linear erosion from scratching — a behavioral marker of significant pruritus, and its presence/pattern can itself be diagnostically useful (e.g., sparing the mid-back, the one place a patient can't reach).</p></div><div class="lesion-item"><span class="lesion-name">Lichenification</span><p>Thickened skin with accentuated skin lines/leathery texture from chronic rubbing/scratching — a marker of CHRONICITY, distinguishing a long-standing process from an acute one.</p></div><div class="lesion-item"><span class="lesion-name">Erosion</span><p>Superficial loss of epidermis only (heals without scarring) — distinct from an ulcer, which extends into the dermis.</p></div><div class="lesion-item"><span class="lesion-name">Ulcer</span><p>Full-thickness loss of epidermis extending into the dermis (or deeper) — heals with scarring, unlike an erosion.</p></div><div class="lesion-item"><span class="lesion-name">Atrophy</span><p>Thinning of the skin, often from chronic topical corticosteroid use or as an intrinsic disease feature (e.g., lichen sclerosus) — visible as fine wrinkling, translucency, or a shiny surface.</p></div></div>
-    </div>
-    <div class="mpearl"><span class="pearl-tag">The Blanch Test</span><p>Press a clear glass slide (diascopy) or a gloved finger firmly onto the lesion. If the color FADES/blanches, the color is from dilated blood vessels (an inflammatory erythema) — reassuring for most benign and inflammatory rashes. If the color does NOT fade, the color is from extravasated blood outside the vessels (true purpura/petechiae) — this changes the differential immediately toward vasculitis, coagulopathy, meningococcemia, or another serious systemic process, and should prompt urgent evaluation rather than routine rash management.</p></div>
-  </section>
-  
-  <section class="erpanel" data-etab="docguide">
-    <div class="intro"><p>A repeatable skeleton for describing any skin finding, a worked example, and a skin-of-color caveat that changes how erythema should be assessed.</p></div>
-    <div class="stage-block">
-      <h3 class="dg-h">The Documentation Skeleton</h3>
-      <div class="dg-grid"><div class="dg-item"><span class="dg-label">1. Distribution</span><p>Localized vs. generalized; specific pattern (flexural, extensor, photodistributed, dermatomal, acral, truncal) — state this explicitly, don't rely on an attached photo alone.</p></div><div class="dg-item"><span class="dg-label">2. Number &amp;amp; Arrangement</span><p>Solitary vs. multiple; grouped (herpetiform), linear, annular (ring-shaped), reticulated (net-like), or randomly scattered.</p></div><div class="dg-item"><span class="dg-label">3. Primary Lesion</span><p>Name the primary lesion type from the morphology primer above (macule, papule, plaque, vesicle, bulla, pustule, wheal, purpura) — this is the single most important documentation element and should come before any descriptive adjectives.</p></div><div class="dg-item"><span class="dg-label">4. Color &amp;amp; Blanching</span><p>Erythematous, violaceous, hyperpigmented, hypopigmented, skin-colored — and explicitly state blanching status for any red/purple lesion, since this single detail is often the difference between a reassuring and an emergent read.</p></div><div class="dg-item"><span class="dg-label">5. Size</span><p>Measure in cm/mm — avoid relative-only descriptors ("quarter-sized") since they don't translate for a future reader or support objective tracking of change.</p></div><div class="dg-item"><span class="dg-label">6. Secondary Change</span><p>Scale, crust, excoriation, lichenification, erosion, ulceration, atrophy — secondary changes often tell you about chronicity or patient behavior (scratching) as much as the primary process.</p></div><div class="dg-item"><span class="dg-label">7. Border</span><p>Well-demarcated vs. poorly-demarcated/blending into normal skin — sharp demarcation vs. ill-defined borders is itself a useful diagnostic clue (e.g., contact dermatitis often has a surprisingly sharp, geometric border matching the causative exposure).</p></div></div>
-    </div>
-    <div class="mpearl"><span class="pearl-tag">Worked Example</span><p>Worked example (hives): "Generalized distribution involving the trunk and proximal extremities, numerous discrete and coalescing pink-to-red WHEALS ranging 1-4cm, blanching with pressure, no associated purpura, individual lesions reportedly resolving within hours per patient report (consistent with true urticaria rather than urticarial vasculitis). No mucosal/lip/tongue involvement, no respiratory distress."</p></div>
-    <div class="mpearl warn-pearl"><span class="pearl-tag">Skin-of-Color Caveat</span><p>Erythema is frequently harder to appreciate on darker skin tones and can appear violaceous, gray, or simply as a subtle change in skin texture/sheen rather than classic "redness" — palpation for warmth/induration and comparison to adjacent unaffected skin become proportionally MORE important exam techniques in these patients, and relying on color descriptors alone risks under-triaging a genuinely concerning finding (e.g., early necrotizing fasciitis or cellulitis can be substantially under-recognized this way).</p></div>
-  </section>
-  <section class="erpanel" data-etab="lifethreat"><div class="condcard-list">
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">01</span><h3>Stevens-Johnson Syndrome / Toxic Epidermal Necrolysis (SJS/TEN)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Painful, dusky-red to violaceous macules/targetoid lesions that rapidly progress to flaccid bullae and full-thickness epidermal SLOUGHING; Nikolsky sign is POSITIVE (lateral pressure on adjacent skin causes further epidermal detachment). Mucosal involvement (oral, ocular, genital) is present in the large majority of cases and is often the earliest sign, sometimes preceding the skin findings by 1-3 days.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>A T-cell-mediated cytotoxic reaction (keratinocyte apoptosis via the Fas-FasL and perforin/granzyme pathways) most commonly triggered by a medication started in the preceding 1-8 weeks — classic culprits include allopurinol, sulfonamide antibiotics, anticonvulsants (lamotrigine, carbamazepine, phenytoin), and NSAIDs. SJS (&amp;lt;10% BSA detachment) and TEN (&amp;gt;30% BSA) are considered the same disease spectrum, distinguished by extent.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Dusky, targetoid macules with epidermal sloughing involving [X]% BSA, Nikolsky sign positive. Oral/ocular/genital mucosal involvement: [present, describe]. New medication in the preceding 1-8 weeks: [agent, start date]. Estimated BSA detachment supports SJS (&amp;lt;10%) / SJS-TEN overlap (10-30%) / TEN (&amp;gt;30%) classification."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>STOP the offending drug immediately — this is the single highest-yield intervention and delay directly worsens mortality. Aggressive supportive care mirrors burn management: IV fluid resuscitation, wound care with non-adherent dressings, and early ophthalmology consultation for ANY ocular involvement (can cause permanent blindness if undertreated). No single systemic immunomodulatory therapy (IVIG, cyclosporine, systemic corticosteroids) has definitively proven superior in controlled trials, though many burn/dermatology centers use one per local protocol.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Burn unit or ICU-level admission is standard, especially for &amp;gt;10% BSA involvement — this is not a floor-admission diagnosis. Emergent dermatology and ophthalmology consultation on presentation.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Recheck/reassessment is continuous (ICU-level monitoring) rather than an outpatient interval — mortality is highest in the first 1-2 weeks; SCORTEN score calculated on admission and at 48h predicts mortality and helps guide level of care.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient with new oral erosions/conjunctival injection and a recent new medication should be treated as evolving SJS/TEN UNTIL skin findings clarify the picture — don't wait for frank epidermal sloughing to escalate, since earlier recognition and drug discontinuation directly improves outcomes.</p></div>
-    </article>
+<nav class="jump"><div class="inner">
+  <a href="#morphology">Morphology primer</a>
+  <a href="#document">How to document</a>
+  <a href="#emergent">Life-threatening</a>
+  <a href="#urgent">Urgent</a>
+  <a href="#peds">Pediatric</a>
+  <a href="#common">Common / benign</a>
+  <a href="#infest">Bites & infestations</a>
+  <a href="#pearls">Pearls</a>
+</div></nav>
 
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">02</span><h3>Necrotizing Fasciitis</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythema that spreads RAPIDLY (can visibly progress within hours) with PAIN OUT OF PROPORTION to exam findings — this pain/exam mismatch is the single most important early clue, since surface findings can look deceptively mild while deep fascial destruction is already extensive. Later, more specific signs include hemorrhagic bullae, skin necrosis/dusky discoloration, crepitus (gas-forming organisms), and rapidly progressive systemic toxicity (fever, tachycardia, hypotension).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Polymicrobial or monomicrobial (classically group A Streptococcus or, in immunocompromised/diabetic patients, mixed flora including anaerobes) infection spreading along the fascial planes — the fascia's relatively poor blood supply allows rapid bacterial spread and tissue necrosis before the overlying skin shows dramatic change, explaining the exam-lag phenomenon.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Rapidly progressive erythema/edema over [site], pain [X/10] disproportionate to visible skin findings. [Hemorrhagic bullae/crepitus/skin necrosis if present]. Systemic toxicity: [fever, tachycardia, hypotension]. Surgical consultation obtained emergently given clinical concern for necrotizing soft tissue infection."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Emergent broad-spectrum IV antibiotics (typically vancomycin/piperacillin-tazobactam or a carbapenem, PLUS clindamycin specifically for its antitoxin effect against toxin-producing strains) and EMERGENT surgical consultation for debridement — surgical debridement is the definitive treatment, and antibiotics alone do not substitute for source control in established necrotizing infection.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>OR for emergent surgical debridement, ICU-level admission — this is a surgical emergency, and time to debridement is directly tied to mortality; do not delay surgical consultation while awaiting imaging if clinical suspicion is high.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Not an outpatient-timeline diagnosis — reassessment is continuous/hourly in the acute phase; often requires SERIAL debridements over subsequent days as the true extent of necrotic tissue is determined progressively.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Pain out of proportion to exam findings, in the right clinical context (diabetes, immunosuppression, recent skin break, IV drug use), should override a reassuring-looking surface exam — imaging (CT/MRI showing fascial gas/fluid) can support the diagnosis but should never delay surgical consultation if clinical suspicion is high, since imaging can also be falsely reassuring early in the disease course.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">03</span><h3>Meningococcemia / Purpura Fulminans</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Petechiae that rapidly coalesce into larger, NON-BLANCHING purpuric patches with a stellate/irregular ("gunmetal gray") appearance, often starting on the extremities/dependent areas and spreading centrally — accompanied by fever, hypotension, and rapid clinical deterioration in true meningococcemia/purpura fulminans, distinguishing it from more benign petechial causes.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Neisseria meningitidis (or, in purpura fulminans specifically, any cause of severe DIC/protein C-S deficiency, including severe sepsis from other organisms) causes endothelial damage and microvascular thrombosis, leading to widespread cutaneous hemorrhage and, if untreated, progressive tissue ischemia/necrosis of the affected skin and digits.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Non-blanching purpuric lesions, [stellate/irregular borders], [distribution and rate of spread documented with time-stamped photo if possible]. Associated fever [X]°C, hemodynamic status [vitals]. Blanch test negative. Empiric antibiotics administered at [time] — document timing explicitly given its prognostic importance."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>EMPIRIC IV antibiotics (ceftriaxone or another 3rd-generation cephalosporin) given IMMEDIATELY on clinical suspicion — do not wait for confirmatory testing (blood cultures, LP) to administer the first antibiotic dose, since delay is directly associated with increased mortality. Aggressive fluid resuscitation and vasopressor support for septic shock; droplet precaution isolation for the patient and post-exposure prophylaxis consideration for close contacts.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>ICU-level admission — this is one of the most rapidly fatal infections in medicine if treatment is delayed, with mortality rising measurably for every hour antibiotics are delayed.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>No outpatient interval applies — continuous ICU monitoring; close contacts should receive chemoprophylaxis (rifampin, ciprofloxacin, or ceftriaxone depending on population) within 24 hours of exposure identification for maximal effectiveness.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>In a febrile patient with ANY new non-blanching rash, empiric antibiotics should be given BEFORE the diagnostic workup is complete, not after — this is one of the few dermatologic presentations where treatment genuinely cannot wait for a name.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">04</span><h3>DRESS Syndrome (Drug Reaction with Eosinophilia and Systemic Symptoms)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Widespread morbilliform (measles-like) eruption, often becoming edematous/infiltrated (a helpful distinguishing feature from a simple morbilliform drug rash — DRESS lesions feel thicker/more indurated on palpation) with striking FACIAL EDEMA in a substantial fraction of cases — a distinctive finding not typical of most other drug eruptions.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>A delayed (typically 2-8 weeks after drug start — notably longer than most drug reactions) hypersensitivity reaction associated with reactivation of latent herpesviruses (HHV-6 specifically) as part of its pathophysiology, triggered classically by anticonvulsants (especially aromatic ones — phenytoin, carbamazepine), allopurinol, and sulfonamides — the delayed onset relative to drug start is a key distinguishing feature from more immediate drug hypersensitivity reactions.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Widespread morbilliform, edematous/indurated eruption with facial edema, onset [X weeks] after starting [drug]. Fever [X]°C. Labs: eosinophilia [absolute count], atypical lymphocytes, LFT elevation [values] — screening for internal organ involvement (liver, kidney, lung, heart) actively pursued given DRESS's systemic, multi-organ nature."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Stop the offending drug immediately. Systemic corticosteroids are the mainstay for significant organ involvement, though duration and taper require careful, often prolonged management given DRESS's tendency to FLARE with steroid taper — this relapsing course during treatment is a distinctive management challenge compared to most other drug eruptions.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Admission for internal organ screening (LFTs, renal function, cardiac and pulmonary evaluation as indicated) and monitoring — DRESS mortality (roughly 10% in some series) is driven by organ involvement, most often hepatic, rather than the skin findings themselves.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>This is a prolonged disease course — skin and systemic findings can persist or relapse over WEEKS TO MONTHS even after stopping the causative drug and starting treatment, and steroid tapers must often be extended over months given the flare risk with faster tapering.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Facial edema plus a widespread drug rash with a delayed (weeks-long) onset after starting a new medication should immediately raise DRESS on the differential rather than being dismissed as a routine morbilliform drug eruption — the systemic organ screening this triggers is what actually catches the potentially fatal internal organ involvement.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">05</span><h3>Erythroderma (Exfoliative Dermatitis)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Diffuse erythema and scaling involving &amp;gt;90% of the body surface area — a description of EXTENT/SEVERITY rather than a single specific diagnosis, since erythroderma can be the final common pathway of many underlying conditions (psoriasis, atopic dermatitis, drug reaction, cutaneous T-cell lymphoma, or idiopathic).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Widespread cutaneous inflammation from any of the above underlying causes disrupts the skin's normal barrier and thermoregulatory function across nearly the entire body surface simultaneously — this is why erythroderma causes systemic physiologic derangement (see treatment) that a more localized rash of the same underlying disease would not.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Diffuse erythema and scaling involving approximately [X]% BSA. Underlying/preceding diagnosis: [known psoriasis/eczema exacerbation, new drug exposure, unknown]. Temperature dysregulation, fluid status, and nutritional/protein status assessed given erythroderma's systemic physiologic impact."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Because the skin barrier is disrupted over nearly the whole body, patients lose the ability to regulate temperature and fluid balance normally — treat as a systemic illness: IV fluids, temperature regulation (erythrodermic patients can become hypothermic despite looking inflamed/red), and treatment directed at the underlying cause once identified (withdraw a causative drug, treat an underlying flare of psoriasis/eczema).</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Admission is generally warranted given the systemic fluid/thermoregulatory risk, even though the skin findings themselves may look less immediately alarming than SJS/TEN — don't underestimate erythroderma's systemic risk just because there's no frank sloughing/blistering.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Resolution timeline depends entirely on the underlying cause and how quickly it's identified/treated — can range from days (drug-induced, once the drug is stopped) to weeks (an underlying flare of chronic disease); dermatology follow-up is essential to identify/manage the underlying trigger long-term.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Always ask "what is the underlying disease here" rather than treating erythroderma as its own diagnosis — the skin finding is a shared final pathway, and management/prognosis differ enormously depending on whether the cause is a treatable drug reaction versus an underlying cutaneous T-cell lymphoma, which requires an entirely different workup.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#ff6b5e">
-      <header class="mcard-h"><span class="mcard-num">06</span><h3>Staphylococcal Scalded Skin Syndrome (SSSS)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Diffuse, tender erythema followed by superficial, FLACCID bullae and sheet-like epidermal peeling — Nikolsky sign is positive, similar to SJS/TEN, but critically SPARES the mucous membranes (a key distinguishing feature from SJS/TEN, where mucosal involvement is prominent). Predominantly affects infants and young children.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Exfoliative (epidermolytic) toxins produced by certain Staphylococcus aureus strains (often from a distant, sometimes clinically inapparent focus of infection — conjunctivitis, omphalitis, or a minor skin infection) cleave desmoglein-1, causing a split within the superficial epidermis (distinct from SJS/TEN's full-thickness epidermal necrosis) — this more superficial split explains SSSS's generally better prognosis and faster healing than TEN.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Diffuse tender erythema with superficial flaccid bullae and sheet-like desquamation, Nikolsky positive, mucous membranes SPARED. Age: [infant/young child]. Possible primary infection focus: [identified/being sought]. Distinguishing from SJS/TEN specifically documented given the mucosal-sparing finding."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>IV anti-staphylococcal antibiotics (e.g., nafcillin/oxacillin, or vancomycin if MRSA risk/local resistance patterns warrant) targeting the toxin-producing source infection; supportive skin care similar in principle to a burn (though generally less extensive/severe than TEN given the more superficial split) — gentle handling to avoid further epidermal shearing.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Admission for IV antibiotics and monitoring, particularly in infants given fluid/thermoregulatory risk from the skin barrier disruption, though generally less intensive than SJS/TEN management.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Healing is typically faster than TEN given the more superficial split — often within 1-2 weeks with appropriate antibiotic treatment of the underlying source, WITHOUT scarring (since the epidermis, not the dermis, is what's affected).</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Mucosal SPARING is the single most useful bedside feature distinguishing SSSS from SJS/TEN when a young child presents with diffuse blistering/peeling skin — this distinction matters enormously since management (antibiotics targeting a toxin-producing infection vs. drug withdrawal + burn-level supportive care) diverges significantly between the two.</p></div>
-    </article></div></section>
-  <section class="erpanel" data-etab="urgent"><div class="condcard-list">
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">01</span><h3>Cellulitis</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Poorly-demarcated erythema, warmth, swelling, and tenderness — typically unilateral on an extremity; mark the border with a skin pen at the initial visit to objectively track progression/improvement on recheck.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Bacterial infection (most commonly Streptococcus and Staphylococcus species) of the dermis and subcutaneous tissue, typically entering through a break in the skin barrier (a wound, insect bite, or interdigital fissure from tinea pedis) — purulent/fluctuant cellulitis suggests a Staph/MRSA-predominant process and possible underlying abscess, while non-purulent cellulitis is more classically streptococcal.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Poorly-demarcated erythema, warmth, tenderness over [site], borders marked with skin pen at [time] for interval tracking. Purulent drainage/fluctuance: [present/absent — changes antibiotic selection]. Systemic symptoms: [fever, chills — absent supports outpatient management]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral antibiotics for non-purulent cellulitis without systemic toxicity (cephalexin or dicloxacillin covering Strep/MSSA; add TMP-SMX or clindamycin empirically if MRSA risk factors present). IV antibiotics (vancomycin, or cefazolin if low MRSA suspicion) for systemic toxicity, rapid progression, or failed outpatient treatment.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management is appropriate for most uncomplicated cases; admission for systemic toxicity, rapid progression despite oral antibiotics, immunocompromise, or facial/orbital involvement (higher risk of serious complication).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Recheck in 48-72 hours to confirm the marked border isn't advancing — this is the single most useful objective follow-up practice for cellulitis; expect visible improvement (not full resolution) by that interval on appropriate antibiotics, with full resolution typically over 7-10 days total.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Marking the erythema border with a skin pen at the initial visit turns a subjective "does it look better" recheck into an objective measurement — this is a simple, high-value habit that meaningfully improves recheck accuracy.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">02</span><h3>Cutaneous Abscess</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Fluctuant, tender, erythematous nodule/mass, often with a visible or palpable pointing head — distinguish from simple cellulitis by the presence of fluctuance, which indicates a discrete fluid/pus collection requiring drainage rather than antibiotics alone.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Localized collection of pus within the dermis/subcutaneous tissue, most commonly Staphylococcus aureus (including a substantial proportion of community-acquired MRSA in many regions) — often originates from an infected hair follicle, sebaceous cyst, or minor skin break.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Fluctuant, tender [size]cm mass at [site] with [pointing head/surrounding cellulitis extent]. I&amp;amp;D performed under local anesthesia, [packing placed/loop drain placed/no packing per wound size], purulent material sent for culture given [MRSA risk factors/treatment failure risk]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Incision and drainage (I&amp;amp;D) is the primary, definitive treatment — antibiotics ALONE are inadequate for a true abscess regardless of size, since undrained purulent material will not resolve with antibiotics alone. Adjunctive oral antibiotics (TMP-SMX or clindamycin for MRSA coverage) are added per current guidance for abscesses with significant surrounding cellulitis, systemic symptoms, immunocompromise, or in high-risk locations (face, hands, genitalia).</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management after I&amp;amp;D is standard for most cases; admission for extensive surrounding cellulitis, systemic toxicity, or abscesses in higher-risk anatomic locations.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Recheck in 48-72 hours if packing was placed (for removal/reassessment) or sooner if worsening; most abscesses fully resolve within 1-2 weeks after adequate drainage.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A fluctuant mass that's been treated with antibiotics alone without drainage and isn't improving hasn't necessarily failed antibiotic selection — it's more likely failed because it needed I&amp;amp;D in the first place; reassess for fluctuance before escalating antibiotics further.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">03</span><h3>Herpes Zoster (Shingles)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Grouped vesicles on an erythematous base, STRICTLY unilateral and confined to a single dermatome, stopping sharply at the midline — pain/burning/paresthesia often PRECEDES the visible rash by 1-5 days, which can cause diagnostic confusion (mimicking cardiac, pleuritic, or abdominal pain depending on the dermatome involved) before lesions appear.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Reactivation of latent varicella-zoster virus (VZV) from the dorsal root or cranial nerve ganglia, where it has persisted since a prior primary varicella (chickenpox) infection — reactivation risk rises with age and immunosuppression, reflecting age/immune-related decline in VZV-specific T-cell immunity that normally keeps the latent virus suppressed.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Grouped vesicles on erythematous base, strictly unilateral, confined to [dermatome], stopping at midline. Pain/paresthesia onset: [X days] prior to visible rash. Ophthalmic involvement assessed given V1 dermatome distribution [Hutchinson's sign present/absent] — if positive, urgent ophthalmology referral given corneal involvement risk."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral antiviral therapy (valacyclovir, famciclovir, or acyclovir) started ideally within 72 hours of rash onset to reduce severity/duration and postherpetic neuralgia risk — still reasonable to start beyond 72 hours if new vesicles are actively forming, ongoing pain, or in immunocompromised/older patients. Gabapentin or other neuropathic pain agents for significant pain. Emergent ophthalmology referral for any V1 (ophthalmic division) involvement given corneal/vision risk (herpes zoster ophthalmicus).</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for uncomplicated cases; admission for disseminated zoster (typically in significantly immunocompromised patients, presenting with lesions outside the original dermatome) or any CNS/ophthalmic complication.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Antiviral course: typically 7 days. Lesions crust over within 7-10 days; postherpetic neuralgia (pain persisting &amp;gt;90 days after rash onset) is the most common complication and risk rises significantly with age &amp;gt;60 — counsel on this risk explicitly at the index visit.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Unilateral, dermatomal pain preceding a visible rash by several days is a classic, easily-missed early zoster presentation — consider it in the differential for unexplained unilateral chest, abdominal, or facial pain in an older or immunocompromised patient even before any rash is visible.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">04</span><h3>Eczema Herpeticum</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Widespread, monomorphic (uniform-appearing), PUNCHED-OUT vesicles/erosions superimposed on a background of atopic dermatitis (or another disrupted skin barrier condition) — often with fever and systemic symptoms, distinguishing it from a simple eczema flare.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>HSV infection disseminates widely and rapidly across skin with a disrupted barrier (the hallmark of atopic dermatitis specifically) — the same impaired barrier/immune dysregulation that defines atopic dermatitis (see the Outpatient Dermatology Atlas) removes the normal containment that would otherwise limit HSV to a localized cold-sore-type presentation.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Widespread punched-out vesicles/erosions on a background of known atopic dermatitis, fever [X]°C, onset [X days], rapid spread noted. Viral PCR/Tzanck prep [performed/pending]. IV acyclovir initiated empirically at [time] given clinical suspicion, without awaiting confirmatory testing."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>IV acyclovir empirically as soon as eczema herpeticum is suspected — do NOT wait for viral PCR/culture confirmation to begin treatment given the risk of rapid dissemination and systemic HSV infection, particularly in young children. Treat any secondary bacterial superinfection if present.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Admission for IV antiviral therapy and monitoring, particularly in infants/young children or with extensive involvement — this is a genuine dermatologic emergency superimposed on a very common chronic condition, and recognizing it requires actively considering it rather than defaulting to "just a bad eczema flare."</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>IV acyclovir typically continued until clear clinical improvement, then often transitioned to oral antiviral to complete a course; lesions crust and heal over 1-2 weeks with appropriate treatment.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>A patient with known eczema who develops a sudden, widespread, punched-out vesicular eruption with fever should be treated for eczema herpeticum immediately, not managed as a routine eczema flare with escalated topical steroids — topical steroids in this setting can actually worsen the viral dissemination.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">05</span><h3>Erythema Multiforme</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Classic TARGET lesions (three concentric zones: dusky center, pale ring, erythematous outer ring) — typically acral (hands/feet), symmetric, and, in contrast to SJS/TEN, mucosal involvement (if present) is generally limited to ONE site and less severe, and there is NO significant epidermal detachment/Nikolsky sign.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Most commonly triggered by HSV infection (recurrent herpes labialis is the classic association, with EM often appearing about a week after a cold sore outbreak) — a hypersensitivity-type reaction to the virus rather than direct viral skin infection; less commonly drug-induced or associated with Mycoplasma pneumoniae infection.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Target lesions with three concentric zones, acral/symmetric distribution. Mucosal involvement: [absent/limited to one site — distinguishing from SJS/TEN]. Nikolsky sign negative, no epidermal detachment. Recent HSV outbreak or Mycoplasma symptoms: [present/absent]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Supportive care (antihistamines, topical corticosteroids/analgesics for symptomatic relief) for most cases; treat any identified underlying trigger (though treating an already-resolved HSV outbreak doesn't change the current EM episode). Recurrent EM associated with recurrent HSV may warrant prophylactic antiviral therapy to reduce future episode frequency.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for the typical (EM minor) presentation; admission only if significant mucosal involvement affecting oral intake/hydration or diagnostic uncertainty with SJS/TEN.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Self-limited, typically resolving over 1-2 weeks even without specific treatment; recurrent HSV-associated EM can recur multiple times per year in some patients, which is the specific population considered for prophylactic antiviral therapy.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The key bedside distinction from SJS/TEN is the ABSENCE of significant epidermal detachment/Nikolsky sign and the typically limited (not multi-site, not severe) mucosal involvement — when in doubt about which you're seeing, err toward the more cautious SJS/TEN workup and disposition, since missing early SJS/TEN carries far greater consequence than over-triaging EM.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">06</span><h3>Henoch-Schönlein Purpura (IgA Vasculitis)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Palpable purpura (raised, non-blanching) classically distributed on the lower extremities and buttocks — often accompanied by the other classic tetrad components: arthralgia/arthritis, abdominal pain, and renal involvement (hematuria/proteinuria), though not all components need be present simultaneously.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>An IgA-mediated small-vessel vasculitis, most common in children, often following an upper respiratory infection — IgA immune complex deposition in small vessels (skin, joints, GI tract, kidneys) drives the multi-organ presentation, explaining why a purely dermatologic read of "just a rash" misses the systemic disease.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Palpable, non-blanching purpura over bilateral lower extremities/buttocks. Associated symptoms: [arthralgia/arthritis, abdominal pain, gross/microscopic hematuria]. Urinalysis obtained given renal involvement risk. Recent URI: [present/absent]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Supportive care (NSAIDs for joint pain, though used cautiously given potential renal involvement/GI symptoms) for most cases; systemic corticosteroids for significant abdominal pain or select severe presentations, though their role in preventing long-term renal complications remains debated in the literature.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management with close follow-up for most children; admission for severe abdominal pain (evaluate for intussusception, a recognized HSP complication), significant GI bleeding, or substantial renal involvement.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Urinalysis/renal function should be monitored for at LEAST 6 months after diagnosis even after the rash resolves, since renal involvement can manifest or evolve well after the skin findings have cleared — this extended surveillance window is a key, easily-overlooked management detail.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Don't discharge a child with HSP without arranging the extended renal surveillance follow-up — the skin rash resolving is not the same as the disease being over, since delayed-onset or evolving nephritis is the complication that actually drives long-term morbidity in this disease.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#e0a13c">
-      <header class="mcard-h"><span class="mcard-num">07</span><h3>Stasis Dermatitis (The Cellulitis Mimic)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Bilateral (usually), poorly-demarcated erythema, scaling, and hyperpigmentation over the lower legs/ankles, often with associated edema and sometimes weeping/crusting — the BILATERAL, chronic, non-tender-to-minimally-tender presentation is the key distinguishing feature from true cellulitis, which is classically unilateral and more acutely tender.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Chronic venous insufficiency causes venous hypertension, capillary leakage of red blood cells and fibrin into the dermis (producing the characteristic hemosiderin-driven hyperpigmentation), and a resulting chronic inflammatory response — not an infectious process, despite its frequent misdiagnosis and treatment as bilateral cellulitis in acute care settings.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Bilateral, poorly-demarcated erythema and hyperpigmentation over the lower legs/ankles with associated edema and [scaling/weeping]. Tenderness: [minimal/absent]. Distinguished from cellulitis given bilateral symmetric presentation, chronicity, and absence of systemic symptoms/fever."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Leg elevation and compression therapy are the foundational, most effective treatments (addressing the underlying venous hypertension directly), NOT antibiotics — this is a frequently over-treated condition in acute care settings, where bilateral leg erythema is reflexively treated as cellulitis. Topical corticosteroids for significant inflammation/itching; treat any genuinely superimposed infection if truly present (unilateral worsening, fever, or other infectious signs layered on top of chronic bilateral changes).</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management with primary care or vascular follow-up for underlying venous insufficiency evaluation and management (compression stockings, possible venous intervention).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Improvement with elevation/compression is typically visible over days to a couple weeks, though this is fundamentally a CHRONIC condition requiring ongoing compression therapy long-term to prevent recurrence/progression, not a short antibiotic course.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Bilateral leg erythema is stasis dermatitis until proven otherwise — true bilateral cellulitis is genuinely rare, and reflexively prescribing antibiotics for bilateral "cellulitis" is one of the most common avoidable antibiotic-overuse patterns in acute care dermatology; look for the asymmetry, acute tenderness, and systemic symptoms that would instead point to true infection.</p></div>
-    </article></div></section>
-  <section class="erpanel" data-etab="pediatric"><div class="condcard-list">
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">01</span><h3>Measles</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythematous, blanching maculopapular rash starting on the FACE/hairline and spreading cephalocaudally (head to trunk to extremities) over 3 days — preceded by the classic prodrome of the "3 Cs" (cough, coryza, conjunctivitis) and fever; Koplik spots (small white/blue-gray spots on an erythematous buccal mucosal background) are pathognomonic and typically precede the skin rash by 1-2 days.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Measles morbillivirus, an airborne/highly contagious paramyxovirus — the rash reflects a T-cell-mediated immune response to virus-infected cells in the skin, not direct cytopathic viral skin damage, which is part of why the rash appears several days into the illness rather than at initial symptom onset.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Cephalocaudal-spreading erythematous maculopapular rash, day [X] of illness, following [3-4 day] prodrome of fever/cough/coryza/conjunctivitis. Koplik spots [present/absent, timing relative to rash]. Vaccination status: [documented]. Public health reporting: [initiated] given reportable disease status."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Supportive care (antipyretics, hydration) — no specific antiviral treatment exists. Vitamin A supplementation is recommended by the WHO/AAP for all children with acute measles given documented reduction in morbidity/mortality, particularly relevant in vitamin A-deficient populations but recommended broadly.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for uncomplicated cases with strict isolation precautions (airborne, given how highly contagious measles is); admission for complications (pneumonia, encephalitis, or significant dehydration).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Rash and fever typically resolve over 7-10 days total illness course; the patient remains contagious from 4 days before rash onset to 4 days after — this contagious window, not just visible symptom duration, should guide isolation/return-to-school timing.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>This is a REPORTABLE disease requiring immediate public health notification — with rising rates of vaccine hesitancy and localized outbreaks, measles should be on the differential for a compatible presentation even in regions where it was previously considered eliminated, and unvaccinated status should raise (not lower) your index of suspicion.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">02</span><h3>Fifth Disease (Erythema Infectiosum)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Classic "slapped cheek" bright red facial erythema, followed 1-4 days later by a lacy, reticulated erythematous rash on the trunk/extremities that can wax and wane (notably re-appearing with heat exposure, bathing, or sun exposure) for weeks after the acute illness.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Parvovirus B19 — importantly, by the time the rash appears, the patient is generally NO LONGER contagious (the viremic/contagious phase precedes the rash), an important and often counterintuitive point for return-to-school/daycare counseling.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Slapped-cheek facial erythema followed by lacy reticulated rash on trunk/extremities, [timing]. Pregnancy status of household/close contacts assessed given parvovirus B19 fetal risk. Sickle cell/hemolytic anemia history assessed given aplastic crisis risk."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Supportive care only (antipyretics, hydration) — the illness is generally mild and self-limited in immunocompetent children.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for the typical case; the main clinical concerns requiring closer attention are exposure in PREGNANT contacts (risk of fetal hydrops/loss, particularly in the first half of pregnancy) and in patients with underlying hemolytic anemia/sickle cell disease (risk of transient aplastic crisis from parvovirus B19's tropism for erythroid progenitor cells).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>The rash itself can wax and wane for 1-3 weeks, particularly with heat/sun/bathing exposure — counsel families explicitly that rash recurrence over these weeks does NOT indicate ongoing contagiousness or a new illness.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Because the child is no longer contagious once the rash appears, there's no medical reason to exclude them from school/daycare based on the rash itself — this is genuinely useful, reassuring guidance that differs from the isolation logic applied to most other pediatric exanthems.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">03</span><h3>Scarlet Fever</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Fine, diffuse, sandpaper-textured erythematous rash, often starting in flexural creases (axillae, groin) and spreading, with characteristic PERIORAL SPARING (circumoral pallor) and a "strawberry tongue" (initially white-coated with red, swollen papillae, later becoming uniformly red/beefy) — accompanies streptococcal pharyngitis symptoms (sore throat, fever, tonsillar exudate).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Group A Streptococcus infection (typically pharyngitis) producing an erythrogenic exotoxin that causes the characteristic rash — distinguishing this from simple strep throat matters because scarlet fever carries the same downstream rheumatic fever/post-streptococcal glomerulonephritis risk if untreated, making antibiotic treatment equally important as for uncomplicated strep pharyngitis.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Fine sandpaper-textured erythematous rash with circumoral pallor and strawberry tongue, [flexural distribution/spread pattern]. Concurrent pharyngitis: [tonsillar exudate, fever, tender cervical lymphadenopathy]. Rapid strep/throat culture: [performed, result]. Antibiotics initiated: [agent]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral penicillin or amoxicillin (first-line) for 10 days — the same treatment as uncomplicated strep pharyngitis, since scarlet fever is simply strep pharyngitis with a toxin-mediated rash rather than a distinct infection requiring different antibiotic choice.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for uncomplicated cases; return to school/daycare typically permitted after 24 hours of antibiotic treatment and clinical improvement (fever resolution).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Symptoms improve within 24-48 hours of starting antibiotics; the rash itself can take 1-2 weeks to fully resolve and is often followed by DESQUAMATION (peeling), particularly of the hands/feet, over the following 2-3 weeks — counsel families that this delayed peeling is an expected, benign part of the resolution process, not a new problem.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Circumoral pallor (sparing around the mouth) combined with a sandpaper-textured rash and strawberry tongue is close to pathognomonic — this combination should prompt strep testing/treatment even before classic pharyngitis findings are fully assessed.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">04</span><h3>Hand-Foot-Mouth Disease</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Small vesicles/erosions on the palms, soles, and oral mucosa (buccal mucosa, tongue), often accompanied by oval/football-shaped vesicles or gray macules — fever and mild systemic symptoms typically precede or accompany the rash; oral lesions can cause significant pain limiting oral intake, which is often the primary clinical concern rather than the skin findings themselves.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Coxsackievirus A16 (classic) or Enterovirus 71 (associated with more severe disease/neurologic complications in some outbreaks) — a highly contagious enteroviral infection spread via fecal-oral and respiratory routes, common in daycare/school settings.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Vesicles/erosions on palms, soles, and oral mucosa, fever [X]°C, oral intake status: [adequate/limited by pain]. Hydration status assessed given oral lesion pain risk for reduced intake. Neurologic exam: [normal — screening given rare but serious enterovirus 71-associated neurologic complications]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Supportive care — antipyretics/analgesics for pain (including for oral lesions, where a "magic mouthwash"-type topical analgesic can help maintain oral intake, similar in principle to the oncology mucositis management discussed elsewhere), and hydration monitoring given the oral pain's impact on intake.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for the vast majority of cases; admission only for significant dehydration from poor oral intake or the rare neurologic complication (ataxia, myoclonus, or more severe encephalitis-type presentations, more associated with Enterovirus 71).</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Self-limited, typically resolving over 7-10 days; the virus can be shed in stool for WEEKS after clinical resolution, though standard return-to-school guidance is generally based on fever resolution and lesion crusting rather than complete viral clearance.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The oral lesions, not the skin findings, are usually the actual clinical problem in HFMD — a child refusing to drink due to painful mouth sores is the presentation that should drive your hydration assessment and management focus, more so than the relatively benign-appearing hand/foot vesicles.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">05</span><h3>Acute Urticaria (Hives) — Pediatric</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Well-demarcated, raised, pink-to-red wheals of variable size, intensely pruritic, with INDIVIDUAL lesions resolving within 24 hours (though new lesions can continuously form elsewhere, giving the appearance of a persistent rash even as individual wheals come and go) — this 24-hour-per-lesion rule distinguishes true urticaria from urticarial vasculitis.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Mast cell degranulation releasing histamine and other mediators, triggered by a viral illness (the most common pediatric cause), a new food, medication, or, in many cases, no identifiable trigger at all (idiopathic) — IgE-mediated in allergic cases, though many pediatric viral-associated cases are not classically IgE-mediated.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Well-demarcated, blanching wheals, [distribution], individual lesions reportedly resolving &amp;lt;24h per parent report. No angioedema, no respiratory/GI symptoms, no hypotension — supporting isolated urticaria over anaphylaxis. Possible trigger: [recent viral illness/new food/medication]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral antihistamines (a non-sedating agent like cetirizine for daytime, diphenhydramine can be added at night for its sedating effect to help with sleep given the itch) as first-line; topical treatments (zinc oxide-containing lotions/calamine) can provide additional symptomatic itch relief. Reserve systemic corticosteroids for severe/refractory cases given limited evidence of added benefit for typical acute urticaria and real side-effect burden in children.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for isolated urticaria without angioedema/respiratory/GI/cardiovascular symptoms; treat as anaphylaxis (epinephrine, closer monitoring/admission) if ANY of those additional features are present — urticaria alone is not anaphylaxis, but the two exist on a spectrum and mixed presentations need to be triaged toward the more serious end.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Acute urticaria by definition resolves within 6 weeks (chronic urticaria is defined as lasting beyond that point and warrants a different, more extensive workup); most pediatric viral-associated cases resolve within days to 1-2 weeks.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Always specifically ask about and examine for angioedema (lip/tongue/facial swelling), respiratory symptoms, and GI symptoms (vomiting, abdominal pain) before reassuring a family that urticaria is "just hives" — their absence is what actually supports a benign disposition, and this should be explicitly documented, not just assumed.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4a90c9">
-      <header class="mcard-h"><span class="mcard-num">06</span><h3>Pediatric Atopic Dermatitis Flare</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythematous, scaly, excoriated patches in an age-dependent distribution (facial/extensor in infants, flexural in older children — see the Outpatient Dermatology Atlas for full detail) — in the acute care setting, the key task is distinguishing a routine flare from a superimposed complication (eczema herpeticum, bacterial superinfection).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Same filaggrin-barrier-defect and Th2-skewed immune pathophysiology detailed in the Outpatient Dermatology Atlas — the acute care encounter is typically prompted either by flare severity, parental concern, or a superimposed complication rather than the baseline disease itself.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Known atopic dermatitis, acute flare, [distribution, % BSA, secondary changes]. Screened for and [ruled out/concerning for] eczema herpeticum (punched-out monomorphic vesicles, fever) and bacterial superinfection (honey-colored crusting, purulent drainage, disproportionate warmth/tenderness)."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical corticosteroids for an uncomplicated flare (see the Outpatient Dermatology Atlas for potency selection by site); treat any identified bacterial superinfection with appropriate topical or oral antibiotics; escalate immediately to eczema herpeticum management (IV acyclovir, admission) if that specific pattern is identified — see the Urgent tier.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for an uncomplicated flare with primary care/dermatology follow-up; admission only if eczema herpeticum, extensive bacterial superinfection, or significant dehydration/systemic illness is identified.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Topical steroid course for an acute flare: typically 1-2 weeks, then return to maintenance emollient care — see the Outpatient Dermatology Atlas for the full chronic management framework.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The acute care visit for an eczema flare is a genuine opportunity to actively screen for eczema herpeticum and bacterial superinfection specifically, rather than reflexively treating every flare the same way — a few extra seconds looking for punched-out vesicles or honey-crusting changes the entire management path for a subset of these visits.</p></div>
-    </article></div></section>
-  <section class="erpanel" data-etab="common"><div class="condcard-list">
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">01</span><h3>Allergic/Irritant Contact Dermatitis (ED Presentation)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Well-demarcated (allergic) or more diffuse (irritant) erythematous, often vesicular/weeping patches corresponding to a specific contact site — a shape that doesn't match a known dermatosis pattern (linear streaking, a geometric shape matching jewelry/a plant) is itself a diagnostic clue — see the Outpatient Dermatology Atlas for full detail.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Type IV delayed hypersensitivity (allergic) or direct chemical/physical skin barrier damage (irritant) — see the Outpatient Dermatology Atlas for the full mechanistic distinction.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"[Geometric/linear/streaked] dermatitis at [site] corresponding to [suspected exposure]. Onset [X hours-days] after exposure. No systemic symptoms, no evidence of angioedema/anaphylaxis."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical corticosteroids for the inflammatory component; oral antihistamines for pruritus; identify and counsel on avoiding the causative exposure — the single most important intervention, with no medication substituting for allergen/irritant avoidance.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases; escalate only if widespread involvement with facial/airway swelling raises concern for a more significant allergic reaction.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Improvement typically begins within days of avoiding the exposure; topical steroid course generally 1-2 weeks for the acute reaction.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Poison ivy/oak/sumac classically shows LINEAR streaking where the plant brushed against skin — nearly diagnostic on its own even without a clear reported exposure history.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">02</span><h3>Tinea (Dermatophyte Infection)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Annular (ring-shaped) erythematous patch with a raised, SCALY ACTIVE EDGE and relative CENTRAL CLEARING — the active border is where to scrape for KOH prep, since the center may show minimal fungal elements by comparison.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Dermatophyte fungi (Trichophyton, Microsporum, Epidermophyton species) infect the stratum corneum, feeding on keratin — transmission via direct contact (person-to-person, animal-to-person for some species) or fomites (shared towels, gym mats).</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Annular erythematous patch with raised scaly active border and central clearing at [site]. KOH prep: [performed, result]. Distinguishing from nummular eczema/psoriasis given the annular configuration with active-edge scale pattern."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical antifungals (terbinafine, clotrimazole) for localized disease; oral antifungals (terbinafine, griseofulvin in children) for tinea capitis (scalp — topical agents don't adequately penetrate the hair follicle) or extensive/refractory disease.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all presentations.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Topical treatment: typically 2-4 weeks for resolution of localized tinea corporis/cruris/pedis. Oral treatment for tinea capitis: typically 6-8 weeks given the need to treat through the hair follicle's growth cycle.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Tinea incognito (a dermatophyte infection that's been treated with a topical corticosteroid, altering/obscuring its classic annular appearance) should be considered in any "eczema" that isn't responding as expected to steroids — always ask about prior topical steroid use on a rash before accepting an atypical-appearing lesion at face value.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">03</span><h3>Morbilliform Drug Eruption</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Widespread, symmetric, erythematous macules/papules (measles-like — "morbilliform") typically starting on the trunk and spreading to extremities, usually appearing 1-2 weeks after starting a new medication — the most common drug reaction pattern, and important to distinguish from the more concerning DRESS/SJS-TEN patterns.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>A delayed (type IV) hypersensitivity reaction to a medication — nearly any drug can cause this pattern, though antibiotics (especially penicillins, sulfonamides) are among the most common culprits.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Widespread symmetric morbilliform eruption, onset [X days-weeks] after starting [medication]. NO mucosal involvement, NO facial edema, NO blistering/skin sloughing, NO systemic toxicity/fever — actively documented to distinguish from SJS/TEN and DRESS."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Stop the offending drug if it's not essential (or substitute if it is); oral antihistamines and topical corticosteroids for symptomatic relief — supportive care is generally sufficient for this uncomplicated pattern.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for the typical case; the essential task at the index visit is actively screening for and ruling out the more dangerous mimics (SJS/TEN, DRESS) via the documentation elements above.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Resolves over 1-2 weeks after stopping the causative drug; can occasionally still worsen for a few days after discontinuation before improving ("drug rash flare") — counsel families/patients on this expected initial trajectory so it isn't mistaken for treatment failure.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>The critical ED task for ANY new drug rash is actively looking for and documenting the ABSENCE of red-flag features (mucosal involvement, facial edema, blistering, systemic toxicity) — a morbilliform rash without these features is reassuring, but the absence needs to be explicitly assessed and charted, not assumed.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">04</span><h3>Impetigo</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Superficial erosions with characteristic HONEY-COLORED CRUST (non-bullous, most common form) or, less commonly, flaccid bullae (bullous impetigo) — typically on the face (classically around the nose/mouth) or extremities, especially in children.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Staphylococcus aureus (bullous form specifically, via exfoliative toxin — a localized, milder version of the same toxin mechanism as SSSS) or Streptococcus pyogenes (non-bullous form, though S. aureus also commonly causes non-bullous disease) — a superficial bacterial skin infection, highly contagious via direct contact/fomites.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Superficial erosions with honey-colored crust [or flaccid bullae] at [site], [extent]. No surrounding cellulitis/systemic symptoms suggesting a more invasive process. Topical vs. oral antibiotic selected based on extent."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical mupirocin for limited, localized disease; oral antibiotics (cephalexin or dicloxacillin, adding MRSA coverage like TMP-SMX/clindamycin if risk factors present) for more extensive disease or bullous impetigo.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Improvement typically within 3-5 days of appropriate treatment; return to school/daycare generally permitted after 24 hours of treatment given reduced contagiousness at that point.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Impetigo is highly contagious via direct contact and fomites (towels, shared equipment) — counsel on hygiene measures (not sharing towels, hand hygiene, keeping lesions covered) alongside antibiotic treatment to reduce spread to close contacts.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">05</span><h3>Intertrigo</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythematous, sometimes macerated/weeping patches confined to skin folds (inframammary, inguinal, abdominal panniculus, axillary) — often with satellite papules/pustules if candida has superimposed on the primary irritant process.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Friction and moisture trapped within skin folds cause primary irritant inflammation, which frequently becomes secondarily colonized/infected with Candida albicans (explaining the satellite lesion pattern) given the warm, moist, occluded local environment these folds create.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Erythematous, [macerated/weeping] patches confined to [fold location], [satellite papules/pustules present, suggesting candidal superinfection]. Contributing factors: [obesity, diabetes, incontinence, hyperhidrosis] assessed."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Keep the area dry (moisture-wicking powder, separating skin folds with dry gauze/cloth where feasible) as the foundational measure; topical antifungal (nystatin, clotrimazole) if candidal superinfection is suspected/confirmed; low-potency topical corticosteroid briefly for significant inflammation, used cautiously in occluded fold areas given increased absorption risk.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Improvement typically within 1-2 weeks with appropriate drying measures and antifungal treatment if indicated; recurrence is common without addressing underlying contributing factors (weight, diabetes control, moisture management) long-term.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Address the underlying moisture/friction driver (not just prescribe an antifungal) for any real chance of preventing recurrence — intertrigo without addressing contributing factors like obesity or incontinence will predictably recur despite appropriate acute treatment.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#4f9e6e">
-      <header class="mcard-h"><span class="mcard-num">06</span><h3>Paronychia</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythema, swelling, and tenderness of the periungual (nail fold) tissue — acute paronychia often shows a visible fluctuant collection/pus, while chronic paronychia (typically from repeated water exposure/irritant contact) shows more indolent swelling without frank abscess.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Acute paronychia: typically bacterial (Staphylococcus aureus most common), often following minor trauma (nail-biting, manicure injury, hangnail) that breaches the nail fold's protective barrier. Chronic paronychia: typically a low-grade irritant/candidal process from repeated wet-work exposure rather than a single acute bacterial event.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"[Acute: fluctuant, tender, erythematous periungual swelling / Chronic: indolent swelling, history of repeated water exposure]. I&amp;amp;D performed [if fluctuant] under digital block. Culture obtained: [if applicable]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Acute paronychia with a visible fluctuant collection: incision and drainage (often simply with a needle or blade at the point of maximal fluctuance under digital block, given the small/superficial nature of most collections) plus oral antibiotics for surrounding cellulitis or significant infection. Chronic paronychia: address the underlying moisture exposure, topical antifungal/corticosteroid combination, and irritant avoidance rather than antibiotics.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Acute paronychia: improvement within days after drainage. Chronic paronychia: a genuinely prolonged process (weeks to months) requiring sustained behavior change (glove use for wet work) rather than a quick medication course — set this expectation explicitly to avoid frustration with a slower-than-expected response.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Chronic paronychia is fundamentally a BEHAVIORAL/exposure problem (repeated water/irritant contact) more than an infectious one — a prescription alone without addressing the underlying wet-work exposure pattern will predictably fail to resolve it long-term.</p></div>
-    </article></div></section>
-  <section class="erpanel" data-etab="bites"><div class="condcard-list">
-    <article class="condcard" style="--tabclr:#a3603a">
-      <header class="mcard-h"><span class="mcard-num">01</span><h3>Scabies</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Intensely pruritic (classically WORSE AT NIGHT), small erythematous papules with fine, thread-like BURROWS (a pathognomonic finding when visible) — classic distribution includes finger webs, wrists, axillae, waistline, and genitalia, generally sparing the face/scalp in adults (though infants can have facial/scalp involvement, an important distinguishing detail).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Sarcoptes scabiei mite burrows into the epidermis to lay eggs — the intense pruritus reflects a delayed hypersensitivity reaction to the mite, eggs, and fecal matter (scybala) rather than direct mechanical irritation alone, which is why itch can persist for 2-4 weeks even after successful treatment kills the mites ("post-scabetic itch").</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Intensely pruritic papules, worse at night, with [burrows visible/not visible] at [finger webs/wrists/waistline/genitalia]. Close contacts with similar symptoms: [assessed]. Treatment and simultaneous treatment of household/close contacts discussed given transmission risk."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical permethrin 5% cream applied neck-to-toe (or scalp-to-toe in infants), left on for 8-14 hours, is first-line; oral ivermectin is an alternative, particularly useful for outbreak settings (nursing homes, institutional settings) or when topical application/compliance is a concern. TREAT ALL HOUSEHOLD/CLOSE CONTACTS SIMULTANEOUSLY regardless of symptoms, since asymptomatic mite carriage during the incubation period is common and untreated contacts will re-infest the index patient.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases; crusted (Norwegian) scabies in immunocompromised patients (a markedly more severe, highly contagious variant with thick scaling and massive mite burden) may warrant more aggressive treatment and infection control precautions.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Itch can persist for 2-4 weeks after successful treatment (post-scabetic pruritus) — counsel on this explicitly so ongoing itch after treatment isn't mistaken for treatment failure and doesn't prompt unnecessary retreatment; wash bedding/clothing in hot water and dry on high heat (or seal in a bag for 72 hours if not washable) to eliminate mites in the environment.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Persistent itch for a couple weeks after appropriate treatment is EXPECTED and does not mean treatment failed — this distinction prevents unnecessary repeat treatment courses and helps set appropriate patient expectations at the index visit.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#a3603a">
-      <header class="mcard-h"><span class="mcard-num">02</span><h3>Bed Bug Bites</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Grouped or LINEAR ("breakfast, lunch, dinner") erythematous papules, often with a central punctum, typically on exposed skin (face, neck, arms) — the linear/clustered arrangement reflects the bug's feeding pattern along a single exposed skin area during one feeding session.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Cimex lectularius (bed bug) bites — a purely mechanical/allergic reaction to the bite itself, with NO disease transmission risk (unlike many other arthropod bites/vectors) — this is an important reassurance point, since bed bugs are not known vectors for any human disease despite the significant psychological distress an infestation causes.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Grouped/linear erythematous papules with central punctum on exposed skin areas. History of new/used furniture, travel, or shared living space consistent with bed bug exposure. No systemic symptoms."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Symptomatic treatment only — topical corticosteroids and oral antihistamines for pruritus; no antibiotic or antiviral treatment is indicated for the bite itself (though secondary bacterial infection from scratching, if present, is treated per standard impetigo/cellulitis management).</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases — the actual practical challenge is environmental remediation (pest control) rather than medical treatment of the bites themselves.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Individual bite lesions typically resolve over 1-2 weeks; ongoing new lesions reflect continued exposure/infestation rather than a medical treatment failure, and should prompt a pest control conversation rather than escalating topical treatment.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Explicitly reassure patients that bed bugs do not transmit disease — the psychological distress of a bed bug infestation is often disproportionate to the actual medical risk, and this reassurance, alongside practical referral to pest control resources, is often more useful than any topical medication.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#a3603a">
-      <header class="mcard-h"><span class="mcard-num">03</span><h3>Tick Bite / Erythema Migrans (Lyme Disease)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Erythema migrans: an expanding, often (though not always) "bull's-eye" annular erythematous patch with partial central clearing, typically appearing 3-30 days after a tick bite at or near the bite site, usually ≥5cm in diameter (this size threshold helps distinguish it from a simple local bite reaction, which is smaller and doesn't expand over days).</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Borrelia burgdorferi, transmitted by Ixodes tick species — transmission risk correlates with tick attachment duration, generally requiring at least 36-48 hours of attachment for meaningful transmission risk, which is why prompt tick removal matters even after the fact.</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Expanding annular erythematous patch, [X]cm, [bull's-eye pattern present/absent], at site of known/suspected tick bite [X days ago], estimated attachment duration [if known]. Geographic exposure risk: [endemic area]. Associated symptoms: [fever, arthralgia, fatigue]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Oral doxycycline (first-line for most age groups, including now recommended for short courses in young children per updated guidance given revised understanding of tooth-staining risk at these doses/durations) for 10-14 days for uncomplicated erythema migrans; single-dose post-exposure prophylactic doxycycline can be considered for a high-risk tick bite (identified Ixodes tick, endemic area, ≥36h attachment) within 72 hours of tick removal, per specific criteria.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for uncomplicated erythema migrans; evaluate for disseminated disease (cardiac — Lyme carditis with heart block, neurologic — facial palsy, meningitis) if compatible symptoms are present, which may warrant more urgent evaluation/admission.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Erythema migrans resolves within days of starting appropriate antibiotic treatment; the full antibiotic course (10-14 days) should be completed even after the rash resolves to ensure adequate treatment of the underlying infection.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Not every erythema migrans lesion has the classic bull's-eye appearance — many are simply a uniform expanding erythematous patch, and requiring the classic bull's-eye pattern before considering the diagnosis will cause you to miss cases; size (≥5cm) and expansion over days are more reliable diagnostic features than the classic-but-inconsistent target appearance.</p></div>
-    </article>
-
-    <article class="condcard" style="--tabclr:#a3603a">
-      <header class="mcard-h"><span class="mcard-num">04</span><h3>Pediculosis (Lice)</h3></header>
-      <div class="se-field"><span class="flabel">Appearance</span><p>Intense scalp (head lice), body, or pubic (pubic lice) pruritus with visible NITS (egg casings firmly adherent to hair shafts, unlike dandruff which flakes off easily) and, on close inspection, visible live lice — excoriations and secondary bacterial infection from scratching are common secondary findings.</p></div>
-      <div class="se-field"><span class="flabel">Etiology / Pathophysiology</span><p>Pediculus humanus capitis (head lice), Pediculus humanus corporis (body lice, notably associated with poor hygiene access/crowded living conditions and a recognized vector for other diseases like typhus in specific contexts), or Pthirus pubis (pubic lice, typically sexually transmitted in adults — its presence in a child should prompt consideration of possible sexual abuse and appropriate further evaluation).</p></div>
-      <div class="se-field doc"><span class="flabel">Documentation Language</span><p>"Intense [scalp/body/pubic] pruritus with visible nits firmly adherent to hair shafts and [live lice observed/not observed]. [If pubic lice in a child: appropriate further evaluation for possible sexual abuse discussed/initiated per protocol]."</p></div>
-      <div class="se-field mgmt"><span class="flabel">Treatment</span><p>Topical permethrin 1% (OTC) is first-line for head lice; a second application 7-9 days later is recommended to catch any newly-hatched lice that survived the first treatment as eggs. Oral ivermectin or alternative topical agents (malathion, spinosad) for treatment-resistant cases. Body lice: improved hygiene/clothing laundering is central to treatment given the louse's habitat in clothing rather than directly on the body.</p></div>
-      <div class="se-field"><span class="flabel">Disposition</span><p>Outpatient management for essentially all cases; pubic lice in a prepubertal child warrants the sexual abuse evaluation noted above rather than routine outpatient treatment alone.</p></div>
-      <div class="se-field dur"><span class="flabel">Duration / Recheck Timing</span><p>Nit removal (fine-tooth combing) alongside the two-dose treatment regimen over 7-9 days is standard; "no-nit" school exclusion policies have been increasingly de-emphasized by the AAP given limited evidence supporting them and their disproportionate educational disruption — worth mentioning to frustrated families citing strict school policies.</p></div>
-      <div class="mpearl"><span class="pearl-tag">Clinical Pearl</span><p>Nits (egg casings) remaining after appropriate treatment do NOT necessarily indicate treatment failure or active infestation — dead nits can remain firmly adherent to the hair shaft for a long time after successful treatment, and distinguishing this from a true treatment failure (live lice found on re-exam) prevents unnecessary repeat treatment courses.</p></div>
-    </article></div></section>
-  
-  <section class="erpanel" data-etab="pearls">
-    <div class="stage-block">
-      <h3 class="dg-h">16 Rapid-Fire Pearls</h3>
-      <ol class="pearls-list"><li>Non-blanching = purpura until proven otherwise — always perform the blanch test (diascopy or firm finger pressure) on any red/purple lesion before reassuring a patient.</li><li>Pain out of proportion to exam findings is the earliest and most important clue for necrotizing fasciitis — don't wait for skin necrosis or crepitus to escalate.</li><li>Mucosal involvement + a new drug in the past 1-8 weeks = think SJS/TEN until proven otherwise, and stop the suspected drug immediately.</li><li>Mucosal SPARING distinguishes SSSS from SJS/TEN in a child with diffuse blistering/peeling — this single detail changes the entire management pathway.</li><li>Bilateral leg erythema is stasis dermatitis until proven otherwise — true bilateral cellulitis is rare; look for asymmetry and acute tenderness before reaching for antibiotics.</li><li>A fluctuant abscess needs drainage, not just antibiotics — antibiotics alone will not resolve an undrained purulent collection regardless of size.</li><li>Dermatomal pain preceding a visible rash by days is classic early zoster — consider it for unexplained unilateral chest/abdominal/facial pain even before any rash appears.</li><li>A punched-out, monomorphic vesicular eruption on a background of known eczema, especially with fever, is eczema herpeticum until proven otherwise — start IV acyclovir empirically.</li><li>Facial edema + a widespread drug rash with delayed (weeks-long) onset should raise DRESS syndrome — pursue organ-system screening (LFTs, renal function) immediately.</li><li>In a febrile patient with a new non-blanching rash, give empiric antibiotics BEFORE the workup is complete — meningococcemia mortality rises with every hour of delay.</li><li>Erythema migrans doesn't always look like a classic bull's-eye — an expanding, uniform erythematous patch ≥5cm after a tick bite still counts.</li><li>HSP renal involvement can appear or evolve well after the skin rash resolves — arrange at least 6 months of urinalysis/renal function follow-up, not just resolution of the rash.</li><li>Post-scabetic itch can persist 2-4 weeks after successful treatment — this is expected, not treatment failure, and shouldn't automatically prompt retreatment.</li><li>Always treat ALL household/close contacts simultaneously for scabies, regardless of symptoms — asymptomatic carriage during the incubation period causes re-infestation otherwise.</li><li>Erythema is harder to see on darker skin tones — rely more on palpation for warmth/induration and comparison to adjacent skin, since color-based descriptors alone risk under-triaging serious findings.</li><li>Mark the border of cellulitis with a skin pen at the first visit — this turns a subjective recheck into an objective measurement of whether treatment is working.</li></ol>
-    </div>
-    <div class="stage-block">
-      <h3 class="dg-h">ED Dermatology Workflow</h3>
-      <div class="dg-grid"><div class="dg-item"><span class="dg-label">1. Blanch Test</span><p>Any red/purple lesion gets the diascopy/finger-pressure test before anything else — this single step immediately reroutes the differential if positive for true purpura.</p></div><div class="dg-item"><span class="dg-label">2. Systemic Screen</span><p>Fever, hemodynamic stability, mucosal involvement, and pain-out-of-proportion-to-exam are the four questions that separate the life-threatening tier from everything else — ask all four before moving on.</p></div><div class="dg-item"><span class="dg-label">3. Distribution &amp;amp; Pattern</span><p>Unilateral/dermatomal vs. bilateral/symmetric vs. generalized — this alone often narrows the differential dramatically (e.g., bilateral leg erythema toward stasis dermatitis, dermatomal toward zoster).</p></div><div class="dg-item"><span class="dg-label">4. Exposure &amp;amp; Timing History</span><p>New medications (with start date), recent travel, sick contacts, tick/insect exposure, and known chronic skin conditions (atopic dermatitis specifically, given the eczema herpeticum risk) — timing relative to rash onset is often the most diagnostically useful single piece of history.</p></div><div class="dg-item"><span class="dg-label">5. Document Using the Skeleton</span><p>Distribution → number/arrangement → primary lesion → color/blanching → size → secondary change → border — see the Documentation Guide tab.</p></div><div class="dg-item"><span class="dg-label">6. Treat, Consult, or Escalate</span><p>Match the tier: life-threatening tier triggers immediate consultation/admission in parallel with initial treatment, not after a full workup; urgent tier gets same-visit treatment with a defined recheck interval; common/pediatric/bites tier gets outpatient treatment with standard follow-up guidance.</p></div></div>
-    </div>
-  </section>
-</main>
-
-<footer>ER Dermatology Atlas (rebuilt) — original reference content for clinical education. Companion to the Outpatient Dermatology Atlas (chronic/inflammatory dermatoses, procedures) and the Cosmetic Dermatology Atlas. Verify current guidelines and institutional protocols before clinical use.</footer>
+<main id="main"></main>
+<footer id="foot"></footer>
 
 <script>
+/* ============================================================
+   SVG MORPHOLOGY ENGINE — stylized skin lesion schematics
+   ============================================================ */
+const SKIN='var(--skin)',SKIN2='var(--skin2)',ERY='var(--ery)',PURP='var(--purp)',VES='var(--vesicle)',PUS='var(--pus)',BR='var(--brown)';
+function svg(inner,vb){return `<svg viewBox="0 0 ${vb||'200 150'}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
+function skinbg(w,h){return `<rect width="${w||200}" height="${h||150}" fill="${SKIN}"/>`+skinTexture(w||200,h||150);}
+function skinTexture(w,h){let s='';let seed=99;for(let i=0;i<26;i++){seed=(seed*9301+49297)%233280;const r=seed/233280;seed=(seed*9301+49297)%233280;const r2=seed/233280;s+=`<circle cx="${r*w}" cy="${r2*h}" r="${0.6+r*0.8}" fill="${SKIN2}" opacity="0.3"/>`;}return s;}
+function tlabel(x,y,t,fill){return `<text x="${x}" y="${y}" font-family="SF Mono,monospace" font-size="9" fill="${fill||'var(--muted)'}" text-anchor="middle">${t}</text>`;}
+
+/* PRIMARY LESION SCHEMATICS */
+function figMacule(){return svg(skinbg()+`<ellipse cx="100" cy="70" rx="34" ry="26" fill="${ERY}" opacity="0.5"/>`+tlabel(100,130,"flat, non-palpable"));}
+function figPapule(){return svg(skinbg()+`<ellipse cx="100" cy="78" rx="26" ry="20" fill="${ERY}" opacity="0.55"/>`+`<ellipse cx="100" cy="70" rx="24" ry="16" fill="${ERY}" opacity="0.7"/>`+`<ellipse cx="93" cy="64" rx="8" ry="5" fill="#fff" opacity="0.18"/>`+tlabel(100,130,"raised <1 cm"));}
+function figPlaque(){return svg(skinbg()+`<rect x="56" y="56" width="88" height="34" rx="10" fill="${ERY}" opacity="0.55"/>`+`<rect x="56" y="56" width="88" height="10" rx="6" fill="#fff" opacity="0.12"/>`+`<rect x="60" y="60" width="80" height="26" rx="8" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="2 3" opacity="0.25"/>`+tlabel(100,130,"raised, flat-topped >1 cm"));}
+function figNodule(){return svg(skinbg()+`<circle cx="100" cy="76" r="26" fill="${ERY}" opacity="0.4"/>`+`<circle cx="100" cy="74" r="22" fill="${ERY}" opacity="0.6"/>`+`<circle cx="92" cy="66" r="7" fill="#fff" opacity="0.18"/>`+tlabel(100,130,"deep, palpable >1 cm"));}
+function figVesicle(){return svg(skinbg()+`<circle cx="100" cy="72" r="20" fill="${VES}" opacity="0.85"/>`+`<circle cx="100" cy="72" r="20" fill="none" stroke="${ERY}" stroke-width="2"/>`+`<circle cx="94" cy="66" r="6" fill="#fff" opacity="0.5"/>`+tlabel(100,130,"clear fluid <1 cm"));}
+function figBulla(){return svg(skinbg()+`<ellipse cx="100" cy="74" rx="38" ry="28" fill="${VES}" opacity="0.8"/>`+`<ellipse cx="100" cy="74" rx="38" ry="28" fill="none" stroke="${ERY}" stroke-width="2"/>`+`<ellipse cx="88" cy="64" rx="12" ry="7" fill="#fff" opacity="0.45"/>`+tlabel(100,130,"fluid-filled >1 cm"));}
+function figPustule(){return svg(skinbg()+`<circle cx="100" cy="74" r="20" fill="${ERY}" opacity="0.45"/>`+`<circle cx="100" cy="74" r="13" fill="${PUS}"/>`+`<circle cx="96" cy="70" r="4" fill="#fff" opacity="0.4"/>`+tlabel(100,130,"pus-filled"));}
+function figWheal(){return svg(skinbg()+`<ellipse cx="100" cy="72" rx="40" ry="24" fill="${ERY}" opacity="0.3"/>`+`<ellipse cx="100" cy="72" rx="30" ry="17" fill="${SKIN}" opacity="0.85"/>`+`<ellipse cx="100" cy="72" rx="40" ry="24" fill="none" stroke="${ERY}" stroke-width="3"/>`+tlabel(100,130,"edematous, transient"));}
+function figPurpura(){return svg(skinbg()+`<circle cx="80" cy="64" r="9" fill="${PURP}"/>`+`<circle cx="112" cy="72" r="12" fill="${PURP}"/>`+`<circle cx="95" cy="88" r="7" fill="${PURP}"/>`+`<circle cx="124" cy="56" r="6" fill="${PURP}"/>`+tlabel(100,130,"non-blanching, blood"));}
+function figScale(){return svg(skinbg()+`<ellipse cx="100" cy="72" rx="32" ry="24" fill="${ERY}" opacity="0.4"/>`+Array.from({length:7},(_,i)=>`<path d="M${78+i*7},${58+(i%2)*6} l6,3 l-3,5 z" fill="#e8eef0" opacity="0.7"/>`).join('')+tlabel(100,130,"flaking stratum corneum"));}
+
+/* DANGEROUS RASH SCHEMATICS */
+function figTarget(){return svg(skinbg()+`<circle cx="100" cy="72" r="30" fill="${ERY}" opacity="0.5"/>`+`<circle cx="100" cy="72" r="20" fill="${SKIN}" opacity="0.9"/>`+`<circle cx="100" cy="72" r="11" fill="${PURP}" opacity="0.7"/>`+tlabel(100,130,"3-zone target lesion"));}
+function figSloughing(){return svg(skinbg()+`<rect x="48" y="50" width="104" height="50" rx="8" fill="${ERY}" opacity="0.5"/>`+`<path d="M70,55 q20,-6 40,2 q14,5 30,0 l0,40 q-30,8 -70,-2 z" fill="${PURP}" opacity="0.35"/>`+`<path d="M64,70 q30,10 70,-2" fill="none" stroke="#caa" stroke-width="3" opacity="0.6"/>`+tlabel(100,128,"sheets sloughing (Nikolsky +)"));}
+function figPetechiaePurpura(){return svg(skinbg()+Array.from({length:22},(_,i)=>{let seed=(i*73+11)%200;let x=20+((i*53)%160);let y=40+((i*37)%80);let r=2+((i*17)%5);return `<circle cx="${x}" cy="${y}" r="${r}" fill="${PURP}"/>`;}).join('')+tlabel(100,135,"petechiae → palpable purpura"));}
+function figErythroderma(){return svg(`<rect width="200" height="150" fill="${ERY}" opacity="0.55"/>`+Array.from({length:10},(_,i)=>`<path d="M${10+i*19},20 q4,55 0,110" stroke="#e8eef0" stroke-width="1.5" opacity="0.3" fill="none"/>`).join('')+tlabel(100,135,">90% body erythema + scale",'#fff'));}
+function figCellulitis(){return svg(skinbg()+`<path d="M50,76 q12,-26 50,-22 q42,4 50,26 q-8,24 -50,22 q-40,-2 -50,-26 z" fill="${ERY}" opacity="0.45"/>`+`<path d="M50,76 q12,-26 50,-22 q42,4 50,26 q-8,24 -50,22 q-40,-2 -50,-26 z" fill="none" stroke="${ERY}" stroke-width="2" stroke-dasharray="4 3"/>`+tlabel(100,130,"warm, ill-defined erythema"));}
+function figAbscess(){return svg(skinbg()+`<circle cx="100" cy="74" r="30" fill="${ERY}" opacity="0.4"/>`+`<circle cx="100" cy="74" r="18" fill="${PUS}" opacity="0.85"/>`+`<circle cx="100" cy="74" r="18" fill="none" stroke="${ERY}" stroke-width="2"/>`+`<circle cx="100" cy="74" r="5" fill="${BR}"/>`+tlabel(100,130,"fluctuant, pus collection"));}
+function figNecFasc(){return svg(skinbg()+`<path d="M48,74 q14,-28 52,-24 q44,4 52,28 q-10,26 -52,24 q-42,-2 -52,-28 z" fill="${PURP}" opacity="0.45"/>`+`<ellipse cx="96" cy="70" rx="20" ry="13" fill="#2a2a30" opacity="0.55"/>`+`<ellipse cx="118" cy="82" rx="9" ry="6" fill="${VES}" opacity="0.7"/>`+tlabel(100,130,"dusky + bullae + pain≫exam"));}
+
+/* INFECTION / VESICULAR */
+function figZoster(){return svg(skinbg()+`<path d="M30,100 Q80,40 170,60" fill="none" stroke="${ERY}" stroke-width="22" opacity="0.25"/>`+Array.from({length:6},(_,i)=>{let t=i/5;let x=30+t*140;let y=100-Math.sin(t*2.2)*46- (1-t)*0;return `<circle cx="${x}" cy="${100-(Math.sin(t*1.6)*40)}" r="7" fill="${VES}" stroke="${ERY}" stroke-width="1.5"/>`;}).join('')+tlabel(100,135,"grouped vesicles, 1 dermatome"));}
+function figHSV(){return svg(skinbg()+`<ellipse cx="100" cy="72" rx="30" ry="22" fill="${ERY}" opacity="0.3"/>`+[[88,66],[100,62],[112,68],[92,80],[106,80]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${VES}" stroke="${ERY}" stroke-width="1.5"/>`).join('')+tlabel(100,128,"grouped vesicles on erythema"));}
+function figImpetigo(){return svg(skinbg()+`<circle cx="90" cy="70" r="16" fill="${ERY}" opacity="0.35"/>`+`<path d="M78,64 q12,-8 24,0 q4,10 -2,16 q-12,6 -22,-2 z" fill="${PUS}" opacity="0.8"/>`+`<circle cx="120" cy="82" r="10" fill="${PUS}" opacity="0.7"/>`+tlabel(100,128,"honey-colored crust"));}
+
+/* PEDIATRIC EXANTHEMS */
+function figMorbilli(){return svg(skinbg()+Array.from({length:16},(_,i)=>{let x=24+((i*47)%150);let y=34+((i*61)%90);return `<ellipse cx="${x}" cy="${y}" rx="8" ry="6" fill="${ERY}" opacity="0.5"/>`;}).join('')+tlabel(100,140,"confluent maculopapular"));}
+function figSlapped(){return svg(skinbg()+`<ellipse cx="100" cy="74" rx="44" ry="34" fill="${ERY}" opacity="0.5"/>`+`<ellipse cx="100" cy="74" rx="44" ry="34" fill="none" stroke="${ERY}" stroke-width="2"/>`+tlabel(100,128,"bright 'slapped cheek'"));}
+function figScarlet(){return svg(`<rect width="200" height="150" fill="${ERY}" opacity="0.42"/>`+Array.from({length:80},(_,i)=>{let x=(i*23)%200;let y=(i*47)%150;return `<circle cx="${x}" cy="${y}" r="1.3" fill="${ERY}"/>`;}).join('')+tlabel(100,140,"sandpaper, fine punctate",'#fff'));}
+function figHFM(){return svg(skinbg()+[[70,60],[110,66],[88,86],[128,78]].map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="9" ry="6" fill="${VES}" stroke="${ERY}" stroke-width="1.5"/>`).join('')+tlabel(100,128,"oval vesicles hands/feet/mouth"));}
+function figUrticaria(){return svg(skinbg()+`<ellipse cx="78" cy="62" rx="26" ry="15" fill="${ERY}" opacity="0.25"/>`+`<ellipse cx="78" cy="62" rx="26" ry="15" fill="none" stroke="${ERY}" stroke-width="3"/>`+`<ellipse cx="120" cy="86" rx="32" ry="17" fill="${ERY}" opacity="0.2"/>`+`<ellipse cx="120" cy="86" rx="32" ry="17" fill="none" stroke="${ERY}" stroke-width="3"/>`+tlabel(100,132,"migratory wheals, pale center"));}
+function figEczema(){return svg(skinbg()+`<path d="M54,60 q40,-12 90,2 q6,30 -8,42 q-44,10 -78,-4 q-10,-22 -4,-40 z" fill="${ERY}" opacity="0.4"/>`+Array.from({length:18},(_,i)=>`<circle cx="${60+((i*37)%80)}" cy="${58+((i*29)%36)}" r="1.6" fill="${ERY}"/>`).join('')+tlabel(100,128,"ill-defined, dry, lichenified"));}
+
+/* COMMON */
+function figTinea(){return svg(skinbg()+`<circle cx="100" cy="72" r="32" fill="none" stroke="${ERY}" stroke-width="7" opacity="0.6"/>`+`<circle cx="100" cy="72" r="32" fill="${ERY}" opacity="0.08"/>`+Array.from({length:10},(_,i)=>{let a=i/10*6.28;return `<circle cx="${100+Math.cos(a)*32}" cy="${72+Math.sin(a)*32}" r="2.5" fill="${PUS}" opacity="0.7"/>`;}).join('')+tlabel(100,130,"annular, scaly active edge"));}
+function figContact(){return svg(skinbg()+`<rect x="64" y="50" width="20" height="56" rx="6" fill="${ERY}" opacity="0.5"/>`+`<rect x="96" y="50" width="20" height="56" rx="6" fill="${ERY}" opacity="0.5"/>`+[[74,60],[74,82],[106,66],[106,90]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${VES}"/>`).join('')+tlabel(100,130,"linear/geometric, sharp border"));}
+function figAbscess2(){return figAbscess();}
+function figDrugRash(){return svg(skinbg()+Array.from({length:20},(_,i)=>{let x=22+((i*51)%156);let y=34+((i*43)%92);return `<ellipse cx="${x}" cy="${y}" rx="7" ry="5" fill="${ERY}" opacity="0.45"/>`;}).join('')+tlabel(100,140,"symmetric, trunk-onset morbilliform"));}
+function figIntertrigo(){return svg(skinbg()+`<path d="M100,30 L100,120" stroke="${SKIN2}" stroke-width="3" opacity="0.5"/>`+`<path d="M100,30 q-26,40 0,90" fill="${ERY}" opacity="0.4"/>`+`<path d="M100,30 q26,40 0,90" fill="${ERY}" opacity="0.4"/>`+[[88,60],[112,72],[90,90]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${ERY}"/>`).join('')+tlabel(100,135,"erythema in skin folds"));}
+
+/* ============================================================
+   MORPHOLOGY PRIMER
+   ============================================================ */
+function morphology(){
+ const M=[
+  ['Macule',figMacule,'Flat, non-palpable color change <1 cm (≥1 cm = patch). E.g., freckle, petechia, early viral rash.'],
+  ['Papule',figPapule,'Solid, raised <1 cm. E.g., acne, wart, molluscum.'],
+  ['Plaque',figPlaque,'Raised, flat-topped >1 cm (often coalesced papules). E.g., psoriasis.'],
+  ['Nodule',figNodule,'Solid, palpable, deeper, >1 cm. E.g., cyst, lipoma.'],
+  ['Vesicle',figVesicle,'Clear fluid-filled <1 cm. E.g., HSV, early zoster, contact dermatitis.'],
+  ['Bulla',figBulla,'Fluid-filled >1 cm. E.g., bullous pemphigoid, burns, SJS/TEN.'],
+  ['Pustule',figPustule,'Pus-filled. E.g., folliculitis, pustular psoriasis.'],
+  ['Wheal (hive)',figWheal,'Transient edematous papule/plaque. E.g., urticaria.'],
+  ['Purpura',figPurpura,'Non-blanching red-purple from extravasated blood; petechiae (<3 mm) → purpura → ecchymosis.'],
+  ['Scale',figScale,'Flakes of stratum corneum. E.g., psoriasis, tinea, eczema.']
+ ];
+ return `<h2 class="sec" id="morphology">1 · Primary lesion morphology — the vocabulary</h2>
+ <p class="seclead">Every dermatology note starts with naming the <b>primary lesion</b> correctly — it's the foundation of an accurate description and the differential. Master these ten and you can describe almost anything.</p>
+ <div class="cardgrid">${M.map(m=>`<div class="lcard"><div class="lfig">${m[1]()}</div><div class="lbody"><h3>${m[0]}</h3><div class="blk look" style="margin-top:4px">${m[2]}</div></div></div>`).join('')}</div>
+ <div class="note buzz"><b>Secondary changes to name too:</b> crust (dried exudate), erosion (loss of epidermis — heals without scar), ulcer (into dermis — scars), excoriation (scratch), lichenification (thickened skin from rubbing), atrophy, fissure. <b>Blanching matters:</b> press with a glass slide — blanching = vascular dilation (most rashes); <b>non-blanching = purpura/petechiae</b> (blood out of vessels → think serious).</div>`;
+}
+
+function documentation(){
+ return `<h2 class="sec" id="document">2 · How to document a skin finding</h2>
+ <p class="seclead">A reproducible derm description follows a fixed order so anyone reading it can picture the lesion. Each lesion card below includes a ready-made "document it" line — here's the framework they follow.</p>
+ <div class="svgfig">${figDocFramework()}<div class="figcap">The description skeleton: <b>Distribution → Number/Arrangement → Primary lesion → Color → Size → Secondary change → Border</b>, plus associated symptoms and time course. Build the sentence in that order.</div></div>
+ <div class="note good"><b>Worked example (hives):</b> "Multiple <b>blanching</b> erythematous <b>wheals</b> with pale centers, 1–5 cm, scattered and migratory over the trunk and arms, no mucosal involvement, no purpura — onset 2 h ago, pruritic." That single sentence names distribution, number, primary lesion, blanching, size, and the pertinent negatives (mucosa, purpura) that drive disposition.</div>
+ <div class="note buzz"><b>Skin-tone caveat in documentation:</b> erythema reads as violaceous, grey, or simply "darker than surrounding skin" in skin of color — describe the change you see ("violaceous," "hyperpigmented," "dusky") rather than defaulting to "red," and palpate (warmth, induration) since color cues are subtler. Erythroderma and cellulitis are easy to under-call in darker skin.</div>`;
+}
+function figDocFramework(){
+ const W=820,H=150;
+ const steps=[['Distribution','where / pattern'],['Number &\nArrangement','single, grouped, scattered'],['Primary lesion','macule…wheal'],['Color','+ blanching?'],['Size','mm / cm'],['Secondary','crust, scale, ulcer'],['Border','sharp / diffuse']];
+ let x=14;const boxW=108,gap=8;
+ let inner=`<rect width="${W}" height="${H}" fill="var(--bg2)"/>`;
+ steps.forEach((s,i)=>{
+   inner+=`<rect x="${x}" y="40" width="${boxW}" height="70" rx="9" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>`;
+   const lines=s[0].split('\n');
+   lines.forEach((ln,j)=>inner+=`<text x="${x+boxW/2}" y="${66+j*15-(lines.length-1)*7}" font-family="SF Mono,monospace" font-size="11" font-weight="700" fill="var(--ink)" text-anchor="middle">${ln}</text>`);
+   inner+=`<text x="${x+boxW/2}" y="98" font-family="SF Mono,monospace" font-size="8" fill="var(--muted)" text-anchor="middle">${s[1]}</text>`;
+   if(i<steps.length-1) inner+=`<path d="M${x+boxW+1},75 l${gap-2},0" stroke="var(--accent)" stroke-width="2" marker-end="url(#da)"/>`;
+   x+=boxW+gap;
+ });
+ inner+=`<defs><marker id="da" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--accent)"/></marker></defs>`;
+ return svg(inner,`0 0 ${W} ${H}`);
+}
+
+/* ============================================================
+   LESION CARD BUILDER
+   ============================================================ */
+function lesion(c){
+ const sevName={emergent:'Life-threatening',urgent:'Urgent',common:'Common'}[c.sev];
+ return `<div class="lcard sev-${c.sev}">
+   <div class="lfig">${c.fig()}</div>
+   <div class="lbody">
+     <h3>${c.n}<span class="sevtag ${c.sev}">${sevName}</span></h3>
+     <div class="tagline">${c.tag}</div>
+     <div class="blk look"><b>What it looks like</b>${c.look}</div>
+     <div class="blk tx"><b>Starting treatment (teaching)</b>${c.tx}</div>
+     <div class="blk dispo"><b>Disposition</b>${c.dispo}</div>
+     ${c.miss?`<div class="blk miss"><b>Don't miss</b>${c.miss}</div>`:''}
+     <div class="blk doc"><b>Document it</b>${c.doc}</div>
+   </div>
+ </div>`;
+}
+
+/* ============================================================
+   EMERGENT / LIFE-THREATENING
+   ============================================================ */
+function emergent(){
+ const L=[
+  {sev:'emergent',n:'SJS / TEN',tag:'drug reaction · dermatologic emergency',fig:figSloughing,
+   look:'Painful dusky macules → epidermal detachment, sheets of skin sloughing, positive Nikolsky sign, ≥2 mucosal surfaces (eyes, mouth, genitals). SJS <10% BSA, TEN >30%. Often 1–3 wk after a culprit drug (anticonvulsants, sulfonamides, allopurinol, NSAIDs).',
+   tx:'STOP the culprit drug immediately. Burn-unit-level supportive care: fluids, wound/eye care, analgesia, temperature control; ophthalmology + dermatology emergently. (Adjuncts like IVIG/cyclosporine are specialist decisions.)',
+   dispo:'Admit — ICU/burn unit; transfer if no burn capability. High mortality (esp. TEN).',
+   miss:'Skin pain out of proportion + mucosal involvement + a new drug = SJS/TEN until proven otherwise.',
+   doc:'"Painful dusky targetoid macules with epidermal sloughing and positive Nikolsky over X% BSA, plus oral/ocular mucosal erosions; new [drug] started ___ days ago."'},
+  {sev:'emergent',n:'Necrotizing fasciitis',tag:'surgical emergency',fig:figNecFasc,
+   look:'Rapidly spreading, dusky/violaceous skin, PAIN OUT OF PROPORTION to exam, woody induration, bullae, crepitus, systemic toxicity; later anesthesia of overlying skin. Erythema borders advance by the hour.',
+   tx:'EMERGENT surgical debridement (the only definitive Tx) + broad IV antibiotics (e.g., vancomycin + piperacillin-tazobactam + clindamycin for toxin) + aggressive resuscitation.',
+   dispo:'OR now + ICU; surgery consult before imaging delays anything in a toxic patient.',
+   miss:'Pain out of proportion, rapid progression, or crepitus → don\'t wait for imaging; this is clinical and surgical.',
+   doc:'"Rapidly advancing violaceous indurated plaque with bullae and crepitus, pain out of proportion to exam, systemic toxicity; margins marked and timed."'},
+  {sev:'emergent',n:'Meningococcemia / purpura fulminans',tag:'sepsis',fig:figPetechiaePurpura,
+   look:'Ill/toxic patient with rapidly spreading non-blanching petechiae and purpura (retiform, stellate), can progress to large necrotic purpura (purpura fulminans) + DIC + shock.',
+   tx:'IMMEDIATE IV antibiotics (ceftriaxone) — do NOT delay for LP or workup; resuscitate, manage DIC; droplet isolation + post-exposure prophylaxis for contacts.',
+   dispo:'Admit ICU; time-critical — antibiotics within minutes.',
+   miss:'Non-blanching purpura + fever + ill-appearance = empiric antibiotics now.',
+   doc:'"Non-blanching petechiae and stellate/retiform purpura over trunk/extremities in a febrile, ill-appearing patient; ___ progression noted."'},
+  {sev:'emergent',n:'DRESS syndrome',tag:'drug reaction with systemic involvement',fig:figDrugRash,
+   look:'Widespread morbilliform → confluent eruption, FACIAL EDEMA, fever, lymphadenopathy, 2–8 weeks after a culprit drug (anticonvulsants, allopurinol, sulfa); eosinophilia + transaminitis/organ involvement.',
+   tx:'STOP the drug; systemic corticosteroids for organ involvement; supportive; monitor liver/kidney/heart; dermatology.',
+   dispo:'Admit — internal-organ involvement and a protracted course; can relapse.',
+   miss:'Rash + fever + facial edema + eosinophilia + LFT rise weeks after a drug = DRESS, not "just a drug rash."',
+   doc:'"Confluent morbilliform eruption with facial edema, fever, lymphadenopathy; eosinophilia and transaminitis; culprit [drug] started ~X weeks ago."'},
+  {sev:'emergent',n:'Erythroderma',tag:'>90% BSA',fig:figErythroderma,
+   look:'Generalized erythema + scaling over >90% of body surface; the skin fails as an organ → temperature dysregulation, fluid/protein loss, high-output state, infection risk. Causes: psoriasis, drug, eczema, cutaneous lymphoma.',
+   tx:'Admit; supportive (fluids, warmth, emollients, electrolytes), treat the underlying cause, hold culprit drugs; dermatology.',
+   dispo:'Admit — it\'s a systemic emergency even if it "looks like bad eczema."',
+   miss:'Treat it as a failure of the skin barrier — hypothermia, dehydration, and sepsis are the killers.',
+   doc:'"Confluent erythema with scaling involving >90% BSA; temperature/hemodynamic status documented; suspected underlying [cause]."'},
+  {sev:'emergent',n:'Staph scalded skin (SSSS)',tag:'pediatric · toxin-mediated',fig:figSloughing,
+   look:'Young child, fever, diffuse tender erythema → superficial peeling/sloughing with positive Nikolsky, PERIORAL crusting/radial fissures, mucosa SPARED (vs SJS/TEN). Toxin-mediated (exfoliative toxin), often from a distant staph focus.',
+   tx:'IV anti-staph antibiotics (e.g., nafcillin/oxacillin or vancomycin per local MRSA rates), fluids, gentle wound care, analgesia.',
+   dispo:'Admit (peds/burn). Generally better prognosis than TEN; mucosa spared is the key distinction.',
+   miss:'Mucosa SPARED + perioral crusting + young child distinguishes SSSS from SJS/TEN (mucosa involved).',
+   doc:'"Diffuse tender erythema with superficial sloughing, positive Nikolsky, perioral radial crusting, mucosa spared, in a febrile young child."'}
+ ];
+ return `<h2 class="sec" id="emergent">3 · Life-threatening rashes</h2>
+ <p class="seclead">The "don't-send-home" tier — dermatologic emergencies where recognition and the first move (stop the drug, antibiotics now, surgery now, admit) change survival. Severity flag: <span style="color:var(--emergent);font-weight:700">red</span>.</p>
+ <div class="cardgrid">${L.map(lesion).join('')}</div>
+ <div class="note crit"><b>The red-flag screen for any rash:</b> mucosal involvement, skin pain/tenderness out of proportion, Nikolsky sign (skin shears with lateral pressure), non-blanching purpura, facial/edema + fever, rapid progression, systemic toxicity, or a new high-risk drug. Any of these → think emergency, not "rash."</div>`;
+}
+
+/* ============================================================
+   URGENT
+   ============================================================ */
+function urgent(){
+ const L=[
+  {sev:'urgent',n:'Cellulitis',tag:'bacterial soft-tissue infection',fig:figCellulitis,
+   look:'Warm, tender, ill-defined erythema with edema; spreading; ± lymphangitic streaking, fever. Usually unilateral (bilateral lower-leg "cellulitis" is often venous stasis dermatitis — a common misdiagnosis).',
+   tx:'Mark the border. Non-purulent → cover strep/MSSA: cephalexin or dicloxacillin PO (cefazolin/IV if severe). Purulent/MRSA risk → add TMP-SMX or doxycycline. Elevate the limb.',
+   dispo:'Most discharge with oral antibiotics + return precautions; admit for systemic toxicity, rapid progression, immunocompromise, or failed outpatient therapy.',
+   miss:'Bilateral lower-leg redness is rarely bilateral cellulitis — reconsider stasis dermatitis; and exclude nec fasc if pain/toxicity is disproportionate.',
+   doc:'"Warm, tender, ill-defined erythematous patch with edema over [site], borders marked and timed; ± lymphangitic streaking; no crepitus or bullae."'},
+  {sev:'urgent',n:'Abscess',tag:'walled-off pus',fig:figAbscess,
+   look:'Fluctuant, tender, erythematous nodule ± central pointing/pustule; surrounding cellulitis common.',
+   tx:'Incision &amp; drainage is the primary treatment. Antibiotics (TMP-SMX/doxycycline for MRSA) for surrounding cellulitis, systemic signs, immunocompromise, or large/multiple lesions.',
+   dispo:'Most discharge post-I&D with wound care/follow-up; admit for systemic illness or special sites (face/hand/perineum may need specialist).',
+   miss:'Don\'t just antibiotic an abscess — it needs drainage. Consider sites needing the OR (deep, perirectal, hand).',
+   doc:'"Fluctuant tender erythematous nodule [size] at [site] with central pointing and surrounding cellulitis; ___ mL purulent drainage on I&D."'},
+  {sev:'urgent',n:'Herpes zoster (shingles)',tag:'VZV reactivation',fig:figZoster,
+   look:'Grouped vesicles on an erythematous base in a SINGLE dermatome, does not cross midline; preceded by pain/tingling; pain can be severe.',
+   tx:'Antivirals (valacyclovir 1 g PO TID ×7 d) ideally within 72 h; analgesia. IV acyclovir + admit if disseminated/immunocompromised.',
+   dispo:'Most discharge; urgent ophthalmology if ophthalmic division (Hutchinson sign — tip-of-nose vesicles → eye involvement).',
+   miss:'Hutchinson sign (nasal tip) → herpes zoster ophthalmicus → sight-threatening, urgent ophtho. Disseminated zoster = immunocompromise workup.',
+   doc:'"Grouped vesicles on erythematous base in a single [dermatome] distribution, not crossing midline; ± Hutchinson sign; onset ___ days ago."'},
+  {sev:'urgent',n:'Eczema herpeticum',tag:'HSV on eczematous skin',fig:figHSV,
+   look:'Rapidly spreading monomorphic "punched-out" erosions/vesicles over areas of eczema (often face/neck), in an unwell child or adult with atopic dermatitis; fever.',
+   tx:'Systemic antiviral (acyclovir/valacyclovir — IV if severe/ill); treat bacterial superinfection; ophthalmology if periocular.',
+   dispo:'Low threshold to admit (especially children, periocular involvement, systemic illness).',
+   miss:'"Worsening infected eczema" with punched-out monomorphic lesions = eczema herpeticum, not just impetiginized eczema — it needs antivirals.',
+   doc:'"Monomorphic punched-out vesicles/erosions clustered over eczematous skin at [site] with fever; concern for eczema herpeticum."'},
+  {sev:'urgent',n:'Erythema multiforme',tag:'usually post-HSV',fig:figTarget,
+   look:'TARGET (target/iris) lesions — three zones (central dusky/blister, pale ring, erythematous halo) — symmetric, acral (hands/feet) → trunk; often triggered by HSV (or Mycoplasma in kids). Minor (no/limited mucosa) vs major (mucosal).',
+   tx:'Treat/Suppress the trigger (aciclovir for HSV-associated, antibiotics for Mycoplasma); symptomatic care; EM major with mucosa → admit + ophtho.',
+   dispo:'EM minor discharge; EM major or extensive mucosal disease → admit, and reconsider SJS on the spectrum.',
+   miss:'True 3-zone targets = EM; atypical flat targets + skin pain + extensive mucosa lean toward SJS — different disposition.',
+   doc:'"Symmetric acral three-zone target lesions on dorsal hands/feet; [no/with] mucosal involvement; recent HSV/Mycoplasma trigger."'},
+  {sev:'urgent',n:'Henoch-Schönlein purpura (IgA vasculitis)',tag:'pediatric vasculitis',fig:figPetechiaePurpura,
+   look:'PALPABLE purpura on the buttocks and lower extremities (dependent/extensor), in a child, ± abdominal pain, arthralgia, renal involvement.',
+   tx:'Supportive (hydration, analgesia — acetaminophen/NSAID caution if renal); monitor BP and urinalysis for nephritis; steroids for severe abdominal/renal disease.',
+   dispo:'Many discharge with close follow-up and urinalysis/BP monitoring; admit for severe abdominal pain (intussusception risk), renal involvement, or inability to tolerate PO.',
+   miss:'Palpable purpura is never normal — it means small-vessel vasculitis; track the kidneys (can evolve over weeks).',
+   doc:'"Palpable purpura over buttocks and bilateral lower extremities (dependent distribution) with [arthralgia/abdominal pain]; UA and BP documented."'},
+  {sev:'urgent',n:'Stasis dermatitis (the cellulitis mimic)',tag:'venous · commonly over-treated',fig:figEczema,
+   look:'BILATERAL lower-leg erythema, scaling, hyperpigmentation (hemosiderin), edema, varicosities; chronic, itchy more than painful, afebrile.',
+   tx:'Leg elevation, compression, topical steroid for the dermatitis, emollients — NOT antibiotics. Treat the venous insufficiency.',
+   dispo:'Discharge with compression/derm follow-up; the teaching point is to STOP unnecessary antibiotics.',
+   miss:'Bilateral + chronic + itchy + afebrile = stasis, not cellulitis; antibiotics won\'t help and admissions for "bilateral cellulitis" are usually this.',
+   doc:'"Bilateral lower-extremity erythema with scale, hemosiderin hyperpigmentation, edema and varicosities; afebrile, pruritic > painful — consistent with stasis dermatitis."'}
+ ];
+ return `<h2 class="sec" id="urgent">4 · Urgent rashes</h2>
+ <p class="seclead">Need prompt treatment or specialist input, but not usually immediately life-threatening. Severity flag: <span style="color:var(--urgent);font-weight:700">amber</span>.</p>
+ <div class="cardgrid">${L.map(lesion).join('')}</div>`;
+}
+
+/* ============================================================
+   PEDIATRIC
+   ============================================================ */
+function peds(){
+ const L=[
+  {sev:'common',n:'Measles (morbilliform)',tag:'paramyxovirus · resurging',fig:figMorbilli,
+   look:'Confluent erythematous maculopapular rash spreading CEPHALOCAUDALLY (face → down), after 3 C\'s (cough, coryza, conjunctivitis) + Koplik spots (white buccal spots); febrile, ill.',
+   tx:'Supportive + vitamin A; airborne isolation; report to public health. Antibiotics only for bacterial complications.',
+   dispo:'Most supportive/home with isolation; admit for complications (pneumonia, dehydration, encephalitis).',
+   miss:'Check immunization status; measles is resurging and highly contagious — isolate early.',
+   doc:'"Confluent blanching maculopapular eruption spreading face-to-trunk with Koplik spots and conjunctivitis in an unimmunized febrile child."'},
+  {sev:'common',n:'Erythema infectiosum (Fifth disease)',tag:'parvovirus B19',fig:figSlapped,
+   look:'Bright "slapped cheek" facial erythema → lacy reticular rash on extremities; child often well by rash stage. Mild prodrome.',
+   tx:'Supportive (self-limited).',
+   dispo:'Discharge. Counsel: risk to pregnant contacts (hydrops) and aplastic crisis in sickle cell/hemolytic anemia.',
+   miss:'Once the rash appears the child is generally no longer contagious — but warn about pregnant and hemolytic-anemia contacts.',
+   doc:'"Bright erythematous malar (\'slapped cheek\') patches with a reticular/lacy eruption on the extremities in a well-appearing child."'},
+  {sev:'common',n:'Scarlet fever',tag:'group A strep toxin',fig:figScarlet,
+   look:'Fine, rough "sandpaper" punctate erythema (blanching), accentuated in skin folds (Pastia lines), circumoral pallor, strawberry tongue, with strep pharyngitis; later desquamation.',
+   tx:'Penicillin or amoxicillin (treat the strep). Supportive.',
+   dispo:'Discharge with antibiotics; treating prevents rheumatic fever.',
+   miss:'Sandpaper rash + strawberry tongue + sore throat = treat for strep to prevent rheumatic fever.',
+   doc:'"Diffuse fine punctate blanching (\'sandpaper\') erythema accentuated in flexures with circumoral pallor and strawberry tongue, plus pharyngitis."'},
+  {sev:'common',n:'Hand-foot-mouth disease',tag:'coxsackievirus',fig:figHFM,
+   look:'Oval grey-roofed vesicles on hands, feet (and buttocks) + painful oral ulcers/enanthem; low fever; toddlers.',
+   tx:'Supportive — hydration is the priority (oral ulcers limit intake); analgesia.',
+   dispo:'Discharge; return for dehydration (poor PO from mouth pain).',
+   miss:'Watch hydration; the mouth pain, not the rash, is what brings them back.',
+   doc:'"Oval vesicles on palms, soles and buttocks with oral ulcers; well-hydrated/able to take PO documented."'},
+  {sev:'common',n:'Urticaria (hives)',tag:'mast-cell / allergic',fig:figUrticaria,
+   look:'Transient, migratory, intensely itchy WHEALS (raised edematous plaques) with pale centers and erythematous flares; individual lesions resolve <24 h, blanch with pressure. No mucosal swelling in simple urticaria.',
+   tx:'TEACHING EXAMPLE: oral antihistamine — diphenhydramine (Benadryl) for acute itch, or a non-sedating H1 (cetirizine) for daytime; soothing topical (calamine / zinc oxide) for symptom relief; remove the trigger. Add an H2 blocker for refractory itch; short oral steroid for severe/persistent.',
+   dispo:'Discharge if isolated urticaria. ESCALATE to anaphylaxis pathway (IM epinephrine) if any airway/GI/respiratory/hypotension or mucosal swelling (angioedema).',
+   miss:'Urticaria + lip/tongue/throat swelling, wheeze, vomiting, or hypotension = anaphylaxis → IM epinephrine, not just antihistamines.',
+   doc:'"Multiple blanching erythematous wheals with pale centers, migratory, over trunk/extremities, no angioedema or mucosal involvement, pruritic, onset ___."'},
+  {sev:'common',n:'Atopic dermatitis (eczema) flare',tag:'chronic, relapsing',fig:figEczema,
+   look:'Ill-defined erythematous, dry, scaly, excoriated patches; infants on face/extensors, older children in flexures; lichenification with chronicity; very itchy.',
+   tx:'Liberal emollients + topical corticosteroid to flares; treat itch (oral antihistamine at night); identify triggers; treat superinfection (impetiginization).',
+   dispo:'Discharge with skin-care plan; reassess for eczema herpeticum (punched-out monomorphic lesions) if rapidly worsening.',
+   miss:'A sudden painful monomorphic flare = consider eczema herpeticum (needs antivirals).',
+   doc:'"Ill-defined erythematous scaly excoriated patches in a flexural/extensor distribution with lichenification; pruritic; no punched-out vesicles."'}
+ ];
+ return `<h2 class="sec" id="peds">5 · Pediatric eruptions</h2>
+ <p class="seclead">The childhood exanthems and the everyday pediatric rashes — most are benign and self-limited, but each has a flagged caveat. Severity flag shown per lesion (most are <span style="color:var(--common);font-weight:700">green/common</span>; the dangerous pediatric ones — SSSS, HSP, meningococcemia — live in the urgent/emergent tiers above).</p>
+ <div class="cardgrid">${L.map(lesion).join('')}</div>
+ <div class="note buzz"><b>Pediatric red flags within a "viral rash":</b> petechiae/purpura (esp. ill-appearing → meningococcemia), mucosal involvement (Kawasaki, SJS), fever ≥5 days (Kawasaki — CRASH &amp; burn), skin pain/sloughing (SSSS), or a toxic child. A well child with a blanching viral exanthem is reassuring; the flags above are not.</div>`;
+}
+
+/* ============================================================
+   COMMON / BENIGN
+   ============================================================ */
+function common(){
+ const L=[
+  {sev:'common',n:'Contact dermatitis',tag:'irritant or allergic',fig:figContact,
+   look:'Erythema, vesicles, scaling in a GEOMETRIC / LINEAR pattern matching the exposure (e.g., linear streaks from poison ivy, a band where jewelry/elastic sits); intensely itchy; sharply demarcated to contact area.',
+   tx:'Remove/avoid the allergen; topical corticosteroid (mid-potency; not on face/folds); oral antihistamine for itch; cool compresses. Severe/widespread (e.g., extensive poison ivy) → oral steroid taper over ~2–3 weeks.',
+   dispo:'Discharge with avoidance + topical steroid; the pattern (linear/geometric) is the diagnostic clue.',
+   miss:'A sharply demarcated geometric rash = something touched it; black-dot/linear vesicles = plant (rhus) dermatitis.',
+   doc:'"Erythematous vesicular scaly plaques in a linear/geometric distribution at [site] with sharp borders, pruritic — consistent with contact dermatitis."'},
+  {sev:'common',n:'Tinea (dermatophyte)',tag:'fungal',fig:figTinea,
+   look:'ANNULAR (ring) scaly plaque with a raised, scaly ACTIVE EDGE and central clearing; itchy. Sites: corporis (body), pedis (feet), cruris (groin), capitis (scalp — kids, can scar).',
+   tx:'Topical antifungal (clotrimazole/terbinafine) for localized disease. ORAL antifungal (terbinafine/griseofulvin) for scalp (tinea capitis), nails, or extensive disease. Do NOT use combination steroid-antifungal (worsens/masks).',
+   dispo:'Discharge; tinea capitis needs oral therapy + follow-up.',
+   miss:'A "worsening eczema" treated with steroid that spreads with odd borders = tinea incognito; scrape/KOH if unsure.',
+   doc:'"Annular scaly plaque with raised active border and central clearing at [site], pruritic — consistent with tinea/dermatophyte."'},
+  {sev:'common',n:'Morbilliform drug eruption',tag:'simple drug rash',fig:figDrugRash,
+   look:'Symmetric, blanching, erythematous macules/papules starting on the trunk, spreading, mildly itchy, ~4–14 days after a new drug; patient otherwise WELL, no mucosal/systemic features.',
+   tx:'Stop the likely culprit if feasible; antihistamine + topical steroid for itch; reassure.',
+   dispo:'Discharge — but screen for the danger signs that make it DRESS/SJS (fever, facial edema, mucosa, skin pain, blisters, eosinophilia).',
+   miss:'The job is separating simple morbilliform drug rash (benign) from early SJS/TEN/DRESS — re-examine mucosa, skin pain, systemic features.',
+   doc:'"Symmetric blanching morbilliform macules/papules on trunk/extremities, no mucosal involvement, no skin pain or facial edema, well-appearing; new [drug] ___ days ago."'},
+  {sev:'common',n:'Impetigo',tag:'superficial bacterial',fig:figImpetigo,
+   look:'HONEY-COLORED crusted erosions, often perioral/nares in children; bullous form (staph) makes flaccid blisters; contagious.',
+   tx:'Localized → topical mupirocin. Widespread/multiple → oral antibiotic (cephalexin; cover MRSA if suspected). Hygiene; keep home until treated.',
+   dispo:'Discharge with topical/oral antibiotics.',
+   miss:'Honey crust = impetigo; widespread bullae in a sick child → think SSSS.',
+   doc:'"Honey-colored crusted erosions at [perioral/site] ± flaccid bullae in a well child — consistent with impetigo."'},
+  {sev:'common',n:'Intertrigo / candidal intertrigo',tag:'skin-fold',fig:figIntertrigo,
+   look:'Erythema and maceration in skin folds (inframammary, groin, pannus); candidal form has SATELLITE pustules/papules beyond the main patch; itchy/burning.',
+   tx:'Keep dry, barrier; topical antifungal (clotrimazole/nystatin) for candidal; low-potency topical steroid briefly for inflammation; treat moisture.',
+   dispo:'Discharge with drying measures + antifungal.',
+   miss:'Satellite lesions = candida; recurrent/severe → screen for diabetes.',
+   doc:'"Erythema with maceration in [fold] with satellite pustules — consistent with candidal intertrigo."'},
+  {sev:'common',n:'Acute paronychia',tag:'nail-fold infection',fig:figAbscess2,
+   look:'Red, swollen, tender nail fold ± pus collection at the lateral/proximal nail; usually bacterial (staph) after trauma/biting.',
+   tx:'Warm soaks; incision &amp; drainage if a pus pocket; oral antibiotic (cover staph) if cellulitis/no drainable collection. Chronic paronychia (candida/irritant) → keep dry, topical antifungal.',
+   dispo:'Discharge post-drainage with soaks/follow-up.',
+   miss:'Felon (pulp-space abscess of the fingertip) is a separate, tense, very painful emergency needing prompt I&D — don\'t confuse with paronychia.',
+   doc:'"Erythema, edema and tenderness of the [proximal/lateral] nail fold with a pointing collection; ___ drained."'}
+ ];
+ return `<h2 class="sec" id="common">6 · Common &amp; benign complaints</h2>
+ <p class="seclead">The everyday skin complaints — mostly discharge-with-a-plan, but each carries the one caveat that keeps it from being a missed serious diagnosis. Severity flag: <span style="color:var(--common);font-weight:700">green</span>.</p>
+ <div class="cardgrid">${L.map(lesion).join('')}</div>`;
+}
+
+function infest(){
+ const L=[
+  {sev:'common',n:'Scabies',tag:'mite infestation',fig:figContact,
+   look:'Intensely itchy (worse at night) papules and linear BURROWS in web spaces, wrists, axillae, waist, genitals; often household members affected. Crusted (Norwegian) scabies in immunocompromised = highly contagious.',
+   tx:'Topical permethrin 5% (whole body, repeat in ~1 wk) OR oral ivermectin; TREAT ALL CLOSE CONTACTS simultaneously; wash/bag linens; itch persists weeks after cure (treat with antihistamine/steroid).',
+   dispo:'Discharge with treatment + contact treatment; isolate crusted scabies.',
+   miss:'Treat contacts or it recurs; post-scabetic itch ≠ treatment failure.',
+   doc:'"Excoriated papules with linear burrows in web spaces/wrists/waist, nocturnal pruritus, affected household contacts — consistent with scabies."'},
+  {sev:'common',n:'Bed bug / insect bites',tag:'arthropod',fig:figContact,
+   look:'Grouped or LINEAR ("breakfast-lunch-dinner") pruritic erythematous papules/wheals on exposed skin; sometimes central punctum; bullous reactions possible.',
+   tx:'Symptomatic — topical steroid + oral antihistamine for itch; environmental control for bed bugs. Watch for secondary infection from scratching.',
+   dispo:'Discharge; reassure and address the source.',
+   miss:'A clustered/linear papular eruption on exposed skin → bites; consider secondary impetiginization if crusted/pustular.',
+   doc:'"Grouped/linear pruritic erythematous papules on exposed [sites] with central puncta — consistent with arthropod bites."'},
+  {sev:'urgent',n:'Tick bite / erythema migrans',tag:'Lyme',fig:figTinea,
+   look:'Expanding erythematous patch ± central clearing (classic "bull\'s-eye" target) at a tick-bite site, ≥5 cm, days–weeks after exposure; often warm, not very itchy/painful.',
+   tx:'Doxycycline (treats Lyme and covers other tick-borne illness; given across ages for tick-borne disease); per local guidance/stage.',
+   dispo:'Discharge with antibiotics + return precautions (carditis, neuro, arthritis with dissemination).',
+   miss:'Erythema migrans is a clinical diagnosis — treat empirically in an endemic area; don\'t wait for serology (often negative early).',
+   doc:'"Expanding erythematous annular patch ___ cm with central clearing at a tick-exposure site — consistent with erythema migrans."'},
+  {sev:'common',n:'Lice (pediculosis)',tag:'infestation',fig:figContact,
+   look:'Scalp itch with nits (firmly attached egg cases) on hair shafts ± visible lice; body/pubic forms; excoriation, secondary infection possible.',
+   tx:'Topical pediculicide (permethrin) + wet-combing/nit removal, repeat per instructions; treat contacts; launder linens. Pubic lice → evaluate for other STIs.',
+   dispo:'Discharge with treatment + contact management.',
+   miss:'Nits alone near the scalp can persist after cure; pubic lice warrant STI screening.',
+   doc:'"Nits adherent to hair shafts with scalp excoriation ± visible lice — consistent with pediculosis."'}
+ ];
+ return `<h2 class="sec" id="infest">7 · Bites &amp; infestations</h2>
+ <p class="seclead">Common, itchy, and contagious — the teaching points are treating contacts, the post-treatment itch that isn't failure, and the one tick bite you treat empirically.</p>
+ <div class="cardgrid">${L.map(lesion).join('')}</div>`;
+}
+
+function pearls(){
+ const P=[
+  ['Blanch test','Press with a glass slide: blanching = vascular (most rashes); non-blanching = purpura → think serious (vasculitis, sepsis, DIC).'],
+  ['Mucosa + skin pain','Mucosal involvement + skin pain/tenderness + a new drug = SJS/TEN until proven otherwise → stop the drug, admit.'],
+  ['Pain out of proportion','Soft-tissue pain out of proportion + rapid spread + crepitus = necrotizing fasciitis → OR now, don\'t wait for imaging.'],
+  ['Non-blanching + fever + ill','Petechiae/purpura in an ill, febrile patient = meningococcemia → IV antibiotics within minutes, before LP.'],
+  ['Nikolsky sign','Skin shears with lateral pressure → SJS/TEN or SSSS (mucosa involved = SJS/TEN; mucosa spared + child + perioral crust = SSSS).'],
+  ['Bilateral leg "cellulitis"','Usually stasis dermatitis, not infection — bilateral, chronic, itchy, afebrile; stop the antibiotics.'],
+  ['Hives → escalate if…','Urticaria + airway/GI/respiratory/hypotension or angioedema = anaphylaxis → IM epinephrine, not antihistamines alone.'],
+  ['Target lesions','Three-zone targets = erythema multiforme (often post-HSV); flat atypical targets + mucosa + skin pain → SJS spectrum.'],
+  ['Hutchinson sign','Vesicles on the nose tip in zoster → ophthalmic involvement → urgent ophthalmology.'],
+  ['Drug rash + systemic','Morbilliform + fever + facial edema + eosinophilia weeks after a drug = DRESS (organ involvement), not a simple drug rash.'],
+  ['Annular + active edge','Ring with a scaly leading edge and central clearing = tinea; don\'t treat with a steroid alone (tinea incognito).'],
+  ['Honey crust','= impetigo (topical mupirocin or oral antibiotic); widespread bullae in a sick child → SSSS.'],
+  ['Palpable purpura','= small-vessel vasculitis (HSP in kids) — never "normal"; check kidneys and BP.'],
+  ['Treat the contacts','Scabies/lice recur unless close contacts are treated; post-scabetic itch ≠ failure.'],
+  ['Document by skeleton','Distribution → number/arrangement → primary lesion → color/blanching → size → secondary change → border + time course.'],
+  ['Skin of color','Erythema looks violaceous/grey/darker — describe what you see and palpate; serious rashes are easy to under-call.']
+ ];
+ return `<h2 class="sec" id="pearls">8 · High-yield pearls (rapid fire)</h2>
+ <div class="cardgrid">${P.map(p=>`<div class="lcard" style="border-left-color:var(--gold)"><div class="lbody"><div class="blk doc" style="font-style:normal"><b style="color:var(--gold)">${p[0]}</b><span style="color:var(--ink)">${p[1]}</span></div></div></div>`).join('')}</div>
+ <div class="note good"><b>The ED dermatology workflow:</b> (1) sick or not sick? (vitals, toxicity); (2) blanching or non-blanching?; (3) mucosa, skin pain, Nikolsky, new drug? — the emergency screen; (4) name the primary lesion and distribution; (5) match to pattern; (6) start the first treatment and decide disposition. When a rash + systemic illness doesn't fit, that's the one to photograph (with consent), involve dermatology, and re-examine.</div>`;
+}
+
+document.getElementById('main').innerHTML =
+  morphology()+documentation()+emergent()+urgent()+peds()+common()+infest()+pearls();
+document.getElementById('foot').innerHTML="Master-level educational synthesis for trained clinicians. Schematics are stylized original morphology diagrams (color/shape/distribution), not clinical photographs or diagnostic images; real lesions vary, and appearance differs across skin tones (erythema is often violaceous or subtle in darker skin). Starting treatments are teaching examples, not a substitute for current guidelines, dosing references, allergy/comorbidity checks, or dermatology involvement for serious disease. Not a protocol or a substitute for clinical judgment.";
+
 (function(){
-  var themeBtn = document.getElementById('themeToggle');
-  var root = document.documentElement;
-  function applyTheme(t){ root.setAttribute('data-theme', t); themeBtn.textContent = t === 'light' ? 'Dark mode' : 'Light mode'; }
-  applyTheme('dark');
-  themeBtn.addEventListener('click', function(){
-    applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-  });
-  document.querySelectorAll('.etab').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.etab').forEach(function(b){ b.classList.remove('active'); });
-      document.querySelectorAll('.erpanel').forEach(function(p){ p.classList.remove('active'); });
-      btn.classList.add('active');
-      document.querySelector('.erpanel[data-etab="' + btn.dataset.target + '"]').classList.add('active');
-    });
-  });
+  const sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  const moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>';
+  const root=document.documentElement, b=document.getElementById('themeToggle');
+  const ico=document.getElementById('themeIco'), txt=document.getElementById('themeTxt');
+  function set(m){root.setAttribute('data-theme',m);if(m==='light'){ico.innerHTML=moon;txt.textContent='Dark';}else{ico.innerHTML=sun;txt.textContent='Light';}}
+  set(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  b.addEventListener('click',()=>set(root.getAttribute('data-theme')==='light'?'dark':'light'));
 })();
 </script>
 </body>

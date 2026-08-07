@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiology Atlas · Vol. 3 — Arrhythmias &amp; Conduction Disease</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent-cond: #4dd0e1;
+  --accent-brady: #90a4ae;
+  --accent-svt: #ba68c8;
+  --accent-afib: #ff8a65;
+  --accent-vt: #ef5350;
+  --accent-wct: #ffb74d;
+  --accent-chan: #aed581;
+  --accent: #ef5350;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent-cond: #007680;
+  --accent-brady: #546e7a;
+  --accent-svt: #7b3f96;
+  --accent-afib: #c85a2e;
+  --accent-vt: #b3261e;
+  --accent-wct: #a25b00;
+  --accent-chan: #5a7d1f;
+  --accent: #b3261e;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#cond { --sec-accent: var(--accent-cond); }
+#brady { --sec-accent: var(--accent-brady); }
+#svt { --sec-accent: var(--accent-svt); }
+#afib { --sec-accent: var(--accent-afib); }
+#vt { --sec-accent: var(--accent-vt); }
+#wct { --sec-accent: var(--accent-wct); }
+#chan { --sec-accent: var(--accent-chan); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+/* ============================================================
+   INTERACTIVE: RISK CALCULATORS
+   ============================================================ */
+.calc-card {
+  background: var(--surface); border: 1.5px solid var(--sec-accent, var(--accent));
+  border-radius: var(--radius); padding: 20px 22px; margin: 20px 0;
+  box-shadow: var(--shadow);
+}
+.calc-card .calc-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 14px; }
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.calc-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); cursor: pointer; user-select: none;
+}
+.calc-item:hover { border-color: var(--sec-accent, var(--accent)); }
+.calc-item label { font-size: 14.5px; color: var(--text); cursor: pointer; flex: 1; }
+.calc-item .pts { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-mute); font-weight: 700; flex-shrink: 0; }
+.calc-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--sec-accent, var(--accent)); flex-shrink: 0; cursor: pointer; }
+.calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 14%, var(--surface));
+  border: 1.5px solid var(--sec-accent, var(--accent));
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.calc-result .score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--sec-accent, var(--accent)); line-height: 1; }
+.calc-result .score-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); }
+.calc-result .score-interp { font-size: 14px; color: var(--text); font-weight: 600; text-align: right; flex: 1; min-width: 180px; }
+.calc-note { font-size: 12.5px; color: var(--text-mute); margin-top: 10px; }
+
+/* ============================================================
+   INTERACTIVE: EXPANDABLE ALGORITHM (details/summary)
+   ============================================================ */
+details.algo-step {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  margin: 10px 0; overflow: hidden;
+}
+details.algo-step[open] { border-color: var(--sec-accent, var(--accent)); }
+details.algo-step summary {
+  padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  color: var(--text);
+}
+details.algo-step summary::-webkit-details-marker { display: none; }
+details.algo-step summary::before {
+  content: '+'; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+  color: var(--sec-accent, var(--accent)); flex-shrink: 0; width: 20px; text-align: center;
+  transition: transform .2s ease;
+}
+details.algo-step[open] summary::before { content: '−'; }
+details.algo-step .algo-body { padding: 0 18px 16px 48px; color: var(--text-dim); font-size: 14.5px; }
+details.algo-step .algo-body p:last-child { margin-bottom: 0; }
+.algo-verdict { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.algo-verdict.vt { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
+.algo-verdict.svt { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+
+/* ============================================================
+   TRANSFER / ESCALATION OF CARE CALLOUT
+   ============================================================ */
+.callout.transfer {
+  border-left: 4px solid var(--info);
+  background: color-mix(in srgb, var(--info) 9%, var(--surface));
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0;
+}
+.callout.transfer .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--info); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout.transfer .callout-label::before { content: '⇗'; font-size: 14px; }
+.callout.transfer dl { margin: 8px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+.callout.transfer dt { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--text-mute); white-space: nowrap; padding-top: 1px; }
+.callout.transfer dd { margin: 0; font-size: 14px; color: var(--text-dim); }
+
+/* ============================================================
+   ANIMATED DIAGRAM CONTROLS
+   ============================================================ */
+.anim-toggle {
+  display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 4px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--sec-accent, var(--accent)); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px; cursor: pointer; user-select: none;
+}
+.anim-toggle:hover { border-color: var(--sec-accent, var(--accent)); }
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiology Atlas</span>
+    <span class="title">Vol. 3 — Arrhythmias &amp; Conduction Disease</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#cond">Conduction &amp; Mechanisms</option>
+      <option value="#brady">Bradyarrhythmias &amp; AV Block</option>
+      <option value="#svt">Supraventricular Tachycardias</option>
+      <option value="#afib">Atrial Fibrillation</option>
+      <option value="#vt">Ventricular Arrhythmias</option>
+      <option value="#wct">Wide Complex Tachycardia</option>
+      <option value="#chan">Channelopathies</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Arrhythmias &amp; Conduction Disease</h1>
+  <p class="lede">Mechanism-first diagrams (with animated conduction/reentry models), interactive risk calculators, and expandable decision algorithms — built to the 2023 ACC/AHA/ACCP/HRS AFib Guideline, 2018 ACC/AHA/HRS Bradycardia Guideline, and 2017 AHA/ACC/HRS Ventricular Arrhythmia/SCD Guideline.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-cond)" href="#cond">
+      <div class="n">01</div><div class="t">Conduction &amp; Mechanisms</div>
+      <div class="d">Animated normal conduction + reentry circuit</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-brady)" href="#brady">
+      <div class="n">02</div><div class="t">Bradyarrhythmias &amp; AV Block</div>
+      <div class="d">Sinus node dysfunction, AV block grades, pacing criteria</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-svt)" href="#svt">
+      <div class="n">03</div><div class="t">Supraventricular Tachycardias</div>
+      <div class="d">AVNRT, AVRT/WPW, atrial flutter</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-afib)" href="#afib">
+      <div class="n">04</div><div class="t">Atrial Fibrillation</div>
+      <div class="d">2023 staging, interactive CHA2DS2-VASc &amp; HAS-BLED</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-vt)" href="#vt">
+      <div class="n">05</div><div class="t">Ventricular Arrhythmias</div>
+      <div class="d">VT/VF/Torsades, ICD criteria, EP escalation</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-wct)" href="#wct">
+      <div class="n">06</div><div class="t">Wide Complex Tachycardia</div>
+      <div class="d">Interactive Brugada/Vereckei differentiation</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-chan)" href="#chan">
+      <div class="n">07</div><div class="t">Channelopathies</div>
+      <div class="d">Long QT, Brugada syndrome</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: COND -->
+
+<section class="section" id="cond">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Conduction &amp; Arrhythmia Mechanisms</h2>
+  <p class="section-sub">Every arrhythmia in this volume reduces to one of three mechanisms: enhanced automaticity, triggered activity, or reentry. Get these three right and the rest of the volume is pattern-matching.</p>
+
+  <h3 class="sub-title">Normal Conduction Sequence (animated)</h3>
+  <p>The SA node fires fastest and sets the pace under normal conditions. The AV node's physiologic delay isn't a bug — it's what gives the atria time to finish contracting and fill the ventricles before ventricular systole begins.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_conduction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_conduction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_conduction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_conduction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="940" height="380" rx="16" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+<circle cx="100" cy="80" r="10" fill="var(--accent-cond)"/>
+<text x="100" y="62" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">SA node</text>
+<circle cx="380" cy="200" r="10" fill="var(--accent-cond)"/>
+<text x="380" y="182" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">AV node</text>
+<circle cx="500" cy="200" r="10" fill="var(--accent-cond)"/>
+<text x="500" y="182" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Bundle of His</text>
+<circle cx="650" cy="130" r="10" fill="var(--accent-cond)"/>
+<text x="650" y="112" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Right bundle branch</text>
+<circle cx="650" cy="280" r="10" fill="var(--accent-cond)"/>
+<text x="650" y="262" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Left bundle branch</text>
+<circle cx="850" cy="130" r="10" fill="var(--good)"/>
+<text x="850" y="112" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Purkinje (RV)</text>
+<circle cx="850" cy="280" r="10" fill="var(--good)"/>
+<text x="850" y="262" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Purkinje (LV)</text>
+<path id="conductionPath1_conduction" d="M100,80 C220,80 300,150 380,200 L500,200 C560,200 600,160 650,130 C740,90 800,100 850,130" fill="none" stroke="var(--text-mute)" stroke-width="2.5" stroke-dasharray="6,4"/>
+<path id="conductionPath2_conduction" d="M500,200 C560,200 600,240 650,280 C740,320 800,300 850,280" fill="none" stroke="var(--text-mute)" stroke-width="2.5" stroke-dasharray="6,4"/>
+<circle r="9" fill="var(--accent-cond)">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s">
+    <mpath href="#conductionPath1_conduction" xlink:href="#conductionPath1_conduction"/>
+  </animateMotion>
+</circle>
+<circle r="9" fill="var(--accent-cond)">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s">
+    <mpath href="#conductionPath2_conduction" xlink:href="#conductionPath2_conduction"/>
+  </animateMotion>
+</circle>
+<text x="500" y="360" text-anchor="middle" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Sequential activation: SA node -&gt; internodal tracts -&gt; AV node (physiologic delay) -&gt; His bundle -&gt; bundle branches -&gt; Purkinje network -&gt; ventricular myocardium</text>
+</svg>
+    <div class="diagram-caption">Animated pulse follows the normal activation sequence: SA node → AV node (delay) → His bundle → bundle branches → Purkinje network. If your browser doesn't render SVG animation, the dashed lines show the same path statically.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Pearl</span>
+    <p>Every other pacemaker cell in the heart <em>can</em> fire on its own (Purkinje fibers included) — they just don't get the chance under normal conditions because the SA node's intrinsic rate is faster and overdrive-suppresses everyone downstream. This is exactly why escape rhythms in complete heart block are slow: you're seeing whichever backup pacemaker is closest to the block, and the further from the SA node, the slower and less reliable the intrinsic rate.</p>
+  </div>
+
+  <h4 class="micro-title">Three Mechanisms, One Framework</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Enhanced automaticity</span><p>A focus (SA node or ectopic) simply fires faster than it should — digoxin toxicity, catecholamine excess, ischemia. Usually presents as a gradual "warm-up" in rate rather than an abrupt onset/offset.</p></div>
+    <div class="callout"><span class="callout-label">Triggered activity</span><p>Afterdepolarizations (early = during repolarization, delayed = just after) reach threshold and fire an extra beat. Early afterdepolarizations are the mechanism behind Torsades de pointes in prolonged-QT states; delayed afterdepolarizations are classically digoxin toxicity.</p></div>
+  </div>
+
+  <h3 class="sub-title">Reentry (animated)</h3>
+  <p>Reentry is the mechanism behind the majority of clinically significant tachyarrhythmias — AVNRT, AVRT, atrial flutter, and most monomorphic VT. It requires three ingredients: two available pathways with different conduction/refractory properties, a unidirectional block in one of them, and conduction slow enough in the other that the blocked pathway has time to recover excitability.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_reentry" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_reentry" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_reentry" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_reentry" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="26" font-size="13" font-weight="700" fill="var(--accent-cond)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Reentry circuit (e.g., AVNRT slow-fast mechanism)</text>
+<circle cx="80" cy="230" r="10" fill="var(--text)"/>
+<text x="80" y="200" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">Impulse arrives</text>
+<text x="80" y="264" text-anchor="middle" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">(e.g., early PAC)</text>
+<path d="M80,230 C 250,80 650,80 850,230" fill="none" stroke="var(--danger)" stroke-width="3"/>
+<text x="465" y="110" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">FAST PATHWAY (long refractory period)</text>
+<g transform="translate(180,145)"><line x1="-11" y1="-11" x2="11" y2="11" stroke="var(--danger)" stroke-width="5"/><line x1="-11" y1="11" x2="11" y2="-11" stroke="var(--danger)" stroke-width="5"/></g>
+<text x="180" y="175" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif">BLOCK</text>
+<text x="180" y="190" text-anchor="middle" font-size="9.5" fill="var(--text-mute)" font-family="Inter, sans-serif">(still refractory)</text>
+<path id="slowPath_reentry" d="M80,230 C 250,380 650,380 850,230" fill="none" stroke="var(--good)" stroke-width="3"/>
+<text x="465" y="410" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--good)" font-family="Inter, sans-serif">SLOW PATHWAY (short refractory period)</text>
+<circle cx="850" cy="230" r="10" fill="var(--text)"/>
+<text x="850" y="200" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)" font-family="Inter, sans-serif">His bundle</text>
+<text x="850" y="264" text-anchor="middle" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">(exits to ventricle)</text>
+<path id="fastPathRetro_reentry" d="M850,230 C 650,80 250,80 80,230" fill="none" stroke="none"/>
+<circle r="10" fill="var(--accent-cond)">
+  <animateMotion dur="1.6s" repeatCount="indefinite">
+    <mpath href="#slowPath_reentry" xlink:href="#slowPath_reentry"/>
+  </animateMotion>
+</circle>
+<circle r="10" fill="var(--accent-cond)" opacity="0.85">
+  <animateMotion dur="1.6s" repeatCount="indefinite" begin="0.8s">
+    <mpath href="#fastPathRetro_reentry" xlink:href="#fastPathRetro_reentry"/>
+  </animateMotion>
+</circle>
+<text x="465" y="440" text-anchor="middle" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">A premature impulse blocks in the still-refractory fast pathway, conducts down the slow pathway, then finds the fast pathway recovered and conducts retrograde -- re-entering and perpetuating the circuit (this is why AVNRT starts with a PAC and a sudden PR jump).</text>
+</svg>
+    <div class="diagram-caption">A premature impulse (e.g., a PAC) finds the fast pathway still refractory, conducts down the slow pathway instead, and by the time it reaches the bottom the fast pathway has recovered — allowing retrograde conduction back up and perpetuating a self-sustaining circuit. This slow-fast pattern is the classic AVNRT mechanism, but the same three-ingredient logic applies to AVRT (via an accessory pathway) and scar-related monomorphic VT (via a fixed anatomic circuit around infarct scar).</div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Why this matters clinically</span>
+    <p>Understanding reentry explains why vagal maneuvers and adenosine work for AVNRT/AVRT (transiently blocking the AV node interrupts the circuit) but do nothing for atrial flutter or VT (the circuit doesn't involve the AV node at all — it just transiently reveals the underlying atrial activity by slowing AV conduction). It's also why catheter ablation works: physically interrupting one limb of an anatomically fixed circuit eliminates the arrhythmia permanently.</p>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: BRADY -->
+
+<section class="section" id="brady">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Bradyarrhythmias &amp; AV Block</h2>
+  <p class="section-sub">Not all bradycardia is equal — the location of the block (nodal vs. infranodal) predicts both natural history and urgency far better than heart rate alone.</p>
+
+  <h3 class="sub-title">AV Block Grades &amp; Pacing Criteria</h3>
+  <p>The single most important distinction: Mobitz I is usually a benign AV-nodal phenomenon, while Mobitz II is infranodal disease that can progress to complete heart block without warning. Confusing the two is the most common bradycardia teaching error.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 680" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_avblock" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_avblock" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_avblock" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_avblock" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="220" height="160" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="130.0" y="38" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">1st Degree AV Block</text>
+<text x="130.0" y="111.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fixed prolonged PR interval (&gt;200ms), every P conducts (1:1). Usually benign, often physiologic (high vagal tone, athletes) or AV nodal drug effect.</text>
+<text x="130.0" y="196" text-anchor="middle" font-size="10" font-style="italic" fill="var(--text-mute)" font-family="Inter, sans-serif">Every beat conducts, just delayed</text>
+<rect x="260" y="20" width="220" height="160" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="370.0" y="38" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">2nd Degree — Mobitz I (Wenckebach)</text>
+<text x="370.0" y="111.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Progressive PR prolongation until a P wave is dropped, then the cycle resets. Usually AV nodal (above the His bundle) -- generally benign, rarely progresses to complete block.</text>
+<text x="370.0" y="196" text-anchor="middle" font-size="10" font-style="italic" fill="var(--text-mute)" font-family="Inter, sans-serif">Progressive delay, then a dropped beat</text>
+<rect x="500" y="20" width="220" height="160" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="610.0" y="38" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">2nd Degree — Mobitz II</text>
+<text x="610.0" y="111.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fixed PR interval with intermittent, unpredictable dropped beats -- no warning. Usually infranodal (His-Purkinje) disease -- higher risk of sudden progression to complete heart block.</text>
+<text x="610.0" y="196" text-anchor="middle" font-size="10" font-style="italic" fill="var(--text-mute)" font-family="Inter, sans-serif">Sudden dropped beat, no warning</text>
+<rect x="740" y="20" width="220" height="160" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="850.0" y="38" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">3rd Degree (Complete) Heart Block</text>
+<text x="850.0" y="111.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Complete AV dissociation -- P waves and QRS complexes march independently at their own rates. Ventricular escape rhythm is slow and unreliable.</text>
+<text x="850.0" y="196" text-anchor="middle" font-size="10" font-style="italic" fill="var(--text-mute)" font-family="Inter, sans-serif">P waves and QRS totally independent</text>
+<line x1="20" y1="230" x2="960" y2="230" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="254" font-size="12.5" font-weight="700" fill="var(--accent-brady)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Pacing indications (2018 ACC/AHA/HRS)</text>
+<rect x="20" y="270" width="440" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-brady)" stroke-width="1.6"/>
+<text x="240.0" y="288" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-brady)" font-family="Inter, sans-serif" style="text-transform:uppercase">Class 1 (definitive)</text>
+<text x="240.0" y="336.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Symptomatic bradycardia clearly attributable to the rhythm; complete heart block regardless of symptoms; Mobitz II (even asymptomatic, given progression risk); alternating bundle branch block</text>
+<rect x="500" y="270" width="440" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-brady)" stroke-width="1.6"/>
+<text x="720.0" y="288" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-brady)" font-family="Inter, sans-serif" style="text-transform:uppercase">Shared decision-making zone</text>
+<text x="720.0" y="336.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Asymptomatic 1st-degree or Mobitz I block -- pacing is not automatically indicated; weigh symptoms, comorbidities, and patient goals of care before proceeding</text>
+<line x1="20" y1="410" x2="960" y2="410" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="434" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Sinus node dysfunction (sick sinus syndrome)</text>
+<rect x="20" y="450" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="476.5" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Spectrum includes sinus bradycardia, sinus pauses/arrest, sinoatrial exit block, and tachy-brady syndrome</text>
+<text x="480.0" y="491.2" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(alternating bradycardia with paroxysmal AFib/atrial tachycardia). Pacing is indicated for documented symptomatic</text>
+<text x="480.0" y="505.9" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">bradycardia; if tachy-brady syndrome requires rate-control or antiarrhythmic drugs that would worsen the bradycardia,</text>
+<text x="480.0" y="520.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pacemaker placement enables safe drug therapy for the tachyarrhythmia component.</text>
+</svg>
+    <div class="diagram-caption">Top: the four AV block grades with their defining PR-interval behavior. Bottom: 2018 ACC/AHA/HRS pacing indications and sinus node dysfunction.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Don't miss this distinction</span>
+    <p>Mobitz I (Wenckebach) with a narrow QRS is almost always AV-nodal and rarely needs emergent pacing. Mobitz II — <em>especially with a wide QRS</em> — is infranodal, unpredictable, and can progress to complete heart block within minutes to hours. When in doubt about which type of 2nd-degree block you're looking at, treat it like Mobitz II until proven otherwise.</p>
+  </div>
+
+  <h4 class="micro-title">Interactive: Symptomatic Bradycardia — Immediate Management Steps</h4>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Assess stability</summary>
+    <div class="algo-body">
+      <p>Hypotension, altered mental status, signs of shock, ischemic chest pain, or acute heart failure signal instability. Unstable patients skip straight to pacing (transcutaneous first, transvenous to follow) — don't wait on pharmacologic therapy to fully take effect.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — Atropine 1mg IV, repeat every 3–5 min (max 3mg)</summary>
+    <div class="algo-body">
+      <p>First-line for symptomatic bradycardia. Be aware atropine is often ineffective or can paradoxically worsen block in infranodal disease (Mobitz II, complete heart block with wide-complex escape) — the intrinsic His-Purkinje tissue doesn't have the vagally-mediated responsiveness that atropine targets. Don't delay pacing while repeating ineffective atropine doses in this setting.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Transcutaneous pacing, or dopamine/epinephrine infusion</summary>
+    <div class="algo-body">
+      <p>Bridge therapy while arranging transvenous pacing. Sedate/analgese if the patient is conscious — transcutaneous pacing is uncomfortable. Confirm mechanical capture (a palpable pulse with each paced beat), not just electrical capture on the monitor.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Transvenous pacing / definitive pacemaker</summary>
+    <div class="algo-body">
+      <p>Transvenous pacing bridges to a permanent pacemaker when the indication is durable (complete heart block, Mobitz II, symptomatic sinus node dysfunction) rather than from a reversible cause (electrolyte disturbance, drug toxicity, ischemia expected to resolve with reperfusion).</p>
+    </div>
+  </details>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology/EP for any new Mobitz II, complete heart block, or symptomatic sinus node dysfunction — even if currently hemodynamically stable, given unpredictable progression risk.</dd>
+      <dt>ICU admission</dt><dd>Any patient requiring temporary pacing (transcutaneous or transvenous), hemodynamic instability, or an escape rhythm as the only ventricular rhythm.</dd>
+      <dt>Transfer if no EP/cath lab on-site</dt><dd>Complete heart block, Mobitz II, or any bradycardia requiring temporary pacing at a facility without 24/7 EP or pacemaker-implant capability — arrange transfer <em>before</em> the temporary pacing wire fails or dislodges, not after.</dd>
+      <dt>Transport considerations</dt><dd>Continuous cardiac monitoring and external pacer pads placed and ready (even if not actively pacing) for the entire transport; a physician or critical care transport team for any patient who is pacer-dependent or hemodynamically borderline; confirm transvenous wire position and capture thresholds are documented before transport if a temporary wire is in place.</dd>
+      <dt>Who to call</dt><dd>Electrophysiology is the correct consult for isolated conduction disease requiring device therapy; general cardiology if EP is unavailable emergently. Involve cardiac surgery only if bradycardia is a downstream complication of a surgical issue (e.g., post-TAVR, post-cardiac-surgery heart block).</dd>
+    </dl>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Reversible causes — always screen first</span>
+    <p>Hyperkalemia, hypothyroidism, medication effect (beta-blockers, non-dihydropyridine CCBs, digoxin), inferior MI (RCA supplies the AV node in ~90% of people — expect transient AV block that often resolves with reperfusion), and Lyme carditis (young patient, endemic area, may need only temporary pacing as the carditis resolves) can all produce AV block that doesn't need a permanent pacemaker once the underlying cause is corrected.</p>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: SVT -->
+
+<section class="section" id="svt">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Supraventricular Tachycardias</h2>
+  <p class="section-sub">Three reentrant circuits, one acute-management framework — and one combination (WPW plus atrial fibrillation) that turns a routine SVT algorithm into a potential resuscitation.</p>
+
+  <h3 class="sub-title">AVNRT vs. AVRT vs. Atrial Flutter</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_svt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_svt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_svt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_svt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-svt)" stroke-width="1.6"/>
+<text x="160.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-svt)" font-family="Inter, sans-serif" style="text-transform:uppercase">AVNRT</text>
+<text x="160.0" y="120.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Mechanism: reentry within dual AV nodal</text>
+<text x="160.0" y="134.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pathways (slow-fast most common, ~90%)</text>
+<text x="160.0" y="147.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Most common SVT in adults without</text>
+<text x="160.0" y="161.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  structural/accessory pathway disease</text>
+<text x="160.0" y="174.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ECG: narrow-complex, regular; P waves often</text>
+<text x="160.0" y="188.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  hidden in or just after QRS ("pseudo r'/S")</text>
+<text x="160.0" y="202.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Onset: classically triggered by a PAC</text>
+<rect x="340" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="480.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">AVRT (incl. WPW)</text>
+<text x="480.0" y="120.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Mechanism: reentry using an accessory</text>
+<text x="480.0" y="134.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pathway (e.g., Bundle of Kent) + AV node</text>
+<text x="480.0" y="147.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Orthodromic (narrow, down AV node, up</text>
+<text x="480.0" y="161.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  pathway) far more common than antidromic</text>
+<text x="480.0" y="174.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">WPW at baseline: short PR + delta wave</text>
+<text x="480.0" y="188.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DANGER: AFib + WPW can conduct rapidly</text>
+<text x="480.0" y="202.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  down the pathway -&gt; can degenerate to VF</text>
+<rect x="660" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="800.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">Atrial Flutter</text>
+<text x="800.0" y="113.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Mechanism: macro-reentry, classically around</text>
+<text x="800.0" y="127.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  the tricuspid annulus (cavotricuspid isthmus)</text>
+<text x="800.0" y="140.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ECG: sawtooth flutter waves, classically</text>
+<text x="800.0" y="154.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  ~300/min atrial rate with 2:1 AV conduction</text>
+<text x="800.0" y="168.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (ventricular rate ~150 -- suspect flutter</text>
+<text x="800.0" y="181.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  whenever rate is close to exactly 150)</text>
+<text x="800.0" y="195.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Same thromboembolic risk/anticoagulation</text>
+<text x="800.0" y="208.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  approach as atrial fibrillation</text>
+<line x1="20" y1="304" x2="960" y2="304" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="328" font-size="12.5" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Acute management -- vagal &amp; pharmacologic</text>
+<rect x="20" y="344" width="460" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-svt)" stroke-width="1.6"/>
+<text x="250.0" y="365.9" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">1st line: vagal maneuvers (modified Valsalva</text>
+<text x="250.0" y="379.7" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with leg raise/supine repositioning has higher</text>
+<text x="250.0" y="393.5" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">success than standard Valsalva)</text>
+<text x="250.0" y="407.3" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">2nd line: adenosine 6mg rapid IV push -&gt; 12mg</text>
+<text x="250.0" y="421.2" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  (transiently blocks AV node -- terminates AVNRT/</text>
+<text x="250.0" y="435.0" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  AVRT; will NOT terminate flutter/AFib but may</text>
+<text x="250.0" y="448.8" text-anchor="middle" font-size="10.8" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  unmask flutter waves by slowing AV conduction)</text>
+<rect x="500" y="344" width="460" height="120" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="730.0" y="366.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AVOID AV-nodal blockers (adenosine, beta-</text>
+<text x="730.0" y="380.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">blockers, non-DHP CCBs, digoxin) in pre-excited</text>
+<text x="730.0" y="393.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AFib/flutter with WPW -- blocking the AV node</text>
+<text x="730.0" y="407.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">removes competition, allowing the accessory</text>
+<text x="730.0" y="420.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">pathway to conduct even faster -&gt; can precipitate</text>
+<text x="730.0" y="434.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VF. Use procainamide or synchronized</text>
+<text x="730.0" y="447.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cardioversion instead if unstable.</text>
+<text x="20" y="500" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">Irregularly irregular, wide-complex, and very fast (~200+) is the classic tip-off for pre-excited AFib via an accessory pathway.</text>
+</svg>
+    <div class="diagram-caption">All three are reentrant. AVNRT uses dual pathways within the AV node itself; AVRT uses an accessory pathway plus the AV node; atrial flutter is a macro-reentrant circuit that doesn't involve the AV node at all — which is exactly why adenosine behaves differently in each.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The one combination that changes everything: WPW + AFib</span>
+    <p>When atrial fibrillation occurs in a patient with a bypass tract, the accessory pathway can conduct atrial impulses to the ventricle far faster than the AV node normally would — producing an irregularly irregular, wide-complex tachycardia often exceeding 200 bpm, with real risk of degeneration to ventricular fibrillation. <strong>Do not give AV-nodal blocking agents</strong> (adenosine, beta-blockers, non-dihydropyridine calcium channel blockers, digoxin) in this setting — blocking the AV node removes its competition with the accessory pathway and can accelerate conduction down the bypass tract. Procainamide or ibutilide (agents that slow the accessory pathway) or synchronized cardioversion if unstable are the correct choices.</p>
+  </div>
+
+  <h4 class="micro-title">Vagal Maneuvers — Technique Matters</h4>
+  <p>The modified Valsalva maneuver (standard 15-second strain followed immediately by passive leg raise and supine repositioning) roughly doubles conversion rates compared to standard Valsalva alone in trial data — worth doing correctly before reaching for adenosine.</p>
+
+  <div class="callout pearl">
+    <span class="callout-label">Adenosine as a diagnostic <em>and</em> therapeutic tool</span>
+    <p>Adenosine's ultra-short half-life (~10 seconds) makes it uniquely useful diagnostically: even when it doesn't terminate the rhythm, the transient AV block it produces can unmask flutter waves or reveal the underlying atrial rhythm — turning an ambiguous narrow-complex tachycardia into a clear diagnosis in real time on the monitor.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology/EP for any WPW pattern discovered incidentally (even asymptomatic) given the small but real risk of sudden death, and for any SVT recurrent enough to warrant ablation discussion.</dd>
+      <dt>ICU admission</dt><dd>Hemodynamically unstable SVT requiring cardioversion, or pre-excited AFib/flutter with rapid ventricular response, particularly if antiarrhythmic infusion (procainamide) is needed.</dd>
+      <dt>Transfer if no EP on-site</dt><dd>Pre-excited AFib/flutter with a bypass tract, recurrent/refractory SVT being considered for ablation, or any wide-complex irregular tachycardia where the diagnosis (WPW+AFib vs. VT vs. other) remains uncertain after initial workup.</dd>
+      <dt>Transport considerations</dt><dd>Continuous monitoring with defibrillator/pacer pads placed; have procainamide or synchronized cardioversion readily available en route given the risk of degeneration to VF in pre-excited AFib — this is not a "stable enough for basic transport" scenario until the rhythm is controlled.</dd>
+      <dt>Who to call</dt><dd>Electrophysiology specifically (not general cardiology) for accessory pathway–related arrhythmias, since catheter ablation of the pathway is both diagnostic and curative.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: AFIB -->
+
+<section class="section" id="afib">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Atrial Fibrillation</h2>
+  <p class="section-sub">The most common sustained arrhythmia, restaged in 2023 as a continuum rather than a duration-based label — plus two interactive calculators you'll actually use at the bedside.</p>
+
+  <h3 class="sub-title">Mechanism &amp; the 2023 Staging Framework</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_afib" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_afib" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_afib" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_afib" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="12.5" font-weight="700" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Mechanism: atrial remodeling &amp; multiple wavelet reentry</text>
+<rect x="20" y="40" width="210" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="125.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">Atrial stretch/injury</text>
+<text x="125.0" y="121.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">HTN, HF, valvular disease, obesity, OSA, alcohol, hyperthyroidism drive atrial structural and electrical remodeling</text>
+<rect x="260" y="40" width="210" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="365.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">Fibrosis &amp; dilation</text>
+<text x="365.0" y="121.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Progressive atrial fibrosis creates a substrate of variable conduction velocity and refractoriness across the atria</text>
+<rect x="500" y="40" width="210" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="605.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">Triggers fire</text>
+<text x="605.0" y="121.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ectopic foci, classically from pulmonary vein sleeves, initiate premature atrial activity</text>
+<rect x="740" y="40" width="210" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="845.0" y="58" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">Multiple wavelet reentry</text>
+<text x="845.0" y="121.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Chaotic, self-sustaining micro-reentrant circuits propagate simultaneously -- no organized P waves, irregularly irregular ventricular response</text>
+<line x1="230" y1="110" x2="260" y2="110" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_afib)"/>
+<line x1="470" y1="110" x2="500" y2="110" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_afib)"/>
+<line x1="710" y1="110" x2="740" y2="110" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_afib)"/>
+<text x="20" y="206" font-size="10.5" fill="var(--text-mute)" font-family="Inter, sans-serif">"AF begets AF": the arrhythmia itself accelerates the remodeling that sustains it -- a key argument for early rhythm control rather than watchful waiting.</text>
+<line x1="20" y1="230" x2="960" y2="230" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="254" font-size="12.5" font-weight="700" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">2023 ACC/AHA/ACCP/HRS staging (continuum, not just duration)</text>
+<rect x="20" y="270" width="220" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="130.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 1</text>
+<text x="130.0" y="338.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">At risk</text>
+<text x="130.0" y="351.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="130.0" y="363.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">HTN, obesity, OSA, diabetes, alcohol -- risk factors present, no AF yet, no structural changes</text>
+<rect x="260" y="270" width="220" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="370.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 2</text>
+<text x="370.0" y="338.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pre-AF</text>
+<text x="370.0" y="351.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="370.0" y="363.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Structural/electrical abnormalities (LA enlargement, atrial ectopy) that predispose to AF -- still no AF diagnosed</text>
+<rect x="500" y="270" width="220" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="610.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 3</text>
+<text x="610.0" y="338.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AF</text>
+<text x="610.0" y="351.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="610.0" y="363.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">3A paroxysmal, 3B persistent (&gt;7 days), 3C long-standing persistent (&gt;12 months), 3D successfully ablated/post-intervention</text>
+<rect x="740" y="270" width="220" height="140" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="850.0" y="288" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-afib)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 4</text>
+<text x="850.0" y="338.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Permanent AF</text>
+<text x="850.0" y="351.1" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="850.0" y="363.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">AF accepted by patient and clinician -- no further rhythm-control attempts planned</text>
+<line x1="20" y1="430" x2="960" y2="430" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<rect x="20" y="446" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--accent-afib)" stroke-width="1.6"/>
+<text x="480.0" y="479.8" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">What changed in 2023: early rhythm control (within ~1 year of diagnosis) upgraded to Class 1 based on EARLY-AF and</text>
+<text x="480.0" y="494.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">similar trial evidence -- rhythm control is no longer reserved for those who fail rate control. Catheter ablation for</text>
+<text x="480.0" y="509.3" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">paroxysmal AF as first-line rhythm control was also upgraded from Class 2a to Class 1 in appropriately selected patients.</text>
+</svg>
+    <div class="diagram-caption">Top: atrial remodeling from risk factors to sustained multiple-wavelet reentry. Bottom: the 2023 ACC/AHA/ACCP/HRS four-stage classification, which frames AF as a progressive disease continuum rather than just paroxysmal/persistent/permanent labels.</div>
+  </div>
+
+  <h4 class="micro-title">Interactive: CHA₂DS₂-VASc Stroke Risk Calculator</h4>
+  <p>Tap each risk factor that applies. This estimates annual thromboembolic risk to guide the anticoagulation decision per the 2023 guideline — it is a teaching aid, not a substitute for full clinical assessment.</p>
+
+  <div class="calc-card" id="chadsCalc">
+    <div class="calc-title">CHA₂DS₂-VASc</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" id="chf" data-pts="1"><label for="chf">Congestive heart failure / LV dysfunction</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="htn" data-pts="1"><label for="htn">Hypertension</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="age75" data-pts="2" data-exclusive-group="age"><label for="age75">Age ≥ 75</label><span class="pts">+2</span></div>
+      <div class="calc-item"><input type="checkbox" id="age65" data-pts="1" data-exclusive-group="age"><label for="age65">Age 65–74</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="dm" data-pts="1"><label for="dm">Diabetes mellitus</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="stroke" data-pts="2"><label for="stroke">Prior stroke / TIA / thromboembolism</label><span class="pts">+2</span></div>
+      <div class="calc-item"><input type="checkbox" id="vasc" data-pts="1"><label for="vasc">Vascular disease (MI, PAD, aortic plaque)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="female" data-pts="1"><label for="female">Female sex</label><span class="pts">+1</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="chadsScore">0</div></div>
+      <div class="score-interp" id="chadsInterp">Low risk — anticoagulation generally not indicated on stroke-risk grounds alone.</div>
+    </div>
+    <div class="calc-note">2023 guideline threshold: annual stroke risk ≥2% supports anticoagulation. A score of 0 (male) or 1 (female, sex point only) is low risk; a single non-sex risk factor (score 1 male / 2 female) is intermediate — individualize; score ≥2 (male) / ≥3 (female) generally warrants anticoagulation. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Interactive: HAS-BLED Bleeding Risk Calculator</h4>
+  <p>HAS-BLED doesn't tell you to withhold anticoagulation — a high score identifies <em>modifiable</em> bleeding risk factors (uncontrolled BP, labile INR, concurrent NSAID/antiplatelet use) worth addressing rather than a reason to avoid anticoagulation in a patient who needs it.</p>
+
+  <div class="calc-card" id="hasbledCalc">
+    <div class="calc-title">HAS-BLED</div>
+    <div class="calc-grid">
+      <div class="calc-item"><input type="checkbox" id="hb_htn" data-pts="1"><label for="hb_htn">Hypertension (uncontrolled, SBP &gt;160)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_renal" data-pts="1"><label for="hb_renal">Abnormal renal function (dialysis, transplant, Cr &gt;2.26)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_liver" data-pts="1"><label for="hb_liver">Abnormal liver function (cirrhosis, bilirubin &gt;2x, AST/ALT &gt;3x)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_stroke" data-pts="1"><label for="hb_stroke">Prior stroke</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_bleed" data-pts="1"><label for="hb_bleed">Bleeding history or predisposition</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_inr" data-pts="1"><label for="hb_inr">Labile INR (if on warfarin)</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_elderly" data-pts="1"><label for="hb_elderly">Age &gt; 65</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_drugs" data-pts="1"><label for="hb_drugs">Antiplatelet or NSAID use</label><span class="pts">+1</span></div>
+      <div class="calc-item"><input type="checkbox" id="hb_etoh" data-pts="1"><label for="hb_etoh">Alcohol use (≥8 drinks/week)</label><span class="pts">+1</span></div>
+    </div>
+    <div class="calc-result">
+      <div><div class="score-label">Score</div><div class="score-num" id="hasbledScore">0</div></div>
+      <div class="score-interp" id="hasbledInterp">Lower bleeding risk on this score.</div>
+    </div>
+    <div class="calc-note">Score ≥3 flags "high risk" — the correct response is closer monitoring and correcting modifiable factors (BP control, avoiding concurrent NSAIDs, tighter INR monitoring), not withholding indicated anticoagulation. <span class="verify-tag">teaching aid, not clinical decision support</span></div>
+  </div>
+
+  <h4 class="micro-title">Rate vs. Rhythm Control — Interactive Decision Points</h4>
+
+  <details class="algo-step" open>
+    <summary>Is the patient hemodynamically unstable?</summary>
+    <div class="algo-body">
+      <p>Hypotension, active ischemia, acute heart failure, or altered mental status attributable to the arrhythmia → synchronized cardioversion now, regardless of anticoagulation status or duration of AF (in the truly unstable patient, the thromboembolic risk of cardioversion is accepted).</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Is early rhythm control appropriate?</summary>
+    <div class="algo-body">
+      <p>2023 guideline upgrade: early rhythm control (within ~1 year of diagnosis) is now Class 1 for suitable patients, based on EARLY-AF and similar trial evidence showing reduced cardiovascular outcomes compared to a rate-control-first strategy. This is a meaningful shift from older "rate control unless symptomatic" thinking — consider referral for rhythm control discussion (antiarrhythmics or catheter ablation) earlier than reflexively defaulting to rate control.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Rate control — what target and which agents?</summary>
+    <div class="algo-body">
+      <p>Lenient rate control (resting HR &lt;110) is generally sufficient and non-inferior to strict control for most patients. Beta-blockers or non-dihydropyridine calcium channel blockers (diltiazem, verapamil) are first-line; digoxin is a reasonable add-on especially in HFrEF, but is a poor monotherapy choice given lack of efficacy with exertion. Avoid AV-nodal blockers if WPW/pre-excitation is present (see SVT section).</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Anticoagulation before elective cardioversion</summary>
+    <div class="algo-body">
+      <p>If AF duration is &lt;48 hours and thromboembolic risk is low, cardioversion can proceed without pre-anticoagulation in many protocols — but confirm against current institutional/guideline criteria, since this is a frequently misapplied rule. If duration is ≥48 hours or unknown, either 3 weeks of therapeutic anticoagulation before cardioversion, or TEE to exclude LA appendage thrombus followed by anticoagulation at the time of cardioversion, is required — and anticoagulation continues for at least 4 weeks after regardless of restored rhythm, given the "atrial stunning" phenomenon that persists after successful cardioversion.</p>
+    </div>
+  </details>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology for new-onset AF with rapid ventricular response not controlled by initial IV agents, or any AF with hemodynamic instability requiring cardioversion.</dd>
+      <dt>ICU admission</dt><dd>AF with RVR causing hemodynamic compromise, AF requiring IV antiarrhythmic infusion, or AF in the setting of decompensated heart failure/cardiogenic physiology.</dd>
+      <dt>Transfer if no EP/cardiology on-site</dt><dd>Recurrent symptomatic AF being considered for ablation, AF with a mechanical valve or complex anticoagulation question, or WPW-associated AF (see SVT section) requiring specialized management.</dd>
+      <dt>Transport considerations</dt><dd>Continuous cardiac monitoring; if on an antiarrhythmic infusion (e.g., amiodarone, diltiazem drip), a critical care transport team capable of titrating the infusion; defibrillator/cardioversion capability available en route for any patient with borderline hemodynamics.</dd>
+      <dt>Who to call</dt><dd>General cardiology is appropriate for most new AF management; escalate specifically to EP when ablation, complex device interaction, or accessory-pathway-mediated arrhythmia is in play.</dd>
+    </dl>
+  </div>
+</section>
+
+<script>
+(function(){
+  function wireCalc(cardId, scoreId, interpId, interpFn) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+    var checkboxes = card.querySelectorAll('input[type="checkbox"]');
+    function recalc() {
+      var groups = {};
+      var total = 0;
+      checkboxes.forEach(function(cb) {
+        var group = cb.getAttribute('data-exclusive-group');
+        if (group) {
+          if (!groups[group]) groups[group] = [];
+          groups[group].push(cb);
+        }
+      });
+      // enforce exclusivity: only most recently checked in a group stays checked
+      Object.keys(groups).forEach(function(g) {
+        var checked = groups[g].filter(function(cb){ return cb.checked; });
+        if (checked.length > 1) {
+          checked.slice(0, -1).forEach(function(cb){ cb.checked = false; });
+        }
+      });
+      checkboxes.forEach(function(cb) {
+        if (cb.checked) total += parseInt(cb.getAttribute('data-pts'), 10);
+      });
+      document.getElementById(scoreId).textContent = total;
+      document.getElementById(interpId).textContent = interpFn(total);
+    }
+    checkboxes.forEach(function(cb) { cb.addEventListener('change', recalc); });
+    recalc();
+  }
+
+  wireCalc('chadsCalc', 'chadsScore', 'chadsInterp', function(score) {
+    if (score === 0) return "Low risk (~0-0.5%/yr) — anticoagulation generally not indicated.";
+    if (score === 1) return "Intermediate (~1-2%/yr) — individualize; anticoagulation reasonable, especially if the point isn't sex alone.";
+    if (score === 2) return "~2-3%/yr stroke risk — anticoagulation generally recommended.";
+    if (score <= 4) return "~4-8%/yr stroke risk — anticoagulation recommended.";
+    return "High risk (>8%/yr) — anticoagulation strongly recommended absent a strong contraindication.";
+  });
+
+  wireCalc('hasbledCalc', 'hasbledScore', 'hasbledInterp', function(score) {
+    if (score <= 2) return "Lower bleeding risk on this score.";
+    return "High risk (≥3) — address modifiable factors; this does not by itself contraindicate indicated anticoagulation.";
+  });
+})();
+</script>
+
+
+<!-- SECTION PLACEHOLDER: VT -->
+
+<section class="section" id="vt">
+  <div class="section-eyebrow"><span class="dot"></span>05 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Ventricular Arrhythmias</h2>
+  <p class="section-sub">Monomorphic, polymorphic, and Torsades de pointes are frequently used loosely — but each implies a different mechanism and a different (sometimes opposite) treatment.</p>
+
+  <h3 class="sub-title">VT Morphology, VF, and ICD Criteria</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 620" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_vt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_vt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_vt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_vt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--accent-vt)" stroke-width="1.6"/>
+<text x="160.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-vt)" font-family="Inter, sans-serif" style="text-transform:uppercase">Monomorphic VT</text>
+<text x="160.0" y="121.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Uniform QRS morphology beat-to-beat</text>
+<text x="160.0" y="134.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Usually scar-related reentry (post-MI</text>
+<text x="160.0" y="148.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  scar most common substrate)</text>
+<text x="160.0" y="161.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hemodynamically may be stable or unstable</text>
+<text x="160.0" y="174.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  depending on rate and LV function</text>
+<text x="160.0" y="187.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Rx if stable: procainamide or amiodarone;</text>
+<text x="160.0" y="200.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  if unstable: synchronized cardioversion</text>
+<rect x="340" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="480.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Polymorphic VT</text>
+<text x="480.0" y="121.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Beat-to-beat QRS morphology varies</text>
+<text x="480.0" y="134.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Occurs with normal OR prolonged QT --</text>
+<text x="480.0" y="148.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  mechanism and treatment differ completely</text>
+<text x="480.0" y="161.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Normal QT: usually ischemia-driven --</text>
+<text x="480.0" y="174.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  treat the ischemia, consider amiodarone</text>
+<text x="480.0" y="187.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Prolonged QT = Torsades de pointes (see</text>
+<text x="480.0" y="200.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  right) -- amiodarone can worsen this</text>
+<rect x="660" y="20" width="280" height="260" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="800.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">Torsades de Pointes</text>
+<text x="800.0" y="108.5" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Polymorphic VT specifically with a</text>
+<text x="800.0" y="121.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  prolonged QT -- "twisting of the points"</text>
+<text x="800.0" y="134.8" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Causes: congenital LQTS, QT-prolonging</text>
+<text x="800.0" y="148.0" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  drugs, hypokalemia, hypomagnesemia,</text>
+<text x="800.0" y="161.2" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  bradycardia</text>
+<text x="800.0" y="174.4" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Rx: IV magnesium (even if level normal),</text>
+<text x="800.0" y="187.6" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  correct K+, overdrive pacing/isoproterenol</text>
+<text x="800.0" y="200.7" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  if bradycardia-dependent -- AVOID</text>
+<text x="800.0" y="213.9" text-anchor="middle" font-size="10.3" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  amiodarone/other QT-prolonging agents</text>
+<line x1="20" y1="304" x2="960" y2="304" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="328" font-size="12.5" font-weight="700" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Ventricular fibrillation &amp; the pulseless algorithm</text>
+<rect x="20" y="344" width="920" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="480.0" y="377.8" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Chaotic, disorganized ventricular activity -- no coordinated contraction, no cardiac output. This is a pulseless</text>
+<text x="480.0" y="392.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">arrest rhythm: immediate defibrillation (unsynchronized) plus high-quality CPR per ACLS, epinephrine every</text>
+<text x="480.0" y="407.3" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">3-5 minutes, amiodarone or lidocaine for refractory VF/pulseless VT after the first few defibrillation attempts.</text>
+<line x1="20" y1="452" x2="960" y2="452" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="476" font-size="12.5" font-weight="700" fill="var(--accent-vt)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Primary prevention ICD criteria (2017 AHA/ACC/HRS)</text>
+<rect x="20" y="492" width="920" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-vt)" stroke-width="1.6"/>
+<text x="480.0" y="529.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Ischemic or nonischemic cardiomyopathy with LVEF &lt;=35%, NYHA class 2-4 symptoms despite &gt;=3 months of</text>
+<text x="480.0" y="543.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">guideline-directed medical therapy, and meaningful survival &gt;1 year expected. Also: prior cardiac arrest from VF/</text>
+<text x="480.0" y="557.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">unstable VT not due to a reversible cause (secondary prevention); certain inherited channelopathies/cardiomyopathies</text>
+<text x="480.0" y="571.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with high-risk features regardless of EF (HCM with risk factors, ARVC, Brugada with syncope, etc.)</text>
+</svg>
+    <div class="diagram-caption">Top: the three VT phenotypes and their treatment logic. Middle: VF and the pulseless arrest algorithm. Bottom: 2017 AHA/ACC/HRS primary-prevention ICD criteria.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The Torsades trap</span>
+    <p>Amiodarone is a mainstay for most VT — but amiodarone itself prolongs the QT interval, making it the <em>wrong</em> choice for Torsades de pointes and potentially perpetuating the very mechanism causing the arrhythmia. If the QT is prolonged, reach for IV magnesium (give it even with a normal serum level — it works on repolarization independent of measured magnesium status), correct potassium to the high-normal range, and consider overdrive pacing or isoproterenol if the Torsades is bradycardia-dependent (pause-dependent).</p>
+  </div>
+
+  <h4 class="micro-title">Interactive: Is This Monomorphic, Polymorphic, or Torsades?</h4>
+
+  <details class="algo-step" open>
+    <summary>Is the QRS morphology consistent beat-to-beat?</summary>
+    <div class="algo-body">
+      <p>Yes → monomorphic VT, typically scar-related reentry (post-MI scar is the most common substrate). No → proceed to the QT question below.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Was the baseline (or inter-episode) QT prolonged?</summary>
+    <div class="algo-body">
+      <p>Yes → Torsades de pointes. Look specifically for the "twisting" QRS axis around the isoelectric line, and search for a cause: congenital LQTS, QT-prolonging drugs, hypokalemia, hypomagnesemia, or profound bradycardia. No → polymorphic VT with a normal QT, which is usually acute ischemia-driven — treat the ischemia (consider emergent catheterization) rather than reflexively loading an antiarrhythmic.</p>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Is the patient pulseless?</summary>
+    <div class="algo-body">
+      <p>Yes → this is a cardiac arrest rhythm (pulseless VT or VF): immediate unsynchronized defibrillation plus ACLS. No → assess hemodynamic stability; unstable but with a pulse gets synchronized cardioversion; stable monomorphic VT can be trialed on procainamide or amiodarone while preparing for cardioversion if it fails.</p>
+    </div>
+  </details>
+
+  <h4 class="micro-title">Secondary Causes to Screen For</h4>
+  <div class="pearl-grid two">
+    <div class="callout pearl"><span class="callout-label">Structural substrate</span><p>Prior MI scar, nonischemic cardiomyopathy, arrhythmogenic right ventricular cardiomyopathy (ARVC — suspect in young patients with VT of LBBB morphology and a family history of sudden death), and sarcoidosis all create fixed reentry circuits.</p></div>
+    <div class="callout warn"><span class="callout-label">Reversible/toxic causes</span><p>Severe electrolyte derangement (K+, Mg2+), digoxin toxicity, QT-prolonging drug combinations, cocaine/sympathomimetic toxicity, and severe hypoxia/acidosis should all be actively screened for — some VT is entirely reversible once corrected.</p></div>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Electrophysiology for any sustained VT, and cardiology/EP jointly for any survived cardiac arrest — ICD candidacy assessment should begin during the index admission, not be deferred to outpatient follow-up.</dd>
+      <dt>ICU admission</dt><dd>Any sustained VT (with or without instability), post-arrest care (targeted temperature management candidacy), or need for antiarrhythmic infusion.</dd>
+      <dt>Transfer if no EP/cath lab on-site</dt><dd>Recurrent or refractory VT (VT storm), suspected channelopathy or inherited cardiomyopathy needing specialized workup, or any post-arrest patient at a facility without cardiac catheterization and targeted temperature management capability.</dd>
+      <dt>Transport considerations</dt><dd>Continuous monitoring with defibrillator pads placed and ready for the entire transport; antiarrhythmic infusion capability if VT is recurrent; a physician or critical-care-level transport team for any patient with recent sustained VT/VF given the real risk of recurrence in transit.</dd>
+      <dt>Who to call</dt><dd>Electrophysiology for device therapy and ablation candidacy; interventional cardiology emergently if the VT is ischemia-driven and revascularization is indicated.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: WCT -->
+
+<section class="section" id="wct">
+  <div class="section-eyebrow"><span class="dot"></span>06 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Wide Complex Tachycardia</h2>
+  <p class="section-sub">VT vs. SVT with aberrancy is a genuinely hard call — and the base rates matter as much as the criteria: roughly 80% of wide-complex tachycardia is VT, rising even higher in patients with known structural heart disease.</p>
+
+  <div class="callout danger">
+    <span class="callout-label">The single most important rule in this section</span>
+    <p>When uncertain, treat wide-complex tachycardia as VT. This isn't just caution for caution's sake — the base rate genuinely favors VT, and the harm of treating VT as if it were SVT (giving an AV-nodal blocker to a rhythm that doesn't involve the AV node, or worse, giving verapamil to true VT — which can cause hemodynamic collapse via peripheral vasodilation without terminating the arrhythmia) is far worse than the reverse error.</p>
+  </div>
+
+  <h4 class="micro-title">Interactive: Brugada Criteria (Step Through in Order)</h4>
+  <p>Work through each step in sequence — the algorithm stops and calls VT as soon as any step is positive. Only reaching step 4 without a positive finding favors SVT with aberrancy.</p>
+
+  <details class="algo-step" open>
+    <summary>Step 1 — Is an RS complex absent in ALL precordial leads (V1–V6)?</summary>
+    <div class="algo-body">
+      <p>Look across every precordial lead for any RS pattern at all. If every single precordial lead shows only monophasic (all R or all S) or biphasic-without-RS morphology — no lead has a clean R-then-S — this strongly favors a ventricular origin, since SVT with aberrancy almost always preserves an RS complex somewhere across the precordium.</p>
+      <span class="algo-verdict vt">If absent everywhere → VT (stop here)</span>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 2 — Is the R-to-S interval &gt;100ms in any precordial lead?</summary>
+    <div class="algo-body">
+      <p>Measure from the onset of the R wave to the nadir of the S wave in whichever precordial lead has the longest interval. A markedly delayed intrinsicoid deflection like this reflects slow, non-physiologic conduction through myocardium rather than the His-Purkinje system.</p>
+      <span class="algo-verdict vt">If &gt;100ms in any lead → VT (stop here)</span>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 3 — Is AV dissociation present?</summary>
+    <div class="algo-body">
+      <p>Look for P waves marching through independently of the QRS complexes, or their electrical equivalents — capture beats (a normal, narrow QRS interrupting the wide-complex rhythm when a sinus impulse "captures" the ventricle) and fusion beats (a QRS that's a hybrid of the wide and narrow morphology). Both are pathognomonic for VT when present, since they require independent atrial and ventricular activity.</p>
+      <span class="algo-verdict vt">If AV dissociation, capture, or fusion beats present → VT (stop here)</span>
+    </div>
+  </details>
+  <details class="algo-step">
+    <summary>Step 4 — Do morphology criteria for VT match in BOTH V1-2 AND V6?</summary>
+    <div class="algo-body">
+      <p>This step requires knowing the specific morphology criteria (R-wave characteristics in V1, qR/QS patterns, R/S ratio in V6) that are beyond quick bedside recall for most clinicians — this is the step most often skipped in practice in favor of just defaulting to "treat as VT" if steps 1–3 were all negative but clinical suspicion remains.</p>
+      <span class="algo-verdict svt">If VT morphology absent in both leads → favors SVT with aberrancy</span>
+    </div>
+  </details>
+
+  <h4 class="micro-title">Supporting Features (Not Part of Brugada, But Useful)</h4>
+  <div class="pearl-grid two">
+    <div class="callout warn"><span class="callout-label">Favors VT</span><p>QRS duration &gt;160ms, extreme (northwest) axis deviation, precordial concordance (all precordial leads pointing the same direction), history of prior MI or structural heart disease, and hemodynamic instability all shift the probability strongly toward VT.</p></div>
+    <div class="callout"><span class="callout-label">Favors SVT with aberrancy</span><p>A QRS morphology identical to a known baseline bundle branch block on prior ECGs, young age with no structural heart disease, and a typical right or left bundle branch block pattern (rather than an atypical/bizarre morphology) lean toward aberrant conduction — but none of these rule out VT on their own.</p></div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Practical bedside approach</span>
+    <p>Many emergency clinicians reasonably skip the full four-step Brugada algorithm under time pressure and instead use a simplified, high-sensitivity approach: any history of structural heart disease, hemodynamic instability, AV dissociation, or extreme QRS widening/axis leads directly to treating as VT (procainamide, amiodarone, or cardioversion) without working through detailed morphology criteria. This undertreats the rare true SVT-with-aberrancy case but essentially never misses true VT — an acceptable trade given the relative harms.</p>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology/EP for any diagnostically uncertain wide-complex tachycardia, particularly if it recurs or if the patient has known structural heart disease.</dd>
+      <dt>ICU admission</dt><dd>Any wide-complex tachycardia requiring antiarrhythmic infusion or cardioversion, or any episode with hemodynamic compromise.</dd>
+      <dt>Transfer if no EP on-site</dt><dd>Recurrent wide-complex tachycardia of uncertain mechanism, or any case where empiric VT treatment fails and the diagnosis needs electrophysiology study to resolve.</dd>
+      <dt>Transport considerations</dt><dd>Treat as VT for transport purposes if any uncertainty exists — continuous monitoring, defibrillator pads placed, antiarrhythmic or cardioversion capability immediately available throughout transport.</dd>
+      <dt>Who to call</dt><dd>Electrophysiology for definitive diagnosis (EP study) and ablation candidacy once the acute episode is controlled.</dd>
+    </dl>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: CHAN -->
+
+<section class="section" id="chan">
+  <div class="section-eyebrow"><span class="dot"></span>07 / Arrhythmias &amp; Conduction Disease</div>
+  <h2 class="section-title">Channelopathies</h2>
+  <p class="section-sub">Structurally normal hearts, purely electrical disease, and a shared talent for presenting as unexplained syncope or witnessed arrest in an otherwise healthy young person.</p>
+
+  <h3 class="sub-title">Long QT Syndrome &amp; Brugada Syndrome</h3>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 520" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
+<defs>
+<marker id="arrowMute_chan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_chan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_chan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_chan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="460" height="300" rx="12" fill="var(--surface)" stroke="var(--accent-chan)" stroke-width="1.6"/>
+<text x="250.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-chan)" font-family="Inter, sans-serif" style="text-transform:uppercase">LONG QT SYNDROME</text>
+<text x="250.0" y="66.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Prolonged ventricular repolarization -&gt; QTc</text>
+<text x="250.0" y="79.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">&gt;450ms (men) / &gt;460ms (women) roughly, though</text>
+<text x="250.0" y="93.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cutoffs vary by formula and society</text>
+<text x="250.0" y="106.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="120.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LQT1: potassium channel (KCNQ1) -- triggered by</text>
+<text x="250.0" y="133.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  EXERCISE/SWIMMING</text>
+<text x="250.0" y="147.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LQT2: potassium channel (KCNH2/hERG) -- triggered</text>
+<text x="250.0" y="160.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  by EMOTIONAL STRESS/AUDITORY STIMULI (alarm)</text>
+<text x="250.0" y="174.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LQT3: sodium channel (SCN5A) -- events often occur</text>
+<text x="250.0" y="188.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  AT REST/SLEEP (delayed repolarization + bradycardia)</text>
+<text x="250.0" y="201.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="215.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Acquired causes matter more day-to-day: QT-</text>
+<text x="250.0" y="228.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">prolonging drugs (antipsychotics, methadone,</text>
+<text x="250.0" y="242.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">some antiemetics/antibiotics), hypokalemia,</text>
+<text x="250.0" y="255.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">hypomagnesemia, hypocalcemia, bradycardia</text>
+<text x="250.0" y="269.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="283.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Screen family members; avoid QT-prolonging</text>
+<text x="250.0" y="296.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">drugs; beta-blockers first-line; ICD for high-risk</text>
+<rect x="500" y="20" width="460" height="300" rx="12" fill="var(--surface)" stroke="var(--accent-wct)" stroke-width="1.6"/>
+<text x="730.0" y="38" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="var(--accent-wct)" font-family="Inter, sans-serif" style="text-transform:uppercase">BRUGADA SYNDROME</text>
+<text x="730.0" y="52.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sodium channelopathy (SCN5A in ~20-30% of</text>
+<text x="730.0" y="66.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cases) -- structurally normal heart, ECG-based</text>
+<text x="730.0" y="79.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">diagnosis</text>
+<text x="730.0" y="93.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="106.7" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Type 1 (diagnostic): coved ST-elevation &gt;=2mm</text>
+<text x="730.0" y="120.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  in V1-V2 followed by a negative T wave</text>
+<text x="730.0" y="133.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pattern can be UNMASKED or worsened by fever --</text>
+<text x="730.0" y="147.4" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">  aggressive antipyretic treatment matters clinically</text>
+<text x="730.0" y="160.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="174.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Risk is highest in young males, often presents</text>
+<text x="730.0" y="188.1" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">as syncope or nocturnal agonal breathing/sudden</text>
+<text x="730.0" y="201.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">death (historically overrepresented in Southeast</text>
+<text x="730.0" y="215.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Asian populations -- "Brugada syndrome"/SUNDS)</text>
+<text x="730.0" y="228.8" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="242.3" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Avoid sodium channel blocking drugs (many</text>
+<text x="730.0" y="255.9" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">antiarrhythmics, some antidepressants/anesthetics)</text>
+<text x="730.0" y="269.5" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="730.0" y="283.0" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ICD is the only proven effective therapy for</text>
+<text x="730.0" y="296.6" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">high-risk patients (syncope, documented VT/VF,</text>
+<text x="730.0" y="310.2" text-anchor="middle" font-size="10.6" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">spontaneous type 1 pattern)</text>
+<text x="20" y="352" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">Shared pearl: both are channelopathies in structurally normal hearts, both can present as unexplained syncope or witnessed cardiac arrest in a young, otherwise healthy person -- both mandate</text>
+<text x="20" y="372" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">first-degree family screening (ECG +/- genetic testing) once identified, since these are heritable and relatives may be asymptomatic carriers.</text>
+<line x1="20" y1="400" x2="960" y2="400" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<rect x="20" y="416" width="920" height="86" rx="12" fill="var(--surface)" stroke="var(--accent-chan)" stroke-width="1.6"/>
+<text x="480.0" y="448.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Fastest bedside reference: if a patient on a new QT-prolonging medication develops palpitations or syncope,</text>
+<text x="480.0" y="462.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">get an ECG and basic metabolic panel (K+, Mg2+, Ca2+) before assuming an unrelated cause. www.crediblemeds.org</text>
+<text x="480.0" y="476.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(QTdrugs list) is the standard reference for checking individual medications -- verify against it directly rather than memory.</text>
+</svg>
+    <div class="diagram-caption">Both conditions are ion channelopathies rather than structural disease — LQTS affects repolarization (potassium or sodium channels depending on subtype), Brugada affects sodium channel function and produces a specific, diagnostic ECG pattern.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">The genotype-specific trigger pattern (LQTS) is clinically actionable</span>
+    <p>LQT1 events during swimming/exercise, LQT2 events triggered by sudden noise (an alarm clock, a phone ringing) or emotional stress, and LQT3 events occurring at rest or during sleep aren't just trivia — they directly inform counseling (LQT1 patients should generally avoid competitive swimming) and raise suspicion for the specific subtype even before genetic testing results return.</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Fever unmasks Brugada</span>
+    <p>The type 1 Brugada ECG pattern can appear or worsen during febrile illness, and fever-precipitated arrhythmic events are a recognized phenomenon in this population — aggressive antipyretic management in a known or suspected Brugada patient with fever is a genuine clinical intervention, not just comfort care.</p>
+  </div>
+
+  <h4 class="micro-title">Acquired QT Prolongation — The More Common Bedside Problem</h4>
+  <p>Congenital channelopathies are individually rare; acquired QT prolongation from drug interactions and electrolyte disturbance is the far more common cause of a prolonged QT you'll actually encounter. Antipsychotics, methadone, certain antiemetics (ondansetron at high doses), fluoroquinolones/macrolides, and multiple QT-prolonging drugs used concurrently are frequent culprits — check the specific combination against a current reference (e.g., CredibleMeds' QTdrugs list) rather than relying on memory, since risk is often driven by drug <em>combinations</em> rather than any single agent.</p>
+
+  <div class="pearl-grid two">
+    <div class="callout pearl"><span class="callout-label">Family screening</span><p>Once either condition is identified in a patient, first-degree relatives warrant ECG screening (and often genetic testing once a pathogenic variant is identified) — both are heritable, and asymptomatic carriers exist in both conditions.</p></div>
+    <div class="callout"><span class="callout-label">ICD as definitive therapy</span><p>For Brugada syndrome specifically, ICD placement is the only therapy with proven mortality benefit in high-risk patients (spontaneous type 1 pattern plus syncope or documented VT/VF) — unlike LQTS, where beta-blockers meaningfully reduce events in many patients before ICD becomes necessary.</p></div>
+  </div>
+
+  <div class="callout transfer">
+    <span class="callout-label">Escalation &amp; Transfer Criteria</span>
+    <dl>
+      <dt>Consult now</dt><dd>Cardiology/EP for any newly identified Brugada pattern (spontaneous or fever-unmasked) or any QTc prolongation with syncope, and clinical genetics for suspected inherited channelopathy once the patient is stabilized.</dd>
+      <dt>ICU admission</dt><dd>Any patient with a channelopathy who has had a syncopal event with a documented or highly suspected arrhythmic cause, or any Torsades de pointes episode regardless of resolution.</dd>
+      <dt>Transfer if no EP on-site</dt><dd>Newly diagnosed Brugada syndrome or LQTS requiring risk stratification and possible ICD placement, or recurrent syncope with a suspected channelopathy not yet definitively characterized.</dd>
+      <dt>Transport considerations</dt><dd>Continuous cardiac monitoring for the duration of transport; avoid administering any further QT-prolonging or sodium-channel-blocking medications en route; have magnesium readily available if Torsades is a concern.</dd>
+      <dt>Who to call</dt><dd>Electrophysiology for device therapy and risk stratification; clinical genetics/inherited arrhythmia clinic for family cascade screening once the acute issue is addressed.</dd>
+    </dl>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiology Atlas Vol. 3 — Arrhythmias &amp; Conduction Disease · Built for clinical education and bedside reference. Interactive calculators are teaching aids, not a substitute for clinical judgment or institutional protocol. Verify thresholds and dosing against current primary literature before relying on them in practice.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>

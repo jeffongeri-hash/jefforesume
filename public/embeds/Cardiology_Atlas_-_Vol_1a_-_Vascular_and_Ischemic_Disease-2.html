@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiology Atlas · Vol. 1a — Vascular &amp; Ischemic Disease</title>
+<style>
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg: #0b0f14;
+  --bg-alt: #0f151c;
+  --surface: #131a22;
+  --surface-2: #1a222c;
+  --border: #263140;
+  --border-soft: #1d2731;
+  --text: #eef2f6;
+  --text-dim: #b9c4d0;
+  --text-mute: #8695a7;
+  --accent-htn: #ff8a65;
+  --accent-lipid: #ffd54f;
+  --accent-cad: #ef5350;
+  --accent-pad: #4fc3f7;
+  --accent: #ef5350;
+  --danger: #ff5252;
+  --warn: #ffb74d;
+  --good: #66bb6a;
+  --info: #4fc3f7;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --radius: 14px;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #f7f5f1;
+  --bg-alt: #f0ede7;
+  --surface: #ffffff;
+  --surface-2: #f2efe9;
+  --border: #ddd7cb;
+  --border-soft: #e7e2d8;
+  --text: #201d19;
+  --text-dim: #4a453e;
+  --text-mute: #726c62;
+  --accent-htn: #c85a2e;
+  --accent-lipid: #a67c00;
+  --accent-cad: #b3261e;
+  --accent-pad: #0d6d8f;
+  --accent: #b3261e;
+  --danger: #b3261e;
+  --warn: #a25b00;
+  --good: #2e7d32;
+  --info: #0d6d8f;
+  --shadow: 0 8px 24px rgba(60,50,30,0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s ease, color .25s ease;
+}
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0 0 .5em; }
+p { margin: 0 0 1em; color: var(--text-dim); }
+small, .mono { font-family: var(--font-mono); }
+a { color: inherit; }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; line-height: 1.35; min-width: 0; flex: 1 1 auto; }
+.brand .kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 2px; }
+.brand .title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: break-word; word-break: break-word; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+.navselect, .themebtn {
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 12px; cursor: pointer;
+}
+.themebtn { padding: 9px 11px; display:flex; align-items:center; justify-content:center; }
+
+main { max-width: 880px; margin: 0 auto; padding: 28px 20px 120px; }
+
+.section {
+  scroll-margin-top: 78px;
+  padding-top: 46px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 46px;
+}
+.section:first-of-type { border-top: none; margin-top: 0; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--sec-accent, var(--accent)); margin-bottom: 10px;
+}
+.section-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sec-accent, var(--accent)); }
+.section h2.section-title { font-size: 30px; margin-bottom: 6px; }
+.section .section-sub { color: var(--text-mute); font-size: 15.5px; margin-bottom: 28px; max-width: 62ch; }
+
+/* Section accent scoping */
+#htn { --sec-accent: var(--accent-htn); }
+#lipid { --sec-accent: var(--accent-lipid); }
+#cad { --sec-accent: var(--accent-cad); }
+#pad { --sec-accent: var(--accent-pad); }
+
+h3.sub-title {
+  font-size: 21px; margin-top: 40px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+h3.sub-title::before {
+  content: ''; width: 4px; height: 20px; border-radius: 2px;
+  background: var(--sec-accent, var(--accent)); display: inline-block;
+}
+h4.micro-title { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); margin: 22px 0 10px; }
+
+/* ============================================================
+   CARDS / CALLOUTS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 18px 0;
+  box-shadow: var(--shadow);
+}
+.diagram-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin: 20px 0 26px; box-shadow: var(--shadow); }
+.diagram-card svg { display:block; width: 100%; height: auto; }
+.diagram-caption { font-size: 13.5px; color: var(--text-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+
+.callout {
+  border-left: 4px solid var(--sec-accent, var(--accent));
+  background: color-mix(in srgb, var(--sec-accent, var(--accent)) 10%, var(--surface));
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 18px 0;
+}
+.callout .callout-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--sec-accent, var(--accent)); margin-bottom: 6px; display:block; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+.callout.danger .callout-label { color: var(--danger); }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); }
+.callout.warn .callout-label { color: var(--warn); }
+.callout.pearl { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--surface)); }
+.callout.pearl .callout-label { color: var(--good); }
+.callout.stat { border-left-color: var(--info); background: color-mix(in srgb, var(--info) 10%, var(--surface)); }
+.callout.stat .callout-label { color: var(--info); }
+
+.pearl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+@media (min-width: 640px) { .pearl-grid.two { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+thead th { background: var(--surface-2); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+td.mono, th.mono { font-family: var(--font-mono); font-size: 13.5px; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; }
+.badge.b-normal { background: color-mix(in srgb, var(--good) 22%, transparent); color: var(--good); }
+.badge.b-elevated { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.badge.b-stage1 { background: color-mix(in srgb, var(--accent-htn) 24%, transparent); color: var(--accent-htn); }
+.badge.b-stage2 { background: color-mix(in srgb, var(--danger) 24%, transparent); color: var(--danger); }
+
+/* ============================================================
+   ALGORITHM / FLOW STEPS (fallback non-SVG flow lists)
+   ============================================================ */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+.flow-step { position: relative; padding: 14px 18px 14px 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+.flow-step::before {
+  counter-increment: flowstep; content: counter(flowstep);
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sec-accent, var(--accent)); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow { counter-reset: flowstep; }
+.flow-step .step-title { font-weight: 700; margin-bottom: 2px; }
+.flow-step .step-body { color: var(--text-dim); font-size: 15px; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.divider-label { display: flex; align-items: center; gap: 12px; margin: 34px 0 20px; color: var(--text-mute); font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+ul.clean { margin: 0 0 1em; padding-left: 1.2em; color: var(--text-dim); }
+ul.clean li { margin-bottom: 6px; }
+ul.clean li::marker { color: var(--sec-accent, var(--accent)); }
+
+.hero {
+  padding: 30px 0 10px;
+}
+.hero .kicker { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 14px; }
+.hero h1 { font-size: 38px; line-height: 1.08; max-width: 16ch; }
+.hero p.lede { font-size: 17.5px; color: var(--text-dim); max-width: 60ch; margin-top: 14px; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+@media (min-width: 560px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-card { display: block; text-decoration: none; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); transition: transform .15s ease, border-color .15s ease; }
+.toc-card:hover { transform: translateY(-2px); border-color: var(--tc-accent); }
+.toc-card .n { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--tc-accent); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.toc-card .t { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin-top: 6px; overflow-wrap: break-word; }
+.toc-card .d { font-size: 13.5px; color: var(--text-mute); line-height: 1.5; margin-top: 6px; }
+
+footer.atlas-footer { max-width: 880px; margin: 60px auto 40px; padding: 0 20px; color: var(--text-mute); font-size: 13px; border-top: 1px solid var(--border-soft); padding-top: 22px; }
+
+/* Verify-before-relying tag used across atlases */
+.verify-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-mute); border: 1px dashed var(--border); border-radius: 999px; padding: 3px 10px; margin-left: 8px; }
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 30px; }
+  .section h2.section-title { font-size: 25px; }
+  main { padding: 22px 14px 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="kicker">Cardiology Atlas</span>
+    <span class="title">Vol. 1a — Vascular &amp; Ischemic Disease</span>
+  </div>
+  <div class="topbar-controls">
+    <select class="navselect" id="navSelect" aria-label="Jump to section">
+      <option value="">Jump to…</option>
+      <option value="#htn">Hypertension</option>
+      <option value="#lipid">Hyperlipidemia</option>
+      <option value="#cad">CAD → ACS Spectrum</option>
+      <option value="#pad">PAD &amp; Aortic Aneurysm/Dissection</option>
+    </select>
+    <button class="themebtn" id="themeToggle" aria-label="Toggle theme">◐</button>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO / TOC -->
+<section class="hero">
+  <div class="kicker">Master-Depth Reference · Pathophysiology &amp; Progression</div>
+  <h1>Vascular &amp; Ischemic Disease</h1>
+  <p class="lede">Pathophysiology diagrams, disease-progression algorithms, and bedside pearls for hypertension, hyperlipidemia, the CAD→ACS spectrum, and PAD/aortic aneurysm-dissection — built to current 2025–2026 ACC/AHA guidance.</p>
+  <div class="toc-grid">
+    <a class="toc-card" style="--tc-accent: var(--accent-htn)" href="#htn">
+      <div class="n">01</div><div class="t">Hypertension</div>
+      <div class="d">RAAS, sympathetic drive, vascular remodeling, end-organ progression</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-lipid)" href="#lipid">
+      <div class="n">02</div><div class="t">Hyperlipidemia</div>
+      <div class="d">Lipoprotein pathways, atherogenesis, 2026 LDL-C goals</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-cad)" href="#cad">
+      <div class="n">03</div><div class="t">CAD → ACS Spectrum</div>
+      <div class="d">Plaque biology, stable angina to STEMI, 2025 ACS guideline</div>
+    </a>
+    <a class="toc-card" style="--tc-accent: var(--accent-pad)" href="#pad">
+      <div class="n">04</div><div class="t">PAD &amp; Aortic Aneurysm/Dissection</div>
+      <div class="d">Limb ischemia, AAA wall stress, dissection classification</div>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION PLACEHOLDER: HTN -->
+
+<section class="section" id="htn">
+  <div class="section-eyebrow"><span class="dot"></span>01 / Vascular &amp; Ischemic Disease</div>
+  <h2 class="section-title">Hypertension</h2>
+  <p class="section-sub">The most prevalent, modifiable driver of cardiovascular and renal disease worldwide — mechanism, staging, and the 2025 ACC/AHA reframing of who gets treated and how aggressively.</p>
+
+  <div class="callout stat">
+    <span class="callout-label">Burden</span>
+    <p>Hypertension affects roughly 46–50% of US adults, yet only about 23% of those with hypertension are controlled to goal. Left unaddressed, projections estimate 162 million US adults will have hypertension by 2060. <span class="verify-tag">verify before citing exactly</span></p>
+  </div>
+
+  <h3 class="sub-title">Pathophysiology: RAAS &amp; Sympathetic Drive</h3>
+  <p>Chronic hypertension is rarely a single-pathway problem — it's the net result of renin-angiotensin-aldosterone system (RAAS) activation, sympathetic overactivity, and volume handling converging on the same endpoint: increased peripheral resistance and/or intravascular volume.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 940 730" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_htn_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_htn_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_htn_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_htn_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="260" height="54" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="150.0" y="42.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Decreased renal</text>
+<text x="150.0" y="59.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">perfusion pressure</text>
+<rect x="300" y="20" width="300" height="54" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="450.0" y="42.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Increased sympathetic tone</text>
+<text x="450.0" y="59.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(stress, obesity, high HR)</text>
+<rect x="620" y="20" width="300" height="54" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="770.0" y="42.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Excess Na+ intake / retention</text>
+<text x="770.0" y="59.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(high salt diet, CKD)</text>
+<rect x="120" y="124" width="340" height="58" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="290.0" y="148.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Juxtaglomerular cells</text>
+<text x="290.0" y="165.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">release RENIN</text>
+<line x1="150" y1="74" x2="220" y2="124" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="450" y1="74" x2="320" y2="124" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<rect x="304.08" y="99" width="81.84" height="16" fill="var(--bg)" opacity="0.92"/><text x="345" y="111.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase; letter-spacing:.04em">beta-1 stim.</text>
+<rect x="40" y="228" width="220" height="54" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="150.0" y="250.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Angiotensinogen</text>
+<text x="150.0" y="267.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(hepatic synthesis)</text>
+<rect x="300" y="228" width="220" height="54" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="410.0" y="246" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--text)" font-family="Inter, sans-serif" style="text-transform:uppercase">peptide</text>
+<text x="410.0" y="267.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ANGIOTENSIN I</text>
+<line x1="150" y1="182" x2="150" y2="228" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="290" y1="182" x2="150" y2="228" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="260" y1="255" x2="300" y2="255" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<rect x="300" y="328" width="220" height="50" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="410.0" y="348.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ACE</text>
+<text x="410.0" y="365.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(pulmonary endothelium)</text>
+<rect x="300" y="422" width="220" height="54" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="2.2"/>
+<text x="410.0" y="440" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--text)" font-family="Inter, sans-serif" style="text-transform:uppercase">central mediator</text>
+<text x="410.0" y="461.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ANGIOTENSIN II</text>
+<line x1="410" y1="282" x2="410" y2="328" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="410" y1="378" x2="410" y2="422" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<rect x="20" y="520" width="205" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="122.5" y="548.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Direct arteriolar</text>
+<text x="122.5" y="565.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">vasoconstriction</text>
+<rect x="245" y="520" width="205" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="347.5" y="548.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Aldosterone (adrenal cortex)</text>
+<text x="347.5" y="565.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; Na+/H2O retention</text>
+<rect x="470" y="520" width="205" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="572.5" y="548.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ADH (posterior pituitary)</text>
+<text x="572.5" y="565.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; free water retention</text>
+<rect x="695" y="520" width="225" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="807.5" y="548.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Vascular smooth muscle</text>
+<text x="807.5" y="565.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">hypertrophy (remodeling)</text>
+<path d="M410,476 Q269.6246095697963,521.7247171841213 122,520" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="410" y1="476" x2="347" y2="520" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<path d="M410,476 Q484.7093803992798,521.1609176208335 572,520" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<path d="M410,476 Q605.856238224935,521.853941470472 807,520" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<rect x="60" y="628" width="320" height="44" rx="12" fill="var(--surface-2)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="220.0" y="646.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">INCREASED PERIPHERAL</text>
+<text x="220.0" y="661.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VASCULAR RESISTANCE</text>
+<rect x="500" y="628" width="320" height="44" rx="12" fill="var(--surface-2)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="660.0" y="646.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">INCREASED INTRAVASCULAR</text>
+<text x="660.0" y="661.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VOLUME</text>
+<line x1="122" y1="586" x2="150" y2="628" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<path d="M807,586 Q776.5424719749353,634.0165490909374 720,628" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<path d="M347,586 Q445.7616790186953,646.2443421194737 560,628" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<line x1="572" y1="586" x2="660" y2="628" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_patho)"/>
+<rect x="290" y="708" width="360" height="46" rx="12" fill="var(--accent-htn)" opacity="0.16" stroke="var(--accent-htn)" stroke-width="2"/>
+<text x="470" y="737" text-anchor="middle" font-size="15" font-weight="800" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="letter-spacing:.03em">INCREASED ARTERIAL BLOOD PRESSURE</text>
+<line x1="220" y1="672" x2="420" y2="708" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_htn_patho)"/>
+<line x1="660" y1="672" x2="530" y2="708" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_htn_patho)"/>
+<rect x="700" y="230" width="220" height="86" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6" stroke-dasharray="5,4"/>
+<text x="810.0" y="259.9" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--good)" font-family="Inter, sans-serif">Counter-regulatory:</text>
+<text x="810.0" y="277.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--good)" font-family="Inter, sans-serif">ANP / BNP (atrial &amp;</text>
+<text x="810.0" y="294.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--good)" font-family="Inter, sans-serif">ventricular stretch)</text>
+<text x="810" y="330" text-anchor="middle" font-size="10.2" font-weight="600" fill="var(--good)" font-family="Inter, sans-serif">natriuresis - vasodilation - lower renin</text>
+<path d="M700,270 Q636.7530169119028,380.15928980460046 530,449" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowGood_htn_patho)" stroke-dasharray="4,3"/>
+</svg>
+    <div class="diagram-caption">RAAS cascade from renal hypoperfusion through angiotensin II's four downstream effects, with ANP/BNP shown as the physiologic counter-regulatory brake.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Pearl</span>
+    <p>Angiotensin II does double duty: it's both an acute vasoconstrictor <em>and</em> a chronic growth factor. That's why ACEi/ARBs don't just lower pressure acutely — they also blunt the vascular and myocardial remodeling that drives long-term target-organ damage, which is part of why they're preferred in diabetic nephropathy and HFrEF independent of their BP-lowering effect.</p>
+  </div>
+
+  <h4 class="micro-title">Primary vs. Secondary Hypertension</h4>
+  <p>~90–95% of hypertension is primary (essential) — polygenic, related to age, salt sensitivity, obesity, and sympathetic/RAAS tone. Suspect secondary causes with: onset before age 30 or after 55, resistant hypertension (uncontrolled on 3+ agents including a diuretic), abrupt worsening of previously controlled BP, or specific clinical clues below.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Cause</th><th>Clinical clue</th><th>Screening test</th></tr></thead>
+      <tbody>
+        <tr><td>Primary aldosteronism</td><td>Hypokalemia, resistant HTN, adrenal incidentaloma — most common identifiable secondary cause</td><td class="mono">Plasma aldosterone/renin ratio</td></tr>
+        <tr><td>Renal artery stenosis</td><td>Abdominal bruit, flash pulmonary edema, AKI after ACEi/ARB initiation</td><td class="mono">Renal duplex / MRA</td></tr>
+        <tr><td>Pheochromocytoma</td><td>Paroxysmal headache, palpitations, diaphoresis (classic triad)</td><td class="mono">Plasma/urine metanephrines</td></tr>
+        <tr><td>Obstructive sleep apnea</td><td>Obesity, snoring, resistant nocturnal/morning HTN, non-dipping pattern</td><td class="mono">Polysomnography</td></tr>
+        <tr><td>Cushing syndrome</td><td>Central obesity, striae, proximal weakness, glucose intolerance</td><td class="mono">Overnight dexamethasone suppression</td></tr>
+        <tr><td>Coarctation of the aorta</td><td>Young patient, BP differential arm vs. leg, radial-femoral delay</td><td class="mono">Echo / CTA</td></tr>
+        <tr><td>Drug-induced</td><td>NSAIDs, decongestants, stimulants, OCPs, licorice, calcineurin inhibitors</td><td class="mono">Medication reconciliation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-title">Classification &amp; Risk-Based Treatment</h3>
+  <p>The 2025 ACC/AHA guideline retired the 2017 document but kept the same four-tier BP framework. What changed is the risk model gating <em>who</em> gets pharmacologic therapy at the lower end of the range.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Systolic</th><th>Diastolic</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-normal">Normal</span></td><td class="mono">&lt;120</td><td class="mono">and &lt;80</td></tr>
+        <tr><td><span class="badge b-elevated">Elevated</span></td><td class="mono">120–129</td><td class="mono">and &lt;80</td></tr>
+        <tr><td><span class="badge b-stage1">Stage 1</span></td><td class="mono">130–139</td><td class="mono">or 80–89</td></tr>
+        <tr><td><span class="badge b-stage2">Stage 2</span></td><td class="mono">≥140</td><td class="mono">or ≥90</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">What's new in 2025</span>
+    <p>The Pooled Cohort Equations are out; the PREVENT equations are in for estimating 10-year CVD risk, and the treatment-initiation threshold moved from ≥10% (PCE) to ≥7.5% (PREVENT) — reflecting evidence that PCE meaningfully overestimated risk in contemporary cohorts. Practically: Stage 1 hypertension (130–139/80–89) now gets pharmacologic therapy if PREVENT 10-year risk is ≥7.5%, or if the patient already has clinical CVD, diabetes, or CKD — otherwise a 3–6 month lifestyle trial comes first. Stage 2 hypertension gets medication regardless of calculated risk. The SBP goal remains &lt;130 mmHg, with new encouragement (based on additional trial evidence since SPRINT) to push toward &lt;120 mmHg where tolerated. <span class="verify-tag">confirm current version before teaching</span></p>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Out-of-office confirmation</span>
+    <p>The 2025 guideline leans further into home BP monitoring (HBPM) over ambulatory monitoring (ABPM) for diagnosis and titration — HBPM correlates with outcomes, is more reproducible, and is far easier to implement in practice. Don't anchor to a single elevated office reading.</p>
+  </div>
+
+  <h3 class="sub-title">Progression &amp; End-Organ Damage Algorithm</h3>
+  <p>Two very different clinical problems both sit under "severe hypertension" — the chronic, cumulative organ damage of sustained stage 2 disease, and the acute decompensation of a hypertensive crisis. They are staged and managed completely differently.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 960 760" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_htn_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_htn_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_htn_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_htn_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="220" height="72" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="130.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">NORMAL</text>
+<text x="130.0" y="67.9" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SBP &lt;120 and DBP &lt;80</text>
+<rect x="250" y="20" width="220" height="72" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="360.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--warn)" font-family="Inter, sans-serif" style="text-transform:uppercase">ELEVATED</text>
+<text x="360.0" y="67.9" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SBP 120-129 and DBP &lt;80</text>
+<rect x="480" y="20" width="220" height="72" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="590.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 1</text>
+<text x="590.0" y="67.9" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SBP 130-139 or DBP 80-89</text>
+<rect x="710" y="20" width="220" height="72" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="820.0" y="38" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">STAGE 2</text>
+<text x="820.0" y="67.9" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">SBP &gt;=140 or DBP &gt;=90</text>
+<line x1="240" y1="56" x2="250" y2="56" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<line x1="470" y1="56" x2="480" y2="56" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<line x1="700" y1="56" x2="710" y2="56" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<text x="480" y="112" text-anchor="middle" font-size="11" fill="var(--text-mute)" font-family="Inter, sans-serif">2025 ACC/AHA categories -- same 4-tier framework as 2017; therapy now gated by PREVENT 10-yr CVD risk, not just stage</text>
+<rect x="600" y="148" width="340" height="54" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="770.0" y="179.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Acute severe rise: BP &gt; 180/120 mmHg?</text>
+<line x1="820" y1="92" x2="770" y2="148" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="240" y="236" width="300" height="50" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="390.0" y="256.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No -- continue guideline-directed</text>
+<text x="390.0" y="273.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">chronic outpatient management</text>
+<line x1="650" y1="202" x2="450" y2="236" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="553.18" y="213" width="13.64" height="16" fill="var(--bg)" opacity="0.92"/><text x="560" y="225.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase; letter-spacing:.04em">no</text>
+<rect x="600" y="236" width="190" height="84" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="695.0" y="266.8" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No acute target-organ</text>
+<text x="695.0" y="281.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">damage present</text>
+<text x="695.0" y="296.3" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; HYPERTENSIVE URGENCY</text>
+<rect x="810" y="236" width="150" height="84" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="885.0" y="267.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Acute target-organ</text>
+<text x="885.0" y="281.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">damage present</text>
+<text x="885.0" y="295.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; HYPERTENSIVE EMERGENCY</text>
+<line x1="750" y1="202" x2="695" y2="236" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<line x1="850" y1="202" x2="880" y2="236" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="859.77" y="213" width="20.46" height="16" fill="var(--bg)" opacity="0.92"/><text x="870" y="225.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase; letter-spacing:.04em">yes</text>
+<rect x="600" y="340" width="190" height="64" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="695.0" y="361.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Oral agents; lower BP</text>
+<text x="695.0" y="375.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">gradually over 24-48h,</text>
+<text x="695.0" y="389.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">outpatient or obs unit</text>
+<rect x="810" y="340" width="150" height="64" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="885.0" y="361.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">IV titratable therapy, ICU;</text>
+<text x="885.0" y="375.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reduce MAP ~10-20% in</text>
+<text x="885.0" y="388.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">1st hour (not to normal)</text>
+<line x1="695" y1="320" x2="695" y2="340" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<line x1="885" y1="320" x2="885" y2="340" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<line x1="20" y1="430" x2="940" y2="430" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="452" font-size="11.5" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Chronic, sustained hypertension -- end-organ remodeling</text>
+<rect x="330" y="470" width="300" height="46" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="480.0" y="497.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Sustained arterial pressure &amp; stiffness</text>
+<path d="M240,261 Q351.7613682834203,341.18507691221413 400,470" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="20" y="550" width="190" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="115.0" y="568" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Heart</text>
+<text x="115.0" y="636.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Concentric LVH -&gt; diastolic dysfunction -&gt; HFpEF; also accelerates CAD</text>
+<path d="M480,516 Q304.6107688959344,609.3361955004727 115.0,550" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="210" y="550" width="190" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="305.0" y="568" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Brain</text>
+<text x="305.0" y="636.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lipohyalinosis of penetrating arteries -&gt; lacunar stroke, vascular dementia</text>
+<path d="M480,516 Q401.0823782587312,577.1740057434693 305.0,550" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="400" y="550" width="190" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="495.0" y="568" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Kidney</text>
+<text x="495.0" y="636.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Nephrosclerosis -&gt; reduced GFR -&gt; CKD; CKD itself worsens HTN (bidirectional)</text>
+<path d="M480,516 Q499.6989040209724,527.6181305789828 495.0,550" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="590" y="550" width="190" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="685.0" y="568" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Eyes</text>
+<text x="685.0" y="636.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hypertensive retinopathy: AV nicking, flame hemorrhages, papilledema if severe</text>
+<path d="M480,516 Q579.5003263787133,551.0862674224636 685.0,550" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+<rect x="760" y="550" width="180" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="850.0" y="568" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-htn)" font-family="Inter, sans-serif" style="text-transform:uppercase">Aorta / PAD</text>
+<text x="850.0" y="636.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Accelerated atherosclerosis, aortic wall stress -&gt; aneurysm &amp; dissection risk</text>
+<path d="M480,516 Q660.7297032594768,579.470876293929 850.0,550" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_htn_algo)"/>
+</svg>
+    <div class="diagram-caption">Left: the four-tier staging framework. Right: acute severe elevation (&gt;180/120) branches into urgency vs. emergency based on acute target-organ damage. Bottom: the chronic remodeling pathway across five organ systems.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Urgency vs. emergency — don't blur this line</span>
+    <p><strong>Hypertensive urgency:</strong> severe BP elevation, no acute end-organ damage. Oral agents, BP lowered gradually over 24–48 hours, often manageable as an outpatient. Rapid ED-based IV correction is <em>not</em> indicated and can itself cause harm (watershed ischemia).</p>
+    <p><strong>Hypertensive emergency:</strong> severe BP elevation <em>with</em> acute damage — encephalopathy, ICH, acute pulmonary edema, ACS, aortic dissection, AKI, or eclampsia. IV titratable agents, ICU-level monitoring. General target is ~10–20% MAP reduction in the first hour (not to normal) — the major exceptions are aortic dissection (aggressive, rapid HR &lt;60 and SBP 100–120 within ~20 minutes) and acute ischemic stroke (permissive, more conservative thresholds to protect penumbral perfusion).</p>
+  </div>
+
+  <h4 class="micro-title">First-Line Pharmacotherapy</h4>
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Thiazide-type diuretics</span><p>Chlorthalidone favored over HCTZ in most outcome comparisons given longer half-life and better 24-hour coverage.</p></div>
+    <div class="callout"><span class="callout-label">Long-acting dihydropyridine CCB</span><p>Amlodipine — well tolerated, effective across most demographics including Black patients and older adults.</p></div>
+    <div class="callout"><span class="callout-label">ACE inhibitor / ARB</span><p>Preferred with diabetes, CKD with proteinuria, or HFrEF — added RAAS-remodeling benefit beyond BP control.</p></div>
+    <div class="callout"><span class="callout-label">Combination first</span><p>Stage 2 disease often warrants starting two first-line agents simultaneously rather than sequential titration, given the larger gap to goal.</p></div>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: LIPID -->
+
+<section class="section" id="lipid">
+  <div class="section-eyebrow"><span class="dot"></span>02 / Vascular &amp; Ischemic Disease</div>
+  <h2 class="section-title">Hyperlipidemia</h2>
+  <p class="section-sub">Lipoprotein trafficking, where it goes wrong, and the newly restored LDL-C treatment goals from the 2026 ACC/AHA/Multisociety Dyslipidemia Guideline.</p>
+
+  <h3 class="sub-title">Lipoprotein Pathways</h3>
+  <p>Two parallel systems handle dietary vs. hepatically-synthesized lipid, converging on LDL as the final atherogenic particle — with HDL running a separate, protective reverse-transport circuit.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_lipid_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_lipid_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_lipid_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_lipid_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="26" font-size="12" font-weight="700" fill="var(--accent-lipid)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.07em">Exogenous pathway (dietary)</text>
+<rect x="20" y="40" width="190" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="115.0" y="64.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Dietary fat + cholesterol</text>
+<text x="115.0" y="81.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(small intestine)</text>
+<rect x="240" y="40" width="190" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="335.0" y="64.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Chylomicrons</text>
+<text x="335.0" y="81.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(TG-rich)</text>
+<rect x="460" y="40" width="220" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="570.0" y="64.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Peripheral tissue lipoprotein</text>
+<text x="570.0" y="81.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">lipase strips TG -&gt; FFA</text>
+<rect x="710" y="40" width="220" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="820.0" y="64.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Chylomicron remnants</text>
+<text x="820.0" y="81.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cleared by liver (ApoE)</text>
+<line x1="210" y1="69" x2="240" y2="69" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<line x1="430" y1="69" x2="460" y2="69" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<line x1="680" y1="69" x2="710" y2="69" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<text x="20" y="146" font-size="12" font-weight="700" fill="var(--accent-lipid)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.07em">Endogenous pathway (hepatic)</text>
+<rect x="20" y="160" width="180" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="110.0" y="184.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Liver synthesizes</text>
+<text x="110.0" y="201.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VLDL (TG-rich)</text>
+<rect x="230" y="160" width="180" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="320.0" y="184.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Peripheral LPL strips TG</text>
+<text x="320.0" y="201.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; IDL</text>
+<rect x="440" y="160" width="180" height="58" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="530.0" y="184.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Hepatic lipase further</text>
+<text x="530.0" y="201.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">remodels IDL -&gt; LDL</text>
+<rect x="650" y="160" width="280" height="58" rx="12" fill="var(--surface)" stroke="var(--accent-lipid)" stroke-width="1.6"/>
+<text x="790.0" y="184.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LDL delivers cholesterol via</text>
+<text x="790.0" y="201.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LDL-receptor-mediated endocytosis</text>
+<line x1="200" y1="189" x2="230" y2="189" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<line x1="410" y1="189" x2="440" y2="189" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<line x1="620" y1="189" x2="650" y2="189" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)"/>
+<rect x="650" y="254" width="280" height="60" rx="12" fill="var(--surface-2)" stroke="var(--accent-lipid)" stroke-width="1.6"/>
+<text x="790.0" y="273.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Statins inhibit HMG-CoA reductase -&gt;</text>
+<text x="790.0" y="287.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">fewer hepatocyte cholesterol synthesis</text>
+<text x="790.0" y="301.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; upregulated LDL receptors -&gt; lower serum LDL-C</text>
+<line x1="790" y1="218" x2="790" y2="254" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_lipid_patho)" stroke-dasharray="4,3"/>
+<rect x="650" y="344" width="280" height="70" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="790.0" y="361.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Excess circulating LDL:</text>
+<text x="790.0" y="375.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">oxidized/modified LDL crosses</text>
+<text x="790.0" y="389.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">dysfunctional endothelium into</text>
+<text x="790.0" y="403.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">the arterial intima -&gt; atherogenesis</text>
+<line x1="790" y1="278" x2="790" y2="344" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_lipid_patho)"/>
+<line x1="20" y1="440" x2="940" y2="440" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="462" font-size="12" font-weight="700" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.07em">Reverse cholesterol transport (HDL, protective)</text>
+<rect x="20" y="478" width="240" height="66" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="140.0" y="500.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Nascent HDL (liver/intestine)</text>
+<text x="140.0" y="514.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">accepts free cholesterol from</text>
+<text x="140.0" y="528.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">peripheral tissues via ABCA1</text>
+<rect x="300" y="478" width="240" height="66" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="420.0" y="500.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LCAT esterifies cholesterol;</text>
+<text x="420.0" y="514.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">mature HDL enlarges,</text>
+<text x="420.0" y="528.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">cholesterol core-loaded</text>
+<rect x="580" y="478" width="360" height="66" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="760.0" y="500.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Delivered to liver directly (SR-B1) or</text>
+<text x="760.0" y="514.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">transferred to VLDL/LDL via CETP,</text>
+<text x="760.0" y="528.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">then cleared hepatically -- net cholesterol efflux</text>
+<line x1="260" y1="511" x2="300" y2="511" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowGood_lipid_patho)"/>
+<line x1="540" y1="511" x2="580" y2="511" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowGood_lipid_patho)"/>
+</svg>
+    <div class="diagram-caption">Exogenous (dietary/chylomicron) and endogenous (hepatic/VLDL) pathways both terminate in LDL particle formation; statins act by upregulating hepatic LDL receptors. HDL reverse cholesterol transport runs in parallel as the protective counterweight.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Pearl</span>
+    <p>LDL-C is a calculated (Friedewald) or directly measured surrogate for the number of atherogenic particles, not a direct count. In patients with high triglycerides, diabetes, or low achieved LDL-C, ApoB (one molecule per atherogenic particle) is a more accurate risk marker than LDL-C alone — this is why the 2026 guideline elevates ApoB testing once LDL-C/non-HDL-C goals are met.</p>
+  </div>
+
+  <h3 class="sub-title">2026 LDL-C Treatment Goals</h3>
+  <p>The 2018 cholesterol guideline moved away from fixed LDL-C targets toward percent-reduction-only thinking. The 2026 update reverses that — absolute LDL-C goals are back, layered on top of percent-reduction guidance, using an "earlier and lower for longer" framework.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Population</th><th>LDL-C goal</th></tr></thead>
+      <tbody>
+        <tr><td>Clinical ASCVD, <strong>very high-risk</strong> (multiple events, or one event + high-risk features)</td><td class="mono">&lt; 55 mg/dL</td></tr>
+        <tr><td>Clinical ASCVD, not very high-risk</td><td class="mono">&lt; 70 mg/dL</td></tr>
+        <tr><td>Heterozygous FH, or one+ ASCVD risk factor, or subclinical atherosclerosis</td><td class="mono">&lt; 70 mg/dL</td></tr>
+        <tr><td>CAC score 1–99 AU (and &lt;75th percentile for age/sex)</td><td class="mono">&lt; 100 mg/dL</td></tr>
+        <tr><td>CAC score ≥100–299 AU or ≥75th percentile</td><td class="mono">&lt; 70 mg/dL</td></tr>
+        <tr><td>CAC score ≥1000 AU</td><td class="mono">&lt; 55 mg/dL</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px; color:var(--text-mute)">Guideline current as of March 2026 — replaces the 2018 AHA/ACC/Multisociety Blood Cholesterol Guideline. <span class="verify-tag">confirm no interim update</span></p>
+
+  <h4 class="micro-title">PREVENT 10-Year ASCVD Risk Categories</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Risk category</th><th>10-year risk</th></tr></thead>
+      <tbody>
+        <tr><td>Low</td><td class="mono">&lt; 3%</td></tr>
+        <tr><td>Borderline</td><td class="mono">3% to &lt;5%</td></tr>
+        <tr><td>Intermediate</td><td class="mono">5% to &lt;10%</td></tr>
+        <tr><td>High</td><td class="mono">≥ 10%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>PREVENT equations apply to adults 30–79 without known ASCVD, and — unlike the Pooled Cohort Equations — no longer use race as an input variable. In head-to-head comparisons, the PCE has been described as overestimating 10-year risk substantially in contemporary populations. <span class="verify-tag">verify specific overestimation figure before citing</span></p>
+
+  <h3 class="sub-title">Secondary &amp; Genetic Causes Worth Screening For</h3>
+  <div class="pearl-grid two">
+    <div class="callout warn"><span class="callout-label">Familial hypercholesterolemia clues</span><p>LDL-C ≥190 mg/dL, tendon xanthomas, corneal arcus before age 45, or a family history of premature ASCVD (men &lt;55, women &lt;65) — think heterozygous FH and consider cascade family screening.</p></div>
+    <div class="callout"><span class="callout-label">Secondary dyslipidemia</span><p>Hypothyroidism, nephrotic syndrome, poorly controlled diabetes, chronic alcohol use, and certain medications (protease inhibitors, retinoids, older beta-blockers, high-dose thiazides) can all drive acquired dyslipidemia — worth a basic metabolic/TSH check before assuming primary hyperlipidemia.</p></div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Safety: statin-associated muscle symptoms</span>
+    <p>Clinically meaningful myopathy is uncommon and rhabdomyolysis is rare with appropriately dosed statin monotherapy; most reported muscle symptoms in trials occur at similar rates to placebo (nocebo effect is substantial). True risk rises with drug-drug interactions (strong CYP3A4 inhibitors with simvastatin/lovastatin), hypothyroidism, and advanced age/frailty. Don't abandon statin therapy on symptoms alone without considering a rechallenge or alternate agent — undertreated ASCVD risk is the bigger safety problem in most of these conversations. <span class="verify-tag">verify current incidence figures before quoting to patients</span></p>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: CAD -->
+
+<section class="section" id="cad">
+  <div class="section-eyebrow"><span class="dot"></span>03 / Vascular &amp; Ischemic Disease</div>
+  <h2 class="section-title">CAD → ACS Spectrum</h2>
+  <p class="section-sub">From endothelial injury to plaque rupture to the reperfusion decision tree — reframed around the 2025 unified ACC/AHA/ACEP/NAEMSP/SCAI Acute Coronary Syndromes Guideline.</p>
+
+  <h3 class="sub-title">Atherogenesis</h3>
+  <p>The same five-step process underlies both the fixed, flow-limiting lesion of stable angina and the disrupted, thrombogenic lesion of ACS. What diverges is plaque <em>composition</em>, not just size.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_athero" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_athero" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_athero" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_athero" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="20" y="20" width="175" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="107.5" y="38" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Endothelial injury</text>
+<text x="107.5" y="106.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Shear stress, HTN, smoking, hyperglycemia -&gt; endothelial dysfunction, reduced NO</text>
+<rect x="215" y="20" width="175" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="302.5" y="38" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Lipid infiltration</text>
+<text x="302.5" y="106.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LDL (esp. small dense LDL, high ApoB) crosses into intima, becomes oxidized/modified</text>
+<rect x="410" y="20" width="175" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="497.5" y="38" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Foam cell formation</text>
+<text x="497.5" y="106.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Monocytes adhere (VCAM-1), migrate in, become macrophages, engulf oxLDL</text>
+<rect x="605" y="20" width="175" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="692.5" y="38" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Fatty streak</text>
+<text x="692.5" y="106.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Lipid-laden foam cells accumulate -&gt; earliest visible lesion, present even in youth</text>
+<rect x="800" y="20" width="175" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="887.5" y="38" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">Fibrous plaque</text>
+<text x="887.5" y="106.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Smooth muscle migration/proliferation forms fibrous cap over lipid + necrotic core</text>
+<line x1="195" y1="95" x2="215" y2="95" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_athero)"/>
+<line x1="390" y1="95" x2="410" y2="95" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_athero)"/>
+<line x1="585" y1="95" x2="605" y2="95" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_athero)"/>
+<line x1="780" y1="95" x2="800" y2="95" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowAccent_athero)"/>
+<line x1="20" y1="210" x2="940" y2="210" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="20" y="234" font-size="12" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Plaque fate diverges: stability determines clinical syndrome</text>
+<rect x="60" y="256" width="380" height="170" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="250.0" y="274" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--good)" font-family="Inter, sans-serif" style="text-transform:uppercase">STABLE / FIBROTIC PLAQUE</text>
+<text x="250.0" y="306.6" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thick fibrous cap, small lipid core,</text>
+<text x="250.0" y="322.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">abundant smooth muscle &amp; collagen</text>
+<text x="250.0" y="337.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; resists rupture</text>
+<text x="250.0" y="352.7" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="250.0" y="368.1" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Progressive luminal narrowing</text>
+<text x="250.0" y="383.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; demand ischemia with exertion</text>
+<text x="250.0" y="398.8" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; STABLE ANGINA</text>
+<rect x="520" y="256" width="400" height="170" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="720.0" y="274" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">VULNERABLE / THIN-CAP FIBROATHEROMA</text>
+<text x="720.0" y="306.6" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Thin fibrous cap (&lt;65 micrometers),</text>
+<text x="720.0" y="322.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">large necrotic lipid core, dense</text>
+<text x="720.0" y="337.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">macrophage infiltration -&gt; prone to</text>
+<text x="720.0" y="352.7" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">RUPTURE or superficial EROSION</text>
+<text x="720.0" y="368.1" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="720.0" y="383.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Exposed thrombogenic core -&gt; acute</text>
+<text x="720.0" y="398.8" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">platelet-rich thrombus -&gt; ACS</text>
+<path d="M880,170 Q790.5311377320818,195.38351205968698 720,256" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_athero)"/>
+<path d="M880,170 Q570.4101426989674,252.63244070173837 250,256" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_athero)"/>
+</svg>
+    <div class="diagram-caption">Endothelial injury → lipid infiltration → foam cell formation → fatty streak → fibrous plaque. Downstream, a stable fibrous plaque produces demand-driven stable angina; a thin-cap fibroatheroma is primed to rupture or erode into an acute thrombus.</div>
+  </div>
+
+  <div class="callout pearl">
+    <span class="callout-label">Pearl</span>
+    <p>Angiographic stenosis severity correlates poorly with rupture risk. Many MIs occur at plaques that were only mildly-to-moderately stenotic on prior imaging — it's the thin cap and lipid-rich core, not the luminal narrowing, that predicts an acute event. This is why aggressive lipid-lowering (cap stabilization) matters even for "insignificant" lesions.</p>
+  </div>
+
+  <h4 class="micro-title">Type 1 vs. Type 2 MI vs. MINOCA</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Mechanism</th></tr></thead>
+      <tbody>
+        <tr><td>Type 1 MI</td><td>Plaque rupture/erosion with thrombus — the "true" ACS this guideline targets</td></tr>
+        <tr><td>Type 2 MI</td><td>Oxygen supply-demand mismatch without acute plaque disruption (sepsis, tachyarrhythmia, severe anemia, hypotension) — troponin rises, but the treatment is the precipitant, not necessarily the coronary tree</td></tr>
+        <tr><td>MINOCA</td><td>MI with non-obstructive coronaries on angiography — consider plaque disruption without flow-limiting stenosis, coronary spasm, spontaneous dissection (SCAD, especially peripartum/young women), or microvascular dysfunction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-title">Progression Algorithm &amp; the 2025 Guideline</h3>
+  <p>The 2025 guideline is the first to unify what used to be separate STEMI (2013) and NSTE-ACS (2014) documents into one framework — reflecting that the underlying decision points (reperfusion urgency, revascularization completeness, antithrombotic strategy) are more alike than different across the spectrum.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 920" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_acs_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_acs_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_acs_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_acs_algo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<rect x="340" y="20" width="300" height="54" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="490.0" y="42.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Suspected ACS: chest pain</text>
+<text x="490.0" y="59.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">or anginal equivalent</text>
+<rect x="340" y="110" width="300" height="44" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="490.0" y="136.2" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">12-lead ECG within 10 minutes</text>
+<line x1="490" y1="74" x2="490" y2="110" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<rect x="60" y="200" width="300" height="58" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="210.0" y="224.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ST-elevation (or new LBBB /</text>
+<text x="210.0" y="241.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">posterior MI pattern) -&gt; STEMI</text>
+<rect x="620" y="200" width="300" height="58" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="770.0" y="224.5" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">No ST-elevation -&gt; obtain</text>
+<text x="770.0" y="241.8" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">high-sensitivity troponin</text>
+<line x1="430" y1="154" x2="220" y2="200" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<line x1="550" y1="154" x2="770" y2="200" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<rect x="20" y="300" width="180" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="110.0" y="326.5" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">PCI-capable center:</text>
+<text x="110.0" y="341.2" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">primary PCI, goal</text>
+<text x="110.0" y="355.9" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">door-to-balloon</text>
+<text x="110.0" y="370.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">&lt; 90 minutes</text>
+<rect x="220" y="300" width="180" height="90" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="310.0" y="320.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Non-PCI center:</text>
+<text x="310.0" y="334.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">fibrinolysis, goal</text>
+<text x="310.0" y="348.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">door-to-needle</text>
+<text x="310.0" y="362.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">&lt; 30 min, then</text>
+<text x="310.0" y="376.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">transfer for PCI</text>
+<line x1="150" y1="258" x2="110" y2="300" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_acs_algo)"/>
+<line x1="210" y1="258" x2="310" y2="300" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowDanger_acs_algo)"/>
+<rect x="620" y="300" width="300" height="60" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="770.0" y="318.8" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Troponin normal, ischemic sx</text>
+<text x="770.0" y="333.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">= Unstable Angina  |  Troponin</text>
+<text x="770.0" y="348.3" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">elevated with rise/fall = NSTEMI</text>
+<line x1="770" y1="258" x2="770" y2="300" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<rect x="620" y="398" width="300" height="50" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="770.0" y="419.2" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Risk-stratify: clinical status,</text>
+<text x="770.0" y="433.9" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">hemodynamics, arrhythmic risk</text>
+<line x1="770" y1="360" x2="770" y2="398" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<rect x="430" y="486" width="120" height="110" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="490.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">VERY HIGH</text>
+<text x="490.0" y="537.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(shock, refractory</text>
+<text x="490.0" y="550.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ischemia, arrhythmia)</text>
+<text x="490.0" y="563.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; invasive &lt;2h</text>
+<rect x="565" y="486" width="120" height="110" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="625.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">HIGH</text>
+<text x="625.0" y="537.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(GRACE &gt;140, dynamic</text>
+<text x="625.0" y="550.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ST change, trop rise)</text>
+<text x="625.0" y="563.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; invasive &lt;24h</text>
+<rect x="700" y="486" width="120" height="110" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="760.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">INTERMEDIATE</text>
+<text x="760.0" y="537.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(diabetes, CKD,</text>
+<text x="760.0" y="550.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reduced EF, recent PCI)</text>
+<text x="760.0" y="563.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; invasive 25-72h</text>
+<rect x="835" y="486" width="120" height="110" rx="12" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="895.0" y="524.9" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">LOW</text>
+<text x="895.0" y="537.7" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(no recurrent sx,</text>
+<text x="895.0" y="550.5" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">low GRACE)</text>
+<text x="895.0" y="563.3" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; selective/conservative</text>
+<path d="M770,448 Q634.7068515145265,501.6820637912481 490,486" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M770,448 Q702.0948330871586,484.53291572731564 625,486" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M770,448 Q766.2088431715783,467.31811662409956 760,486" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M770,448 Q827.9553589870217,481.949477016376 895,486" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<line x1="20" y1="636" x2="960" y2="636" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<rect x="300" y="660" width="380" height="56" rx="12" fill="var(--surface-2)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="490.0" y="684.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Reperfusion / revascularization achieved</text>
+<text x="490.0" y="699.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(2025 guideline: complete revasc. favored)</text>
+<path d="M110,390 Q304.40684468825214,479.75510424682165 420,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M310,390 Q402.03005009277297,511.985531436813 440,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M490,596 Q489.5447997803503,630.9827499313594 470,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M625,596 Q567.2953717188191,619.4611567261876 520,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M760,596 Q650.8567281868865,599.4272755840203 560,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M895,596 Q736.8991487713027,579.1367013677236 600,660" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<rect x="700" y="660" width="260" height="56" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="830.0" y="684.2" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Cardiogenic shock present:</text>
+<text x="830.0" y="698.9" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">culprit-lesion-only PCI first</text>
+<rect x="150" y="750" width="660" height="120" rx="12" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="480.0" y="768" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase">SECONDARY PREVENTION (2025 ACC/AHA ACS Guideline)</text>
+<text x="480.0" y="798.7" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DAPT (aspirin + P2Y12 inhibitor) x= 12 months default for most; individualize</text>
+<text x="480.0" y="814.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">duration by ischemic vs bleeding risk. High-intensity statin at discharge; recheck</text>
+<text x="480.0" y="829.4" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">lipid panel in 4-8 weeks and intensify if LDL-C remains &gt;= 55-70 mg/dL. Beta-blocker</text>
+<text x="480.0" y="844.8" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">+ ACEi/ARB if reduced EF. Cardiac rehabilitation referral before discharge.</text>
+<line x1="490" y1="716" x2="480" y2="750" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+<path d="M830,716 Q717.9247379459853,752.7849919875474 600,750" fill="none" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_acs_algo)"/>
+</svg>
+    <div class="diagram-caption">ECG bifurcates STEMI (immediate reperfusion) from NSTE-ACS (troponin-guided risk stratification into four invasive-timing tiers). Both pathways converge on revascularization and a shared secondary-prevention bundle — except cardiogenic shock, which gets culprit-only PCI first.</div>
+  </div>
+
+  <div class="pearl-grid two">
+    <div class="callout"><span class="callout-label">Complete revascularization</span><p>Now favored over culprit-only for most STEMI and NSTEMI patients with multivessel disease — nonculprit lesions can be treated at the index procedure or staged later, based on recent trial evidence. The exception is ACS complicated by cardiogenic shock, where culprit-only PCI remains preferred.</p></div>
+    <div class="callout"><span class="callout-label">Intracoronary imaging</span><p>Elevated from a 2021 class 2a to a class 1 recommendation for guiding PCI in complex lesions — reflecting how routine IVUS/OCT use has become.</p></div>
+    <div class="callout"><span class="callout-label">DAPT duration</span><p>Aspirin plus an oral P2Y12 inhibitor for at least 12 months remains the default for patients not at high bleeding risk; individualize shorter courses for those with elevated bleeding risk.</p></div>
+    <div class="callout"><span class="callout-label">Transfusion threshold</span><p>In ACS patients with acute or chronic anemia who are not actively bleeding, it may be reasonable to transfuse to maintain hemoglobin around 10 g/dL — a more liberal threshold than general ICU anemia management.</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-label">Presentation pearls</span>
+    <p>Women, older adults, and patients with diabetes disproportionately present with atypical or absent chest pain — dyspnea, fatigue, epigastric discomfort, or "silent" ischemia detected only on ECG/troponin. Maintain a low threshold for ECG and troponin in these groups even with vague symptoms. Cocaine-associated chest pain is its own trap: avoid unopposed beta-blockade (unopposed alpha-mediated vasospasm risk) — benzodiazepines plus nitrates plus alpha-blockade or calcium channel blockade are preferred first-line.</p>
+  </div>
+</section>
+
+
+<!-- SECTION PLACEHOLDER: PAD -->
+
+<section class="section" id="pad">
+  <div class="section-eyebrow"><span class="dot"></span>04 / Vascular &amp; Ischemic Disease</div>
+  <h2 class="section-title">PAD &amp; Aortic Aneurysm/Dissection</h2>
+  <p class="section-sub">The same atherosclerotic biology that produces CAD, applied to the limbs and the aortic wall — where the failure modes are ischemia and mechanical rupture rather than acute thrombosis.</p>
+
+  <h3 class="sub-title">Peripheral Artery Disease</h3>
+  <p>PAD is atherosclerosis by another name, staged by symptom severity and confirmed with the ankle-brachial index (ABI) — the resting ratio of ankle to brachial systolic pressure.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 640" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_pad_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_pad_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_pad_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_pad_patho" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="12.5" font-weight="700" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Clinical progression</text>
+<rect x="20" y="40" width="260" height="64" rx="12" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="150.0" y="61.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Asymptomatic atherosclerotic</text>
+<text x="150.0" y="75.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">stenosis (aortoiliac, femoropopliteal,</text>
+<text x="150.0" y="89.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">or tibial vessels)</text>
+<rect x="20" y="130" width="260" height="74" rx="12" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="150.0" y="149.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Intermittent claudication:</text>
+<text x="150.0" y="163.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">reproducible exertional pain,</text>
+<text x="150.0" y="177.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">relieved by rest (fixed O2 supply/demand</text>
+<text x="150.0" y="191.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">mismatch in muscle bed)</text>
+<rect x="20" y="230" width="260" height="74" rx="12" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="150.0" y="249.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Rest pain: perfusion insufficient</text>
+<text x="150.0" y="263.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">even at rest, worse when</text>
+<text x="150.0" y="277.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">supine/legs elevated, improves</text>
+<text x="150.0" y="291.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">with dependent positioning</text>
+<rect x="20" y="330" width="260" height="74" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="150.0" y="349.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Chronic limb-threatening</text>
+<text x="150.0" y="363.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">ischemia (CLTI): tissue loss,</text>
+<text x="150.0" y="377.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">non-healing ulcers, gangrene</text>
+<text x="150.0" y="391.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-&gt; amputation risk</text>
+<line x1="150" y1="104" x2="150" y2="130" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad_patho)"/>
+<line x1="150" y1="204" x2="150" y2="230" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad_patho)"/>
+<line x1="150" y1="304" x2="150" y2="330" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_pad_patho)"/>
+<rect x="20" y="430" width="260" height="74" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="2.2"/>
+<text x="150.0" y="450.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Acute limb ischemia (embolism or</text>
+<text x="150.0" y="463.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">in-situ thrombosis): the 6 P's --</text>
+<text x="150.0" y="477.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Pain, Pallor, Pulselessness,</text>
+<text x="150.0" y="490.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Paresthesia, Poikilothermia, Paralysis</text>
+<text x="150" y="522" text-anchor="middle" font-size="10.5" fill="var(--danger)" font-family="Inter, sans-serif" font-weight="700">SURGICAL EMERGENCY -- limb viability clock</text>
+<text x="580" y="24" font-size="12.5" font-weight="700" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Ankle-brachial index (ABI)</text>
+<rect x="580" y="50" width="380" height="74" rx="10" fill="var(--surface)" stroke="var(--text-mute)" stroke-width="1.6"/>
+<text x="600" y="80" font-size="16" font-weight="800" fill="var(--text-mute)" font-family="JetBrains Mono, monospace">&gt;1.40</text>
+<text x="950" y="96.4" text-anchor="end" font-size="11" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Noncompressible / calcified vessels (esp. diabetes, ESRD) -- ABI unreliable, pursue TBI or other imaging</text>
+<rect x="580" y="136" width="380" height="74" rx="10" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="600" y="166" font-size="16" font-weight="800" fill="var(--good)" font-family="JetBrains Mono, monospace">1.00-1.40</text>
+<text x="950" y="182.4" text-anchor="end" font-size="11" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Normal</text>
+<rect x="580" y="222" width="380" height="74" rx="10" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="600" y="252" font-size="16" font-weight="800" fill="var(--warn)" font-family="JetBrains Mono, monospace">0.91-0.99</text>
+<text x="950" y="268.4" text-anchor="end" font-size="11" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Borderline / equivocal</text>
+<rect x="580" y="308" width="380" height="74" rx="10" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="600" y="338" font-size="16" font-weight="800" fill="var(--accent-pad)" font-family="JetBrains Mono, monospace">0.41-0.90</text>
+<text x="950" y="354.4" text-anchor="end" font-size="11" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Mild-to-moderate PAD (correlates with claudication)</text>
+<rect x="580" y="394" width="380" height="74" rx="10" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="600" y="424" font-size="16" font-weight="800" fill="var(--danger)" font-family="JetBrains Mono, monospace">&lt;=0.40</text>
+<text x="950" y="440.4" text-anchor="end" font-size="11" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Severe PAD -- high risk for rest pain / tissue loss (CLTI)</text>
+</svg>
+    <div class="diagram-caption">Left: symptomatic progression from asymptomatic stenosis through claudication, rest pain, and chronic limb-threatening ischemia — with acute limb ischemia as a separate, time-critical branch. Right: ABI interpretation bands.</div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Acute limb ischemia — the 6 P's</span>
+    <p>Pain, Pallor, Pulselessness, Paresthesia, Poikilothermia, Paralysis. Paresthesia and paralysis are the late, ominous findings signaling nerve and muscle ischemia — this is a surgical emergency with a limb-viability clock measured in hours, not days. Don't wait for imaging to call vascular surgery if the exam is convincing.</p>
+  </div>
+
+  <div class="pearl-grid two">
+    <div class="callout pearl"><span class="callout-label">Medical management</span><p>High-intensity statin and antiplatelet therapy (aspirin or clopidogrel) for all symptomatic PAD, regardless of revascularization plans — this is secondary ASCVD prevention, not just a limb issue. Cilostazol can improve walking distance in claudication (contraindicated in heart failure). Supervised exercise therapy has outcomes data comparable to revascularization for claudication alone.</p></div>
+    <div class="callout warn"><span class="callout-label">ABI caveat</span><p>Diabetic and ESRD patients frequently have medial arterial calcification producing falsely elevated, noncompressible ABIs (&gt;1.40) — a normal-appearing ABI in a symptomatic diabetic patient should prompt toe-brachial index or other imaging rather than reassurance.</p></div>
+  </div>
+
+  <h3 class="sub-title">Aortic Aneurysm &amp; Dissection</h3>
+  <p>Two distinct mechanical failure modes of the aortic wall: aneurysm is a chronic dilation problem governed by Laplace's law; dissection is an acute intimal tear creating a false lumen — and the two frequently intersect, since a dissected or aneurysmal aorta is more prone to further complications.</p>
+
+  <div class="diagram-card">
+    <svg viewBox="0 0 980 760" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs>
+<marker id="arrowMute_aorta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8695a7"/>
+    </marker>
+<marker id="arrowAccent_aorta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef5350"/>
+    </marker>
+<marker id="arrowDanger_aorta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff5252"/>
+    </marker>
+<marker id="arrowGood_aorta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#66bb6a"/>
+    </marker>
+
+</defs>
+
+<text x="20" y="24" font-size="12.5" font-weight="700" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Aneurysm: Laplace-driven wall stress</text>
+<rect x="20" y="40" width="420" height="60" rx="12" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="230.0" y="66.2" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Wall tension proportional to (Pressure x Radius) / Wall thickness</text>
+<text x="230.0" y="80.9" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">-- as the aorta dilates, wall tension rises even at constant BP</text>
+<rect x="20" y="118" width="420" height="54" rx="10" fill="var(--surface)" stroke="var(--good)" stroke-width="1.6"/>
+<text x="36" y="140" font-size="14" font-weight="800" fill="var(--good)" font-family="JetBrains Mono, monospace">&lt;4.0 cm</text>
+<text x="36" y="162.3" text-anchor="start" font-size="10.5" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Rupture risk &lt;0.5%/yr -- surveillance only</text>
+<rect x="20" y="180" width="420" height="54" rx="10" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.6"/>
+<text x="36" y="202" font-size="14" font-weight="800" fill="var(--warn)" font-family="JetBrains Mono, monospace">4.0-5.4 cm</text>
+<text x="36" y="224.3" text-anchor="start" font-size="10.5" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Rupture risk ~1%/yr -- serial imaging q6-12mo</text>
+<rect x="20" y="242" width="420" height="54" rx="10" fill="var(--surface)" stroke="var(--accent-htn)" stroke-width="1.6"/>
+<text x="36" y="264" font-size="14" font-weight="800" fill="var(--accent-htn)" font-family="JetBrains Mono, monospace">5.5-5.9 cm</text>
+<text x="36" y="286.3" text-anchor="start" font-size="10.5" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Elective repair threshold (men) -- rupture risk rising sharply</text>
+<rect x="20" y="304" width="420" height="54" rx="10" fill="var(--surface)" stroke="var(--accent-cad)" stroke-width="1.6"/>
+<text x="36" y="326" font-size="14" font-weight="800" fill="var(--accent-cad)" font-family="JetBrains Mono, monospace">6.0-6.9 cm</text>
+<text x="36" y="348.3" text-anchor="start" font-size="10.5" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Rupture risk ~10%/yr if unrepaired</text>
+<rect x="20" y="366" width="420" height="54" rx="10" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.6"/>
+<text x="36" y="388" font-size="14" font-weight="800" fill="var(--danger)" font-family="JetBrains Mono, monospace">&gt;=7.0 cm</text>
+<text x="36" y="410.3" text-anchor="start" font-size="10.5" font-weight="500" fill="var(--text-dim)" font-family="Inter, sans-serif">Rupture risk &gt;20%/yr</text>
+<text x="20" y="442" font-size="10" fill="var(--text-mute)" font-family="Inter, sans-serif">Women/marfan/bicuspid valve: repair thresholds lower (~5.0 cm)</text>
+<text x="520" y="24" font-size="12.5" font-weight="700" fill="var(--accent-cad)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Aortic dissection classification</text>
+<rect x="520" y="40" width="200" height="150" rx="12" fill="var(--surface)" stroke="var(--danger)" stroke-width="2.2"/>
+<text x="620.0" y="58" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--danger)" font-family="Inter, sans-serif" style="text-transform:uppercase">STANFORD A</text>
+<text x="620.0" y="91.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Involves the ascending aorta</text>
+<text x="620.0" y="105.3" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(with or without extension)</text>
+<text x="620.0" y="119.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="620.0" y="133.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Surgical EMERGENCY --</text>
+<text x="620.0" y="147.5" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">open repair; mortality</text>
+<text x="620.0" y="161.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">rises ~1-2%/hr untreated</text>
+<rect x="740" y="40" width="200" height="150" rx="12" fill="var(--surface)" stroke="var(--accent-pad)" stroke-width="1.6"/>
+<text x="840.0" y="58" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.5" fill="var(--accent-pad)" font-family="Inter, sans-serif" style="text-transform:uppercase">STANFORD B</text>
+<text x="840.0" y="85.9" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Begins distal to left</text>
+<text x="840.0" y="99.4" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">subclavian artery, descending</text>
+<text x="840.0" y="112.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">aorta only</text>
+<text x="840.0" y="126.3" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif"></text>
+<text x="840.0" y="139.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Usually medical management</text>
+<text x="840.0" y="153.1" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">(BP/HR control) unless</text>
+<text x="840.0" y="166.6" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">malperfusion or rupture</text>
+<rect x="520" y="210" width="420" height="90" rx="12" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="730.0" y="243.8" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DeBakey I: ascending + arch + descending</text>
+<text x="730.0" y="258.6" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DeBakey II: ascending only</text>
+<text x="730.0" y="273.3" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">DeBakey III: descending only (distal to L subclavian)</text>
+<line x1="520" y1="322" x2="940" y2="322" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="520" y="344" font-size="11.5" font-weight="700" fill="var(--text-mute)" font-family="Inter, sans-serif" style="text-transform:uppercase;letter-spacing:.06em">Mechanism: intimal tear -> false lumen</text>
+<rect x="520" y="360" width="420" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="730.0" y="396.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Intimal tear (often at high shear points: root, ligamentum arteriosum)</text>
+<rect x="520" y="450" width="420" height="66" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="730.0" y="486.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Blood dissects between intima and media, creating a false lumen</text>
+<rect x="520" y="540" width="420" height="80" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="730.0" y="583.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">False lumen propagates antegrade and/or retrograde, may compress true lumen or branch vessel ostia (malperfusion)</text>
+<rect x="520" y="630" width="420" height="80" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.6"/>
+<text x="730.0" y="673.4" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)" font-family="Inter, sans-serif">Complications: aortic regurgitation, tamponade (proximal), stroke, limb/mesenteric/renal ischemia (branch involvement), rupture</text>
+<line x1="730" y1="426" x2="730" y2="450" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_aorta)"/>
+<line x1="730" y1="516" x2="730" y2="540" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_aorta)"/>
+<line x1="730" y1="606" x2="730" y2="630" stroke="var(--text-mute)" stroke-width="1.8" marker-end="url(#arrowMute_aorta)"/>
+<text x="20" y="700" font-size="11.5" fill="var(--text-mute)" font-family="Inter, sans-serif">CXR cannot reliably exclude dissection; a widened mediastinum is neither sensitive nor specific enough alone. CT angiography (or TEE if unstable) is required to rule out.</text>
+</svg>
+    <div class="diagram-caption">Left: rupture risk rises steeply with diameter, driving the ~5.5 cm elective repair threshold. Right: Stanford/DeBakey classification and the intimal-tear-to-malperfusion mechanism.</div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-label">AAA screening (USPSTF)</span>
+    <p>One-time ultrasound screening: men aged 65–75 who have ever smoked (grade B, recommended). Selective screening based on shared decision-making for men 65–75 who never smoked (grade C). Screening women who never smoked and have no family history is <em>not</em> recommended (grade D) — the harms of screening in this group outweigh the benefits. Evidence is insufficient for women 65–75 who have ever smoked or have a family history (grade I). <span class="verify-tag">confirm no interim USPSTF update</span></p>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-label">Documentation trap, revisited</span>
+    <p>As in the trauma literature: a normal or "unremarkable" CXR does not exclude dissection. A widened mediastinum is neither sensitive nor specific enough to rule in or out on its own. CT angiography (or bedside TEE in the unstable patient) is the standard — document the objective findings and imaging plan rather than a conclusory "dissection ruled out by CXR."</p>
+  </div>
+
+  <div class="callout stat">
+    <span class="callout-label">Rupture mortality</span>
+    <p>Ruptured AAA carries very high overall mortality — commonly cited figures put death before hospital arrival or during emergency repair at roughly 80% of ruptures, versus well under 5% mortality for elective repair of an unruptured aneurysm. This gap is the entire argument for screening and elective repair at threshold size. <span class="verify-tag">verify exact figures against current source before quoting</span></p>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="atlas-footer">
+  Cardiology Atlas Vol. 1a — Vascular &amp; Ischemic Disease · Built for clinical education and bedside reference. Verify thresholds and dosing against institutional protocol and current primary literature before relying on them in practice. Content reflects 2025–2026 ACC/AHA guidance current as of build date.
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cardio-atlas-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme','light'); else root.removeAttribute('data-theme');
+    localStorage.setItem('cardio-atlas-theme', next);
+  });
+  document.getElementById('navSelect').addEventListener('change', function(e){
+    var v = e.target.value;
+    if (v) { document.querySelector(v).scrollIntoView({behavior:'smooth'}); }
+    e.target.value = '';
+  });
+})();
+</script>
+</body>
+</html>
