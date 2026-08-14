@@ -572,6 +572,102 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "chest-imaging-atlas": {
+    title: "Chest Imaging Atlas — CXR & CT Interpretation",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Systematic chest radiograph and CT interpretation — lines, opacities, pneumothorax, effusions, and can't-miss findings.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/chest-imaging-atlas.html" title="Chest Imaging Atlas — CXR & CT Interpretation" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/chest-imaging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "neuro-imaging-atlas": {
+    title: "Neuro Imaging Atlas — Brain & Spine",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>CT and MRI interpretation for stroke, hemorrhage, mass effect, and spinal pathology — with decision rules.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/neuro-imaging-atlas.html" title="Neuro Imaging Atlas — Brain & Spine" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/neuro-imaging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "msk-extremities-imaging-atlas": {
+    title: "MSK & Extremities Imaging Atlas",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Fracture and joint imaging by region — views, subtle findings, and pitfalls across the extremities.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/msk-extremities-imaging-atlas.html" title="MSK & Extremities Imaging Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/msk-extremities-imaging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "abdomen-pelvis-imaging-atlas": {
+    title: "Abdomen & Pelvis Imaging Atlas",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>CT, ultrasound, and plain film interpretation for abdominal and pelvic pathology — with contrast selection guidance.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/abdomen-pelvis-imaging-atlas.html" title="Abdomen & Pelvis Imaging Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/abdomen-pelvis-imaging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "neck-softtissue-vascular-imaging-atlas": {
+    title: "Neck, Soft Tissue & Vascular Imaging Atlas",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Imaging of neck spaces, soft tissue infections, and vascular pathology — CTA, ultrasound, and red flags.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/neck-softtissue-vascular-imaging-atlas.html" title="Neck, Soft Tissue & Vascular Imaging Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/neck-softtissue-vascular-imaging-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "reading-the-defense": {
+    title: "Reading The Defense — Coverage Film Room",
+    category: "HEALTHCARE",
+    date: "August 14, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>An interactive film-room breakdown of defensive coverages, how to identify them pre-snap, and the concepts that beat them.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/reading-the-defense.html" title="Reading The Defense — Coverage Film Room" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/reading-the-defense.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "gi-physical-exam-atlas": {
     title: "GI Physical Exam Atlas — Abdominal & Rectal Exam Reference",
     category: "HEALTHCARE",
