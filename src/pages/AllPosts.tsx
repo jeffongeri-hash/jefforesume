@@ -41,11 +41,72 @@ const imgEnt = imgEntAsset.url;
 const imgObgynNew = imgObgynAsset.url;
 import imgToxicology from '@/assets/blog/toxicology.jpg';
 import imgProcedures from '@/assets/blog/procedures.jpg';
+import imgOffTheClock from '@/assets/blog/off-the-clock.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
   const blogPosts: Post[] = [
+    {
+      title: "Chest Imaging Atlas — CXR & CT Interpretation",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 14, 2026",
+      excerpt: "Systematic chest radiograph and CT interpretation — lines, opacities, pneumothorax, effusions, and cannot-miss findings.",
+      image: businessPost,
+      slug: "chest-imaging-atlas",
+      tags: ["Radiology", "Pulmonary"]
+    },
+    {
+      title: "Neuro Imaging Atlas — Brain & Spine",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 14, 2026",
+      excerpt: "CT and MRI interpretation for stroke, hemorrhage, mass effect, and spinal pathology — with decision rules.",
+      image: businessPost,
+      slug: "neuro-imaging-atlas",
+      tags: ["Radiology", "Neurology"]
+    },
+    {
+      title: "MSK & Extremities Imaging Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 14, 2026",
+      excerpt: "Fracture and joint imaging by region — views, subtle findings, and pitfalls across the extremities.",
+      image: businessPost,
+      slug: "msk-extremities-imaging-atlas",
+      tags: ["Radiology", "Musculoskeletal"]
+    },
+    {
+      title: "Abdomen & Pelvis Imaging Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 14, 2026",
+      excerpt: "CT, ultrasound, and plain film interpretation for abdominal and pelvic pathology — with contrast selection guidance.",
+      image: businessPost,
+      slug: "abdomen-pelvis-imaging-atlas",
+      tags: ["Radiology", "Gastroenterology"]
+    },
+    {
+      title: "Neck, Soft Tissue & Vascular Imaging Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 14, 2026",
+      excerpt: "Imaging of neck spaces, soft tissue infections, and vascular pathology — CTA, ultrasound, and red flags.",
+      image: businessPost,
+      slug: "neck-softtissue-vascular-imaging-atlas",
+      tags: ["Radiology", "ENT"]
+    },
+    {
+      title: "Reading The Defense — Coverage Film Room",
+      category: "HEALTHCARE",
+      subcategory: "Off the Clock",
+      date: "August 14, 2026",
+      excerpt: "An interactive film-room breakdown of defensive coverages, how to identify them pre-snap, and the concepts that beat them.",
+      image: businessPost,
+      slug: "reading-the-defense",
+      tags: ["Football", "Off the Clock"]
+    },
     {
       title: "Hematopoiesis & Cellular Atlas",
       category: "HEALTHCARE",
@@ -1342,6 +1403,14 @@ const AllPosts = () => {
     "ocular-atlas-vol6": "Ophthalmology",
     // Dermatology (add)
     "derm-er-rash-atlas": "Dermatology",
+    // Imaging
+    "chest-imaging-atlas": "Pulmonary & Critical Care",
+    "neuro-imaging-atlas": "Neurology",
+    "msk-extremities-imaging-atlas": "Musculoskeletal",
+    "abdomen-pelvis-imaging-atlas": "Gastroenterology",
+    "neck-softtissue-vascular-imaging-atlas": "ENT",
+    // Off the Clock
+    "reading-the-defense": "Off the Clock",
   };
 
   const systemOrder = [
@@ -1363,6 +1432,7 @@ const AllPosts = () => {
     "Musculoskeletal",
     "Toxicology",
     "Procedures",
+    "Off the Clock",
   ];
 
   const systemImage: Record<string, string> = {
@@ -1384,6 +1454,7 @@ const AllPosts = () => {
     "Musculoskeletal": imgMsk,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Off the Clock": imgOffTheClock,
   };
 
   const getSystem = (post: Post) => systemBySlug[post.slug] || post.subcategory || "Other";

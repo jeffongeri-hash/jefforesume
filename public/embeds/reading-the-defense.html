@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading The Defense — Coverage Film Room</title>
+<style>
+  :root{
+    --ink:#0a100b;
+    --turf:#132015;
+    --turf2:#0f1a11;
+    --panel:#101a12;
+    --line:#2a3a2c;
+    --chalk:#eef0e6;
+    --fog:#7f9482;
+    --def:#e2483f;
+    --def-soft:rgba(226,72,63,0.16);
+    --def-soft2:rgba(226,72,63,0.28);
+    --off:#f2b632;
+    --win:#6fd66a;
+    --man:#c9885a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--ink);color:var(--chalk);}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding-bottom:60px;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(111,214,106,0.06), transparent 55%),
+      var(--ink);
+  }
+  .mono{font-family:"Courier New",Courier,monospace;}
+  .display{
+    font-family:"Arial Narrow","Helvetica Neue Condensed","Segoe UI",Arial,sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+
+  header.top{
+    padding:28px 18px 18px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(111,214,106,0.05), transparent);
+  }
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.28em;
+    color:var(--win);
+    font-family:"Courier New",monospace;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:8px;height:8px;border-radius:50%;
+    background:var(--win);
+    box-shadow:0 0 8px var(--win);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  h1.pagetitle{
+    font-size:clamp(28px,7vw,42px);
+    margin:8px 0 6px;
+    line-height:0.98;
+  }
+  .sub{
+    color:var(--fog);
+    font-size:14.5px;
+    max-width:56ch;
+    line-height:1.5;
+  }
+
+  nav.tabs{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:12px 18px 14px;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(10,16,11,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .tabrow{display:flex;align-items:center;gap:10px;}
+  .tabrow-label{
+    flex:0 0 auto;
+    font-family:"Courier New",monospace;
+    font-size:9.5px;
+    letter-spacing:0.14em;
+    color:var(--fog);
+    width:88px;
+  }
+  .tabrow-items{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:2px;
+  }
+  .tabrow-items::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--panel);
+    color:var(--fog);
+    cursor:pointer;
+    font-size:13px;
+    white-space:nowrap;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .tab .num{
+    font-family:"Courier New",monospace;
+    font-weight:700;
+    color:var(--off);
+    font-size:12px;
+    border:1px solid var(--off);
+    border-radius:4px;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tab.active{
+    background:var(--def-soft);
+    border-color:var(--def);
+    color:var(--chalk);
+  }
+  .tab.active .num{background:var(--def);border-color:var(--def);color:var(--ink);}
+  .tab:hover{color:var(--chalk);}
+
+  main{max-width:920px;margin:0 auto;padding:18px;}
+
+  .shellhead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:12px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .shellhead h2{
+    font-size:26px;
+    margin:0;
+  }
+  .shelltag{
+    font-family:"Courier New",monospace;
+    font-size:11.5px;
+    color:var(--ink);
+    background:var(--off);
+    padding:4px 9px;
+    border-radius:4px;
+    font-weight:700;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+
+  .diagram-card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:linear-gradient(180deg,var(--turf),var(--turf2));
+    padding:10px 10px 4px;
+    position:relative;
+    overflow:hidden;
+  }
+  .diagram-card::before,.diagram-card::after{
+    content:"";
+    position:absolute;
+    width:18px;height:18px;
+    border-color:var(--win);
+    opacity:0.5;
+    top:8px;
+  }
+  .diagram-card::before{left:8px;border-left:2px solid;border-top:2px solid;}
+  .diagram-card::after{right:8px;border-right:2px solid;border-top:2px solid;}
+  .diagram-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:2px 4px 8px;
+    font-size:12px;
+    color:var(--fog);
+  }
+  label.toggle{
+    display:flex;align-items:center;gap:7px;
+    cursor:pointer;
+    user-select:none;
+    font-family:"Courier New",monospace;
+    font-size:11.5px;
+    color:var(--off);
+  }
+  label.toggle input{accent-color:var(--off);width:14px;height:14px;}
+  svg.field{width:100%;height:auto;display:block;}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:12px;
+    padding:8px 4px 10px;
+    font-size:10.5px;
+    color:var(--fog);
+    font-family:"Courier New",monospace;
+  }
+  .legend span{display:flex;align-items:center;gap:5px;}
+  .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+  .readout{
+    margin-top:16px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    background:var(--panel);
+  }
+  .readout .lbl{
+    font-family:"Courier New",monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    color:var(--win);
+    margin-bottom:8px;
+  }
+  .readout ul{margin:0;padding-left:18px;}
+  .readout li{margin-bottom:6px;font-size:13.5px;line-height:1.5;color:var(--chalk);}
+
+  .prose{
+    margin-top:16px;
+    font-size:14.5px;
+    line-height:1.6;
+    color:#dfe4da;
+  }
+  .prose .lbl{
+    font-family:"Courier New",monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    color:var(--def);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  .section-title{
+    font-size:12px;
+    font-family:"Courier New",monospace;
+    letter-spacing:0.18em;
+    color:var(--off);
+    margin:26px 0 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-title::after{
+    content:"";flex:1;height:1px;background:var(--line);
+  }
+
+  .beaters{display:grid;grid-template-columns:1fr;gap:10px;}
+  @media(min-width:640px){.beaters{grid-template-columns:1fr 1fr;}}
+  .beater-card{
+    border:1px solid var(--line);
+    border-left:3px solid var(--win);
+    border-radius:8px;
+    padding:12px 13px;
+    background:var(--panel);
+  }
+  .beater-card h4{margin:0 0 5px;font-size:14.5px;color:var(--win);}
+  .beater-card p{margin:0;font-size:13px;line-height:1.5;color:var(--fog);}
+
+  .formations{
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+  .formations li{
+    list-style:none;
+    border:1px solid var(--line);
+    background:var(--panel);
+    padding:7px 11px;
+    border-radius:20px;
+    font-size:12.5px;
+    color:var(--chalk);
+  }
+  .formations{padding-left:0;}
+
+  .gamenotes{
+    display:grid;grid-template-columns:1fr;gap:14px;
+  }
+  @media(min-width:640px){.gamenotes{grid-template-columns:1fr 1fr;}}
+  .platform{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 15px;
+    background:var(--panel);
+  }
+  .platform .ptitle{
+    font-family:"Courier New",monospace;
+    font-size:11.5px;
+    letter-spacing:0.1em;
+    color:var(--man);
+    margin-bottom:9px;
+    display:flex;align-items:center;gap:7px;
+  }
+  .platform .ptitle .dot{width:7px;height:7px;border-radius:50%;background:var(--man);}
+  .platform ul{margin:0;padding-left:16px;}
+  .platform li{font-size:13px;line-height:1.55;color:#dfe4da;margin-bottom:8px;}
+
+  section.idflow{
+    max-width:920px;margin:0 auto;padding:6px 18px 22px;
+  }
+  .idflow .lead{
+    color:var(--fog);font-size:13.5px;line-height:1.55;
+    max-width:62ch;margin:0 0 16px;
+  }
+  .idsteps{position:relative;padding-left:6px;}
+  .idstep{
+    display:flex;gap:14px;
+    padding-bottom:18px;
+    position:relative;
+  }
+  .idstep:not(:last-child)::before{
+    content:"";
+    position:absolute;
+    left:15px;top:34px;bottom:-2px;
+    width:1px;
+    background:var(--line);
+  }
+  .stepnum{
+    flex:0 0 auto;
+    width:31px;height:31px;
+    border-radius:50%;
+    background:var(--panel);
+    border:1.5px solid var(--win);
+    color:var(--win);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Courier New",monospace;
+    font-weight:700;font-size:13px;
+    z-index:1;
+  }
+  .stepbody h4{margin:2px 0 6px;font-size:15px;color:var(--chalk);}
+  .stepbody .read{margin:0 0 4px;font-size:13px;line-height:1.5;color:#dfe4da;}
+  .stepbody .tell{margin:0;font-size:12.5px;line-height:1.5;color:var(--off);}
+  .stepbody .tell::before{content:"→ ";opacity:0.7;}
+
+  .decoder{margin-top:6px;}
+  .decoder-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch;}
+  table.decoder-table{border-collapse:collapse;width:100%;min-width:640px;font-size:12px;}
+  table.decoder-table th{
+    text-align:left;padding:9px 12px;
+    font-family:"Courier New",monospace;font-size:10px;letter-spacing:0.08em;
+    color:var(--fog);background:var(--panel);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;
+  }
+  table.decoder-table td{
+    padding:9px 12px;border-bottom:1px solid var(--line);
+    color:#dfe4da;vertical-align:top;
+  }
+  table.decoder-table tr.decoder-row{cursor:pointer;transition:background .12s;}
+  table.decoder-table tr.decoder-row:hover{background:var(--def-soft);}
+  table.decoder-table td.covname{color:var(--win);font-weight:700;white-space:nowrap;}
+  .decoder-hint{
+    font-size:11px;color:var(--fog);margin:8px 2px 0;
+    font-family:"Courier New",monospace;
+  }
+
+  .modeswitch{
+    max-width:920px;margin:0 auto;padding:16px 18px 4px;
+    display:flex;gap:10px;
+  }
+  .modebtn{
+    flex:1;
+    display:flex;flex-direction:column;align-items:flex-start;
+    gap:2px;
+    padding:12px 16px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--panel);
+    color:var(--fog);
+    font-family:"Arial Narrow","Helvetica Neue Condensed",Arial,sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    font-size:15px;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .modebtn span{
+    font-family:"Courier New",monospace;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0;
+    font-size:10.5px;
+    color:var(--fog);
+  }
+  .modebtn.active{
+    border-color:var(--win);
+    background:rgba(111,214,106,0.08);
+    color:var(--chalk);
+  }
+  .modebtn.active span{color:var(--win);}
+
+  ol.readprog{margin:0;padding-left:20px;}
+  ol.readprog li{margin-bottom:9px;font-size:13.5px;line-height:1.55;color:var(--chalk);}
+  ol.readprog li strong{color:var(--win);font-family:"Courier New",monospace;font-size:11.5px;}
+
+  .chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+  .chip{
+    border:1px solid var(--def);
+    background:var(--def-soft);
+    color:var(--chalk);
+    padding:7px 13px;
+    border-radius:20px;
+    font-size:12.5px;
+    cursor:pointer;
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    transition:background .15s;
+  }
+  .chip:hover{background:var(--def-soft2);}
+
+  footer.note{
+    max-width:920px;margin:32px auto 0;padding:0 18px;
+    font-size:11.5px;color:var(--fog);line-height:1.6;
+    border-top:1px solid var(--line);padding-top:14px;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">FILM ROOM — PRE-SNAP &amp; PROGRESSION READS</div>
+  <h1 class="pagetitle display">Reading The Defense</h1>
+  <p class="sub">Eleven defensive shells and pressure packages with how to ID each pre-snap — plus eight offensive concepts with their read progressions, best matchups, and formation notes. Adjustments specific to College Football 27 and Madden NFL 26 throughout.</p>
+</header>
+
+<div class="modeswitch">
+  <button class="modebtn active" data-mode="defense">Defense<span>Read the coverage</span></button>
+  <button class="modebtn" data-mode="offense">Offense<span>Read your progression</span></button>
+</div>
+
+<div id="defenseSection">
+
+<section class="idflow">
+  <div class="section-title" style="margin-top:18px;">HOW TO ID THE DEFENSE — PRE-SNAP</div>
+
+  <p class="lead">Work through these five reads in order, every snap, before you ever look at a route concept. Each one narrows the possibilities — by step 4 or 5 you should know almost exactly what's coming.</p>
+
+  <div class="idsteps">
+    <div class="idstep">
+      <div class="stepnum">1</div>
+      <div class="stepbody">
+        <h4>Count the box</h4>
+        <p class="read">Count defenders within about 5 yards of the LOS, inside the tackles.</p>
+        <p class="tell">6 = light box (pass-shell likely) · 7 = balanced/base · 8+ = loaded (run support or an all-out blitz coming).</p>
+      </div>
+    </div>
+    <div class="idstep">
+      <div class="stepnum">2</div>
+      <div class="stepbody">
+        <h4>Count the safeties — find the shell</h4>
+        <p class="read">How many defensive backs are sitting deep, and how deep are they?</p>
+        <p class="tell">0-High (both under 5 yds) = Cover 0 · 1-High (one at 10–14 yds, centered) = Cover 1, Cover 3, or Fire Zone · 2-High (both split at 10–12 yds) = Cover 2, Cover 2 Man, Tampa 2, Cover 4, or Cover 6.</p>
+      </div>
+    </div>
+    <div class="idstep">
+      <div class="stepnum">3</div>
+      <div class="stepbody">
+        <h4>Read corner leverage</h4>
+        <p class="read">Are the corners pressed and square, off with a cushion, or squatting with inside leverage?</p>
+        <p class="tell">Press/tight with no help = man (Cover 0, Cover 1, Cover 2 Man) · Off, backpedaling hard at the snap = softer man · Squat, flat-footed, sinking = zone (Cover 2/3/4/6).</p>
+      </div>
+    </div>
+    <div class="idstep">
+      <div class="stepnum">4</div>
+      <div class="stepbody">
+        <h4>Check linebacker/nickel stance</h4>
+        <p class="read">Normal zone-drop depth (4–5 yds) — or "mugged," walked up tight to the LOS?</p>
+        <p class="tell">Both A-gaps mugged = Double A-Gap · Stacked on one side only = Zone Pressure/Overload · Spread evenly across the whole front = Cover 0.</p>
+      </div>
+    </div>
+    <div class="idstep">
+      <div class="stepnum">5</div>
+      <div class="stepbody">
+        <h4>Send motion to confirm</h4>
+        <p class="read">Send a receiver in motion across the formation and watch the defense react.</p>
+        <p class="tell">A defender trails him the whole way = man, confirmed — that's his guy · Defenders just bump/shift zones = zone, confirmed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="decoder">
+    <div class="section-title">QUICK DECODER — TAP A ROW TO JUMP TO IT</div>
+    <div class="decoder-scroll">
+      <table class="decoder-table">
+        <thead>
+          <tr><th>Safety Shell</th><th>CB Leverage</th><th>Box / Mug Tell</th><th>Coverage</th></tr>
+        </thead>
+        <tbody>
+          <tr class="decoder-row" onclick="window.selectTab('c0')"><td>0-High (both &lt;5 yds)</td><td>Press, no help</td><td>Balanced pressure everywhere</td><td class="covname">Cover 0</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c1')"><td>1-High (10–14 yds, centered)</td><td>Off-man, bails hard</td><td>Normal (7 in box)</td><td class="covname">Cover 1</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c3')"><td>1-High (10–14 yds, centered)</td><td>Squat, bails to a third</td><td>Normal (7 in box)</td><td class="covname">Cover 3</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('firezone')"><td>1-High (looks like Cover 3)</td><td>Squat/zone</td><td>Extra rusher, one edge or interior</td><td class="covname">Fire Zone</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c2m')"><td>2-High (split 10–12 yds)</td><td>Press/tight man</td><td>Normal</td><td class="covname">Cover 2 Man</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c2')"><td>2-High (split 10–12 yds)</td><td>Squat, inside leverage</td><td>Normal, Mike at normal depth</td><td class="covname">Cover 2</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('tampa2')"><td>2-High (looks like Cover 2)</td><td>Squat, inside leverage</td><td>Normal, but Mike cheats deeper</td><td class="covname">Tampa 2</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c4')"><td>2-High, wider (near numbers)</td><td>Soft cushion, squats</td><td>Normal</td><td class="covname">Cover 4</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('c6')"><td>2-High but asymmetric</td><td>Mixed by side</td><td>Normal, keyed to formation strength</td><td class="covname">Cover 6</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('doubleag')"><td>Neutral (~10–11 yds, undeclared)</td><td>Varies</td><td>Both A-gaps mugged</td><td class="covname">Double A-Gap</td></tr>
+          <tr class="decoder-row" onclick="window.selectTab('zonepressure')"><td>1-High-ish / rotating</td><td>Varies, tight on one side</td><td>Extra rushers stacked one side only</td><td class="covname">Zone Pressure</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="decoder-hint">Real defenses disguise these on purpose — treat this as your best pre-snap guess, then confirm with what actually rotates after the ball is snapped.</p>
+  </div>
+</section>
+
+<nav class="tabs" id="tabs"></nav>
+
+<main id="main"></main>
+
+</div>
+
+<div id="offenseSection" style="display:none;">
+
+<section class="idflow">
+  <div class="section-title" style="margin-top:18px;">READING YOUR OWN PLAY — PRIMARY, SECONDARY, CHECKDOWN</div>
+  <p class="lead">Every concept below is drawn with numbered read-order badges — <strong style="color:var(--win)">① primary</strong>, <strong style="color:var(--off)">② secondary</strong>, <strong style="color:var(--man)">③ checkdown</strong> — at the start of each route. Work them in order; don't stare down ①.</p>
+</section>
+
+<nav class="tabs" id="offTabs"></nav>
+
+<main id="offMain"></main>
+
+</div>
+
+<footer class="note">
+  Diagrams are simplified teaching shells — real defenses adjust personnel, blitz timing, and match rules based on formation and down/distance. Use these as the base read, then confirm with what actually rotates on your screen pre-snap.
+</footer>
+
+<script>
+(function(){
+
+  /* ---------- coordinate helpers ---------- */
+  const VB_W = 700, VB_H = 520;
+  const FX0 = 26, FX1 = 674;           // sideline to sideline in px
+  const FIELD_YD = 53.3;
+  const LOS_Y = 466;                    // px of line of scrimmage
+  const DEEP_MAX = 26;                  // yards shown downfield
+  const TOP_Y = 44;
+  function X(yd){ return FX0 + (yd/FIELD_YD)*(FX1-FX0); }
+  function Y(depthYd){ return LOS_Y - (depthYd/DEEP_MAX)*(LOS_Y-TOP_Y); }
+
+  /* ---------- offense formation presets ---------- */
+  const FORM_2X2 = {
+    name:"2x2 Spread (Gun)",
+    receivers:[
+      {key:'X',x:6,label:'X'},
+      {key:'H',x:15,label:'H'},
+      {key:'Y',x:38,label:'Y'},
+      {key:'Z',x:47,label:'Z'},
+    ],
+    rb:{x:22,py:500,label:'RB'},
+    qb:{x:26.65,py:492,label:'QB'}
+  };
+  const FORM_TRIPS = {
+    name:"Trips Right, X Isolated Left",
+    receivers:[
+      {key:'X',x:6,label:'X'},
+      {key:'Y',x:34,label:'Y'},
+      {key:'H',x:41,label:'H'},
+      {key:'Z',x:49,label:'Z'},
+    ],
+    rb:{x:22,py:500,label:'RB'},
+    qb:{x:26.65,py:492,label:'QB'}
+  };
+  const FORM_PISTOL = {
+    name:"Pistol (2x2)",
+    receivers:[
+      {key:'X',x:6,label:'X'},
+      {key:'H',x:15,label:'H'},
+      {key:'Y',x:38,label:'Y'},
+      {key:'Z',x:47,label:'Z'},
+    ],
+    rb:{x:26.65,py:508,label:'RB'},
+    qb:{x:26.65,py:490,label:'QB'}
+  };
+
+  /* ---------- coverage data ---------- */
+  const COVERAGES = [
+  {
+    key:'c0', num:'0', name:'Cover 0', shell:'0-HIGH · ALL MAN, NO HELP',
+    group:'coverage',
+    noHelp:true,
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:1,label:'CB',type:'man',target:'X'},
+      {x:47,y:1,label:'CB',type:'man',target:'Z'},
+      {x:38,y:2,label:'NB',type:'man',target:'Y'},
+      {x:15,y:2,label:'FS',type:'man',target:'H'},
+      {x:22,y:3,label:'SS',type:'man',target:'RB'},
+      {x:26.65,y:2,label:'MIKE',type:'blitz'},
+      {x:19,y:3,label:'WILL',type:'blitz'},
+    ],
+    bands:[],
+    routes:[
+      {recv:'X',x0:6,y0:0,path:[[6,0],[10,2],[16,4]],label:'Slant',primary:true},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,22]],label:'Go / Fade',primary:true},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[22,3],[30,5],[35,6]],label:'Mesh'},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[30,3],[22,5],[16,6]],label:'Mesh'},
+    ],
+    reads:[
+      'Both safeties sit inside 5 yards of the LOS pre-snap — nobody stays deep.',
+      'Corners press hard, often bumping receivers off the line.',
+      'You can usually count 6+ defenders showing near the box — a clear blitz tell.',
+      'On 3rd-and-long, this look means max pressure is coming almost every time.'
+    ],
+    rule:'Every eligible receiver is matched man-to-man with zero deep safety help. It is almost always paired with an all-out blitz — the defense is betting the rush gets home before you find the man-beater.',
+    beaters:[
+      {name:'Quick Slant', desc:'Beats press leverage instantly and gets the ball out before the rush arrives.'},
+      {name:'Go / Fade', desc:'No safety over the top means a straight vertical is live all the way down the field.'},
+      {name:'Mesh (rub)', desc:'Two receivers cross tight underneath — man defenders run into each other, not the ball carrier.'},
+    ],
+    formations:['Bunch / stack releases (built-in picks)','Empty sets (reveals the blitzer pre-snap)','Max protect + one deep shot'],
+    cfb27:[
+      'Use Custom Stem (Y/Triangle → receiver icon → L1) to shorten a slant to 3–4 yards — against no help, separation at the top matters more than depth.',
+      'Check the coach cam for CB Matchups and stacked box defenders before the snap; if extras are creeping in, throw hot.'
+    ],
+    madden26:[
+      'Hot-route your RB into the new Corner or a Swing out of the backfield — Route Commit can\'t save a defense with no deep help.',
+      'If a safety is sitting under 5 yards pre-snap, throw the Go — there\'s no eraser behind him.'
+    ]
+  },
+  {
+    key:'c1', num:'1', name:'Cover 1', shell:'1-HIGH · MAN FREE',
+    group:'coverage',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:6,label:'CB',type:'man',target:'X'},
+      {x:47,y:6,label:'CB',type:'man',target:'Z'},
+      {x:38,y:5,label:'NB',type:'man',target:'Y'},
+      {x:22,y:4,label:'MIKE',type:'man',target:'RB'},
+      {x:26.65,y:5,label:'SS',type:'robber'},
+      {x:26.65,y:13,label:'FS',type:'deep'},
+    ],
+    bands:[{x0:0,x1:53.3,y0:11,y1:26,color:'var(--def-soft)',label:'FS — SOLO DEEP'}],
+    routes:[
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,14],[52,15]],label:'Deep Out',primary:true},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,10],[13,16]],label:'Corner (iso)',primary:true},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[24,3],[34,4]],label:'Drag'},
+    ],
+    reads:[
+      'One safety sits deep and centered, 12–14 yards off the ball.',
+      'The second safety creeps to 5–7 yards — that\'s a robber/spy, not deep help.',
+      'Corners typically play off-man, backpedaling hard at the snap.',
+      'The lone deep safety will shade his depth/leverage toward the passing strength.'
+    ],
+    rule:'One free safety plays true centerfield while everyone else — corners, nickel, and a linebacker — is locked in man coverage. A second safety or a linebacker often "robs" underneath as a spy.',
+    beaters:[
+      {name:'Iso Corner/Go', desc:'Attack the receiver furthest from the single safety — he physically can\'t help both sides.'},
+      {name:'Deep Comeback/Out', desc:'Break at the safety\'s landmark; by the time he closes, the throw is already out.'},
+      {name:'Drag / Crosser', desc:'Creates traffic against man leverage and forces a defender to fight through picks.'},
+    ],
+    formations:['Trips to overload and isolate the backside X','Stack/bunch releases for natural rubs','Deep-shot play-action off run action'],
+    cfb27:[
+      'Custom Stem your isolated X\'s corner route a yard or two deeper — it makes the single-high FS travel further and widens the window.',
+      'Watch Safety Midpoint pre-snap: if the FS shades toward the strength, attack the backside single receiver instead.'
+    ],
+    madden26:[
+      'The revamped Hot Route Tree gives outside WRs a Corner option — hot-route your backside X into one against any 1-high look.',
+      'A delayed drag underneath punishes Route Commit if the defender guesses inside or outside on his jump.'
+    ]
+  },
+  {
+    key:'c2', num:'2', name:'Cover 2', shell:'2-HIGH · ZONE HALVES',
+    group:'coverage',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:2,label:'CB',type:'zone'},
+      {x:47,y:2,label:'CB',type:'zone'},
+      {x:15,y:5,label:'WILL',type:'zone'},
+      {x:26.65,y:5,label:'MIKE',type:'zone'},
+      {x:38,y:5,label:'SAM',type:'zone'},
+      {x:15,y:12,label:'S',type:'deep'},
+      {x:38,y:12,label:'S',type:'deep'},
+    ],
+    bands:[
+      {x0:0,x1:26.65,y0:10,y1:26,color:'var(--def-soft)',label:'LEFT HALF'},
+      {x0:26.65,x1:53.3,y0:10,y1:26,color:'var(--def-soft)',label:'RIGHT HALF'},
+    ],
+    routes:[
+      {x0:15,y0:0,path:[[15,0],[18,10],[20,22]],label:'Seam',primary:true},
+      {x0:38,y0:0,path:[[38,0],[35,10],[33,22]],label:'Seam',primary:true},
+      {x0:47,y0:0,path:[[47,0],[47,9],[53,15]],label:'Corner'},
+    ],
+    reads:[
+      'Two safeties split evenly at 10–12 yards, roughly hash to numbers on each side.',
+      'Corners squat with inside leverage — they\'re jamming and passing #1 to the flat, not bailing deep.',
+      'Both safeties backpedal to their half at the snap instead of stepping toward the box.'
+    ],
+    rule:'Two safeties each own a deep half; five defenders play zone underneath (both corners in the flat, three linebackers in the hook/curl areas). The classic hole is the seam between the numbers and the hash, right where the safety and corner both bail out of.',
+    beaters:[
+      {name:'Four Verticals', desc:'Two seam routes stretch the safeties horizontally until the middle window opens.'},
+      {name:'Smash Concept', desc:'A hitch underneath and a corner over top put the flat defender in a high-low he can\'t win.'},
+      {name:'Corner Route', desc:'Thrown before the safety fully rotates over, right in the classic Cover 2 hole.'},
+    ],
+    formations:['2x2 to stress both seams at once','Fast slot receivers on the numbers','Trips to overload one safety\'s help window'],
+    cfb27:[
+      'Custom Stem your seam receiver to bend slightly toward the numbers around 12–15 yards — that\'s the soft spot between the two safeties.',
+      'If Smart Zones is set to Aggressive, corners jump short routes hard — that\'s exactly when Four Verts or a corner over the top wins.'
+    ],
+    madden26:[
+      'Corner routes are a known weak spot for Cover 2 in Madden 26 unless the defense specifically checks for depth — hot-route into one against any standard look.',
+      'If opposing safeties are set to Deep (25 yd) in Custom Zone Stem, the underneath hook/curl area opens — a Smash hitch is close to automatic.'
+    ]
+  },
+  {
+    key:'tampa2', num:'T2', name:'Tampa 2', shell:'2-HIGH · MIKE DEEP HOLE',
+    group:'coverage',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:2,label:'CB',type:'zone'},
+      {x:47,y:2,label:'CB',type:'zone'},
+      {x:13,y:5,label:'WILL',type:'zone'},
+      {x:40,y:5,label:'SAM',type:'zone'},
+      {x:26.65,y:16,label:'MIKE',type:'deep'},
+      {x:24,y:12,label:'S',type:'deep'},
+      {x:29.3,y:12,label:'S',type:'deep'},
+    ],
+    bands:[
+      {x0:0,x1:22,y0:10,y1:26,color:'var(--def-soft)',label:'LEFT HALF'},
+      {x0:31,x1:53.3,y0:10,y1:26,color:'var(--def-soft)',label:'RIGHT HALF'},
+      {x0:22,x1:31,y0:14,y1:26,color:'var(--def-soft2)',label:'MIKE HOLE'},
+    ],
+    routes:[
+      {x0:38,y0:0,path:[[38,0],[38,13],[46,14]],label:'Deep Out',primary:true},
+      {x0:15,y0:0,path:[[15,0],[24,3],[32,4]],label:'Drag (behind Mike)',primary:true},
+      {x0:22,y0:0,path:[[22,0],[28,2],[33,3]],label:'RB Flat'},
+    ],
+    reads:[
+      'Looks identical to Cover 2 pre-snap — same two-deep-safety picture.',
+      'The tell is the Mike linebacker: he cheats a half-step deeper than his usual 4–5 yard spot.',
+      'If the Mike is a bigger, slower run-stuffer, the seam still lives even after he drops.'
+    ],
+    rule:'A Cover 2 variant where the middle linebacker sprints to the deep middle at the snap, closing the classic Cover 2 seam. It costs the defense an underneath defender — the middle hook/flat area he vacates is now open.',
+    beaters:[
+      {name:'Deep Out', desc:'The corner still has flat responsibility and the safety is rotated to a half — the sideline is empty.'},
+      {name:'Drag Behind Mike', desc:'Run right into the space the Mike just left on his way to the deep middle.'},
+      {name:'RB Flat Flood', desc:'Adds a third level to the vacated underneath area the Mike used to own.'},
+    ],
+    formations:['2x2 with a fast underneath option','Flood concepts to one side','Attack if your opponent\'s Mike is slow-footed'],
+    cfb27:[
+      'Custom Stem a shallow drag to sit right behind the Mike\'s drop depth — Smart Zones on Balanced won\'t react until it\'s already open.',
+      'Look off the deep safeties with your QB\'s eyes before working the drag; Smart Zones rewards patience here.'
+    ],
+    madden26:[
+      'Deep Out to the sideline is the textbook Tampa 2 beater — hot-route your outside WR into one.',
+      'Get the ball out before the Mike settles into his drop; Route Commit can bait him inside on the drag if you sell it.'
+    ]
+  },
+  {
+    key:'c3', num:'3', name:'Cover 3', shell:'3-HIGH · ZONE THIRDS',
+    group:'coverage',
+    formation: FORM_TRIPS,
+    defenders:[
+      {x:6,y:14,label:'CB',type:'deep'},
+      {x:49,y:14,label:'CB',type:'deep'},
+      {x:26.65,y:15,label:'FS',type:'deep'},
+      {x:15,y:5,label:'WILL',type:'zone'},
+      {x:41,y:5,label:'SAM',type:'zone'},
+      {x:26.65,y:5,label:'MIKE',type:'zone'},
+    ],
+    bands:[
+      {x0:0,x1:17.7,y0:10,y1:26,color:'var(--def-soft)',label:'LEFT THIRD'},
+      {x0:17.7,x1:35.5,y0:10,y1:26,color:'var(--def-soft)',label:'MIDDLE THIRD'},
+      {x0:35.5,x1:53.3,y0:10,y1:26,color:'var(--def-soft)',label:'RIGHT THIRD'},
+    ],
+    routes:[
+      {x0:49,y0:0,path:[[49,0],[49,4]],label:'Flat'},
+      {x0:41,y0:0,path:[[41,0],[41,10],[38,9]],label:'Curl',primary:true},
+      {x0:34,y0:0,path:[[34,0],[31,22]],label:'Seam (honey hole)',primary:true},
+      {x0:6,y0:0,path:[[6,0],[6,22]],label:'Go (clear)'},
+    ],
+    reads:[
+      'One safety is clearly deeper/more centered than the other, or both start high and one rotates to the middle third at the snap.',
+      'Corners bail hard into their thirds off the snap rather than staying flat-footed at the line.',
+      'Four defenders spaced evenly underneath — two flat/curl, two hook — is the classic "cloud" shell.'
+    ],
+    rule:'Three deep defenders (both corners plus the free safety) each own a third of the field; four defenders play zone underneath. The stress points are the flat/curl seam around 10–15 yards and the vertical "honey hole" between the two outside thirds and the middle third.',
+    beaters:[
+      {name:'Curl-Flat Overload', desc:'From trips, stack a flat route under a curl route on the same defender — he can only take one.'},
+      {name:'Seam / Honey Hole', desc:'A vertical route splitting the numbers stresses the gap between the middle and outside thirds.'},
+      {name:'Dagger', desc:'A clear-out vertical removes the deep third defender, opening a deep dig underneath him.'},
+    ],
+    formations:['Trips to overload the curl-flat defender','3-level vertical stretch to one side','Play-action to hold the underneath four'],
+    cfb27:[
+      'Custom Stem your curl route to hold a beat longer against the flat/curl defender in a trips combo — the extra depth forces him to pick one guy.',
+      'CFB 27\'s Smart Zones gives defenders better route/leverage awareness, so look off the FS with your QB\'s eyes before working the seam.'
+    ],
+    madden26:[
+      'Corner routes are the go-to Cover 3 sideline beater in Madden 26 unless the defense specifically checks to Cover 3 Cloud — hot-route your outside WR into one.',
+      'Four Verts still finds the seam between the thirds; use the Hot Route Tree to put your slot on a Seam if the play doesn\'t already call one.'
+    ]
+  },
+  {
+    key:'c4', num:'4', name:'Cover 4', shell:'4-HIGH · QUARTERS',
+    group:'coverage',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:7,label:'CB',type:'deep'},
+      {x:47,y:7,label:'CB',type:'deep'},
+      {x:15,y:12,label:'S',type:'deep'},
+      {x:38,y:12,label:'S',type:'deep'},
+      {x:15,y:5,label:'WILL',type:'zone'},
+      {x:26.65,y:5,label:'MIKE',type:'zone'},
+      {x:38,y:5,label:'SAM',type:'zone'},
+    ],
+    bands:[
+      {x0:0,x1:13.3,y0:9,y1:26,color:'var(--def-soft)',label:'Q1'},
+      {x0:13.3,x1:26.65,y0:9,y1:26,color:'var(--def-soft)',label:'Q2'},
+      {x0:26.65,x1:40,y0:9,y1:26,color:'var(--def-soft)',label:'Q3'},
+      {x0:40,x1:53.3,y0:9,y1:26,color:'var(--def-soft)',label:'Q4'},
+    ],
+    routes:[
+      {x0:6,y0:0,path:[[6,0],[6,6]],label:'Hitch'},
+      {x0:47,y0:0,path:[[47,0],[47,5],[52,6]],label:'Quick Out'},
+      {x0:38,y0:0,path:[[38,0],[26,8],[12,18]],label:'Deep Cross',primary:true},
+      {x0:15,y0:0,path:[[15,0],[17,9],[23,19]],label:'Post',primary:true},
+    ],
+    reads:[
+      'Both safeties align deep (10–13 yds) but wide, closer to the numbers than the hash — each owns a quarter, not a half.',
+      'Corners play with extra cushion (6–8 yds) and often squat instead of bailing, since they have safety help on verticals.',
+      'Motion tags that trigger a "MEG" (man everywhere he goes) call from a safety are a Quarters tell.'
+    ],
+    rule:'Four deep defenders — both corners and both safeties — each own a quarter of the field with match rules based on what the #2 receiver does. Three linebackers play zone underneath. It is very hard to threaten deep with only one receiver per quarter, but the extra cushion invites the quick game.',
+    beaters:[
+      {name:'Quick Game', desc:'Hitches and quick outs sit in the cushion corners are giving up to protect their deep quarter.'},
+      {name:'Yankee Concept', desc:'A deep crosser and a post attack the safety\'s run/pass and #2-receiver conflict at the same time.'},
+      {name:'Mesh Underneath', desc:'Shallow crossers sit in the void the three reading linebackers leave behind.'},
+    ],
+    formations:['2x2 to isolate safety run/pass reads','Motion to trigger match-rule rotation','Play-action to freeze the underneath three'],
+    cfb27:[
+      'Corners in Quarters often play with extra cushion — use a quick hot route (Y/Triangle) to a Hitch or Speed Out instead of pushing vertical into two-deep-quarter help.',
+      'Custom Stem the deep crosser in Yankee a yard or two deeper to fully sell the post/safety conflict before it breaks across the field.'
+    ],
+    madden26:[
+      'If Custom Zone Stem shows the safeties sitting Tight (5 yd) or Close (8 yd) against the run, that\'s your green light for a vertical shot — the quarter is compromised.',
+      'Mesh underneath still works well since Quarters\' three linebackers are reading run/pass first — hot-route a shallow drag into the void.'
+    ]
+  },
+  {
+    key:'c6', num:'6', name:'Cover 6', shell:'QUARTER-QUARTER-HALF',
+    group:'coverage',
+    formation: FORM_TRIPS,
+    defenders:[
+      {x:6,y:2,label:'CB',type:'zone'},
+      {x:15,y:12,label:'S',type:'deep'},
+      {x:24,y:5,label:'MIKE',type:'zone'},
+      {x:41,y:5,label:'NB',type:'zone'},
+      {x:38,y:12,label:'S',type:'deep'},
+      {x:49,y:9,label:'CB',type:'deep'},
+    ],
+    bands:[
+      {x0:0,x1:26.65,y0:10,y1:26,color:'var(--def-soft)',label:'HALF (2-side)'},
+      {x0:26.65,x1:40,y0:9,y1:26,color:'var(--def-soft2)',label:'Q (4-side)'},
+      {x0:40,x1:53.3,y0:9,y1:26,color:'var(--def-soft2)',label:'Q (4-side)'},
+    ],
+    routes:[
+      {x0:6,y0:0,path:[[6,0],[6,10],[14,17]],label:'Corner (2-side)',primary:true},
+      {x0:49,y0:0,path:[[49,0],[49,5],[53,6]],label:'Quick Out (4-side)'},
+      {x0:34,y0:0,path:[[34,0],[31,10],[29,20]],label:'Bender (shell seam)',primary:true},
+    ],
+    reads:[
+      'The two sides are NOT symmetrical — one side looks like Cover 2 (safety shading middle, corner squatting flat), the other looks like Cover 4 (safety and corner both deep and wide).',
+      'It almost always rolls to match formation strength — trips gets quarters, the backside single receiver gets the 2-shell.',
+      'Motion across the formation often forces a late safety rotation — watch for it right before the snap.'
+    ],
+    rule:'A hybrid shell: one half of the field plays Cover 4 (usually toward the passing strength/trips) while the other half plays Cover 2. It lets the defense bracket a stacked side while still keeping numbers to defend a single receiver on the other.',
+    beaters:[
+      {name:'Attack the 2-Side', desc:'Only one deep-half defender covers a lot of grass on the single-receiver side — a corner or go route stresses him alone.'},
+      {name:'Attack the 4-Side', desc:'Quick game beats the extra cushion the corner is giving up on the quarters side.'},
+      {name:'Shell-Seam Bender', desc:'A vertical right at the boundary where the two coverage rules meet is tough for either safety to fully own.'},
+    ],
+    formations:['Trips to force the quarters rotation','Single-WR backside iso routes','Motion to identify which side is which pre-snap'],
+    cfb27:[
+      'Use pre-snap motion — CFB 27\'s defensive checks (Stubbie/Solo) often force a late rotation, and a rotation caught mid-motion is a free access read.',
+      'Identify the 2-side (single WR, safety shaded middle) and Custom Stem that receiver into a deeper corner route before working the trips side.'
+    ],
+    madden26:[
+      'Hot-route the single-receiver side into a Corner or Go — that\'s true Cover 2 rules with only one deep defender over a lot of field.',
+      'On the trips/quarters side, stick to quick game (Hitch, Out); save your vertical shots for the 2-side.'
+    ]
+  },
+  {
+    key:'c2m', num:'2M', name:'Cover 2 Man', shell:'2-HIGH · MAN UNDER',
+    group:'coverage',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:2,label:'CB',type:'man',target:'X'},
+      {x:47,y:2,label:'CB',type:'man',target:'Z'},
+      {x:15,y:3,label:'NB',type:'man',target:'H'},
+      {x:38,y:3,label:'SAM',type:'man',target:'Y'},
+      {x:22,y:4,label:'MIKE',type:'man',target:'RB'},
+      {x:15,y:12,label:'S',type:'deep'},
+      {x:38,y:12,label:'S',type:'deep'},
+    ],
+    bands:[
+      {x0:0,x1:26.65,y0:10,y1:26,color:'var(--def-soft)',label:'HELP — LEFT HALF'},
+      {x0:26.65,x1:53.3,y0:10,y1:26,color:'var(--def-soft)',label:'HELP — RIGHT HALF'},
+    ],
+    routes:[
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,13],[44,14]],label:'Comeback (at safety)',primary:true},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[24,3],[32,4]],label:'Mesh'},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[30,3],[22,4]],label:'Mesh'},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,2],[20,4]],label:'Option (vs LB)',primary:true},
+    ],
+    reads:[
+      'The shell looks identical to zone Cover 2 pre-snap — two safeties split at 10–12 yards.',
+      'The giveaway is underneath: corners play tight/press man instead of squatting with inside leverage, and linebackers shift to match a specific receiver instead of settling into a hook/curl zone.',
+      'Motion is the surest confirm — send a receiver across the formation; if one defender follows him the whole way, it\'s man.'
+    ],
+    rule:'Two safeties split the field in deep halves — the same shell as zone Cover 2 — but everyone underneath plays true man coverage instead of zone drops. The safeties are strictly help over the top, not independent route-reading zone defenders.',
+    beaters:[
+      {name:'Comeback at the Safety\'s Landmark', desc:'Breaks back toward the QB right as the safety closes to help over the top — the corner has no zone recovery to fall back on.'},
+      {name:'Mesh / Rub Concepts', desc:'Tight crossing routes create traffic man defenders have to fight through, same as any man beater.'},
+      {name:'Option / Shake Route (vs LB)', desc:'A linebacker matched on a slot or back in man rarely has the range to carry a good route runner.'},
+    ],
+    formations:['Bunch/stack releases for natural picks','Motion to confirm man before the snap','Attack the LB/S matchup in the slot or backfield'],
+    cfb27:[
+      'Send pre-snap motion across the formation — if a defender mirrors it all the way, you\'ve confirmed man and know exactly who has whom before the snap.',
+      'Custom Stem a comeback route to break a yard or two earlier than default — it beats the safety\'s help before he can fully close.'
+    ],
+    madden26:[
+      'Motion is the cleanest man/zone confirm in Madden 26 — a trailing defender means it\'s on, so hot-route a rub concept toward that side.',
+      'Target the linebacker in man coverage on your RB or slot — Route Commit doesn\'t fix a bad athletic matchup.'
+    ]
+  },
+  {
+    key:'firezone', num:'FZ', name:'Fire Zone', shell:'5-MAN RUSH · 3-DEEP / 3-UNDER',
+    group:'pressure',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:14,label:'CB',type:'deep'},
+      {x:47,y:14,label:'CB',type:'deep'},
+      {x:26.65,y:15,label:'FS',type:'deep'},
+      {x:15,y:5,label:'WILL',type:'zone'},
+      {x:26.65,y:5,label:'MIKE',type:'zone'},
+      {x:36,y:4,label:'DROP',type:'zone'},
+      {x:19,y:3,label:'BLITZ',type:'blitz'},
+    ],
+    bands:[
+      {x0:0,x1:17.7,y0:10,y1:26,color:'var(--def-soft)',label:'LEFT THIRD'},
+      {x0:17.7,x1:35.5,y0:10,y1:26,color:'var(--def-soft)',label:'MIDDLE THIRD'},
+      {x0:35.5,x1:53.3,y0:10,y1:26,color:'var(--def-soft)',label:'RIGHT THIRD'},
+    ],
+    routes:[
+      {x0:15,y0:0,path:[[15,0],[15,5]],label:'Hot Route (vs blitz)',primary:true},
+      {x0:22,y0:0,path:[[22,0],[26,1],[30,0]],label:'Screen'},
+      {x0:38,y0:0,path:[[38,0],[30,3],[20,12]],label:'Deep In (behind rush)',primary:true},
+    ],
+    reads:[
+      'Look for an extra defender — LB, S, or CB — walked up threatening the edge or A-gap beyond the standard 4 down linemen.',
+      'The safety shell often still looks like an ordinary 1-high Cover 3 look — the pressure is disguised behind a completely normal picture.',
+      'A down lineman lined up unusually wide or light in his stance is a subtle tell he might be the one dropping instead of rushing — hard to catch, more of a film-study read than an in-the-moment one.',
+      'If you\'re not sure, count rushers after the snap before committing deep into coverage you haven\'t confirmed.'
+    ],
+    rule:'A 5-man pressure built on top of a standard Cover 3 shell (3 deep thirds, 3 underneath zones). One extra rusher comes free by dropping a down lineman or extra defender into a shallow zone instead of rushing him — same numbers, different guy doing each job — which disguises real pressure behind a shell that looks completely ordinary pre-snap.',
+    beaters:[
+      {name:'Hot Route / Sight Adjust', desc:'The zone the blitzer vacated is thin — a quick, sight-adjusted route into it beats the pressure before it ever arrives.'},
+      {name:'RB / WR Screen', desc:'Punishes an aggressive rush lane — the more the defense sells out to get to the QB, the better a screen works.'},
+      {name:'Deep In / Dig Behind the Rush', desc:'The defense has committed extra numbers forward; the intermediate window behind them opens up.'},
+    ],
+    formations:['Empty/spread sets to count the free rusher pre-snap','Built-in quick-game/sight-adjust concepts','Screen game (RB, WR bubble/tunnel)'],
+    cfb27:[
+      'Turn on Pass Protection adjustments (Playmaker Menu → L1) to slide protection toward the side showing an extra rusher before the snap.',
+      'Trust your tagged sight-adjustments — CFB 27\'s Smart Zones AI usually disguises the drop defender until just after the snap, so pre-snap diagnosis is limited.'
+    ],
+    madden26:[
+      'Use the Hot Route Tree to tag a quick Slant/Hitch as a sight adjustment on the side of the walked-up blitzer — get the ball out before the extra rusher closes.',
+      'Screens are a strong universal answer to Madden 26 fire-zone pressure; RB screens especially punish upfield rush lanes.'
+    ]
+  },
+  {
+    key:'doubleag', num:'AG', name:'Double A-Gap', shell:'MUGGED · SHELL DISGUISED',
+    group:'pressure',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:6,label:'CB',type:'zone'},
+      {x:47,y:6,label:'CB',type:'zone'},
+      {x:24,y:1,label:'MIKE',type:'blitz'},
+      {x:29,y:1,label:'WILL',type:'blitz'},
+      {x:38,y:5,label:'SAM',type:'zone'},
+      {x:15,y:11,label:'S',type:'deep'},
+      {x:38,y:11,label:'S',type:'deep'},
+    ],
+    bands:[
+      {x0:0,x1:26.65,y0:10,y1:26,color:'rgba(242,182,50,0.10)',label:'?'},
+      {x0:26.65,x1:53.3,y0:10,y1:26,color:'rgba(242,182,50,0.10)',label:'?'},
+    ],
+    routes:[
+      {x0:6,y0:0,path:[[6,0],[6,5]],label:'Quick Game (works either way)',primary:true},
+      {x0:22,y0:0,path:[[22,0],[15,2],[10,3]],label:'RB Check-Release'},
+      {x0:15,y0:0,path:[[15,0],[17,10],[19,22]],label:'Seam (test rotation)',primary:true},
+    ],
+    reads:[
+      'Two off-ball linebackers walk up and "mug" both A-gaps, tight to the center, hands down like they\'re about to shoot the gap.',
+      'Safeties often stay neutral — both around 10–11 yards, not yet declaring 1-high or 2-high — specifically to hide what\'s actually coming.',
+      'This can turn into real pressure (both rush), a zone blitz (one rushes, one drops), or a total bluff (both drop out) — you often can\'t be 100% sure pre-snap.',
+      'Watch the protection: if your own RB is checking his eyes toward the A-gaps, real pressure through there is likely.'
+    ],
+    rule:'Both inside linebackers walk up into the A-gaps, showing simultaneous interior pressure. It\'s one of the most disguised looks in football — the actual rush can be 4, 5, or 6 defenders, and the coverage behind it can be almost anything, because the mug itself is designed to create indecision in protection.',
+    beaters:[
+      {name:'Quick Game / Hot Route', desc:'A fast, universal answer — it beats real pressure by getting the ball out, and still gains positive yards if the whole thing is a bluff.'},
+      {name:'RB Check-Release', desc:'Picks up whichever backer actually rushes, then leaks into the vacated space for a checkdown.'},
+      {name:'Draw / Delayed Run', desc:'When both mugged backers crash upfield as rushers, they\'re often out of run-fit position — a delayed handoff hits the vacated A-gaps.'},
+    ],
+    formations:['Empty/spread sets to count actual rushers by elimination','Built-in hot routes/sight adjustments on every call','Keep a check-release RB or TE on passing downs'],
+    cfb27:[
+      'Set Pass Protection (Playmaker Menu → L1) to slide toward the mugged side, or assign a check-release back so you have an answer no matter which backer actually comes.',
+      'Custom Stem a quick game route to fire in about 1.5–2 seconds — mug looks are built to beat slower-developing plays.'
+    ],
+    madden26:[
+      'Use the Hot Route Tree to tag a sight-adjust slant/hitch — it\'s the safest universal answer to a mug look you can\'t fully diagnose pre-snap.',
+      'If you keep seeing the same mug bluff repeatedly, start calling draws — mugged backers are frequently out of run-fit position when they show blitz and drop.'
+    ]
+  },
+  {
+    key:'zonepressure', num:'OV', name:'Zone Pressure', shell:'OVERLOAD · ONE-SIDE STACK',
+    group:'pressure',
+    formation: FORM_2X2,
+    defenders:[
+      {x:6,y:6,label:'CB',type:'zone'},
+      {x:47,y:2,label:'CB',type:'zone'},
+      {x:22,y:13,label:'FS',type:'deep'},
+      {x:38,y:2,label:'SS',type:'blitz'},
+      {x:42,y:2,label:'SAM',type:'blitz'},
+      {x:22,y:5,label:'MIKE',type:'zone'},
+      {x:15,y:5,label:'WILL',type:'zone'},
+    ],
+    bands:[
+      {x0:0,x1:53.3,y0:11,y1:26,color:'var(--def-soft)',label:'FS ROTATES TO HELP (WEAK SIDE)'},
+      {x0:33,x1:53.3,y0:0,y1:9,color:'rgba(242,182,50,0.12)',label:'THIN (overload side)'},
+    ],
+    routes:[
+      {x0:47,y0:0,path:[[47,0],[47,5]],label:'Hot Route (overload side)',primary:true},
+      {x0:22,y0:0,path:[[22,0],[30,2],[36,3]],label:'RB to Overload Flat'},
+      {x0:6,y0:0,path:[[6,0],[6,14],[10,15]],label:'Backside Comeback (numbers)',primary:true},
+    ],
+    reads:[
+      'Multiple extra defenders — LB, S, or CB — stack on ONE side of the formation only, an asymmetric picture unlike Cover 0\'s balanced pressure or Double A-Gap\'s symmetric middle stack.',
+      'The overloaded side is usually away from the running back, since the RB can help pick up blitzers on his own side.',
+      'The backside safety or corner often widens or rotates to cover for the numbers given up on the overload side — watch for a safety cheating toward the single-high/backside role.'
+    ],
+    rule:'Extra rushers stack on one side of the formation to outnumber the offensive line\'s blockers there, while the coverage rotates — often to a single-high shell — to cover for the defenders who left their normal zones to rush. The overloaded side wins with numbers up front but gives up numbers in coverage.',
+    beaters:[
+      {name:'Hot Route (Overload Side)', desc:'The zone the extra rushers vacated is thin — a quick, sight-adjusted route into it beats the pressure before it arrives.'},
+      {name:'RB to the Overload Flat', desc:'Releases into the same space the blitz came from, since nobody\'s left back there to cover it.'},
+      {name:'Backside Comeback / Iso', desc:'Away from the overload, the defense is shorthanded — attack the numbers advantage on that side.'},
+    ],
+    formations:['Identify the overloaded side pre-snap and flip protection/hot reads that way','RB release away from his natural blitz-pickup side when the overload is opposite him','Single-receiver iso routes on the backside'],
+    cfb27:[
+      'Flip protection (Playmaker Menu → L1) toward the overloaded side before the snap — CFB 27 lets you slide the whole line with one input.',
+      'Custom Stem a hot route on the overload side to break at 3–4 yards — that\'s the space the extra rusher just vacated.'
+    ],
+    madden26:[
+      'Max protect (extra RB/TE stay in) toward the overloaded side, then work your Hot Route Tree throw to the backside single receiver for the numbers advantage.',
+      'Man matchups on the backside are more beatable than usual here since extra defenders are committed to the rush instead of coverage.'
+    ]
+  },
+  ];
+
+  /* ---------- offensive concepts ---------- */
+  const OFFENSE_CONCEPTS = [
+  {
+    key:'mesh', num:'M', name:'Mesh', tag:'SHALLOW CROSS · RUB CONCEPT', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'H',x0:15,y0:0,path:[[15,0],[24,4],[34,5],[42,5]],label:'Mesh (under)',read:1},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[30,4],[20,5],[12,5]],label:'Mesh (under)',read:1},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,4],[38,13],[20,13]],label:'Over/Dig (behind mesh)',read:2},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,8],[9,7]],label:'Hunt/Curl (backside)',read:3},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Swing/Check',read:3},
+    ],
+    progression:[
+      {step:'① Crossers', text:'Read the two shallow crossers at the mesh point — throw to whichever one clears the rub first based on leverage.'},
+      {step:'② Over/Dig', text:'If both crossers are covered (common vs zone drops), come off them to the deeper over/dig route sitting behind the mesh.'},
+      {step:'③ Checkdown', text:'RB swing or the backside hunt/curl route if the play holds up long enough.'},
+    ],
+    rule:'Two receivers release from opposite sides and cross tight underneath around 5–6 yards, creating natural traffic for man defenders to fight through. A deeper over/dig route trails behind the mesh as the zone-coverage answer, since it settles in the space the crossing routes clear out.',
+    bestAgainst:['c0','c1','c2m','firezone'],
+    formationNote:'Needs two receivers releasing from opposite sides to actually cross — works from 2x2 or 3x1 (the two innermost receivers run the crossers). It struggles from bunch/stack releases, where the receivers are already grouped before the snap and the rub effect is redundant.',
+    cfb27:[
+      'Custom Stem the crossers a yard or two closer to the numbers if a zone defender is squatting right on the mesh point.',
+      'CFB 27 marks your primary receiver with an on-screen icon pre-snap — but on Mesh, trust your eyes post-snap over the pre-snap tag, since the actual open crosser depends on leverage you can only see after the snap.'
+    ],
+    madden26:[
+      'Use the numbered receiver-throw buttons to work your progression exactly as drawn — crossers first, over/dig second, checkdown last.',
+      'Mesh is one of the most reliable answers to Madden 26 man-heavy user defense, since the rub forces a split-second decision even from a good defender.'
+    ]
+  },
+  {
+    key:'smash', num:'SM', name:'Smash', tag:'HITCH + CORNER · HIGH-LOW', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[38,10],[45,15]],label:'Corner',read:1},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,5]],label:'Hitch',read:2},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[10,3],[15,4]],label:'Backside Slant',read:3},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Corner', text:'Read the flat/curl defender\'s depth at the snap — if he sits low on the hitch, the corner route behind him is the throw.'},
+      {step:'② Hitch', text:'If the defender carries the corner route deep, come down to the hitch sitting underneath him.'},
+      {step:'③ Backside/Checkdown', text:'Work backside if the whole side is bracketed, or the checkdown if the pocket collapses.'},
+    ],
+    rule:'A hitch at 5 yards and a corner route at 12–15 yards stack the same side, putting one flat/curl defender in a high-low he can\'t cover both halves of.',
+    bestAgainst:['c2','c2m','c4'],
+    formationNote:'Run to one side from a 2x2, or doubled to both sides ("Smash-Smash") to isolate two defenders at once. Needs an outside receiver on the corner and an inside receiver on the hitch (or vice versa) — normal splits, not bunched.',
+    cfb27:[
+      'Custom Stem the corner route a yard deeper if the flat defender is squatting hard — it buys the corner extra separation over the top.',
+      'Watch for a Cover 3 Cloud roll-up corner (safety help over a constricting flat/hook corner) — that specific rotation is built to take Smash away; check to a run or a different concept if you see it.'
+    ],
+    madden26:[
+      'Throw off the flat defender\'s depth — hold the throw a beat if he sinks under the hitch, since the corner route is about to come open behind him.',
+      'Smash is a strong answer to Madden 26\'s zone AI when it squats hard on underneath routes; the corner route punishes that tendency directly.'
+    ]
+  },
+  {
+    key:'verts', num:'4V', name:'Four Verticals', tag:'VERTICAL STRETCH · MOF READ', group:'concept',
+    formation: FORM_TRIPS,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'Y',x0:34,y0:0,path:[[34,0],[31,22]],label:'Seam',read:1},
+      {recv:'H',x0:41,y0:0,path:[[41,0],[39,22]],label:'Seam',read:1},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,22]],label:'Go',read:2},
+      {recv:'Z',x0:49,y0:0,path:[[49,0],[49,22]],label:'Go',read:2},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Read the MOF safety', text:'At the snap, find the middle-of-field safety. If he stays high (2-high shell holds), throw the seam on the side he widens away from.'},
+      {step:'② Opposite Seam/Go', text:'If he rotates to the middle (goes 1-high), throw off his leverage to the seam or go route he can\'t get to.'},
+      {step:'③ Checkdown', text:'RB safety valve if no vertical window opens in time.'},
+    ],
+    rule:'All four eligible receivers threaten vertically at once, stretching every deep defender sideline-to-sideline. The QB\'s read is the middle-of-field safety, not a specific receiver — his leverage tells you which seam is open.',
+    bestAgainst:['c1','c3','c2'],
+    formationNote:'Runs from 2x2 or 3x1/trips with a backside iso vertical — needs four real vertical stems, so it\'s uncommon from bunch/stack where release lanes get congested. Against zone, the inside seam routes are often coached to option/sit at 10–12 yards if a defender settles under them.',
+    cfb27:[
+      'If Smart Zones has safeties playing deep, use Custom Stem to option the seam route down to a sit route at 10–12 yards instead of running through the defender.',
+      'Empty or trips formations force an earlier safety rotation in CFB 27, giving you the MOF read before the snap instead of after.'
+    ],
+    madden26:[
+      'Verts is a strong answer to Madden 26\'s single-high AI shells — target the seam away from the deep safety\'s pre-snap leverage.',
+      'True Cover 4 (Quarters) is the toughest matchup for this concept; if you keep seeing safeties sitting wide and deep with soft-cushioned corners, switch to a quick-game concept instead.'
+    ]
+  },
+  {
+    key:'dagger', num:'DG', name:'Dagger', tag:'CLEAR-OUT + DEEP DIG', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[34,8],[16,15]],label:'Dig',read:1},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[24,3],[32,4]],label:'Drag',read:2},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,24]],label:'Clear-Out (Go)',read:3},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,6]],label:'Backside Hitch',read:3},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Dig', text:'The dig is the intended throw — it sits in the window the clear-out route just vacated.'},
+      {step:'② Drag', text:'If an underneath defender jumps the dig, work down to the drag running right behind him.'},
+      {step:'③ Checkdown', text:'RB or the backside hitch if both are taken away.'},
+    ],
+    rule:'A vertical clear-out route occupies the deep defender on one side while a deep dig works underneath him from the other side of the formation — the clear-out isn\'t really a read, it\'s the mechanism that opens the dig.',
+    bestAgainst:['c3','c1','c4'],
+    formationNote:'2x2 or 3x1 — needs one legitimate vertical threat to actually occupy the deep defender (a receiver who can\'t be ignored) and one route-runner who can sit down in the window. Often paired with play-action to hold the underneath hook defenders an extra beat.',
+    cfb27:[
+      'Custom Stem the dig route to break a yard or two later against zone — CFB 27\'s Smart Zones defenders are better at closing on digs that arrive right on schedule.',
+      'Use play-action to freeze linebackers before the dig crosses their zone.'
+    ],
+    madden26:[
+      'If your opponent keeps carrying the clear-out route with a deep safety, the dig behind him is almost automatically open — trust the design.',
+      'Dagger is a strong answer to Madden 26 single-high AI shells for the same reason it beats Cover 1/3 in real football: one deep defender can\'t be in two places.'
+    ]
+  },
+  {
+    key:'levels', num:'LV', name:'Levels', tag:'STACKED IN-CUTS · LB BEATER', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'H',x0:15,y0:0,path:[[15,0],[19,4],[26,6]],label:'Shallow Level',read:1},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[34,8],[24,12]],label:'Deep Level',read:2},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,16]],label:'Backside Go',read:3},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Shallow Level', text:'The quick in-cut is the first look — it develops fastest and is live almost immediately.'},
+      {step:'② Deep Level', text:'If a linebacker drives on the shallow route, the deeper in-cut sits right behind him — same angle, different depth.'},
+      {step:'③ Checkdown', text:'RB or backside iso if the defense drops extra numbers underneath.'},
+    ],
+    rule:'Two in-breaking routes stack at different depths (about 6 and 12 yards) on the same side. It\'s built specifically to beat a linebacker or zone defender driving on the shallow route — the deeper level occupies exactly the space he just left.',
+    bestAgainst:['c3','c4','zonepressure'],
+    formationNote:'2x2, usually run to one side with both in-cuts stacked or run in the same rep — works from under center or gun equally well.',
+    cfb27:[
+      'Custom Stem the deep level a yard shallower if the opposing Mike is fast enough to carry both levels — it tightens the window before he can undercut it.',
+      'A reliable quick-game check vs Zone Pressure/Overload looks, since it develops before extra rushers get home.'
+    ],
+    madden26:[
+      'Levels beats Madden 26\'s aggressive linebacker AI specifically — if a backer keeps jumping your shallow routes, this concept punishes it directly.',
+      'Use the numbered receiver buttons to stay disciplined: shallow first, deep level second, don\'t skip the progression.'
+    ]
+  },
+  {
+    key:'stick', num:'ST', name:'Stick', tag:'3-LEVEL QUICK GAME · BLITZ BEATER', group:'concept',
+    formation: FORM_TRIPS,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'H',x0:41,y0:0,path:[[41,0],[41,5]],label:'Stick',read:1},
+      {recv:'Z',x0:49,y0:0,path:[[49,0],[49,3],[53,4]],label:'Flat',read:2},
+      {recv:'Y',x0:34,y0:0,path:[[34,0],[26,3],[18,3]],label:'Drag/Arrow',read:3},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[10,2],[15,3]],label:'Backside Slant',read:3},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Stick', text:'The hot, quickest-developing route — the first answer against pressure or press coverage.'},
+      {step:'② Flat', text:'High-low with the stick: if the flat/curl defender sits on the stick, throw the flat behind him.'},
+      {step:'③ Checkdown', text:'Drag/arrow underneath or the RB if both are taken away.'},
+    ],
+    rule:'A three-level combination on one side: a quick stick/hitch, a flat route underneath it, and a shallow drag or arrow behind everything. It\'s built to be fast — the whole progression should resolve in about two seconds.',
+    bestAgainst:['firezone','doubleag','zonepressure'],
+    formationNote:'The classic version runs from 3x1/trips (stick-flat-drag needs three receivers to one side); a simpler two-man stick/flat pairing works from a 2x2 to either side. It\'s the offense\'s most common automatic answer to a perceived blitz.',
+    cfb27:[
+      'Tag Stick as your built-in sight-adjustment on money downs — Custom Stem lets you shorten the stick route even further (3–4 yards) against confirmed pressure.',
+      'Because it\'s a quick-game concept, it pairs well with tempo/no-huddle to prevent the defense from disguising a blitz look.'
+    ],
+    madden26:[
+      'Stick is one of the fastest-developing concepts in Madden 26 — use it as your answer any time you see a mugged look or extra rushers walked up.',
+      'Work the numbered throw buttons in order (stick, flat, drag) — resist the urge to stare down the stick route if it\'s covered.'
+    ]
+  },
+  {
+    key:'corners', num:'CN', name:'Corners', tag:'DOUBLE CORNER · BOUNDARY STRESS', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,9],[53,15]],label:'Corner',read:1},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[38,8],[44,14]],label:'Corner (2nd)',read:2},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[15,5]],label:'Hitch (support)',read:3},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[12,4],[18,5]],label:'Backside Dig',read:3},
+    ],
+    progression:[
+      {step:'① Outside Corner', text:'The first and usually cleanest window — it stresses the boundary of a deep third or quarter before the defender fully sinks.'},
+      {step:'② Second Corner', text:'If the primary is bracketed by two defenders, the inside corner route behind it is the answer.'},
+      {step:'③ Underneath/Backside', text:'Hitch or backside dig if both corners are taken away.'},
+    ],
+    rule:'Two receivers threaten the same deep boundary with corner routes, stacked or staggered, so one zone defender has to choose which one to carry — the other comes open behind him.',
+    bestAgainst:['c3','c4','c6'],
+    formationNote:'Works well from a stack/bunch release (the natural pick helps both corner routes clear press coverage) or a standard 2x2. Needs at least two receivers with enough vertical speed to threaten before breaking, so it\'s less effective with possession-receiver personnel.',
+    cfb27:[
+      'Corner routes are a known Cover 3/Cover 4 stress point in CFB 27 — Custom Stem the first corner a yard deeper to fully clear the flat/curl defender before breaking.',
+      'A stack release pre-snap shift can force the defense to declare man or zone early, which tells you which corner route will actually be open.'
+    ],
+    madden26:[
+      'Corner routes are one of the most consistently effective throws in Madden 26 against zone shells that don\'t specifically account for them (like Cover 3 Cloud or Match Cover 2) — hot-route into one whenever you see a standard zone look.',
+      'Lead the throw toward the sideline on both corner routes — a flat-footed lead pass gives the defender the least amount of time to close.'
+    ]
+  },
+  {
+    key:'rollout', num:'PA', name:'PA Rollout', tag:'BOOTLEG / WAGGLE · PISTOL', group:'playaction',
+    formation: FORM_PISTOL,
+    defenders:[],
+    bands:[],
+    routes:[
+      {x0:26.65,y0:0,path:[[26.65,0],[24,-2],[22,-3]],label:'Run Fake',kind:'run'},
+      {x0:26.65,y0:0,path:[[26.65,0],[33,1],[40,2.5]],label:'QB Boot (rollout)',kind:'run'},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[34,3],[38,5]],label:'Flat (TE)',read:1},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,12],[44,13]],label:'Comeback/Out (playside)',read:2},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[16,4],[30,9],[40,10]],label:'Deep Crosser (backside)',read:3},
+    ],
+    progression:[
+      {step:'① Flat', text:'Closest and quickest — the TE or playside receiver settling in the flat right as the QB clears the pocket.'},
+      {step:'② Comeback/Out', text:'The intermediate answer on the same side — comes open as the corner drives on run support or the flat.'},
+      {step:'③ Deep Crosser', text:'The backside receiver dragging across the whole field late — takes longest to develop but is often the biggest gain if the defense over-pursues the run fake.'},
+    ],
+    rule:'A run-action fake sells the defense on the run, then the QB rolls outside the pocket off it (a "naked" or "waggle" boot — often with no blocker accompanying him). Rolling out shortens the field on one side and puts a run-flowing defense in conflict, since linebackers and safeties who bit on the fake now have to sprint back into coverage.',
+    bestAgainst:['c1','c3','firezone','zonepressure'],
+    formationNote:'Needs a real run threat next to the QB to sell the fake — Pistol keeps the back directly behind the QB (rather than offset like shotgun), which sells inside/outside zone action better and gives a cleaner rollout lane. Also runs from under center; less effective from empty or spread-only formations with no run game to hold the defense.',
+    cfb27:[
+      'CFB 27\'s play-action has a dedicated fake-hold input before rollout control kicks in — hold through the fake to sell the run before breaking outside the pocket.',
+      'Custom Stem the flat route to sit right at the numbers if you\'re rolling into a tight space near the sideline — it keeps the route from drifting out of bounds during the design\'s timing.'
+    ],
+    madden26:[
+      'Madden 26\'s play-action hold is tied to how long you hold the snap button before releasing into the rollout — a fuller hold sells the fake harder but costs reaction time if the defense reads run.',
+      'Roll to the side with your best pass-blocking tackle if you can choose formation strength — contain defenders getting home is the single biggest threat to this concept.'
+    ]
+  },
+  {
+    key:'comebacks', num:'CB', name:'Comebacks', tag:'TIMING · OFF-CORNER BEATER', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,15],[9,14]],label:'Comeback',read:1},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,15],[44,14]],label:'Comeback',read:1},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[15,6],[18,6]],label:'Hook (support)',read:2},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[38,6],[35,6]],label:'Hook (support)',read:2},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check',read:3},
+    ],
+    progression:[
+      {step:'① Comeback (leverage read)', text:'Pre- and post-snap, find the corner giving the deepest cushion — that\'s your comeback.'},
+      {step:'② Opposite Comeback / Hook', text:'If the first corner squats to rob it, work to the other comeback or the underneath hook for support.'},
+      {step:'③ Checkdown', text:'RB safety valve if the timing breaks down.'},
+    ],
+    rule:'Both outside receivers push vertically to sell a go route, then break back sharply toward the QB around 15–16 yards — right as an off-corner is opening his hips to run with the vertical. Underneath hooks hold the intermediate defenders off the sideline throw.',
+    bestAgainst:['c1','c2m','c3','c4'],
+    formationNote:'Standard 2x2, any personnel — the read is about corner cushion, not formation leverage, so it travels well across shotgun or pistol. Often paired with play-action to hold the corner\'s eyes on the run fake an extra beat before he opens his hips.',
+    cfb27:[
+      'Custom Stem the comeback to break a yard shallower if the corner is playing extra-deep off coverage — timing matters more than depth here.',
+      'CFB 27 marks your primary receiver pre-snap, but on Comebacks the real read is the corner\'s cushion at the snap, not a fixed receiver — watch leverage, not the icon.'
+    ],
+    madden26:[
+      'Lead the throw slightly upfield-and-back on comeback routes — a flat pass gives a trailing corner more time to drive on the break.',
+      'Comebacks are a strong rhythm-throw answer to Madden 26 off-coverage AI, which tends to play a heavy cushion by default on early downs.'
+    ]
+  },
+  {
+    key:'flood', num:'FL', name:'Flood', tag:'3-LEVEL OVERLOAD · ONE SIDE', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[38,8],[44,12]],label:'Deep Out',read:1},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[30,1],[38,2]],label:'Flat',read:2},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,22]],label:'Clear-Out (Go)',read:3},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[10,3],[15,4]],label:'Backside Slant',read:3},
+    ],
+    progression:[
+      {step:'① Deep Out', text:'The main answer against most zone drops — the intermediate level of the flood, right where the defense usually leaves a window.'},
+      {step:'② Flat', text:'If a defender jumps the deep out, work down to the flat underneath him — especially live against pressure.'},
+      {step:'③ Clear-Out / Backside', text:'The deep go only if it\'s truly open (man coverage or a blown assignment); backside slant as the safety valve.'},
+    ],
+    rule:'Three routes stack at three different depths on the same side — a clear-out vertical, an intermediate out, and a flat — overloading whichever zone defender is responsible for that third of the field.',
+    bestAgainst:['c3','zonepressure','firezone'],
+    formationNote:'2x2 or 3x1, flooded to either side. Pairs naturally with play-action or rollout calls, since holding the backside defenders with a run fake makes the flooded side even harder to defend with numbers.',
+    cfb27:[
+      'Custom Stem the intermediate out a yard deeper if the flat/curl defender is squatting hard underneath — it fully clears his zone.',
+      'Flood pairs naturally with play-action or rollout calls in CFB 27\'s playbook — check for a "Boot Flood" or similar tag if you want both in one play.'
+    ],
+    madden26:[
+      'Read outside-in: check the deep shot first, but the intermediate out is almost always the actual answer against a standard zone drop.',
+      'Flood is one of the more reliable answers to Madden 26\'s Zone Pressure/Overload AI, since the flooded side usually has a numbers advantage right where the defense is thinnest.'
+    ]
+  },
+  {
+    key:'spacing', num:'SP', name:'Spacing', tag:'FULL-WIDTH QUICK GAME · BLITZ BEATER', group:'concept',
+    formation: FORM_2X2,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'H',x0:15,y0:0,path:[[15,0],[15,5]],label:'Hitch',read:1},
+      {recv:'Y',x0:38,y0:0,path:[[38,0],[38,5]],label:'Hitch',read:1},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[6,5]],label:'Hitch',read:2},
+      {recv:'Z',x0:47,y0:0,path:[[47,0],[47,5]],label:'Hitch',read:2},
+      {recv:'RB',x0:22,y0:0,path:[[22,0],[16,1],[10,2]],label:'Check (if kept in)',read:3},
+    ],
+    progression:[
+      {step:'① Find the void', text:'All four routes sit at the same depth — read leverage, not a fixed name. Start toward wherever the box count told you a defender is outnumbered.'},
+      {step:'② Work the grass', text:'Move to the next hitch over if your first window is taken away — the field is spaced evenly, so there\'s almost always a soft spot.'},
+      {step:'③ Checkdown', text:'RB releases as a 5th target if he\'s not needed in protection.'},
+    ],
+    rule:'Four or five receivers sit down at the same shallow depth, spaced evenly across the width of the field. There\'s no strict route progression — the QB reads leverage and finds whichever window is softest, which makes it one of the fastest and safest answers in the playbook.',
+    bestAgainst:['zonepressure','doubleag','firezone'],
+    formationNote:'Traditionally run from a 4–5 wide empty or spread set for maximum width — condensed formations like bunch/stack work against the concept\'s whole purpose. Doesn\'t need a real run threat, which makes it a natural go-to on obvious passing downs and in the two-minute drill.',
+    cfb27:[
+      'Spacing is a strong answer on 3rd-and-medium against disguised pressure in CFB 27 — the ball comes out fast enough that even a free rusher rarely gets there.',
+      'Only check protection to max-protect if you\'re NOT releasing the RB as a 5th target; otherwise leave him in the route.'
+    ],
+    madden26:[
+      'Spacing is one of the fastest-developing concepts in Madden 26 — a great answer any time you see a mugged A-gap or overload look you can\'t fully diagnose.',
+      'Because every route sits at the same depth, target whichever defender is clearly out of position rather than following a fixed progression.'
+    ]
+  },
+  {
+    key:'snag', num:'SN', name:'Snag', tag:'CORNER + PIVOT + FLAT · TRIPS', group:'concept',
+    formation: FORM_TRIPS,
+    defenders:[],
+    bands:[],
+    routes:[
+      {recv:'H',x0:41,y0:0,path:[[41,0],[45,3],[41,4]],label:'Snag/Pivot',read:1},
+      {recv:'Z',x0:49,y0:0,path:[[49,0],[49,9],[53,15]],label:'Corner',read:2},
+      {recv:'Y',x0:34,y0:0,path:[[34,0],[28,2],[22,2]],label:'Flat',read:3},
+      {recv:'X',x0:6,y0:0,path:[[6,0],[10,3],[15,4]],label:'Backside Slant',read:3},
+    ],
+    progression:[
+      {step:'① Snag/Pivot', text:'The fastest-developing route in the concept — a quick out-and-in that settles facing the QB around 5 yards. First read almost every time.'},
+      {step:'② Corner', text:'If the flat/curl defender squeezes down on the snag, the corner route behind him is the answer — same high-low logic as Smash.'},
+      {step:'③ Flat/Backside', text:'Underneath flat or the backside slant if both are taken away.'},
+    ],
+    rule:'A three-level triangle to one side: a corner route over the top, a "snag" or pivot route settling underneath facing the QB, and a flat route underneath everything. It\'s built to be fast and hard for a zone defender to pattern-match.',
+    bestAgainst:['zonepressure','doubleag','c3'],
+    formationNote:'Classic shape is 3x1/trips — needs three receivers to one side to form the full triangle. Commonly packaged with an RPO tag off the same run action in modern spread offenses.',
+    cfb27:[
+      'Custom Stem the snag/pivot route to sit down a yard earlier against aggressive Smart Zones defenders — it\'s designed to be the fastest rhythm throw in the concept.',
+      'Snag is commonly packaged with an RPO tag in CFB 27\'s spread playbooks — check your play list for a "Snag RPO" variant if you want the run element too.'
+    ],
+    madden26:[
+      'The snag/pivot route is the first read almost every time — it\'s the quickest developing and hardest for zone defenders to pattern-match.',
+      'If the flat/curl defender keys the snag route immediately, the corner behind it is coming open — don\'t hesitate to move to your second read.'
+    ]
+  },
+  {
+    key:'rpo', num:'RPO', name:'RPO (Bubble)', tag:'RUN-PASS OPTION · ONE-KEY READ', group:'rpo',
+    formation: FORM_2X2,
+    defenders:[
+      {x:19,y:4,label:'KEY',type:'read'},
+    ],
+    bands:[],
+    routes:[
+      {x0:22,y0:0,path:[[22,0],[23,3.5]],label:'Inside Zone (run action)',kind:'run'},
+      {recv:'H',x0:15,y0:0,path:[[15,0],[10,1],[6,1]],label:'Bubble (pass option)',read:1},
+    ],
+    progression:[
+      {step:'① The Key Defender', text:'There\'s really only one read: the force/alley defender aligned outside the box. Everything happens off him.'},
+      {step:'② He Crashes → Throw', text:'If he steps up or widens to fill the run, the bubble/now screen behind him is a numbers-advantage throw.'},
+      {step:'③ He Stays Wide → Hand Off', text:'If he sits outside to take away the bubble, hand the ball off into the box he just vacated.'},
+    ],
+    rule:'A run play and a pass option are packaged into the same snap. The offensive line blocks the run regardless — the quarterback\'s only job is to read one specific defender and decide, in about a second, whether to hand it off or throw the quick perimeter route behind him.',
+    bestAgainst:['c2','c4','c6','zonepressure'],
+    formationNote:'Needs gun spread personnel with a real run threat next to the QB and a receiver positioned to bubble outside — almost always 2x2 or 3x1/trips. Formation is not optional here: the read only exists because the receiver\'s split creates a numbers conflict for one specific defender.',
+    cfb27:[
+      'CFB 27 has three RPO tags — Read, Peek, and Alert. Read gives you all three options (handoff, QB keep-and-run, QB keep-and-pass); Alert/Peek are faster handoff-or-quick-pass looks with a shorter window.',
+      'Hold A/X after the snap to keep the ball alive for the pass option, then press the throw button for your receiver before the handoff triggers automatically — hesitate too long and the game hands it off for you.'
+    ],
+    madden26:[
+      'Hold LT/L2 before the snap to highlight your read/conflict defender, then watch him after the snap — if he crashes, throw; if he stays wide, hand off (or keep, on RPO Read).',
+      'Madden 26 uses the same Read/Peek/Alert framework — Alert-style RPOs commit to the handoff fastest, so use those on early downs and save Read-style RPOs for when you want the full three-way option.'
+    ]
+  },
+  ];
+
+  /* ---------- SVG rendering ---------- */
+  function fieldSVG(cov, showRoutes){
+    const f = cov.formation;
+    let s = '';
+    s += `<svg class="field" viewBox="0 0 ${VB_W} ${VB_H}" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="var(--off)"/>
+      </marker>
+      <marker id="arrowman" markerWidth="7" markerHeight="7" refX="4" refY="2.5" orient="auto">
+        <path d="M0,0 L5,2.5 L0,5 Z" fill="var(--man)"/>
+      </marker>
+      <pattern id="hazard" patternUnits="userSpaceOnUse" width="14" height="14" patternTransform="rotate(45)">
+        <rect width="14" height="14" fill="transparent"/>
+        <line x1="0" y1="0" x2="0" y2="14" stroke="var(--def)" stroke-width="6" opacity="0.22"/>
+      </pattern>
+    </defs>`;
+
+    // field background
+    s += `<rect x="${FX0}" y="${TOP_Y-10}" width="${FX1-FX0}" height="${LOS_Y-TOP_Y+40}" fill="none"/>`;
+
+    // yard grid
+    for(let d=0; d<=DEEP_MAX; d+=5){
+      const y = Y(d);
+      s += `<line x1="${FX0}" y1="${y}" x2="${FX1}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`;
+      s += `<text x="${FX0-6}" y="${y+3}" text-anchor="end" font-family="Courier New,monospace" font-size="8" fill="var(--fog)">${d===0?'LOS':'+'+d}</text>`;
+    }
+    // hashes
+    s += `<line x1="${X(20)}" y1="${TOP_Y-10}" x2="${X(20)}" y2="${LOS_Y+18}" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,4"/>`;
+    s += `<line x1="${X(33.3)}" y1="${TOP_Y-10}" x2="${X(33.3)}" y2="${LOS_Y+18}" stroke="var(--line)" stroke-width="1" stroke-dasharray="2,4"/>`;
+    // sidelines
+    s += `<line x1="${FX0}" y1="${TOP_Y-10}" x2="${FX0}" y2="${LOS_Y+18}" stroke="var(--line)" stroke-width="1.5"/>`;
+    s += `<line x1="${FX1}" y1="${TOP_Y-10}" x2="${FX1}" y2="${LOS_Y+18}" stroke="var(--line)" stroke-width="1.5"/>`;
+
+    // LOS
+    s += `<line x1="${FX0}" y1="${LOS_Y}" x2="${FX1}" y2="${LOS_Y}" stroke="var(--chalk)" stroke-width="1.5" opacity="0.6"/>`;
+
+    // deep bands
+    cov.bands.forEach(b=>{
+      const x1=X(b.x0), x2=X(b.x1), y1=Y(b.y1), y2=Y(b.y0);
+      s += `<rect x="${x1}" y="${y1}" width="${x2-x1}" height="${y2-y1}" fill="${b.color}" stroke="var(--def)" stroke-opacity="0.35" stroke-width="1" rx="4"/>`;
+      s += `<text x="${(x1+x2)/2}" y="${y1+14}" text-anchor="middle" font-family="Courier New,monospace" font-size="9" fill="var(--def)" opacity="0.85">${b.label}</text>`;
+    });
+
+    // no-help hazard zone (Cover 0: nobody is deep, the whole field behind the LBs is open)
+    if(cov.noHelp){
+      const hx1 = FX0, hx2 = FX1, hy1 = Y(DEEP_MAX), hy2 = Y(8);
+      s += `<rect x="${hx1}" y="${hy1}" width="${hx2-hx1}" height="${hy2-hy1}" fill="url(#hazard)" stroke="var(--def)" stroke-opacity="0.5" stroke-width="1" stroke-dasharray="6,4" rx="4"/>`;
+      const midY = (hy1+hy2)/2;
+      s += `<text x="${(hx1+hx2)/2}" y="${midY-6}" text-anchor="middle" font-family="Courier New,monospace" font-size="12" font-weight="700" fill="var(--def)" opacity="0.9">NO DEEP SAFETY</text>`;
+      s += `<text x="${(hx1+hx2)/2}" y="${midY+10}" text-anchor="middle" font-family="Courier New,monospace" font-size="9.5" fill="var(--def)" opacity="0.8">EVERY ROUTE IS 1-ON-1 — WIN OR GET BEAT DEEP</text>`;
+    }
+
+    // underneath zone circles + man dashed lines (drawn before dots)
+    const targetMap = {};
+    f.receivers.forEach(r=>targetMap[r.key]={x:r.x,y:0});
+    targetMap['RB'] = {x:f.rb.x, y:0.4};
+
+    function trailPoint(path, cushionYd){
+      const n = path.length;
+      const [x2,y2] = path[n-1];
+      const [x1,y1] = path[n-2] || path[0];
+      const dx = x2-x1, dy = y2-y1;
+      const len = Math.sqrt(dx*dx+dy*dy) || 1;
+      const ux = dx/len, uy = dy/len;
+      return [x2 - ux*cushionYd, y2 - uy*cushionYd];
+    }
+
+    cov.defenders.forEach(d=>{
+      if(d.type==='zone'){
+        s += `<circle cx="${X(d.x)}" cy="${Y(d.y)}" r="${((Y(d.y-4))-(Y(d.y+4)))/2}" fill="var(--def-soft)" stroke="var(--def)" stroke-opacity="0.3"/>`;
+      }
+      if(d.type==='robber'){
+        s += `<circle cx="${X(d.x)}" cy="${Y(d.y)}" r="26" fill="rgba(201,136,90,0.18)" stroke="var(--man)" stroke-opacity="0.5" stroke-dasharray="3,3"/>`;
+      }
+      if(d.type==='man' && targetMap[d.target]){
+        const t = targetMap[d.target];
+        const matchedRoute = showRoutes ? cov.routes.find(r=>r.recv===d.target) : null;
+        if(matchedRoute){
+          // man defender trails the actual route his man is running — this is the "chase" line
+          const trail = trailPoint(matchedRoute.path, 1.6);
+          s += `<line x1="${X(d.x)}" y1="${Y(d.y)}" x2="${X(trail[0])}" y2="${Y(trail[1])}" stroke="var(--man)" stroke-width="1.5" stroke-dasharray="1,4" opacity="0.85" marker-end="url(#arrowman)"/>`;
+          s += `<circle cx="${X(trail[0])}" cy="${Y(trail[1])}" r="6.5" fill="var(--ink)" stroke="var(--man)" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.9"/>`;
+          s += `<text x="${X(trail[0])}" y="${Y(trail[1])+2.5}" text-anchor="middle" font-size="6" font-family="Courier New,monospace" fill="var(--man)" font-weight="700">${d.label.slice(0,3)}</text>`;
+        } else {
+          // routes hidden: show static pre-snap leverage alignment instead
+          s += `<line x1="${X(d.x)}" y1="${Y(d.y)}" x2="${X(t.x)}" y2="${Y(t.y)}" stroke="var(--man)" stroke-width="1.4" stroke-dasharray="4,4" opacity="0.8"/>`;
+        }
+      }
+      if(d.type==='blitz'){
+        s += `<line x1="${X(d.x)}" y1="${Y(d.y)}" x2="${X(26.65)}" y2="${Y(-3.2)}" stroke="var(--def)" stroke-width="1.6" stroke-dasharray="1,3" opacity="0.8" marker-end="url(#arrow)"/>`;
+      }
+      if(d.type==='read'){
+        s += `<circle cx="${X(d.x)}" cy="${Y(d.y)}" r="15" fill="none" stroke="var(--off)" stroke-width="2" stroke-dasharray="3,3" opacity="0.85"/>`;
+        s += `<text x="${X(d.x)}" y="${Y(d.y)-22}" text-anchor="middle" font-size="8.5" font-family="Courier New,monospace" fill="var(--off)" opacity="0.9">QB READS HIM</text>`;
+      }
+    });
+
+    // offense: OL ticks
+    for(let i=-2;i<=2;i++){
+      s += `<rect x="${X(26.65+i*2.2)-4}" y="${LOS_Y-3}" width="8" height="6" fill="var(--chalk)" opacity="0.35"/>`;
+    }
+    // QB / RB
+    s += `<circle cx="${X(f.qb.x)}" cy="${f.qb.py}" r="7" fill="none" stroke="var(--chalk)" stroke-width="1.3" opacity="0.7"/>`;
+    s += `<text x="${X(f.qb.x)}" y="${f.qb.py+3}" text-anchor="middle" font-size="7" font-family="Courier New,monospace" fill="var(--chalk)" opacity="0.8">QB</text>`;
+    s += `<circle cx="${X(f.rb.x)}" cy="${f.rb.py}" r="7" fill="none" stroke="var(--chalk)" stroke-width="1.3" opacity="0.7"/>`;
+    s += `<text x="${X(f.rb.x)}" y="${f.rb.py+3}" text-anchor="middle" font-size="7" font-family="Courier New,monospace" fill="var(--chalk)" opacity="0.8">RB</text>`;
+    // WRs
+    f.receivers.forEach(r=>{
+      s += `<circle cx="${X(r.x)}" cy="${LOS_Y}" r="7" fill="var(--ink)" stroke="var(--chalk)" stroke-width="1.6"/>`;
+      s += `<text x="${X(r.x)}" y="${LOS_Y+3}" text-anchor="middle" font-size="7.5" font-family="Courier New,monospace" fill="var(--chalk)">${r.label}</text>`;
+    });
+
+    // routes
+    if(showRoutes){
+      cov.routes.forEach(r=>{
+        const pts = r.path.map(p=>`${X(p[0])},${Y(p[1])}`).join(' ');
+        const isRun = r.kind==='run';
+        const strokeColor = isRun ? 'var(--man)' : 'var(--off)';
+        const dashAttr = isRun ? ' stroke-dasharray="2,4"' : '';
+        s += `<polyline points="${pts}" fill="none" stroke="${strokeColor}" stroke-width="${r.primary||isRun?2.6:1.8}" opacity="${r.primary||isRun?1:0.75}"${dashAttr} marker-end="url(${isRun?'#arrowman':'#arrow'})"/>`;
+        const last = r.path[r.path.length-1];
+        const lx = X(last[0]); const ly = Y(last[1]);
+        s += `<text x="${lx+8}" y="${ly-4}" font-size="9" font-family="Courier New,monospace" fill="${strokeColor}" font-weight="${r.primary?'700':'400'}">${r.label}</text>`;
+        if(r.read){
+          const first = r.path[0];
+          const fx = X(first[0]); const fy = Y(first[1]);
+          const badgeColor = r.read===1 ? 'var(--win)' : (r.read===2 ? 'var(--off)' : 'var(--man)');
+          s += `<circle cx="${fx-12}" cy="${fy-13}" r="8.5" fill="var(--ink)" stroke="${badgeColor}" stroke-width="1.8"/>`;
+          s += `<text x="${fx-12}" y="${fy-10}" text-anchor="middle" font-size="9.5" font-family="Courier New,monospace" fill="${badgeColor}" font-weight="700">${r.read}</text>`;
+        }
+      });
+    }
+
+    // defender dots (drawn after lines so they sit on top)
+    cov.defenders.forEach(d=>{
+      const fill = d.type==='blitz' ? 'var(--def)' : (d.type==='man' ? 'var(--man)' : (d.type==='robber' ? 'var(--man)' : (d.type==='read' ? 'var(--off)' : 'var(--def)')));
+      s += `<circle cx="${X(d.x)}" cy="${Y(d.y)}" r="9" fill="${fill}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      s += `<text x="${X(d.x)}" y="${Y(d.y)+3}" text-anchor="middle" font-size="7" font-family="Courier New,monospace" fill="var(--ink)" font-weight="700">${d.label.slice(0,4)}</text>`;
+    });
+
+    s += `</svg>`;
+    return s;
+  }
+
+  /* ---------- legend ---------- */
+  function legendItems(cov){
+    const items = [];
+    if(cov.defenders.some(d=>d.type==='zone'||d.type==='deep')){
+      items.push({color:'var(--def)', label:'Zone / deep defender'});
+    }
+    if(cov.defenders.some(d=>d.type==='man')){
+      items.push({color:'var(--man)', label:'Man coverage (dot chases the route)'});
+    }
+    if(cov.defenders.some(d=>d.type==='robber')){
+      items.push({color:'var(--man)', label:'Robber / spy (underneath hole)'});
+    }
+    if(cov.defenders.some(d=>d.type==='blitz')){
+      items.push({color:'var(--def)', label:'Blitzer'});
+    }
+    if(cov.defenders.some(d=>d.type==='read')){
+      items.push({color:'var(--off)', label:'RPO key / conflict defender'});
+    }
+    const hasRoutes = cov.routes && cov.routes.length;
+    const hasRunAction = hasRoutes && cov.routes.some(r=>r.kind==='run');
+    const hasReadNums = hasRoutes && cov.routes.some(r=>r.read);
+    if(hasRoutes && !hasReadNums){
+      items.push({color:'var(--off)', label:'Attack route'});
+    }
+    if(hasRunAction){
+      items.push({color:'var(--man)', label:'Run action'});
+    }
+    if(hasReadNums){
+      items.push({color:'var(--win)', label:'① Primary read'});
+      items.push({color:'var(--off)', label:'② Secondary read'});
+      items.push({color:'var(--man)', label:'③ Checkdown'});
+    }
+    if(cov.bands && cov.bands.length){
+      items.push({color:'var(--def-soft)', label:'Deep zone band'});
+    }
+    if(cov.noHelp){
+      items.push({color:'var(--def)', label:'No safety help — every route is 1-on-1'});
+    }
+    return items;
+  }
+
+  /* ---------- panel rendering ---------- */
+  let showRoutes = true;
+
+  function renderPanel(cov){
+    const main = document.getElementById('main');
+    main.innerHTML = `
+      <div class="shellhead">
+        <h2 class="display">${cov.name}</h2>
+        <div class="shelltag">${cov.shell}</div>
+      </div>
+
+      <div class="diagram-card">
+        <div class="diagram-toolbar">
+          <span>${cov.formation.name}</span>
+          <label class="toggle">
+            <input type="checkbox" id="routeToggle" ${showRoutes?'checked':''}>
+            SHOW ATTACK ROUTES
+          </label>
+        </div>
+        <div id="svgMount">${fieldSVG(cov, showRoutes)}</div>
+        <div class="legend">
+          ${legendItems(cov).map(it=>`<span><i style="background:${it.color}"></i>${it.label}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="readout">
+        <div class="lbl">PRE-SNAP READ</div>
+        <ul>${cov.reads.map(r=>`<li>${r}</li>`).join('')}</ul>
+      </div>
+
+      <div class="prose">
+        <span class="lbl">THE COVERAGE</span>
+        ${cov.rule}
+      </div>
+
+      <div class="section-title">HOW TO BEAT IT</div>
+      <div class="beaters">
+        ${cov.beaters.map(b=>`<div class="beater-card"><h4>${b.name}</h4><p>${b.desc}</p></div>`).join('')}
+      </div>
+
+      <div class="section-title">BEST FORMATIONS</div>
+      <ul class="formations">
+        ${cov.formations.map(f=>`<li>${f}</li>`).join('')}
+      </ul>
+
+      <div class="section-title">GAME-SPECIFIC ADJUSTMENTS</div>
+      <div class="gamenotes">
+        <div class="platform">
+          <div class="ptitle"><span class="dot"></span>COLLEGE FOOTBALL 27</div>
+          <ul>${cov.cfb27.map(t=>`<li>${t}</li>`).join('')}</ul>
+        </div>
+        <div class="platform">
+          <div class="ptitle"><span class="dot"></span>MADDEN NFL 26</div>
+          <ul>${cov.madden26.map(t=>`<li>${t}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('routeToggle').addEventListener('change', function(){
+      showRoutes = this.checked;
+      document.getElementById('svgMount').innerHTML = fieldSVG(cov, showRoutes);
+    });
+  }
+
+  function selectTab(key, scroll){
+    const nav = document.getElementById('tabs');
+    nav.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    const el = nav.querySelector(`.tab[data-key="${key}"]`);
+    if(el) el.classList.add('active');
+    const cov = COVERAGES.find(c=>c.key===key);
+    renderPanel(cov);
+    if(scroll!==false){
+      try{ document.getElementById('tabs').scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){}
+    }
+  }
+
+  function renderTabs(){
+    const nav = document.getElementById('tabs');
+    const groupLabel = (g)=> g==='pressure' ? 'PRESSURE PACKAGES' : 'COVERAGE SHELLS';
+    const coverageTabs = COVERAGES.filter(c=>c.group!=='pressure');
+    const pressureTabs = COVERAGES.filter(c=>c.group==='pressure');
+    function row(list){
+      return list.map(c=>
+        `<div class="tab" data-key="${c.key}"><span class="num">${c.num}</span>${c.name}</div>`
+      ).join('');
+    }
+    nav.innerHTML = `
+      <div class="tabrow">
+        <span class="tabrow-label">${groupLabel('coverage')}</span>
+        <div class="tabrow-items">${row(coverageTabs)}</div>
+      </div>
+      <div class="tabrow">
+        <span class="tabrow-label">${groupLabel('pressure')}</span>
+        <div class="tabrow-items">${row(pressureTabs)}</div>
+      </div>
+    `;
+    nav.querySelectorAll('.tab').forEach(el=>{
+      el.addEventListener('click', ()=> selectTab(el.dataset.key));
+    });
+    nav.querySelector('.tab').classList.add('active');
+  }
+
+  /* ---------- offense panel rendering ---------- */
+  let showRoutesOff = true;
+
+  function renderOffensePanel(concept){
+    const off = document.getElementById('offMain');
+    off.innerHTML = `
+      <div class="shellhead">
+        <h2 class="display">${concept.name}</h2>
+        <div class="shelltag">${concept.tag}</div>
+      </div>
+
+      <div class="diagram-card">
+        <div class="diagram-toolbar">
+          <span>${concept.formation.name}</span>
+          <label class="toggle">
+            <input type="checkbox" id="offRouteToggle" ${showRoutesOff?'checked':''}>
+            SHOW ROUTES
+          </label>
+        </div>
+        <div id="offSvgMount">${fieldSVG(concept, showRoutesOff)}</div>
+        <div class="legend">
+          ${legendItems(concept).map(it=>`<span><i style="background:${it.color}"></i>${it.label}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="readout">
+        <div class="lbl">READ PROGRESSION</div>
+        <ol class="readprog">
+          ${concept.progression.map(p=>`<li><strong>${p.step}</strong> — ${p.text}</li>`).join('')}
+        </ol>
+      </div>
+
+      <div class="prose">
+        <span class="lbl">THE CONCEPT</span>
+        ${concept.rule}
+      </div>
+
+      <div class="section-title">BEST AGAINST</div>
+      <div class="chiprow">
+        ${concept.bestAgainst.map(key=>{
+          const cv = COVERAGES.find(c=>c.key===key);
+          return cv ? `<button class="chip" onclick="window.jumpToDefense('${key}')">${cv.name} →</button>` : '';
+        }).join('')}
+      </div>
+
+      <div class="section-title">FORMATION NOTES</div>
+      <div class="prose" style="margin-top:0;">${concept.formationNote}</div>
+
+      <div class="section-title">GAME-SPECIFIC ADJUSTMENTS</div>
+      <div class="gamenotes">
+        <div class="platform">
+          <div class="ptitle"><span class="dot"></span>COLLEGE FOOTBALL 27</div>
+          <ul>${concept.cfb27.map(t=>`<li>${t}</li>`).join('')}</ul>
+        </div>
+        <div class="platform">
+          <div class="ptitle"><span class="dot"></span>MADDEN NFL 26</div>
+          <ul>${concept.madden26.map(t=>`<li>${t}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('offRouteToggle').addEventListener('change', function(){
+      showRoutesOff = this.checked;
+      document.getElementById('offSvgMount').innerHTML = fieldSVG(concept, showRoutesOff);
+    });
+  }
+
+  function selectOffenseTab(key, scroll){
+    const nav = document.getElementById('offTabs');
+    nav.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    const el = nav.querySelector(`.tab[data-key="${key}"]`);
+    if(el) el.classList.add('active');
+    const concept = OFFENSE_CONCEPTS.find(c=>c.key===key);
+    renderOffensePanel(concept);
+    if(scroll!==false){
+      try{ document.getElementById('offTabs').scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){}
+    }
+  }
+
+  function renderOffenseTabs(){
+    const nav = document.getElementById('offTabs');
+    const routeTabs = OFFENSE_CONCEPTS.filter(c=>c.group!=='rpo' && c.group!=='playaction');
+    const paTabs = OFFENSE_CONCEPTS.filter(c=>c.group==='playaction');
+    const rpoTabs = OFFENSE_CONCEPTS.filter(c=>c.group==='rpo');
+    function row(list){
+      return list.map(c=>
+        `<div class="tab" data-key="${c.key}"><span class="num">${c.num}</span>${c.name}</div>`
+      ).join('');
+    }
+    nav.innerHTML = `
+      <div class="tabrow">
+        <span class="tabrow-label">ROUTE CONCEPTS</span>
+        <div class="tabrow-items">${row(routeTabs)}</div>
+      </div>
+      <div class="tabrow">
+        <span class="tabrow-label">PLAY-ACTION</span>
+        <div class="tabrow-items">${row(paTabs)}</div>
+      </div>
+      <div class="tabrow">
+        <span class="tabrow-label">RUN-PASS OPTIONS</span>
+        <div class="tabrow-items">${row(rpoTabs)}</div>
+      </div>
+    `;
+    nav.querySelectorAll('.tab').forEach(el=>{
+      el.addEventListener('click', ()=> selectOffenseTab(el.dataset.key));
+    });
+    nav.querySelector('.tab').classList.add('active');
+  }
+
+  /* ---------- mode switching ---------- */
+  function setMode(mode){
+    document.getElementById('defenseSection').style.display = mode==='defense' ? '' : 'none';
+    document.getElementById('offenseSection').style.display = mode==='offense' ? '' : 'none';
+    document.querySelectorAll('.modebtn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+  }
+
+  document.querySelectorAll('.modebtn').forEach(b=>{
+    b.addEventListener('click', ()=> setMode(b.dataset.mode));
+  });
+
+  window.jumpToDefense = function(key){
+    setMode('defense');
+    selectTab(key);
+  };
+
+  renderTabs();
+  renderPanel(COVERAGES[0]);
+  renderOffenseTabs();
+  renderOffensePanel(OFFENSE_CONCEPTS[0]);
+  window.selectTab = selectTab;
+
+})();
+</script>
+</body>
+</html>
