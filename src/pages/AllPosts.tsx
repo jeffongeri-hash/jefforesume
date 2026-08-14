@@ -55,7 +55,7 @@ const AllPosts = () => {
       excerpt: "Systematic chest radiograph and CT interpretation — lines, opacities, pneumothorax, effusions, and cannot-miss findings.",
       image: businessPost,
       slug: "chest-imaging-atlas",
-      tags: ["Radiology", "Pulmonary"]
+      tags: ["Imaging"]
     },
     {
       title: "Neuro Imaging Atlas — Brain & Spine",
@@ -65,7 +65,7 @@ const AllPosts = () => {
       excerpt: "CT and MRI interpretation for stroke, hemorrhage, mass effect, and spinal pathology — with decision rules.",
       image: businessPost,
       slug: "neuro-imaging-atlas",
-      tags: ["Radiology", "Neurology"]
+      tags: ["Imaging"]
     },
     {
       title: "MSK & Extremities Imaging Atlas",
@@ -75,7 +75,7 @@ const AllPosts = () => {
       excerpt: "Fracture and joint imaging by region — views, subtle findings, and pitfalls across the extremities.",
       image: businessPost,
       slug: "msk-extremities-imaging-atlas",
-      tags: ["Radiology", "Musculoskeletal"]
+      tags: ["Imaging"]
     },
     {
       title: "Abdomen & Pelvis Imaging Atlas",
@@ -85,7 +85,7 @@ const AllPosts = () => {
       excerpt: "CT, ultrasound, and plain film interpretation for abdominal and pelvic pathology — with contrast selection guidance.",
       image: businessPost,
       slug: "abdomen-pelvis-imaging-atlas",
-      tags: ["Radiology", "Gastroenterology"]
+      tags: ["Imaging"]
     },
     {
       title: "Neck, Soft Tissue & Vascular Imaging Atlas",
@@ -95,7 +95,7 @@ const AllPosts = () => {
       excerpt: "Imaging of neck spaces, soft tissue infections, and vascular pathology — CTA, ultrasound, and red flags.",
       image: businessPost,
       slug: "neck-softtissue-vascular-imaging-atlas",
-      tags: ["Radiology", "ENT"]
+      tags: ["Imaging"]
     },
     {
       title: "Reading The Defense — Coverage Film Room",
@@ -105,7 +105,7 @@ const AllPosts = () => {
       excerpt: "An interactive film-room breakdown of defensive coverages, how to identify them pre-snap, and the concepts that beat them.",
       image: businessPost,
       slug: "reading-the-defense",
-      tags: ["Football", "Off the Clock"]
+      tags: ["Sports"]
     },
     {
       title: "Hematopoiesis & Cellular Atlas",
