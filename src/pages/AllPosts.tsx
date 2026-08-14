@@ -1404,13 +1404,13 @@ const AllPosts = () => {
     // Dermatology (add)
     "derm-er-rash-atlas": "Dermatology",
     // Imaging
-    "chest-imaging-atlas": "Pulmonary & Critical Care",
-    "neuro-imaging-atlas": "Neurology",
-    "msk-extremities-imaging-atlas": "Musculoskeletal",
-    "abdomen-pelvis-imaging-atlas": "Gastroenterology",
-    "neck-softtissue-vascular-imaging-atlas": "ENT",
-    // Off the Clock
-    "reading-the-defense": "Off the Clock",
+    "chest-imaging-atlas": "Imaging",
+    "neuro-imaging-atlas": "Imaging",
+    "msk-extremities-imaging-atlas": "Imaging",
+    "abdomen-pelvis-imaging-atlas": "Imaging",
+    "neck-softtissue-vascular-imaging-atlas": "Imaging",
+    // Sports
+    "reading-the-defense": "Sports",
   };
 
   const systemOrder = [
