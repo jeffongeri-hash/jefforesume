@@ -100,7 +100,7 @@ const AllPosts = () => {
     {
       title: "Reading The Defense — Coverage Film Room",
       category: "HEALTHCARE",
-      subcategory: "Clinical Education",
+      subcategory: "Off the Clock",
       date: "August 14, 2026",
       excerpt: "An interactive film-room breakdown of defensive coverages, how to identify them pre-snap, and the concepts that beat them.",
       image: businessPost,
