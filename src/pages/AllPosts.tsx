@@ -1464,16 +1464,19 @@ const AllPosts = () => {
   const getSystem = (post: Post) => systemBySlug[post.slug] || post.subcategory || "Other";
 
   const withSystemImage = (post: Post): Post => {
-    if (post.subcategory !== "Clinical Education") return post;
     const sys = getSystem(post);
     return systemImage[sys] ? { ...post, image: systemImage[sys] } : post;
   };
 
-  const clinicalPosts = postsToShow.filter((p) => p.subcategory === "Clinical Education").map(withSystemImage);
-  const otherPosts = postsToShow.filter((p) => p.subcategory !== "Clinical Education");
+  const groupedPosts = postsToShow.filter(
+    (p) => p.subcategory === "Clinical Education" || getSystem(p) !== "Other"
+  ).map(withSystemImage);
+  const otherPosts = postsToShow.filter(
+    (p) => p.subcategory !== "Clinical Education" && getSystem(p) === "Other"
+  );
 
   const grouped: Record<string, Post[]> = {};
-  clinicalPosts.forEach((p) => {
+  groupedPosts.forEach((p) => {
     const sys = getSystem(p);
     (grouped[sys] ||= []).push(p);
   });
