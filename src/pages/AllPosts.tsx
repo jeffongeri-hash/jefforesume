@@ -52,7 +52,7 @@ const AllPosts = () => {
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
       date: "August 14, 2026",
-      excerpt: "Systematic chest radiograph and CT interpretation — lines, opacities, pneumothorax, effusions, and can"t-miss findings.",
+      excerpt: "Systematic chest radiograph and CT interpretation — lines, opacities, pneumothorax, effusions, and cannot-miss findings.",
       image: businessPost,
       slug: "chest-imaging-atlas",
       tags: ["Radiology", "Pulmonary"]
