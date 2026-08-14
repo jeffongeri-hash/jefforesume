@@ -1430,8 +1430,10 @@ const AllPosts = () => {
     "Pediatrics",
     "Psychiatry",
     "Musculoskeletal",
+    "Imaging",
     "Toxicology",
     "Procedures",
+    "Sports",
     "Off the Clock",
   ];
 
