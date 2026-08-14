@@ -1454,8 +1454,10 @@ const AllPosts = () => {
     "Pediatrics": imgPediatrics,
     "Psychiatry": imgPsychiatry,
     "Musculoskeletal": imgMsk,
+    "Imaging": businessPost,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Sports": imgOffTheClock,
     "Off the Clock": imgOffTheClock,
   };
 
