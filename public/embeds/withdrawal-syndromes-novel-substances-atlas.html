@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Withdrawal Syndromes &amp; Novel Substances Atlas</title>
+<style>
+:root{
+  --bg:#0e1318; --bg2:#151b22; --panel:#1a222b; --panel2:#212b36;
+  --ink:#e7edf3; --ink-soft:#a9b6c2; --ink-faint:#6f7c89;
+  --line:#2a3541; --line-soft:#222c37;
+
+  --classic:#4f9fd6;      /* hydration blue */
+  --classic-soft:rgba(79,159,214,.12);
+  --novel:#c9973f;          /* amber-gold */
+  --novel-soft:rgba(201,151,63,.12);
+  --blood:#c14f5a;            /* deep red */
+  --blood-soft:rgba(193,79,90,.12);
+  --lab:#a165c9;            /* violet for labtonic/neuro */
+  --lab-soft:rgba(161,101,201,.12);
+
+  --good:#4a9d84; --good-soft:rgba(74,157,132,.12);
+  --danger:#d5645c; --danger-soft:rgba(213,100,92,.12);
+  --warn:#d3a545; --warn-soft:rgba(211,165,69,.12);
+  --neutral:#5b84a3; --neutral-soft:rgba(91,132,163,.12);
+
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 14px 40px rgba(0,0,0,.45);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+  --radius:12px;
+}
+html[data-theme="light"]{
+  --bg:#f5f2ea; --bg2:#ede8db; --panel:#fdfbf5; --panel2:#f5f0e3;
+  --ink:#20262d; --ink-soft:#49525c; --ink-faint:#7c8590;
+  --line:#ddd4bf; --line-soft:#e7dfca;
+  --classic:#2b6f9e; --classic-soft:rgba(43,111,158,.09);
+  --novel:#8f6a1c; --novel-soft:rgba(143,106,28,.09);
+  --blood:#a13d47; --blood-soft:rgba(161,61,71,.08);
+  --lab:#7a4f9a; --lab-soft:rgba(122,79,154,.08);
+  --good:#2f7a63; --good-soft:rgba(47,122,99,.08);
+  --danger:#b23c34; --danger-soft:rgba(178,60,52,.07);
+  --warn:#a67a1e; --warn-soft:rgba(166,122,30,.09);
+  --neutral:#3d5a75; --neutral-soft:rgba(61,90,117,.08);
+  --shadow:0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(110,95,60,.13);
+}
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.62;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:-.01em;margin:0 0 .5em}
+p{margin:0 0 1em}
+a{color:inherit}
+code,.mono{font-family:var(--mono)}
+::selection{background:var(--classic);color:#0e1318}
+
+/* topbar */
+.topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:14px;padding:13px 20px;background:color-mix(in srgb, var(--bg) 90%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-size:1.12rem;font-weight:600;display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.brand .sub{font-family:var(--mono);font-size:.6rem;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase}
+.navwrap{position:relative;flex:1;display:flex;justify-content:center}
+.navtrigger{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer;font-size:.82rem;color:var(--ink-soft);font-family:var(--sans)}
+.navtrigger:hover{color:var(--ink);border-color:var(--classic)}
+.navmenu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:min(760px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;display:none;grid-template-columns:repeat(3,1fr);gap:4px;z-index:300;max-height:70vh;overflow-y:auto}
+.navmenu.open{display:grid}
+.navitem{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:8px;cursor:pointer;font-size:.83rem;color:var(--ink-soft)}
+.navitem:hover{background:var(--classic-soft);color:var(--ink)}
+.navitem.active{background:var(--classic-soft);color:var(--classic);font-weight:600}
+.navdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.topbtns{display:flex;align-items:center;gap:8px}
+.iconbtn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.iconbtn:hover{color:var(--ink);border-color:var(--classic)}
+.searchbox{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:0 10px;height:36px}
+.searchbox input{background:transparent;border:0;outline:0;color:var(--ink);font-family:var(--sans);font-size:.83rem;width:170px}
+.searchbox svg{flex-shrink:0;opacity:.6}
+
+main{max-width:1160px;margin:0 auto;padding:28px 22px 80px}
+.dom{display:none}
+.dom.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.hero{padding:8px 0 26px;border-bottom:1px solid var(--line-soft);margin-bottom:26px}
+.hero .kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--classic);margin-bottom:10px}
+.hero h1{font-size:2.1rem;margin-bottom:10px}
+.hero .lead{color:var(--ink-soft);font-size:1.02rem;max-width:760px}
+
+.section{margin-bottom:34px}
+.section h2{font-size:1.35rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section h3{font-size:1.08rem;margin:18px 0 10px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+.card.tight{padding:16px 18px}
+
+/* timeline */
+.timeline{position:relative;padding-left:26px;border-left:2px solid var(--line)}
+.tlitem{position:relative;margin-bottom:20px;padding-left:6px}
+.tlitem::before{content:'';position:absolute;left:-32px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--classic);border:2px solid var(--bg)}
+.tlyear{font-family:var(--mono);font-size:.75rem;color:var(--classic);font-weight:600;letter-spacing:.03em}
+.tltext{color:var(--ink-soft);font-size:.92rem;margin-top:3px}
+
+/* fluid monograph card */
+.fluidcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
+.fluidhead{padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line-soft)}
+.fluidhead h3{margin:0;font-size:1.25rem}
+.fluidaka{font-size:.85rem;color:var(--ink-faint);margin-top:2px}
+.fluidtag{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;font-weight:600}
+.tag-classic{background:var(--classic-soft);color:var(--classic)}
+.tag-novel{background:var(--novel-soft);color:var(--novel)}
+.tag-blood{background:var(--blood-soft);color:var(--blood)}
+.tag-lab{background:var(--lab-soft);color:var(--lab)}
+.tag-danger{background:var(--danger-soft);color:var(--danger)}
+
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line-soft);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.statcell{background:var(--panel);padding:11px 16px}
+.statlabel{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+.statval{font-family:var(--mono);font-size:.93rem;color:var(--ink);font-weight:600}
+
+.fluidbody{padding:18px 22px}
+.subhead{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:16px 0 8px}
+.subhead:first-child{margin-top:0}
+ul.plain{list-style:none;padding:0;margin:0 0 4px}
+ul.plain li{position:relative;padding-left:18px;margin-bottom:8px;font-size:.92rem;color:var(--ink-soft);line-height:1.55}
+ul.plain li::before{content:'';position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--classic)}
+ul.plain.bad li::before{background:var(--danger)}
+ul.plain.good li::before{background:var(--good)}
+
+.myth{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:16px 18px;margin:12px 0}
+.myth .mtitle{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:8px}
+.myth .claim{font-style:italic;color:var(--ink-soft);margin-bottom:8px;font-size:.92rem}
+.myth .reality{font-size:.92rem;color:var(--ink);margin-bottom:10px}
+
+.uncertainty{background:var(--neutral-soft);border-left:3px solid var(--neutral);border-radius:6px;padding:12px 16px;margin:12px 0;font-size:.88rem;color:var(--ink-soft)}
+.uncertainty .utitle{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--neutral);font-weight:700;margin-bottom:6px}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.compare{width:100%;border-collapse:collapse;font-size:.83rem;min-width:900px}
+table.compare th{background:var(--panel2);font-family:var(--mono);font-size:.63rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);padding:10px 12px;text-align:left;position:sticky;top:0;border-bottom:1px solid var(--line)}
+table.compare td{padding:9px 12px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
+table.compare tr:hover td{background:var(--classic-soft)}
+table.compare td.fname{color:var(--ink);font-weight:600;white-space:normal}
+
+/* population cards */
+.popcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px}
+.popcard h3{font-size:1.05rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.popsummary{color:var(--ink-soft);font-size:.9rem;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
+.pitfall{background:var(--danger-soft);border-radius:8px;padding:10px 14px;font-size:.85rem;color:var(--ink-soft);margin-top:10px}
+.pitfall .ptitle{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--danger);font-weight:700;margin-bottom:4px}
+
+/* svg diagram wrapper */
+.diagram{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.diagram .dcaption{font-size:.8rem;color:var(--ink-faint);margin-top:10px;font-family:var(--mono)}
+
+/* grid layout for fundamentals */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-family:var(--mono);font-size:.7rem;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft)}
+
+footer{text-align:center;padding:30px 20px;color:var(--ink-faint);font-size:.78rem;border-top:1px solid var(--line-soft);margin-top:40px}
+
+@media(max-width:640px){
+  .brand .sub{display:none}
+  .navmenu{grid-template-columns:1fr}
+  .hero h1{font-size:1.6rem}
+  .topbar{flex-wrap:wrap;row-gap:10px}
+  .brand{flex:1 1 auto}
+  .navwrap{order:3;flex:1 1 100%;justify-content:flex-start}
+  .navmenu{left:0;transform:none;width:100%}
+  .topbtns{order:2;margin-left:auto}
+  .searchbox{display:none}
+}
+@media(max-width:420px){
+  .brand{font-size:1rem}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">⛽ Withdrawal &amp; Novel Substances Atlas <span class="sub">Toxicology Reference</span></div>
+  <div class="navwrap">
+    <div class="navtrigger" id="navTrigger">
+      <span>Navigate</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="navmenu" id="navMenu">
+      <div class="navitem" data-dom="overview"><span class="navdot" style="background:var(--classic)"></span>Mechanism Families</div><div class="navitem" data-dom="alcohol"><span class="navdot" style="background:var(--classic)"></span>Alcohol Withdrawal</div><div class="navitem" data-dom="benzo"><span class="navdot" style="background:var(--classic)"></span>Benzodiazepine Withdrawal</div><div class="navitem" data-dom="opioid"><span class="navdot" style="background:var(--classic)"></span>Opioid Withdrawal</div><div class="navitem" data-dom="novel"><span class="navdot" style="background:var(--novel)"></span>Gas Station & OTC Substances</div><div class="navitem" data-dom="screening"><span class="navdot" style="background:var(--blood)"></span>Master Drug Screen Table</div>
+    </div>
+  </div>
+  <div class="topbtns">
+    <div class="searchbox">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search atlas… (Enter)">
+    </div>
+    <div class="iconbtn" id="themeBtn" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Withdrawal Syndromes &amp; Novel Substances Atlas · Master Reference</div>
+    <h1>The Withdrawal &amp; Novel Substances Atlas</h1>
+    <p class="lead">Classic withdrawal syndromes (alcohol, benzodiazepine, opioid) at full protocol depth, plus a dedicated section on gas-station and OTC/legal-loophole substances — mechanism of action, intoxication, withdrawal, and what actually shows up on a lab — for kratom, tianeptine, kava-kratom tonics, phenibut, high-dose loperamide, kava, delta-8 THC, synthetic cannabinoids, and DXM.</p>
+    <div class="pillrow">
+      <span class="pill">3 classic syndromes</span>
+      <span class="pill">9 novel substances</span>
+      <span class="pill">Master drug screen table</span>
+    </div>
+  </div>
+
+  <section class="dom active" id="dom-overview"><div class="section"><h2>🧬 Withdrawal Mechanism Families</h2><div class="card"><p style="color:var(--ink-soft);font-size:.95rem">Every withdrawal syndrome in this atlas traces back to one of three receptor mechanisms being unmasked on cessation. Knowing which family a substance belongs to predicts both the withdrawal picture and its danger level — GABA-ergic withdrawal can kill through seizures and delirium; opioidergic withdrawal is miserable but rarely lethal on its own; cannabinoid/NMDA-mechanism substances mostly carry intoxication risk rather than dangerous withdrawal.</p></div><div class="diagram">
+<svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>
+    .lbl-b{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;fill:var(--ink,#e7edf3)}
+    .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;fill:var(--ink-soft,#a9b6c2)}
+    .box{fill:#1a222b;stroke-width:1.5}
+  </style></defs>
+
+  <rect x="30" y="40" width="260" height="180" rx="10" class="box" stroke="#4f9fd6"/>
+  <text x="160" y="68" text-anchor="middle" class="lbl-b" fill="#4f9fd6">GABA-ergic</text>
+  <text x="160" y="90" text-anchor="middle" class="lbl">Alcohol, benzodiazepines,</text>
+  <text x="160" y="104" text-anchor="middle" class="lbl">phenibut, kava</text>
+  <text x="160" y="130" text-anchor="middle" class="lbl">↓GABA tone on cessation</text>
+  <text x="160" y="146" text-anchor="middle" class="lbl">→ hyperexcitable state</text>
+  <text x="160" y="170" text-anchor="middle" class="lbl">Seizures + delirium</text>
+  <text x="160" y="186" text-anchor="middle" class="lbl">are hallmark risks</text>
+
+  <rect x="320" y="40" width="260" height="180" rx="10" class="box" stroke="#c1443f"/>
+  <text x="450" y="68" text-anchor="middle" class="lbl-b" fill="#c1443f">Opioidergic</text>
+  <text x="450" y="90" text-anchor="middle" class="lbl">Classic opioids, kratom,</text>
+  <text x="450" y="104" text-anchor="middle" class="lbl">tianeptine, loperamide</text>
+  <text x="450" y="130" text-anchor="middle" class="lbl">↓mu-receptor tone →</text>
+  <text x="450" y="146" text-anchor="middle" class="lbl">rebound noradrenergic surge</text>
+  <text x="450" y="170" text-anchor="middle" class="lbl">Miserable but rarely</text>
+  <text x="450" y="186" text-anchor="middle" class="lbl">life-threatening alone</text>
+
+  <rect x="610" y="40" width="260" height="180" rx="10" class="box" stroke="#c9973f"/>
+  <text x="740" y="68" text-anchor="middle" class="lbl-b" fill="#c9973f">Cannabinoid / Other</text>
+  <text x="740" y="90" text-anchor="middle" class="lbl">Delta-8, synthetic</text>
+  <text x="740" y="104" text-anchor="middle" class="lbl">cannabinoids, DXM</text>
+  <text x="740" y="130" text-anchor="middle" class="lbl">CB1 / NMDA mechanisms —</text>
+  <text x="740" y="146" text-anchor="middle" class="lbl">distinct from GABA/opioid</text>
+  <text x="740" y="170" text-anchor="middle" class="lbl">Mild-to-absent withdrawal,</text>
+  <text x="740" y="186" text-anchor="middle" class="lbl">intoxication risk dominates</text>
+</svg>
+<div class="dcaption">Figure — The three withdrawal mechanism families</div></div></div></section><section class="dom" id="dom-alcohol"><div class="section"><h2>🍺 Alcohol Withdrawal</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Chronic alcohol use potentiates GABA-A receptor inhibitory tone and suppresses NMDA-glutamate excitatory tone. Abrupt cessation unmasks a rebound state of relative GABA underactivity and glutamate overactivity, producing the hyperadrenergic, hyperexcitable withdrawal state — the same core mechanism underlying why benzodiazepines (GABA-A agonists) and phenobarbital (GABA-A agonist + weak NMDA antagonist) are both effective treatments.</p></div><div class="diagram"><svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg"><defs><style>
+      .t{font-family:'Inter',sans-serif;font-size:12px;fill:var(--ink,#e7edf3);text-anchor:middle}
+      .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-anchor:middle}
+    </style></defs><line x1="40" y1="60" x2="860" y2="60" stroke="#2a3541" stroke-width="3"/><circle cx="142.5" cy="60" r="8" fill="#4f9fd6"/><text x="142.5" y="40" class="lbl" fill="#4f9fd6">6–24h</text><text x="142.5" y="95" class="t">Tremor, anxiety,</text><text x="142.5" y="111" class="t">tachycardia</text><circle cx="347.5" cy="60" r="8" fill="#c9973f"/><text x="347.5" y="40" class="lbl" fill="#c9973f">12–48h</text><text x="347.5" y="95" class="t">Withdrawal</text><text x="347.5" y="111" class="t">seizures</text><circle cx="552.5" cy="60" r="8" fill="#a165c9"/><text x="552.5" y="40" class="lbl" fill="#a165c9">12–48h</text><text x="552.5" y="95" class="t">Alcoholic</text><text x="552.5" y="111" class="t">hallucinosis</text><circle cx="757.5" cy="60" r="8" fill="#c1443f"/><text x="757.5" y="40" class="lbl" fill="#c1443f">48–96h</text><text x="757.5" y="95" class="t">Delirium</text><text x="757.5" y="111" class="t">tremens</text><text x="450.0" y="175" text-anchor="middle" class="t" fill="var(--ink-faint,#6f7c89)" font-size="10.5">Timelines overlap — seizures can precede or coincide with other stages, not follow strictly in sequence</text></svg><div class="dcaption">Figure — Alcohol withdrawal timeline</div></div><div class="tablewrap"><table class="compare"><thead><tr><th>Onset</th><th>Presentation</th></tr></thead><tbody><tr><td class="fname">6–24 hours</td><td style="white-space:normal">Tremor, anxiety, diaphoresis, tachycardia, hypertension, nausea — the earliest and most common presentation.</td></tr><tr><td class="fname">12–48 hours</td><td style="white-space:normal">Withdrawal seizures (generalized tonic-clonic) — can occur even before other withdrawal symptoms are prominent; a history of prior withdrawal seizures strongly predicts recurrence with future withdrawal episodes (kindling phenomenon).</td></tr><tr><td class="fname">12–48 hours (overlapping)</td><td style="white-space:normal">Alcoholic hallucinosis — visual, auditory, or tactile hallucinations with intact orientation and normal vital signs, distinct from delirium tremens and generally self-limited.</td></tr><tr><td class="fname">48–96 hours</td><td style="white-space:normal">Delirium tremens (DTs) — the most severe presentation: disorientation, agitation, hallucinations WITH autonomic instability (fever, tachycardia, hypertension) and clouded sensorium, carrying meaningful mortality risk if untreated.</td></tr></tbody></table></div><div class="uncertainty"><div class="utitle">Assessment</div>CIWA-Ar (Clinical Institute Withdrawal Assessment for Alcohol, revised) remains the standard symptom-triggered severity scale, though it requires patient cooperation/verbal responsiveness and is less reliable in non-verbal, intubated, or severely agitated patients. PAWSS (Prediction of Alcohol Withdrawal Severity Scale) is increasingly used as a risk-stratification tool at admission to identify patients likely to develop severe withdrawal before it happens, rather than only reacting once symptoms appear.</div><div class="myth"><div class="mtitle">⚡ Phenobarbital vs. Benzodiazepine Evidence</div><div class="reality">Multiple retrospective cohort studies (2023–2025) comparing phenobarbital-based protocols to benzodiazepine-based protocols for alcohol withdrawal in the ICU/medical ICU setting have found phenobarbital associated with significantly shorter hospital length of stay (one cohort: 2.8 vs. 4.7 days, p<0.0001), reduced need for adjunctive medications (quetiapine, haloperidol, dexmedetomidine), and reduced respiratory complications compared to benzodiazepine-based protocols. This has driven a genuine practice shift at many institutions toward phenobarbital-forward protocols for moderate-to-severe alcohol withdrawal, particularly in the ICU, rather than phenobarbital being reserved only as a benzodiazepine-refractory rescue agent.</div></div><div class="subhead">Treatment Principles</div><ul class="plain "><li>Symptom-triggered dosing (CIWA-Ar-guided) generally outperforms fixed-schedule dosing for most patients — less total medication exposure and shorter treatment duration</li><li>Front-loading (larger initial doses with rapid reassessment) is preferred over slow escalation in moderate-severe withdrawal — under-treatment early is a more common and more dangerous error than over-treatment</li><li>Phenobarbital protocols (IV loading, e.g., 260 mg increments titrated to effect, or weight-based 10–15 mg/kg loading with oral taper) are an increasingly evidence-supported alternative or adjunct to benzodiazepines, particularly for ICU-level severe withdrawal</li><li>Thiamine before glucose — always, to avoid precipitating Wernicke's encephalopathy in a thiamine-depleted patient</li><li>Adjunctive agents (dexmedetomidine, propofol for refractory DTs requiring intubation) have a role but should supplement, not substitute for, adequate GABA-agonist dosing — dexmedetomidine and antipsychotics do not treat the underlying withdrawal seizure risk</li></ul></div></section><section class="dom" id="dom-benzo"><div class="section"><h2>💊 Benzodiazepine Withdrawal</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Same core GABA-A receptor mechanism as alcohol withdrawal — chronic benzodiazepine exposure downregulates and desensitizes GABA-A receptors; abrupt cessation unmasks the same relative GABA-underactivity/glutamate-overactivity hyperexcitable state. This mechanistic overlap is why benzodiazepines effectively treat alcohol withdrawal and why alcohol and benzodiazepine withdrawal can look clinically similar.</p></div><div class="subhead">Presentation</div><ul class="plain "><li>Anxiety, insomnia, tremor, autonomic hyperactivity (tachycardia, hypertension, diaphoresis) — the core symptom cluster, overlapping substantially with alcohol withdrawal</li><li>Seizures — particularly with abrupt discontinuation of short-half-life agents (alprazolam) after prolonged high-dose use</li><li>Perceptual disturbances, depersonalization — more characteristic of benzodiazepine withdrawal specifically than alcohol withdrawal</li><li>Protracted withdrawal syndrome — a subset of patients experience lingering anxiety, insomnia, and perceptual symptoms for weeks to months after acute withdrawal resolves, a phenomenon less prominent in alcohol withdrawal</li></ul><div class="uncertainty"><div class="utitle">Risk Factors</div>Short-half-life agents (alprazolam, lorazepam) carry higher withdrawal severity/seizure risk than long-half-life agents (diazepam, clonazepam) at equivalent duration of use, given the more abrupt drop in receptor occupancy. High dose, long duration of use, and prior withdrawal episodes (kindling, same concept as alcohol) all increase risk.</div><div class="subhead">Treatment Principles</div><ul class="plain "><li>Cross-taper to a longer-acting benzodiazepine (commonly diazepam or chlordiazepoxide) with a gradual taper over weeks — the standard outpatient approach for planned discontinuation</li><li>For acute severe withdrawal/seizure in the acute care setting, treat similarly to alcohol withdrawal — benzodiazepine dosing (often the same or a cross-tolerant agent) titrated to symptom control</li><li>Never abruptly discontinue in a dependent patient without a taper plan — this is one of the more common iatrogenic precipitants of withdrawal seizures seen in hospitalized patients whose home benzodiazepine is simply omitted on admission</li></ul></div></section><section class="dom" id="dom-opioid"><div class="section"><h2>💉 Opioid Withdrawal</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Chronic opioid agonism at the mu-opioid receptor suppresses locus coeruleus noradrenergic firing; abrupt cessation or antagonist/partial-agonist displacement unmasks a rebound noradrenergic surge — the physiologic basis of the classic hyperadrenergic opioid withdrawal picture (unlike GABA-ergic alcohol/benzodiazepine withdrawal, opioid withdrawal is virtually never fatal on its own in an otherwise healthy adult, though it is intensely uncomfortable and a major driver of relapse/overdose risk).</p></div><div class="subhead">Presentation</div><ul class="plain "><li>Early: anxiety, yawning, rhinorrhea, lacrimation, diaphoresis, piloerection</li><li>Progressive: nausea, vomiting, diarrhea, abdominal cramping, mydriasis, tachycardia, hypertension</li><li>Musculoskeletal: myalgias, arthralgias ('kicking the habit' — the origin of the phrase, from restless leg movements)</li><li>Notably absent: seizures and delirium are NOT typical features of pure opioid withdrawal (unlike alcohol/benzodiazepine withdrawal) — their presence should prompt consideration of a co-occurring withdrawal syndrome or another diagnosis</li></ul><div class="uncertainty"><div class="utitle">Assessment</div>COWS (Clinical Opiate Withdrawal Scale) is the standard objective severity tool, scoring resting pulse, sweating, restlessness, pupil size, bone/joint aches, GI symptoms, tremor, yawning, anxiety, and gooseflesh skin — used both to grade severity and to determine readiness for buprenorphine induction.</div><h3>Buprenorphine Induction</h3><div class="card"><h3 style="margin-top:0;font-size:.98rem">Traditional Induction</h3><p style="color:var(--ink-soft);font-size:.9rem;margin:0">Standard/traditional induction requires the patient to be in mild-moderate withdrawal (COWS ≥ 8–12, roughly 12–24 hours after last short-acting opioid use) before the first buprenorphine dose — because buprenorphine is a high-affinity partial agonist, giving it while full agonist is still substantially occupying/stimulating the receptor can displace the full agonist and precipitate acute, severe withdrawal.</p></div><div class="uncertainty"><div class="utitle">The Fentanyl-Era Problem</div>The shift to a fentanyl-dominant illicit opioid supply has made traditional induction substantially harder: fentanyl's lipophilicity causes it to sequester in adipose tissue and re-release over days, meaning patients can remain at meaningful risk of precipitated withdrawal well beyond the classical 12–24 hour window used for heroin/prescription opioids — traditional induction protocols developed in a pre-fentanyl era are frequently ineffective or provoke precipitated withdrawal in current patients.</div><div class="myth"><div class="mtitle">⚡ Low-Dose (Microdose) Induction</div><div class="reality">Low-dose (microdose) induction has emerged as the major current-practice adaptation: very small buprenorphine doses (e.g., starting around 0.5–1 mg, using buccal/transdermal formulations dosed in micrograms, or IV microdosing in inpatient settings) are given while the patient continues their full agonist opioid, with the buprenorphine dose gradually increased over 3–7+ days until a therapeutic dose is reached — at which point the full agonist is stopped. This avoids the need for the patient to be in withdrawal at all before starting, and avoids precipitated withdrawal by never allowing buprenorphine to reach receptor-displacing concentrations while full agonist is still present in meaningful amounts.</div></div><div class="uncertainty"><div class="utitle">Evidence</div>Multiple recent case series and retrospective cohorts (2023–2026) of low-dose/microdose buprenorphine induction in fentanyl-using populations report low rates of precipitated withdrawal and successful transition to maintenance therapy, including inpatient IV microdosing protocols and outpatient low-dose sublingual/buccal protocols. This remains a rapidly evolving area without full standardization across institutions — verify against your institution's current protocol, as dosing schedules vary meaningfully across published approaches.</div><div class="subhead">Treatment Principles</div><ul class="plain "><li>Buprenorphine (or methadone, in an appropriately licensed program) for medication-assisted withdrawal management/maintenance is the evidence-based standard — symptomatic-only management (clonidine, antiemetics, antidiarrheals) is a reasonable bridge or option for patients declining MOUD, but is inferior for relapse/overdose prevention</li><li>Clonidine (alpha-2 agonist) blunts the noradrenergic surge and is a useful adjunct for autonomic symptoms regardless of whether buprenorphine/methadone is also used</li><li>Always screen for and address concurrent alcohol/benzodiazepine dependence — opioid withdrawal itself is rarely dangerous, but a missed concurrent GABA-ergic withdrawal syndrome can be</li></ul></div></section><section class="dom" id="dom-novel"><div class="section"><h2>⛽ Gas Station &amp; OTC / Legal-Loophole Substances</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Sold at gas stations, vape shops, and online — unscheduled, unregulated, or regulated as “supplements,” and almost universally invisible to standard hospital toxicology testing. Each entry covers mechanism, intoxication, withdrawal, and what (if anything) will actually show up on a lab.</p></div><div class="fluidcard" id="sub-kratom"><div class="fluidhead"><div><h3>Kratom</h3><div class="fluidaka">Mitragyna speciosa · mitragynine · 7-hydroxymitragynine (7-OH)</div></div><span class="fluidtag tag-novel">Plant-derived opioid/stimulant — unscheduled, DEA “drug of concern”</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">The active alkaloids mitragynine and 7-hydroxymitragynine act as partial agonists at mu-opioid receptors (7-OH is substantially more potent and more efficacious at the mu receptor than mitragynine itself), while also engaging adrenergic and serotonergic receptors — producing a dose-dependent dual profile: stimulant/euphoric effects at lower doses, sedative/opioid-like effects at higher doses.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Low dose: stimulant-like effects — increased energy, alertness, sociability, mild euphoria</li><li>High dose: opioid-like effects — sedation, analgesia, euphoria, respiratory depression (less pronounced than classic opioids but reported, particularly in combination with other CNS depressants)</li><li>Nausea, constipation (opioid-receptor-mediated GI effects, same mechanism as classic opioids)</li><li>Tachycardia, hypertension at higher/stimulant-predominant doses</li><li>Seizures, hepatotoxicity, and rare deaths reported — poison control reports of kratom-associated adverse events rose substantially over the last decade</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Regular use produces physical dependence with an opioid-like withdrawal syndrome: myalgias, rhinorrhea, anxiety, irritability, insomnia, and GI upset — generally reported as milder than classic opioid withdrawal but clinically real and a common reason for repeat use.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">NOT detected by standard 5-panel or most 10-panel urine drug screens — the immunoassay opioid panel targets morphine-derived structures and does not cross-react with mitragynine/7-OH. Detection requires a kratom-specific send-out assay (LC-MS/MS) targeting mitragynine and 7-hydroxymitragynine specifically; must be explicitly ordered, it will not appear on a routine tox panel. A kratom metabolite has been documented to cause a false-positive result for methadone on some immunoassay platforms — worth knowing if a methadone-naive patient screens unexpectedly positive.</div></div></div></div><div class="fluidcard" id="sub-tianeptine"><div class="fluidhead"><div><h3>Tianeptine</h3><div class="fluidaka">“Gas station heroin” · Neptune's Fix · ZaZa · Tianaa · Pegasus · TD Red</div></div><span class="fluidtag tag-novel">Atypical antidepressant (foreign-licensed) misused as opioid substitute — not FDA-approved, unscheduled in the US</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">Licensed in some countries (France, other parts of Europe, Latin America, Asia) as an atypical tricyclic-structure antidepressant at low therapeutic doses (~12.5 mg three times daily) via a mechanism initially described as glutamatergic/AMPA modulation — but at the supratherapeutic doses used recreationally (products sold in the US have been found to contain up to 250× the licensed therapeutic dose), tianeptine acts as a full agonist at the mu-opioid receptor, producing genuinely opioid-like effects despite its antidepressant classification abroad.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Euphoria, sedation, and opioid-like effects at high/recreational doses — the basis of its opioid-substitute street use</li><li>Agitation, confusion, tachycardia, hypertension — reported adverse effects per FDA surveillance</li><li>Respiratory depression and coma at high doses, mirroring classic opioid overdose</li><li>Death — reported adverse events to US poison control centers rose from 11 total (2000–2013) to 151 in a single year (2020) per FDA data, and the agency issued a direct consumer warning in May 2025</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Repeated use produces dependence with an opioid-like withdrawal syndrome — agitation, nausea, anxiety, diarrhea, chills — clinically similar enough to classic opioid withdrawal that some reported cases have been severe enough to require intubation. Given the mu-opioid mechanism, standard opioid withdrawal management principles (including buprenorphine) are a reasonable clinical approach, though tianeptine-specific induction/dosing protocols are not yet well-standardized.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">NOT detected by standard urine drug screens, including standard opioid immunoassay panels — tianeptine's structure does not cross-react with routine opioid screening antibodies. Confirmation requires a specific send-out assay; most hospital labs cannot detect it on a routine panel. A high index of suspicion based on history/product packaging (patient may have the product itself, worth asking to see it) is often the only clue in an undifferentiated opioid-toxidrome presentation with a negative standard tox screen.</div></div></div></div><div class="fluidcard" id="sub-feelfree"><div class="fluidhead"><div><h3>“Feel Free” and Similar Kava-Kratom Tonics</h3><div class="fluidaka">Botanic Tonics Feel Free Classic · various gas-station kava-kratom drink brands</div></div><span class="fluidtag tag-novel">Combination product — kava + kratom, marketed as an alcohol alternative</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">A specific, widely marketed commercial product combining kava (GABA-ergic sedative, see standalone Kava entry) and kratom (opioid-receptor-active, see standalone Kratom entry) — the combination is notable less for a unique pharmacologic mechanism than for its marketing and consumption pattern: sold in single-serving bottles at gas stations and convenience stores, marketed explicitly as a ‘healthy, sober alternative to alcohol,’ and consumed repeatedly throughout the day by some users (one plaintiff in litigation reported up to 10 bottles/day) in a pattern that closely mirrors alcohol use disorder consumption patterns.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Relaxation, mild euphoria, sociability — the marketed/intended effect profile</li><li>Sedation, GI upset from the kava component; opioid-receptor effects (see Kratom entry) from the kratom component, particularly at higher/repeated daily doses</li><li>The product's kratom content is reported to exceed its kava content by roughly 2:1 in some formulations — relevant because the marketing historically emphasized kava almost exclusively while downplaying kratom, leading many users to be unaware they were developing opioid-receptor-mediated dependence</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Case reports and litigation describe a withdrawal syndrome combining opioid-like features (from the kratom component) that some users have managed by returning to alcohol use specifically to relieve tonic withdrawal symptoms — a clinically important pattern given the product's marketing as an alcohol-cessation aid, which can paradoxically drive a return to alcohol use in susceptible individuals.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">Same detection gap as its individual components — neither kava's kavalactones nor kratom's mitragynine/7-OH appear on standard urine drug screens. If a patient reports use of this or a similar branded product, ask specifically what it contains (many users are unaware of the kratom content) and consider send-out testing for both kava and kratom markers if clinically indicated.</div></div></div></div><div class="fluidcard" id="sub-phenibut"><div class="fluidhead"><div><h3>Phenibut</h3><div class="fluidaka">β-phenyl-γ-aminobutyric acid · Fenibut · Anvifen · Noofen</div></div><span class="fluidtag tag-novel">GABA-B agonist — marketed as a “nootropic” dietary supplement, not FDA-approved</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">A GABA analog developed in the Soviet Union (originally used by cosmonauts for anxiolysis), acting primarily as a GABA-B receptor agonist — the same receptor targeted by baclofen, to which phenibut is structurally and pharmacologically closely related — with weaker GABA-A activity and additional effects on voltage-dependent calcium channels (gabapentinoid-like activity) and dopamine receptors.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Sedation, euphoria, anxiolysis, muscle relaxation at typical recreational doses</li><li>At higher doses: ataxia, respiratory depression, decreased level of consciousness, hypothermia — a sedative-hypnotic overdose picture</li><li>Dissociative features have been reported in case literature, an atypical but documented presentation</li><li>No specific antidote — management is supportive (airway protection, monitoring) as for other sedative-hypnotic overdoses</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Can be severe and, in a meaningful proportion of cases, refractory to standard treatment — one case series found 95.7% of acute phenibut withdrawal cases required therapeutic intervention. Presentation includes insomnia, anxiety, psychomotor agitation, tremor, myalgias, palpitations, and in severe cases delirium, hallucinations, and catatonic episodes; some published cases failed to respond to escalating doses of multiple benzodiazepines, antipsychotics, AND baclofen, ultimately developing catatonia despite aggressive multi-agent treatment. Baclofen (same GABA-B mechanism) is the most commonly reported successful taper/detox agent given the pharmacologic overlap, sometimes combined with benzodiazepines, gabapentin, and clonidine — but baclofen tapers themselves have proven difficult to discontinue in at least one reported case, an unusual second-order withdrawal problem worth being aware of.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">No routine, readily available confirmatory laboratory test exists for acute phenibut intoxication in most hospital settings — this is explicitly noted in the case-report literature as a diagnostic gap. Diagnosis is clinical, based on history (including specifically asking about nootropic/supplement use, which patients may not volunteer as “drug use”) and a sedative-hypnotic toxidrome with a negative standard tox screen and negative alcohol level.</div></div></div></div><div class="fluidcard" id="sub-loperamide"><div class="fluidhead"><div><h3>Loperamide (High-Dose Misuse)</h3><div class="fluidaka">Imodium · “poor man's methadone”</div></div><span class="fluidtag tag-novel">OTC antidiarrheal misused for opioid effect/self-treated withdrawal — legal, unrestricted OTC sale</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">A peripherally-restricted mu-opioid receptor agonist at therapeutic doses — normally excluded from the CNS by P-glycoprotein efflux transport at the blood-brain barrier, which is why standard-dose loperamide has essentially no central opioid/euphoric effect. At the very high doses used recreationally (commonly 70–100+ mg/day, versus a therapeutic ceiling around 16 mg/day), this efflux mechanism is overwhelmed, allowing meaningful CNS penetration and central opioid effects — but critically, these same supratherapeutic doses also produce direct cardiac ion channel blockade unrelated to its opioid mechanism (see below), which is the actual dangerous part.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>At the doses that produce a desired euphoric/opioid effect, loperamide simultaneously blocks cardiac sodium channels (Nav1.5) and the hERG/IKr potassium channel — producing QRS widening, QTc prolongation, and a Brugada-pattern ECG</li><li>This translates clinically to a genuine and specific risk of polymorphic ventricular tachycardia/torsades de pointes, AV block, bradycardia, and cardiac arrest — a systematic review of loperamide cardiotoxicity cases found 67% of reviewed cases involved polymorphic VT or torsades, at a median daily dose of 200 mg</li><li>Syncope, palpitations, and unexplained cardiac arrest in a patient with a history of opioid use disorder or GI complaints should raise suspicion — this is a genuinely under-recognized toxicology diagnosis given loperamide's OTC, seemingly innocuous status</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Because loperamide is a genuine mu-opioid agonist at the doses used recreationally, chronic high-dose users can develop physical dependence and a classic opioid withdrawal syndrome on cessation — the basis of its street name “poor man's methadone,” used by some individuals specifically to self-treat opioid withdrawal from other substances using an unrestricted OTC product.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">Loperamide is NOT detected by standard urine opioid immunoassay panels — it does not cross-react with the antibodies used in routine opioid screening. The critical ‘lab’ here is actually the ECG, not a toxicology panel: obtain a 12-lead ECG and continuous cardiac monitoring in any suspected high-dose loperamide exposure, looking specifically for QRS widening, QTc prolongation, and Brugada-pattern changes — send-out serum loperamide levels exist but do not return in a clinically actionable timeframe and are not part of routine acute management.</div></div></div></div><div class="fluidcard" id="sub-kava"><div class="fluidhead"><div><h3>Kava</h3><div class="fluidaka">Piper methysticum · kavalactones · kavain</div></div><span class="fluidtag tag-novel">Botanical sedative/anxiolytic — sold as a dietary supplement/beverage, not FDA-regulated as a drug</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">The active kavalactones (kavain, dihydrokavain, methysticin, yangonin, and others) potentiate GABA-A receptor activity (increasing the number of GABA binding sites rather than acting as a classic benzodiazepine-site ligand), block voltage-gated sodium and calcium channels, and inhibit monoamine oxidase-B and norepinephrine/dopamine reuptake — a multi-mechanism sedative/anxiolytic/muscle-relaxant profile distinct from both benzodiazepines and opioids.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Sedation, muscle relaxation, mild euphoria, anxiolysis at typical doses — the intended/marketed effect</li><li>Ataxia, impaired driving performance, and signs of intoxication have been documented even at self-reported typical recreational doses</li><li>Additive CNS depression with alcohol, benzodiazepines, barbiturates, and other sedatives — a clinically important interaction given kava's over-the-counter, 'natural' positioning that leads many patients not to disclose its use when asked about other substances</li><li>Hepatotoxicity is the most clinically significant risk: ranges from asymptomatic transaminase elevation to fulminant hepatic failure requiring transplant, reported even without confirmed excess dosing in some cases — proposed mechanisms include CYP450 inhibition, glutathione depletion, and idiosyncratic/immunoallergic injury</li><li>A 2025 CDC MMWR report found kava-related poison control center calls increased 383% from 2011 to 2025, with roughly one-third of 2025 calls also involving kratom (reflecting combination-product use like Feel Free) and 8 kava-related deaths recorded during the study period</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Less well-characterized than the other substances in this section — kava is not classically associated with a severe, well-defined physical withdrawal syndrome the way opioids, GABA-A-active benzodiazepines, or GABA-B-active phenibut are, though rebound anxiety/insomnia on discontinuation after heavy chronic use has been reported anecdotally.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">Kavalactones are NOT part of any standard urine drug screen or hospital toxicology panel — detection requires a specialized send-out assay and is rarely clinically necessary; the more actionable labs are hepatic (AST/ALT/bilirubin/INR) in any patient with reported kava use and abdominal symptoms, jaundice, or unexplained transaminitis, given the hepatotoxicity risk profile.</div></div></div></div><div class="fluidcard" id="sub-delta8"><div class="fluidhead"><div><h3>Delta-8 THC</h3><div class="fluidaka">Δ⁸-tetrahydrocannabinol · “legal weed”</div></div><span class="fluidtag tag-novel">Hemp-derived cannabinoid — federally unscheduled via the 2018 Farm Bill hemp loophole</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">A cannabinoid isomer of the more familiar delta-9-THC (the primary psychoactive compound in cannabis), acting as a partial agonist at CB1 receptors — the same receptor target as delta-9-THC, but with somewhat lower binding affinity, producing a generally milder psychoactive effect profile at equivalent doses. Legally distinct from cannabis/delta-9-THC because it is synthesized from hemp-derived CBD (hemp being federally legal under the 2018 Farm Bill), a regulatory loophole rather than a meaningfully different pharmacologic risk category.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Effects generally comparable to mild-to-moderate delta-9-THC intoxication: relaxation, altered perception, euphoria, anxiety/paranoia at higher doses, tachycardia, dry mouth, conjunctival injection</li><li>Products are unregulated/inconsistently regulated compared to state-licensed cannabis dispensary products — potency and purity can vary substantially between manufacturers, and synthesis byproducts/contaminants are a recognized concern given the unregulated chemical conversion process from CBD</li><li>Cannabinoid hyperemesis syndrome is a recognized risk with regular heavy use, as with delta-9-THC/cannabis</li><li>Does NOT typically produce the severe sympathomimetic toxicity, seizures, or acute psychosis seen with synthetic cannabinoids (K2/Spice, see below) — an important clinical distinction despite frequent public conflation of delta-8 with synthetic cannabinoids</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>A cannabis-like withdrawal syndrome (irritability, insomnia, decreased appetite, mild anxiety) is expected with regular heavy use, extrapolated from delta-9-THC/cannabis use disorder data given the shared CB1 mechanism — not separately well-studied for delta-8 specifically.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">Delta-8 THC WILL generally cross-react with standard THC/cannabinoid immunoassay screens, since these tests target the broader THC metabolite class rather than distinguishing delta-8 from delta-9 — this is a genuinely useful and frequently misunderstood point: unlike most other substances in this section, a standard urine drug screen usually DOES detect delta-8 use as a positive THC result, contrary to the common assumption that 'legal' cannabinoids are invisible to testing.</div></div></div></div><div class="fluidcard" id="sub-syncannabinoid"><div class="fluidhead"><div><h3>Synthetic Cannabinoids</h3><div class="fluidaka">K2 · Spice · Black Mamba · numerous other brand names</div></div><span class="fluidtag tag-novel">Designer drug class — structurally diverse, many individually unscheduled/rapidly changing</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">A chemically diverse and constantly evolving class of compounds originally developed as research tools to probe the endocannabinoid system, now diverted to recreational use — most act as full agonists (not partial agonists, unlike THC) at CB1 receptors, often with substantially higher receptor affinity and efficacy than natural THC, producing a markedly more intense and unpredictable effect profile. Sold as 'herbal incense' labeled 'not for human consumption' specifically to evade regulation, with the actual chemical constituents frequently changing to stay ahead of scheduling efforts — meaning the specific compound in any given product is often unknown even to the person using it.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Effects are qualitatively different from and more dangerous than natural cannabis despite being marketed as a 'legal marijuana alternative' — the full-agonist, high-affinity CB1 activity produces disproportionate psychiatric and physiologic effects</li><li>Severe agitation, tachycardia (often >120 bpm), hypertension, and diaphoresis are common — a sympathomimetic toxidrome more prominent than with natural cannabis</li><li>Acute psychosis is a hallmark and clinically important feature — paranoid delusions, disorganized thought, and assaultive behavior have been described clinically as 'spiceophrenia' given the resemblance to acute schizophrenia presentations; can occur even in patients with no prior psychiatric history</li><li>Seizures, and in more severe cases: acute kidney injury (direct nephrotoxicity, distinct mechanism from typical rhabdomyolysis-driven AKI), diffuse alveolar hemorrhage, ischemic stroke, and cardiac ischemia have all been reported</li><li>A CDC toxicology surveillance registry review found CNS effects (agitation, depression/coma, delirium/toxic psychosis) as the most common presentation, with a 1.2% in-hospital mortality rate among cases with known hospital outcomes</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>A withdrawal syndrome with cannabis-like features (irritability, insomnia, decreased appetite, cravings) plus, in some case reports, more severe autonomic and psychiatric features than typical cannabis withdrawal has been described with heavy regular use — less systematically characterized than classic substance withdrawal syndromes given the compound's chemical variability.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">NOT detected by standard cannabinoid immunoassay screens — unlike delta-8 THC, synthetic cannabinoids have structurally distinct chemical scaffolds that do NOT cross-react with THC-targeting antibodies, meaning a patient with an obvious cannabis-like or worse toxidrome will typically screen THC-negative. This is a critical, frequently misunderstood clinical point: a negative standard tox screen does NOT rule out synthetic cannabinoid intoxication, and specific confirmatory testing (when available) must target the specific suspected compound class via specialized send-out assay, which is rarely fast enough to guide acute management. Diagnosis in the acute setting is clinical.</div></div></div></div><div class="fluidcard" id="sub-dxm"><div class="fluidhead"><div><h3>Dextromethorphan (DXM)</h3><div class="fluidaka">“Robotripping” · “Skittling” · Triple C's (Coricidin HBP Cough & Cold)</div></div><span class="fluidtag tag-novel">OTC antitussive misused as a dissociative — legal, unrestricted OTC sale in most formulations</span></div><div class="fluidbody"><div class="subhead">Mechanism of Action</div><p style="font-size:.92rem;color:var(--ink-soft)">At therapeutic antitussive doses, acts primarily via sigma-1 receptor agonism. At the supratherapeutic doses used recreationally, dextromethorphan and its active metabolite dextrorphan (formed via hepatic CYP2D6 metabolism) act as non-competitive NMDA receptor antagonists — the same receptor mechanism as ketamine and PCP, producing genuinely comparable dissociative effects. Also inhibits serotonin and norepinephrine reuptake at high doses, the basis of its serotonin syndrome risk.</p><div class="subhead">Intoxication</div><ul class="plain bad"><li>Dose-dependent, plateau-described effect tiers in recreational-use culture (first through fourth 'plateau'): mild stimulant/euphoric effects at lower supratherapeutic doses, progressing to hallucinations, marked dissociation, and PCP/ketamine-like out-of-body experiences at higher doses</li><li>Agitation, hyperadrenergic signs, nystagmus, and dissociation are the core acute presentation</li><li>Serotonin syndrome is a genuine and clinically important risk, particularly in combination with SSRIs, SNRIs, MAOIs, or other serotonergic agents — DXM's own serotonin reuptake inhibition is sufficient to precipitate this on its own at high doses, without requiring a second agent</li><li>CYP2D6 genetic polymorphism matters clinically: poor metabolizers accumulate DXM itself (less dextrorphan formation) and may experience prolonged toxicity at lower doses than expected; ultra-rapid metabolizers convert DXM to dextrorphan quickly and may experience more intense but shorter-lived dissociative/euphoric effects. CYP2D6 inhibitors (fluoxetine, paroxetine, bupropion) can meaningfully increase DXM levels and duration of action in a co-prescribed patient</li><li>Many combination OTC products pair DXM with acetaminophen or antihistamines (e.g., Coricidin HBP 'Triple C's' contains chlorpheniramine) — always consider co-ingestant toxicity (acetaminophen hepatotoxicity, anticholinergic toxidrome from the antihistamine component) in addition to the DXM effect itself</li></ul><div class="uncertainty"><div class="utitle">Withdrawal</div>Not classically associated with a well-defined physical withdrawal syndrome the way opioids or GABA-ergic substances are, though psychological dependence and craving with regular recreational use are described; genuine physical withdrawal is not a prominent feature of the DXM misuse literature.</div><div class="myth"><div class="mtitle">⚡ Labs / Detection</div><div class="reality">NOT detected by standard urine drug screens — DXM's dissociative metabolite dextrorphan can, in some circumstances, cause a false-positive result on PCP immunoassay screens (a genuinely useful and frequently tested clinical pearl), which is the closest thing to a routine lab clue in an otherwise negative standard panel. Purchases are also not tracked by prescription drug monitoring programs given its OTC status, meaning there is no external record to check the way there is for controlled substances.</div></div></div></div></div></section><section class="dom" id="dom-screening"><div class="section"><h2>🧪 Master Drug Screen Comparison</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">What actually shows up on a standard hospital urine drug screen, across every substance covered in this atlas.</p></div><div class="tablewrap"><table class="compare"><thead><tr><th>Substance</th><th>Standard Screen</th><th>Notes</th></tr></thead><tbody><tr><td class="fname">Alcohol</td><td>Yes (dedicated test)</td><td style="white-space:normal">Not part of the standard immunoassay panel itself but routinely co-ordered as a separate serum/breath test; not detected by the urine opioid/amphetamine/etc. panels.</td></tr><tr><td class="fname">Benzodiazepines</td><td>Partially</td><td style="white-space:normal">Standard immunoassay targets older benzodiazepine metabolites (e.g., oxazepam) — several newer agents (clonazepam, lorazepam, alprazolam at low doses) are notorious for FALSE NEGATIVES on standard screens despite genuine use; confirmatory testing may be needed if clinical suspicion is high despite a negative screen.</td></tr><tr><td class="fname">Opioids (morphine/heroin/codeine)</td><td>Yes</td><td style="white-space:normal">Standard opioid immunoassay reliably detects morphine-derived opioids.</td></tr><tr><td class="fname">Synthetic/semi-synthetic opioids (fentanyl, oxycodone, methadone, buprenorphine)</td><td>Variable — often NOT detected by the basic panel</td><td style="white-space:normal">Require specific add-on assays; a standard ‘opiate’ panel frequently does NOT detect fentanyl, oxycodone, methadone, or buprenorphine without a specifically ordered expanded panel — a critical, frequently misunderstood gap given fentanyl's current prevalence.</td></tr><tr><td class="fname">Kratom (mitragynine/7-OH)</td><td>No</td><td style="white-space:normal">Requires a specific send-out kratom assay; can cause a false-positive for methadone on some platforms.</td></tr><tr><td class="fname">Tianeptine</td><td>No</td><td style="white-space:normal">Does not cross-react with opioid immunoassay antibodies; requires specific send-out testing, rarely available in a clinically useful timeframe.</td></tr><tr><td class="fname">Phenibut</td><td>No</td><td style="white-space:normal">No routine confirmatory test widely available; diagnosis is clinical.</td></tr><tr><td class="fname">Loperamide (high-dose misuse)</td><td>No</td><td style="white-space:normal">Does not cross-react with opioid immunoassay; the actionable test is a 12-lead ECG (QRS/QTc/Brugada pattern), not a toxicology panel.</td></tr><tr><td class="fname">Kava</td><td>No</td><td style="white-space:normal">Not part of any standard panel; check hepatic function instead if clinically indicated.</td></tr><tr><td class="fname">Delta-8 THC</td><td>YES — cross-reacts with standard THC screen</td><td style="white-space:normal">Unlike most substances on this list, delta-8 generally DOES trigger a positive standard cannabinoid immunoassay result, since the test targets the broader THC metabolite class rather than distinguishing delta-8 from delta-9.</td></tr><tr><td class="fname">Synthetic cannabinoids (K2/Spice)</td><td>No</td><td style="white-space:normal">Structurally distinct from THC — does NOT cross-react with standard cannabinoid immunoassay; a severe cannabis-like or worse toxidrome with a negative standard THC screen should raise suspicion for this class.</td></tr><tr><td class="fname">Dextromethorphan (DXM)</td><td>No (but can cause a false positive elsewhere)</td><td style="white-space:normal">Not detected directly; its metabolite dextrorphan can cause a FALSE-POSITIVE PCP result on standard immunoassay — a genuinely useful clinical/testing pearl.</td></tr><tr><td class="fname">Cocaine</td><td>Yes</td><td style="white-space:normal">Reliably detected on standard panels via the benzoylecgonine metabolite.</td></tr><tr><td class="fname">Amphetamines/methamphetamine</td><td>Yes, with caveats</td><td style="white-space:normal">Reliably detected, but numerous legitimate medications (bupropion, trazodone, some decongestants) are well-documented causes of false-positive amphetamine screens — confirmatory testing resolves genuine ambiguity.</td></tr><tr><td class="fname">Cannabis (delta-9 THC)</td><td>Yes</td><td style="white-space:normal">Reliably detected on the standard cannabinoid panel.</td></tr><tr><td class="fname">PCP</td><td>Yes (but watch for the DXM false positive above)</td><td style="white-space:normal">Reliably detected, but interpret a positive result in the context of reported DXM/cough-and-cold product use given the documented cross-reactivity.</td></tr></tbody></table></div><div class="myth"><div class="mtitle">⚡ The Pattern</div><div class="reality">The single biggest pattern in this table: nearly every 'gas station drug' in this atlas is invisible to the standard hospital urine drug screen — not because the tests are broken, but because they were designed decades ago to target a specific, older list of classic drugs of abuse. A reassuringly negative tox screen in a patient with a clear opioid-like or sedative-hypnotic toxidrome should prompt consideration of this entire substance class, not reassurance that 'nothing is on board.' Conversely, delta-8 THC is the one substance here that behaves the opposite way — it WILL show up as a standard positive THC result, contrary to its 'legal' framing leading many to assume otherwise.</div></div></div></section>
+
+  <footer>
+    Built for point-of-care and teaching use. Guideline-sensitive content (phenobarbital protocols, buprenorphine induction, novel substance regulatory status, drug screen cross-reactivity) reflects evidence and market conditions current as of construction — novel/OTC substance regulatory status changes rapidly and varies by state; verify against your institution's current protocol and the latest primary literature before relying on it clinically. Not a substitute for clinical judgment.
+  </footer>
+</main>
+
+<script>
+(function(){
+  var domSections = document.querySelectorAll('.dom');
+  var navItems = document.querySelectorAll('.navitem');
+  var trigger = document.getElementById('navTrigger');
+  var menu = document.getElementById('navMenu');
+
+  function showDom(id){
+    domSections.forEach(function(s){ s.classList.toggle('active', s.id === 'dom-' + id); });
+    navItems.forEach(function(n){ n.classList.toggle('active', n.getAttribute('data-dom') === id); });
+    menu.classList.remove('open');
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    try{ localStorage.setItem('withdrawalatlas_tab', id); }catch(e){}
+  }
+
+  navItems.forEach(function(n){
+    n.addEventListener('click', function(){ showDom(n.getAttribute('data-dom')); });
+  });
+
+  trigger.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!menu.contains(e.target) && e.target !== trigger){ menu.classList.remove('open'); }
+  });
+
+  // theme toggle
+  var themeBtn = document.getElementById('themeBtn');
+  var html = document.documentElement;
+  function applyTheme(t){
+    html.setAttribute('data-theme', t);
+    try{ localStorage.setItem('withdrawalatlas_theme', t); }catch(e){}
+  }
+  themeBtn.addEventListener('click', function(){
+    var cur = html.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  try{
+    var savedTheme = localStorage.getItem('withdrawalatlas_theme');
+    if(savedTheme) applyTheme(savedTheme);
+  }catch(e){}
+
+  // restore last tab
+  try{
+    var savedTab = localStorage.getItem('withdrawalatlas_tab');
+    if(savedTab && document.getElementById('dom-' + savedTab)) showDom(savedTab);
+  }catch(e){}
+
+  // search — scoped to active tab, simple text highlight/scroll-to
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    var q = searchInput.value.trim().toLowerCase();
+    if(!q) return;
+    // remove old highlights
+    document.querySelectorAll('mark.hit').forEach(function(m){
+      var parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+    var found = null;
+    domSections.forEach(function(section){
+      var walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, null);
+      var node;
+      var toWrap = [];
+      while(node = walker.nextNode()){
+        if(node.nodeValue.toLowerCase().indexOf(q) !== -1){ toWrap.push(node); }
+      }
+      toWrap.forEach(function(node){
+        var idx = node.nodeValue.toLowerCase().indexOf(q);
+        var span = document.createElement('span');
+        var before = document.createTextNode(node.nodeValue.slice(0, idx));
+        var mark = document.createElement('mark');
+        mark.className = 'hit';
+        mark.style.background = 'var(--warn)';
+        mark.style.color = '#1a1a1a';
+        mark.textContent = node.nodeValue.slice(idx, idx+q.length);
+        var after = document.createTextNode(node.nodeValue.slice(idx+q.length));
+        span.appendChild(before); span.appendChild(mark); span.appendChild(after);
+        node.parentNode.replaceChild(span, node);
+        if(!found) found = {mark: mark, section: section};
+      });
+    });
+    if(found){
+      showDom(found.section.id.replace('dom-',''));
+      setTimeout(function(){ found.mark.scrollIntoView({behavior:'smooth', block:'center'}); }, 60);
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Airway Management &amp; RSI Pharmacology Atlas</title>
+<style>
+:root{
+  --bg:#0e1318; --bg2:#151b22; --panel:#1a222b; --panel2:#212b36;
+  --ink:#e7edf3; --ink-soft:#a9b6c2; --ink-faint:#6f7c89;
+  --line:#2a3541; --line-soft:#222c37;
+
+  --airway:#3f9e8f;      /* teal — airway/respiratory */
+  --airway-soft:rgba(63,158,143,.12);
+  --drug:#c9973f;          /* amber-gold */
+  --drug-soft:rgba(201,151,63,.12);
+  --blood:#c14f5a;            /* deep red */
+  --blood-soft:rgba(193,79,90,.12);
+  --device:#a165c9;            /* violet for devicetonic/neuro */
+  --device-soft:rgba(161,101,201,.12);
+
+  --good:#4a9d84; --good-soft:rgba(74,157,132,.12);
+  --danger:#d5645c; --danger-soft:rgba(213,100,92,.12);
+  --warn:#d3a545; --warn-soft:rgba(211,165,69,.12);
+  --neutral:#5b84a3; --neutral-soft:rgba(91,132,163,.12);
+
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 14px 40px rgba(0,0,0,.45);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+  --radius:12px;
+}
+html[data-theme="light"]{
+  --bg:#f5f2ea; --bg2:#ede8db; --panel:#fdfbf5; --panel2:#f5f0e3;
+  --ink:#20262d; --ink-soft:#49525c; --ink-faint:#7c8590;
+  --line:#ddd4bf; --line-soft:#e7dfca;
+  --airway:#2a7a6c; --airway-soft:rgba(42,122,108,.09);
+  --drug:#8f6a1c; --drug-soft:rgba(143,106,28,.09);
+  --blood:#a13d47; --blood-soft:rgba(161,61,71,.08);
+  --device:#7a4f9a; --device-soft:rgba(122,79,154,.08);
+  --good:#2f7a63; --good-soft:rgba(47,122,99,.08);
+  --danger:#b23c34; --danger-soft:rgba(178,60,52,.07);
+  --warn:#a67a1e; --warn-soft:rgba(166,122,30,.09);
+  --neutral:#3d5a75; --neutral-soft:rgba(61,90,117,.08);
+  --shadow:0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(110,95,60,.13);
+}
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.62;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:-.01em;margin:0 0 .5em}
+p{margin:0 0 1em}
+a{color:inherit}
+code,.mono{font-family:var(--mono)}
+::selection{background:var(--airway);color:#0e1318}
+
+/* topbar */
+.topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:14px;padding:13px 20px;background:color-mix(in srgb, var(--bg) 90%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-size:1.12rem;font-weight:600;display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.brand .sub{font-family:var(--mono);font-size:.6rem;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase}
+.navwrap{position:relative;flex:1;display:flex;justify-content:center}
+.navtrigger{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer;font-size:.82rem;color:var(--ink-soft);font-family:var(--sans)}
+.navtrigger:hover{color:var(--ink);border-color:var(--airway)}
+.navmenu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:min(760px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;display:none;grid-template-columns:repeat(3,1fr);gap:4px;z-index:300;max-height:70vh;overflow-y:auto}
+.navmenu.open{display:grid}
+.navitem{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:8px;cursor:pointer;font-size:.83rem;color:var(--ink-soft)}
+.navitem:hover{background:var(--airway-soft);color:var(--ink)}
+.navitem.active{background:var(--airway-soft);color:var(--airway);font-weight:600}
+.navdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.topbtns{display:flex;align-items:center;gap:8px}
+.iconbtn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.iconbtn:hover{color:var(--ink);border-color:var(--airway)}
+.searchbox{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:0 10px;height:36px}
+.searchbox input{background:transparent;border:0;outline:0;color:var(--ink);font-family:var(--sans);font-size:.83rem;width:170px}
+.searchbox svg{flex-shrink:0;opacity:.6}
+
+main{max-width:1160px;margin:0 auto;padding:28px 22px 80px}
+.dom{display:none}
+.dom.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.hero{padding:8px 0 26px;border-bottom:1px solid var(--line-soft);margin-bottom:26px}
+.hero .kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--airway);margin-bottom:10px}
+.hero h1{font-size:2.1rem;margin-bottom:10px}
+.hero .lead{color:var(--ink-soft);font-size:1.02rem;max-width:760px}
+
+.section{margin-bottom:34px}
+.section h2{font-size:1.35rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section h3{font-size:1.08rem;margin:18px 0 10px}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+.card.tight{padding:16px 18px}
+
+/* timeline */
+.timeline{position:relative;padding-left:26px;border-left:2px solid var(--line)}
+.tlitem{position:relative;margin-bottom:20px;padding-left:6px}
+.tlitem::before{content:'';position:absolute;left:-32px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--airway);border:2px solid var(--bg)}
+.tlyear{font-family:var(--mono);font-size:.75rem;color:var(--airway);font-weight:600;letter-spacing:.03em}
+.tltext{color:var(--ink-soft);font-size:.92rem;margin-top:3px}
+
+/* fluid monograph card */
+.fluidcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
+.fluidhead{padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line-soft)}
+.fluidhead h3{margin:0;font-size:1.25rem}
+.fluidaka{font-size:.85rem;color:var(--ink-faint);margin-top:2px}
+.fluidtag{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;font-weight:600}
+.tag-airway{background:var(--airway-soft);color:var(--airway)}
+.tag-drug{background:var(--drug-soft);color:var(--drug)}
+.tag-blood{background:var(--blood-soft);color:var(--blood)}
+.tag-device{background:var(--device-soft);color:var(--device)}
+.tag-danger{background:var(--danger-soft);color:var(--danger)}
+
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line-soft);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.statcell{background:var(--panel);padding:11px 16px}
+.statlabel{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+.statval{font-family:var(--mono);font-size:.93rem;color:var(--ink);font-weight:600}
+
+.fluidbody{padding:18px 22px}
+.subhead{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:16px 0 8px}
+.subhead:first-child{margin-top:0}
+ul.plain{list-style:none;padding:0;margin:0 0 4px}
+ul.plain li{position:relative;padding-left:18px;margin-bottom:8px;font-size:.92rem;color:var(--ink-soft);line-height:1.55}
+ul.plain li::before{content:'';position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--airway)}
+ul.plain.bad li::before{background:var(--danger)}
+ul.plain.good li::before{background:var(--good)}
+
+.myth{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:16px 18px;margin:12px 0}
+.myth .mtitle{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:8px}
+.myth .claim{font-style:italic;color:var(--ink-soft);margin-bottom:8px;font-size:.92rem}
+.myth .reality{font-size:.92rem;color:var(--ink);margin-bottom:10px}
+
+.uncertainty{background:var(--neutral-soft);border-left:3px solid var(--neutral);border-radius:6px;padding:12px 16px;margin:12px 0;font-size:.88rem;color:var(--ink-soft)}
+.uncertainty .utitle{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--neutral);font-weight:700;margin-bottom:6px}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.compare{width:100%;border-collapse:collapse;font-size:.83rem;min-width:900px}
+table.compare th{background:var(--panel2);font-family:var(--mono);font-size:.63rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);padding:10px 12px;text-align:left;position:sticky;top:0;border-bottom:1px solid var(--line)}
+table.compare td{padding:9px 12px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
+table.compare tr:hover td{background:var(--airway-soft)}
+table.compare td.fname{color:var(--ink);font-weight:600;white-space:normal}
+
+/* population cards */
+.popcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px}
+.popcard h3{font-size:1.05rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.popsummary{color:var(--ink-soft);font-size:.9rem;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
+.pitfall{background:var(--danger-soft);border-radius:8px;padding:10px 14px;font-size:.85rem;color:var(--ink-soft);margin-top:10px}
+.pitfall .ptitle{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--danger);font-weight:700;margin-bottom:4px}
+
+/* svg diagram wrapper */
+.diagram{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.diagram .dcaption{font-size:.8rem;color:var(--ink-faint);margin-top:10px;font-family:var(--mono)}
+
+/* grid layout for fundamentals */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-family:var(--mono);font-size:.7rem;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft)}
+
+footer{text-align:center;padding:30px 20px;color:var(--ink-faint);font-size:.78rem;border-top:1px solid var(--line-soft);margin-top:40px}
+
+@media(max-width:640px){
+  .brand .sub{display:none}
+  .navmenu{grid-template-columns:1fr}
+  .hero h1{font-size:1.6rem}
+  .topbar{flex-wrap:wrap;row-gap:10px}
+  .brand{flex:1 1 auto}
+  .navwrap{order:3;flex:1 1 100%;justify-content:flex-start}
+  .navmenu{left:0;transform:none;width:100%}
+  .topbtns{order:2;margin-left:auto}
+  .searchbox{display:none}
+}
+@media(max-width:420px){
+  .brand{font-size:1rem}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">🌬️ Airway &amp; RSI Atlas <span class="sub">Airway Management Reference</span></div>
+  <div class="navwrap">
+    <div class="navtrigger" id="navTrigger">
+      <span>Navigate</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="navmenu" id="navMenu">
+      <div class="navitem" data-dom="overview"><span class="navdot" style="background:var(--airway)"></span>RSI Sequence Overview</div><div class="navitem" data-dom="preox"><span class="navdot" style="background:var(--airway)"></span>Preoxygenation</div><div class="navitem" data-dom="induction"><span class="navdot" style="background:var(--drug)"></span>Induction Agents</div><div class="navitem" data-dom="paralytics"><span class="navdot" style="background:var(--drug)"></span>Paralytics</div><div class="navitem" data-dom="difficult"><span class="navdot" style="background:var(--device)"></span>Difficult Airway & Rescue</div><div class="navitem" data-dom="postintubation"><span class="navdot" style="background:var(--blood)"></span>Post-Intubation Management</div><div class="navitem" data-dom="populations"><span class="navdot" style="background:var(--device)"></span>Special Populations</div>
+    </div>
+  </div>
+  <div class="topbtns">
+    <div class="searchbox">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search atlas… (Enter)">
+    </div>
+    <div class="iconbtn" id="themeBtn" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="kicker">Airway Management &amp; RSI Pharmacology Atlas · Master Reference</div>
+    <h1>The Airway &amp; RSI Atlas</h1>
+    <p class="lead">Full RSI pharmacology, a difficult airway framework, post-intubation management, and induction-agent selection by special population — grounded in evidence that shifted meaningfully in the last two years (PREOXI 2024, DEVICE 2023, RSI trial 2025). Cricothyrotomy is covered in the companion Trauma &amp; Resuscitation Atlas rather than duplicated here.</p>
+    <div class="pillrow">
+      <span class="pill">4 induction agents</span>
+      <span class="pill">4 paralytics</span>
+      <span class="pill">7 special populations</span>
+    </div>
+  </div>
+
+  <section class="dom active" id="dom-overview"><div class="section"><h2>🌬️ RSI Sequence Overview</h2><div class="card"><p style="color:var(--ink-soft);font-size:.95rem">The companion piece to the Vasopressor and Fluid Resuscitation Atlases: full RSI pharmacology, a difficult airway framework, post-intubation management, and induction-agent selection by special population — built around the evidence that has shifted meaningfully in just the last 1–2 years (the 2024 PREOXI trial, the 2023 DEVICE trial, and the 2025 RSI ketamine-vs-etomidate trial all directly inform current practice here).</p></div><div class="diagram"><svg viewBox="0 0 960 170" xmlns="http://www.w3.org/2000/svg"><defs><style>
+      .t{font-family:'Inter',sans-serif;font-size:11.5px;fill:var(--ink,#e7edf3);text-anchor:middle}
+      .n{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;fill:#fff;text-anchor:middle}
+    </style></defs><line x1="102.85714285714286" y1="60" x2="857.1428571428571" y2="60" stroke="#3f9e8f" stroke-width="2.5"/><circle cx="102.9" cy="60" r="18" fill="#3f9e8f"/><text x="102.9" y="65" class="n">1</text><text x="102.9" y="98" class="t">Preparation</text><circle cx="228.6" cy="60" r="18" fill="#3f9e8f"/><text x="228.6" y="65" class="n">2</text><text x="228.6" y="98" class="t">Preoxygenation</text><circle cx="354.3" cy="60" r="18" fill="#3f9e8f"/><text x="354.3" y="65" class="n">3</text><text x="354.3" y="98" class="t">Pretreatment*</text><circle cx="480.0" cy="60" r="18" fill="#3f9e8f"/><text x="480.0" y="65" class="n">4</text><text x="480.0" y="98" class="t">Paralysis +</text><text x="480.0" y="114" class="t">Induction</text><circle cx="605.7" cy="60" r="18" fill="#3f9e8f"/><text x="605.7" y="65" class="n">5</text><text x="605.7" y="98" class="t">Positioning</text><circle cx="731.4" cy="60" r="18" fill="#3f9e8f"/><text x="731.4" y="65" class="n">6</text><text x="731.4" y="98" class="t">Placement +</text><text x="731.4" y="114" class="t">Proof</text><circle cx="857.1" cy="60" r="18" fill="#3f9e8f"/><text x="857.1" y="65" class="n">7</text><text x="857.1" y="98" class="t">Post-Intubation</text><text x="480.0" y="150" text-anchor="middle" class="t" fill="var(--ink-faint,#6f7c89)" font-size="10.5">*largely folded into agent selection in modern practice, not a routine independent step</text></svg><div class="dcaption">Figure — The RSI sequence</div></div><div class="tablewrap"><table class="compare"><thead><tr><th>Step</th><th>Detail</th></tr></thead><tbody><tr><td class="fname">Preparation</td><td style="white-space:normal">Equipment (laryngoscope, backup blade/device, bougie, supraglottic rescue device, cric kit), suction, monitors, two working IVs, push-dose pressors drawn up, backup plan explicitly stated out loud before starting.</td></tr><tr><td class="fname">Preoxygenation</td><td style="white-space:normal">3–5 minutes of high-FiO2 breathing (or 8 vital-capacity breaths if time-critical) to build an oxygen reservoir in the lungs, extending safe apnea time during the paralysis-to-tube window. See dedicated section below — the evidence here has shifted meaningfully in the last two years.</td></tr><tr><td class="fname">Pretreatment</td><td style="white-space:normal">Largely fallen out of routine use as an independent step in modern EM practice (historically: lidocaine for ICP/reactive airway, opioids to blunt sympathetic response, defasciculating doses) — most current teaching folds any needed pretreatment into agent selection itself (e.g., choosing ketamine for reactive airway) rather than a separate universal pretreatment step.</td></tr><tr><td class="fname">Paralysis with Induction</td><td style="white-space:normal">Induction agent and paralytic given in rapid succession — the pharmacologic core of RSI, covered in full in the Induction Agents and Paralytics sections below.</td></tr><tr><td class="fname">Positioning</td><td style="white-space:normal">Sniffing position (or ramped position in obesity/OSA — see Special Populations) to align oral-pharyngeal-laryngeal axes for the best possible view.</td></tr><tr><td class="fname">Placement with Proof</td><td style="white-space:normal">Direct visualization of the tube passing through the cords when possible, plus objective confirmation — waveform capnography is the standard of care for confirmation, not an optional extra; auscultation and fogging in the tube are supportive but not sufficient alone.</td></tr><tr><td class="fname">Post-Intubation Management</td><td style="white-space:normal">Sedation/analgesia, ventilator initiation, and post-intubation hypotension recognition — the phase most commonly under-taught relative to the drama of the intubation itself. See dedicated section below.</td></tr></tbody></table></div></div></section><section class="dom" id="dom-preox"><div class="section"><h2>🫁 Preoxygenation &amp; Apneic Oxygenation</h2><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Preoxygenation replaces the nitrogen in the functional residual capacity with oxygen, creating a reservoir that extends the time available between the onset of paralysis-induced apnea and clinically significant desaturation. The goal is denitrogenation, not just a higher pulse-ox reading at the start.</p></div><h3>Methods</h3><div class="card tight"><h3 style="margin-top:0;font-size:.98rem">Non-rebreather mask / bag-mask device</h3><p style="color:var(--ink-soft);font-size:.88rem;margin:0">Traditional default — simple, low aspiration risk, delivers up to ~100% FiO2 with a good seal, but ceiling-limited compared to positive-pressure options in patients with significant shunt physiology or poor respiratory effort.</p></div><div class="card tight"><h3 style="margin-top:0;font-size:.98rem">Noninvasive ventilation (NIV/BiPAP)</h3><p style="color:var(--ink-soft);font-size:.88rem;margin:0">Adds positive pressure to overcome shunt and recruit atelectatic alveoli — now preferred by trial data over a simple oxygen mask for critically ill adults specifically (see PREOXI below).</p></div><div class="card tight"><h3 style="margin-top:0;font-size:.98rem">Apneic oxygenation (nasal cannula during the apneic period)</h3><p style="color:var(--ink-soft);font-size:.88rem;margin:0">High-flow nasal cannula (or standard NC at 15 L/min) left running through the paralysis-to-tube window — doesn't replace preoxygenation but extends the safe apnea window once it begins, via passive oxygen diffusion (aventilatory mass flow) even without active breathing.</p></div><div class="myth"><div class="mtitle">⚡ PREOXI Trial (2024)</div><div class="reality">The PREOXI trial (Gibbs 2024, NEJM, n=1,301 critically ill ED/ICU adults) found preoxygenation with noninvasive ventilation resulted in significantly lower hypoxemia during intubation than an oxygen mask: 9.1% (57/624) vs. 18.5% (118/637) — a striking absolute difference of 9.4 percentage points (95% CI ⋅−13.2 to −5.6, p<0.001). Cardiac arrest during the peri-intubation period was also lower with NIV (0.2% vs. 1.1%). This is a genuinely practice-changing, current (2024) result: noninvasive ventilation should be the default preoxygenation method for critically ill adults when available and not contraindicated, not simply an alternative to an oxygen mask.</div></div><div class="uncertainty"><div class="utitle">Clinical Bottom Line</div>For a critically ill patient being intubated in the ED or ICU, reach for NIV/BiPAP preoxygenation rather than a plain non-rebreather mask as the new evidence-based default — and keep apneic oxygenation running via nasal cannula through the entire paralysis-to-tube window regardless of which primary preoxygenation method you used.</div></div></section><section class="dom" id="dom-induction"><div class="section"><h2>💉 Induction Agents</h2><div class="fluidcard" id="agent-etomidate"><div class="fluidhead"><div><h3>Etomidate</h3><div class="fluidaka">Amidate</div></div><span class="fluidtag tag-airway">Induction agent — imidazole derivative</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">0.3 mg/kg IV</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">15–45 seconds</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">3–12 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Enhances GABA-A receptor activity, producing rapid hypnosis with minimal effect on sympathetic tone — the basis of its long-standing reputation as the most hemodynamically neutral induction agent, valuable in patients who cannot tolerate a drop in blood pressure.</p><div class="subhead">Benefits</div><ul class="plain good"><li>Hemodynamically neutral — minimal effect on heart rate or blood pressure at induction doses, historically the default choice for hemodynamically unstable or borderline patients</li><li>Rapid onset and predictable, short duration</li><li>No histamine release, no significant bronchospasm risk</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Reliably produces transient adrenal suppression via 11β-hydroxylase inhibition after even a single induction dose, lasting up to 72 hours</li><li>Myoclonus during induction is common and can be mistaken for seizure activity</li></ul><div class="myth"><div class="mtitle">⚡ The Etomidate-vs-Ketamine Mortality Question</div><div class="reality">The 2025 RSI trial (Casey/Seitz/Driver, NEJM, n=2,365 critically ill adults) is the largest and highest-quality answer yet: no significant difference in 28-day in-hospital mortality between ketamine and etomidate (28.1% vs. 29.1%, difference −0.8%, 95% CI −4.5 to 2.9, p=0.65). But ketamine produced significantly MORE cardiovascular collapse within 2 minutes of intubation (SBP <65, new/increased vasopressors, or arrest): 22.1% vs. 17.0% (difference 5.1%, 95% CI 1.9–8.3) — a gap that widened further in the septic shock subgroup (30.6% vs. 20.9%). This directly inverts the commonly-taught assumption that ketamine is simply the 'safer, more hemodynamically stable' choice; the trial found the opposite for early cardiovascular collapse, even though neither agent proved superior for the outcome that actually matters most (mortality). A pediatric propensity-matched study similarly found no mortality difference between etomidate and ketamine, though etomidate showed a lower (not higher) rate of adrenal suppression than ketamine in that cohort (1.8% vs 4.2%) — counter to the adult adrenal-suppression narrative and a reminder that the etomidate-adrenal-suppression-equals-harm chain of reasoning has never been as clean as the oral tradition suggests.</div></div><div class="subhead">Special Considerations</div><ul class="plain "><li>Reasonable default in hemodynamically unstable/shock patients where avoiding induction-related hypotension is the priority — the adrenal suppression concern has not been shown to translate into a clear mortality signal across the highest-quality current trial data</li><li>Myoclonus can complicate neurologic exams immediately post-induction — worth anticipating and documenting so it isn't mistaken for a seizure</li></ul></div></div><div class="fluidcard" id="agent-ketamine"><div class="fluidhead"><div><h3>Ketamine</h3><div class="fluidaka">Ketalar</div></div><span class="fluidtag tag-airway">Induction agent — NMDA receptor antagonist, dissociative</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">1–2 mg/kg IV (RSI trial median dose 140 mg — notably higher than many real-world practice doses)</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">45–60 seconds</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">10–20 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Non-competitive NMDA receptor antagonist producing a dissociative anesthetic state, distinct from the GABA-ergic mechanism of every other agent on this list. Typically preserves airway reflexes and respiratory drive better than propofol or benzodiazepines, and its sympathomimetic effect (catecholamine release) usually supports rather than drops blood pressure — though this sympathomimetic reserve can be exhausted in catecholamine-depleted critical illness (see evidence below).</p><div class="subhead">Benefits</div><ul class="plain good"><li>Bronchodilation — the preferred induction agent in reactive airway disease/status asthmaticus for this reason specifically</li><li>Analgesic in addition to dissociative/amnestic effect, unlike every other induction agent here</li><li>Preserves spontaneous respiratory drive and airway reflexes at sub-dissociative doses, enabling delayed sequence intubation and procedural sedation use cases beyond RSI</li><li>No adrenal suppression</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Emergence reactions (hallucinations, agitation) on recovery, more common in adults than children and mitigated by co-administered benzodiazepines when used for procedural sedation</li><li>Sialorrhea (increased secretions)</li><li>Contraindicated in known psychosis given risk of exacerbation</li></ul><div class="myth"><div class="mtitle">⚡ The ICP Myth — Debunked</div><div class="reality">Ketamine was dogmatically taught as contraindicated in traumatic brain injury / elevated ICP for roughly 50 years, based entirely on a small cluster of 1970s studies using lumbar CSF pressure measurements in patients with obstructive hydrocephalus or aqueductal stenosis — a fundamentally different population and measurement technique than modern TBI care. None of those foundational studies were performed in actual TBI patients. Multiple modern systematic reviews and meta-analyses have since found no evidence of harm and no significant ICP increase with ketamine in TBI populations (one 2025 meta-analysis: RR 0.67, 95% CI 0.45–1.01, p=0.054, trending toward reduced rather than increased ICP), and ketamine is now considered by many neurocritical care groups to be a reasonable, even preferred, induction agent in TBI given its hemodynamic stability profile relative to propofol/benzodiazepines — a complete reversal of 50 years of teaching. Retrospective ICU data have even found ketamine boluses associated with reduced ICP and increased cerebral perfusion pressure in severe TBI with refractory intracranial hypertension.</div></div><div class="subhead">Special Considerations</div><ul class="plain "><li>No longer contraindicated in TBI/elevated ICP — update this teaching if you trained when it was still taught as an absolute contraindication</li><li>First-line induction agent in status asthmaticus/severe bronchospasm given its unique bronchodilatory property</li><li>The 2025 RSI trial's cardiovascular collapse finding is most relevant in septic/catecholamine-depleted shock — don't assume 'ketamine is always the hemodynamically safe choice' in this specific population</li></ul></div></div><div class="fluidcard" id="agent-propofol"><div class="fluidhead"><div><h3>Propofol</h3><div class="fluidaka">Diprivan</div></div><span class="fluidtag tag-airway">Induction agent — alkylphenol, GABA-ergic</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">1.5–2.5 mg/kg IV (reduce substantially in hemodynamically unstable patients)</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">15–45 seconds</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">5–10 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Potentiates GABA-A receptor activity producing rapid, smooth hypnosis. Causes dose-dependent vasodilation and myocardial depression — the mechanism behind its most clinically significant drawback.</p><div class="subhead">Benefits</div><ul class="plain good"><li>Rapid, smooth onset with a favorable side-effect profile for airway reflexes/laryngospasm risk compared to some alternatives</li><li>Antiemetic properties</li><li>Excellent choice for elective/controlled intubations in hemodynamically normal patients</li><li>Same agent used for post-intubation sedation, allowing pharmacologic continuity from induction through maintenance</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Significant, dose-dependent hypotension via vasodilation and direct myocardial depression — the primary reason it's used cautiously or avoided as a sole induction agent in hemodynamically unstable/shock patients</li><li>Injection pain (mitigated by lidocaine pretreatment through the same line)</li><li>Propofol infusion syndrome with prolonged high-dose infusions (rare, but relevant for post-intubation sedation planning, not the single induction dose)</li></ul><div class="subhead">Special Considerations</div><ul class="plain "><li>Reduce dose substantially (or avoid as sole agent) in hypotensive/shock patients — this is the agent most likely to precipitate peri-intubation cardiovascular collapse if dosed at standard elective-anesthesia levels in a sick patient</li><li>A reasonable default for elective/controlled RSI in a hemodynamically normal patient given its smooth, predictable profile</li></ul></div></div><div class="fluidcard" id="agent-midazolam"><div class="fluidhead"><div><h3>Midazolam</h3><div class="fluidaka">Versed</div></div><span class="fluidtag tag-airway">Induction agent (less common for RSI) — benzodiazepine</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">0.1–0.3 mg/kg IV for induction (notably higher than typical procedural sedation dosing)</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">60–90 seconds (slower than the other agents here)</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">15–30 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">GABA-A receptor agonist producing sedation, amnesia, and anxiolysis, with no analgesic properties.</p><div class="subhead">Benefits</div><ul class="plain good"><li>Reliable amnestic effect</li><li>Familiar, widely available</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Slower, less predictable onset than etomidate, ketamine, or propofol makes it a poor choice as a primary RSI induction agent — commonly under-dosed for induction because typical procedural sedation doses are far lower than what true induction requires</li><li>Hypotension risk, particularly in combination with opioids</li><li>No analgesic effect — intubation itself is a painful stimulus that midazolam alone does not address</li></ul><div class="subhead">Special Considerations</div><ul class="plain "><li>Far more commonly used for post-intubation sedation or procedural sedation than as a primary RSI induction agent — included here for completeness and because under-dosing it for induction (using procedural-sedation-level doses) is a recognized pitfall</li></ul></div></div></div></section><section class="dom" id="dom-paralytics"><div class="section"><h2>⛓️ Paralytics</h2><div class="fluidcard" id="agent-succ"><div class="fluidhead"><div><h3>Succinylcholine</h3><div class="fluidaka">Sux · Anectine</div></div><span class="fluidtag tag-drug">Depolarizing neuromuscular blocker</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">1–1.5 mg/kg IV</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">45–60 seconds (fastest of any paralytic)</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">6–10 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Depolarizes the neuromuscular junction by binding nicotinic acetylcholine receptors as an acetylcholine agonist, producing sustained depolarization (visible as fasciculations) followed by flaccid paralysis as the receptor becomes refractory. Metabolized by plasma pseudocholinesterase — the basis of its short, self-terminating duration.</p><div class="subhead">Benefits</div><ul class="plain good"><li>Fastest onset of any paralytic — the traditional default when the fastest possible time-to-paralysis matters</li><li>Shortest duration — if intubation fails, spontaneous respiration returns fastest with this agent among standard paralytics</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Hyperkalemia risk in specific populations (see evidence below) — can be life-threatening</li><li>Malignant hyperthermia trigger in susceptible individuals</li><li>Fasciculations can transiently raise intragastric, intraocular, and intracranial pressure</li><li>Bradycardia, particularly with repeat dosing or in children</li></ul><div class="myth"><div class="mtitle">⚡ The Hyperkalemia Timing Window — More Precise Than “Avoid in Burns”</div><div class="reality">The mechanism is upregulation of extrajunctional acetylcholine receptors spreading across the entire muscle membrane (not just the neuromuscular junction) in denervation, burns, crush injury, prolonged immobilization, or upper motor neuron lesions — succinylcholine depolarizes all of these upregulated receptors simultaneously, producing a massive, potentially lethal potassium efflux rather than the small, clinically insignificant efflux seen in normal muscle. Critically, this upregulation takes time to develop: primate denervation models show changes in serum potassium beginning as early as day 4, with half-peak rise at 8.4 days and peak rise at 14 days post-injury — succinylcholine is NOT dangerous in the acute window (roughly the first 3–4 days) after burns, denervation, or crush injury, contrary to the commonly taught blanket rule of 'avoid in burns.' The risk then persists for 2–3 months in burns/trauma, and potentially 3–6 months (or per some sources, up to 2 years) in upper motor neuron lesions/prolonged denervation, requiring an individualized rather than purely time-based judgment as the window extends.</div></div><div class="subhead">Special Considerations</div><ul class="plain "><li>Safe in the acute setting (roughly first 3–4 days) after burns, crush injury, or denervation — the danger window is delayed onset (day 4 onward, peaking around day 14), not immediate</li><li>Avoid from several days out through the 2–3+ month risk window in burns, denervation, spinal cord injury, prolonged immobilization, or neuromuscular disease — use rocuronium instead</li><li>Avoid in known/suspected hyperkalemia, malignant hyperthermia history, or pseudocholinesterase deficiency</li></ul></div></div><div class="fluidcard" id="agent-roc"><div class="fluidhead"><div><h3>Rocuronium</h3><div class="fluidaka">Zemuron</div></div><span class="fluidtag tag-drug">Non-depolarizing neuromuscular blocker — aminosteroid</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">1–1.2 mg/kg IV for RSI (higher than the standard OR dose of 0.6 mg/kg, specifically to shorten onset time to compete with succinylcholine)</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">45–90 seconds at RSI dosing</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">45–70 minutes at RSI dosing</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Competitively antagonizes acetylcholine at the nicotinic receptor without depolarizing it — no fasciculations, no direct potassium efflux mechanism, making it fundamentally immune to the hyperkalemia risk that limits succinylcholine.</p><div class="subhead">Benefits</div><ul class="plain good"><li>No hyperkalemia risk — the default paralytic whenever succinylcholine is contraindicated</li><li>At RSI dosing (1–1.2 mg/kg), onset is now comparable to succinylcholine, largely closing the historical speed gap</li><li>Reversible with sugammadex (see below) — a genuine safety advantage over succinylcholine when reversal might be needed urgently (failed airway, can't-intubate-can't-oxygenate scenario where restoring spontaneous ventilation matters)</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Much longer duration than succinylcholine (45–70 min vs. 6–10 min) — if intubation fails and the patient cannot be ventilated, this duration becomes a genuine liability unless sugammadex is immediately available</li><li>Anaphylaxis risk (aminosteroid neuromuscular blockers are a leading cause of perioperative anaphylaxis)</li></ul><div class="subhead">Special Considerations</div><ul class="plain "><li>Default choice whenever succinylcholine is contraindicated (hyperkalemia risk populations, malignant hyperthermia history, pseudocholinesterase deficiency)</li><li>Have sugammadex immediately available/considered whenever rocuronium is used for RSI, specifically as a rescue plan for the failed airway scenario</li></ul></div></div><div class="fluidcard" id="agent-vec"><div class="fluidhead"><div><h3>Vecuronium</h3><div class="fluidaka">Norcuron</div></div><span class="fluidtag tag-drug">Non-depolarizing neuromuscular blocker — aminosteroid</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">0.08–0.1 mg/kg IV (RSI/high dose); not typically used for RSI given slower onset than rocuronium</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">2–3 minutes at standard dosing — too slow for primary RSI use</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">25–40 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Same mechanism class as rocuronium (competitive nicotinic antagonist), structurally related aminosteroid.</p><div class="subhead">Benefits</div><ul class="plain good"><li>More hemodynamically neutral than some alternatives</li><li>Useful for post-intubation ongoing paralysis (e.g., severe ARDS with ventilator dyssynchrony) rather than the induction moment itself</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Too slow an onset for primary RSI use — rocuronium has essentially replaced it for this indication</li><li>Active metabolite can prolong effect in renal/hepatic impairment</li></ul><div class="subhead">Special Considerations</div><ul class="plain "><li>Reserve for post-intubation maintenance paralysis rather than the RSI paralytic step itself</li></ul></div></div><div class="fluidcard" id="agent-cisatr"><div class="fluidhead"><div><h3>Cisatracurium</h3><div class="fluidaka">Nimbex</div></div><span class="fluidtag tag-drug">Non-depolarizing neuromuscular blocker — benzylisoquinolinium</span></div><div class="statrow"><div class="statcell"><div class="statlabel">Dose</div><div class="statval">0.15–0.2 mg/kg IV (RSI dosing); not first-line for primary RSI given onset time</div></div><div class="statcell"><div class="statlabel">Onset</div><div class="statval">2–3 minutes — too slow for primary RSI</div></div><div class="statcell"><div class="statlabel">Duration</div><div class="statval">45–60 minutes</div></div></div><div class="fluidbody"><div class="subhead">Physiology</div><p style="font-size:.92rem;color:var(--ink-soft)">Non-depolarizing blocker undergoing Hofmann elimination (spontaneous, organ-independent degradation) rather than hepatic/renal metabolism — the key distinguishing feature from the aminosteroids.</p><div class="subhead">Benefits</div><ul class="plain good"><li>Organ-independent elimination (Hofmann degradation) makes it the preferred agent for ongoing paralysis in significant renal or hepatic failure, where rocuronium/vecuronium clearance becomes unpredictable</li><li>Minimal histamine release compared to atracurium (its parent compound)</li></ul><div class="subhead">Downfalls / Risks</div><ul class="plain bad"><li>Too slow an onset for primary RSI use</li><li>Not reversible by sugammadex (which is specific to aminosteroid neuromuscular blockers)</li></ul><div class="subhead">Special Considerations</div><ul class="plain "><li>The preferred paralytic for continuous post-intubation neuromuscular blockade (e.g., severe ARDS requiring paralysis) specifically in renal or hepatic failure, not for the RSI paralysis step itself</li></ul></div></div><h3>Sugammadex Reversal</h3><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">A modified gamma-cyclodextrin that encapsulates rocuronium (and, less effectively, vecuronium) molecules directly, terminating neuromuscular blockade independent of acetylcholinesterase — a fundamentally different reversal mechanism from neostigmine, and one that works even at deep levels of blockade where neostigmine is ineffective.</p></div><div class="statrow"><div class="statcell" style="grid-column:1/-1"><div class="statlabel">Rescue Dose</div><div class="statval">16 mg/kg IV for immediate reversal of rocuronium-induced blockade (the 'can't intubate, can't oxygenate' rescue dose) — lower doses (2–4 mg/kg) suffice for reversal at lighter, more typical post-procedure blockade levels.</div></div></div><div class="myth"><div class="mtitle">⚡ Clinical Relevance</div><div class="reality">The existence of sugammadex is the strongest modern argument for choosing rocuronium over succinylcholine even when speed is the only historical advantage succinylcholine offered — a truly failed rocuronium-paralyzed airway can, in principle, be pharmacologically reversed within roughly 2–3 minutes at the 16 mg/kg rescue dose, restoring spontaneous ventilation faster than simply waiting out succinylcholine's own natural 6–10 minute duration in some comparisons. Not FDA-approved for pediatric use under 2 years of age at the time of most current labeling, and not effective for reversing succinylcholine, vecuronium (only partially effective), or the benzylisoquinolinium agents like cisatracurium.</div></div></div></section><section class="dom" id="dom-difficult"><div class="section"><h2>🗺️ Difficult Airway Assessment &amp; Rescue</h2><h3>LEMON Assessment</h3><div class="tablewrap"><table class="compare"><thead><tr><th>Element</th><th>What to check</th></tr></thead><tbody><tr><td class="fname" style="white-space:normal">L — Look externally</td><td style="white-space:normal">Facial trauma, large incisors, beard/mustache, large tongue, short/thick neck — the fast gestalt assessment.</td></tr><tr><td class="fname" style="white-space:normal">E — Evaluate 3-3-2</td><td style="white-space:normal">Mouth opening ≥3 fingerbreadths, hyoid-to-chin distance ≥3 fingerbreadths, thyroid-notch-to-floor-of-mouth ≥2 fingerbreadths — a quick geometric check on whether the airway axes can realistically align.</td></tr><tr><td class="fname" style="white-space:normal">M — Mallampati</td><td style="white-space:normal">Class I–IV oropharyngeal view with the patient seated, mouth open, tongue out — higher class correlates with more difficult direct laryngoscopy, though it's a poor standalone predictor and should be combined with the other LEMON elements.</td></tr><tr><td class="fname" style="white-space:normal">O — Obstruction</td><td style="white-space:normal">Any condition causing upper airway obstruction (epiglottitis, peritonsillar/retropharyngeal abscess, angioedema, expanding neck hematoma) predicts a difficult, potentially rapidly deteriorating airway.</td></tr><tr><td class="fname" style="white-space:normal">N — Neck mobility</td><td style="white-space:normal">Cervical collar, ankylosing spondylitis, prior neck surgery/radiation, or halo traction all limit the ability to achieve optimal positioning.</td></tr></tbody></table></div><h3>Video vs. Direct Laryngoscopy</h3><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Video laryngoscopy adds a camera near the blade tip, displaying the glottic view on a screen rather than requiring direct line-of-sight — the operator can visualize around anatomic obstructions that would block a direct line of sight.</p></div><div class="diagram">
+<svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>
+    .lbl-b{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;fill:var(--ink,#e7edf3)}
+    .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;fill:var(--ink-soft,#a9b6c2)}
+    .val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+  </style></defs>
+  <text x="450" y="24" text-anchor="middle" class="lbl-b">DEVICE trial — first-attempt intubation success</text>
+
+  <text x="120" y="70" class="lbl">All operators</text>
+  <rect x="230" y="56" width="551" height="22" fill="#2a3541"/>
+  <rect x="230" y="56" width="469" height="22" fill="#3f9e8f"/>
+  <text x="710" y="72" class="val" fill="#3f9e8f">85.1% VL</text>
+  <rect x="230" y="82" width="390" height="22" fill="#2a3541"/>
+  <rect x="230" y="82" width="390" height="22" fill="#c1443f66"/>
+  <text x="630" y="98" class="val" fill="#c1443f">70.8% DL</text>
+
+  <text x="120" y="150" class="lbl">Least experienced</text>
+  <text x="120" y="164" class="lbl">operators</text>
+  <rect x="230" y="140" width="551" height="22" fill="#2a3541"/>
+  <rect x="230" y="140" width="441" height="22" fill="#3f9e8f"/>
+  <text x="685" y="156" class="val" fill="#3f9e8f">80.0% VL</text>
+  <rect x="230" y="166" width="326" height="22" fill="#2a3541"/>
+  <rect x="230" y="166" width="326" height="22" fill="#c1443f66"/>
+  <text x="565" y="182" class="val" fill="#c1443f">59.3% DL</text>
+
+  <text x="450" y="230" text-anchor="middle" class="lbl">The benefit is present at every experience level — largest for the least experienced</text>
+  <text x="450" y="246" text-anchor="middle" class="lbl">n=1,417 · Prekker 2023, NEJM</text>
+</svg>
+<div class="dcaption">Figure — DEVICE trial first-attempt success by device and operator experience</div></div><div class="myth"><div class="mtitle">⚡ DEVICE Trial Evidence</div><div class="reality">The DEVICE trial (Prekker 2023, NEJM, n=1,417 critically ill adults across 17 ED/ICU sites) found video laryngoscopy produced significantly higher first-attempt success than direct laryngoscopy: 85.1% (600/705) vs. 70.8% (504/712) — an absolute difference of 14.3 percentage points. The benefit was present across all operator experience levels but was largest for the least experienced operators (27.1 percentage point gap: 80.0% vs. 59.3%), suggesting video laryngoscopy meaningfully flattens the experience-dependent learning curve rather than only helping already-skilled operators. This is now one of the most decisive head-to-head device trials in emergency airway management — earlier smaller trials had given conflicting signals (e.g., the 2017 MACMAN trial did not show a first-pass benefit), but DEVICE's size and pragmatic multi-specialty design make it the most influential current evidence.</div></div><div class="uncertainty"><div class="utitle">Clinical Bottom Line</div>Video laryngoscopy should be the default first-attempt device for emergency intubation when available, particularly for less experienced operators — not reserved only for predicted-difficult airways. Maintain direct laryngoscopy skill for device failure/unavailability scenarios, but the default-device decision has shifted meaningfully based on DEVICE trial data.</div><h3>Rescue Devices</h3><div class="tablewrap"><table class="compare"><thead><tr><th>Device</th><th>Role</th></tr></thead><tbody><tr><td class="fname" style="white-space:normal">Bougie (gum-elastic/flexible-tip introducer)</td><td style="white-space:normal">A flexible introducer passed through the cords (often guided by feel of tracheal rings clicking against the tip) when the glottic view is poor or the tube itself won't pass directly — the endotracheal tube is then railroaded over it. Particularly valuable when only a partial glottic view (e.g., epiglottis only) is obtainable.</td></tr><tr><td class="fname" style="white-space:normal">Supraglottic airway / LMA</td><td style="white-space:normal">Sits above the glottic opening rather than passing through the cords — the standard rescue device when intubation attempts fail and oxygenation/ventilation must be restored quickly, per every major difficult airway algorithm (ASA, DAS). Not a definitive airway, but a critical bridge that buys time for either a subsequent controlled intubation attempt (including intubating LMA/fiberoptic-through-LMA techniques) or surgical airway if oxygenation still cannot be achieved.</td></tr><tr><td class="fname" style="white-space:normal">Fiberoptic/flexible scope</td><td style="white-space:normal">Primarily an awake, spontaneously-breathing-patient technique for anticipated difficult airways (e.g., known unstable cervical spine, severe ankylosing spondylitis, large obstructing mass) rather than a rescue tool in an already-paralyzed, apneic patient — timing and patient selection matter enormously here.</td></tr><tr><td class="fname" style="white-space:normal">Cricothyrotomy (surgical airway)</td><td style="white-space:normal">The definitive rescue for a 'can't intubate, can't oxygenate' scenario when supraglottic rescue also fails — full procedural detail, landmarks, and an SVG diagram are covered in the companion Trauma & Resuscitation Atlas (Domain 2: Airway & Chest Trauma). Cross-referenced here rather than duplicated.</td></tr></tbody></table></div></div></section><section class="dom" id="dom-postintubation"><div class="section"><h2>📈 Post-Intubation Management</h2><h3>Sedation &amp; Analgesia</h3><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">The immediate post-intubation period is a well-documented high-risk window for both under-sedation (awareness, agitation, self-extubation) and hemodynamic deterioration from over-sedation — a frequently under-taught phase relative to the drama of the intubation itself.</p></div><div class="tablewrap"><table class="compare"><thead><tr><th>Agent</th><th>Role &amp; notes</th></tr></thead><tbody><tr><td class="fname" style="white-space:normal">Propofol infusion</td><td style="white-space:normal">Common default for hemodynamically stable patients — titratable, short context-sensitive half-time, but the same vasodilatory/negative inotropic risk from induction persists at infusion doses; watch for delayed post-intubation hypotension as the bolus effects of induction agents wear off and infusion effects take over.</td></tr><tr><td class="fname" style="white-space:normal">Fentanyl (± propofol/midazolam)</td><td style="white-space:normal">Analgesia is frequently under-dosed relative to sedation in the immediate post-intubation period — an intubated patient still needs pain control, not just sedation, and endotracheal tubes themselves are a painful stimulus.</td></tr><tr><td class="fname" style="white-space:normal">Dexmedetomidine (precedex)</td><td style="white-space:normal">Useful when a patient needs to remain more arousable/cooperative (e.g., approaching extubation readiness assessment) or when avoiding respiratory depression matters, given its distinct alpha-2 agonist mechanism — less acutely useful as the very first post-intubation agent in an unstable patient given its own hypotension/bradycardia profile.</td></tr><tr><td class="fname" style="white-space:normal">Ketamine infusion</td><td style="white-space:normal">An emerging option particularly when hemodynamic stability is the priority or when the patient was induced with ketamine and continuity of agent is desired — less standardized than propofol/fentanyl-based sedation but increasingly used in shock physiology.</td></tr></tbody></table></div><div class="uncertainty"><div class="utitle">Pitfall</div>Post-intubation hypotension is common and multifactorial: residual induction agent effect, transition to positive-pressure ventilation (reducing venous return/preload, especially in volume-depleted patients), and sedation infusion effects can all stack — have push-dose pressors ready proactively rather than reactively, particularly in any patient who was borderline before induction.</div><h3>Ventilator Initiation</h3><div class="card"><p style="color:var(--ink-soft);font-size:.92rem">Lung-protective ventilation principles (originally validated in ARDS, now broadly applied as a reasonable default even before ARDS is confirmed) aim to minimize ventilator-induced lung injury from the first breath after intubation, not just after a delayed ARDS diagnosis.</p></div><div class="tablewrap"><table class="compare"><thead><tr><th>Parameter</th><th>Starting point</th></tr></thead><tbody><tr><td class="fname">Tidal volume</td><td style="white-space:normal">6 mL/kg predicted body weight (calculated from height and sex, not actual body weight — a frequently missed detail that leads to over-sized tidal volumes in obese patients specifically)</td></tr><tr><td class="fname">Respiratory rate</td><td style="white-space:normal">14–20/min initially, titrated to pH/PaCO2 and patient synchrony</td></tr><tr><td class="fname">PEEP</td><td style="white-space:normal">5 cmH2O as a reasonable universal starting point, titrated upward per oxygenation and the specific clinical scenario (higher in ARDS/obesity, lower in COPD/severe bronchospasm given air-trapping risk)</td></tr><tr><td class="fname">FiO2</td><td style="white-space:normal">100% initially post-intubation, then titrated down to the lowest FiO2 achieving an acceptable SpO2 (generally targeting the low-to-mid 90s rather than reflexively keeping FiO2 high)</td></tr></tbody></table></div><div class="myth"><div class="mtitle">⚡ Pitfall</div><div class="reality">Using actual body weight instead of predicted body weight for tidal volume calculation is one of the most common ventilator-initiation errors, particularly in obese patients, where it can lead to volutrauma from an inappropriately large tidal volume.</div></div></div></section><section class="dom" id="dom-populations"><div class="section"><h2>🧑‍⚕️ Special Population Induction Selection</h2><div class="diagram">
+<svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>
+    .lbl-b{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;fill:var(--ink,#e7edf3)}
+    .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;fill:var(--ink-soft,#a9b6c2)}
+  </style></defs>
+
+  <text x="225" y="24" text-anchor="middle" class="lbl-b">Standard sniffing position</text>
+  <line x1="80" y1="180" x2="380" y2="180" stroke="#2a3541" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="330" cy="150" rx="42" ry="34" fill="#3f9e8f33" stroke="#3f9e8f" stroke-width="2"/>
+  <line x1="330" y1="150" x2="290" y2="182" stroke="#3f9e8f" stroke-width="3" stroke-linecap="round"/>
+  <text x="200" y="220" text-anchor="middle" class="lbl">flat — ear and sternal notch</text>
+  <text x="200" y="234" text-anchor="middle" class="lbl">NOT aligned in obesity/OSA</text>
+
+  <text x="675" y="24" text-anchor="middle" class="lbl-b">Ramped position</text>
+  <path d="M 520 180 L 700 180 L 700 168 L 660 150 L 630 128 L 610 118 L 600 112 L 600 180 Z" fill="#2a3541"/>
+  <ellipse cx="655" cy="105" rx="42" ry="34" fill="#3f9e8f33" stroke="#3f9e8f" stroke-width="2"/>
+  <line x1="655" y1="105" x2="700" y2="118" stroke="#3f9e8f" stroke-width="3" stroke-linecap="round"/>
+  <line x1="655" y1="105" x2="700" y2="118" stroke="#c9973f" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <circle cx="700" cy="118" r="3" fill="#c9973f"/>
+  <text x="740" y="122" class="lbl" fill="#c9973f">ear</text>
+  <line x1="600" y1="180" x2="700" y2="180" stroke="#c9973f" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="740" y="184" class="lbl" fill="#c9973f">sternal notch</text>
+  <text x="655" y="240" text-anchor="middle" class="lbl">blankets/pillows under shoulders + head</text>
+  <text x="655" y="254" text-anchor="middle" class="lbl">ear-to-sternal-notch alignment — external auditory</text>
+  <text x="655" y="268" text-anchor="middle" class="lbl">meatus level with the sternal notch, horizontally</text>
+</svg>
+<div class="dcaption">Figure — Standard vs. ramped positioning (obesity/OSA)</div></div><div class="popcard" id="pop-icp"><h3>🧠 Elevated ICP / Neurotrauma</h3><div class="popsummary">The single biggest teaching reversal in this atlas: ketamine's 50-year 'contraindicated in head injury' status has been thoroughly debunked, while the actual priority — avoiding hypotension, which independently worsens outcomes in TBI far more than any induction-agent-specific ICP effect — is often under-emphasized relative to drug selection.</div><ul class="plain "><li>Ketamine or etomidate are both reasonable induction choices — ketamine is no longer contraindicated (see Induction Agents tab for the full evidence), and etomidate's hemodynamic neutrality remains valuable here</li><li>Avoiding peri-intubation hypotension matters more than which specific induction agent is chosen — a single hypotensive episode is independently associated with worse TBI outcomes, making agent-induced blood pressure drops (propofol especially) the bigger practical concern than any ICP-specific drug property</li><li>Rocuronium or succinylcholine are both acceptable paralytics — succinylcholine's transient ICP elevation from fasciculations is generally considered clinically insignificant relative to the benefit of rapid, reliable paralysis</li><li>Maintain adequate MAP/cerebral perfusion pressure as the actual physiologic target throughout, not just at the moment of induction</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Reflexively avoiding ketamine out of outdated training, and under-appreciating that hypotension — not drug selection — is the dominant modifiable risk in this population</div></div><div class="popcard" id="pop-shock"><h3>⚡ Hemodynamically Unstable / Shock</h3><div class="popsummary">The population where induction agent choice has the most direct, immediate life-or-death consequence — and where the 2025 RSI trial data meaningfully updated the conventional wisdom.</div><ul class="plain "><li>Etomidate remains a reasonable default given its hemodynamic neutrality, particularly outside septic shock specifically</li><li>Ketamine is also reasonable but the 2025 RSI trial found significantly more early cardiovascular collapse with ketamine than etomidate, especially pronounced in septic shock (30.6% vs. 20.9%) — don't assume ketamine is automatically the 'safe' choice in this population without accounting for this data</li><li>Reduce induction doses substantially regardless of which agent is chosen — standard elective-anesthesia dosing in a shock patient is a common and dangerous error</li><li>Avoid propofol as a sole induction agent given its more pronounced vasodilatory/negative inotropic profile, unless dosed very conservatively</li><li>Have push-dose pressors drawn up and ready before induction, not after hypotension develops</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Assuming ketamine is the reflexively 'safe' hemodynamic choice without considering current trial data, and using standard (non-reduced) induction doses in a hypotensive patient</div></div><div class="popcard" id="pop-asthma"><h3>🌬️ Reactive Airway Disease / Status Asthmaticus</h3><div class="popsummary">One of the few scenarios in this atlas with a genuinely clean, mechanism-based first-choice answer.</div><ul class="plain "><li>Ketamine is the preferred induction agent specifically for its bronchodilatory property — no other agent on this list shares this effect</li><li>Avoid histamine-releasing agents/adjuncts where possible given bronchospasm risk</li><li>Anticipate breath-stacking/dynamic hyperinflation risk once ventilation begins — permissive hypercapnia with a lower respiratory rate and prolonged expiratory time is generally preferred over aggressive normalization of PaCO2 in the immediate post-intubation period</li><li>Have a plan for post-intubation bronchodilator delivery through the circuit</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Aggressive bag-mask or ventilator rates immediately post-intubation in a severely obstructed patient, risking breath-stacking, auto-PEEP, and secondary hypotension/barotrauma</div></div><div class="popcard" id="pop-rhf"><h3>❤️ Right Heart Failure / Pulmonary Hypertension</h3><div class="popsummary">A frequently under-recognized population where the induction and positive-pressure-ventilation transition itself — not just drug choice — carries major risk, since acute RV failure can be precipitated by increases in pulmonary vascular resistance or drops in RV preload/coronary perfusion.</div><ul class="plain "><li>Etomidate is generally preferred given hemodynamic neutrality — avoiding a systemic BP drop is critical since RV coronary perfusion depends on maintaining a favorable systemic-to-pulmonary pressure gradient</li><li>Avoid factors that acutely raise pulmonary vascular resistance during induction/intubation: hypoxia, hypercapnia, acidosis, and excessive positive intrathoracic pressure from aggressive positive-pressure ventilation</li><li>Have inotropic/vasopressor support (and ideally pulmonary-vasodilator-capable agents) ready before induction, not as a reactive measure</li><li>Ventilator strategy post-intubation should specifically avoid excessive PEEP/plateau pressure, which can further increase RV afterload</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Treating this like routine hemodynamically unstable shock without recognizing the RV-specific physiology — standard aggressive fluid resuscitation, for instance, can worsen rather than help an acutely failing right ventricle</div></div><div class="popcard" id="pop-obesity"><h3>👥 Obesity / OSA</h3><div class="popsummary">Primarily a mechanical/positioning and preoxygenation challenge more than a drug-selection one — the airway anatomy and rapid desaturation physiology matter more here than which induction agent is chosen.</div><ul class="plain "><li>Ramped position (external auditory meatus aligned horizontally with the sternal notch, often requiring blankets/pillows under the shoulders and head) rather than standard sniffing position — significantly improves laryngoscopic view and reduces time to desaturation in this population</li><li>Preoxygenation is disproportionately important given reduced functional residual capacity and faster desaturation kinetics — NIV/BiPAP preoxygenation (per PREOXI data) plus apneic oxygenation via nasal cannula is especially valuable here</li><li>Drug dosing: use ideal/adjusted body weight for most induction agents and paralytics rather than total body weight, to avoid overdosing (an important and frequently missed calculation)</li><li>Video laryngoscopy is particularly advantageous in this population given the anatomic challenges</li><li>Tidal volume calculation must use predicted body weight (height/sex-based), not actual weight — see Post-Intubation Ventilator section</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Standard sniffing position instead of ramping, underestimating how quickly this population desaturates once apneic, and dosing induction agents/paralytics by total body weight instead of ideal/adjusted body weight</div></div><div class="popcard" id="pop-pregnancy"><h3>👶 Pregnancy</h3><div class="popsummary">Physiologic changes of pregnancy (reduced FRC, increased oxygen consumption, airway edema/friability, delayed gastric emptying and reduced lower esophageal sphincter tone) combine to produce both faster desaturation and a higher difficult-airway/aspiration-risk profile than the general population.</div><ul class="plain "><li>Left uterine displacement (left lateral tilt or manual displacement) beyond ~20 weeks to relieve aortocaval compression — improves both maternal venous return and, indirectly, preoxygenation tolerance and hemodynamic stability during induction</li><li>Preoxygenation is even more critical than usual given reduced FRC and increased oxygen consumption — desaturation happens faster in pregnancy than in an otherwise-similar non-pregnant patient</li><li>Anticipate a more difficult airway than the general population given airway edema/friability — have a lower threshold for video laryngoscopy and a smaller-than-usual endotracheal tube available</li><li>Standard RSI induction/paralytic agents (etomidate or ketamine, succinylcholine or rocuronium) are all generally considered acceptable in pregnancy — this is not a scenario requiring fundamentally different pharmacology, but rather heightened attention to positioning, preoxygenation, and aspiration precautions</li><li>Aspiration risk is elevated (delayed gastric emptying, reduced LES tone, gravid uterus increasing intra-abdominal pressure) — standard RSI technique with cricoid pressure remains commonly taught here even as its routine use elsewhere has become more selective</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Underestimating how quickly a pregnant patient desaturates, and failing to position with left uterine displacement in a patient beyond ~20 weeks gestation</div></div><div class="popcard" id="pop-peds"><h3>👶 Pediatric RSI Dosing</h3><div class="popsummary">Same pharmacologic principles as adult RSI, with weight-based dosing and a few population-specific considerations — cross-reference the companion Fluid Resuscitation Atlas's pediatric fluid content and the Lab Values Atlas's pediatric calculators for adjacent dosing tools.</div><ul class="plain "><li>Etomidate: 0.3 mg/kg IV — same weight-based dose as adults; the pediatric propensity-matched comparison to ketamine found no mortality difference and, notably, lower (not higher) adrenal suppression with etomidate than ketamine in that cohort</li><li>Ketamine: 1–2 mg/kg IV — widely used in pediatric RSI, particularly valued for hemodynamic stability and bronchodilation in pediatric reactive airway presentations</li><li>Succinylcholine: 1–2 mg/kg IV in infants/young children (higher mg/kg than the adult dose given a larger relative extracellular fluid volume/volume of distribution); atropine pretreatment is more commonly considered in young children given a higher risk of succinylcholine-associated bradycardia in this age group than in adults</li><li>Rocuronium: 1–1.2 mg/kg IV, same RSI-dose principle as adults</li><li>Weight-based/length-based dosing references (Broselow tape or equivalent) are the standard safeguard against dosing errors in a genuine pediatric emergency — have one available rather than relying on mental math under pressure</li></ul><div class="pitfall"><div class="ptitle">Common Pitfalls</div>Using adult fixed doses instead of weight-based pediatric dosing, and forgetting the higher bradycardia risk with succinylcholine in young children specifically</div></div></div></section>
+
+  <footer>
+    Built for point-of-care and teaching use. Guideline-sensitive content (RSI trial data, PREOXI, DEVICE, succinylcholine hyperkalemia timing) reflects evidence current as of construction — verify against your institution's current protocol and the latest primary literature before relying on it clinically. Not a substitute for clinical judgment.
+  </footer>
+</main>
+
+<script>
+(function(){
+  var domSections = document.querySelectorAll('.dom');
+  var navItems = document.querySelectorAll('.navitem');
+  var trigger = document.getElementById('navTrigger');
+  var menu = document.getElementById('navMenu');
+
+  function showDom(id){
+    domSections.forEach(function(s){ s.classList.toggle('active', s.id === 'dom-' + id); });
+    navItems.forEach(function(n){ n.classList.toggle('active', n.getAttribute('data-dom') === id); });
+    menu.classList.remove('open');
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    try{ localStorage.setItem('airwayatlas_tab', id); }catch(e){}
+  }
+
+  navItems.forEach(function(n){
+    n.addEventListener('click', function(){ showDom(n.getAttribute('data-dom')); });
+  });
+
+  trigger.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!menu.contains(e.target) && e.target !== trigger){ menu.classList.remove('open'); }
+  });
+
+  // theme toggle
+  var themeBtn = document.getElementById('themeBtn');
+  var html = document.documentElement;
+  function applyTheme(t){
+    html.setAttribute('data-theme', t);
+    try{ localStorage.setItem('airwayatlas_theme', t); }catch(e){}
+  }
+  themeBtn.addEventListener('click', function(){
+    var cur = html.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  try{
+    var savedTheme = localStorage.getItem('airwayatlas_theme');
+    if(savedTheme) applyTheme(savedTheme);
+  }catch(e){}
+
+  // restore last tab
+  try{
+    var savedTab = localStorage.getItem('airwayatlas_tab');
+    if(savedTab && document.getElementById('dom-' + savedTab)) showDom(savedTab);
+  }catch(e){}
+
+  // search — scoped to active tab, simple text highlight/scroll-to
+  var searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    var q = searchInput.value.trim().toLowerCase();
+    if(!q) return;
+    // remove old highlights
+    document.querySelectorAll('mark.hit').forEach(function(m){
+      var parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+    var found = null;
+    domSections.forEach(function(section){
+      var walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, null);
+      var node;
+      var toWrap = [];
+      while(node = walker.nextNode()){
+        if(node.nodeValue.toLowerCase().indexOf(q) !== -1){ toWrap.push(node); }
+      }
+      toWrap.forEach(function(node){
+        var idx = node.nodeValue.toLowerCase().indexOf(q);
+        var span = document.createElement('span');
+        var before = document.createTextNode(node.nodeValue.slice(0, idx));
+        var mark = document.createElement('mark');
+        mark.className = 'hit';
+        mark.style.background = 'var(--warn)';
+        mark.style.color = '#1a1a1a';
+        mark.textContent = node.nodeValue.slice(idx, idx+q.length);
+        var after = document.createTextNode(node.nodeValue.slice(idx+q.length));
+        span.appendChild(before); span.appendChild(mark); span.appendChild(after);
+        node.parentNode.replaceChild(span, node);
+        if(!found) found = {mark: mark, section: section};
+      });
+    });
+    if(found){
+      showDom(found.section.id.replace('dom-',''));
+      setTimeout(function(){ found.mark.scrollIntoView({behavior:'smooth', block:'center'}); }, 60);
+    }
+  });
+})();
+</script>
+</body>
+</html>
