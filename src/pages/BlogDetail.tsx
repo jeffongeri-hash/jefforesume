@@ -581,7 +581,7 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: businessPost,
     content: `
-      <p>Every recent guideline change that alters bedside practice — cardiology, heme, endocrine, GI, derm, ENT, immunology, environmental, migraine, and EMTALA, in one place.</p>
+      <p>Every recent guideline change that alters bedside practice — cardiology, sepsis, radiology, OB/GYN, heme, endocrine, GI, ocular, stroke, renal, MSK, oncology, derm, ENT, trauma, sedation, immunology, environmental, migraine, and EMTALA, in one place.</p>
       <p>All volumes of the Guideline Changes Atlas are collected below. Each volume is fully interactive.</p>
       
       <h2>Vol. 1 — Migraine: 2026 AHS ED Update</h2>
@@ -590,17 +590,35 @@ const blogPosts = {
       </div>
       <p><a href="/embeds/guideline-changes-migraine-vol1.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
+      <h2>Vol. 2 — Sepsis: 2026 SSC Update</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-sepsis-vol2.html" title="Vol. 2 — Sepsis: 2026 SSC Update" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-sepsis-vol2.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
       <h2>Vol. 3 — Cardiology: 2024–2026 Updates</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
         <iframe src="/embeds/guideline-changes-cardiology-vol3.html" title="Vol. 3 — Cardiology: 2024–2026 Updates" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
       </div>
       <p><a href="/embeds/guideline-changes-cardiology-vol3.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
+      <h2>Vol. 4 — Radiology: 2024–2026 Contrast Media Updates</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-radiology-vol4.html" title="Vol. 4 — Radiology: 2024–2026 Contrast Media Updates" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-radiology-vol4.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
       <h2>Vol. 5 — Hematology: Andexanet Alfa Withdrawal</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
         <iframe src="/embeds/guideline-changes-hematology-vol5.html" title="Vol. 5 — Hematology: Andexanet Alfa Withdrawal" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
       </div>
       <p><a href="/embeds/guideline-changes-hematology-vol5.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 7 — OB/GYN: 2024–2025 ACOG Updates</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-obgyn-vol7.html" title="Vol. 7 — OB/GYN: 2024–2025 ACOG Updates" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-obgyn-vol7.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
       <h2>Vol. 8 — Endocrine: 2024 DKA/HHS Consensus</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
@@ -614,6 +632,36 @@ const blogPosts = {
       </div>
       <p><a href="/embeds/guideline-changes-gi-vol9.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
+      <h2>Vol. 10 — Ocular: Retinal Artery Occlusion as Stroke</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-ocular-vol10.html" title="Vol. 10 — Ocular: Retinal Artery Occlusion as Stroke" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-ocular-vol10.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 11 — Neurology/Stroke: 2026 AHA/ASA AIS Guideline</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-neurology-vol11.html" title="Vol. 11 — Neurology/Stroke: 2026 AHA/ASA AIS Guideline" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-neurology-vol11.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 12 — Renal: 2024 KDIGO CKD Guideline</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-renal-vol12.html" title="Vol. 12 — Renal: 2024 KDIGO CKD Guideline" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-renal-vol12.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 13 — MSK: 2025 AAOS Compartment Syndrome</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-msk-vol13.html" title="Vol. 13 — MSK: 2025 AAOS Compartment Syndrome" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-msk-vol13.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 14 — Oncology: MSCC Steroid Reversal</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-oncology-vol14.html" title="Vol. 14 — Oncology: MSCC Steroid Reversal" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-oncology-vol14.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
       <h2>Vol. 15 — Dermatology: 2024 Epidermal Necrolysis Guideline</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
         <iframe src="/embeds/guideline-changes-dermatology-vol15.html" title="Vol. 15 — Dermatology: 2024 Epidermal Necrolysis Guideline" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
@@ -625,6 +673,18 @@ const blogPosts = {
         <iframe src="/embeds/guideline-changes-ent-vol16.html" title="Vol. 16 — ENT: 2025 AAO-HNSF Adult Sinusitis" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
       </div>
       <p><a href="/embeds/guideline-changes-ent-vol16.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 17 — Trauma: ATLS 11th Edition</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-trauma-vol17.html" title="Vol. 17 — Trauma: ATLS 11th Edition" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-trauma-vol17.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 18 — Procedural Sedation: Reaffirmed Guidance, New Evidence</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-sedation-vol18.html" title="Vol. 18 — Procedural Sedation: Reaffirmed Guidance, New Evidence" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-sedation-vol18.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
       <h2>Vol. 19 — Immunology: Anaphylaxis Criteria Unified</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
