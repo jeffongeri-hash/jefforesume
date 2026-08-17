@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immunology Atlas Vol. 1 — Foundations, Cytokine Storms &amp; Hypersensitivity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #14141c;
+  --ink-800: #1c1d29;
+  --ink-700: #2a2b3d;
+  --paper-050: #f8f6f0;
+  --paper-100: #efece2;
+  --paper-200: #e3ded0;
+
+  --sentinel-600: #4a3f9e;
+  --sentinel-500: #5d4fc4;
+  --sentinel-400: #8177d9;
+  --sentinel-300: #ada4e8;
+
+  --gold-500: #b5892c;
+  --gold-400: #d1a441;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #efece4;
+  --text-secondary: #b8b6c4;
+  --text-tertiary: #83829a;
+  --border: rgba(239, 236, 228, 0.10);
+  --border-strong: rgba(239, 236, 228, 0.18);
+  --accent: var(--sentinel-400);
+  --accent-strong: var(--sentinel-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #1c1a24;
+  --text-secondary: #4a4757;
+  --text-tertiary: #78748a;
+  --border: rgba(28, 26, 36, 0.10);
+  --border-strong: rgba(28, 26, 36, 0.18);
+  --accent: var(--sentinel-600);
+  --accent-strong: var(--sentinel-500);
+  --shadow: 0 8px 30px rgba(28,26,36,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sentinel-400); color: #fff; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+/* ---------- Top identity bar ---------- */
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+/* ---------- Nav rail ---------- */
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* ---------- Case box ---------- */
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+/* ---------- Danger / storm callout ---------- */
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--gold-500); }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Diagram frame ---------- */
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ---------- Comparison strip ---------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+/* ---------- badges/pills ---------- */
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- footer ---------- */
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* toc back-to-top */
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Immunology Atlas</span>
+    <span class="sub">Vol. I &middot; Foundations, Storms &amp; Hypersensitivity</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#cells-overview">Innate vs Adaptive</a><a href="#innate-cells">Innate Cells</a><a href="#complement">Complement</a><a href="#t-cells">T Cells</a><a href="#b-cells">B Cells</a><a href="#antigens-mhc">Antigens & MHC</a><a href="#antibodies">Antibodies</a><a href="#cytokine-signaling">Cytokine Signaling</a><a href="#storm-overview">Storm Physiology</a><a href="#superantigen">Strep/Staph TSS</a><a href="#sepsis-storm">Sepsis</a><a href="#crs">CAR-T / CRS</a><a href="#hlh">HLH / MAS</a><a href="#dress">DRESS</a><a href="#covid-storm">COVID Storm</a><a href="#hs-overview">Hypersensitivity Map</a><a href="#type1">Type I</a><a href="#type2">Type II</a><a href="#type3">Type III</a><a href="#type4">Type IV</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME I OF THE IMMUNOLOGY SERIES</div>
+  <h1>Immunology: Cellular Pathophysiology, Cytokine Storms &amp; Hypersensitivity</h1>
+  <p class="lede">A bedside-oriented map of the immune response — from the cells and antibodies that carry it out, through the toxin-mediated
+  and iatrogenic syndromes where that response becomes the emergency itself, to the four mechanistically distinct ways it can misfire against
+  a harmless or self target.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">20</div><div class="l">Cell &amp; molecule profiles</div></div>
+    <div class="hero-stat"><div class="n">7</div><div class="l">Cytokine storm syndromes</div></div>
+    <div class="hero-stat"><div class="n">4</div><div class="l">Hypersensitivity types</div></div>
+    <div class="hero-stat"><div class="n">16</div><div class="l">Pathway diagrams</div></div>
+  </div>
+</div>
+
+<section class="block" id="cells-overview">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>Innate vs. Adaptive Immunity</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Two integrated systems separated by speed and specificity — the innate system buys time in minutes to hours, the adaptive system arrives in days but remembers.</p>
+    </div><p class="lead-q">“Why does this patient mount fever and neutrophilia within hours, but their antibody titer doesn’t rise for a week?”</p><p>Innate immunity is the immediate, germline-encoded response: physical barriers, phagocytes, and the complement cascade recognize broad
+    molecular patterns (PAMPs via pattern recognition receptors such as Toll-like receptors) rather than specific antigens. It is fast but non-specific and
+    has no memory. Adaptive immunity is slower to activate on first exposure — clonal selection and expansion of antigen-specific T and B lymphocytes takes
+    roughly 5–10 days — but it is exquisitely antigen-specific and generates immunologic memory, which is why re-exposure produces a faster, larger, higher-affinity
+    response.</p><div class="diagram"><svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M168.6,151.7 L263.4,115.4" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M168.6,204.3 Q216.0,252.4 263.4,240.6" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,69.6 L481.9,55.6" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,91.1 L481.9,93.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,112.6 L492.2,134.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M335.0,115.4 Q335.0,198.0 335.0,240.6" fill="none" style="stroke:var(--slate-500);color:var(--slate-500)" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)"></path><text x="335.0" y="182.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--slate-500)">antigen presentation</text><path d="M418.3,251.7 L481.9,239.2" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,273.2 L481.9,277.2" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,294.7 L498.6,320.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="30" y="150" width="140" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="100.0" y="170.56">Pathogen / tissue</tspan><tspan x="100.0" y="185.56">injury</tspan></text><rect x="250" y="60" width="170" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="335.0" y="82.0">Innate immunity</tspan></text><text x="335.0" y="100.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">minutes – hours, non-specific</text><rect x="480" y="10" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="21.560000000000002">Physical / chemical</tspan><tspan x="575.0" y="36.56">barriers</tspan></text><text x="575.0" y="53.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">skin, mucosa, pH, lysozyme</text><rect x="480" y="72" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="83.56">Phagocytes &amp;</tspan><tspan x="575.0" y="98.56">granulocytes</tspan></text><text x="575.0" y="115.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">neutrophils, macrophages</text><rect x="480" y="134" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="153.0">Complement cascade</tspan></text><text x="575.0" y="170.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">opsonization, lysis, MAC</text><rect x="250" y="240" width="170" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="335.0" y="262.0">Adaptive immunity</tspan></text><text x="335.0" y="280.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">days, antigen-specific</text><rect x="480" y="196" width="190" height="50" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="207.56">Cell-mediated</tspan><tspan x="575.0" y="222.56">response</tspan></text><text x="575.0" y="239.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">CD4 / CD8 T cells</text><rect x="480" y="258" width="190" height="50" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="277.0">Humoral response</tspan></text><text x="575.0" y="294.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">B cells → antibodies</text><rect x="480" y="320" width="190" height="50" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="575.0" y="339.0">Immunologic memory</tspan></text><text x="575.0" y="356.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">faster, larger 2° response</text></svg><div class="cap">Figure 1. Innate and adaptive arms converge through antigen presentation.</div></div><div class="pearl"><b>Clinical correlation:</b> a patient with recurrent, severe bacterial infections from early childhood suggests an innate or humoral defect (e.g., chronic granulomatous disease, complement deficiency, agammaglobulinemia). Recurrent viral/fungal/opportunistic infections point toward a T-cell or combined defect (e.g., SCID, DiGeorge, HIV).</div>  </div>
+</section>
+<section class="block" id="innate-cells">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>Innate Immune Cells</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The first responders — pre-programmed to recognize danger and act within minutes.</p>
+    </div><div class="cell-grid">
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">First responder</span>
+      <h5>Neutrophil</h5>
+      <p>Most abundant circulating leukocyte; first to arrive at acute bacterial infection/injury (within hours). Phagocytosis, degranulation, and NETs (neutrophil extracellular traps).</p>
+      <div class="markers">Markers: CD16, CD66b &middot; Elevated in bacterial infection, stress, steroids &middot; Left shift = bands</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">Tissue sentinel & cleanup</span>
+      <h5>Macrophage</h5>
+      <p>Tissue-resident phagocyte (Kupffer cells in liver, alveolar macrophages in lung, microglia in CNS). Phagocytoses pathogens/debris, presents antigen, and is the dominant source of IL-1, IL-6, and TNF-&alpha; in early inflammation.</p>
+      <div class="markers">Markers: CD68, CD14 &middot; M1 = pro-inflammatory &middot; M2 = tissue repair</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">Professional antigen-presenting cell</span>
+      <h5>Dendritic cell</h5>
+      <p>The essential bridge between innate and adaptive immunity. Captures antigen in peripheral tissue, migrates to lymph node, and presents via MHC II to prime naive T cells.</p>
+      <div class="markers">Markers: CD11c, CD83 &middot; Most potent APC for naive T cell priming</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">Innate cytotoxicity</span>
+      <h5>Natural killer (NK) cell</h5>
+      <p>Kills virus-infected and tumor cells that downregulate MHC I (“missing self” recognition) without prior sensitization. Also mediates antibody-dependent cellular cytotoxicity (ADCC) via CD16/Fc&gamma;RIII.</p>
+      <div class="markers">Markers: CD16, CD56 &middot; No antigen specificity, no memory (classically)</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Sentinel of type I hypersensitivity</span>
+      <h5>Mast cell</h5>
+      <p>Tissue-resident, especially at mucosal/skin barriers. Surface Fc&epsilon;RI binds IgE; antigen cross-linking triggers degranulation — histamine, tryptase, leukotrienes — driving anaphylaxis and allergic disease.</p>
+      <div class="markers">Markers: c-KIT (CD117), tryptase &middot; Central to Type I hypersensitivity</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">Anti-parasitic, allergic effector</span>
+      <h5>Eosinophil</h5>
+      <p>Releases major basic protein and eosinophil cationic protein; central to defense against helminths and to the late phase of allergic/atopic disease. Recruited by IL-5.</p>
+      <div class="markers">Markers: CD193 (CCR3) &middot; Eosinophilia: allergy, parasites, drug reaction (DRESS), Churg-Strauss</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Circulating IgE effector</span>
+      <h5>Basophil</h5>
+      <p>Circulating counterpart to the mast cell; releases histamine and leukotrienes on IgE cross-linking. Minority player numerically but amplifies Th2 polarization via IL-4.</p>
+      <div class="markers">Markers: CD123, Fc&epsilon;RI &middot; Basopenia can be seen in acute infection</div>
+    </div></div><h3>How NK Cells Recognize a Target Without Prior Sensitization</h3><div class="diagram"><svg viewBox="0 0 960 250" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M198.2,68.0 L261.9,68.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.1,68.0 L511.8,68.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M198.2,188.0 L261.9,188.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.1,188.0 L511.8,188.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M688.2,188.0 L761.7,188.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="40" width="180" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="110.0" y="61.18">Healthy cell: normal</tspan><tspan x="110.0" y="74.93">MHC I expression</tspan></text><rect x="260" y="40" width="190" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="355.0" y="61.49">Inhibitory KIR</tspan><tspan x="355.0" y="74.61500000000001">receptor binds MHC I</tspan></text><rect x="510" y="40" width="180" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="600.0" y="55.6">Inhibitory signal</tspan><tspan x="600.0" y="68.1">dominates — NK cell</tspan><tspan x="600.0" y="80.6">stands down</tspan></text><rect x="20" y="160" width="180" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="110.0" y="175.6">Virus-infected or</tspan><tspan x="110.0" y="188.1">malignant cell: MHC I</tspan><tspan x="110.0" y="200.6">downregulated</tspan></text><rect x="260" y="160" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="355.0" y="181.49">Little/no MHC I —</tspan><tspan x="355.0" y="194.615">inhibitory signal lost</tspan></text><rect x="510" y="160" width="180" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="600.0" y="176.22">Activating signals</tspan><tspan x="600.0" y="188.095">dominate — “missing</tspan><tspan x="600.0" y="199.97">self” triggers killing</tspan></text><rect x="760" y="160" width="170" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="845.0" y="174.98"></tspan><tspan x="845.0" y="188.105">Perforin/granzyme-mediated</tspan><tspan x="845.0" y="201.23">lysis</tspan></text></svg><div class="cap">Figure 1b. “Missing self” recognition — NK cells are held in check by inhibitory receptors reading normal MHC I, and fire when that signal disappears.</div></div><div class="pearl"><b>The elegant logic behind this:</b> viruses and tumors both have strong incentives to downregulate MHC I to escape CD8+ T cell recognition (Volume I's antigen presentation section) — NK cells close that loophole by doing the opposite of a T cell: they kill when MHC I is <i>absent</i> rather than when a specific antigen is present, which is why NK cells need no prior exposure or priming to respond.</div>  </div>
+</section>
+<section class="block" id="complement">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>The Complement Cascade</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Three converging activation pathways feeding one final common pathway — opsonization, chemotaxis, and lysis.</p>
+    </div><div class="diagram"><svg viewBox="0 0 700 356" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M186.3,72.7 L251.7,93.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M186.3,119.0 L251.7,119.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M186.3,165.3 L251.7,145.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,95.8 L477.0,79.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M335.0,145.5 L335.0,180.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.3,183.8 L477.0,167.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M565.0,79.5 Q565.0,219.0 565.0,278.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M565.0,167.5 L565.0,206.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="20" width="168" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="104.0" y="41.0">Classical pathway</tspan></text><text x="104.0" y="58.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">antigen–antibody complex</text><rect x="20" y="92" width="168" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="104.0" y="113.0">Lectin pathway</tspan></text><text x="104.0" y="130.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">MBL binds microbial sugars</text><rect x="20" y="164" width="168" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="104.0" y="185.0">Alternative pathway</tspan></text><text x="104.0" y="200.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">spontaneous C3 hydrolysis on microbial surface</text><rect x="250" y="92" width="170" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="335.0" y="113.0">C3 convertase</tspan></text><text x="335.0" y="131.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">C4b2a  /  C3bBb</text><rect x="470" y="30" width="190" height="50" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="565.0" y="49.0">C3a + C3b</tspan></text><text x="565.0" y="66.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">anaphylatoxin  /  opsonin</text><rect x="250" y="180" width="170" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="335.0" y="201.0">C5 convertase</tspan></text><text x="335.0" y="219.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">cleaves C5</text><rect x="470" y="118" width="190" height="50" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="565.0" y="137.0">C5a + C5b</tspan></text><text x="565.0" y="154.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">chemotaxis  /  MAC assembly</text><rect x="470" y="206" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="565.0" y="227.0">C5b-9 (MAC)</tspan></text><text x="565.0" y="244.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">membrane attack complex → lysis</text><rect x="470" y="278" width="190" height="50" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="565.0" y="297.0">Opsonization</tspan></text><text x="565.0" y="312.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">C3b coats microbe → phagocytosis</text></svg><div class="cap">Figure 2. Classical, lectin, and alternative pathways converge on C3, driving C5 cleavage and membrane attack complex formation.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Pathway</th><th class="">Trigger</th><th class="">Key step</th></tr></thead>
+        <tbody><tr><td class="">Classical</td><td class="">IgG or IgM bound to antigen (immune complex)</td><td class="">C1q binds Fc region &rarr; C4b2a (C3 convertase)</td></tr><tr><td class="">Lectin</td><td class="">Mannose-binding lectin (MBL) binds microbial mannose residues — antibody independent</td><td class="">MASP proteases &rarr; C4b2a</td></tr><tr><td class="">Alternative</td><td class="">Spontaneous, low-level C3 hydrolysis stabilized on microbial surfaces</td><td class="">C3bBb (C3 convertase), amplification loop</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Deficiency pattern worth knowing:</b> terminal complement deficiency (C5–C9, i.e., inability to form the membrane attack complex) presents with recurrent <i>Neisseria</i> infections (meningococcemia, disseminated gonococcal infection) because MAC-mediated lysis of gram-negative diplococci is the dominant defense against this genus. Early complement deficiency (C1–C4) presents with lupus-like autoimmune disease from impaired immune complex clearance. C1 esterase inhibitor deficiency causes hereditary angioedema.</div>  </div>
+</section>
+<section class="block" id="t-cells">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>T Lymphocytes</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Thymically-educated, antigen-specific cells that either kill directly or orchestrate the response of others.</p>
+    </div><p>T cells undergo positive and negative selection in the thymus: positive selection retains only cells whose T-cell receptor (TCR)
+    can weakly bind self-MHC (ensuring MHC restriction), and negative selection deletes cells that bind self-antigen with high affinity (central tolerance).
+    Cells surviving both checkpoints emigrate as naive CD4+ or CD8+ T cells.</p><div class="diagram"><svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,142.2 L256.8,119.4" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,70.2 L501.8,56.7" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><text x="467.5" y="58.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--ember-500)">~95%</text><path d="M438.1,100.6 L501.8,107.9" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M539.1,145.4 Q469.3,243.0 399.6,220.6" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,234.0 L501.8,223.1" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,270.1 L501.8,283.9" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="140" width="170" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="105.0" y="157.6">Double-positive</tspan><tspan x="105.0" y="170.1">thymocyte (CD4+CD8+)</tspan><tspan x="105.0" y="182.6">enters cortex</tspan></text><rect x="250" y="60" width="190" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="345.0" y="76.98">Positive selection:</tspan><tspan x="345.0" y="90.105">can it weakly bind</tspan><tspan x="345.0" y="103.23">self-MHC?</tspan></text><rect x="500" y="10" width="180" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="590.0" y="31.8">No binding → death by</tspan><tspan x="590.0" y="44.3">neglect (apoptosis)</tspan></text><rect x="500" y="90" width="180" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="590.0" y="105.6">Weak binding →</tspan><tspan x="590.0" y="118.1">survives, becomes</tspan><tspan x="590.0" y="130.6">single-positive</tspan></text><rect x="250" y="220" width="190" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="345.0" y="236.98">Negative selection:</tspan><tspan x="345.0" y="250.105">does it strongly bind</tspan><tspan x="345.0" y="263.23">self-antigen?</tspan></text><rect x="500" y="180" width="180" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="590.0" y="195.6">Strong binding →</tspan><tspan x="590.0" y="208.1">clonal deletion</tspan><tspan x="590.0" y="220.6">(central tolerance)</tspan></text><rect x="500" y="270" width="180" height="66" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="590.0" y="284.4">No strong</tspan><tspan x="590.0" y="296.9">self-reactivity → mature</tspan><tspan x="590.0" y="309.4">naive T cell exits to</tspan><tspan x="590.0" y="321.9">periphery</tspan></text></svg><div class="cap">Figure 2b. Thymic selection — roughly 95% of thymocytes die by neglect or deletion; only self-restricted, non-self-reactive cells graduate.</div></div><div class="cell-grid">
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">MHC II restricted</span>
+      <h5>CD4+ Helper T cell</h5>
+      <p>Recognizes antigen presented on MHC II by professional APCs. Differentiates into functional subsets (Th1/Th2/Th17/Treg/Tfh) that orchestrate, rather than directly execute, the immune response.</p>
+      <div class="markers">Core marker: CD4, TCR&alpha;&beta;</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">MHC I restricted</span>
+      <h5>CD8+ Cytotoxic (killer) T cell</h5>
+      <p>Recognizes antigen presented on MHC I — present on essentially all nucleated cells. Directly kills infected or malignant cells via perforin/granzyme-mediated apoptosis and Fas-FasL signaling.</p>
+      <div class="markers">Core marker: CD8, TCR&alpha;&beta; &middot; Effector of viral clearance, tumor immunosurveillance</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">Long-lived, antigen-experienced</span>
+      <h5>Memory T cell</h5>
+      <p>Persists after antigen clearance; re-encounter triggers a faster, larger secondary response without needing full priming. Central memory (lymph node homing) vs. effector memory (tissue surveillance) subsets.</p>
+      <div class="markers">Markers: CD45RO+, CCR7 (central) &middot; Basis for vaccine durability</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sage-500)">
+      <div class="band"></div>
+      <span class="role">Peripheral tolerance</span>
+      <h5>Regulatory T cell (Treg)</h5>
+      <p>Suppresses autoreactive lymphocytes via IL-10, TGF-&beta;, and CTLA-4. Loss of function (e.g., FOXP3 mutation in IPEX syndrome) causes severe multi-organ autoimmunity.</p>
+      <div class="markers">Markers: CD4, CD25, FOXP3+</div>
+    </div></div><h3>How Cytotoxic Killing Actually Happens</h3><div class="diagram"><svg viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M186.7,150.6 L273.3,119.4" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M188.3,203.3 L261.9,223.9" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.1,90.0 L511.9,90.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.1,250.0 L511.9,250.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M690.0,119.4 Q725.9,151.8 761.7,144.2" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M696.6,220.6 Q729.2,190.2 761.7,199.7" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="150" width="170" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="105.0" y="173.49">CD8+ T cell / NK cell</tspan><tspan x="105.0" y="186.615">recognizes target</tspan></text><rect x="260" y="60" width="190" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="355.0" y="77.6">Perforin pathway:</tspan><tspan x="355.0" y="90.1">perforin pokes pores in</tspan><tspan x="355.0" y="102.6">target membrane</tspan></text><rect x="510" y="60" width="190" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="605.0" y="77.6">Granzyme B enters</tspan><tspan x="605.0" y="90.1">through pores →</tspan><tspan x="605.0" y="102.6">activates caspases</tspan></text><rect x="260" y="220" width="190" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="355.0" y="238.22">Fas-FasL pathway: FasL on</tspan><tspan x="355.0" y="250.095">effector binds Fas on</tspan><tspan x="355.0" y="261.97">target</tspan></text><rect x="510" y="220" width="190" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="605.0" y="237.6">Death-inducing signaling</tspan><tspan x="605.0" y="250.1">complex → activates</tspan><tspan x="605.0" y="262.6">caspases</tspan></text><rect x="760" y="140" width="170" height="66" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="845.0" y="160.6">Target cell apoptosis</tspan><tspan x="845.0" y="173.1">— controlled,</tspan><tspan x="845.0" y="185.6">non-inflammatory death</tspan></text></svg><div class="cap">Figure 2c. Two independent pathways — perforin/granzyme and Fas-FasL — both converge on target-cell apoptosis, a controlled death that avoids the collateral tissue damage of necrosis.</div></div><div class="pearl"><b>Why apoptosis, not necrosis, matters here:</b> both CD8+ T cells and NK cells kill by triggering the target cell's own apoptotic machinery rather than lysing it outright — a controlled, non-inflammatory death that clears infected or malignant cells without releasing the damage-associated molecular patterns that would trigger a wider inflammatory cascade.</div><h3>CD4+ Helper T Cell Subsets</h3><div class="diagram"><svg viewBox="0 0 720 410" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M149.6,170.6 L330.4,63.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M168.6,179.8 L301.5,140.6" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M168.6,200.2 L301.5,200.7" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M168.6,220.7 L301.5,260.8" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M149.6,229.4 L333.7,338.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.5,37.0 L541.5,37.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.5,119.0 L541.5,119.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.5,201.0 L541.5,201.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.5,283.0 L541.5,283.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M448.5,363.0 L541.5,363.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="30" y="170" width="140" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="100.0" y="192.56">Naive CD4+ T cell</tspan><tspan x="100.0" y="207.56">(Th0)</tspan></text><rect x="300" y="10" width="150" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="375.0" y="31.0">Th1</tspan></text><text x="375.0" y="49.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">driven by IL-12, IFN-γ</text><rect x="300" y="92" width="150" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="375.0" y="113.0">Th2</tspan></text><text x="375.0" y="131.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">driven by IL-4</text><rect x="300" y="174" width="150" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="375.0" y="195.0">Th17</tspan></text><text x="375.0" y="210.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">driven by IL-6, TGF-β, IL-23</text><rect x="300" y="256" width="150" height="54" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="375.0" y="277.0">Treg</tspan></text><text x="375.0" y="295.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">driven by TGF-β, IL-2</text><rect x="300" y="338" width="150" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="375.0" y="357.0">Tfh</tspan></text><text x="375.0" y="372.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">drives germinal center B cells</text><rect x="540" y="10" width="150" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="615.0" y="24.18">Macrophage</tspan><tspan x="615.0" y="37.93">activation</tspan></text><text x="615.0" y="53.68" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">intracellular pathogens</text><rect x="540" y="92" width="150" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="615.0" y="106.18">IgE class switch,</tspan><tspan x="615.0" y="119.93">eosinophils</tspan></text><text x="615.0" y="135.68" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">helminths, allergy</text><rect x="540" y="174" width="150" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="615.0" y="188.18">Neutrophil</tspan><tspan x="615.0" y="201.93">recruitment</tspan></text><text x="615.0" y="217.68" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">extracellular bacteria, fungi</text><rect x="540" y="256" width="150" height="54" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="615.0" y="277.0">Peripheral tolerance</tspan></text><text x="615.0" y="292.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">suppresses autoreactivity</text><rect x="540" y="338" width="150" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="615.0" y="356.18">Antibody affinity</tspan><tspan x="615.0" y="369.93">maturation</tspan></text></svg><div class="cap">Figure 3. Cytokine milieu at priming determines Th lineage commitment and downstream effector function.</div></div><div class="pearl"><b>Why this matters at the bedside:</b> biologics are built around this map. Anti–IL-17 (secukinumab) and anti–IL-23 (ustekinumab, guselkumab) target the Th17 axis in psoriasis; anti–IL-4/IL-13 (dupilumab) targets the Th2 axis in atopic disease and eosinophilic asthma; low-dose IL-2 and CTLA-4 fusion proteins (abatacept) work through the Treg/co-stimulation axis in autoimmune disease.</div>  </div>
+</section>
+<section class="block" id="b-cells">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>B Lymphocytes & the Humoral Response</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">From naive recognition to durable antibody-producing memory.</p>
+    </div><div class="cell-grid">
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">Antigen recognition</span>
+      <h5>Naive B cell</h5>
+      <p>Surface IgM/IgD recognizes native (unprocessed) antigen directly — unlike T cells, no MHC presentation is required. Antigen binding plus T-cell help (CD40L-CD40) drives germinal center entry.</p>
+      <div class="markers">Markers: CD19, CD20, surface IgM/IgD</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">Affinity maturation</span>
+      <h5>Germinal center B cell</h5>
+      <p>Undergoes somatic hypermutation and class-switch recombination (driven by Tfh-derived IL-21 and CD40L) to increase antibody affinity and change isotype (IgM &rarr; IgG/IgA/IgE).</p>
+      <div class="markers">Located in lymph node follicles / splenic white pulp</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Antibody factory</span>
+      <h5>Plasma cell</h5>
+      <p>Terminally differentiated, largely non-dividing cell dedicated to high-rate antibody secretion. Long-lived plasma cells home to bone marrow and can persist for decades, providing durable titers.</p>
+      <div class="markers">Markers: CD138 &middot; Loses CD19/CD20 (relevant to rituximab non-response)</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sage-500)">
+      <div class="band"></div>
+      <span class="role">Rapid recall</span>
+      <h5>Memory B cell</h5>
+      <p>Persists after antigen clearance; on re-exposure, differentiates rapidly into antibody-secreting plasma cells without needing to repeat affinity maturation — the basis of the anamnestic (secondary) response.</p>
+      <div class="markers">Markers: CD27+ &middot; Faster, higher-titer response on re-exposure</div>
+    </div></div><h3>The Germinal Center Reaction</h3><div class="diagram"><svg viewBox="0 0 1120 330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M178.4,180.0 L231.7,180.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,180.0 L441.8,180.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M600.2,150.6 L674.8,119.4" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M609.0,209.4 L666.0,230.6" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M838.1,90.0 L901.9,90.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M838.1,263.0 L901.9,265.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M995.0,119.4 Q995.0,145.1 995.0,230.8" fill="none" style="stroke:var(--slate-500);color:var(--slate-500)" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)"></path><rect x="20" y="150" width="160" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="100.0" y="167.6">Naive B cell binds</tspan><tspan x="100.0" y="180.1">antigen via surface</tspan><tspan x="100.0" y="192.6">IgM/IgD</tspan></text><rect x="230" y="150" width="170" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="315.0" y="173.49">Tfh cell provides</tspan><tspan x="315.0" y="186.615">CD40L + IL-21 help</tspan></text><rect x="440" y="150" width="180" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="530.0" y="173.18">Germinal center</tspan><tspan x="530.0" y="186.93">entry</tspan></text><rect x="650" y="60" width="190" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="745.0" y="78.22">Somatic hypermutation —</tspan><tspan x="745.0" y="90.095">random mutation of the</tspan><tspan x="745.0" y="101.97">antigen-binding region</tspan></text><rect x="650" y="230" width="190" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="745.0" y="247.6">Class-switch</tspan><tspan x="745.0" y="260.1">recombination — IgM →</tspan><tspan x="745.0" y="272.6">IgG/IgA/IgE</tspan></text><rect x="900" y="60" width="190" height="60" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="995.0" y="78.22">Affinity-based selection —</tspan><tspan x="995.0" y="90.095">only the best binders</tspan><tspan x="995.0" y="101.97">survive</tspan></text><rect x="900" y="230" width="190" height="76" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="995.0" y="254.98">Output: long-lived</tspan><tspan x="995.0" y="268.105">plasma cells + memory B</tspan><tspan x="995.0" y="281.23">cells</tspan></text></svg><div class="cap">Figure 3b. Inside the germinal center, B cells simultaneously mutate their antigen receptor and switch antibody class — only the highest-affinity clones survive selection.</div></div><div class="pearl"><b>This is why a second exposure produces a better antibody than the first:</b> somatic hypermutation randomly diversifies the antigen-binding region with each round of proliferation, and only B cells whose mutated receptor binds antigen <i>better</i> receive survival signals from follicular dendritic cells and Tfh cells — an iterative, Darwinian selection process happening over days inside a single lymph node.</div>  </div>
+</section>
+<section class="block" id="antigens-mhc">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>Antigens & Antigen Presentation</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The same molecule is processed through two distinct pathways depending on where it comes from — and this determines which T cell responds.</p>
+    </div><p>An <b>antigen</b> is any molecule capable of being recognized by the adaptive immune system; an <b>epitope</b> is the specific
+    portion of that antigen actually bound by an antibody or TCR. A <b>hapten</b> is a small molecule too small to be immunogenic on its own but that
+    becomes antigenic when covalently bound to a carrier protein — the mechanism behind most drug allergies (e.g., penicillin metabolites haptenating
+    host proteins).</p><div class="diagram"><svg viewBox="0 0 660 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M115.0,79.5 L115.0,102.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M115.0,151.5 L115.0,174.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M115.0,223.5 L115.0,246.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M115.0,295.5 L115.0,318.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M535.0,79.5 L535.0,102.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M535.0,151.5 L535.0,174.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M535.0,223.5 L535.0,246.5" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M535.0,295.5 L535.0,318.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="30" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="48.18">Cytosolic / viral</tspan><tspan x="115.0" y="61.93">protein</tspan></text><rect x="20" y="102" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="127.0">Proteasome degradation</tspan></text><rect x="20" y="174" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="199.0">TAP transporter → ER</tspan></text><rect x="20" y="246" width="190" height="50" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" style="fill:var(--text-primary)"><tspan x="115.0" y="265.0">MHC class I</tspan></text><text x="115.0" y="283.25" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">all nucleated cells</text><rect x="20" y="318" width="190" height="50" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="337.0">CD8+ cytotoxic T cell</tspan></text><text x="115.0" y="352.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">kills infected cell</text><rect x="440" y="30" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="535.0" y="48.18">Extracellular /</tspan><tspan x="535.0" y="61.93">phagocytosed antigen</tspan></text><rect x="440" y="102" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="535.0" y="120.18">Phagolysosome</tspan><tspan x="535.0" y="133.93">processing</tspan></text><rect x="440" y="174" width="190" height="50" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="535.0" y="199.0">Loaded in MIIC vesicle</tspan></text><rect x="440" y="246" width="190" height="50" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="535.0" y="265.0">MHC class II</tspan></text><text x="535.0" y="280.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">APCs: dendritic, macrophage, B cell</text><rect x="440" y="318" width="190" height="50" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="535.0" y="337.0">CD4+ helper T cell</tspan></text><text x="535.0" y="352.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">activates, coordinates response</text></svg><div class="cap">Figure 4. Endogenous antigen is presented on MHC I to CD8+ T cells; exogenous antigen is presented on MHC II to CD4+ T cells.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl"></th><th class="">MHC class I</th><th class="">MHC class II</th></tr></thead>
+        <tbody><tr><td class="hl">Expressed on</td><td class="">All nucleated cells</td><td class="">Professional APCs only (dendritic cells, macrophages, B cells)</td></tr><tr><td class="hl">Antigen source</td><td class="">Endogenous (cytosolic/viral)</td><td class="">Exogenous (phagocytosed/extracellular)</td></tr><tr><td class="hl">Processing</td><td class="">Proteasome &rarr; TAP &rarr; ER loading</td><td class="">Phagolysosome &rarr; invariant chain exchange</td></tr><tr><td class="hl">T cell partner</td><td class="">CD8+ cytotoxic T cell</td><td class="">CD4+ helper T cell</td></tr><tr><td class="hl">Clinical relevance</td><td class="">Viral evasion via MHC I downregulation triggers NK “missing self” killing</td><td class="">HLA-DR associations with autoimmune disease (e.g., HLA-DR4 in RA)</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="antibodies">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>Antibody Structure & Isotypes</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">One basic Y-shaped architecture, five functional flavors.</p>
+    </div><div class="diagram">
+<svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg">
+  <g style="stroke:var(--sentinel-400);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round">
+    <path d="M320,40 L320,140"></path>
+    <path d="M320,140 L200,260"></path>
+    <path d="M320,140 L440,260"></path>
+    <path d="M200,260 L160,360"></path>
+    <path d="M200,260 L235,360"></path>
+    <path d="M440,260 L405,360"></path>
+    <path d="M440,260 L480,360"></path>
+  </g>
+  <g style="stroke:var(--gold-500);stroke-width:8;stroke-linecap:round">
+    <path d="M320,42 L320,138"></path>
+    <path d="M322,141 L204,258"></path>
+    <path d="M322,141 L438,258"></path>
+  </g>
+  <g style="stroke:var(--sentinel-400);stroke-width:8;stroke-linecap:round">
+    <path d="M198,262 L162,358"></path>
+    <path d="M203,262 L233,358"></path>
+    <path d="M442,262 L407,358"></path>
+    <path d="M437,262 L478,358"></path>
+  </g>
+  <circle cx="160" cy="358" r="5" style="fill:var(--ember-500)"></circle>
+  <circle cx="235" cy="358" r="5" style="fill:var(--ember-500)"></circle>
+  <circle cx="405" cy="358" r="5" style="fill:var(--ember-500)"></circle>
+  <circle cx="480" cy="358" r="5" style="fill:var(--ember-500)"></circle>
+  <text x="320" y="20" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--gold-500)">Fc region (constant, effector binding)</text>
+  <text x="130" y="330" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--ember-500)">Fab – antigen</text>
+  <text x="130" y="343" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--ember-500)">binding site</text>
+  <text x="510" y="330" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--ember-500)">Fab – antigen</text>
+  <text x="510" y="343" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--ember-500)">binding site</text>
+  <text x="80" y="230" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)">Light chain</text>
+  <text x="80" y="245" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Vₗ + Cₗ</text>
+  <text x="560" y="150" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)">Heavy chain</text>
+  <text x="560" y="165" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Vʜ + Cʜ1-3</text>
+  <text x="320" y="115" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">hinge region</text>
+</svg><div class="cap">Figure 5. Two identical heavy chains and two identical light chains; the Fab arms bind antigen, the Fc stem drives effector function.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Isotype</th><th class="">Structure</th><th class="">Key function</th><th class="">Clinical note</th></tr></thead>
+        <tbody><tr><td class="hl">IgG</td><td class="">Monomer</td><td class="">Dominant secondary response antibody; only isotype to cross the placenta; opsonization, complement fixation</td><td class="">Most abundant serum Ig (~75%); measured in most serologies</td></tr><tr><td class="hl">IgM</td><td class="">Pentamer</td><td class="">First antibody produced in a primary response; potent complement activator due to multivalency</td><td class="">Elevated = recent/acute infection (e.g., acute hepatitis A, toxoplasmosis)</td></tr><tr><td class="hl">IgA</td><td class="">Monomer (serum) / dimer (secretory)</td><td class="">Mucosal defense — tears, saliva, breast milk, GI/respiratory secretions</td><td class="">Selective IgA deficiency: most common primary immunodeficiency, risk of anaphylaxis with blood products</td></tr><tr><td class="hl">IgE</td><td class="">Monomer</td><td class="">Binds Fc&epsilon;RI on mast cells/basophils; mediates Type I hypersensitivity and anti-helminthic defense</td><td class="">Elevated in atopy, allergic disease, parasitic infection</td></tr><tr><td class="hl">IgD</td><td class="">Monomer</td><td class="">Co-expressed with IgM on naive B cell surface; receptor role, minimal secreted function</td><td class="">Limited independent clinical utility</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="cytokine-signaling">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pathophysiology</span>
+      <h2>Cytokine Signaling</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The chemical language immune cells use to coordinate — and the shared pathway that makes JAK inhibitors work across so many diseases.</p>
+    </div><p>Most cytokine receptors (IL-6, IFN-&gamma;, IL-2, and many others) lack intrinsic kinase activity and instead signal through
+    associated <b>Janus kinases (JAK1/2/3, TYK2)</b>. Receptor dimerization on cytokine binding brings JAKs into proximity, they trans-phosphorylate each
+    other and the receptor tail, and this recruits and phosphorylates <b>STAT</b> proteins, which dimerize and translocate to the nucleus to drive
+    transcription. This shared final pathway is why a single class of drug — JAK inhibitors (tofacitinib, baricitinib, ruxolitinib) — has effect
+    across rheumatoid arthritis, myelofibrosis, and severe COVID-19 cytokine release.</p><div class="diagram"><svg viewBox="0 0 830 340" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M178.5,198.0 L231.5,198.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M378.5,173.5 L432.7,155.4" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M515.0,155.4 Q515.0,218.0 515.0,240.6" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M597.3,240.6 L651.5,222.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="30" y="170" width="150" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="105.0" y="192.0">Cytokine</tspan></text><text x="105.0" y="209.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">e.g. IL-6, IFN-γ</text><rect x="230" y="170" width="150" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="305.0" y="191.18">Cytokine receptor</tspan><tspan x="305.0" y="204.93">dimerizes</tspan></text><rect x="430" y="100" width="170" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="515.0" y="121.49">JAK1/2/3, TYK2</tspan><tspan x="515.0" y="134.615">trans-phosphorylate</tspan></text><rect x="430" y="240" width="170" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="515.0" y="254.98">STAT proteins</tspan><tspan x="515.0" y="268.105">phosphorylated,</tspan><tspan x="515.0" y="281.23">dimerize</tspan></text><rect x="650" y="170" width="150" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="725.0" y="185.6">Nuclear</tspan><tspan x="725.0" y="198.1">translocation → gene</tspan><tspan x="725.0" y="210.6">transcription</tspan></text></svg><div class="cap">Figure 6. The JAK-STAT pathway — shared final common pathway for most pro-inflammatory cytokines.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Cytokine</th><th class="">Principal source</th><th class="">Core action</th></tr></thead>
+        <tbody><tr><td class="hl">IL-1</td><td class="">Macrophages</td><td class="">Endogenous pyrogen; fever, acute phase reactants</td></tr><tr><td class="hl">IL-2</td><td class="">T cells (autocrine)</td><td class="">T cell proliferation and survival; target of calcineurin inhibitors upstream</td></tr><tr><td class="hl">IL-6</td><td class="">Macrophages, Th2</td><td class="">Fever, hepatic acute-phase proteins (CRP), B cell differentiation; central driver of CRS/cytokine storm</td></tr><tr><td class="hl">TNF-&alpha;</td><td class="">Macrophages</td><td class="">Fever, endothelial activation, cachexia, septic shock; target of infliximab/etanercept</td></tr><tr><td class="hl">IFN-&gamma;</td><td class="">Th1, NK, CD8 T cells</td><td class="">Macrophage activation, MHC upregulation, antiviral/antitumor state</td></tr><tr><td class="hl">IL-10</td><td class="">Treg, Th2</td><td class="">Anti-inflammatory; suppresses macrophage activation — counter-regulatory to the storm</td></tr><tr><td class="hl">IL-17</td><td class="">Th17</td><td class="">Neutrophil recruitment, antifungal/antibacterial mucosal defense; psoriasis driver</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> cytokine target dosing and specific biologic indications change frequently — confirm current FDA labeling before prescribing.</div>  </div>
+</section>
+<section class="block" id="storm-overview">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>Pathophysiology of Cytokine Storm</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A self-amplifying loop, not a single event — recognizing where in the loop you are determines what you treat.</p>
+    </div><p class="lead-q">“Three liters of fluid in and the blood pressure is still soft — is this just under-resuscitated distributive shock, or is the immune system itself now the problem?”</p><p>A cytokine storm is a state of immune dysregulation in which pro-inflammatory cytokine production becomes self-sustaining and
+    outpaces its normal counter-regulation. The common final pathway — regardless of trigger — is a surge of IL-1, IL-6, TNF-&alpha;, and IFN-&gamma;
+    driving capillary leak, vasodilatory shock, coagulopathy (consumptive and pro-thrombotic simultaneously), and multi-organ injury. What differs between
+    the syndromes below is the <i>trigger</i> and therefore the <i>specific intervention</i> that interrupts the loop — source control and antitoxin
+    therapy in toxin-mediated shock, IL-6 blockade in CRS, etoposide-based cytotoxic therapy in HLH, and drug withdrawal plus steroids in DRESS.</p><div class="diagram"><svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M400.9,87.4 Q412.8,112.2 424.7,101.1" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M475.6,159.9 Q475.6,221.0 475.6,246.1" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M424.7,304.9 Q412.8,329.8 400.9,318.6" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M299.1,318.6 Q287.2,329.8 275.3,304.9" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M224.4,246.1 Q224.4,221.0 224.4,159.9" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M275.3,101.1 Q287.2,112.3 299.1,87.4" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="265.0" y="28.0" width="170" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="350.0" y="52.0">Trigger</tspan></text><text x="350.0" y="69.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">infection, toxin, or immunotherapy</text><rect x="390.5736835487436" y="100.5" width="170" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="475.5736835487436" y="124.5">Innate activation</tspan></text><text x="475.5736835487436" y="141.5" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">macrophages, monocytes release IL-1, IL-6, TNF-α</text><rect x="390.5736835487436" y="245.5" width="170" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="475.5736835487436" y="262.06">Endothelial</tspan><tspan x="475.5736835487436" y="277.06">activation</tspan></text><text x="475.5736835487436" y="294.06" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">capillary leak, vasodilation, coagulopathy</text><rect x="265.0" y="318.0" width="170" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="350.0" y="334.56">T cell</tspan><tspan x="350.0" y="349.56">hyperactivation</tspan></text><text x="350.0" y="366.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">massive polyclonal or superantigen-driven proliferation</text><rect x="139.4263164512564" y="245.50000000000006" width="170" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="224.4263164512564" y="269.50000000000006">Amplification</tspan></text><text x="224.4263164512564" y="286.50000000000006" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">IL-6, IFN-γ feed back on myeloid cells</text><rect x="139.42631645125635" y="100.50000000000009" width="170" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="224.42631645125635" y="124.50000000000009">End-organ injury</tspan></text><text x="224.42631645125635" y="141.50000000000009" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">shock, ARDS, AKI, DIC</text><text x="350" y="194" text-anchor="middle" font-family="var(--font-display)" font-style="italic" font-size="15" style="fill:var(--text-tertiary)">self-amplifying</text><text x="350" y="214" text-anchor="middle" font-family="var(--font-display)" font-style="italic" font-size="15" style="fill:var(--text-tertiary)">feedback loop</text></svg><div class="cap">Figure 7. The cytokine storm as a self-amplifying loop — breaking it requires removing the trigger, not just supporting the downstream organ failure.</div></div>  </div>
+</section>
+<section class="block" id="superantigen">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>Superantigen-Mediated Toxic Shock</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Group A Streptococcus and Staphylococcus aureus toxins bypass normal antigen specificity entirely.</p>
+    </div><p>A conventional antigen activates roughly 1 in 10,000 to 1 in 1,000,000 T cells — only those whose TCR happens to match the
+    processed peptide in the MHC groove. A <b>superantigen</b> (streptococcal pyrogenic exotoxins, staphylococcal TSST-1 and enterotoxins) bypasses this
+    entirely: it binds directly to the outside of the MHC II molecule on one end and the TCR V&beta; chain on the other, <i>outside</i> the normal
+    peptide-binding groove, cross-linking them non-specifically. The result is polyclonal activation of up to 20–30% of the entire T-cell repertoire
+    at once — a cytokine surge orders of magnitude larger than any conventional antigen could produce.</p><div class="diagram"><svg viewBox="0 0 730 350" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M208.1,58.0 L271.9,58.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M458.1,58.0 L521.9,58.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M208.1,188.0 L271.9,188.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M458.1,188.0 L521.9,188.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M552.6,215.4 Q490.0,213.0 427.4,270.6" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M458.1,298.0 L521.9,298.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="30" width="190" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="51.18">APC + processed</tspan><tspan x="115.0" y="64.93">peptide</tspan></text><rect x="270" y="30" width="190" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="365.0" y="51.18">MHC II groove presents</tspan><tspan x="365.0" y="64.93">specific peptide</tspan></text><rect x="520" y="30" width="190" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="615.0" y="44.980000000000004">Only antigen-specific TCR</tspan><tspan x="615.0" y="58.105000000000004">clones bind (~0.001% of T</tspan><tspan x="615.0" y="71.23">cells)</tspan></text><rect x="20" y="160" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="115.0" y="181.18">APC (no processing</tspan><tspan x="115.0" y="194.93">required)</tspan></text><rect x="270" y="160" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="365.0" y="175.6">Superantigen bridges MHC</tspan><tspan x="365.0" y="188.1">II α-chain to TCR Vβ</tspan><tspan x="365.0" y="200.6">outside the groove</tspan></text><rect x="520" y="160" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="615.0" y="174.98">Up to 20–30% of all T</tspan><tspan x="615.0" y="188.105">cells activated</tspan><tspan x="615.0" y="201.23">non-specifically</tspan></text><rect x="270" y="270" width="190" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="365.0" y="285.18">Massive polyclonal</tspan><tspan x="365.0" y="298.93">cytokine release</tspan></text><text x="365.0" y="314.68" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">IL-1, IL-2, IL-6, TNF-α, IFN-γ</text><rect x="520" y="270" width="190" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="615.0" y="285.6">Toxic shock: fever, rash,</tspan><tspan x="615.0" y="298.1">hypotension, multi-organ</tspan><tspan x="615.0" y="310.6">injury</tspan></text></svg><div class="cap">Figure 8. Superantigens cross-link MHC II and TCR outside the antigen-binding groove, activating T cells non-specifically at massive scale.</div></div><h3>Why clindamycin is added — not substituted — in invasive Group A Strep</h3><p>In necrotizing fasciitis and streptococcal toxic shock syndrome (STSS), a beta-lactam alone is often insufficient for two
+    reasons. First, the <b>Eagle effect</b>: beta-lactams act on actively dividing bacteria via cell-wall synthesis inhibition, but in the very high
+    bacterial density of necrotizing infection, a large fraction of organisms are in stationary phase and express fewer penicillin-binding proteins —
+    efficacy paradoxically drops as bacterial burden rises. Second, and more relevant to the cytokine storm itself: <b>clindamycin suppresses toxin and
+    virulence factor production</b> at the ribosomal level (50S inhibition of protein synthesis) independent of bacterial killing. It directly reduces
+    M-protein and exotoxin (superantigen) synthesis, which is the actual driver of the cytokine cascade — a beta-lactam kills the bacteria but does
+    nothing to stop toxin already being produced, or being released as bacteria lyse.</p>
+    <div class="storm-box">
+      <span class="case-label">Case pattern</span>
+      <p>A previously healthy 34-year-old with a minor forearm laceration returns at 36 hours with pain
+        disproportionate to exam findings, bullae, and a temperature of 39.4&deg;C. Within hours he develops hypotension refractory to 3L crystalloid and
+        a lactate of 6. This trajectory — rapid progression, pain out of proportion, and early refractory shock — should trigger surgical consultation
+        for exploration/debridement <i>simultaneously</i> with antibiotics, not after imaging. Empiric coverage in this setting is a beta-lactam
+        (piperacillin-tazobactam or a carbapenem) <b>plus clindamycin</b> for toxin suppression, pending culture data; IVIG is considered in refractory STSS
+        for its capacity to neutralize circulating superantigen.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Syndrome</th><th class="">Superantigen</th><th class="">Mortality (treated)</th><th class="">Distinguishing feature</th></tr></thead>
+        <tbody><tr><td class="hl">Streptococcal TSS</td><td class="">SpeA, SpeC (pyrogenic exotoxins)</td><td class="">~30–70% when associated with necrotizing fasciitis/bacteremia</td><td class="">Usually a defined portal of entry (wound, postpartum, varicella); soft tissue findings often present</td></tr><tr><td class="hl">Staphylococcal TSS</td><td class="">TSST-1, enterotoxin B/C</td><td class="">~5%</td><td class="">Classically menstrual (tampon-associated) or non-menstrual (surgical packing, wound); diffuse desquamating rash 1–2 weeks later</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> mortality figures vary substantially by cohort and case definition — treat as an order-of-magnitude teaching estimate, not a prognostic tool for an individual patient.</div><div class="myth"><b>Myth:</b> “If I'm covering with a broad-spectrum beta-lactam, I don't need anything else.” Broad-spectrum coverage treats the bacterial burden but does not address toxin already produced or being produced during bacterial lysis — clindamycin's protein-synthesis-inhibiting, toxin-suppressing effect is a distinct and complementary mechanism, not redundant coverage.</div>  </div>
+</section>
+<section class="block" id="sepsis-storm">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>Sepsis-Associated Cytokine Dysregulation</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The prototype — covered in full depth in the dedicated Sepsis Atlas (SSC 2026).</p>
+    </div><p>Sepsis represents the most common cause of cytokine-storm physiology encountered in the ED, arising from pattern-recognition-receptor
+    activation (TLR4 by LPS in gram-negatives, TLR2 by lipoteichoic acid in gram-positives) triggering the same IL-1/IL-6/TNF-&alpha; cascade described above,
+    layered on top of direct pathogen-mediated tissue injury and, frequently, a superimposed coagulopathy (sepsis-induced DIC). Hemodynamic management,
+    source control timing, and antimicrobial selection are covered in depth in the six-volume Sepsis Atlas — this entry exists here only to place sepsis
+    correctly within the broader cytokine storm framework rather than duplicate that content.</p><div class="pearl">Cross-reference: Sepsis Atlas Vol. I–VI (2026 Surviving Sepsis Campaign) and the companion Antibiotic Indications Atlas for full source-control and antimicrobial dosing detail.</div>  </div>
+</section>
+<section class="block" id="crs">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>CAR-T & Immunotherapy-Associated CRS</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">An iatrogenic, on-target cytokine storm — the immune system doing exactly what it was engineered to do.</p>
+    </div><p>Chimeric antigen receptor (CAR) T-cell therapy and certain bispecific antibodies (e.g., blinatumomab) engineer massive, targeted
+    T-cell activation against tumor antigen — and the resulting IL-6-dominant cytokine release syndrome (CRS) is a direct, expected consequence of that
+    mechanism rather than an off-target complication. Onset is typically within the first 1–2 weeks after infusion and correlates with tumor burden and
+    peak CAR-T expansion.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">ASTCT grade</th><th class="">Fever</th><th class="">Hypotension</th><th class="">Hypoxia</th></tr></thead>
+        <tbody><tr><td class="hl">Grade 1</td><td class="">≥38&deg;C</td><td class="">None</td><td class="">None</td></tr><tr><td class="hl">Grade 2</td><td class="">≥38&deg;C</td><td class="">Not requiring vasopressors</td><td class="">Requiring low-flow nasal cannula</td></tr><tr><td class="hl">Grade 3</td><td class="">≥38&deg;C</td><td class="">Requiring one vasopressor ± vasopressin</td><td class="">Requiring high-flow/facemask/CPAP</td></tr><tr><td class="hl">Grade 4</td><td class="">≥38&deg;C</td><td class="">Requiring multiple vasopressors</td><td class="">Requiring positive pressure ventilation</td></tr></tbody>
+      </table>
+    </div><p>First-line treatment for Grade ≥2 CRS is <b>tocilizumab</b>, a monoclonal antibody against the IL-6 receptor — it does not
+    reduce CAR-T efficacy because it blocks the receptor rather than the T cells themselves. Corticosteroids are reserved for tocilizumab-refractory CRS or
+    when concurrent immune effector cell-associated neurotoxicity syndrome (ICANS) is present, since steroids cross the blood-brain barrier more reliably
+    than tocilizumab and IL-6 blockade alone can occasionally worsen neurotoxicity by shunting IL-6 across an already-permeable BBB.</p><div class="verify"><b>Verify before use:</b> ASTCT grading thresholds and tocilizumab dosing are frequently updated by product-specific REMS programs — confirm against the specific CAR-T product's current label before applying at the bedside.</div>  </div>
+</section>
+<section class="block" id="hlh">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>HLH & Macrophage Activation Syndrome</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The storm that hides in plain sight — mimics sepsis, but the treatment is cytotoxic immunosuppression, not just antibiotics.</p>
+    </div><p>Hemophagocytic lymphohistiocytosis (HLH) and its rheumatologic variant, macrophage activation syndrome (MAS, typically seen with
+    systemic juvenile idiopathic arthritis/adult-onset Still's disease), result from failure of NK cells and cytotoxic T cells to terminate an immune
+    response — either from an inherited perforin-pathway defect (primary HLH, usually pediatric) or triggered secondarily by infection (especially EBV),
+    malignancy, or autoimmune disease. Uncontrolled macrophage and T-cell activation drives extreme hyperferritinemia, cytopenias from marrow
+    hemophagocytosis, and often disseminated intravascular coagulation.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">HLH-2004 diagnostic criteria — 5 of 8 required</th><th class="">Threshold / finding</th></tr></thead>
+        <tbody><tr><td class="">Fever</td><td class="">≥38.5&deg;C</td></tr><tr><td class="">Splenomegaly</td><td class="">Present</td></tr><tr><td class="">Cytopenias</td><td class="">≥2 of 3 lines (Hgb &lt;9, platelets &lt;100k, ANC &lt;1000)</td></tr><tr><td class="">Hypertriglyceridemia and/or hypofibrinogenemia</td><td class="">TG &ge;265 mg/dL and/or fibrinogen &le;150 mg/dL</td></tr><tr><td class="">Hemophagocytosis</td><td class="">On bone marrow, spleen, liver, or lymph node biopsy</td></tr><tr><td class="">Low or absent NK-cell activity</td><td class="">Functional assay</td></tr><tr><td class="">Ferritin</td><td class="">&ge;500 ng/mL (very high, &gt;10,000 ng/mL, is highly specific for HLH in the right clinical context)</td></tr><tr><td class="">Soluble CD25 (IL-2 receptor)</td><td class="">Elevated (2 SD above age-adjusted norms)</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Safety-relevant number:</b> a ferritin &gt;10,000 ng/mL has been reported with roughly 90% sensitivity and specificity for HLH in pediatric cohorts — a level that severe sepsis or liver failure alone rarely produces, and should actively raise HLH/MAS on the differential rather than be dismissed as “just a very sick patient.”</div><p>Treatment follows the HLH-94/2004 protocol backbone — etoposide and dexamethasone, with cyclosporine, and intrathecal therapy for
+    CNS involvement — aimed at suppressing the runaway cytotoxic/macrophage response rather than antimicrobial escalation. In MAS specifically,
+    anakinra (IL-1 receptor antagonist) is increasingly used, often earlier and preferentially, given its short half-life and rapid reversibility if the
+    diagnosis is wrong.</p><div class="verify"><b>Verify before use:</b> HLH-2004 remains the most widely taught criteria set, but HScore and evolving MAS-specific criteria are also used clinically and weight variables differently — confirm which tool your institution's hematology/rheumatology service anchors to.</div>  </div>
+</section>
+<section class="block" id="dress">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>DRESS Syndrome</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A delayed, T-cell-driven drug reaction that behaves like a slow-motion cytokine storm — not a typical Type I drug allergy.</p>
+    </div><p>Drug Reaction with Eosinophilia and Systemic Symptoms (DRESS) is fundamentally different from an IgE-mediated drug allergy in its
+    timeline: onset is typically <b>2–8 weeks</b> after starting the culprit drug (versus minutes to hours for Type I reactions), reflecting a delayed
+    T-cell-driven mechanism with HHV-6 reactivation frequently implicated in propagating the syndrome once triggered. Classic culprits are the aromatic
+    anticonvulsants (phenytoin, carbamazepine, lamotrigine — with cross-reactivity among them), allopurinol, sulfonamides, and vancomycin.</p>
+    <div class="storm-box">
+      <span class="case-label">Case pattern</span>
+      <p>A patient started on vancomycin for a skin/soft tissue infection three weeks ago now returns with fever,
+        a diffuse morbilliform rash with facial edema, and labs showing a leukocytosis with striking eosinophilia and atypical lymphocytes, alongside a new
+        transaminitis. The temporal gap from vancomycin initiation to symptom onset — not the day the drug was started — is the clue that separates this
+        from a typical drug rash, and liver involvement is the most common and most dangerous organ manifestation to monitor.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">RegiSCAR feature</th><th class="">Points toward DRESS</th></tr></thead>
+        <tbody><tr><td class="">Fever ≥38.5&deg;C</td><td class="">Yes</td></tr><tr><td class="">Lymphadenopathy (≥2 sites)</td><td class="">Yes</td></tr><tr><td class="">Eosinophilia</td><td class="">Yes — often striking</td></tr><tr><td class="">Atypical lymphocytes</td><td class="">Yes</td></tr><tr><td class="">Skin involvement ≥50% BSA and/or suggestive rash</td><td class="">Yes</td></tr><tr><td class="">Organ involvement (liver most common, also kidney, lung, heart)</td><td class="">Yes</td></tr><tr><td class="">Resolution &gt;15 days</td><td class="">Yes</td></tr></tbody>
+      </table>
+    </div><p>Management is culprit drug withdrawal (and avoidance of cross-reactive agents) plus systemic corticosteroids for moderate-to-severe
+    disease, with a slow taper — relapse on rapid steroid withdrawal is well described given the ongoing HHV-6-driven immune activation. Reported
+    mortality is approximately 5–10%, driven primarily by fulminant hepatic failure.</p><div class="verify"><b>Verify before use:</b> culprit-drug cross-reactivity mapping and steroid tapering schedules vary by severity and institutional protocol — confirm with dermatology/allergy before finalizing a taper plan.</div>  </div>
+</section>
+<section class="block" id="covid-storm">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Cytokine Storms</span>
+      <h2>COVID-19-Associated Cytokine Storm</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The syndrome that brought IL-6 biology and dexamethasone timing into mainstream emergency medicine.</p>
+    </div><p>Severe COVID-19 pneumonia produces an IL-6-dominant hyperinflammatory phase, typically in the second week of illness, correlating
+    with clinical deterioration and ARDS. Two therapeutic strategies became standard from large randomized trials: <b>dexamethasone</b>, and IL-6 pathway
+    blockade (tocilizumab) or JAK inhibition (baricitinib) in appropriately selected, more severely hypoxemic patients.</p><div class="pearl"><b>Safety-relevant number:</b> the RECOVERY trial found dexamethasone reduced 28-day mortality in patients requiring supplemental oxygen, with the largest absolute benefit in those requiring invasive mechanical ventilation — but showed no benefit, and a signal toward harm, in patients not requiring any supplemental oxygen. Timing and hypoxemia severity, not a blanket “treat all COVID” approach, determined benefit.</div><div class="verify"><b>Verify before use:</b> specific trial-derived mortality deltas, dexamethasone dosing windows, and tocilizumab/baricitinib eligibility criteria have been revised repeatedly since 2020 — confirm against current institutional/IDSA guidance before applying to a specific patient.</div>  </div>
+</section>
+<section class="block" id="hs-overview">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Hypersensitivity</span>
+      <h2>The Gell &amp; Coombs Classification</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Four distinct immunologic mechanisms of tissue injury — the mechanism, not just the timing, determines the correct treatment.</p>
+    </div><p class="lead-q">“Is this rash immediate IgE-mediated anaphylaxis, or a delayed T-cell process that will look identical on skin exam but kill through a completely different pathway?”</p><p>All four types represent an <i>otherwise normal</i> immune mechanism (antibody binding, complement activation, immune complex
+    formation, or T-cell cytotoxicity) directed at a target that causes harm rather than benefit — either because the target is self (autoimmunity),
+    the target is harmless (allergy), or the magnitude of the otherwise-appropriate response is itself the problem. Onset timing is a genuinely useful
+    bedside clue: Type I evolves over minutes, Type II and III over days to two weeks, and Type IV over 1–3 days on re-exposure (or up to 2 weeks on
+    first sensitization).</p><div class="compare-grid">
+        <div class="compare-card" style="--type-color:var(--ember-500)">
+          <h5>Type I</h5>
+          <div class="big">Immediate</div>
+          <p>IgE-mediated</p><p>Mast cell / basophil degranulation</p><p>Minutes to onset</p><p><i>Anaphylaxis, allergic rhinitis, asthma</i></p>
+        </div>
+        <div class="compare-card" style="--type-color:var(--gold-500)">
+          <h5>Type II</h5>
+          <div class="big">Cytotoxic</div>
+          <p>IgG/IgM against cell-surface antigen</p><p>Complement, ADCC, or opsonization</p><p>Hours to days</p><p><i>Hemolytic transfusion reaction, Goodpasture, HIT</i></p>
+        </div>
+        <div class="compare-card" style="--type-color:var(--sentinel-400)">
+          <h5>Type III</h5>
+          <div class="big">Immune complex</div>
+          <p>Antigen-antibody complexes deposit in tissue</p><p>Complement-mediated vasculitis</p><p>1–2 weeks</p><p><i>Serum sickness, lupus nephritis, PSGN</i></p>
+        </div>
+        <div class="compare-card" style="--type-color:var(--sage-500)">
+          <h5>Type IV</h5>
+          <div class="big">Delayed / cellular</div>
+          <p>T-cell mediated (no antibody)</p><p>Th1/CD8 direct cytotoxicity</p><p>24–72h (up to 2wk if first sensitization)</p><p><i>Contact dermatitis, TB skin test, SJS/TEN</i></p>
+        </div></div>  </div>
+</section>
+<section class="block" id="type1">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Hypersensitivity</span>
+      <h2>Type I — Immediate (IgE-Mediated)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Sensitization is silent; the reaction is anything but.</p>
+    </div><div class="diagram"><svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M208.1,47.0 L251.9,47.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,47.0 L481.9,47.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M575.0,73.5 L575.0,110.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M481.9,137.0 L438.1,137.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M251.9,137.0 L208.1,137.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M345.0,163.5 L345.0,200.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="20" width="190" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="115.0" y="40.49">First exposure: allergen</tspan><tspan x="115.0" y="53.615">+ Th2 → IgE class switch</tspan></text><rect x="250" y="20" width="190" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="345.0" y="40.18">IgE binds FcεRI on</tspan><tspan x="345.0" y="53.93">mast cells / basophils</tspan></text><rect x="480" y="20" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="575.0" y="33.36">Re-exposure: allergen</tspan><tspan x="575.0" y="47.11">cross-links surface</tspan><tspan x="575.0" y="60.86">IgE</tspan></text><rect x="480" y="110" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="575.0" y="123.36">Mast cell</tspan><tspan x="575.0" y="137.11">degranulation</tspan><tspan x="575.0" y="150.86">(minutes)</tspan></text><rect x="250" y="110" width="190" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="345.0" y="130.49">Histamine, tryptase,</tspan><tspan x="345.0" y="143.615">leukotrienes, PGD2</tspan></text><rect x="20" y="110" width="190" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="115.0" y="124.6">Early phase:</tspan><tspan x="115.0" y="137.1">vasodilation,</tspan><tspan x="115.0" y="149.6">bronchospasm, urticaria</tspan></text><rect x="250" y="200" width="190" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="345.0" y="213.98">Late phase (4–8h):</tspan><tspan x="345.0" y="227.105">eosinophil, Th2</tspan><tspan x="345.0" y="240.23">recruitment</tspan></text></svg><div class="cap">Figure 9. First exposure sensitizes via IgE class switch; re-exposure cross-links surface IgE and triggers immediate mast cell degranulation.</div></div><p>The first exposure to an allergen is clinically silent — it drives Th2-directed IgE class switching, and that IgE then coats
+    mast cells and basophils via Fc&epsilon;RI without producing symptoms. Only on <i>re-exposure</i> does allergen cross-link adjacent surface IgE
+    molecules, triggering degranulation within minutes: histamine, tryptase, and rapidly synthesized leukotrienes and prostaglandin D2 drive vasodilation,
+    increased vascular permeability, bronchospasm, and mucosal edema. A late phase 4–8 hours later, driven by newly recruited eosinophils and Th2 cells,
+    explains biphasic reactions.</p>
+    <div class="case">
+      <span class="case-label">Case pattern</span>
+      <p>Twenty minutes after eating a meal containing tree nuts, a patient develops lip swelling, diffuse hives,
+        throat tightness, and a drop in systolic blood pressure to 82 mmHg. This combination — skin/mucosal findings plus either respiratory
+        compromise or hypotension, following exposure to a likely allergen — meets clinical criteria for anaphylaxis and should prompt immediate
+        intramuscular epinephrine, not antihistamines as a first step.</p>
+    </div><h3>Why epinephrine, and why IM, and why first</h3>
+    <p>Epinephrine is the only agent that addresses all three life-threatening mechanisms of anaphylaxis simultaneously: <b>&alpha;1</b> agonism reverses
+    vasodilation and mucosal edema, <b>&beta;1</b> agonism supports blood pressure and cardiac output, and <b>&beta;2</b> agonism produces
+    bronchodilation and — clinically underappreciated — helps stabilize mast cells and reduce further mediator release. Antihistamines and steroids
+    treat cutaneous symptoms and may blunt a late-phase/biphasic reaction respectively, but neither reverses airway or hemodynamic compromise, which is
+    why delaying epinephrine to trial an antihistamine first is a recognized and preventable cause of fatal anaphylaxis. Intramuscular injection into the
+    anterolateral thigh (vastus lateralis) achieves faster, more reliable peak plasma concentration than subcutaneous administration.</p><div class="pearl"><b>Safety-relevant numbers:</b> biphasic anaphylactic reactions — recurrence of symptoms after apparent resolution, without re-exposure — have been reported in a wide range (roughly 1–20% depending on cohort and definition), typically within 1–72 hours, which is why observation periods of at least 4–6 hours (longer for severe reactions, refractory hypotension, or reactions requiring multiple epinephrine doses) remain standard practice.</div><div class="verify"><b>Verify before use:</b> biphasic reaction incidence estimates and specific observation-window recommendations vary meaningfully across published cohorts and society guidelines — confirm against your institution's current anaphylaxis protocol.</div>  </div>
+</section>
+<section class="block" id="type2">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Hypersensitivity</span>
+      <h2>Type II — Cytotoxic (Antibody-Mediated)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">IgG or IgM binds a cell-surface target directly — the cell itself is destroyed.</p>
+    </div><div class="diagram"><svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M198.2,128.0 L251.8,128.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M419.6,100.6 L498.2,73.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M428.2,127.6 L481.9,127.4" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M421.6,155.4 L496.3,180.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="100" width="180" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="110.0" y="121.49">Cell-surface antigen</tspan><tspan x="110.0" y="134.615">(self or drug-hapten)</tspan></text><rect x="250" y="100" width="180" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="340.0" y="121.18">IgG / IgM bind the</tspan><tspan x="340.0" y="134.93">surface antigen</tspan></text><rect x="480" y="20" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="575.0" y="40.18">Complement activation</tspan><tspan x="575.0" y="53.93">→ MAC lysis</tspan></text><rect x="480" y="100" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="575.0" y="113.98">ADCC: NK cells /</tspan><tspan x="575.0" y="127.105">macrophages via Fc</tspan><tspan x="575.0" y="140.23000000000002">receptor</tspan></text><rect x="480" y="180" width="190" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="575.0" y="200.18">Opsonization → splenic</tspan><tspan x="575.0" y="213.93">phagocytosis</tspan></text></svg><div class="cap">Figure 10. Antibody bound to a cell-surface antigen triggers complement lysis, ADCC, or opsonized phagocytosis.</div></div><p>Unlike Type I, no mast cell is required — IgG or IgM binds directly to an antigen physically anchored on a cell surface (a
+    true self-antigen, an absorbed drug hapten, or a mismatched transfused cell), and destruction proceeds through one or more of three mechanisms:
+    complement-mediated lysis via the membrane attack complex, opsonization leading to splenic/hepatic phagocytosis, or antibody-dependent cellular
+    cytotoxicity (ADCC) by NK cells engaging the antibody's Fc region.</p>
+    <div class="storm-box">
+      <span class="case-label">Case pattern</span>
+      <p>Within minutes of starting a red cell transfusion, a patient develops fever, flank pain, hemoglobinuria,
+        and hypotension. An acute hemolytic transfusion reaction from ABO incompatibility — almost always the result of a clerical/identification error
+        rather than a laboratory testing failure — causes complement-mediated intravascular hemolysis severe enough to precipitate DIC and acute kidney
+        injury. The transfusion must be stopped immediately, the unit and patient identity re-verified, and supportive care (aggressive fluid
+        resuscitation to protect renal perfusion) initiated without waiting for confirmatory serology.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Condition</th><th class="">Target antigen</th><th class="">Mechanism</th></tr></thead>
+        <tbody><tr><td class="hl">Acute hemolytic transfusion reaction</td><td class="">ABO blood group antigens on donor RBCs</td><td class="">Complement-mediated intravascular hemolysis</td></tr><tr><td class="hl">Heparin-induced thrombocytopenia (HIT)</td><td class="">Platelet factor 4–heparin complex</td><td class="">IgG-mediated platelet activation → paradoxical thrombosis</td></tr><tr><td class="hl">Goodpasture syndrome</td><td class="">Type IV collagen (alveolar/glomerular basement membrane)</td><td class="">Complement-mediated tissue destruction; pulmonary hemorrhage + glomerulonephritis</td></tr><tr><td class="hl">Autoimmune hemolytic anemia</td><td class="">RBC surface antigens (warm: IgG: cold: IgM)</td><td class="">Extravascular (warm) or intravascular (cold) hemolysis</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="type3">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Hypersensitivity</span>
+      <h2>Type III — Immune Complex-Mediated</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Not the antigen and not the antibody alone — it's the complex, deposited in the wrong place, that does the damage.</p>
+    </div><div class="diagram"><svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,137.0 L231.7,137.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,137.0 L441.8,137.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M530.0,110.5 L530.0,73.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M530.0,163.5 L530.0,200.5" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="110" width="170" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="105.0" y="130.49">Soluble antigen (drug,</tspan><tspan x="105.0" y="143.615">microbial protein)</tspan></text><rect x="230" y="110" width="170" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="315.0" y="130.49">Immune complex forms</tspan><tspan x="315.0" y="143.615">in circulation</tspan></text><rect x="440" y="110" width="180" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="530.0" y="123.98">Deposits in vessel</tspan><tspan x="530.0" y="137.10500000000002">walls, joints,</tspan><tspan x="530.0" y="150.23000000000002">glomeruli</tspan></text><rect x="440" y="20" width="180" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="530.0" y="40.49">Complement activation,</tspan><tspan x="530.0" y="53.615">C5a chemotaxis</tspan></text><rect x="440" y="200" width="180" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="530.0" y="214.6">Neutrophil recruitment →</tspan><tspan x="530.0" y="227.1">enzyme release,</tspan><tspan x="530.0" y="239.6">vasculitis</tspan></text></svg><div class="cap">Figure 11. Circulating immune complexes deposit in small vessels/glomeruli and trigger complement-driven vasculitis.</div></div><p>Type III injury requires a <i>soluble</i> antigen (unlike the cell-bound antigen of Type II) that forms circulating
+    antigen-antibody complexes once the host generates sufficient antibody — which is why symptom onset lags exposure by roughly 1–2 weeks, the time
+    needed to mount that antibody response. These complexes deposit preferentially in small vessels, joints, and glomeruli (areas of high filtration
+    pressure/turbulent flow), where they activate complement and recruit neutrophils, producing local vasculitis rather than direct cell killing.</p>
+    <div class="case">
+      <span class="case-label">Case pattern</span>
+      <p>Ten days after a course of an antibiotic (classically cefaclor) or antivenom/antitoxin administration, a
+        patient develops fever, urticarial-appearing rash, symmetric arthralgias, and diffuse lymphadenopathy. Serum sickness is self-limited once the
+        inciting antigen clears, and management is supportive (NSAIDs for arthralgia, antihistamines for rash, corticosteroids reserved for more severe
+        presentations) — the key teaching point is recognizing the delayed timeline so the antibiotic given 10 days ago, not any medication started
+        today, is correctly identified as the trigger.</p>
+    </div><div class="pearl">Post-streptococcal glomerulonephritis (PSGN) is a Type III mechanism: circulating immune complexes from a preceding streptococcal throat or skin infection deposit in the glomerular basement membrane roughly 1–3 weeks later, producing the classic triad of hematuria, edema, and hypertension — a useful contrast to acute post-strep rheumatic fever, which is a Type II/molecular-mimicry mechanism instead.</div>  </div>
+</section>
+<section class="block" id="type4">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Hypersensitivity</span>
+      <h2>Type IV — Delayed-Type (Cell-Mediated)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The only type with no antibody involvement at all — T cells do the recognizing and the damage.</p>
+    </div><div class="diagram"><svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,137.0 L231.7,137.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,137.0 L441.8,137.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M530.0,110.5 L530.0,73.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M530.0,163.5 L530.0,200.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M466.8,163.5 L378.2,200.5" fill="none" style="stroke:var(--slate-500);color:var(--slate-500)" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)"></path><rect x="20" y="110" width="170" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="105.0" y="123.98">Hapten / antigen</tspan><tspan x="105.0" y="137.10500000000002">contacts skin or</tspan><tspan x="105.0" y="150.23000000000002">tissue</tspan></text><rect x="230" y="110" width="170" height="54" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="315.0" y="124.6">Sensitization: APC</tspan><tspan x="315.0" y="137.1">primes Th1 / CD8 (10–14</tspan><tspan x="315.0" y="149.6">days)</tspan></text><rect x="440" y="110" width="180" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="530.0" y="123.98">Re-exposure: memory T</tspan><tspan x="530.0" y="137.10500000000002">cells recognize</tspan><tspan x="530.0" y="150.23000000000002">antigen</tspan></text><rect x="440" y="20" width="180" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="530.0" y="40.49">Th1 releases IFN-γ →</tspan><tspan x="530.0" y="53.615">macrophage activation</tspan></text><rect x="440" y="200" width="180" height="54" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="530.0" y="220.18">CD8 cytotoxic killing</tspan><tspan x="530.0" y="233.93">of target cells</tspan></text><rect x="230" y="200" width="170" height="54" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="315.0" y="220.18">Delayed onset:</tspan><tspan x="315.0" y="233.93">24–72h to peak</tspan></text></svg><div class="cap">Figure 12. Sensitized memory T cells recognize antigen on re-exposure and drive Th1 macrophage activation or direct CD8 cytotoxicity.</div></div><p>Type IV reactions require prior sensitization — typically 10–14 days for a first exposure to prime antigen-specific memory T
+    cells — but on <i>re</i>-exposure, the reaction unfolds over 24–72 hours rather than minutes, since it depends on T-cell trafficking and cytokine
+    release rather than pre-formed mediators. Subtypes matter clinically: <b>Th1-driven (IVa)</b> reactions activate macrophages via IFN-&gamma;
+    (contact dermatitis, tuberculin skin test); <b>CD8-driven (IVc)</b> reactions cause direct cytotoxic killing of keratinocytes and are the mechanism
+    behind Stevens-Johnson syndrome/toxic epidermal necrolysis.</p>
+    <div class="case">
+      <span class="case-label">Case pattern</span>
+      <p>Two days after a weekend hike, a patient presents with intensely pruritic, linear vesicular streaks on
+        the exposed forearms and legs. Allergic contact dermatitis from urushiol (poison ivy/oak) is a textbook Th1-mediated Type IV reaction — the
+        linear distribution reflects where the plant physically brushed the skin, and the 1–2 day delay (rather than immediate reaction) is itself
+        diagnostic of the mechanism. Management is topical or systemic corticosteroids and avoidance; unlike Type I reactions, antihistamines have
+        limited mechanistic rationale here beyond symptomatic pruritus control.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Type IV subtype</th><th class="">Effector</th><th class="">Example</th></tr></thead>
+        <tbody><tr><td class="hl">IVa</td><td class="">Th1 → macrophage activation (IFN-&gamma;)</td><td class="">Contact dermatitis, tuberculin (PPD) skin test, granulomatous disease</td></tr><tr><td class="hl">IVb</td><td class="">Th2 → eosinophil recruitment (IL-4, IL-5)</td><td class="">Maculopapular drug eruptions, some DRESS presentations</td></tr><tr><td class="hl">IVc</td><td class="">CD8 cytotoxic T cell → direct keratinocyte killing</td><td class="">Stevens-Johnson syndrome / toxic epidermal necrolysis</td></tr><tr><td class="hl">IVd</td><td class="">T cell → IL-8/GM-CSF → neutrophil recruitment</td><td class="">Acute generalized exanthematous pustulosis (AGEP)</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Myth:</b> “All drug rashes are allergies and should be worked up/labeled the same way.” A benign morphologic drug eruption (Type IVb pattern) and SJS/TEN (Type IVc, CD8-driven direct cytotoxicity) can look superficially similar in the first hours but carry vastly different mortality — mucosal involvement, skin pain out of proportion to visible findings, and Nikolsky sign are the exam findings that should trigger urgent escalation rather than reassurance.</div><div class="verify"><b>Verify before use:</b> SJS/TEN risk-stratification (SCORTEN) and acute management protocols are best confirmed against current dermatology/burn-center guidance given the high stakes and evolving practice around IVIG/cyclosporine use.</div>  </div>
+</section>
+<footer class="wrap">
+  <p>Immunology Atlas &middot; Volume I of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures and dosing against current institutional/society sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('immuno-atlas-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('immuno-atlas-theme', next);
+      paint();
+    });
+
+    // Scroll-spy for nav rail
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

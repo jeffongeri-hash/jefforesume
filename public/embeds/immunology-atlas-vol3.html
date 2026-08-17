@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immunology Atlas Vol. 3 — Immune-Related Adverse Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #14141c;
+  --ink-800: #1c1d29;
+  --ink-700: #2a2b3d;
+  --paper-050: #f8f6f0;
+  --paper-100: #efece2;
+  --paper-200: #e3ded0;
+
+  --sentinel-600: #4a3f9e;
+  --sentinel-500: #5d4fc4;
+  --sentinel-400: #8177d9;
+  --sentinel-300: #ada4e8;
+
+  --gold-500: #b5892c;
+  --gold-400: #d1a441;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #efece4;
+  --text-secondary: #b8b6c4;
+  --text-tertiary: #83829a;
+  --border: rgba(239, 236, 228, 0.10);
+  --border-strong: rgba(239, 236, 228, 0.18);
+  --accent: var(--sentinel-400);
+  --accent-strong: var(--sentinel-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #1c1a24;
+  --text-secondary: #4a4757;
+  --text-tertiary: #78748a;
+  --border: rgba(28, 26, 36, 0.10);
+  --border-strong: rgba(28, 26, 36, 0.18);
+  --accent: var(--sentinel-600);
+  --accent-strong: var(--sentinel-500);
+  --shadow: 0 8px 30px rgba(28,26,36,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sentinel-400); color: #fff; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+/* ---------- Top identity bar ---------- */
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+/* ---------- Nav rail ---------- */
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* ---------- Case box ---------- */
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+/* ---------- Danger / storm callout ---------- */
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--gold-500); }
+
+.evidence {
+  border-left: 3px solid var(--sentinel-400); background: color-mix(in srgb, var(--sentinel-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sentinel-400); display:block; margin-bottom: 0.4rem; }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Diagram frame ---------- */
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ---------- Comparison strip ---------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+/* ---------- badges/pills ---------- */
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- footer ---------- */
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* toc back-to-top */
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Immunology Atlas</span>
+    <span class="sub">Vol. III &middot; Immune-Related Adverse Events</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#mechanism">Mechanism</a><a href="#grading-general">General Ladder</a><a href="#colitis">Colitis</a><a href="#hepatitis">Hepatitis</a><a href="#pneumonitis">Pneumonitis</a><a href="#myocarditis">Myocarditis</a><a href="#endocrinopathies">Endocrinopathies</a><a href="#irae-ed-approach">ED Approach</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME III OF THE IMMUNOLOGY SERIES</div>
+  <h1>Immune-Related Adverse Events from Checkpoint Inhibitors</h1>
+  <p class="lede">Why releasing the brakes on the immune system to fight cancer also lets it attack healthy tissue, organ-by-organ
+  recognition and management — colitis, hepatitis, pneumonitis, myocarditis, and the endocrinopathies — and the practical ED synthesis
+  for a patient population that's only getting larger.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">6</div><div class="l">Organ systems covered</div></div>
+    <div class="hero-stat"><div class="n">4</div><div class="l">Pathway &amp; grading diagrams</div></div>
+    <div class="hero-stat"><div class="n">25–50%</div><div class="l">Myocarditis mortality</div></div>
+  </div>
+</div>
+
+<section class="block" id="mechanism">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Foundations</span>
+      <h2>Why Checkpoint Inhibitors Cause This</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The toxicity is the mechanism working correctly, just aimed too broadly — not an off-target side effect.</p>
+    </div><p class="lead-q">“This patient started pembrolizumab three months ago and now has new joint pain and diarrhea — is that even related, this late?”</p><p>PD-1/PD-L1 and CTLA-4 are checkpoint molecules — physiologic “brakes” that prevent T cells from over-responding and
+    attacking the body's own tissue, part of normal peripheral tolerance. Checkpoint inhibitors work by blocking these brakes, which unleashes T cells
+    against tumor antigens — but the same released T cells lose some of their restraint against normal tissue too. An irAE isn't a drug side effect
+    in the traditional pharmacologic sense; it's the intended mechanism of action generalizing beyond the tumor.</p><div class="diagram"><svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,68.0 L231.7,68.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,68.0 L441.8,68.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M188.3,178.0 L231.7,178.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,166.4 L441.8,160.3" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.3,199.3 L441.8,210.4" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="40" width="170" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="105.0" y="68.0">T cell (normal)</tspan></text><rect x="230" y="40" width="170" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="315.0" y="55.49">PD-1 / CTLA-4</tspan><tspan x="315.0" y="68.61500000000001">checkpoint engaged</tspan></text><text x="315.0" y="83.74000000000001" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">brake ON</text><rect x="440" y="40" width="180" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="530.0" y="62.0">Tumor cell survives</tspan></text><text x="530.0" y="77.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">T cell suppressed</text><rect x="20" y="150" width="170" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="105.0" y="171.49">T cell + checkpoint</tspan><tspan x="105.0" y="184.615">inhibitor</tspan></text><rect x="230" y="150" width="170" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="315.0" y="165.49">PD-1/PD-L1 or CTLA-4</tspan><tspan x="315.0" y="178.615">blocked</tspan></text><text x="315.0" y="193.74" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">brake OFF</text><rect x="440" y="120" width="180" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="530.0" y="142.0">Tumor cell killed</tspan></text><text x="530.0" y="157.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">desired effect</text><rect x="440" y="200" width="180" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="530.0" y="220.8">Healthy tissue also</tspan><tspan x="530.0" y="233.3">attacked</tspan></text><text x="530.0" y="247.8" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">loss of peripheral tolerance = irAE</text></svg><div class="cap">Figure 1. Checkpoint blockade releases T-cell activity against the tumor — and, less selectively, against healthy tissue.</div></div><div class="pearl"><b>Combination therapy (e.g., ipilimumab + nivolumab) substantially raises both the incidence and severity of irAEs</b> compared with either agent alone — anti-CTLA-4 and anti-PD-1 act at different points in T-cell regulation, so blocking both removes more than one layer of restraint at once.</div><h3>Two facts that should change how you take a history</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Fact</th><th class="">Why it matters in the ED</th></tr></thead>
+        <tbody><tr><td class="">irAEs can occur any time after the first dose — including months after the drug was <i>stopped</i></td><td class="">“Are you on any cancer treatment right now?” is the wrong question — ask about checkpoint inhibitor exposure ever, not just currently</td></tr><tr><td class="">irAEs can affect essentially any organ, and more than one organ can be involved simultaneously (overlap syndromes)</td><td class="">A patient with new weakness <i>and</i> chest discomfort on a checkpoint inhibitor needs the myositis-myocarditis-myasthenia overlap specifically considered, not just the most obvious complaint worked up in isolation</td></tr></tbody>
+      </table>
+    </div><div class="diagram"><svg viewBox="0 0 780 408" xmlns="http://www.w3.org/2000/svg"><text x="20" y="30" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-tertiary)">TYPICAL ONSET AFTER ICI INITIATION</text><rect x="20" y="45" width="230" height="46" rx="9" style="fill:var(--sage-500);fill-opacity:0.12;stroke:var(--sage-500);stroke-width:1.4"></rect><text x="34" y="74" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--sage-500)">Skin (rash, pruritus)</text><rect x="270" y="45" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="74" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">2–4 weeks</text><rect x="20" y="103" width="230" height="46" rx="9" style="fill:var(--gold-500);fill-opacity:0.12;stroke:var(--gold-500);stroke-width:1.4"></rect><text x="34" y="132" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--gold-500)">GI (colitis)</text><rect x="270" y="103" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="132" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">5–10 weeks</text><rect x="20" y="161" width="230" height="46" rx="9" style="fill:var(--gold-500);fill-opacity:0.12;stroke:var(--gold-500);stroke-width:1.4"></rect><text x="34" y="190" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--gold-500)">Hepatic</text><rect x="270" y="161" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="190" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">6–12 weeks</text><rect x="20" y="219" width="230" height="46" rx="9" style="fill:var(--ember-500);fill-opacity:0.12;stroke:var(--ember-500);stroke-width:1.4"></rect><text x="34" y="248" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--ember-500)">Endocrine (thyroid, hypophysitis)</text><rect x="270" y="219" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="248" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">Weeks to months, highly variable</text><rect x="20" y="277" width="230" height="46" rx="9" style="fill:var(--ember-500);fill-opacity:0.12;stroke:var(--ember-500);stroke-width:1.4"></rect><text x="34" y="306" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--ember-500)">Pulmonary (pneumonitis)</text><rect x="270" y="277" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="306" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">Weeks to months, more common with combo therapy</text><rect x="20" y="335" width="230" height="46" rx="9" style="fill:var(--ember-500);fill-opacity:0.12;stroke:var(--ember-500);stroke-width:1.4"></rect><text x="34" y="364" font-family="var(--font-body)" font-weight="600" font-size="12.5" style="fill:var(--ember-500)">Cardiac (myocarditis)</text><rect x="270" y="335" width="490" height="46" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="286" y="364" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-primary)">Often early — median ~45 days, but can be within days of dose 1</text></svg><div class="cap">Figure 2. Typical (highly variable) onset timing by organ system.</div></div>  </div>
+</section>
+<section class="block" id="grading-general">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Foundations</span>
+      <h2>The General Management Ladder</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The specifics differ by organ, but the shape of the response is the same across nearly every irAE.</p>
+    </div><div class="diagram"><svg viewBox="0 0 780 352" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="120" height="64" rx="10" style="fill:var(--sage-500);fill-opacity:0.15;stroke:var(--sage-500);stroke-width:1.6"></rect><text x="80" y="67.0" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--sage-500)">Grade 1</text><rect x="160" y="30" width="260" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="174" y="58.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">Mild, asymptomatic or mild</text><text x="174" y="74.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">symptoms</text><rect x="440" y="30" width="320" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="454" y="66.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Continue ICI, monitor closely</text><path d="M 80,94 L 80,108" style="stroke:var(--border-strong)" stroke-width="2"></path><rect x="20" y="108" width="120" height="64" rx="10" style="fill:var(--gold-500);fill-opacity:0.15;stroke:var(--gold-500);stroke-width:1.6"></rect><text x="80" y="145.0" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--gold-500)">Grade 2</text><rect x="160" y="108" width="260" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="174" y="136.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">Moderate, limiting</text><text x="174" y="152.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">instrumental ADLs</text><rect x="440" y="108" width="320" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="454" y="136.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Hold ICI, moderate-dose steroids (~0.5–1</text><text x="454" y="152.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">mg/kg)</text><path d="M 80,172 L 80,186" style="stroke:var(--border-strong)" stroke-width="2"></path><rect x="20" y="186" width="120" height="64" rx="10" style="fill:var(--ember-500);fill-opacity:0.15;stroke:var(--ember-500);stroke-width:1.6"></rect><text x="80" y="223.0" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--ember-500)">Grade 3</text><rect x="160" y="186" width="260" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="174" y="222.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">Severe, limiting self-care</text><rect x="440" y="186" width="320" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="454" y="214.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Hold/discontinue ICI, high-dose IV steroids</text><text x="454" y="230.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">(1–2 mg/kg)</text><path d="M 80,250 L 80,264" style="stroke:var(--border-strong)" stroke-width="2"></path><rect x="20" y="264" width="120" height="64" rx="10" style="fill:var(--ember-500);fill-opacity:0.15;stroke:var(--ember-500);stroke-width:1.6"></rect><text x="80" y="301.0" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--ember-500)">Grade 4</text><rect x="160" y="264" width="260" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="174" y="300.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-primary)">Life-threatening</text><rect x="440" y="264" width="320" height="64" rx="9" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="454" y="284.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Discontinue ICI permanently; high-dose</text><text x="454" y="300.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">steroids + early second-line agent;</text><text x="454" y="316.0" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">ICU-level care</text></svg><div class="cap">Figure 3. Generic CTCAE-anchored grading and escalation ladder — organ-specific detail follows in each section below.</div></div><div class="pearl"><b>The single most useful cross-organ rule:</b> a corticosteroid-refractory irAE is generally defined as failure to improve by at least one grade within 48–72 hours of adequate steroid dosing — that's the trigger point for escalating to a second-line immunosuppressive agent (infliximab, vedolizumab, mycophenolate, IVIG, etc., chosen by organ) rather than simply continuing to wait.</div><div class="verify"><b>Verify before use:</b> this section reflects the ASCO irAE management guideline framework (Schneider et al., <i>J Clin Oncol</i>, 2021 update) — confirm current version and institutional oncology protocol before applying specific dosing.</div>  </div>
+</section>
+<section class="block" id="colitis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Gastrointestinal</span>
+      <h2>Colitis &amp; Immune-Mediated Diarrhea</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The most common severe irAE — and the one where the evidence for which second-line agent to reach for is genuinely still moving.</p>
+    </div><p>Grading follows stool frequency above the patient's baseline: <b>Grade 1</b> &lt;4 stools/day above baseline; <b>Grade 2</b>
+    4–6 stools/day above baseline; <b>Grade 3</b> ≥7 stools/day above baseline, incontinence, or hospitalization indicated; <b>Grade 4</b>
+    life-threatening, perforation, or hemodynamic collapse.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Grade</th><th class="">Management</th></tr></thead>
+        <tbody><tr><td class="hl">1</td><td class="">Supportive care, continue ICI, close follow-up; rule out infection before attributing to the drug</td></tr><tr><td class="hl">2</td><td class="">Hold ICI, oral or IV corticosteroids (~1 mg/kg prednisone-equivalent)</td></tr><tr><td class="hl">3–4</td><td class="">Hold/discontinue ICI, IV methylprednisolone 1–2 mg/kg; if no ≥1-grade improvement by 48–72 hours, add infliximab or vedolizumab; imaging (CT abdomen/pelvis) to exclude perforation or typhlitis before escalating workup further</td></tr></tbody>
+      </table>
+    </div><div class="pearl">Screen for HIV, hepatitis A/B, and TB before starting infliximab or vedolizumab, and repeat annually if a patient requires ongoing biologic treatment for recurrent irAEs — easy to forget in an acute presentation, but standard of care before immunosuppressive biologic initiation.</div><div class="myth"><b>Genuinely unsettled, not a clean answer:</b> which second-line agent to reach for first is actively debated. Some 2025 cohort data found <i>higher</i> colitis recurrence with infliximab than vedolizumab (28.7% vs 12.9%); other 2025 data found the <i>opposite</i> — higher recurrence with vedolizumab. A 2024 randomized trial found the two comparably effective at symptom control within two weeks. Combination infliximab + vedolizumab shows higher remission than infliximab alone in refractory cases. Don't treat either agent as the clearly superior default — this is genuinely evolving literature, and institutional/oncology preference reasonably varies.</div><p>For colitis refractory to both steroids and a first-line biologic, third-line options with smaller evidence bases include
+    tofacitinib, ustekinumab, and fecal microbiota transplantation (reported ~75% efficacy in a small refractory case series).</p>  </div>
+</section>
+<section class="block" id="hepatitis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Gastrointestinal</span>
+      <h2>Hepatitis</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Usually asymptomatic transaminitis caught on routine labs before it's caught on exam.</p>
+    </div><p>Reported in roughly 2–10% of patients on monotherapy, rising to 25–30% (all-grade) with combination ipilimumab +
+    nivolumab, with grade 3 hepatotoxicity in roughly 15% of combination-therapy patients. Onset is typically 6–12 weeks after initiation.
+    Grading follows AST/ALT and total bilirubin elevation relative to the upper limit of normal.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Grade</th><th class="">Management</th></tr></thead>
+        <tbody><tr><td class="hl">1</td><td class="">Continue ICI, monitor LFTs more frequently</td></tr><tr><td class="hl">2</td><td class="">Hold ICI, consider corticosteroids if not improving; rule out viral hepatitis, alcohol, other drugs, and disease progression</td></tr><tr><td class="hl">3–4</td><td class="">Hold/discontinue ICI, IV methylprednisolone 1–2 mg/kg; if refractory, <b>mycophenolate mofetil</b> is preferred second-line — not infliximab, which carries its own hepatotoxicity risk and is avoided specifically for this irAE</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Easy mistake:</b> infliximab is the reflexive second-line agent for several other irAEs, but hepatitis is a specific exception — anti-TNF therapy carries its own risk of drug-induced liver injury, so mycophenolate is favored instead for steroid-refractory immune-mediated hepatitis.</div><div class="verify"><b>Verify before use:</b> specific transaminase/bilirubin grading cutoffs and second-line dosing should be confirmed against current ASCO/institutional oncology guidance.</div>  </div>
+</section>
+<section class="block" id="pneumonitis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Pulmonary</span>
+      <h2>Pneumonitis</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">More common with combination therapy and in patients with pre-existing lung disease — and a mimicker of the malignancy itself.</p>
+    </div><p>Grading is based on symptom severity and functional limitation rather than imaging extent alone: <b>Grade 1</b> asymptomatic,
+    radiographic changes only; <b>Grade 2</b> symptomatic, limiting instrumental activities of daily living; <b>Grade 3</b> severe symptoms, limiting
+    self-care, oxygen indicated; <b>Grade 4</b> life-threatening, respiratory failure.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Grade</th><th class="">Management</th></tr></thead>
+        <tbody><tr><td class="hl">1</td><td class="">Continue ICI with close imaging/symptom follow-up</td></tr><tr><td class="hl">2</td><td class="">Hold ICI, corticosteroids (~1 mg/kg); bronchoscopy with BAL ± transbronchial biopsy if the patient can tolerate it, to help exclude infection</td></tr><tr><td class="hl">3–4</td><td class="">Discontinue ICI, IV methylprednisolone 1–2 mg/kg, pulmonary and infectious disease consultation; if no improvement at 48 hours, add a second agent — infliximab, mycophenolate, IVIG, or cyclophosphamide depending on the case</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>The differential that has to stay open:</b> new pulmonary infiltrates in a cancer patient on immunotherapy are not automatically pneumonitis — infection and disease progression/lymphangitic spread have to be actively excluded, not assumed away, before committing to high-dose steroids that could worsen an unrecognized infection.</div>  </div>
+</section>
+<section class="block" id="myocarditis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Cardiac</span>
+      <h2>Myocarditis</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Rare, and the one irAE where “wait and see” is the wrong instinct — by far the highest mortality of any irAE.</p>
+    </div><p class="lead-q">“This patient on nivolumab has new mild dyspnea and a slightly elevated troponin — how worried should I actually be?”</p><p>Very. Reported incidence is low (roughly 0.04–1.14%, higher with combination therapy), but mortality is reported at
+    <b>25–50%</b>, and a 2024 cohort of severe (Grade 3–4) cases found mortality as high as 54.5%. Median time to onset is around 45 days, but
+    presentations within the first few doses are well described, and the clinical spectrum ranges from an isolated asymptomatic troponin elevation to
+    fulminant cardiogenic shock, life-threatening arrhythmia, and complete heart block — the last of which is an independently strong predictor of
+    death.</p><div class="diagram"><svg viewBox="0 0 690 340" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,170.0 L241.8,170.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M165.1,140.6 Q217.5,95.0 269.9,89.4" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.2,145.7 L471.7,131.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.2,179.0 L471.7,184.5" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M555.0,225.3 L555.0,250.7" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="140" width="170" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="105.0" y="157.6">New chest pain,</tspan><tspan x="105.0" y="170.1">dyspnea, palpitations,</tspan><tspan x="105.0" y="182.6">or weakness on an ICI</tspan></text><rect x="240" y="140" width="180" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="330.0" y="151.4">Troponin, ECG,</tspan><tspan x="330.0" y="163.9">BNP/NT-proBNP, echo —</tspan><tspan x="330.0" y="176.4">low threshold for</tspan><tspan x="330.0" y="188.9">cardiology</tspan></text><rect x="240" y="30" width="180" height="60" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="330.0" y="47.6">Check for overlap:</tspan><tspan x="330.0" y="60.1">concurrent myositis /</tspan><tspan x="330.0" y="72.6">MG-like weakness</tspan></text><rect x="470" y="80" width="170" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="555.0" y="108.0">Hold ICI immediately</tspan></text><rect x="470" y="160" width="170" height="66" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="555.0" y="180.6">High-dose pulse</tspan><tspan x="555.0" y="193.1">methylprednisolone (≈1</tspan><tspan x="555.0" y="205.6">g/day)</tspan></text><rect x="470" y="250" width="170" height="66" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="555.0" y="265.33">Refractory: consider</tspan><tspan x="555.0" y="277.205">ATG, plasmapheresis,</tspan><tspan x="555.0" y="289.08">abatacept — case-report</tspan><tspan x="555.0" y="300.955">level evidence</tspan></text></svg><div class="cap">Figure 4. Suspected ICI myocarditis — workup and management pathway.</div></div>
+    <div class="storm-box">
+      <span class="case-label">The overlap syndrome to actively screen for</span>
+      <p>Myocarditis, myositis, and a myasthenia gravis-like syndrome can occur
+        together as a recognized overlap — a patient with new proximal weakness, ptosis, or dysphagia on a checkpoint inhibitor should prompt
+        cardiac workup even without cardiac symptoms, and vice versa. This overlap is disproportionately represented in fatal cases.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Step</th><th class="">Detail</th></tr></thead>
+        <tbody><tr><td class="hl">Hold the drug</td><td class="">Immediately, on clinical suspicion — do not wait for confirmatory testing to complete</td></tr><tr><td class="hl">Workup</td><td class="">Troponin, ECG, BNP/NT-proBNP, echocardiogram; cardiac MRI and/or biopsy as available, but treatment should not be delayed waiting for these</td></tr><tr><td class="hl">First-line treatment</td><td class="">High-dose pulse corticosteroids (methylprednisolone ~1 g/day) — associated with lower MACE than lower-dose regimens in recent case series/systematic review data</td></tr><tr><td class="hl">Refractory disease</td><td class="">Case-report-level evidence for anti-thymocyte globulin, plasmapheresis, abatacept, or ruxolitinib — this is specialist (cardiology/oncology) territory, not an ED-driven decision</td></tr><tr><td class="hl">Rechallenge</td><td class="">Generally avoided after myocarditis of any grade given the mortality profile — an oncology/cardio-oncology decision, not a default</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Myth:</b> “a normal ejection fraction on echo makes this unlikely to be significant.” ICI myocarditis frequently presents with a preserved ejection fraction even in fatal cases — the injury is often more about conduction system involvement and arrhythmia than pump failure, so a normal EF should not be reassuring on its own.</div><div class="verify"><b>Verify before use:</b> mortality figures are drawn from recent (2024–2025) retrospective cohorts and vary by cohort and severity mix — treat as an order-of-magnitude estimate; escalation therapy beyond high-dose steroids is guided by specialist consultation given the sparse evidence base.</div>  </div>
+</section>
+<section class="block" id="endocrinopathies">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">05 · Endocrine</span>
+      <h2>Endocrinopathies</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The irAE category most likely to be permanent — and the one where a normal-looking A1c can be dangerously reassuring.</p>
+    </div><div class="cell-grid">
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">Most common endocrine irAE</span>
+      <h5>Thyroiditis</h5>
+      <p>Destructive thyroiditis often runs a biphasic course — a transient thyrotoxic phase from release of preformed hormone, followed by hypothyroidism as the gland is depleted. Usually doesn't require holding the ICI; managed symptomatically (beta-blocker in the thyrotoxic phase) and with levothyroxine replacement once hypothyroid.</p>
+      <div class="markers">Check TSH/free T4 &middot; Often permanent hypothyroidism</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">More common with anti-CTLA-4</span>
+      <h5>Hypophysitis</h5>
+      <p>Pituitary inflammation causing headache and fatigue, with secondary adrenal insufficiency, hypothyroidism, and/or hypogonadism from downstream hormone loss. MRI may show pituitary enlargement early. Hormone deficits are frequently permanent even after the acute inflammation resolves.</p>
+      <div class="markers">Check morning cortisol, TSH/free T4, LH/FSH &middot; MRI pituitary</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Rarer, more acutely dangerous</span>
+      <h5>Primary adrenal insufficiency</h5>
+      <p>Can precipitate a true adrenal crisis — hypotension and shock refractory to fluids. If clinically suspected in an unstable patient, treat with empiric stress-dose hydrocortisone immediately; do not wait for a cosyntropin stimulation test to result.</p>
+      <div class="markers">Fatigue, hypotension, hyponatremia, hyperkalemia</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Rare, classically missed</span>
+      <h5>Fulminant Type 1 diabetes</h5>
+      <p>Can present as new DKA with rapid beta-cell destruction — and because onset is fast, the A1c can be near-normal despite the patient being critically ill, since there hasn't been time for chronic hyperglycemia to accumulate. A reassuring A1c does not rule this out.</p>
+      <div class="markers">Check A1c <i>and</i> glucose/ketones/gap — don't anchor on A1c alone</div>
+    </div></div><div class="pearl"><b>General endocrine irAE rule:</b> unlike most other irAEs, most endocrinopathies do <i>not</i> require holding the checkpoint inhibitor once the patient is on appropriate hormone replacement — the exception is an acute adrenal or thyroid storm-level presentation requiring stabilization first.</div><div class="verify"><b>Verify before use:</b> hormone replacement dosing and specific ICI-hold decisions should be made with endocrinology/oncology input — this section is oriented toward ED recognition and initial stabilization, not long-term hormone management.</div>  </div>
+</section>
+<section class="block" id="irae-ed-approach">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">06 · Practical Synthesis</span>
+      <h2>The ED Approach</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">One question to add to every relevant history, and one number to keep in your head.</p>
+    </div>
+    <div class="case">
+      <span class="case-label">Practical synthesis</span>
+      <p>Ask about checkpoint inhibitor exposure <i>ever</i>, not just current treatment — irAEs
+        can present months after the drug was stopped. Any new or unexplained symptom in that patient deserves irAE on the differential, and more
+        than one organ can be involved at once (screen broadly, especially for the myocarditis-myositis-myasthenia overlap once any one component is
+        found). Hold the checkpoint inhibitor and start corticosteroids for anything Grade 2 or higher pending oncology involvement. For myocarditis
+        specifically, treat clinical suspicion as sufficient to act — don't wait for confirmatory testing to start steroids or to hold the drug.
+        Involve oncology early in every case; irAE management decisions (rechallenge, choice of second-line agent) are collaborative, but initial
+        recognition and stabilization in the ED shouldn't wait for that conversation to happen.</p>
+    </div>  </div>
+</section>
+<footer class="wrap">
+  <p>Immunology Atlas &middot; Volume III of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures, grading thresholds, and dosing against current institutional/oncology sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('immuno-atlas-v3-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('immuno-atlas-v3-theme', next);
+      paint();
+    });
+
+    // Scroll-spy for nav rail
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>
