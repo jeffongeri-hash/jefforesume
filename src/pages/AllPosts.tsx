@@ -48,6 +48,16 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Guideline Changes Atlas — Master Collection",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Every recent guideline change that alters bedside practice — cardiology, heme, endocrine, GI, derm, ENT, immunology, environmental, migraine, and EMTALA, in one place.",
+      image: businessPost,
+      slug: "guideline-changes-atlas",
+      tags: ["Guidelines"]
+    },
+    {
       title: "Immunology Atlas Vol. 1 — Foundations, Cytokine Storms & Hypersensitivity",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1579,6 +1589,8 @@ const AllPosts = () => {
     "msk-extremities-imaging-atlas": "Imaging",
     "abdomen-pelvis-imaging-atlas": "Imaging",
     "neck-softtissue-vascular-imaging-atlas": "Imaging",
+    // Guideline Changes
+    "guideline-changes-atlas": "Guideline Changes",
     // Pharmacology + Vitals
     "immunology-atlas-vol1": "Pharmacology",
     "immunology-atlas-vol2": "Pharmacology",
@@ -1623,6 +1635,7 @@ const AllPosts = () => {
     "Imaging",
     "Toxicology",
     "Procedures",
+    "Guideline Changes",
     "Pharmacology",
     "Pertinent ER Knowledge",
     "Things We Do For No Reason",
@@ -1650,6 +1663,7 @@ const AllPosts = () => {
     "Imaging": businessPost,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Guideline Changes": businessPost,
     "Pharmacology": businessPost,
     "Pertinent ER Knowledge": imgProcedures,
     "Things We Do For No Reason": businessPost,
