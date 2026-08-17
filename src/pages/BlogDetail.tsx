@@ -572,6 +572,80 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "guideline-changes-atlas": {
+    title: "Guideline Changes Atlas — Master Collection",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "60 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Every recent guideline change that alters bedside practice — cardiology, heme, endocrine, GI, derm, ENT, immunology, environmental, migraine, and EMTALA, in one place.</p>
+      <p>All volumes of the Guideline Changes Atlas are collected below. Each volume is fully interactive.</p>
+      
+      <h2>Vol. 1 — Migraine: 2026 AHS ED Update</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-migraine-vol1.html" title="Vol. 1 — Migraine: 2026 AHS ED Update" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-migraine-vol1.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 3 — Cardiology: 2024–2026 Updates</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-cardiology-vol3.html" title="Vol. 3 — Cardiology: 2024–2026 Updates" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-cardiology-vol3.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 5 — Hematology: Andexanet Alfa Withdrawal</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-hematology-vol5.html" title="Vol. 5 — Hematology: Andexanet Alfa Withdrawal" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-hematology-vol5.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 8 — Endocrine: 2024 DKA/HHS Consensus</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-endocrine-vol8.html" title="Vol. 8 — Endocrine: 2024 DKA/HHS Consensus" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-endocrine-vol8.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 9 — GI: 2024 ACG Pancreatitis & GIB Imaging</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-gi-vol9.html" title="Vol. 9 — GI: 2024 ACG Pancreatitis & GIB Imaging" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-gi-vol9.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 15 — Dermatology: 2024 Epidermal Necrolysis Guideline</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-dermatology-vol15.html" title="Vol. 15 — Dermatology: 2024 Epidermal Necrolysis Guideline" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-dermatology-vol15.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 16 — ENT: 2025 AAO-HNSF Adult Sinusitis</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-ent-vol16.html" title="Vol. 16 — ENT: 2025 AAO-HNSF Adult Sinusitis" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-ent-vol16.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 19 — Immunology: Anaphylaxis Criteria Unified</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-immunology-vol19.html" title="Vol. 19 — Immunology: Anaphylaxis Criteria Unified" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-immunology-vol19.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 20 — Environmental: 2024 WMS Heat Illness</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-environmental-vol20.html" title="Vol. 20 — Environmental: 2024 WMS Heat Illness" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-environmental-vol20.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 21 — ED Documentation/Medicolegal: EMTALA Updates 2024–2025</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-ed-medicolegal-vol21.html" title="Vol. 21 — ED Documentation/Medicolegal: EMTALA Updates 2024–2025" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-ed-medicolegal-vol21.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+    `
+  },
   "immunology-atlas-vol1": {
     title: "Immunology Atlas Vol. 1 — Foundations, Cytokine Storms & Hypersensitivity",
     category: "HEALTHCARE",
