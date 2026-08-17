@@ -48,6 +48,46 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Things We Do For No Reason Atlas — Vol. 1: 2025–2026",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Recent low-value practices from 2025–2026 — what the evidence says, and what to do instead.",
+      image: businessPost,
+      slug: "twdfnr-vol1-2025-2026",
+      tags: ["Evidence-Based Medicine"]
+    },
+    {
+      title: "Things We Do For No Reason Atlas — Vol. 2: 2022–2024",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Low-value care habits from 2022–2024 — myth, evidence, and the better alternative.",
+      image: businessPost,
+      slug: "twdfnr-vol2-2022-2024",
+      tags: ["Evidence-Based Medicine"]
+    },
+    {
+      title: "Things We Do For No Reason Atlas — Vol. 3: 2019–2021",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Deconstructing 2019–2021 practices that persist without evidence.",
+      image: businessPost,
+      slug: "twdfnr-vol3-2019-2021",
+      tags: ["Evidence-Based Medicine"]
+    },
+    {
+      title: "Things We Do For No Reason Atlas — Vol. 4: 2015–2018",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "The classics: 2015–2018 low-value interventions and what the data actually shows.",
+      image: businessPost,
+      slug: "twdfnr-vol4-2015-2018",
+      tags: ["Evidence-Based Medicine"]
+    },
+    {
       title: "Chest Imaging Atlas — CXR & CT Interpretation",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1409,6 +1449,11 @@ const AllPosts = () => {
     "msk-extremities-imaging-atlas": "Imaging",
     "abdomen-pelvis-imaging-atlas": "Imaging",
     "neck-softtissue-vascular-imaging-atlas": "Imaging",
+    // Things We Do For No Reason
+    "twdfnr-vol1-2025-2026": "Things We Do For No Reason",
+    "twdfnr-vol2-2022-2024": "Things We Do For No Reason",
+    "twdfnr-vol3-2019-2021": "Things We Do For No Reason",
+    "twdfnr-vol4-2015-2018": "Things We Do For No Reason",
     // Sports
     "reading-the-defense": "Sports",
   };
@@ -1433,6 +1478,7 @@ const AllPosts = () => {
     "Imaging",
     "Toxicology",
     "Procedures",
+    "Things We Do For No Reason",
     "Sports",
     "Off the Clock",
   ];
@@ -1457,6 +1503,7 @@ const AllPosts = () => {
     "Imaging": businessPost,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Things We Do For No Reason": businessPost,
     "Sports": imgOffTheClock,
     "Off the Clock": imgOffTheClock,
   };

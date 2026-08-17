@@ -572,6 +572,70 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "twdfnr-vol1-2025-2026": {
+    title: "Things We Do For No Reason Atlas — Vol. 1: 2025–2026",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Recent low-value practices from 2025–2026 — what the evidence says, and what to do instead.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/twdfnr-vol1-2025-2026.html" title="Things We Do For No Reason Atlas — Vol. 1: 2025–2026" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/twdfnr-vol1-2025-2026.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "twdfnr-vol2-2022-2024": {
+    title: "Things We Do For No Reason Atlas — Vol. 2: 2022–2024",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Low-value care habits from 2022–2024 — myth, evidence, and the better alternative.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/twdfnr-vol2-2022-2024.html" title="Things We Do For No Reason Atlas — Vol. 2: 2022–2024" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/twdfnr-vol2-2022-2024.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "twdfnr-vol3-2019-2021": {
+    title: "Things We Do For No Reason Atlas — Vol. 3: 2019–2021",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Deconstructing 2019–2021 practices that persist without evidence.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/twdfnr-vol3-2019-2021.html" title="Things We Do For No Reason Atlas — Vol. 3: 2019–2021" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/twdfnr-vol3-2019-2021.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "twdfnr-vol4-2015-2018": {
+    title: "Things We Do For No Reason Atlas — Vol. 4: 2015–2018",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>The classics: 2015–2018 low-value interventions and what the data actually shows.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/twdfnr-vol4-2015-2018.html" title="Things We Do For No Reason Atlas — Vol. 4: 2015–2018" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/twdfnr-vol4-2015-2018.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "chest-imaging-atlas": {
     title: "Chest Imaging Atlas — CXR & CT Interpretation",
     category: "HEALTHCARE",
