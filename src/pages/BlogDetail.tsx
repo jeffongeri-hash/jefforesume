@@ -572,6 +572,134 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "immunology-atlas-vol1": {
+    title: "Immunology Atlas Vol. 1 — Foundations, Cytokine Storms & Hypersensitivity",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Innate and adaptive immunity foundations, cytokine storm syndromes, and hypersensitivity reactions.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol1.html" title="Immunology Atlas Vol. 1 — Foundations, Cytokine Storms & Hypersensitivity" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "immunology-atlas-vol2": {
+    title: "Immunology Atlas Vol. 2 — Immunodeficiency & Infection Risk Patterns",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Primary and acquired immunodeficiency, and the infection patterns each defect predicts.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol2.html" title="Immunology Atlas Vol. 2 — Immunodeficiency & Infection Risk Patterns" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol2.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "immunology-atlas-vol3": {
+    title: "Immunology Atlas Vol. 3 — Immune-Related Adverse Events",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Checkpoint inhibitor toxicity by organ system — grading, steroids, and when to stop therapy.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol3.html" title="Immunology Atlas Vol. 3 — Immune-Related Adverse Events" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol3.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "immunology-atlas-vol4": {
+    title: "Immunology Atlas Vol. 4 — Autoimmune Emergencies",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Life-threatening autoimmune presentations and their time-critical management.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol4.html" title="Immunology Atlas Vol. 4 — Autoimmune Emergencies" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol4.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "immunology-atlas-vol5": {
+    title: "Immunology Atlas Vol. 5 — Transplant Immunology",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Rejection types, immunosuppression regimens, and complications in transplant recipients.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol5.html" title="Immunology Atlas Vol. 5 — Transplant Immunology" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol5.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "immunology-atlas-vol6": {
+    title: "Immunology Atlas Vol. 6 — Pharmacology: Biologics, Immunosuppressants & Adjuncts",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Biologics and immunosuppressants by mechanism — dosing, monitoring, and adverse effects.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/immunology-atlas-vol6.html" title="Immunology Atlas Vol. 6 — Pharmacology: Biologics, Immunosuppressants & Adjuncts" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/immunology-atlas-vol6.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "pharmacokinetics-culture-interpretation-atlas": {
+    title: "Pharmacokinetics & Culture Interpretation Atlas",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Dosing by PK/PD principles, trough and level monitoring, and how to read culture and sensitivity data.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/pharmacokinetics-culture-interpretation-atlas.html" title="Pharmacokinetics & Culture Interpretation Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/pharmacokinetics-culture-interpretation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "vitals-atlas-vol1": {
+    title: "Vitals Atlas Vol. 1 — Blood Pressure, Heart Rate, Respiratory Rate & Pulse Oximetry",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>What each vital sign really measures, sources of error, and how to act on abnormal values.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/vitals-atlas-vol1.html" title="Vitals Atlas Vol. 1 — Blood Pressure, Heart Rate, Respiratory Rate & Pulse Oximetry" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/vitals-atlas-vol1.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "airway-rsi-pharmacology-atlas": {
     title: "The Airway Management & RSI Pharmacology Atlas",
     category: "HEALTHCARE",

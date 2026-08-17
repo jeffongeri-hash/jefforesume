@@ -48,6 +48,86 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "Immunology Atlas Vol. 1 — Foundations, Cytokine Storms & Hypersensitivity",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Innate and adaptive immunity foundations, cytokine storm syndromes, and hypersensitivity reactions.",
+      image: businessPost,
+      slug: "immunology-atlas-vol1",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Immunology Atlas Vol. 2 — Immunodeficiency & Infection Risk Patterns",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Primary and acquired immunodeficiency, and the infection patterns each defect predicts.",
+      image: businessPost,
+      slug: "immunology-atlas-vol2",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Immunology Atlas Vol. 3 — Immune-Related Adverse Events",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Checkpoint inhibitor toxicity by organ system — grading, steroids, and when to stop therapy.",
+      image: businessPost,
+      slug: "immunology-atlas-vol3",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Immunology Atlas Vol. 4 — Autoimmune Emergencies",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Life-threatening autoimmune presentations and their time-critical management.",
+      image: businessPost,
+      slug: "immunology-atlas-vol4",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Immunology Atlas Vol. 5 — Transplant Immunology",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Rejection types, immunosuppression regimens, and complications in transplant recipients.",
+      image: businessPost,
+      slug: "immunology-atlas-vol5",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Immunology Atlas Vol. 6 — Pharmacology: Biologics, Immunosuppressants & Adjuncts",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Biologics and immunosuppressants by mechanism — dosing, monitoring, and adverse effects.",
+      image: businessPost,
+      slug: "immunology-atlas-vol6",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Pharmacokinetics & Culture Interpretation Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Dosing by PK/PD principles, trough and level monitoring, and how to read culture and sensitivity data.",
+      image: businessPost,
+      slug: "pharmacokinetics-culture-interpretation-atlas",
+      tags: ["Pharmacology"]
+    },
+    {
+      title: "Vitals Atlas Vol. 1 — Blood Pressure, Heart Rate, Respiratory Rate & Pulse Oximetry",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "What each vital sign really measures, sources of error, and how to act on abnormal values.",
+      image: businessPost,
+      slug: "vitals-atlas-vol1",
+      tags: ["Emergency Medicine"]
+    },
+    {
       title: "The Airway Management & RSI Pharmacology Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1499,6 +1579,15 @@ const AllPosts = () => {
     "msk-extremities-imaging-atlas": "Imaging",
     "abdomen-pelvis-imaging-atlas": "Imaging",
     "neck-softtissue-vascular-imaging-atlas": "Imaging",
+    // Pharmacology + Vitals
+    "immunology-atlas-vol1": "Pharmacology",
+    "immunology-atlas-vol2": "Pharmacology",
+    "immunology-atlas-vol3": "Pharmacology",
+    "immunology-atlas-vol4": "Pharmacology",
+    "immunology-atlas-vol5": "Pharmacology",
+    "immunology-atlas-vol6": "Pharmacology",
+    "pharmacokinetics-culture-interpretation-atlas": "Pharmacology",
+    "vitals-atlas-vol1": "Pertinent ER Knowledge",
     // Pertinent ER Knowledge
     "airway-rsi-pharmacology-atlas": "Pertinent ER Knowledge",
     "environmental-emergencies-atlas": "Pertinent ER Knowledge",
@@ -1534,6 +1623,7 @@ const AllPosts = () => {
     "Imaging",
     "Toxicology",
     "Procedures",
+    "Pharmacology",
     "Pertinent ER Knowledge",
     "Things We Do For No Reason",
     "Sports",
@@ -1560,6 +1650,7 @@ const AllPosts = () => {
     "Imaging": businessPost,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Pharmacology": businessPost,
     "Pertinent ER Knowledge": imgProcedures,
     "Things We Do For No Reason": businessPost,
     "Sports": imgOffTheClock,
