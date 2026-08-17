@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immunology Atlas Vol. 4 — Autoimmune Emergencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #14141c;
+  --ink-800: #1c1d29;
+  --ink-700: #2a2b3d;
+  --paper-050: #f8f6f0;
+  --paper-100: #efece2;
+  --paper-200: #e3ded0;
+
+  --sentinel-600: #4a3f9e;
+  --sentinel-500: #5d4fc4;
+  --sentinel-400: #8177d9;
+  --sentinel-300: #ada4e8;
+
+  --gold-500: #b5892c;
+  --gold-400: #d1a441;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #efece4;
+  --text-secondary: #b8b6c4;
+  --text-tertiary: #83829a;
+  --border: rgba(239, 236, 228, 0.10);
+  --border-strong: rgba(239, 236, 228, 0.18);
+  --accent: var(--sentinel-400);
+  --accent-strong: var(--sentinel-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #1c1a24;
+  --text-secondary: #4a4757;
+  --text-tertiary: #78748a;
+  --border: rgba(28, 26, 36, 0.10);
+  --border-strong: rgba(28, 26, 36, 0.18);
+  --accent: var(--sentinel-600);
+  --accent-strong: var(--sentinel-500);
+  --shadow: 0 8px 30px rgba(28,26,36,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sentinel-400); color: #fff; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+/* ---------- Top identity bar ---------- */
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+/* ---------- Nav rail ---------- */
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* ---------- Case box ---------- */
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+/* ---------- Danger / storm callout ---------- */
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--gold-500); }
+
+.evidence {
+  border-left: 3px solid var(--sentinel-400); background: color-mix(in srgb, var(--sentinel-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sentinel-400); display:block; margin-bottom: 0.4rem; }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Diagram frame ---------- */
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ---------- Comparison strip ---------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+/* ---------- badges/pills ---------- */
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- footer ---------- */
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* toc back-to-top */
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Immunology Atlas</span>
+    <span class="sub">Vol. IV &middot; Autoimmune Emergencies</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#myasthenic-crisis">Myasthenic Crisis</a><a href="#lupus-flare">Lupus Flare / Nephritis</a><a href="#pulmonary-renal">ANCA vs Goodpasture</a><a href="#caps">CAPS</a><a href="#autoimmune-ed-synthesis">Common Thread</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME IV OF THE IMMUNOLOGY SERIES</div>
+  <h1>Autoimmune Emergencies</h1>
+  <p class="lede">Five organ-specific crises where the underlying disease is autoimmune but the emergency is entirely acute: myasthenic
+  crisis, lupus flare vs. infection, the two pulmonary-renal syndromes, and catastrophic antiphospholipid syndrome — with the evidence
+  behind each management decision, including where that evidence has genuinely moved.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">5</div><div class="l">Organ-specific emergencies</div></div>
+    <div class="hero-stat"><div class="n">4</div><div class="l">Pathway &amp; evidence diagrams</div></div>
+    <div class="hero-stat"><div class="n">28–75%</div><div class="l">CAPS mortality by treatment completeness</div></div>
+  </div>
+</div>
+
+<section class="block" id="myasthenic-crisis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Neuromuscular</span>
+      <h2>Myasthenic Crisis</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The autoimmune emergency where the pulse ox lies to you, and where the wrong reflex (treat the numbers, not the trend) costs the most time.</p>
+    </div><p class="lead-q">“Sats are 96% and the ABG looks fine — so this MG patient with worsening weakness isn't in trouble yet, right?”</p><p>Myasthenia gravis is caused by autoantibodies against the nicotinic acetylcholine receptor (or, less commonly, MuSK) at the
+    neuromuscular junction, progressively impairing signal transmission with fatigable weakness. <b>Myasthenic crisis</b> is respiratory failure from
+    that same weakness affecting the diaphragm and accessory muscles — and it is a <i>hypercarbic</i>, neuromuscular pump failure, not a primary
+    oxygenation problem. That distinction is the single most important thing to internalize: <b>SpO₂ and even a normal ABG are late, unreliable
+    indicators here</b> — by the time hypoxemia or hypercapnia shows up, the patient has already lost significant respiratory reserve.</p><div class="diagram"><svg viewBox="0 0 920 280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,171.1 L241.9,171.8" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M428.1,142.6 L482.0,125.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M678.0,93.0 L721.7,93.0" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M428.1,186.3 L482.0,194.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M678.0,210.2 L721.7,211.1" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="140" width="170" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="105.0" y="151.4">Worsening</tspan><tspan x="105.0" y="163.9">generalized/bulbar</tspan><tspan x="105.0" y="176.4">weakness on a</tspan><tspan x="105.0" y="188.9">background of MG</tspan></text><rect x="240" y="140" width="190" height="66" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="335.0" y="160.6">Serial NIF &amp; FVC</tspan><tspan x="335.0" y="173.1">every ~2h — don't wait</tspan><tspan x="335.0" y="185.6">on SpO₂ or ABG</tspan></text><rect x="480" y="60" width="200" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="580.0" y="81.22">20/30/40 rule: FVC &lt;20</tspan><tspan x="580.0" y="93.095">mL/kg, NIF &lt;30 cmH₂O,</tspan><tspan x="580.0" y="104.97">MEP &lt;40 cmH₂O</tspan></text><rect x="720" y="60" width="170" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9" style="fill:var(--text-primary)"><tspan x="805.0" y="76.26">Elective intubation —</tspan><tspan x="805.0" y="87.51">non-depolarizing agent,</tspan><tspan x="805.0" y="98.76">reduced dose; avoid</tspan><tspan x="805.0" y="110.01">succinylcholine reliance</tspan></text><rect x="480" y="180" width="200" height="56" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="580.0" y="195.6">Identify &amp; treat</tspan><tspan x="580.0" y="208.1">trigger (infection,</tspan><tspan x="580.0" y="220.6">offending drug, taper)</tspan></text><rect x="720" y="180" width="170" height="66" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9" style="fill:var(--text-primary)"><tspan x="805.0" y="196.26">PLEX or IVIG — steroids</tspan><tspan x="805.0" y="207.51">often deferred until</tspan><tspan x="805.0" y="218.76">started (transient</tspan><tspan x="805.0" y="230.01">worsening risk)</tspan></text></svg><div class="cap">Figure 1. Myasthenic crisis — monitoring and management pathway.</div></div><h3>What to trend instead</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Measure</th><th class="">Normal</th><th class="">Concerning</th><th class="">Consider intubation</th></tr></thead>
+        <tbody><tr><td class="hl">Forced vital capacity (FVC)</td><td class="">≥60 mL/kg</td><td class="">Trending down</td><td class="">&lt;20 mL/kg (“20/30/40 rule”)</td></tr><tr><td class="hl">Negative inspiratory force (NIF)</td><td class="">−80 to −100 cmH₂O</td><td class="">Trending toward 0</td><td class="">Less negative than −30 cmH₂O</td></tr><tr><td class="hl">Maximum expiratory pressure (MEP)</td><td class="">Higher magnitude</td><td class="">Trending down</td><td class="">&lt;40 cmH₂O</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Check these serially (roughly every 2 hours) and trust the trend over any single value.</b> Intubate <i>electively</i> once the numbers cross the threshold above — waiting for hypoxemia or hypercarbia to develop means waiting for a late, ominous sign in a disease process that can progress rapidly once respiratory muscles fatigue.</div><h3>Airway management specifics</h3><p>Myasthenic patients are classically <b>resistant to succinylcholine</b> (higher/unpredictable dose requirements due to
+    receptor pathology) and simultaneously <b>more sensitive to non-depolarizing agents</b> (rocuronium, vecuronium) — the practical takeaway is to
+    use a non-depolarizing agent at a reduced dose rather than leaning on succinylcholine for rapid sequence intubation.</p><h3>Treatment sequencing — the order matters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Step</th><th class="">Detail</th></tr></thead>
+        <tbody><tr><td class="hl">Identify and treat the trigger</td><td class="">Infection is the most common precipitant; also consider a recently added offending drug or rapid immunosuppressant taper</td></tr><tr><td class="hl">Hold acetylcholinesterase inhibitors if intubated</td><td class="">Pyridostigmine/neostigmine increase secretions and offer no benefit to the underlying crisis once mechanically ventilated</td></tr><tr><td class="hl">Start rapid therapy: PLEX or IVIG</td><td class="">Comparable efficacy overall; some recent comparative data favor plasmapheresis for extubation at 2 weeks and functional outcome, at the cost of a higher complication rate. IVIG is typically dosed 2 g/kg divided over 5 days</td></tr><tr><td class="hl">Corticosteroids — often deliberately delayed</td><td class="">Roughly 50% of patients experience <i>transient worsening</i> of weakness 5–10 days after starting steroids — many protocols defer steroid initiation until after PLEX/IVIG has been started and the patient is stabilized, rather than starting everything simultaneously</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Myth:</b> “start steroids right away — more immunosuppression started sooner is always better.” In myasthenic crisis specifically, early high-dose steroids can transiently <i>worsen</i> weakness before they help, which is exactly why they're often sequenced after the rapid-acting therapy rather than alongside it.</div><div class="verify"><b>Verify before use:</b> PLEX vs IVIG comparative outcome data is still evolving and based on modest cohort sizes — confirm current neurology/institutional preference; steroid timing practice also varies by institution.</div>  </div>
+</section>
+<section class="block" id="lupus-flare">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Systemic Lupus</span>
+      <h2>Lupus Flare &amp; Nephritis</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The question that has to be answered before any other decision gets made: is this the disease, or is this an infection wearing the disease's face?</p>
+    </div><p class="lead-q">“This lupus patient on mycophenolate has a fever and feels worse all over — flare or infection, and how do I actually tell?”</p><p>SLE can flare in nearly any organ, but the ED-relevant emergencies cluster around a handful of patterns: <b>lupus nephritis</b>
+    (rapidly progressive glomerulonephritis), <b>CNS lupus</b> (seizure, psychosis, “lupus cerebritis”), <b>serositis</b> (pericarditis that can
+    progress to tamponade, pleuritis), <b>pulmonary</b> involvement (pneumonitis, diffuse alveolar hemorrhage), and severe <b>hematologic</b>
+    manifestations (deep cytopenias, thrombotic microangiopathy). The single hardest and most consequential judgment call layered on top of all of
+    these: most SLE patients are chronically immunosuppressed, so a new fever or new organ dysfunction is genuinely ambiguous between flare and
+    infection — and treating an infection as a flare (more immunosuppression) is a well-documented way to kill a patient.</p><h3>Flare vs. infection — imperfect but useful discriminators</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Favors flare</th><th class="">Favors infection</th></tr></thead>
+        <tbody><tr><td class="">Low complement (C3/C4) with rising anti-dsDNA titer</td><td class="">Complement typically less affected acutely (though can be depressed at baseline)</td></tr><tr><td class="">Multi-system pattern consistent with the patient's known lupus phenotype</td><td class="">Localizing signs/symptoms (cough, dysuria, focal pain) pointing to a single source</td></tr><tr><td class="">Gradual symptom evolution over days matching prior flare pattern</td><td class="">Rigors, very high fever, rapid deterioration</td></tr><tr><td class="">Active urinary sediment (RBC casts) without clear infectious source</td><td class="">Elevated procalcitonin (used cautiously — not perfectly discriminating in SLE)</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Neither column is a reliable rule-out on its own.</b> This is a genuinely difficult distinction even for rheumatology, and the two can coexist (infection triggering a flare). The safer default in an ambiguous, sick-looking patient is to treat empirically for infection <i>while</i> pursuing the flare workup, rather than assuming flare and escalating immunosuppression first.</div><h3>Lupus nephritis</h3><p>Presents with hematuria, proteinuria, hypertension, edema, and a rising creatinine; active urinary sediment (dysmorphic
+    RBCs, RBC casts) supports glomerular inflammation over another cause of kidney injury. Definitive classification requires renal biopsy, which
+    won't happen in the ED — the ED role is recognition, ruling out competing/treatable causes of AKI, and prompt nephrology/rheumatology
+    involvement, since induction therapy (high-dose steroids plus cyclophosphamide or mycophenolate) is a specialty-directed decision.</p><div class="pearl"><b>Practical ED synthesis:</b> stabilize, treat any identified infection aggressively regardless of flare suspicion, pulse corticosteroids are reasonable empirically for a clearly life- or organ-threatening flare (severe cerebritis, tamponade, diffuse alveolar hemorrhage) after infection has been reasonably excluded or is being treated in parallel, and involve rheumatology/nephrology early rather than trying to fully characterize the flare in the ED.</div><div class="verify"><b>Verify before use:</b> specific induction regimens (cyclophosphamide vs. mycophenolate, steroid dosing/route) are rheumatology-directed decisions with evolving evidence — this section is oriented toward ED recognition and stabilization, not induction protocol selection.</div>  </div>
+</section>
+<section class="block" id="pulmonary-renal">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Vasculitis</span>
+      <h2>Pulmonary-Renal Syndrome: ANCA Vasculitis vs. Goodpasture</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Two different antibodies producing the same terrifying combination — hemoptysis plus a rapidly rising creatinine — with meaningfully different treatment, especially now.</p>
+    </div><p class="lead-q">“Hemoptysis and a creatinine that's doubled in three days — is this ANCA vasculitis or Goodpasture, and does it change what I do tonight?”</p><div class="diagram"><svg viewBox="0 0 950 350" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M419.8,75.4 L276.6,140.8" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M480.0,75.4 L480.0,140.8" fill="none" style="stroke:var(--slate-500);color:var(--slate-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M540.2,75.4 L683.4,140.8" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M195.0,215.2 L195.0,260.7" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M765.0,215.2 L765.0,260.7" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="370" y="20" width="220" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="480.0" y="41.18">Pulmonary hemorrhage +</tspan><tspan x="480.0" y="54.93">rapidly progressive GN</tspan></text><rect x="80" y="140" width="230" height="76" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="195.0" y="164.56">Goodpasture</tspan><tspan x="195.0" y="179.56">(anti-GBM)</tspan></text><text x="195.0" y="196.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Anti-GBM antibody positive</text><rect x="650" y="140" width="230" height="76" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="765.0" y="164.56">ANCA-associated</tspan><tspan x="765.0" y="179.56">vasculitis</tspan></text><text x="765.0" y="196.56" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">c-ANCA/PR3 or p-ANCA/MPO positive</text><rect x="370" y="140" width="220" height="76" rx="10" style="fill:var(--slate-500);fill-opacity:0.10;stroke:var(--slate-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="480.0" y="172.0">Double-positive overlap</tspan></text><text x="480.0" y="187.125" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Both antibodies present — uncommon but recognized</text><rect x="80" y="260" width="230" height="66" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="195.0" y="280.6">Plasmapheresis clearly</tspan><tspan x="195.0" y="293.1">beneficial — established</tspan><tspan x="195.0" y="305.6">mainstay</tspan></text><rect x="650" y="260" width="230" height="66" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="765.0" y="275.33">Plasma exchange: PEXIVAS</tspan><tspan x="765.0" y="287.205">(2020) found no benefit on</tspan><tspan x="765.0" y="299.08">death/ESKD — no longer</tspan><tspan x="765.0" y="310.955">routine</tspan></text></svg><div class="cap">Figure 2. Both conditions converge on the same dangerous presentation; the confirmatory antibody test and, increasingly, the treatment approach diverge.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl"></th><th class="">ANCA-associated vasculitis (GPA / MPA / EGPA)</th><th class="">Goodpasture (anti-GBM disease)</th></tr></thead>
+        <tbody><tr><td class="hl">Antibody</td><td class="">c-ANCA/PR3 (GPA) or p-ANCA/MPO (MPA, EGPA)</td><td class="">Anti-glomerular basement membrane (anti-GBM), targeting type IV collagen</td></tr><tr><td class="hl">Other clues</td><td class="">Upper airway involvement (sinusitis, saddle-nose, subglottic stenosis) in GPA; asthma + eosinophilia in EGPA; palpable purpura, mononeuritis multiplex</td><td class="">Isolated pulmonary-renal presentation; smoking/hydrocarbon exposure can trigger the pulmonary component</td></tr><tr><td class="hl">Overlap</td><td class="">A double-positive (ANCA + anti-GBM) overlap syndrome is uncommon but recognized — test for both</td><td class="">Same overlap consideration applies</td></tr><tr><td class="hl">Induction therapy</td><td class="">High-dose steroids + cyclophosphamide or rituximab</td><td class="">High-dose steroids + cyclophosphamide</td></tr><tr><td class="hl">Role of plasma exchange</td><td class=""><b>No longer routine</b> — PEXIVAS (2020) found no reduction in death/ESKD; reserved for select severe cases</td><td class=""><b>Established mainstay</b> — clearly beneficial, especially with early initiation before irreversible renal damage</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>The teaching-point contrast worth remembering:</b> these two pulmonary-renal syndromes used to be managed almost identically with routine plasma exchange for both. That's no longer accurate for ANCA vasculitis — plasma exchange remains standard for Goodpasture, but the evidence base for ANCA vasculitis has moved. Treating them as interchangeable is now a real (and easy) mistake.</div><h3>How the ANCA vasculitis evidence actually moved</h3><div class="diagram"><svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="60" x2="810" y2="60" style="stroke:var(--border-strong)" stroke-width="2"></line><circle cx="90.0" cy="60" r="7" style="fill:var(--slate-500)"></circle><text x="90.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--slate-500)">Pre-2000</text><text x="90.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--slate-500)">Early series</text><text x="90.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">Plasma exchange adopted</text><text x="90.0" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">on pathophysiologic</text><text x="90.0" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">rationale, limited RCT</text><text x="90.0" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">data</text><circle cx="316.66666666666663" cy="60" r="7" style="fill:var(--sentinel-400)"></circle><text x="316.66666666666663" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--sentinel-400)">MEPEX</text><text x="316.66666666666663" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--sentinel-400)">Randomized trial</text><text x="316.66666666666663" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">Favored plasma exchange</text><text x="316.66666666666663" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">for severe renal disease</text><text x="316.66666666666663" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">(SCr &gt;5.8 mg/dL)</text><circle cx="543.3333333333333" cy="60" r="7" style="fill:var(--ember-500)"></circle><text x="543.3333333333333" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--ember-500)">2020</text><text x="543.3333333333333" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--ember-500)">PEXIVAS (n=704)</text><text x="543.3333333333333" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">Largest AAV trial:</text><text x="543.3333333333333" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">plasma exchange did NOT</text><text x="543.3333333333333" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">reduce death/ESKD;</text><text x="543.3333333333333" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">reduced-dose steroids</text><text x="543.3333333333333" y="175" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">non-inferior with fewer</text><text x="543.3333333333333" y="190" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">infections</text><circle cx="770.0" cy="60" r="7" style="fill:var(--sage-500)"></circle><text x="770.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--sage-500)">Current</text><text x="770.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--sage-500)">Practice today</text><text x="770.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">Plasma exchange no</text><text x="770.0" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">longer routine; reserved</text><text x="770.0" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">for select severe RPGN</text><text x="770.0" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">cases per shared</text><text x="770.0" y="175" text-anchor="middle" font-family="var(--font-body)" font-size="11" style="fill:var(--text-secondary)">decision-making</text></svg><div class="cap">Figure 3. From routine plasma exchange to a much more selective role, over roughly two decades of trial data.</div></div><div class="evidence"><span class="study-label">Walsh M, et al. Plasma Exchange and Glucocorticoids in Severe ANCA-Associated Vasculitis. <i>N Engl J Med.</i> 2020;382(7):622–631 (PEXIVAS).</span><p>The largest-ever vasculitis trial (704 patients, severe AAV with renal involvement and/or diffuse pulmonary hemorrhage) found that
+        adding plasma exchange to standard induction immunosuppression did <b>not</b> reduce the composite outcome of death or end-stage kidney
+        disease. A separate arm of the same trial found a reduced-dose glucocorticoid regimen was non-inferior to standard dosing, with fewer serious
+        infections — which is why reduced-dose steroids, not just the plasma exchange finding, changed practice from this trial. Post-hoc analysis
+        did find plasma exchange produced faster early eGFR improvement, which has kept a narrower, more individualized role for plasma exchange alive
+        in patients with the most severe renal presentations and minimal chronic damage on biopsy.</p></div><div class="verify"><b>Verify before use:</b> current society guidance (KDIGO, ACR/EULAR) on the specific role of plasma exchange for ANCA vasculitis with severe renal involvement continues to be refined post-PEXIVAS — confirm current recommendation with nephrology/rheumatology before assuming it's categorically excluded.</div>  </div>
+</section>
+<section class="block" id="caps">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Thrombotic Emergency</span>
+      <h2>Catastrophic Antiphospholipid Syndrome (CAPS)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A thrombotic storm that looks exactly like sepsis with DIC — the diagnosis you have to think of, because nothing about the initial picture points to it specifically.</p>
+    </div><p class="lead-q">“Multi-organ failure, thrombocytopenia, and a lactate that keeps climbing despite broad-spectrum antibiotics and fluids — what am I missing?”</p><p>CAPS is the rare, most severe end of the antiphospholipid syndrome spectrum — widespread <b>small-vessel</b> thrombosis
+    causing multi-organ failure that develops over days rather than the more indolent large-vessel thrombosis of “ordinary” APS. By definition,
+    it involves <b>three or more organ systems within about a week</b>, and the clinical picture (shock, multi-organ dysfunction, thrombocytopenia,
+    microangiopathic hemolysis) is easily and frequently mistaken for sepsis with DIC or thrombotic microangiopathy — which is exactly why it's
+    under-recognized and why recognition, not confirmatory testing, is the rate-limiting step.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Typical trigger</th><th class="">Diagnostic approach</th></tr></thead>
+        <tbody><tr><td class="">Infection (most common)</td><td class="">Antiphospholipid antibodies (lupus anticoagulant, anticardiolipin, anti-β2-glycoprotein I) — triple positivity carries the highest risk</td></tr><tr><td class="">Surgery</td><td class="">Histopathologic confirmation of small-vessel thrombosis when a biopsy is feasible — often it isn't, given how sick these patients are</td></tr><tr><td class="">Anticoagulation withdrawal/subtherapeutic dosing</td><td class="">“Definite” vs. “probable” CAPS classification criteria exist, but treatment should not wait for that classification to be finalized</td></tr><tr><td class="">Pregnancy, malignancy</td><td class=""></td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Don't wait for the antibody panel to result.</b> In a patient with rapid multi-organ small-vessel thrombosis and a clinical picture that doesn't fit cleanly as sepsis/DIC — especially with a known or newly suspected autoimmune background — empiric triple therapy is started on clinical suspicion, with confirmatory testing sent but not awaited.</div><h3>Triple therapy — and why the number of components matters</h3><div class="diagram"><svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg"><line x1="220" y1="240" x2="680" y2="240" style="stroke:var(--border-strong)" stroke-width="2"></line><text x="206" y="58.0" text-anchor="end" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">No triple-therapy components</text><rect x="220" y="30" width="431.25" height="46" rx="6" style="fill:var(--ember-500);fill-opacity:0.75"></rect><text x="661.25" y="58.0" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--ember-500)">75%</text><text x="206" y="134.0" text-anchor="end" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">Partial combination</text><rect x="220" y="106" width="236.32500000000002" height="46" rx="6" style="fill:var(--gold-500);fill-opacity:0.75"></rect><text x="466.32500000000005" y="134.0" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--gold-500)">41.1%</text><text x="206" y="210.0" text-anchor="end" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">Full triple therapy</text><rect x="220" y="182" width="164.45000000000002" height="46" rx="6" style="fill:var(--sage-500);fill-opacity:0.75"></rect><text x="394.45000000000005" y="210.0" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--sage-500)">28.6%</text><text x="220" y="262" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Mortality (CAPS Registry)</text></svg><div class="cap">Figure 4. CAPS Registry mortality by treatment completeness — the gap between partial and full triple therapy is large.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Component</th><th class="">Detail</th></tr></thead>
+        <tbody><tr><td class="hl">Anticoagulation</td><td class="">Therapeutic heparin preferred initially — treats and helps prevent progression of the underlying thrombotic process</td></tr><tr><td class="hl">High-dose glucocorticoids</td><td class="">Pulse methylprednisolone in the acute setting</td></tr><tr><td class="hl">Plasma exchange and/or IVIG</td><td class="">Both have supporting registry data; plasma exchange and IVIG are not mutually exclusive and are sometimes combined in refractory cases</td></tr></tbody>
+      </table>
+    </div><div class="evidence"><span class="study-label">International CAPS Registry (Cervera R, et al., multiple publications)</span>Mortality was 28.6% with full triple therapy, 41.1% with partial combinations of these treatments, and 75% when none of the three components were used. Historical mortality of 50%+ in early cohorts (pre-2000) has fallen to roughly 25–33% in more recent series, attributed largely to more consistent triple therapy use.</div><p>For triple-therapy-refractory disease, rituximab and eculizumab (complement C5 blockade) have case-report and small-series
+    support, reflecting the role of complement activation in CAPS pathophysiology — these are specialist (hematology/rheumatology) decisions, not
+    ED-initiated therapies.</p><div class="verify"><b>Verify before use:</b> mortality figures come from registry (observational) data, not randomized trials, and reflect a heterogeneous, rare patient population — treat as a strong directional signal for triple therapy rather than a precise individual-patient prognosis.</div>  </div>
+</section>
+<section class="block" id="autoimmune-ed-synthesis">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">05 · Practical Synthesis</span>
+      <h2>The Common Thread</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Five different diseases, one recurring bedside lesson.</p>
+    </div>
+    <div class="case">
+      <span class="case-label">Practical synthesis</span>
+      <p>Across all five conditions in this volume, the same pattern repeats: the objective trend
+        (serial NIF/FVC, complement/anti-dsDNA trajectory, rising creatinine, antibody titers) matters more than any single snapshot value, and in
+        several of these diseases (myasthenic crisis, CAPS) the standard vital-sign reassurance — a normal SpO₂, a not-yet-critical lactate —
+        actively lags the true severity of illness. When an autoimmune emergency is on the differential, treat clinical trajectory and specialist
+        involvement as more informative than the first set of numbers, and don't let a reassuring-looking single data point delay escalation.</p>
+    </div>  </div>
+</section>
+<footer class="wrap">
+  <p>Immunology Atlas &middot; Volume IV of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures, thresholds, and dosing against current institutional/specialty sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('immuno-atlas-v4-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('immuno-atlas-v4-theme', next);
+      paint();
+    });
+
+    // Scroll-spy for nav rail
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

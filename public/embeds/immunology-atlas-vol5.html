@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immunology Atlas Vol. 5 — Transplant Immunology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #14141c;
+  --ink-800: #1c1d29;
+  --ink-700: #2a2b3d;
+  --paper-050: #f8f6f0;
+  --paper-100: #efece2;
+  --paper-200: #e3ded0;
+
+  --sentinel-600: #4a3f9e;
+  --sentinel-500: #5d4fc4;
+  --sentinel-400: #8177d9;
+  --sentinel-300: #ada4e8;
+
+  --gold-500: #b5892c;
+  --gold-400: #d1a441;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #efece4;
+  --text-secondary: #b8b6c4;
+  --text-tertiary: #83829a;
+  --border: rgba(239, 236, 228, 0.10);
+  --border-strong: rgba(239, 236, 228, 0.18);
+  --accent: var(--sentinel-400);
+  --accent-strong: var(--sentinel-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #1c1a24;
+  --text-secondary: #4a4757;
+  --text-tertiary: #78748a;
+  --border: rgba(28, 26, 36, 0.10);
+  --border-strong: rgba(28, 26, 36, 0.18);
+  --accent: var(--sentinel-600);
+  --accent-strong: var(--sentinel-500);
+  --shadow: 0 8px 30px rgba(28,26,36,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sentinel-400); color: #fff; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+/* ---------- Top identity bar ---------- */
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+/* ---------- Nav rail ---------- */
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* ---------- Case box ---------- */
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+/* ---------- Danger / storm callout ---------- */
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--gold-500); }
+
+.evidence {
+  border-left: 3px solid var(--sentinel-400); background: color-mix(in srgb, var(--sentinel-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sentinel-400); display:block; margin-bottom: 0.4rem; }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Diagram frame ---------- */
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ---------- Comparison strip ---------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+/* ---------- badges/pills ---------- */
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- footer ---------- */
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* toc back-to-top */
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Immunology Atlas</span>
+    <span class="sub">Vol. V &middot; Transplant Immunology</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#rejection-types">Rejection Types</a><a href="#gvhd">GVHD</a><a href="#immunosuppressant-mechanisms">Drug Mechanisms</a><a href="#cni-toxicity">Calcineurin Inhibitors / PRES</a><a href="#other-immunosuppressants">Other Agents</a><a href="#transplant-ed-approach">ED Approach</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME V OF THE IMMUNOLOGY SERIES</div>
+  <h1>Transplant Immunology</h1>
+  <p class="lede">The two directions transplant immunology can go wrong — solid organ rejection and graft-versus-host disease —
+  plus the toxicity profile of the immunosuppressants holding the whole system in balance, and the three-way rejection/infection/toxicity
+  differential that has to run through every new symptom in a transplant patient.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">4</div><div class="l">Rejection mechanisms</div></div>
+    <div class="hero-stat"><div class="n">3</div><div class="l">GVHD target organs</div></div>
+    <div class="hero-stat"><div class="n">4</div><div class="l">Pathway &amp; mechanism diagrams</div></div>
+  </div>
+</div>
+
+<section class="block" id="rejection-types">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Solid Organ Transplant</span>
+      <h2>Rejection: Four Mechanisms, Four Timelines</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The timeline alone narrows the mechanism before a single lab result comes back.</p>
+    </div><p class="lead-q">“Three years out from a kidney transplant with a slowly rising creatinine — is this even rejection, or something else entirely?”</p><div class="diagram"><svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="60" x2="810" y2="60" style="stroke:var(--border-strong)" stroke-width="2"></line><circle cx="90.0" cy="60" r="7" style="fill:var(--ember-500)"></circle><text x="90.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="14" style="fill:var(--ember-500)">Hyperacute</text><text x="90.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--ember-500)">Minutes – hours</text><text x="90.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">Pre-formed</text><text x="90.0" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">donor-specific</text><text x="90.0" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">antibodies; now rare due</text><text x="90.0" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">to pre-transplant</text><text x="90.0" y="175" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">crossmatching</text><circle cx="316.66666666666663" cy="60" r="7" style="fill:var(--gold-500)"></circle><text x="316.66666666666663" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="14" style="fill:var(--gold-500)">Acute cellular</text><text x="316.66666666666663" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--gold-500)">Days – months</text><text x="316.66666666666663" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">T-cell mediated; most</text><text x="316.66666666666663" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">common type; often found</text><text x="316.66666666666663" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">on protocol biopsy</text><text x="316.66666666666663" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">before symptomatic</text><circle cx="543.3333333333333" cy="60" r="7" style="fill:var(--gold-500)"></circle><text x="543.3333333333333" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="14" style="fill:var(--gold-500)">Acute antibody-mediated</text><text x="543.3333333333333" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--gold-500)">Days – months</text><text x="543.3333333333333" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">De novo donor-specific</text><text x="543.3333333333333" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">antibodies; harder to</text><text x="543.3333333333333" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">treat than cellular</text><text x="543.3333333333333" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">rejection</text><circle cx="770.0" cy="60" r="7" style="fill:var(--sentinel-400)"></circle><text x="770.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="14" style="fill:var(--sentinel-400)">Chronic</text><text x="770.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--sentinel-400)">Months – years</text><text x="770.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">Fibrosis and</text><text x="770.0" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">vasculopathy; largely</text><text x="770.0" y="145" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">irreversible; leading</text><text x="770.0" y="160" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">cause of long-term graft</text><text x="770.0" y="175" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">loss</text></svg><div class="cap">Figure 1. Four rejection mechanisms, roughly ordered by how soon after transplant each becomes possible.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Type</th><th class="">Mechanism</th><th class="">ED-relevant presentation</th></tr></thead>
+        <tbody><tr><td class="hl">Hyperacute</td><td class="">Pre-formed donor-specific antibodies bind graft endothelium immediately on reperfusion</td><td class="">Now rare given routine pre-transplant crossmatching; if it occurs, it's recognized in the OR, not the ED</td></tr><tr><td class="hl">Acute cellular</td><td class="">T-cell mediated direct attack on graft tissue — the most common rejection type</td><td class="">Often subclinical, found on protocol biopsy; when symptomatic: graft tenderness/swelling (kidney), organ dysfunction, low-grade fever</td></tr><tr><td class="hl">Acute antibody-mediated</td><td class="">De novo donor-specific antibodies develop post-transplant</td><td class="">Similar presentation to cellular rejection but generally more treatment-resistant; often found on biopsy with C4d staining</td></tr><tr><td class="hl">Chronic</td><td class="">Progressive fibrosis and vasculopathy from cumulative immune injury over time</td><td class="">Slowly rising creatinine (kidney), progressive dyspnea/reduced ejection fraction (heart), or insidious organ dysfunction over months to years; largely irreversible</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>The ED's actual job with suspected rejection is rarely to diagnose it definitively</b> — that requires biopsy and specialist interpretation. The job is to recognize the pattern (unexplained graft-organ dysfunction in a transplant recipient), rule out the mimics that are actually treatable emergently (infection, drug toxicity, obstruction/vascular complication), and get the transplant team involved quickly.</div><div class="verify"><b>Verify before use:</b> rejection presentation varies significantly by organ (kidney, liver, heart, lung each have different typical signs) — this table is a general framework, not organ-specific detail.</div>  </div>
+</section>
+<section class="block" id="gvhd">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Hematopoietic Stem Cell Transplant</span>
+      <h2>Graft-versus-Host Disease</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The mirror image of rejection — here, the transplanted immune system is the one doing the attacking.</p>
+    </div><p>After allogeneic hematopoietic stem cell transplant (HSCT), the transplanted donor immune cells can recognize the
+    <i>recipient's</i> tissue as foreign and attack it — the reverse direction of solid organ rejection. <b>Acute GVHD</b> classically targets
+    three organs — skin, liver, and the GI tract — and while it was traditionally defined as occurring within the first 100 days post-transplant,
+    the modern view recognizes meaningful overlap in timing with chronic GVHD. <b>Chronic GVHD</b> behaves more like a multi-organ autoimmune/
+    sclerodermatous disease and carries its own distinct, broader set of manifestations.</p><h3>Acute GVHD staging (MAGIC criteria)</h3><div class="diagram"><svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg"><text x="277.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">STAGE 0</text><text x="411.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">STAGE 1</text><text x="545.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">STAGE 2</text><text x="679.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">STAGE 3</text><text x="813.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">STAGE 4</text><text x="0" y="74.0" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Skin</text><rect x="210.0" y="40" width="128.0" height="46" rx="6" style="fill:var(--sage-500);fill-opacity:0.18;stroke:var(--sage-500);stroke-width:1.2"></rect><text x="274.0" y="67.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">No rash</text><rect x="344.0" y="40" width="128.0" height="46" rx="6" style="fill:var(--sage-400);fill-opacity:0.18;stroke:var(--sage-400);stroke-width:1.2"></rect><text x="408.0" y="61.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">Maculopapular</text><text x="408.0" y="73.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&lt;25% BSA</text><rect x="478.0" y="40" width="128.0" height="46" rx="6" style="fill:var(--gold-500);fill-opacity:0.18;stroke:var(--gold-500);stroke-width:1.2"></rect><text x="542.0" y="61.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">Maculopapular</text><text x="542.0" y="73.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">25–50% BSA</text><rect x="612.0" y="40" width="128.0" height="46" rx="6" style="fill:var(--ember-500);fill-opacity:0.18;stroke:var(--ember-500);stroke-width:1.2"></rect><text x="676.0" y="61.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">Maculopapular</text><text x="676.0" y="73.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&gt;50% BSA</text><rect x="746.0" y="40" width="128.0" height="46" rx="6" style="fill:var(--ember-600);fill-opacity:0.18;stroke:var(--ember-600);stroke-width:1.2"></rect><text x="810.0" y="55.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">Erythroderma +</text><text x="810.0" y="67.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">bullae/desquamation</text><text x="810.0" y="79.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&gt;5%</text><text x="0" y="134.0" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Liver (bilirubin)</text><rect x="210.0" y="100" width="128.0" height="46" rx="6" style="fill:var(--sage-500);fill-opacity:0.18;stroke:var(--sage-500);stroke-width:1.2"></rect><text x="274.0" y="127.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&lt;2 mg/dL</text><rect x="344.0" y="100" width="128.0" height="46" rx="6" style="fill:var(--sage-400);fill-opacity:0.18;stroke:var(--sage-400);stroke-width:1.2"></rect><text x="408.0" y="127.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">2–3 mg/dL</text><rect x="478.0" y="100" width="128.0" height="46" rx="6" style="fill:var(--gold-500);fill-opacity:0.18;stroke:var(--gold-500);stroke-width:1.2"></rect><text x="542.0" y="127.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">3.1–6 mg/dL</text><rect x="612.0" y="100" width="128.0" height="46" rx="6" style="fill:var(--ember-500);fill-opacity:0.18;stroke:var(--ember-500);stroke-width:1.2"></rect><text x="676.0" y="127.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">6.1–15 mg/dL</text><rect x="746.0" y="100" width="128.0" height="46" rx="6" style="fill:var(--ember-600);fill-opacity:0.18;stroke:var(--ember-600);stroke-width:1.2"></rect><text x="810.0" y="127.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&gt;15 mg/dL</text><text x="0" y="194.0" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Lower GI (stool output, adult)</text><rect x="210.0" y="160" width="128.0" height="46" rx="6" style="fill:var(--sage-500);fill-opacity:0.18;stroke:var(--sage-500);stroke-width:1.2"></rect><text x="274.0" y="187.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&lt;500 mL/day</text><rect x="344.0" y="160" width="128.0" height="46" rx="6" style="fill:var(--sage-400);fill-opacity:0.18;stroke:var(--sage-400);stroke-width:1.2"></rect><text x="408.0" y="187.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">500–999 mL/day</text><rect x="478.0" y="160" width="128.0" height="46" rx="6" style="fill:var(--gold-500);fill-opacity:0.18;stroke:var(--gold-500);stroke-width:1.2"></rect><text x="542.0" y="187.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">1000–1500 mL/day</text><rect x="612.0" y="160" width="128.0" height="46" rx="6" style="fill:var(--ember-500);fill-opacity:0.18;stroke:var(--ember-500);stroke-width:1.2"></rect><text x="676.0" y="187.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">&gt;1500 mL/day</text><rect x="746.0" y="160" width="128.0" height="46" rx="6" style="fill:var(--ember-600);fill-opacity:0.18;stroke:var(--ember-600);stroke-width:1.2"></rect><text x="810.0" y="175.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">Severe pain ±</text><text x="810.0" y="187.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">ileus or bloody</text><text x="810.0" y="199.0" text-anchor="middle" font-family="var(--font-mono)" font-size="9" style="fill:var(--text-primary)">stool</text><text x="0" y="270" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Overall grade = highest stage across the three organs (MAGIC criteria)</text></svg><div class="cap">Figure 2. Acute GVHD is staged independently in each of three organs; the overall grade takes the worst of the three.</div></div><div class="pearl"><b>The clinical picture to recognize:</b> a maculopapular rash (often starting on palms/soles/ears before spreading), high-volume watery or bloody diarrhea, and rising bilirubin in a patient who had an allogeneic stem cell transplant, typically in the first weeks to months post-transplant. Any one of these findings in that context should raise GVHD, and the degree of each (per the staging above) drives the overall severity grade and treatment intensity.</div><h3>Chronic GVHD — a different disease pattern</h3><p>Chronic GVHD manifests less like an acute inflammatory attack and more like an acquired multi-organ autoimmune syndrome:
+    sclerodermatous skin changes, dry eyes/mouth (sicca syndrome), bronchiolitis obliterans in the lungs, and liver involvement resembling chronic
+    cholestasis. It carries its own long-term morbidity independent of the original transplant indication, and its management (extended
+    immunosuppression, often for years) is a major driver of the chronic infection risk discussed in Volume II.</p><div class="verify"><b>Verify before use:</b> acute GVHD staging criteria have been revised over time (Glucksberg → IBMTR → MAGIC) and different transplant centers may still reference different systems — confirm which staging system your institution/transplant service uses.</div>  </div>
+</section>
+<section class="block" id="immunosuppressant-mechanisms">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Immunosuppression</span>
+      <h2>Where Each Drug Class Acts</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Same goal — stop T-cell-driven rejection — four different chokepoints, four different toxicity profiles.</p>
+    </div><div class="diagram"><svg viewBox="0 0 920 330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M155.2,140.6 L245.5,99.4" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M168.5,168.7 L221.8,169.2" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M152.8,195.4 L248.0,240.6" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.2,69.3 L461.9,68.8" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.2,169.3 L461.9,168.8" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M398.2,269.3 L461.9,268.8" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M648.1,169.9 L701.9,171.1" fill="none" style="stroke:var(--slate-500);color:var(--slate-500)" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)"></path><rect x="20" y="140" width="150" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="95.0" y="161.49">Antigen presentation</tspan><tspan x="95.0" y="174.615">to T cell</tspan></text><rect x="220" y="40" width="180" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="310.0" y="58.22">Signal 1: TCR activation</tspan><tspan x="310.0" y="70.095">→ calcineurin → NFAT →</tspan><tspan x="310.0" y="81.97">IL-2 gene</tspan></text><rect x="460" y="40" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="555.0" y="55.6">Blocked by:</tspan><tspan x="555.0" y="68.1">tacrolimus,</tspan><tspan x="555.0" y="80.6">cyclosporine</tspan></text><rect x="220" y="140" width="180" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="310.0" y="158.22">Signal 3: IL-2 receptor</tspan><tspan x="310.0" y="170.095">→ mTOR → cell cycle</tspan><tspan x="310.0" y="181.97">progression</tspan></text><rect x="460" y="140" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="555.0" y="161.8">Blocked by: sirolimus,</tspan><tspan x="555.0" y="174.3">everolimus</tspan></text><rect x="220" y="240" width="180" height="60" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="310.0" y="258.22">Clonal expansion</tspan><tspan x="310.0" y="270.095">requires new purine/DNA</tspan><tspan x="310.0" y="281.97">synthesis</tspan></text><rect x="460" y="240" width="190" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="555.0" y="255.6">Blocked by:</tspan><tspan x="555.0" y="268.1">mycophenolate,</tspan><tspan x="555.0" y="280.6">azathioprine</tspan></text><rect x="700" y="140" width="190" height="66" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="795.0" y="155.33">Steroids: broad</tspan><tspan x="795.0" y="167.205">transcriptional</tspan><tspan x="795.0" y="179.08">suppression across the</tspan><tspan x="795.0" y="190.955">whole cascade</tspan></text></svg><div class="cap">Figure 3. Immunosuppressant drug classes block T-cell activation at different points in the same pathway.</div></div>  </div>
+</section>
+<section class="block" id="cni-toxicity">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Immunosuppression</span>
+      <h2>Calcineurin Inhibitors (Tacrolimus, Cyclosporine)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The backbone of most regimens — and the class most likely to be the reason a stable transplant patient suddenly isn't.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Toxicity</th><th class="">Detail</th></tr></thead>
+        <tbody><tr><td class="hl">Nephrotoxicity</td><td class="">Dose-related, often reversible early; harder to distinguish from rejection without a level and, sometimes, a biopsy</td></tr><tr><td class="hl">Neurotoxicity</td><td class="">Ranges from tremor to <b>PRES</b> (posterior reversible encephalopathy syndrome) — see below</td></tr><tr><td class="hl">Metabolic</td><td class="">Hyperkalemia, hypertension, hyperglycemia (more pronounced with tacrolimus)</td></tr><tr><td class="hl">Cyclosporine-specific</td><td class="">Gingival hyperplasia, hirsutism, more pronounced hypertension</td></tr><tr><td class="hl">Narrow therapeutic index</td><td class="">Trough levels matter — too low risks rejection, too high risks toxicity; numerous CYP3A4 drug interactions (azole antifungals and macrolides raise levels; rifampin lowers them)</td></tr></tbody>
+      </table>
+    </div><h3>PRES — the calcineurin inhibitor emergency worth recognizing by name</h3><div class="diagram"><svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,172.9 L241.9,174.8" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M335.0,95.4 L335.0,140.8" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)"></path><path d="M428.1,176.1 L481.9,174.9" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M668.1,175.0 L721.8,176.1" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="140" width="170" height="60" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="105.0" y="157.6">Patient on a</tspan><tspan x="105.0" y="170.1">calcineurin inhibitor</tspan><tspan x="105.0" y="182.6">(or sirolimus)</tspan></text><rect x="240" y="140" width="190" height="76" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="335.0" y="165.6">New headache, seizure,</tspan><tspan x="335.0" y="178.1">visual disturbance, or</tspan><tspan x="335.0" y="190.6">altered mental status</tspan></text><rect x="240" y="40" width="190" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="335.0" y="61.8">Often (not always)</tspan><tspan x="335.0" y="74.3">with hypertension</tspan></text><rect x="480" y="140" width="190" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="575.0" y="160.6">MRI: posterior</tspan><tspan x="575.0" y="173.1">(occipito-parietal)</tspan><tspan x="575.0" y="185.6">vasogenic edema</tspan></text><rect x="720" y="140" width="180" height="76" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="810.0" y="159.4">Reduce/hold/switch the</tspan><tspan x="810.0" y="171.9">causative agent +</tspan><tspan x="810.0" y="184.4">control BP — generally</tspan><tspan x="810.0" y="196.9">reversible</tspan></text></svg><div class="cap">Figure 4. Recognizing calcineurin-inhibitor-associated PRES.</div></div>
+    <div class="case">
+      <span class="case-label">Case pattern</span>
+      <p>Two weeks after a kidney transplant on a tacrolimus-based regimen, a patient develops headache,
+        blurred vision, and a witnessed generalized tonic-clonic seizure. Blood pressure is elevated but not dramatically so. MRI shows vasogenic
+        edema concentrated in the posterior (occipito-parietal) white matter. This is the classic presentation of calcineurin-inhibitor-associated
+        PRES — note that it can occur as early as the first 1–2 weeks post-transplant, doesn't require severe hypertension to occur, and is
+        generally reversible with blood pressure control and reducing, holding, or switching the causative agent (often tacrolimus to cyclosporine, "
+        "or a dose reduction).</p>
+    </div><div class="myth"><b>Myth:</b> “normal or only mildly elevated blood pressure makes PRES unlikely.” Hypertension is common in CNI-associated PRES but not universal — don't let a reassuring blood pressure talk you out of the diagnosis in a transplant patient with new headache, seizure, visual change, or altered mental status.</div>  </div>
+</section>
+<section class="block" id="other-immunosuppressants">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Immunosuppression</span>
+      <h2>Antimetabolites, mTOR Inhibitors &amp; Steroids</h2>
+      
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Class</th><th class="">Agents</th><th class="">Key toxicity</th><th class="">Note</th></tr></thead>
+        <tbody><tr><td class="hl">Antimetabolites</td><td class="">Mycophenolate mofetil, azathioprine</td><td class="">GI toxicity (diarrhea is common and can mimic GVHD/infection), leukopenia</td><td class="">Not nephrotoxic — often favored in a calcineurin-sparing regimen for patients with renal dysfunction</td></tr><tr><td class="hl">mTOR inhibitors</td><td class="">Sirolimus, everolimus</td><td class="">Impaired wound healing, hyperlipidemia, thrombocytopenia, interstitial pneumonitis</td><td class="">Not nephrotoxic — sometimes substituted specifically to spare the kidney; pneumonitis is an easy miss if not specifically considered</td></tr><tr><td class="hl">Corticosteroids</td><td class="">Prednisone (maintenance), methylprednisolone (pulse for rejection)</td><td class="">The general infection-risk and atypical-presentation issues covered in Volume II</td><td class="">Broadest mechanism — suppresses the pathway at multiple points rather than one specific target</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Diarrhea in a transplant patient is a genuine three-way differential:</b> mycophenolate toxicity, GVHD (in the HSCT population), and infection (including CMV colitis) can all present similarly — the workup (and the urgency) differs substantially depending on which one it is, so this symptom alone shouldn't be assumed to be a drug side effect without at least considering the other two.</div><div class="verify"><b>Verify before use:</b> specific target trough levels, dose adjustments, and toxicity management belong to the transplant team — this section is oriented toward ED recognition of toxicity patterns, not dosing.</div>  </div>
+</section>
+<section class="block" id="transplant-ed-approach">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Practical Synthesis</span>
+      <h2>The ED Approach: Rejection, Infection, or Toxicity?</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Every new symptom in a transplant patient is one of three things until proven otherwise — and the three have very different next steps.</p>
+    </div><p class="lead-q">“New fever and malaise in a transplant patient — rejection, infection, or a drug problem, and where do I even start?”</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Possibility</th><th class="">Favors this</th><th class="">Initial ED move</th></tr></thead>
+        <tbody><tr><td class="hl">Rejection</td><td class="">Organ-specific dysfunction (rising creatinine, falling ejection fraction, rising LFTs) without a clear infectious or toxic explanation</td><td class="">Trend the organ-specific marker, involve transplant team, avoid assuming without ruling out the other two first</td></tr><tr><td class="hl">Infection</td><td class="">Fever, localizing symptoms, timeline consistent with the post-transplant infection risk window (see Volume II)</td><td class="">Cultures before antibiotics when feasible, but don't delay empiric coverage in a sick-appearing patient — the same urgency principles from Volume II apply</td></tr><tr><td class="hl">Drug toxicity</td><td class="">Symptom pattern matches a known toxicity of the patient's specific regimen (see tables above); recent dose change or new interacting medication</td><td class="">Check a drug level if applicable (tacrolimus, cyclosporine), review the med list for new interacting drugs (azoles, macrolides especially)</td></tr></tbody>
+      </table>
+    </div>
+    <div class="case">
+      <span class="case-label">Practical synthesis</span>
+      <p>Get a precise transplant history fast: organ, time since transplant, current
+        immunosuppression regimen and any recent changes, and baseline organ function (a baseline creatinine or ejection fraction changes everything
+        about how to interpret today's number). Cross-reference the timeline framework from Volume II — how long ago the transplant happened
+        narrows the infectious differential meaningfully. Involve the transplant team early; they carry both the patient's specific history and the
+        standing relationship to guide a rejection-vs-infection-vs-toxicity call that's genuinely difficult to make from a single ED visit. When in
+        doubt and the patient looks unwell, treat empirically for infection while the rest of the workup proceeds — undertreating a real infection "
+        "in an immunosuppressed patient is the higher-consequence error of the three possibilities.</p>
+    </div>  </div>
+</section>
+<footer class="wrap">
+  <p>Immunology Atlas &middot; Volume V of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures, staging criteria, and dosing against current institutional/transplant-service sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('immuno-atlas-v5-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('immuno-atlas-v5-theme', next);
+      paint();
+    });
+
+    // Scroll-spy for nav rail
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

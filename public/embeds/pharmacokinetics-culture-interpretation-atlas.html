@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacokinetics &amp; Culture Interpretation Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #17130f;
+  --ink-800: #201a14;
+  --ink-700: #2e261c;
+  --paper-050: #f8f5f0;
+  --paper-100: #eee7db;
+  --paper-200: #e2d8c6;
+
+  --assay-600: #a8672a;
+  --assay-500: #c17f2e;
+  --assay-400: #d99a4e;
+  --assay-300: #e6b878;
+
+  --plum-500: #7b6bb0;
+  --plum-400: #9686c9;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #f1ece3;
+  --text-secondary: #c2b8a8;
+  --text-tertiary: #948a79;
+  --border: rgba(241, 236, 227, 0.10);
+  --border-strong: rgba(241, 236, 227, 0.18);
+  --accent: var(--assay-400);
+  --accent-strong: var(--assay-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #201a14;
+  --text-secondary: #52483b;
+  --text-tertiary: #7d7364;
+  --border: rgba(32, 26, 20, 0.10);
+  --border-strong: rgba(32, 26, 20, 0.18);
+  --accent: var(--assay-600);
+  --accent-strong: var(--assay-500);
+  --shadow: 0 8px 30px rgba(32,26,20,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--assay-400); color: #1a1208; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--plum-500); }
+
+.evidence {
+  border-left: 3px solid var(--assay-400); background: color-mix(in srgb, var(--assay-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--assay-400); display:block; margin-bottom: 0.4rem; }
+
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- Calculator ---------- */
+.calc-panel { background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: 14px; padding: 1.6rem 1.7rem; margin: 1.6rem 0; box-shadow: var(--shadow); }
+.calc-row { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-bottom: 1rem; }
+.calc-field { flex: 1; min-width: 200px; }
+.calc-field label { display: block; font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary); margin-bottom: 0.4rem; }
+.calc-field input {
+  width: 100%; padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-strong);
+  background: var(--bg-elevated-2); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.95rem;
+}
+.calc-field input:focus { outline: none; border-color: var(--accent); }
+.calc-output { margin-top: 1.2rem; }
+.calc-highlight {
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1rem;
+  font-size: 0.95rem; color: var(--text-primary);
+}
+.calc-highlight b { color: var(--accent-strong); }
+.calc-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.calc-table th { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 0.55rem 0.7rem; color: var(--text-tertiary); border-bottom: 1px solid var(--border-strong); }
+.calc-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); font-family: var(--font-mono); color: var(--text-secondary); }
+.calc-table tr:last-child td { color: var(--text-primary); font-weight: 600; border-bottom: none; }
+.calc-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.8rem; }
+
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">PK &amp; Culture Atlas</span>
+    <span class="sub">Half-Life &middot; MIC &middot; Culture Significance</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#pk-basics">Onset / Peak / Duration</a><a href="#halflife-clearance">Half-Life & Washout</a><a href="#onset-reference">ED Onset Reference</a><a href="#washout-calculator">Washout Calculator</a><a href="#lookup-resources">Lookup Resources</a><a href="#mic-basics">What MIC Is</a><a href="#pkpd-index">PK-PD Index</a><a href="#culture-framework">Sterile vs Colonized</a><a href="#culture-urine">Urine</a><a href="#culture-blood">Blood</a><a href="#culture-respiratory">Respiratory</a><a href="#culture-wound">Wound</a><a href="#culture-csf">CSF</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; PHARMACOKINETICS &amp; MICROBIOLOGY INTERPRETATION</div>
+  <h1>Pharmacokinetics &amp; Culture Interpretation</h1>
+  <p class="lede">How half-life actually determines onset, redosing, washout, and loading-dose logic; how MIC connects to real-world
+  susceptibility and dosing strategy; and how to read a culture result — urine, blood, respiratory, wound, and CSF — without
+  defaulting to a single memorized colony-count cutoff that doesn't actually apply everywhere.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">2</div><div class="l">Core PK concepts</div></div>
+    <div class="hero-stat"><div class="n">3</div><div class="l">PK-PD killing patterns</div></div>
+    <div class="hero-stat"><div class="n">5</div><div class="l">Specimen types covered</div></div>
+  </div>
+</div>
+
+<section class="block" id="pk-basics">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pharmacokinetics</span>
+      <h2>Onset, Peak, Duration — the Basic Vocabulary</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Four numbers that describe the entire life cycle of a drug in the body.</p>
+    </div><p class="lead-q">“I gave IV morphine 8 minutes ago and it hasn't touched the pain — do I redose now, or is this just too soon?”</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Term</th><th class="">What it means</th><th class="">Why it matters at the bedside</th></tr></thead>
+        <tbody><tr><td class="hl">Onset of action</td><td class="">Time from administration to first detectable clinical effect</td><td class="">Redosing before onset has occurred risks stacking doses rather than treating undertreated pain/agitation</td></tr><tr><td class="hl">T<sub>max</sub> (time to peak)</td><td class="">Time to maximum plasma concentration</td><td class="">Peak effect — and peak risk of adverse effect — occurs here, not at the moment of administration</td></tr><tr><td class="hl">Duration of action</td><td class="">How long the clinical effect lasts, which depends on both dose and half-life</td><td class="">Determines redosing interval; often longer than half-life would suggest at high doses</td></tr><tr><td class="hl">Half-life (t½)</td><td class="">Time for plasma concentration to fall by 50%</td><td class="">The single most useful number for predicting how long a drug will remain active or detectable</td></tr></tbody>
+      </table>
+    </div><p>Route drives onset more than any other single factor: IV onset is typically measured in minutes (limited only by circulation
+    time), IM/SC in 10–30 minutes, oral in 30–90 minutes depending on absorption and first-pass metabolism. Onset and half-life are independent
+    of each other — a drug can have a fast onset and a long half-life (e.g., IV fentanyl: onset ~1–2 minutes, but repeated dosing still
+    accumulates over its full half-life) or a slow onset and short half-life.</p>  </div>
+</section>
+<section class="block" id="halflife-clearance">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pharmacokinetics</span>
+      <h2>Half-Life, Elimination &amp; Washout</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The rule of thumb that answers most “how long until this drug is gone” questions in the ED.</p>
+    </div><div class="diagram"><svg viewBox="0 0 780 340" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="280" x2="740" y2="280" style="stroke:var(--border-strong)" stroke-width="2"></line><line x1="60" y1="40" x2="60" y2="280" style="stroke:var(--border-strong)" stroke-width="2"></line><path d="M 60.0,40.0 L 61.4,41.7 L 62.7,43.3 L 64.1,44.9 L 65.4,46.6 L 66.8,48.2 L 68.2,49.8 L 69.5,51.4 L 70.9,52.9 L 72.2,54.5 L 73.6,56.1 L 75.0,57.6 L 76.3,59.2 L 77.7,60.7 L 79.0,62.2 L 80.4,63.7 L 81.8,65.2 L 83.1,66.7 L 84.5,68.2 L 85.8,69.6 L 87.2,71.1 L 88.6,72.5 L 89.9,73.9 L 91.3,75.4 L 92.6,76.8 L 94.0,78.2 L 95.4,79.6 L 96.7,81.0 L 98.1,82.3 L 99.4,83.7 L 100.8,85.1 L 102.2,86.4 L 103.5,87.7 L 104.9,89.1 L 106.2,90.4 L 107.6,91.7 L 109.0,93.0 L 110.3,94.3 L 111.7,95.6 L 113.0,96.8 L 114.4,98.1 L 115.8,99.4 L 117.1,100.6 L 118.5,101.9 L 119.8,103.1 L 121.2,104.3 L 122.6,105.5 L 123.9,106.7 L 125.3,107.9 L 126.6,109.1 L 128.0,110.3 L 129.4,111.5 L 130.7,112.6 L 132.1,113.8 L 133.4,114.9 L 134.8,116.1 L 136.2,117.2 L 137.5,118.3 L 138.9,119.4 L 140.2,120.6 L 141.6,121.7 L 143.0,122.8 L 144.3,123.8 L 145.7,124.9 L 147.0,126.0 L 148.4,127.1 L 149.8,128.1 L 151.1,129.2 L 152.5,130.2 L 153.8,131.2 L 155.2,132.3 L 156.6,133.3 L 157.9,134.3 L 159.3,135.3 L 160.6,136.3 L 162.0,137.3 L 163.4,138.3 L 164.7,139.3 L 166.1,140.2 L 167.4,141.2 L 168.8,142.2 L 170.2,143.1 L 171.5,144.1 L 172.9,145.0 L 174.2,145.9 L 175.6,146.9 L 177.0,147.8 L 178.3,148.7 L 179.7,149.6 L 181.0,150.5 L 182.4,151.4 L 183.8,152.3 L 185.1,153.2 L 186.5,154.0 L 187.8,154.9 L 189.2,155.8 L 190.6,156.6 L 191.9,157.5 L 193.3,158.3 L 194.6,159.2 L 196.0,160.0 L 197.4,160.8 L 198.7,161.7 L 200.1,162.5 L 201.4,163.3 L 202.8,164.1 L 204.2,164.9 L 205.5,165.7 L 206.9,166.5 L 208.2,167.3 L 209.6,168.0 L 211.0,168.8 L 212.3,169.6 L 213.7,170.3 L 215.0,171.1 L 216.4,171.8 L 217.8,172.6 L 219.1,173.3 L 220.5,174.1 L 221.8,174.8 L 223.2,175.5 L 224.6,176.3 L 225.9,177.0 L 227.3,177.7 L 228.6,178.4 L 230.0,179.1 L 231.4,179.8 L 232.7,180.5 L 234.1,181.2 L 235.4,181.9 L 236.8,182.5 L 238.2,183.2 L 239.5,183.9 L 240.9,184.5 L 242.2,185.2 L 243.6,185.8 L 245.0,186.5 L 246.3,187.1 L 247.7,187.8 L 249.0,188.4 L 250.4,189.1 L 251.8,189.7 L 253.1,190.3 L 254.5,190.9 L 255.8,191.5 L 257.2,192.2 L 258.6,192.8 L 259.9,193.4 L 261.3,194.0 L 262.6,194.6 L 264.0,195.1 L 265.4,195.7 L 266.7,196.3 L 268.1,196.9 L 269.4,197.5 L 270.8,198.0 L 272.2,198.6 L 273.5,199.2 L 274.9,199.7 L 276.2,200.3 L 277.6,200.8 L 279.0,201.4 L 280.3,201.9 L 281.7,202.5 L 283.0,203.0 L 284.4,203.5 L 285.8,204.1 L 287.1,204.6 L 288.5,205.1 L 289.8,205.6 L 291.2,206.1 L 292.6,206.6 L 293.9,207.1 L 295.3,207.7 L 296.6,208.2 L 298.0,208.6 L 299.4,209.1 L 300.7,209.6 L 302.1,210.1 L 303.4,210.6 L 304.8,211.1 L 306.2,211.6 L 307.5,212.0 L 308.9,212.5 L 310.2,213.0 L 311.6,213.4 L 313.0,213.9 L 314.3,214.3 L 315.7,214.8 L 317.0,215.2 L 318.4,215.7 L 319.8,216.1 L 321.1,216.6 L 322.5,217.0 L 323.8,217.5 L 325.2,217.9 L 326.6,218.3 L 327.9,218.7 L 329.3,219.2 L 330.6,219.6 L 332.0,220.0 L 333.4,220.4 L 334.7,220.8 L 336.1,221.2 L 337.4,221.6 L 338.8,222.0 L 340.2,222.4 L 341.5,222.8 L 342.9,223.2 L 344.2,223.6 L 345.6,224.0 L 347.0,224.4 L 348.3,224.8 L 349.7,225.2 L 351.0,225.5 L 352.4,225.9 L 353.8,226.3 L 355.1,226.7 L 356.5,227.0 L 357.8,227.4 L 359.2,227.8 L 360.6,228.1 L 361.9,228.5 L 363.3,228.8 L 364.6,229.2 L 366.0,229.5 L 367.4,229.9 L 368.7,230.2 L 370.1,230.6 L 371.4,230.9 L 372.8,231.3 L 374.2,231.6 L 375.5,231.9 L 376.9,232.3 L 378.2,232.6 L 379.6,232.9 L 381.0,233.3 L 382.3,233.6 L 383.7,233.9 L 385.0,234.2 L 386.4,234.5 L 387.8,234.8 L 389.1,235.2 L 390.5,235.5 L 391.8,235.8 L 393.2,236.1 L 394.6,236.4 L 395.9,236.7 L 397.3,237.0 L 398.6,237.3 L 400.0,237.6 L 401.4,237.9 L 402.7,238.2 L 404.1,238.4 L 405.4,238.7 L 406.8,239.0 L 408.2,239.3 L 409.5,239.6 L 410.9,239.9 L 412.2,240.1 L 413.6,240.4 L 415.0,240.7 L 416.3,241.0 L 417.7,241.2 L 419.0,241.5 L 420.4,241.8 L 421.8,242.0 L 423.1,242.3 L 424.5,242.6 L 425.8,242.8 L 427.2,243.1 L 428.6,243.3 L 429.9,243.6 L 431.3,243.8 L 432.6,244.1 L 434.0,244.3 L 435.4,244.6 L 436.7,244.8 L 438.1,245.1 L 439.4,245.3 L 440.8,245.5 L 442.2,245.8 L 443.5,246.0 L 444.9,246.2 L 446.2,246.5 L 447.6,246.7 L 449.0,246.9 L 450.3,247.2 L 451.7,247.4 L 453.0,247.6 L 454.4,247.8 L 455.8,248.1 L 457.1,248.3 L 458.5,248.5 L 459.8,248.7 L 461.2,248.9 L 462.6,249.2 L 463.9,249.4 L 465.3,249.6 L 466.6,249.8 L 468.0,250.0 L 469.4,250.2 L 470.7,250.4 L 472.1,250.6 L 473.4,250.8 L 474.8,251.0 L 476.2,251.2 L 477.5,251.4 L 478.9,251.6 L 480.2,251.8 L 481.6,252.0 L 483.0,252.2 L 484.3,252.4 L 485.7,252.6 L 487.0,252.8 L 488.4,253.0 L 489.8,253.1 L 491.1,253.3 L 492.5,253.5 L 493.8,253.7 L 495.2,253.9 L 496.6,254.1 L 497.9,254.2 L 499.3,254.4 L 500.6,254.6 L 502.0,254.8 L 503.4,254.9 L 504.7,255.1 L 506.1,255.3 L 507.4,255.5 L 508.8,255.6 L 510.2,255.8 L 511.5,256.0 L 512.9,256.1 L 514.2,256.3 L 515.6,256.5 L 517.0,256.6 L 518.3,256.8 L 519.7,256.9 L 521.0,257.1 L 522.4,257.3 L 523.8,257.4 L 525.1,257.6 L 526.5,257.7 L 527.8,257.9 L 529.2,258.0 L 530.6,258.2 L 531.9,258.3 L 533.3,258.5 L 534.6,258.6 L 536.0,258.8 L 537.4,258.9 L 538.7,259.1 L 540.1,259.2 L 541.4,259.4 L 542.8,259.5 L 544.2,259.7 L 545.5,259.8 L 546.9,259.9 L 548.2,260.1 L 549.6,260.2 L 551.0,260.3 L 552.3,260.5 L 553.7,260.6 L 555.0,260.7 L 556.4,260.9 L 557.8,261.0 L 559.1,261.1 L 560.5,261.3 L 561.8,261.4 L 563.2,261.5 L 564.6,261.7 L 565.9,261.8 L 567.3,261.9 L 568.6,262.0 L 570.0,262.2 L 571.4,262.3 L 572.7,262.4 L 574.1,262.5 L 575.4,262.6 L 576.8,262.8 L 578.2,262.9 L 579.5,263.0 L 580.9,263.1 L 582.2,263.2 L 583.6,263.4 L 585.0,263.5 L 586.3,263.6 L 587.7,263.7 L 589.0,263.8 L 590.4,263.9 L 591.8,264.0 L 593.1,264.1 L 594.5,264.3 L 595.8,264.4 L 597.2,264.5 L 598.6,264.6 L 599.9,264.7 L 601.3,264.8 L 602.6,264.9 L 604.0,265.0 L 605.4,265.1 L 606.7,265.2 L 608.1,265.3 L 609.4,265.4 L 610.8,265.5 L 612.2,265.6 L 613.5,265.7 L 614.9,265.8 L 616.2,265.9 L 617.6,266.0 L 619.0,266.1 L 620.3,266.2 L 621.7,266.3 L 623.0,266.4 L 624.4,266.5 L 625.8,266.6 L 627.1,266.7 L 628.5,266.8 L 629.8,266.9 L 631.2,266.9 L 632.6,267.0 L 633.9,267.1 L 635.3,267.2 L 636.6,267.3 L 638.0,267.4 L 639.4,267.5 L 640.7,267.6 L 642.1,267.6 L 643.4,267.7 L 644.8,267.8 L 646.2,267.9 L 647.5,268.0 L 648.9,268.1 L 650.2,268.1 L 651.6,268.2 L 653.0,268.3 L 654.3,268.4 L 655.7,268.5 L 657.0,268.6 L 658.4,268.6 L 659.8,268.7 L 661.1,268.8 L 662.5,268.9 L 663.8,268.9 L 665.2,269.0 L 666.6,269.1 L 667.9,269.2 L 669.3,269.2 L 670.6,269.3 L 672.0,269.4 L 673.4,269.5 L 674.7,269.5 L 676.1,269.6 L 677.4,269.7 L 678.8,269.8 L 680.2,269.8 L 681.5,269.9 L 682.9,270.0 L 684.2,270.0 L 685.6,270.1 L 687.0,270.2 L 688.3,270.2 L 689.7,270.3 L 691.0,270.4 L 692.4,270.4 L 693.8,270.5 L 695.1,270.6 L 696.5,270.6 L 697.8,270.7 L 699.2,270.8 L 700.6,270.8 L 701.9,270.9 L 703.3,271.0 L 704.6,271.0 L 706.0,271.1 L 707.4,271.1 L 708.7,271.2 L 710.1,271.3 L 711.4,271.3 L 712.8,271.4 L 714.2,271.4 L 715.5,271.5 L 716.9,271.6 L 718.2,271.6 L 719.6,271.7 L 721.0,271.7 L 722.3,271.8 L 723.7,271.8 L 725.0,271.9 L 726.4,272.0 L 727.8,272.0 L 729.1,272.1 L 730.5,272.1 L 731.8,272.2 L 733.2,272.2 L 734.6,272.3 L 735.9,272.3 L 737.3,272.4 L 738.6,272.4 L 740.0,272.5" fill="none" style="stroke:var(--assay-400)" stroke-width="3"></path><line x1="60.0" y1="280" x2="60.0" y2="40.0" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="60.0" cy="40.0" r="4.5" style="fill:var(--assay-400)"></circle><text x="60.0" y="28.0" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">100%</text><text x="60.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">0 t½</text><line x1="196.0" y1="280" x2="196.0" y2="160.0" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="196.0" cy="160.0" r="4.5" style="fill:var(--assay-400)"></circle><text x="196.0" y="148.0" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">50%</text><text x="196.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">1 t½</text><line x1="332.0" y1="280" x2="332.0" y2="220.0" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="332.0" cy="220.0" r="4.5" style="fill:var(--assay-400)"></circle><text x="332.0" y="208.0" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">25%</text><text x="332.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">2 t½</text><line x1="468.0" y1="280" x2="468.0" y2="250.0" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="468.0" cy="250.0" r="4.5" style="fill:var(--assay-400)"></circle><text x="468.0" y="238.0" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">12%</text><text x="468.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">3 t½</text><line x1="604.0" y1="280" x2="604.0" y2="265.0" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="604.0" cy="265.0" r="4.5" style="fill:var(--assay-400)"></circle><text x="604.0" y="253.0" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">6%</text><text x="604.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">4 t½</text><line x1="740.0" y1="280" x2="740.0" y2="272.5" stroke-dasharray="3,3" style="stroke:var(--border-strong)" stroke-width="1"></line><circle cx="740.0" cy="272.5" r="4.5" style="fill:var(--assay-400)"></circle><text x="740.0" y="260.5" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-primary)">3%</text><text x="740.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--text-tertiary)">5 t½</text><text x="60" y="16" text-anchor="start" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">% of dose remaining</text></svg><div class="cap">Figure 1. A single dose falls by half with every elapsed half-life — by 5 half-lives, ~97% has been eliminated.</div></div><div class="pearl"><b>The number worth memorizing:</b> after <b>5 half-lives</b>, a drug is considered essentially fully eliminated (~97% gone) — useful for estimating when a drug will be undetectable on testing, when it's safe to assume an ingestion is no longer actively absorbing/redistributing, or when a sedating agent should have cleared enough to reassess mental status.</div><p>The same 5-half-life rule runs in reverse for <b>repeated dosing</b>: with a fixed maintenance dose given at a fixed interval,
+    plasma concentration climbs and plateaus at steady state after roughly 5 half-lives — not after the first dose, and not linearly. This is exactly
+    why a <b>loading dose</b> exists: it's a single larger dose designed to reach the therapeutic range immediately, which the subsequent maintenance
+    doses then simply sustain, instead of making the patient wait 5 half-lives (which, for a drug like amiodarone with a multi-<i>week</i> half-life,
+    would be clinically absurd) to reach a therapeutic level by maintenance dosing alone.</p><div class="diagram"><svg viewBox="0 0 780 340" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="280" x2="740" y2="280" style="stroke:var(--border-strong)" stroke-width="2"></line><line x1="60" y1="30" x2="60" y2="280" style="stroke:var(--border-strong)" stroke-width="2"></line><line x1="60" y1="125.0" x2="740" y2="125.0" stroke-dasharray="5,4" style="stroke:var(--ember-500)" stroke-width="1.6"></line><text x="740" y="117.0" text-anchor="end" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--ember-500)">therapeutic threshold</text><path d="M 60.0,142.5 L 62.3,144.4 L 64.5,146.3 L 66.8,148.1 L 69.1,149.9 L 71.3,151.7 L 73.6,153.5 L 75.9,155.2 L 78.1,156.9 L 80.4,158.6 L 82.7,160.3 L 84.9,161.9 L 87.2,163.6 L 89.5,165.2 L 91.7,166.8 L 94.0,168.3 L 96.3,169.9 L 98.5,171.4 L 100.8,172.9 L 103.1,174.3 L 105.3,175.8 L 107.6,177.2 L 109.9,178.6 L 112.1,180.0 L 114.4,181.4 L 116.7,182.8 L 118.9,184.1 L 121.2,185.4 L 123.5,186.7 L 125.7,188.0 L 128.0,189.3 L 130.3,190.5 L 132.5,191.8 L 134.8,193.0 L 137.1,194.2 L 139.3,195.4 L 141.6,196.5 L 143.9,197.7 L 146.1,198.8 L 148.4,199.9 L 150.7,201.0 L 152.9,202.1 L 155.2,203.2 L 157.5,204.2 L 159.7,205.3 L 162.0,206.3 L 164.3,207.3 L 166.5,208.3 L 168.8,209.3 L 171.1,210.3 L 173.3,73.7 L 175.6,76.6 L 177.9,79.4 L 180.1,82.2 L 182.4,84.9 L 184.7,87.6 L 186.9,90.2 L 189.2,92.8 L 191.5,95.4 L 193.7,97.9 L 196.0,100.4 L 198.3,102.9 L 200.5,105.4 L 202.8,107.8 L 205.1,110.1 L 207.3,112.5 L 209.6,114.8 L 211.9,117.1 L 214.1,119.3 L 216.4,121.5 L 218.7,123.7 L 220.9,125.8 L 223.2,128.0 L 225.5,130.1 L 227.7,132.1 L 230.0,134.2 L 232.3,136.2 L 234.5,138.1 L 236.8,140.1 L 239.1,142.0 L 241.3,143.9 L 243.6,145.8 L 245.9,147.6 L 248.1,149.5 L 250.4,151.3 L 252.7,153.0 L 254.9,154.8 L 257.2,156.5 L 259.5,158.2 L 261.7,159.9 L 264.0,161.5 L 266.3,163.2 L 268.5,164.8 L 270.8,166.4 L 273.1,167.9 L 275.3,169.5 L 277.6,171.0 L 279.9,172.5 L 282.1,174.0 L 284.4,175.4 L 286.7,39.4 L 288.9,42.7 L 291.2,46.0 L 293.5,49.2 L 295.7,52.4 L 298.0,55.5 L 300.3,58.6 L 302.5,61.6 L 304.8,64.6 L 307.1,67.6 L 309.3,70.5 L 311.6,73.4 L 313.9,76.3 L 316.1,79.1 L 318.4,81.8 L 320.7,84.6 L 322.9,87.2 L 325.2,89.9 L 327.5,92.5 L 329.7,95.1 L 332.0,97.6 L 334.3,100.2 L 336.5,102.6 L 338.8,105.1 L 341.1,107.5 L 343.3,109.9 L 345.6,112.2 L 347.9,114.5 L 350.1,116.8 L 352.4,119.0 L 354.7,121.2 L 356.9,123.4 L 359.2,125.6 L 361.5,127.7 L 363.7,129.8 L 366.0,131.9 L 368.3,133.9 L 370.5,135.9 L 372.8,137.9 L 375.1,139.9 L 377.3,141.8 L 379.6,143.7 L 381.9,145.6 L 384.1,147.4 L 386.4,149.3 L 388.7,151.1 L 390.9,152.8 L 393.2,154.6 L 395.5,156.3 L 397.7,158.0 L 400.0,22.2 L 402.3,25.7 L 404.5,29.2 L 406.8,32.7 L 409.1,36.1 L 411.3,39.5 L 413.6,42.8 L 415.9,46.0 L 418.1,49.3 L 420.4,52.4 L 422.7,55.6 L 424.9,58.7 L 427.2,61.7 L 429.5,64.7 L 431.7,67.7 L 434.0,70.6 L 436.3,73.5 L 438.5,76.3 L 440.8,79.1 L 443.1,81.9 L 445.3,84.6 L 447.6,87.3 L 449.9,90.0 L 452.1,92.6 L 454.4,95.2 L 456.7,97.7 L 458.9,100.2 L 461.2,102.7 L 463.5,105.1 L 465.7,107.5 L 468.0,109.9 L 470.3,112.2 L 472.5,114.6 L 474.8,116.8 L 477.1,119.1 L 479.3,121.3 L 481.6,123.5 L 483.9,125.6 L 486.1,127.8 L 488.4,129.9 L 490.7,131.9 L 492.9,134.0 L 495.2,136.0 L 497.5,138.0 L 499.7,139.9 L 502.0,141.8 L 504.3,143.7 L 506.5,145.6 L 508.8,147.5 L 511.1,149.3 L 513.3,17.5 L 515.6,17.5 L 517.9,20.9 L 520.1,24.4 L 522.4,28.0 L 524.7,31.4 L 526.9,34.9 L 529.2,38.2 L 531.5,41.6 L 533.7,44.8 L 536.0,48.1 L 538.3,51.3 L 540.5,54.4 L 542.8,57.5 L 545.1,60.6 L 547.3,63.6 L 549.6,66.6 L 551.9,69.5 L 554.1,72.4 L 556.4,75.3 L 558.7,78.1 L 560.9,80.9 L 563.2,83.6 L 565.5,86.3 L 567.7,89.0 L 570.0,91.6 L 572.3,94.2 L 574.5,96.8 L 576.8,99.3 L 579.1,101.8 L 581.3,104.2 L 583.6,106.7 L 585.9,109.0 L 588.1,111.4 L 590.4,113.7 L 592.7,116.0 L 594.9,118.3 L 597.2,120.5 L 599.5,122.7 L 601.7,124.9 L 604.0,127.0 L 606.3,129.1 L 608.5,131.2 L 610.8,133.2 L 613.1,135.2 L 615.3,137.2 L 617.6,139.2 L 619.9,141.1 L 622.1,143.1 L 624.4,144.9 L 626.7,17.5 L 628.9,17.5 L 631.2,17.5 L 633.5,20.3 L 635.7,23.9 L 638.0,27.4 L 640.3,30.9 L 642.5,34.3 L 644.8,37.7 L 647.1,41.0 L 649.3,44.3 L 651.6,47.6 L 653.9,50.8 L 656.1,53.9 L 658.4,57.1 L 660.7,60.1 L 662.9,63.1 L 665.2,66.1 L 667.5,69.1 L 669.7,72.0 L 672.0,74.8 L 674.3,77.7 L 676.5,80.5 L 678.8,83.2 L 681.1,85.9 L 683.3,88.6 L 685.6,91.2 L 687.9,93.8 L 690.1,96.4 L 692.4,98.9 L 694.7,101.4 L 696.9,103.9 L 699.2,106.3 L 701.5,108.7 L 703.7,111.0 L 706.0,113.4 L 708.3,115.7 L 710.5,117.9 L 712.8,120.2 L 715.1,122.4 L 717.3,124.5 L 719.6,126.7 L 721.9,128.8 L 724.1,130.9 L 726.4,132.9 L 728.7,134.9 L 730.9,136.9 L 733.2,138.9 L 735.5,140.8 L 737.7,142.8 L 740.0,17.5" fill="none" style="stroke:var(--plum-400)" stroke-width="2.6"></path><path d="M 60.0,125.0 L 60.0,125.0 L 62.3,127.1 L 64.5,129.2 L 66.8,131.3 L 69.1,133.4 L 71.3,135.4 L 73.6,137.4 L 75.9,139.3 L 78.1,141.3 L 80.4,143.2 L 82.7,145.1 L 84.9,146.9 L 87.2,148.8 L 89.5,150.6 L 91.7,152.3 L 94.0,154.1 L 96.3,155.8 L 98.5,157.5 L 100.8,159.2 L 103.1,160.9 L 105.3,162.5 L 107.6,164.1 L 109.9,165.7 L 112.1,167.3 L 114.4,168.9 L 116.7,170.4 L 118.9,171.9 L 121.2,173.4 L 123.5,174.9 L 125.7,176.3 L 128.0,177.7 L 130.3,179.1 L 132.5,180.5 L 134.8,181.9 L 137.1,183.3 L 139.3,184.6 L 141.6,185.9 L 143.9,187.2 L 146.1,188.5 L 148.4,189.7 L 150.7,191.0 L 152.9,192.2 L 155.2,193.4 L 157.5,194.6 L 159.7,195.8 L 162.0,196.9 L 164.3,198.1 L 166.5,199.2 L 168.8,200.3 L 171.1,201.4 L 173.3,117.5 L 175.6,119.7 L 177.9,121.9 L 180.1,124.1 L 182.4,126.3 L 184.7,128.4 L 186.9,130.5 L 189.2,132.5 L 191.5,134.6 L 193.7,136.6 L 196.0,138.5 L 198.3,140.5 L 200.5,142.4 L 202.8,144.3 L 205.1,146.2 L 207.3,148.0 L 209.6,149.8 L 211.9,151.6 L 214.1,153.4 L 216.4,155.1 L 218.7,156.8 L 220.9,158.5 L 223.2,160.2 L 225.5,161.9 L 227.7,163.5 L 230.0,165.1 L 232.3,166.7 L 234.5,168.2 L 236.8,169.8 L 239.1,171.3 L 241.3,172.8 L 243.6,174.3 L 245.9,175.7 L 248.1,177.2 L 250.4,178.6 L 252.7,180.0 L 254.9,181.3 L 257.2,182.7 L 259.5,184.0 L 261.7,185.4 L 264.0,186.7 L 266.3,188.0 L 268.5,189.2 L 270.8,190.5 L 273.1,191.7 L 275.3,192.9 L 277.6,194.1 L 279.9,195.3 L 282.1,196.5 L 284.4,197.6 L 286.7,113.7 L 288.9,116.0 L 291.2,118.3 L 293.5,120.5 L 295.7,122.7 L 298.0,124.9 L 300.3,127.0 L 302.5,129.1 L 304.8,131.2 L 307.1,133.3 L 309.3,135.3 L 311.6,137.3 L 313.9,139.2 L 316.1,141.2 L 318.4,143.1 L 320.7,145.0 L 322.9,146.8 L 325.2,148.7 L 327.5,150.5 L 329.7,152.2 L 332.0,154.0 L 334.3,155.7 L 336.5,157.5 L 338.8,159.1 L 341.1,160.8 L 343.3,162.4 L 345.6,164.1 L 347.9,165.7 L 350.1,167.2 L 352.4,168.8 L 354.7,170.3 L 356.9,171.8 L 359.2,173.3 L 361.5,174.8 L 363.7,176.2 L 366.0,177.7 L 368.3,179.1 L 370.5,180.5 L 372.8,181.8 L 375.1,183.2 L 377.3,184.5 L 379.6,185.8 L 381.9,187.1 L 384.1,188.4 L 386.4,189.7 L 388.7,190.9 L 390.9,192.1 L 393.2,193.3 L 395.5,194.5 L 397.7,195.7 L 400.0,111.9 L 402.3,114.2 L 404.5,116.5 L 406.8,118.7 L 409.1,120.9 L 411.3,123.1 L 413.6,125.3 L 415.9,127.4 L 418.1,129.5 L 420.4,131.6 L 422.7,133.6 L 424.9,135.7 L 427.2,137.6 L 429.5,139.6 L 431.7,141.5 L 434.0,143.4 L 436.3,145.3 L 438.5,147.2 L 440.8,149.0 L 443.1,150.8 L 445.3,152.6 L 447.6,154.3 L 449.9,156.1 L 452.1,157.8 L 454.4,159.5 L 456.7,161.1 L 458.9,162.8 L 461.2,164.4 L 463.5,166.0 L 465.7,167.5 L 468.0,169.1 L 470.3,170.6 L 472.5,172.1 L 474.8,173.6 L 477.1,175.1 L 479.3,176.5 L 481.6,177.9 L 483.9,179.3 L 486.1,180.7 L 488.4,182.1 L 490.7,183.4 L 492.9,184.8 L 495.2,186.1 L 497.5,187.4 L 499.7,188.6 L 502.0,189.9 L 504.3,191.1 L 506.5,192.4 L 508.8,193.6 L 511.1,194.8 L 513.3,110.9 L 515.6,113.3 L 517.9,115.6 L 520.1,117.8 L 522.4,120.1 L 524.7,122.3 L 526.9,124.4 L 529.2,126.6 L 531.5,128.7 L 533.7,130.8 L 536.0,132.8 L 538.3,134.8 L 540.5,136.8 L 542.8,138.8 L 545.1,140.8 L 547.3,142.7 L 549.6,144.6 L 551.9,146.4 L 554.1,148.3 L 556.4,150.1 L 558.7,151.9 L 560.9,153.6 L 563.2,155.4 L 565.5,157.1 L 567.7,158.8 L 570.0,160.5 L 572.3,162.1 L 574.5,163.7 L 576.8,165.3 L 579.1,166.9 L 581.3,168.5 L 583.6,170.0 L 585.9,171.5 L 588.1,173.0 L 590.4,174.5 L 592.7,175.9 L 594.9,177.4 L 597.2,178.8 L 599.5,180.2 L 601.7,181.5 L 604.0,182.9 L 606.3,184.2 L 608.5,185.6 L 610.8,186.9 L 613.1,188.1 L 615.3,189.4 L 617.6,190.6 L 619.9,191.9 L 622.1,193.1 L 624.4,194.3 L 626.7,110.5 L 628.9,112.8 L 631.2,115.1 L 633.5,117.4 L 635.7,119.6 L 638.0,121.8 L 640.3,124.0 L 642.5,126.1 L 644.8,128.3 L 647.1,130.4 L 649.3,132.4 L 651.6,134.4 L 653.9,136.5 L 656.1,138.4 L 658.4,140.4 L 660.7,142.3 L 662.9,144.2 L 665.2,146.1 L 667.5,147.9 L 669.7,149.7 L 672.0,151.5 L 674.3,153.3 L 676.5,155.0 L 678.8,156.8 L 681.1,158.4 L 683.3,160.1 L 685.6,161.8 L 687.9,163.4 L 690.1,165.0 L 692.4,166.6 L 694.7,168.2 L 696.9,169.7 L 699.2,171.2 L 701.5,172.7 L 703.7,174.2 L 706.0,175.6 L 708.3,177.1 L 710.5,178.5 L 712.8,179.9 L 715.1,181.3 L 717.3,182.6 L 719.6,184.0 L 721.9,185.3 L 724.1,186.6 L 726.4,187.9 L 728.7,189.2 L 730.9,190.4 L 733.2,191.6 L 735.5,192.9 L 737.7,194.1 L 740.0,110.2" fill="none" style="stroke:var(--assay-400)" stroke-width="2.6"></path><text x="60.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">0 t½</text><text x="173.33333333333331" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">1 t½</text><text x="286.66666666666663" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">2 t½</text><text x="400.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">3 t½</text><text x="513.3333333333333" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">4 t½</text><text x="626.6666666666666" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">5 t½</text><text x="740.0" y="302" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">6 t½</text><circle cx="70" cy="40" r="5" style="fill:var(--assay-400)"></circle><text x="82" y="44" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--assay-400)">with loading dose</text><circle cx="70" cy="60" r="5" style="fill:var(--plum-400)"></circle><text x="82" y="64" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--plum-400)">maintenance dosing only</text></svg><div class="cap">Figure 2. A loading dose reaches the therapeutic range immediately; maintenance dosing alone climbs to the same plateau only after ~5 half-lives.</div></div><div class="pearl"><b>Loading dose sizing follows from volume of distribution, not half-life:</b> loading dose ≈ V<sub>d</sub> × target concentration. A drug with a large volume of distribution (extensively tissue-bound, like digoxin) needs a proportionally larger loading dose to “fill” that larger distribution space before plasma concentration reflects the target level.</div><h3>First-order vs. zero-order elimination — the exception worth knowing</h3><p>Everything above assumes <b>first-order kinetics</b> — a constant <i>fraction</i> of the drug is eliminated per unit time,
+    which is how the vast majority of drugs behave and what makes the half-life concept work cleanly. A handful of clinically important drugs switch to
+    <b>zero-order kinetics</b> at toxic or high therapeutic doses — a constant <i>amount</i> is eliminated per unit time because the metabolizing
+    enzyme system is saturated. Phenytoin, ethanol, and high-dose aspirin are the classic examples. The practical consequence: the “half-life”
+    stops being a fixed, predictable number once elimination is zero-order — a small dose increase can cause a disproportionately large rise in
+    level, which is exactly why phenytoin dosing adjustments are made in small increments and why ethanol elimination is roughly linear (about one
+    standard drink per hour) rather than exponential.</p><div class="myth"><b>Myth:</b> “half-life is a fixed property of the drug, full stop.” It's a fixed property <i>only while elimination stays first-order</i> — renal or hepatic impairment, enzyme saturation, and drug interactions affecting metabolism can all prolong the effective half-life well beyond the textbook number.</div><h3>Illustrative half-lives across drug classes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Drug</th><th class="">Approximate half-life</th><th class="">Clinical note</th></tr></thead>
+        <tbody><tr><td class="hl">Fentanyl (IV)</td><td class="">2–4 hours (single dose); much longer context-sensitive half-life with infusions</td><td class="">Fast onset does not mean fast clearance with repeated dosing</td></tr><tr><td class="hl">Morphine (IV)</td><td class="">2–4 hours</td><td class="">Active metabolite (morphine-6-glucuronide) accumulates in renal impairment</td></tr><tr><td class="hl">Midazolam</td><td class="">2–6 hours (highly variable)</td><td class="">Active metabolite also renally cleared; prolonged sedation in renal failure</td></tr><tr><td class="hl">Lorazepam</td><td class="">10–20 hours</td><td class="">No active metabolites — more predictable in hepatic impairment than other benzodiazepines</td></tr><tr><td class="hl">Diazepam</td><td class="">20–50+ hours (active metabolite even longer)</td><td class="">Prolonged sedation risk especially in the elderly</td></tr><tr><td class="hl">Vancomycin</td><td class="">4–6 hours (normal renal function)</td><td class="">Half-life extends dramatically in renal impairment — dosing interval, not just dose, must adjust</td></tr><tr><td class="hl">Ceftriaxone</td><td class="">6–9 hours</td><td class="">Long half-life allows once-daily dosing</td></tr><tr><td class="hl">Apixaban</td><td class="">~12 hours</td><td class="">Twice-daily dosing reflects this half-life</td></tr><tr><td class="hl">Warfarin</td><td class="">20–60 hours</td><td class="">Long half-life is why reversal and re-therapeutic timing both take days, not hours</td></tr><tr><td class="hl">Amiodarone</td><td class="">Weeks (extremely large V<sub>d</sub>)</td><td class="">Loading dose is essential; drug effect and interactions can persist for weeks after discontinuation</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> specific half-life values vary with renal/hepatic function, age, drug interactions, and formulation — treat this table as an ordering/teaching reference, not a dosing source.</div>  </div>
+</section>
+<section class="block" id="onset-reference">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pharmacokinetics</span>
+      <h2>ED Onset of Action — Quick Reference</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The numbers that actually determine when to reassess, when it's safe to redose, and when a “not working yet” is really “not enough time has passed yet.”</p>
+    </div><p class="lead-q">“I gave IV ketorolac 12 minutes ago and the patient still hurts — is it not working, or have I just not waited long enough?”</p><h3>Analgesics</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Drug (route)</th><th class="">Onset</th><th class="">Time to peak effect</th><th class="">Duration</th></tr></thead>
+        <tbody><tr><td class="hl">Fentanyl (IV)</td><td class="">1–2 min</td><td class="">3–5 min</td><td class="">30–60 min (single dose — short due to redistribution)</td></tr><tr><td class="hl">Morphine (IV)</td><td class="">5–10 min</td><td class="">~20 min</td><td class="">3–4 h</td></tr><tr><td class="hl">Morphine (IM)</td><td class="">10–30 min</td><td class="">30–60 min</td><td class="">3–4 h</td></tr><tr><td class="hl">Hydromorphone (IV)</td><td class="">~5 min</td><td class="">10–20 min</td><td class="">3–4 h</td></tr><tr><td class="hl">Ketorolac (IV/IM)</td><td class="">~10 min</td><td class="">1–2 h</td><td class="">4–6 h</td></tr><tr><td class="hl">Acetaminophen (IV)</td><td class="">5–10 min</td><td class="">~1 h</td><td class="">4–6 h</td></tr><tr><td class="hl">Acetaminophen (PO)</td><td class="">30–60 min</td><td class="">1–2 h</td><td class="">4–6 h</td></tr><tr><td class="hl">Ibuprofen (PO)</td><td class="">30–60 min</td><td class="">1–2 h</td><td class="">4–6 h</td></tr><tr><td class="hl">Lidocaine (local infiltration)</td><td class="">2–5 min</td><td class="">5–15 min</td><td class="">30–60 min (longer with epinephrine)</td></tr><tr><td class="hl">Ketamine, analgesic dose (IV)</td><td class="">&lt;1 min</td><td class="">5–15 min</td><td class="">15–30 min</td></tr></tbody>
+      </table>
+    </div><h3>Antiemetics</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Drug (route)</th><th class="">Onset</th><th class="">Duration</th><th class="">Note</th></tr></thead>
+        <tbody><tr><td class="hl">Ondansetron (IV)</td><td class="">~30 min for peak antiemetic effect (subjective relief often reported sooner)</td><td class="">4–8 h</td><td class="">Onset is slower than many clinicians assume — don't judge failure at 5 minutes</td></tr><tr><td class="hl">Metoclopramide (IV)</td><td class="">1–3 min</td><td class="">1–2 h</td><td class="">Also has analgesic/anti-migraine properties independent of the antiemetic effect</td></tr><tr><td class="hl">Promethazine (IV/IM)</td><td class="">3–5 min IV, ~20 min IM</td><td class="">4–6 h</td><td class="">IV push carries tissue necrosis/gangrene risk if extravasated — dilute and give slowly, or use IM</td></tr><tr><td class="hl">Prochlorperazine (IV/IM)</td><td class="">10–20 min</td><td class="">3–4 h</td><td class="">Extrapyramidal reactions possible — consider diphenhydramine co-administration in high-risk patients</td></tr></tbody>
+      </table>
+    </div><h3>Sedation, Procedural &amp; Reversal Agents</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Drug (route)</th><th class="">Onset</th><th class="">Duration</th><th class="">Note</th></tr></thead>
+        <tbody><tr><td class="hl">Midazolam (IV)</td><td class="">1–2 min</td><td class="">30–60 min</td><td class="">Titrate slowly — full effect not apparent for 2–3 minutes, a common source of over-dosing</td></tr><tr><td class="hl">Etomidate (IV, induction dose)</td><td class="">&lt;1 min (~15–45 sec)</td><td class="">5–15 min</td><td class="">Adrenal suppression with even single dose — rarely clinically significant but worth knowing</td></tr><tr><td class="hl">Propofol (IV, induction dose)</td><td class="">&lt;1 min (~30 sec)</td><td class="">5–10 min</td><td class="">Significant hypotension risk, especially in volume-depleted patients</td></tr><tr><td class="hl">Ketamine, dissociative dose (IV)</td><td class="">~1 min</td><td class="">5–10 min (IV)</td><td class="">IM onset 3–5 min, duration 15–30 min</td></tr><tr><td class="hl">Naloxone (IV/IM/IN)</td><td class="">1–2 min IV, 2–5 min IM/IN</td><td class="">30–90 min</td><td class="">Shorter duration than most opioids — re-sedation risk; observe or redose accordingly</td></tr><tr><td class="hl">Flumazenil (IV)</td><td class="">1–2 min</td><td class="">30–60 min</td><td class="">Shorter duration than most benzodiazepines — re-sedation risk is the main reason it's used cautiously</td></tr><tr><td class="hl">Epinephrine, IM (anaphylaxis)</td><td class="">5–10 min</td><td class="">10–20 min</td><td class="">Repeat dosing q5–15min if inadequate response — don't wait longer expecting more effect from one dose</td></tr><tr><td class="hl">Adenosine (IV push)</td><td class="">Seconds</td><td class="">Seconds (t½ ~10 sec)</td><td class="">Must be given as a rapid push followed immediately by a saline flush, or it's metabolized before reaching the heart</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>The recurring pattern worth internalizing:</b> reversal agents (naloxone, flumazenil) are consistently <i>shorter-acting</i> than the drugs they reverse — that mismatch, not a failure of the reversal agent, is why re-sedation after apparent reversal is expected and why a period of observation (not a single reversal dose and discharge) is standard.</div><div class="verify"><b>Verify before use:</b> onset/duration figures are standard teaching ranges and vary with dose, patient factors (age, hepatic/renal function, volume status), and formulation — confirm against current product labeling for a specific dosing decision.</div>  </div>
+</section>
+<section class="block" id="washout-calculator">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pharmacokinetics</span>
+      <h2>Washout / Observation Calculator</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Enter a half-life (and, optionally, hours since the last dose) to see the elimination timeline.</p>
+    </div>
+    <div class="calc-panel">
+      <div class="calc-row">
+        <div class="calc-field">
+          <label>Half-life (hours)</label>
+          <input type="number" id="calc-halflife" step="0.1" min="0.01" value="4">
+        </div>
+        <div class="calc-field">
+          <label>Hours since last dose (optional)</label>
+          <input type="number" id="calc-elapsed" step="0.1" min="0" placeholder="e.g. 2">
+        </div>
+      </div>
+      <div class="calc-output" id="calc-output"></div>
+    </div><div class="pearl">Plug in the half-life from the table above for any drug in question. For a drug with an active metabolite (e.g., morphine’s M6G, diazepam’s desmethyldiazepam), run the calculation twice — once for the parent drug and once for the metabolite — and use the longer of the two for washout planning.</div>  </div>
+</section>
+<section class="block" id="lookup-resources">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Pharmacokinetics</span>
+      <h2>Looking Up Onset &amp; Half-Life Faster</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The fastest lookup is the one you already have open — worth deciding in advance which tool is your default, rather than choosing mid-shift.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Resource</th><th class="">Best for</th><th class="">Note</th></tr></thead>
+        <tbody><tr><td class="hl">Lexicomp (Lexidrug)</td><td class="">Most detailed monographs — explicit onset, duration, half-life, and active metabolite fields per drug</td><td class="">Bundled into UpToDate for many institutional subscriptions; the deepest PK detail of the point-of-care options</td></tr><tr><td class="hl">Micromedex</td><td class="">Similar depth to Lexicomp, IV compatibility, extensive toxicology (POISINDEX)</td><td class="">Common in hospital EHR-integrated order-entry systems</td></tr><tr><td class="hl">Epocrates</td><td class="">Fastest lookup on a phone for a quick dose/interaction check</td><td class="">Free tier covers the basics; less granular PK detail than Lexicomp/Micromedex</td></tr><tr><td class="hl">FDA label / DailyMed (dailymed.nlm.nih.gov)</td><td class="">The original source data — official Tmax, half-life, and clinical pharmacology section</td><td class="">Free, authoritative, but slower to navigate mid-shift than a point-of-care app</td></tr><tr><td class="hl">Tarascon Pocket Pharmacopoeia</td><td class="">Extremely fast at-a-glance dosing/onset reference, long-time ED favorite</td><td class="">Less detailed PK rationale than Lexicomp/Micromedex, but very fast</td></tr><tr><td class="hl">MDCalc</td><td class="">Not a drug reference per se, but has PK-relevant calculators (e.g., renal dosing adjustments, reversal calculators)</td><td class="">Best used alongside a drug reference, not instead of one</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Practical habit:</b> if your institution's EHR has Lexicomp or Micromedex embedded in order entry, that's usually the fastest path to onset/half-life data specifically — it's already open, already tied to the patient's renal/hepatic function data if integrated, and doesn't require switching apps mid-workflow.</div><div class="verify"><b>Verify before use:</b> product names, ownership, and feature sets in this space change periodically (mergers, rebranding, tier restructuring) — confirm current access/features through your institution's library or IT resources.</div>  </div>
+</section>
+<section class="block" id="mic-basics">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Susceptibility &amp; MIC</span>
+      <h2>What MIC Actually Is</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">One number that gets reported as a clean ‘S/I/R’ on the chart — worth knowing what's actually behind that letter.</p>
+    </div><p class="lead-q">“The susceptibility report says this E. coli is ‘susceptible’ to ciprofloxacin with an MIC of 1 — susceptible compared to what, exactly?”</p><p>The <b>minimum inhibitory concentration (MIC)</b> is the lowest concentration of an antibiotic that visibly inhibits growth
+    of a specific bacterial isolate in a standardized lab test — it's a direct, isolate-specific measurement, not a category. The lab then compares
+    that measured MIC against a <b>breakpoint</b> — a threshold set by a standards body (CLSI in the US, EUCAST in Europe) for that specific
+    drug-organism pair — to assign the Susceptible / Intermediate / Resistant category actually printed on the report. Breakpoints are set based on
+    what concentration is achievable in serum/tissue at standard dosing, so “Susceptible” means <i>a standard dose of this drug should produce a
+    concentration comfortably above this isolate's MIC</i>, not that the drug is guaranteed to work.</p><div class="pearl"><b>A low MIC is not automatically “this drug is a great choice”</b> in isolation — tissue penetration matters just as much. A drug with an excellent (low) MIC against an organism but poor penetration into the relevant tissue (e.g., many agents into the CNS or prostate) may still fail clinically despite a favorable lab number.</div>  </div>
+</section>
+<section class="block" id="pkpd-index">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Susceptibility &amp; MIC</span>
+      <h2>MIC Meets Dosing: the PK-PD Index</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Different antibiotic classes kill bacteria by different rules — and the rule determines whether you should dose bigger, more often, or both.</p>
+    </div><div class="diagram"><svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="10" width="250" height="270" rx="12" style="fill:var(--bg-elevated-2);stroke:var(--border);stroke-width:1"></rect><line x1="50" y1="190" x2="260" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="50" y1="30" x2="50" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="50" y1="122.5" x2="260" y2="122.5" stroke-dasharray="4,3" style="stroke:var(--ember-500)" stroke-width="1.4"></line><text x="260" y="116.5" text-anchor="end" font-family="var(--font-mono)" font-size="10" style="fill:var(--ember-500)">MIC</text><path d="M 50.0,121.4 L 51.0,118.2 L 52.1,115.0 L 53.1,111.9 L 54.2,108.8 L 55.2,105.7 L 56.3,102.7 L 57.4,99.8 L 58.4,97.0 L 59.5,94.2 L 60.5,91.6 L 61.5,89.1 L 62.6,86.7 L 63.6,84.5 L 64.7,82.4 L 65.8,80.4 L 66.8,78.6 L 67.8,77.0 L 68.9,75.6 L 70.0,74.3 L 71.0,73.2 L 72.0,72.3 L 73.1,71.6 L 74.2,71.1 L 75.2,70.8 L 76.2,70.8 L 77.3,70.8 L 78.3,71.1 L 79.4,71.6 L 80.5,72.3 L 81.5,73.2 L 82.5,74.3 L 83.6,75.6 L 84.7,77.0 L 85.7,78.6 L 86.8,80.4 L 87.8,82.4 L 88.8,84.5 L 89.9,86.7 L 91.0,89.1 L 92.0,91.6 L 93.0,94.2 L 94.1,97.0 L 95.2,99.8 L 96.2,102.7 L 97.2,105.7 L 98.3,108.8 L 99.3,111.9 L 100.4,115.0 L 101.5,118.2 L 102.5,121.4 L 103.5,124.6 L 104.6,127.7 L 105.7,130.9 L 106.7,134.0 L 107.8,137.0 L 108.8,140.0 L 109.8,142.9 L 110.9,145.8 L 112.0,148.5 L 113.0,151.1 L 114.0,153.6 L 115.1,156.0 L 116.2,158.3 L 117.2,160.4 L 118.2,162.3 L 119.3,164.1 L 120.3,165.7 L 121.4,167.2 L 122.5,168.4 L 123.5,169.5 L 124.5,170.4 L 125.6,171.1 L 126.7,171.6 L 127.7,171.9 L 128.8,172.0 L 129.8,171.9 L 130.8,171.6 L 131.9,171.1 L 132.9,170.4 L 134.0,169.5 L 135.1,168.4 L 136.1,167.2 L 137.2,165.7 L 138.2,164.1 L 139.2,162.3 L 140.3,160.4 L 141.3,158.3 L 142.4,156.0 L 143.4,153.6 L 144.5,151.1 L 145.6,148.5 L 146.6,145.8 L 147.7,142.9 L 148.7,140.0 L 149.8,137.0 L 150.8,134.0 L 151.8,130.9 L 152.9,127.7 L 153.9,124.6 L 155.0,121.4 L 156.1,118.2 L 157.1,115.0 L 158.2,111.9 L 159.2,108.8 L 160.2,105.7 L 161.3,102.7 L 162.3,99.8 L 163.4,97.0 L 164.4,94.2 L 165.5,91.6 L 166.6,89.1 L 167.6,86.7 L 168.7,84.5 L 169.7,82.4 L 170.8,80.4 L 171.8,78.6 L 172.8,77.0 L 173.9,75.6 L 174.9,74.3 L 176.0,73.2 L 177.1,72.3 L 178.1,71.6 L 179.2,71.1 L 180.2,70.8 L 181.2,70.8 L 182.3,70.8 L 183.3,71.1 L 184.4,71.6 L 185.4,72.3 L 186.5,73.2 L 187.6,74.3 L 188.6,75.6 L 189.7,77.0 L 190.7,78.6 L 191.8,80.4 L 192.8,82.4 L 193.8,84.5 L 194.9,86.7 L 195.9,89.1 L 197.0,91.6 L 198.1,94.2 L 199.1,97.0 L 200.2,99.8 L 201.2,102.7 L 202.2,105.7 L 203.3,108.8 L 204.3,111.9 L 205.4,115.0 L 206.4,118.2 L 207.5,121.4 L 208.6,124.6 L 209.6,127.7 L 210.7,130.9 L 211.7,134.0 L 212.8,137.0 L 213.8,140.0 L 214.8,142.9 L 215.9,145.8 L 216.9,148.5 L 218.0,151.1 L 219.1,153.6 L 220.1,156.0 L 221.2,158.3 L 222.2,160.4 L 223.2,162.3 L 224.3,164.1 L 225.3,165.7 L 226.4,167.2 L 227.4,168.4 L 228.5,169.5 L 229.6,170.4 L 230.6,171.1 L 231.7,171.6 L 232.7,171.9 L 233.8,172.0 L 234.8,171.9 L 235.8,171.6 L 236.9,171.1 L 237.9,170.4 L 239.0,169.5 L 240.1,168.4 L 241.1,167.2 L 242.2,165.7 L 243.2,164.1 L 244.2,162.3 L 245.3,160.4 L 246.3,158.3 L 247.4,156.0 L 248.4,153.6 L 249.5,151.1 L 250.6,148.5 L 251.6,145.8 L 252.7,142.9 L 253.7,140.0 L 254.8,137.0 L 255.8,134.0 L 256.9,130.9 L 257.9,127.7 L 258.9,124.6 L 260.0,121.4" fill="none" style="stroke:var(--assay-400)" stroke-width="2.4"></path><text x="145.0" y="215" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Time-dependent</text><text x="145.0" y="230" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--assay-400)">(T>MIC)</text><text x="145.0" y="248" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Beta-lactams</text><text x="145.0" y="265" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">frequent dosing / extended</text><text x="145.0" y="278" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">infusion maximizes time above MIC</text><rect x="290" y="10" width="250" height="270" rx="12" style="fill:var(--bg-elevated-2);stroke:var(--border);stroke-width:1"></rect><line x1="320" y1="190" x2="530" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="320" y1="30" x2="320" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="320" y1="122.5" x2="530" y2="122.5" stroke-dasharray="4,3" style="stroke:var(--ember-500)" stroke-width="1.4"></line><text x="530" y="116.5" text-anchor="end" font-family="var(--font-mono)" font-size="10" style="fill:var(--ember-500)">MIC</text><path d="M 320.0,62.5 L 321.1,69.9 L 322.1,76.9 L 323.1,83.5 L 324.2,89.7 L 325.2,95.5 L 326.3,101.0 L 327.4,106.2 L 328.4,111.1 L 329.4,115.7 L 330.5,120.0 L 331.6,124.1 L 332.6,127.9 L 333.6,131.6 L 334.7,135.0 L 335.8,138.2 L 336.8,141.2 L 337.9,144.0 L 338.9,146.7 L 339.9,149.2 L 341.0,151.6 L 342.1,153.8 L 343.1,155.9 L 344.1,157.9 L 345.2,159.8 L 346.2,161.6 L 347.3,163.2 L 348.4,164.8 L 349.4,166.2 L 350.4,167.6 L 351.5,168.9 L 352.6,170.2 L 353.6,171.3 L 354.6,172.4 L 355.7,173.4 L 356.8,174.4 L 357.8,175.3 L 358.9,176.2 L 359.9,177.0 L 360.9,177.7 L 362.0,178.4 L 363.1,179.1 L 364.1,179.7 L 365.1,180.3 L 366.2,180.9 L 367.2,181.4 L 368.3,181.9 L 369.4,182.4 L 370.4,182.8 L 371.4,183.3 L 372.5,183.7 L 373.6,184.0 L 374.6,184.4 L 375.6,184.7 L 376.7,185.0 L 377.8,185.3 L 378.8,185.6 L 379.9,185.8 L 380.9,186.1 L 381.9,186.3 L 383.0,186.5 L 384.1,186.7 L 385.1,186.9 L 386.1,187.1 L 387.2,187.3 L 388.2,187.4 L 389.3,187.6 L 390.4,65.0 L 391.4,72.3 L 392.4,79.2 L 393.5,85.6 L 394.6,91.7 L 395.6,97.4 L 396.6,102.8 L 397.7,107.9 L 398.8,112.7 L 399.8,117.2 L 400.9,121.4 L 401.9,125.4 L 402.9,129.2 L 404.0,132.7 L 405.1,136.0 L 406.1,139.2 L 407.1,142.1 L 408.2,144.9 L 409.2,147.6 L 410.3,150.0 L 411.4,152.4 L 412.4,154.6 L 413.4,156.6 L 414.5,158.6 L 415.6,160.4 L 416.6,162.1 L 417.6,163.7 L 418.7,165.3 L 419.8,166.7 L 420.8,168.1 L 421.9,169.3 L 422.9,170.5 L 423.9,171.7 L 425.0,172.7 L 426.1,173.7 L 427.1,174.7 L 428.1,175.6 L 429.2,176.4 L 430.2,177.2 L 431.3,178.0 L 432.4,178.7 L 433.4,179.3 L 434.4,179.9 L 435.5,180.5 L 436.6,181.1 L 437.6,181.6 L 438.6,182.1 L 439.7,182.6 L 440.8,183.0 L 441.8,183.4 L 442.9,183.8 L 443.9,184.1 L 444.9,184.5 L 446.0,184.8 L 447.1,185.1 L 448.1,185.4 L 449.1,185.7 L 450.2,185.9 L 451.2,186.1 L 452.3,186.4 L 453.4,186.6 L 454.4,186.8 L 455.5,187.0 L 456.5,187.1 L 457.6,187.3 L 458.6,187.5 L 459.6,187.6 L 460.7,67.5 L 461.8,74.6 L 462.8,81.4 L 463.9,87.7 L 464.9,93.6 L 465.9,99.2 L 467.0,104.5 L 468.0,109.5 L 469.1,114.2 L 470.1,118.6 L 471.2,122.8 L 472.2,126.7 L 473.3,130.4 L 474.4,133.8 L 475.4,137.1 L 476.4,140.2 L 477.5,143.1 L 478.6,145.8 L 479.6,148.4 L 480.6,150.8 L 481.7,153.1 L 482.8,155.3 L 483.8,157.3 L 484.9,159.2 L 485.9,161.0 L 487.0,162.7 L 488.0,164.3 L 489.1,165.8 L 490.1,167.2 L 491.1,168.5 L 492.2,169.8 L 493.2,170.9 L 494.3,172.0 L 495.4,173.1 L 496.4,174.1 L 497.4,175.0 L 498.5,175.9 L 499.5,176.7 L 500.6,177.5 L 501.6,178.2 L 502.7,178.9 L 503.8,179.5 L 504.8,180.1 L 505.9,180.7 L 506.9,181.3 L 508.0,181.8 L 509.0,182.2 L 510.1,182.7 L 511.1,183.1 L 512.1,183.5 L 513.2,183.9 L 514.2,184.3 L 515.3,184.6 L 516.4,184.9 L 517.4,185.2 L 518.5,185.5 L 519.5,185.7 L 520.5,186.0 L 521.6,186.2 L 522.6,186.4 L 523.7,186.7 L 524.8,186.8 L 525.8,187.0 L 526.9,187.2 L 527.9,187.4 L 529.0,187.5 L 530.0,62.5" fill="none" style="stroke:var(--assay-400)" stroke-width="2.4"></path><text x="415.0" y="215" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Concentration-dependent</text><text x="415.0" y="230" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--assay-400)">(Cmax/MIC)</text><text x="415.0" y="248" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Aminoglycosides</text><text x="415.0" y="265" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">high peak matters most — larger,</text><text x="415.0" y="278" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">less frequent doses</text><rect x="560" y="10" width="250" height="270" rx="12" style="fill:var(--bg-elevated-2);stroke:var(--border);stroke-width:1"></rect><line x1="590" y1="190" x2="800" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="590" y1="30" x2="590" y2="190" style="stroke:var(--border-strong)" stroke-width="1.6"></line><line x1="590" y1="122.5" x2="800" y2="122.5" stroke-dasharray="4,3" style="stroke:var(--ember-500)" stroke-width="1.4"></line><text x="800" y="116.5" text-anchor="end" font-family="var(--font-mono)" font-size="10" style="fill:var(--ember-500)">MIC</text><path d="M 590.0,70.0 L 591.0,72.6 L 592.1,75.2 L 593.1,77.7 L 594.2,80.1 L 595.2,82.5 L 596.3,84.8 L 597.4,87.1 L 598.4,89.4 L 599.5,91.6 L 600.5,93.7 L 601.5,95.8 L 602.6,97.8 L 603.6,99.8 L 604.7,101.8 L 605.8,103.7 L 606.8,105.6 L 607.9,107.4 L 608.9,109.2 L 610.0,111.0 L 611.0,112.7 L 612.0,114.4 L 613.1,116.0 L 614.1,117.7 L 615.2,119.2 L 616.2,120.8 L 617.3,122.3 L 618.4,123.7 L 619.4,125.2 L 620.5,126.6 L 621.5,128.0 L 622.5,129.3 L 623.6,130.6 L 624.6,131.9 L 625.7,133.2 L 626.8,134.4 L 627.8,135.6 L 628.9,136.8 L 629.9,138.0 L 631.0,139.1 L 632.0,140.2 L 633.0,141.3 L 634.1,142.4 L 635.1,143.4 L 636.2,144.4 L 637.2,145.4 L 638.3,146.4 L 639.4,147.3 L 640.4,148.3 L 641.5,149.2 L 642.5,150.1 L 643.5,150.9 L 644.6,151.8 L 645.6,152.6 L 646.7,153.4 L 647.8,154.2 L 648.8,155.0 L 649.9,155.8 L 650.9,156.5 L 652.0,157.2 L 653.0,157.9 L 654.0,158.6 L 655.1,159.3 L 656.1,160.0 L 657.2,160.6 L 658.2,161.3 L 659.3,161.9 L 660.4,162.5 L 661.4,163.1 L 662.5,163.7 L 663.5,164.3 L 664.5,164.8 L 665.6,165.4 L 666.6,165.9 L 667.7,166.4 L 668.8,167.0 L 669.8,167.5 L 670.9,167.9 L 671.9,168.4 L 673.0,168.9 L 674.0,169.4 L 675.0,169.8 L 676.1,170.2 L 677.1,170.7 L 678.2,171.1 L 679.2,171.5 L 680.3,171.9 L 681.4,172.3 L 682.4,172.7 L 683.5,173.1 L 684.5,173.4 L 685.5,173.8 L 686.6,174.1 L 687.6,174.5 L 688.7,174.8 L 689.8,175.2 L 690.8,175.5 L 691.9,175.8 L 692.9,176.1 L 694.0,176.4 L 695.0,70.0 L 696.0,72.6 L 697.1,75.2 L 698.1,77.7 L 699.2,80.1 L 700.2,82.5 L 701.3,84.8 L 702.4,87.1 L 703.4,89.4 L 704.5,91.6 L 705.5,93.7 L 706.5,95.8 L 707.6,97.8 L 708.6,99.8 L 709.7,101.8 L 710.8,103.7 L 711.8,105.6 L 712.9,107.4 L 713.9,109.2 L 715.0,111.0 L 716.0,112.7 L 717.0,114.4 L 718.1,116.0 L 719.1,117.7 L 720.2,119.2 L 721.2,120.8 L 722.3,122.3 L 723.4,123.7 L 724.4,125.2 L 725.5,126.6 L 726.5,128.0 L 727.5,129.3 L 728.6,130.6 L 729.6,131.9 L 730.7,133.2 L 731.8,134.4 L 732.8,135.6 L 733.9,136.8 L 734.9,138.0 L 736.0,139.1 L 737.0,140.2 L 738.0,141.3 L 739.1,142.4 L 740.1,143.4 L 741.2,144.4 L 742.2,145.4 L 743.3,146.4 L 744.4,147.3 L 745.4,148.3 L 746.5,149.2 L 747.5,150.1 L 748.5,150.9 L 749.6,151.8 L 750.6,152.6 L 751.7,153.4 L 752.8,154.2 L 753.8,155.0 L 754.9,155.8 L 755.9,156.5 L 757.0,157.2 L 758.0,157.9 L 759.0,158.6 L 760.1,159.3 L 761.1,160.0 L 762.2,160.6 L 763.2,161.3 L 764.3,161.9 L 765.4,162.5 L 766.4,163.1 L 767.5,163.7 L 768.5,164.3 L 769.5,164.8 L 770.6,165.4 L 771.6,165.9 L 772.7,166.4 L 773.8,167.0 L 774.8,167.5 L 775.9,167.9 L 776.9,168.4 L 778.0,168.9 L 779.0,169.4 L 780.0,169.8 L 781.1,170.2 L 782.1,170.7 L 783.2,171.1 L 784.2,171.5 L 785.3,171.9 L 786.4,172.3 L 787.4,172.7 L 788.5,173.1 L 789.5,173.4 L 790.5,173.8 L 791.6,174.1 L 792.6,174.5 L 793.7,174.8 L 794.8,175.2 L 795.8,175.5 L 796.9,175.8 L 797.9,176.1 L 799.0,176.4 L 800.0,70.0" fill="none" style="stroke:var(--assay-400)" stroke-width="2.4"></path><path d="M 590.0,70.0 L 591.0,72.6 L 592.1,75.2 L 593.1,77.7 L 594.2,80.1 L 595.2,82.5 L 596.3,84.8 L 597.4,87.1 L 598.4,89.4 L 599.5,91.6 L 600.5,93.7 L 601.5,95.8 L 602.6,97.8 L 603.6,99.8 L 604.7,101.8 L 605.8,103.7 L 606.8,105.6 L 607.9,107.4 L 608.9,109.2 L 610.0,111.0 L 611.0,112.7 L 612.0,114.4 L 613.1,116.0 L 614.1,117.7 L 615.2,119.2 L 616.2,120.8 L 617.3,122.3 L 618.4,123.7 L 619.4,125.2 L 620.5,126.6 L 621.5,128.0 L 622.5,129.3 L 623.6,130.6 L 624.6,131.9 L 625.7,133.2 L 626.8,134.4 L 627.8,135.6 L 628.9,136.8 L 629.9,138.0 L 631.0,139.1 L 632.0,140.2 L 633.0,141.3 L 634.1,142.4 L 635.1,143.4 L 636.2,144.4 L 637.2,145.4 L 638.3,146.4 L 639.4,147.3 L 640.4,148.3 L 641.5,149.2 L 642.5,150.1 L 643.5,150.9 L 644.6,151.8 L 645.6,152.6 L 646.7,153.4 L 647.8,154.2 L 648.8,155.0 L 649.9,155.8 L 650.9,156.5 L 652.0,157.2 L 653.0,157.9 L 654.0,158.6 L 655.1,159.3 L 656.1,160.0 L 657.2,160.6 L 658.2,161.3 L 659.3,161.9 L 660.4,162.5 L 661.4,163.1 L 662.5,163.7 L 663.5,164.3 L 664.5,164.8 L 665.6,165.4 L 666.6,165.9 L 667.7,166.4 L 668.8,167.0 L 669.8,167.5 L 670.9,167.9 L 671.9,168.4 L 673.0,168.9 L 674.0,169.4 L 675.0,169.8 L 676.1,170.2 L 677.1,170.7 L 678.2,171.1 L 679.2,171.5 L 680.3,171.9 L 681.4,172.3 L 682.4,172.7 L 683.5,173.1 L 684.5,173.4 L 685.5,173.8 L 686.6,174.1 L 687.6,174.5 L 688.7,174.8 L 689.8,175.2 L 690.8,175.5 L 691.9,175.8 L 692.9,176.1 L 694.0,176.4 L 695.0,70.0 L 696.0,72.6 L 697.1,75.2 L 698.1,77.7 L 699.2,80.1 L 700.2,82.5 L 701.3,84.8 L 702.4,87.1 L 703.4,89.4 L 704.5,91.6 L 705.5,93.7 L 706.5,95.8 L 707.6,97.8 L 708.6,99.8 L 709.7,101.8 L 710.8,103.7 L 711.8,105.6 L 712.9,107.4 L 713.9,109.2 L 715.0,111.0 L 716.0,112.7 L 717.0,114.4 L 718.1,116.0 L 719.1,117.7 L 720.2,119.2 L 721.2,120.8 L 722.3,122.3 L 723.4,123.7 L 724.4,125.2 L 725.5,126.6 L 726.5,128.0 L 727.5,129.3 L 728.6,130.6 L 729.6,131.9 L 730.7,133.2 L 731.8,134.4 L 732.8,135.6 L 733.9,136.8 L 734.9,138.0 L 736.0,139.1 L 737.0,140.2 L 738.0,141.3 L 739.1,142.4 L 740.1,143.4 L 741.2,144.4 L 742.2,145.4 L 743.3,146.4 L 744.4,147.3 L 745.4,148.3 L 746.5,149.2 L 747.5,150.1 L 748.5,150.9 L 749.6,151.8 L 750.6,152.6 L 751.7,153.4 L 752.8,154.2 L 753.8,155.0 L 754.9,155.8 L 755.9,156.5 L 757.0,157.2 L 758.0,157.9 L 759.0,158.6 L 760.1,159.3 L 761.1,160.0 L 762.2,160.6 L 763.2,161.3 L 764.3,161.9 L 765.4,162.5 L 766.4,163.1 L 767.5,163.7 L 768.5,164.3 L 769.5,164.8 L 770.6,165.4 L 771.6,165.9 L 772.7,166.4 L 773.8,167.0 L 774.8,167.5 L 775.9,167.9 L 776.9,168.4 L 778.0,168.9 L 779.0,169.4 L 780.0,169.8 L 781.1,170.2 L 782.1,170.7 L 783.2,171.1 L 784.2,171.5 L 785.3,171.9 L 786.4,172.3 L 787.4,172.7 L 788.5,173.1 L 789.5,173.4 L 790.5,173.8 L 791.6,174.1 L 792.6,174.5 L 793.7,174.8 L 794.8,175.2 L 795.8,175.5 L 796.9,175.8 L 797.9,176.1 L 799.0,176.4 L 800.0,70.0 L 800,190 L 590,190 Z" style="fill:var(--assay-400);fill-opacity:0.15"></path><text x="685.0" y="215" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">AUC-dependent</text><text x="685.0" y="230" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--assay-400)">(AUC/MIC)</text><text x="685.0" y="248" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Vancomycin, fluoroquinolones</text><text x="685.0" y="265" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">total exposure over time matters</text><text x="685.0" y="278" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" style="fill:var(--text-secondary)">most</text></svg><div class="cap">Figure 3. Three PK-PD patterns — the shape of the concentration curve relative to MIC, not just the MIC itself, drives optimal dosing strategy.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Pattern</th><th class="">Goal</th><th class="">Practical dosing implication</th></tr></thead>
+        <tbody><tr><td class="hl">Time-dependent (T&gt;MIC)</td><td class="">Maximize the <i>time</i> concentration stays above MIC</td><td class="">Beta-lactams (penicillins, cephalosporins, carbapenems) — favors more frequent dosing or extended/continuous infusion over a single large dose</td></tr><tr><td class="hl">Concentration-dependent (C<sub>max</sub>/MIC)</td><td class="">Maximize the <i>peak</i> concentration relative to MIC</td><td class="">Aminoglycosides — favors larger, less frequent (e.g., once-daily) dosing over splitting into smaller frequent doses</td></tr><tr><td class="hl">AUC-dependent (AUC/MIC)</td><td class="">Maximize total drug exposure over time relative to MIC</td><td class="">Vancomycin, fluoroquinolones — total daily dose/exposure matters more than the exact schedule used to deliver it</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Myth:</b> “a susceptible MIC means any standard regimen will work equally well.” The PK-PD pattern above explains why under-dosing frequency (for a time-dependent drug) or under-dosing peak (for a concentration-dependent drug) can produce clinical failure <i>despite</i> a susceptible MIC on the report — the category tells you the organism is theoretically treatable with this drug class; the dosing strategy determines whether your specific regimen actually achieves the target.</div><div class="verify"><b>Verify before use:</b> current CLSI/EUCAST breakpoints are revised periodically and vary by organism-drug pair — confirm against your lab's current reporting standard rather than a fixed number, since breakpoints for a given drug can change without the drug itself changing.</div>  </div>
+</section>
+<section class="block" id="culture-framework">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>The Organizing Principle</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">One question underlies every specimen type below: is this site normally sterile, or normally colonized?</p>
+    </div><p>The significance of a given colony count or organism depends almost entirely on <b>where the specimen came from</b>. Blood and
+    CSF are normally sterile — essentially any growth deserves serious consideration. Urine, the respiratory tract, and skin/wounds are normally
+    colonized to varying degrees — growth there has to clear a higher bar, and the specific bar depends on collection method, colony count, and
+    whether the organism identified is a plausible pathogen or a usual-suspect contaminant/colonizer for that site.</p>  </div>
+</section>
+<section class="block" id="culture-urine">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>Urine</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The classic ‘100,000 or nothing’ teaching is outdated — the real threshold depends on symptoms and collection method.</p>
+    </div><p class="lead-q">“This urine culture grew 10,000 CFU/mL E. coli — the textbook number is 100,000, so is this just contamination?”</p><p>The 10<sup>5</sup> CFU/mL threshold (the Kass criterion) was originally derived from studies of asymptomatic bacteriuria and
+    pyelonephritis risk in pregnant women — it was never intended as a universal cutoff for every clinical scenario, and modern guidance
+    (IDSA/ACOG) uses <i>lower</i> thresholds for symptomatic patients specifically because waiting for 10<sup>5</sup> misses real, symptomatic
+    infections.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Scenario</th><th class="">Threshold generally considered significant</th></tr></thead>
+        <tbody><tr><td class="hl">Symptomatic woman, acute uncomplicated cystitis</td><td class="">≥10³ CFU/mL (1,000)</td></tr><tr><td class="hl">Symptomatic patient, complicated UTI or pyelonephritis</td><td class="">≥10⁴–10⁵ CFU/mL depending on guideline</td></tr><tr><td class="hl">Asymptomatic bacteriuria screening (e.g., pregnancy, pre-urologic-procedure)</td><td class="">≥10⁵ CFU/mL (two consecutive specimens traditionally required for true asymptomatic bacteriuria)</td></tr><tr><td class="hl">Straight catheterized specimen</td><td class="">Lower thresholds (≥10²–10³ CFU/mL) often considered significant — less contamination risk than a voided specimen</td></tr><tr><td class="hl">Chronic indwelling catheter</td><td class="">Colonization is expected and near-universal — a positive culture alone does <i>not</i> define infection; requires accompanying symptoms (CAUTI is a clinical, not just microbiologic, diagnosis)</td></tr></tbody>
+      </table>
+    </div><div class="pearl">So: <b>10,000 CFU/mL <i>can</i> absolutely be as significant as 100,000 CFU/mL</b> — in a symptomatic patient, particularly with pyuria on the accompanying urinalysis, 10⁴ E. coli is a real, treatable result, not a result to dismiss while waiting for a bigger number. The colony count needs to be read together with symptoms and collection method, not as a single universal gatekeeper.</div><div class="myth"><b>Myth:</b> “Anything under 100,000 is a contaminant.” That number only ever applied cleanly to asymptomatic screening scenarios. Mixed growth of 2–3 different organisms at low counts, especially from a voided specimen, is the pattern that actually suggests contamination — not a single organism at a moderate count in a symptomatic patient.</div><div class="verify"><b>Verify before use:</b> exact CFU thresholds vary by guideline (IDSA, ACOG, AUA) and continue to be revised — confirm current institutional/guideline threshold, particularly for the complicated-UTI and catheterized-specimen categories.</div>  </div>
+</section>
+<section class="block" id="culture-blood">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>Blood</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Blood is normally sterile, so the question shifts from ‘how much grew’ to ‘which organism, and how many bottles.’</p>
+    </div><div class="diagram"><svg viewBox="0 0 950 300" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,170.0 L241.9,170.0" fill="none" style="stroke:var(--assay-400);color:var(--assay-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M403.7,140.6 L509.4,95.3" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M687.9,60.9 L741.8,59.8" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M428.1,187.9 L482.1,198.2" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M687.9,215.8 L722.0,215.1" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="140" width="170" height="60" rx="10" style="fill:var(--assay-400);fill-opacity:0.10;stroke:var(--assay-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="105.0" y="163.18">Blood culture bottle</tspan><tspan x="105.0" y="176.93">flags positive</tspan></text><rect x="240" y="140" width="190" height="60" rx="10" style="fill:var(--plum-400);fill-opacity:0.10;stroke:var(--plum-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="335.0" y="162.56">What organism is</tspan><tspan x="335.0" y="177.56">it?</tspan></text><rect x="480" y="30" width="210" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="585.0" y="50.6">Recognized pathogen (S.</tspan><tspan x="585.0" y="63.1">aureus, GNRs, Candida, S.</tspan><tspan x="585.0" y="75.6">pneumoniae, S. pyogenes)</tspan></text><rect x="740" y="30" width="180" height="56" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="830.0" y="45.6">Treat as true</tspan><tspan x="830.0" y="58.1">bacteremia — even 1 of</tspan><tspan x="830.0" y="70.6">2 bottles</tspan></text><rect x="480" y="180" width="210" height="76" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="585.0" y="194.44">Common skin flora</tspan><tspan x="585.0" y="206.315">(coag-negative Staph,</tspan><tspan x="585.0" y="218.19">Cutibacterium,</tspan><tspan x="585.0" y="230.065">Corynebacterium, Bacillus</tspan><tspan x="585.0" y="241.94">spp.)</tspan></text><rect x="720" y="180" width="200" height="66" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="820.0" y="200.6">How many separate sets</tspan><tspan x="820.0" y="213.1">grew the same</tspan><tspan x="820.0" y="225.6">organism?</tspan></text>
+    <text x="830" y="270" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" style="fill:var(--sage-500)">1 of several sets → contaminant</text>
+    <text x="830" y="286" text-anchor="middle" font-family="var(--font-mono)" font-size="9.5" style="fill:var(--ember-500)">2+ sets, same organism → true</text>
+    </svg><div class="cap">Figure 4. Organism identity and number of positive sets/bottles together determine true bacteremia vs. contamination.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Category</th><th class="">Examples</th><th class="">Interpretation</th></tr></thead>
+        <tbody><tr><td class="hl">Recognized pathogens</td><td class="">S. aureus, gram-negative rods (E. coli, Klebsiella, Pseudomonas), Candida species, S. pneumoniae, S. pyogenes, Listeria</td><td class="">Essentially always clinically significant — growth in even a single bottle out of a full set should be treated as real until proven otherwise</td></tr><tr><td class="hl">Common contaminants / low-virulence skin flora</td><td class="">Coagulase-negative staphylococci (e.g., S. epidermidis), Cutibacterium (Propionibacterium) acnes, Corynebacterium species, Bacillus species (not anthracis)</td><td class="">Often contamination from skin flora introduced at the draw — growth in only 1 of several bottles/sets, especially without a plausible source (no central line, no prosthetic material, clinically well), favors contamination</td></tr></tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Factor increasing likelihood of TRUE bacteremia (for a borderline organism)</th><th class=""></th></tr></thead>
+        <tbody><tr><td class="">Growth in ≥2 separate sets (different venipuncture sites/times)</td><td class=""></td></tr><tr><td class="">Short time-to-positivity (faster-flagging bottles generally reflect higher initial bacterial burden)</td><td class=""></td></tr><tr><td class="">Presence of a plausible source — central line, prosthetic valve/joint, immunocompromise</td><td class=""></td></tr><tr><td class="">Clinical correlation — fever, hemodynamic instability, leukocytosis</td><td class=""></td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Why 2–4 sets are drawn from separate sites:</b> it's not redundancy — it's specifically to distinguish contamination (typically only 1 of several bottles/sets positive) from true bacteremia (typically concordant across multiple, separately-drawn sets). A single blood culture set drawn is a genuinely weaker diagnostic specimen than 2–4 sets for exactly this reason.</div>  </div>
+</section>
+<section class="block" id="culture-respiratory">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>Respiratory / Sputum</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The specimen type most prone to being misleadingly “positive” — it has to pass through colonized oropharynx to get to the cup.</p>
+    </div><p>Expectorated sputum is never a clean specimen — it's contaminated by upper airway flora by definition. Gram stain quality
+    assessment (Bartlett criteria) should precede culture interpretation: a good-quality lower respiratory specimen shows <b>&gt;25 neutrophils and
+    &lt;10 squamous epithelial cells</b> per low-power field. A specimen dominated by squamous cells reflects oral contamination, and any culture
+    result from it should be interpreted cautiously — ideally the lab rejects it and requests recollection.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Specimen type</th><th class="">Quantitative threshold for significance</th></tr></thead>
+        <tbody><tr><td class="hl">Expectorated sputum</td><td class="">No reliable quantitative cutoff — interpret via Gram stain quality, dominant organism morphology, and clinical correlation, not colony count alone</td></tr><tr><td class="hl">Endotracheal aspirate</td><td class="">≥10⁵–10⁶ CFU/mL (quantitative), used mainly in ventilated patients</td></tr><tr><td class="hl">Bronchoalveolar lavage (BAL)</td><td class="">≥10⁴ CFU/mL</td></tr><tr><td class="hl">Protected specimen brush (PSB)</td><td class="">≥10³ CFU/mL</td></tr></tbody>
+      </table>
+    </div><div class="pearl">More invasive specimens (BAL, PSB) exist specifically because expectorated sputum is so prone to false-positive-by-contamination results in ambiguous cases — they bypass the oropharynx, which is why their quantitative thresholds are trusted in a way a sputum colony count generally isn't.</div>  </div>
+</section>
+<section class="block" id="culture-wound">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>Wound</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A superficial swab tells you what's colonizing the surface — not necessarily what's driving the infection underneath.</p>
+    </div><p>Swabbing the surface of an open wound reliably captures environmental and skin colonizers alongside (or instead of) any true
+    pathogen, and chronic wounds (diabetic foot ulcers especially) are almost always polymicrobial on a surface swab regardless of whether invasive
+    infection is present. A deep tissue specimen — curettage from a debrided wound base, an aspirate of purulent fluid, or bone biopsy when
+    osteomyelitis is suspected — is a substantially more actionable specimen than a surface swab.</p><div class="myth"><b>Myth:</b> “the swab grew 4 organisms, so I need to cover all 4.” Polymicrobial surface-swab growth in a chronic wound usually reflects colonization of the wound bed, not 4 simultaneous invasive pathogens — treat based on the clinical picture (surrounding cellulitis, systemic signs, imaging concerning for osteomyelitis), not by covering everything the swab happened to grow.</div><div class="verify"><b>Verify before use:</b> quantitative wound/burn biopsy thresholds (historically &gt;10⁵ organisms/gram tissue to suggest invasive infection) come from burn literature and are not routinely performed outside specialized centers — most wound management decisions rely on clinical exam plus deep-specimen culture rather than quantitative biopsy.</div>  </div>
+</section>
+<section class="block" id="culture-csf">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Culture Interpretation</span>
+      <h2>Cerebrospinal Fluid</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The other normally-sterile site — treated with the same low threshold for concern as blood, with one notable exception.</p>
+    </div><p>Any bacterial growth from CSF is treated as significant until proven otherwise, given the stakes of missing bacterial
+    meningitis. Culture positivity should always be interpreted <i>alongside</i> the CSF cell count, protein, and glucose — a positive culture with
+    a completely normal cell count/chemistry profile is a more suspicious pattern for contamination (or a shunt-related low-grade colonization) than a
+    positive culture with a clearly inflammatory profile (elevated WBC, elevated protein, low glucose).</p><div class="pearl"><b>The specific exception:</b> in a patient with a CSF shunt or external ventricular drain, low-virulence skin organisms (coagulase-negative staphylococci, Cutibacterium acnes) recovered from CSF can represent either a true indolent shunt infection or introduction during collection — unlike community-acquired meningitis, this specific scenario genuinely requires correlation with repeat cultures, CSF chemistry, and the clinical picture (shunt malfunction symptoms, fever) rather than automatic treatment of every positive culture as definite infection.</div><div class="verify"><b>Verify before use:</b> gram stain sensitivity for bacterial meningitis is meaningfully reduced by prior antibiotic exposure — a negative gram stain or culture in a partially treated patient does not rule out bacterial meningitis, and empiric treatment decisions should not wait on culture results.</div>  </div>
+</section>
+<footer class="wrap">
+  <p>Pharmacokinetics &amp; Culture Interpretation Atlas &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored thresholds, breakpoints, and dosing against current institutional/laboratory/society sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('pk-culture-atlas-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('pk-culture-atlas-theme', next);
+      paint();
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+
+    // Washout / observation calculator
+    const hlInput = document.getElementById('calc-halflife');
+    const elInput = document.getElementById('calc-elapsed');
+    const out = document.getElementById('calc-output');
+
+    function fmtTime(hours) {
+      if (hours >= 24) {
+        const days = hours / 24;
+        return days.toFixed(1) + ' days (' + hours.toFixed(1) + ' h)';
+      }
+      return hours.toFixed(1) + ' hours';
+    }
+
+    function runCalc() {
+      if (!hlInput || !out) return;
+      const hl = parseFloat(hlInput.value);
+      const elapsedRaw = elInput.value;
+      const elapsed = elapsedRaw === '' ? NaN : parseFloat(elapsedRaw);
+
+      if (!hl || hl <= 0 || isNaN(hl)) {
+        out.innerHTML = '<div class="calc-highlight">Enter a valid half-life in hours to calculate.</div>';
+        return;
+      }
+
+      let html = '';
+      if (!isNaN(elapsed) && elapsed >= 0) {
+        const currentPct = Math.pow(0.5, elapsed / hl) * 100;
+        const hoursTo5 = hl * 5;
+        const hoursTo4 = hl * 4;
+        const remaining5 = Math.max(0, hoursTo5 - elapsed);
+        const remaining4 = Math.max(0, hoursTo4 - elapsed);
+        html += '<div class="calc-highlight">At <b>' + elapsed.toFixed(1) + ' h</b> since the last dose: approximately <b>' +
+          currentPct.toFixed(1) + '%</b> of the dose remains.<br>Approx. <b>' + fmtTime(remaining4) +
+          '</b> until ~94% eliminated (4 half-lives) &middot; approx. <b>' + fmtTime(remaining5) +
+          '</b> until ~97% eliminated (5 half-lives, practical full washout).</div>';
+      }
+
+      html += '<table class="calc-table"><thead><tr><th>Elapsed time</th><th>% of dose remaining</th><th>Interpretation</th></tr></thead><tbody>';
+      const labels = ['1 half-life', '2 half-lives', '3 half-lives', '4 half-lives', '5 half-lives'];
+      const notes = ['50% remains', '25% remains', '12.5% remains \u2014 clinically minor for most drugs', '~6% remains', '~3% remains \u2014 conventional \u201cfully washed out\u201d point'];
+      for (let n = 1; n <= 5; n++) {
+        const hours = hl * n;
+        const pct = Math.pow(0.5, n) * 100;
+        html += '<tr><td>' + fmtTime(hours) + '</td><td>' + pct.toFixed(1) + '%</td><td>' + notes[n-1] + '</td></tr>';
+      }
+      html += '</tbody></table>';
+      html += '<div class="calc-note">Assumes standard first-order elimination from a single dose. Does not apply to zero-order kinetics (phenytoin, ethanol, high-dose aspirin) or drugs with clinically active metabolites with their own half-life. A clinical decision to observe or discharge should weigh this alongside symptoms, exam, and institutional protocol \u2014 not this number alone.</div>';
+
+      out.innerHTML = html;
+    }
+
+    if (hlInput) {
+      hlInput.addEventListener('input', runCalc);
+      elInput.addEventListener('input', runCalc);
+      runCalc();
+    }
+  });
+})();
+</script>
+</body>
+</html>

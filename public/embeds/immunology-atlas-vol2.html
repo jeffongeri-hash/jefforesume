@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immunology Atlas Vol. 2 — Immunodeficiency &amp; Infection Risk Patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #14141c;
+  --ink-800: #1c1d29;
+  --ink-700: #2a2b3d;
+  --paper-050: #f8f6f0;
+  --paper-100: #efece2;
+  --paper-200: #e3ded0;
+
+  --sentinel-600: #4a3f9e;
+  --sentinel-500: #5d4fc4;
+  --sentinel-400: #8177d9;
+  --sentinel-300: #ada4e8;
+
+  --gold-500: #b5892c;
+  --gold-400: #d1a441;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #efece4;
+  --text-secondary: #b8b6c4;
+  --text-tertiary: #83829a;
+  --border: rgba(239, 236, 228, 0.10);
+  --border-strong: rgba(239, 236, 228, 0.18);
+  --accent: var(--sentinel-400);
+  --accent-strong: var(--sentinel-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #1c1a24;
+  --text-secondary: #4a4757;
+  --text-tertiary: #78748a;
+  --border: rgba(28, 26, 36, 0.10);
+  --border-strong: rgba(28, 26, 36, 0.18);
+  --accent: var(--sentinel-600);
+  --accent-strong: var(--sentinel-500);
+  --shadow: 0 8px 30px rgba(28,26,36,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--sentinel-400); color: #fff; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+/* ---------- Top identity bar ---------- */
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+/* ---------- Nav rail ---------- */
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* ---------- Case box ---------- */
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+/* ---------- Danger / storm callout ---------- */
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--gold-500); }
+
+.evidence {
+  border-left: 3px solid var(--sentinel-400); background: color-mix(in srgb, var(--sentinel-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sentinel-400); display:block; margin-bottom: 0.4rem; }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Diagram frame ---------- */
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+/* ---------- Comparison strip ---------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+/* ---------- badges/pills ---------- */
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+/* ---------- footer ---------- */
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+/* toc back-to-top */
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Immunology Atlas</span>
+    <span class="sub">Vol. II &middot; Immunodeficiency &amp; Infection Risk</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#what-immunocompromised">What It Means</a><a href="#primary-id">Primary ID</a><a href="#secondary-id">Secondary/Acquired ID</a><a href="#defect-to-pathogen">Defect → Pathogen</a><a href="#ed-approach">ED Approach</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME II OF THE IMMUNOLOGY SERIES</div>
+  <h1>Immunodeficiency &amp; Infection Risk Patterns</h1>
+  <p class="lede">What it actually means for a patient to be immunocompromised, the primary and secondary defects that produce that state,
+  and the practical payoff: mapping the specific defect to the specific pathogen it predisposes to, so empiric coverage is chosen before
+  cultures ever result.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">8</div><div class="l">Primary immunodeficiencies</div></div>
+    <div class="hero-stat"><div class="n">6</div><div class="l">Secondary/acquired causes</div></div>
+    <div class="hero-stat"><div class="n">4</div><div class="l">Pathway &amp; risk diagrams</div></div>
+  </div>
+</div>
+
+<section class="block" id="what-immunocompromised">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Foundations</span>
+      <h2>What It Truly Means to Be Immunocompromised</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Not a checkbox on the chart — a graded, often multifactorial state that changes almost every downstream decision.</p>
+    </div><p class="lead-q">“The chart says ‘history of immunosuppression’ — does that mean I treat this fever completely differently, or is that label doing more work than it should?”</p><p>“Immunocompromised” gets used as a binary label — present or absent — when the reality is a continuous spectrum of
+    degree, breadth, and duration. A patient on low-dose methotrexate for mild rheumatoid arthritis and a patient one week post-allogeneic stem cell
+    transplant are both technically “immunocompromised,” but they carry almost nothing in common in terms of actual infection risk. The clinically
+    useful question isn't <i>whether</i> a patient is immunocompromised, but <i>which specific arm</i> of host defense is impaired, <i>how severely</i>,
+    and <i>for how long</i> — because that combination is what actually predicts which pathogens become dangerous.</p><h3>Functional definitions worth knowing precisely</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Defect</th><th class="">Threshold commonly used</th><th class="">Why the threshold exists</th></tr></thead>
+        <tbody><tr><td class="hl">Neutropenia</td><td class="">ANC &lt;1500/μL; severe &lt;500/μL; profound &lt;100/μL</td><td class="">Infection risk rises sharply below 500, and rises further and the tempo accelerates below 100</td></tr><tr><td class="hl">Lymphopenia</td><td class="">Absolute lymphocyte count &lt;1000/μL</td><td class="">Broad marker of combined humoral/cellular vulnerability; less specific than a CD4 count</td></tr><tr><td class="hl">HIV-associated immunosuppression</td><td class="">Staged by CD4 count (see ladder below)</td><td class="">Different opportunistic pathogens become relevant at different CD4 thresholds</td></tr><tr><td class="hl">Hypogammaglobulinemia</td><td class="">IgG roughly &lt;400–500 mg/dL</td><td class="">Impaired opsonization of encapsulated organisms</td></tr><tr><td class="hl">Asplenia / functional asplenia</td><td class="">Surgical splenectomy or functional (e.g., sickle cell autoinfarction)</td><td class="">Spleen is the primary filter for encapsulated organisms and intraerythrocytic parasites</td></tr><tr><td class="hl">Corticosteroid-induced</td><td class="">Roughly prednisone &ge;20 mg/day (or equivalent) for &ge;2–4 weeks; or a high cumulative dose</td><td class="">Commonly cited threshold above which clinically meaningful immunosuppression, including PJP risk, becomes relevant — a genuinely fuzzy line, not a hard cutoff</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> exact numeric thresholds (especially the corticosteroid dose/duration cutoff) vary across sources and are consensus estimates rather than validated hard lines — treat them as a way to calibrate your index of suspicion, not a strict rule.</div><h3>Immunocompromise is often cumulative, not categorical</h3><p>A patient doesn't need a single named diagnosis to be functionally immunocompromised. Advanced age, poorly controlled diabetes,
+    malnutrition, chronic kidney disease/uremia, cirrhosis, and alcohol use disorder each blunt host defense modestly on their own — but stack several
+    together (which is common) and the cumulative effect can rival a single “textbook” immunodeficiency. This is the patient most likely to be
+    under-recognized as high-risk, because no single line on the problem list says “immunocompromised.”</p><h3>Why this changes the encounter, not just the antibiotic choice</h3><div class="pearl"><b>Atypical presentation is the norm here, not the exception.</b> A neutropenic patient has no neutrophils to form pus — an intra-abdominal or soft tissue infection that would be obviously fluctuant and erythematous in an immunocompetent patient can look almost unremarkable on exam in a neutropenic one. A patient on chronic corticosteroids can have a blunted or absent febrile response and minimal peritoneal signs despite a perforated viscus. The absence of textbook findings is not reassuring in this population — it's expected.</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">What changes in practice</th><th class="">Why</th></tr></thead>
+        <tbody><tr><td class="">Lower threshold to treat empirically before cultures result</td><td class="">The cost of being wrong (missed early sepsis in a patient who can't mount a normal inflammatory response) is asymmetric</td></tr><tr><td class="">Lower threshold for imaging even with a reassuring exam</td><td class="">Physical exam findings are systematically blunted or absent</td></tr><tr><td class="">Faster door-to-antibiotic targets in specific syndromes (e.g., febrile neutropenia)</td><td class="">Deterioration can be rapid and the usual compensatory/localizing signs may not appear first</td></tr><tr><td class="">Broader empiric coverage than the “most likely” organism</td><td class="">The specific defect present determines which unusual organisms become plausible — covered in the mapping table later in this volume</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="primary-id">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Primary Immunodeficiency</span>
+      <h2>Congenital Immunodeficiencies</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Rare individually, but each maps to a distinctive infection pattern that's often the clue that gets the diagnosis made.</p>
+    </div><p>Primary immunodeficiencies are organized most usefully by which arm of host defense is missing — that arm predicts both the
+    infection pattern and the typical age of presentation. Most present in infancy/early childhood, but several (CVID in particular) are frequently
+    not diagnosed until adulthood.</p><div class="cell-grid">
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">B-cell defect</span>
+      <h5>X-linked Agammaglobulinemia (Bruton's)</h5>
+      <p>BTK gene mutation halts B-cell maturation — essentially absent B cells and immunoglobulins. Recurrent sinopulmonary and GI infections beginning after maternal antibody wanes, around 6–12 months of age.</p>
+      <div class="markers">Encapsulated bacteria, enteroviruses &middot; X-linked (boys)</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">B-cell defect</span>
+      <h5>Common Variable Immunodeficiency (CVID)</h5>
+      <p>Impaired B-cell differentiation into plasma cells despite normal B-cell numbers — low IgG, IgA, and/or IgM. The most common symptomatic primary immunodeficiency; frequently diagnosed in adulthood after years of recurrent infections.</p>
+      <div class="markers">Recurrent sinopulmonary infection, bronchiectasis, autoimmune cytopenias</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sentinel-400)">
+      <div class="band"></div>
+      <span class="role">B-cell defect</span>
+      <h5>Selective IgA Deficiency</h5>
+      <p>Isolated low/absent IgA with normal IgG/IgM. Most common primary immunodeficiency overall; many patients are asymptomatic.</p>
+      <div class="markers">Mucosal (sinopulmonary, GI) infections &middot; anaphylaxis risk with blood products containing IgA</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">T-cell defect</span>
+      <h5>DiGeorge Syndrome</h5>
+      <p>22q11.2 deletion causes thymic hypoplasia/aplasia — variable T-cell deficiency. Part of a broader syndrome (cardiac defects, hypocalcemia, characteristic facies).</p>
+      <div class="markers">Viral, fungal, opportunistic infections &middot; presents in infancy</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--ember-500)">
+      <div class="band"></div>
+      <span class="role">Combined B+T defect</span>
+      <h5>Severe Combined Immunodeficiency (SCID)</h5>
+      <p>Multiple genetic causes converge on absent/non-functional T cells (and often B/NK cells) — the “bubble boy” disease. A true pediatric emergency: presents in the first months of life with failure to thrive and overwhelming, often fatal, infection if unrecognized.</p>
+      <div class="markers">Opportunistic infections of every category &middot; live vaccines are fatal</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sage-500)">
+      <div class="band"></div>
+      <span class="role">Phagocyte defect</span>
+      <h5>Chronic Granulomatous Disease (CGD)</h5>
+      <p>NADPH oxidase defect — neutrophils can engulf but can't generate the respiratory burst needed to kill catalase-positive organisms. Recurrent abscesses and granuloma formation.</p>
+      <div class="markers">Staph aureus, Serratia, Burkholderia, Nocardia, Aspergillus</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--sage-500)">
+      <div class="band"></div>
+      <span class="role">Phagocyte defect</span>
+      <h5>Leukocyte Adhesion Deficiency</h5>
+      <p>Defective neutrophil adhesion/migration to sites of infection. Classic clue: delayed umbilical cord separation and infections without pus formation despite marked leukocytosis.</p>
+      <div class="markers">Recurrent bacterial infection, poor wound healing</div>
+    </div>
+    <div class="cell-card" style="--cell-color:var(--gold-500)">
+      <div class="band"></div>
+      <span class="role">Complement defect</span>
+      <h5>Terminal Complement Deficiency (C5–C9)</h5>
+      <p>Inability to form the membrane attack complex. Covered in depth in Volume I's complement cascade section — included here for completeness of the pathogen-mapping picture.</p>
+      <div class="markers">Recurrent Neisseria (meningococcemia, disseminated gonococcal infection)</div>
+    </div></div><div class="pearl"><b>Clinical clue worth remembering:</b> an adult presenting with a first episode of recurrent sinopulmonary infections, or a first case of invasive pneumococcal disease without an obvious reason, is worth a basic humoral workup (quantitative immunoglobulins) — CVID is under-recognized precisely because it isn't a pediatric diagnosis.</div>  </div>
+</section>
+<section class="block" id="secondary-id">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Secondary Immunodeficiency</span>
+      <h2>Acquired &amp; Iatrogenic Immunodeficiency</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Far more common in the ED than any primary immunodeficiency — and the specific cause determines the specific risk.</p>
+    </div><h3>HIV/AIDS — CD4-stratified opportunistic infection risk</h3><p>CD4 count is one of the few places in medicine where a single lab value maps this cleanly onto a specific differential
+    diagnosis. Always pair it with the clinical picture and, when known, whether the patient is on antiretroviral therapy — a suppressed viral load
+    with an low historical CD4 nadir carries different risk than an active, untreated low CD4 count.</p><div class="diagram"><svg viewBox="0 0 780 390" xmlns="http://www.w3.org/2000/svg"><text x="20" y="30" font-family="var(--font-mono)" font-size="12" style="fill:var(--text-tertiary)">CD4 COUNT (cells/μL)</text><rect x="20" y="45" width="140" height="52" rx="10" style="fill:var(--sage-500);fill-opacity:0.14;stroke:var(--sage-500);stroke-width:1.6"></rect><text x="90" y="77" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="17" style="fill:var(--sage-500)">>500</text><rect x="180" y="45" width="580" height="52" rx="10" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="196" y="76" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">Bacterial/typical infections — risk approaches general population</text><rect x="20" y="111" width="140" height="52" rx="10" style="fill:var(--gold-500);fill-opacity:0.14;stroke:var(--gold-500);stroke-width:1.6"></rect><text x="90" y="143" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="17" style="fill:var(--gold-500)">200–500</text><rect x="180" y="111" width="580" height="52" rx="10" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="196" y="142" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">Oral/esophageal thrush, HSV/VZV reactivation, bacterial pneumonia, TB</text><rect x="20" y="177" width="140" height="52" rx="10" style="fill:var(--ember-500);fill-opacity:0.14;stroke:var(--ember-500);stroke-width:1.6"></rect><text x="90" y="209" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="17" style="fill:var(--ember-500)">100–200</text><rect x="180" y="177" width="580" height="52" rx="10" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="196" y="208" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">PJP pneumonia, disseminated histoplasmosis/coccidioidomycosis</text><rect x="20" y="243" width="140" height="52" rx="10" style="fill:var(--ember-500);fill-opacity:0.14;stroke:var(--ember-500);stroke-width:1.6"></rect><text x="90" y="275" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="17" style="fill:var(--ember-500)">50–100</text><rect x="180" y="243" width="580" height="52" rx="10" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="196" y="274" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">Toxoplasma encephalitis, cryptococcal meningitis, disseminated candidiasis</text><rect x="20" y="309" width="140" height="52" rx="10" style="fill:var(--ember-500);fill-opacity:0.14;stroke:var(--ember-500);stroke-width:1.6"></rect><text x="90" y="341" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="17" style="fill:var(--ember-500)">&lt;50</text><rect x="180" y="309" width="580" height="52" rx="10" style="fill:var(--bg-elevated-2);stroke:var(--border-strong);stroke-width:1"></rect><text x="196" y="340" font-family="var(--font-body)" font-size="12.5" style="fill:var(--text-primary)">CMV retinitis/colitis, disseminated MAC — highest-risk tier</text></svg><div class="cap">Figure 1. CD4-stratified opportunistic infection risk.</div></div><div class="verify"><b>Verify before use:</b> these thresholds are teaching anchors, not sharp cutoffs — confirm current OI prophylaxis guidance (e.g., PJP prophylaxis initiation/discontinuation thresholds) against current DHHS/CDC opportunistic infection guidelines, which are periodically updated.</div><h3>Asplenia &amp; functional asplenia</h3><p>The spleen is the primary filter for encapsulated organisms and intraerythrocytic parasites; surgical splenectomy and
+    functional asplenia (sickle cell disease, from repeated splenic auto-infarction) carry essentially the same risk profile. The feared complication
+    is <b>overwhelming post-splenectomy infection (OPSI)</b> — fulminant sepsis and DIC that can progress from feeling well to critically ill within
+    hours, with reported mortality as high as 50–70% once fulminant. Any fever in an asplenic patient warrants immediate empiric antibiotics
+    (typically a third-generation cephalosporin) while the workup proceeds, not a “wait and see.”</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Organism group</th><th class="">Why asplenia matters</th></tr></thead>
+        <tbody><tr><td class="">Encapsulated bacteria (S. pneumoniae, H. influenzae, N. meningitidis)</td><td class="">Normally opsonized and cleared by splenic macrophages</td></tr><tr><td class="">Capnocytophaga canimorsus</td><td class="">Classically fulminant after a dog bite/lick in an asplenic patient</td></tr><tr><td class="">Babesia, malaria</td><td class="">Spleen normally clears parasitized red cells — asplenic patients can have unusually severe parasitemia</td></tr></tbody>
+      </table>
+    </div><h3>Chemotherapy-induced neutropenia &amp; febrile neutropenia</h3><div class="diagram"><svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="150" x2="720" y2="150" style="stroke:var(--border-strong)" stroke-width="2"></line><path d="M 60.0,65.3 L 91.4,69.1 L 122.9,74.7 L 154.3,82.4 L 185.7,92.4 L 217.1,104.3 L 248.6,117.2 L 280.0,129.7 L 311.4,140.4 L 342.9,147.5 L 374.3,150.0 L 405.7,147.5 L 437.1,140.4 L 468.6,129.7 L 500.0,117.2 L 531.4,104.3 L 562.9,92.4 L 594.3,82.4 L 625.7,74.7 L 657.1,69.1 L 688.6,65.3 L 720.0,62.9" fill="none" style="stroke:var(--sentinel-400)" stroke-width="3"></path><rect x="280.0" y="30" width="220.0" height="190" style="fill:var(--ember-500);fill-opacity:0.10"></rect><text x="390.0" y="24" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" style="fill:var(--ember-500)">highest infection risk window</text><line x1="60.0" y1="150" x2="60.0" y2="160" style="stroke:var(--text-tertiary)" stroke-width="1.5"></line><text x="60.0" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">Chemo</text><text x="60.0" y="193" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">given</text><line x1="374.2857142857143" y1="150" x2="374.2857142857143" y2="160" style="stroke:var(--text-tertiary)" stroke-width="1.5"></line><text x="374.2857142857143" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">Nadir</text><text x="374.2857142857143" y="193" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">(~day 7–14)</text><line x1="720.0" y1="150" x2="720.0" y2="160" style="stroke:var(--text-tertiary)" stroke-width="1.5"></line><text x="720.0" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">Recovery</text><text x="60" y="235" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Day 0</text><text x="720" y="235" text-anchor="end" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Day 21</text><text x="60" y="45" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">ANC</text></svg><div class="cap">Figure 2. Typical ANC nadir timing after cytotoxic chemotherapy — infection risk peaks roughly 7–14 days after administration.</div></div><p><b>Febrile neutropenia</b> is defined as a single temperature ≥38.3°C (101°F), or ≥38.0°C (100.4°F) sustained
+    over an hour, in a patient with an ANC &lt;500/μL (or &lt;1000 with an expected decline below 500 within 48 hours). This is treated with the same
+    urgency as sepsis — IDSA-anchored practice calls for empiric antipseudomonal beta-lactam monotherapy (cefepime, meropenem/imipenem, or
+    piperacillin-tazobactam) ideally within an hour of triage; vancomycin is <b>not</b> routine and is reserved for specific indications
+    (suspected line infection, skin/soft-tissue infection, pneumonia, hemodynamic instability, known MRSA colonization). The MASCC risk index helps
+    identify low-risk patients (score ≥21) who may be candidates for outpatient oral therapy after initial evaluation.</p><div class="evidence"><span class="study-label">Practice trend worth knowing</span>More recent stewardship-focused data (2023–2025 cohorts) support discontinuing empiric antibiotics after roughly 72 hours of defervescence and clinical recovery, <i>regardless of whether the ANC has recovered</i> — a shift from older practice of continuing antibiotics until neutrophil recovery, aimed at reducing C. difficile and other antibiotic-associated harm without increasing bacteremia relapse.</div><div class="verify"><b>Verify before use:</b> specific empiric regimen choice, MASCC score application, and discontinuation timing should follow your institution's current oncology/antimicrobial stewardship protocol.</div><h3>Chronic corticosteroid use</h3><p>Beyond the general threshold discussed above, corticosteroids deserve specific mention because their effect is broad
+    (impairing neutrophil migration, cell-mediated immunity, and wound healing simultaneously) and because they actively <b>mask</b> the usual signs
+    of infection — blunted fever, blunted leukocytosis, blunted peritoneal signs — making the patient look reassuring right up until they aren't.
+    PJP prophylaxis is a relevant consideration at sustained higher doses, particularly when combined with other immunosuppressants.</p><h3>Biologics &amp; targeted immunosuppressants</h3><p>TNF inhibitors carry a specific, well-documented risk of reactivating latent tuberculosis and hepatitis B — screening
+    before initiation is standard, but the ED-relevant point is that a patient on a TNF inhibitor with a new pulmonary or hepatic presentation
+    deserves that reactivation risk on the differential. JAK inhibitors carry an elevated herpes zoster risk. Rituximab (anti-CD20, B-cell depleting)
+    carries hepatitis B reactivation and, rarely, progressive multifocal leukoencephalopathy (PML) risk. Full agent-by-agent mechanism, dosing, and
+    adverse effect detail is covered in the upcoming dedicated Pharmacology Atlas — this entry exists here only to keep the infection-risk framework
+    complete.</p><h3>Solid organ &amp; stem cell transplant (brief — full detail in a future volume)</h3><div class="diagram"><svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="60" x2="750" y2="60" style="stroke:var(--border-strong)" stroke-width="2"></line><circle cx="90.0" cy="60" r="7" style="fill:var(--sentinel-400)"></circle><text x="90.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--sentinel-400)">&lt; 1 month</text><text x="90.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--sentinel-400)">Surgical / nosocomial</text><text x="90.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Wound infection, line</text><text x="90.0" y="131" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">infection, anastomotic</text><text x="90.0" y="147" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">leak, donor-derived</text><text x="90.0" y="163" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">infection — same as any</text><text x="90.0" y="179" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">major post-op patient</text><circle cx="400.0" cy="60" r="7" style="fill:var(--ember-500)"></circle><text x="400.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--ember-500)">1–6 months</text><text x="400.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--ember-500)">Peak net immunosuppression</text><text x="400.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)"></text><text x="400.0" y="131" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Opportunistic/reactivation:</text><text x="400.0" y="147" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">CMV, PJP, BK virus,</text><text x="400.0" y="163" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">invasive fungal infection</text><circle cx="710.0" cy="60" r="7" style="fill:var(--sage-500)"></circle><text x="710.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="15" style="fill:var(--sage-500)">> 6 months</text><text x="710.0" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--sage-500)">Chronic, lower-level suppression</text><text x="710.0" y="115" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">Community-acquired</text><text x="710.0" y="131" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">infections predominate,</text><text x="710.0" y="147" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">unless chronic rejection</text><text x="710.0" y="163" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">requires re-intensifying</text><text x="710.0" y="179" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" style="fill:var(--text-secondary)">immunosuppression</text></svg><div class="cap">Figure 3. Post-transplant infection risk follows a fairly predictable timeline driven by net immunosuppression.</div></div><h3>“Soft” cumulative immunocompromise</h3><div class="pearl">Revisit the Volume I foundational point here: advanced age, poorly controlled diabetes, malnutrition, uremia, cirrhosis, and alcohol use disorder don't earn a line on the problem list the way a named immunodeficiency does, but they stack, and a patient with several of these together can carry infection risk comparable to a defined immunodeficiency — worth actively considering rather than waiting for a diagnosis label to prompt it.</div>  </div>
+</section>
+<section class="block" id="defect-to-pathogen">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Practical Synthesis</span>
+      <h2>Mapping Defect to Pathogen</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The payoff for everything above — the specific gap in host defense predicts the specific organism, which drives empiric coverage before cultures result.</p>
+    </div><div class="diagram"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M198.2,48.0 L251.9,48.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,48.0 L492.3,48.0" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M198.2,148.0 L251.9,148.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,149.8 L492.3,150.8" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M198.2,258.0 L251.9,258.0" fill="none" style="stroke:var(--sentinel-400);color:var(--sentinel-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M438.1,259.8 L492.3,260.8" fill="none" style="stroke:var(--gold-500);color:var(--gold-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="20" width="180" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="110.0" y="41.49">Antibody / B-cell /</tspan><tspan x="110.0" y="54.615">complement defect</tspan></text><rect x="250" y="20" width="190" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="345.0" y="41.8">Can't opsonize/clear</tspan><tspan x="345.0" y="54.3">encapsulated organisms</tspan></text><rect x="490" y="20" width="230" height="56" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="605.0" y="41.8">S. pneumoniae, H.</tspan><tspan x="605.0" y="54.3">influenzae, N. meningitidis</tspan></text><rect x="20" y="120" width="180" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="110.0" y="141.18">T-cell / cell-mediated</tspan><tspan x="110.0" y="154.93">defect</tspan></text><rect x="250" y="120" width="190" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="345.0" y="136.22">Can't control</tspan><tspan x="345.0" y="148.095">intracellular pathogens</tspan><tspan x="345.0" y="159.97">or latent reactivation</tspan></text><rect x="490" y="120" width="230" height="66" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="605.0" y="140.6">CMV, HSV/VZV, PJP,</tspan><tspan x="605.0" y="153.1">Cryptococcus, Listeria,</tspan><tspan x="605.0" y="165.6">Mycobacteria</tspan></text><rect x="20" y="230" width="180" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="110.0" y="251.18">Neutrophil / phagocyte</tspan><tspan x="110.0" y="264.93">defect</tspan></text><rect x="250" y="230" width="190" height="56" rx="10" style="fill:var(--sentinel-400);fill-opacity:0.10;stroke:var(--sentinel-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="345.0" y="245.6">Can't engulf/kill — no</tspan><tspan x="345.0" y="258.1">pus, no walled-off</tspan><tspan x="345.0" y="270.6">abscess</tspan></text><rect x="490" y="230" width="230" height="66" rx="10" style="fill:var(--gold-500);fill-opacity:0.10;stroke:var(--gold-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="605.0" y="250.6">Gram-negative rods</tspan><tspan x="605.0" y="263.1">(Pseudomonas), Candida,</tspan><tspan x="605.0" y="275.6">Aspergillus</tspan></text></svg><div class="cap">Figure 4. Three broad categories of host-defense gap and their characteristic pathogens.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Defect</th><th class="">Characteristic pathogens</th><th class="">Empiric coverage consideration</th></tr></thead>
+        <tbody><tr><td class="hl">Neutropenia / phagocyte defect</td><td class="">Gram-negative rods (especially Pseudomonas), gram-positive skin flora, Candida</td><td class="">Antipseudomonal beta-lactam ± antifungal if prolonged</td></tr><tr><td class="hl">Antibody / B-cell / complement (early) defect</td><td class="">Encapsulated organisms — S. pneumoniae, H. influenzae, N. meningitidis</td><td class="">Ceftriaxone-class coverage; consider IVIG replacement in known antibody deficiency with severe infection</td></tr><tr><td class="hl">Complement (terminal, C5–C9) defect</td><td class="">Neisseria specifically</td><td class="">Ceftriaxone; consider meningococcal vaccination status</td></tr><tr><td class="hl">T-cell / cell-mediated defect</td><td class="">CMV, HSV/VZV, PJP, Cryptococcus, Listeria, Mycobacteria</td><td class="">Broader empiric coverage; low threshold to add antiviral/antifungal/antimicrobial coverage for atypical organisms depending on syndrome</td></tr><tr><td class="hl">Asplenia</td><td class="">Encapsulated organisms, Capnocytophaga (dog bite), Babesia</td><td class="">Ceftriaxone-class coverage; ask about animal exposure</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="ed-approach">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Practical Synthesis</span>
+      <h2>The ED Approach to the Febrile Immunocompromised Patient</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The same fever means something different depending on what's missing — the workup and disposition should reflect that.</p>
+    </div>
+    <div class="case">
+      <span class="case-label">Practical synthesis</span>
+      <p>Identify <i>which</i> defect (or combination) is present — not just that the patient is
+        “immunocompromised” — since that determines which organisms belong in the empiric coverage. Set a lower threshold for treating before
+        confirmatory workup returns, given how often exam and inflammatory markers are blunted. In specific high-acuity syndromes — febrile
+        neutropenia, suspected OPSI in an asplenic patient — treat the door-to-antibiotic timeline with the same urgency as sepsis. Keep the
+        threshold for imaging lower than usual: a reassuring exam is far less reassuring in this population. Document the specific immunocompromising
+        condition and its severity explicitly in the chart — “immunocompromised” alone doesn't communicate which risk profile you're
+        managing.</p>
+    </div>  </div>
+</section>
+<footer class="wrap">
+  <p>Immunology Atlas &middot; Volume II of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures, thresholds, and dosing against current institutional/society sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('immuno-atlas-v2-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('immuno-atlas-v2-theme', next);
+      paint();
+    });
+
+    // Scroll-spy for nav rail
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

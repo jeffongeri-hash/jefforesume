@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitals Atlas Vol. 1 — Blood Pressure, Heart Rate, Respiratory Rate &amp; Pulse Oximetry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink-900: #12161a;
+  --ink-800: #1a2025;
+  --ink-700: #263038;
+  --paper-050: #f6f7f5;
+  --paper-100: #ebeee9;
+  --paper-200: #dde2dc;
+
+  --monitor-600: #1f7d78;
+  --monitor-500: #2a9d94;
+  --monitor-400: #4fc0b6;
+  --monitor-300: #8dd8d0;
+
+  --amber-500: #b9862f;
+  --amber-400: #d4a24e;
+
+  --ember-600: #b53f2e;
+  --ember-500: #d0533c;
+  --ember-400: #e37a5f;
+
+  --sage-500: #5f8a6f;
+  --sage-400: #7ea988;
+
+  --slate-500: #6b7280;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: var(--ink-900);
+  --bg-elevated: var(--ink-800);
+  --bg-elevated-2: var(--ink-700);
+  --text-primary: #eceeec;
+  --text-secondary: #b6bdb9;
+  --text-tertiary: #7f8985;
+  --border: rgba(236, 238, 236, 0.10);
+  --border-strong: rgba(236, 238, 236, 0.18);
+  --accent: var(--monitor-400);
+  --accent-strong: var(--monitor-300);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+[data-theme="light"] {
+  --bg: var(--paper-050);
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: var(--paper-100);
+  --text-primary: #171b19;
+  --text-secondary: #454e4a;
+  --text-tertiary: #707874;
+  --border: rgba(23, 27, 25, 0.10);
+  --border-strong: rgba(23, 27, 25, 0.18);
+  --accent: var(--monitor-600);
+  --accent-strong: var(--monitor-500);
+  --shadow: 0 8px 30px rgba(23,27,25,0.08);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--monitor-400); color: #06201d; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 0.5em; color: var(--text-primary); }
+h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.28rem; font-weight: 600; }
+h4 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+p { margin: 0 0 1em; color: var(--text-secondary); }
+a { color: var(--accent-strong); }
+code, .mono { font-family: var(--font-mono); }
+
+.masthead {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.masthead-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+.masthead-brand .mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.masthead-brand .sub { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); }
+.masthead-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+.nav-rail {
+  position: sticky; top: 58px; z-index: 55;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+.nav-rail::-webkit-scrollbar { height: 4px; }
+.nav-rail-inner { display: inline-flex; gap: 0.25rem; padding: 0.6rem 0; }
+.nav-rail a {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  text-decoration: none; color: var(--text-tertiary);
+  padding: 0.45rem 0.75rem; border-radius: 999px; transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.nav-rail a:hover { color: var(--text-primary); }
+.nav-rail a.active { color: var(--accent-strong); background: var(--bg-elevated); border-color: var(--border-strong); }
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 1.5rem; }
+.hero { padding: 3.2rem 0 2.2rem; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+.hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-strong); }
+.hero p.lede { font-size: 1.08rem; max-width: 62ch; }
+.hero-stats { display: flex; gap: 1.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.hero-stat .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent-strong); }
+.hero-stat .l { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+
+section.block { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section.block:last-of-type { border-bottom: none; }
+.block-head { margin-bottom: 1.8rem; }
+.block-head .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+.lead-q {
+  font-family: var(--font-display); font-style: italic; font-size: 1.15rem;
+  color: var(--text-primary); border-left: 3px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.6rem; max-width: 68ch;
+}
+
+.panel {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem 1.6rem; margin: 1.2rem 0;
+  box-shadow: var(--shadow);
+}
+.panel h4 { margin-top: 0; }
+
+.cell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.cell-card {
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.2rem; position: relative; overflow: hidden;
+}
+.cell-card .band { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--cell-color, var(--accent)); }
+.cell-card h5 { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-primary); }
+.cell-card .role { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cell-color, var(--accent-strong)); margin-bottom: 0.5rem; display:block; }
+.cell-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+.cell-card .markers { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+.case {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)), var(--bg-elevated));
+  border: 1px solid var(--border-strong); border-radius: 14px;
+  padding: 1.5rem 1.7rem; margin: 1.6rem 0;
+}
+.case .case-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); margin-bottom: 0.5rem; display:block; }
+.case p:last-child { margin-bottom: 0; }
+
+.storm-box {
+  border: 1px solid color-mix(in srgb, var(--ember-500) 45%, var(--border));
+  background: color-mix(in srgb, var(--ember-500) 7%, var(--bg-elevated));
+  border-radius: 14px; padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+}
+.storm-box .case-label { color: var(--ember-500); }
+
+.pearl {
+  border-left: 3px solid var(--sage-500); background: color-mix(in srgb, var(--sage-500) 8%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.pearl b { color: var(--sage-500); }
+
+.myth {
+  border-left: 3px solid var(--ember-500); background: color-mix(in srgb, var(--ember-500) 6%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1rem 1.3rem; margin: 1.3rem 0; font-size: 0.92rem;
+}
+.myth b { color: var(--ember-500); }
+
+.verify {
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);
+  border: 1px dashed var(--border-strong); border-radius: 8px; padding: 0.6rem 0.9rem; margin: 1rem 0;
+}
+.verify b { color: var(--amber-500); }
+
+.evidence {
+  border-left: 3px solid var(--monitor-400); background: color-mix(in srgb, var(--monitor-400) 7%, var(--bg-elevated));
+  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.9rem;
+}
+.evidence .study-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--monitor-400); display:block; margin-bottom: 0.4rem; }
+
+.table-wrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+thead th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  text-align: left; padding: 0.75rem 1rem; background: var(--bg-elevated-2); color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-secondary); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+td.hl, th.hl { color: var(--text-primary); font-weight: 600; }
+
+.diagram { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; margin: 1.6rem 0; }
+.diagram .cap { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; margin-top: 0.8rem; }
+.diagram svg { width: 100%; height: auto; display: block; }
+
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.compare-card { border: 1px solid var(--border-strong); border-radius: 12px; padding: 1.1rem; background: var(--bg-elevated); border-top: 3px solid var(--type-color, var(--accent)); }
+.compare-card h5 { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--type-color, var(--accent-strong)); margin: 0 0 0.5rem; }
+.compare-card .big { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.compare-card p { font-size: 0.85rem; margin-bottom: 0.4rem; }
+
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-tertiary); margin-right: 0.3rem; }
+
+footer { padding: 2.5rem 0 4rem; text-align: center; }
+footer p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-tertiary); }
+
+.top-link { position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 60; }
+
+@media (max-width: 640px) {
+  .hero { padding: 2.2rem 0 1.6rem; }
+  section.block { padding: 2.2rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="mark">Vitals Atlas</span>
+    <span class="sub">Vol. I &middot; BP, HR, RR &amp; Pulse Oximetry</span>
+  </div>
+  <div class="masthead-controls">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span id="theme-icon">☀</span></button>
+  </div>
+</header>
+<nav class="nav-rail"><div class="nav-rail-inner"><a href="#bp-measurement">BP Measurement</a><a href="#bp-waveform">Pulse Pressure & Waveform</a><a href="#bp-map">MAP</a><a href="#bp-differential">BP Classification</a><a href="#bp-discharge">HTN Discharge Literature</a><a href="#hr-detection">HR Detection</a><a href="#hr-differential">HR Differential</a><a href="#htn-tachy-approach">HTN + Tachycardia</a><a href="#rr-detection">RR Detection</a><a href="#rr-differential">RR Differential</a><a href="#aa-gradient">A-a Gradient</a><a href="#spo2-technology">SpO2 Technology</a><a href="#spo2-waveform">Pleth Waveform</a><a href="#ambulatory-pulseox">Ambulatory Pulse Ox</a><a href="#ambulation-evidence">Ambulation & Orthostatics</a><a href="#peds-vitals">Pediatric Ranges</a></div></nav>
+
+<div class="wrap hero">
+  <div class="eyebrow"><span class="dot"></span>CLINICAL REFERENCE &middot; VOLUME I OF THE VITALS SERIES</div>
+  <h1>Vital Signs: Measurement, Physiology &amp; Discharge Decision-Making</h1>
+  <p class="lede">Blood pressure, heart rate, respiratory rate, and pulse oximetry — how each is actually detected, what an abnormal
+  reading means, how to approach the combined hypertensive-tachycardic patient, and a full literature walkthrough of when asymptomatic
+  severe hypertension is genuinely safe to discharge.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">4</div><div class="l">Core vital signs</div></div>
+    <div class="hero-stat"><div class="n">6</div><div class="l">Primary studies reviewed</div></div>
+    <div class="hero-stat"><div class="n">5</div><div class="l">Waveform &amp; pathway diagrams</div></div>
+    <div class="hero-stat"><div class="n">2</div><div class="l">Pediatric reference tables</div></div>
+  </div>
+</div>
+
+<section class="block" id="bp-measurement">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Blood Pressure</span>
+      <h2>How It's Actually Measured</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Three technologies you'll use interchangeably — they don't always agree, and knowing why matters.</p>
+    </div><p class="lead-q">“The machine says 168/94 but I couldn't hear the Korotkoff sounds clearly — which number do I trust?”</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Method</th><th class="">How it works</th><th class="">Where it's used</th><th class="">Pitfalls</th></tr></thead>
+        <tbody><tr><td class="hl">Auscultatory (manual)</td><td class="">Korotkoff sounds heard via stethoscope over the brachial artery as a cuff deflates; Phase I onset = SBP, Phase V disappearance = DBP</td><td class="">Gold standard for verification; required when oscillometric reading is implausible or in arrhythmia</td><td class="">Operator-dependent; deflation rate, cuff size, and ambient noise all introduce error</td></tr><tr><td class="hl">Oscillometric (automated)</td><td class="">Cuff senses oscillation amplitude in cuff pressure as the artery opens; SBP/DBP are <i>derived algorithmically</i> from the oscillation envelope, not directly measured</td><td class="">Default triage/monitor method in most EDs</td><td class="">Algorithm proprietary to each manufacturer; unreliable in atrial fibrillation, severe bradycardia, tremor, or very low-amplitude pulses</td></tr><tr><td class="hl">Intra-arterial (invasive)</td><td class="">Fluid-filled catheter (radial, femoral, or axillary) transduces pressure directly, continuously, beat-to-beat</td><td class="">Critically ill/unstable patients on vasoactive infusions, frequent ABGs anticipated</td><td class="">Requires correct transducer zeroing (phlebostatic axis) and an adequately damped system — see waveform section below</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Cuff size matters more than people think:</b> a cuff that's too small for the arm circumference falsely elevates the reading (sometimes by 10–20 mmHg); a cuff that's too large falsely lowers it. If a BP doesn't fit the clinical picture, checking cuff size before reaching for medication is often the highest-yield move.</div><p><b>White coat effect</b> (BP elevated only in a clinical setting, normal on home/ambulatory monitoring) and its inverse,
+    <b>masked hypertension</b> (normal in clinic, elevated at home), are both common enough that a single ED reading should be interpreted with that
+    context in mind, especially for a patient without other findings and no prior documented hypertension.</p>  </div>
+</section>
+<section class="block" id="bp-waveform">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Blood Pressure</span>
+      <h2>Pulse Pressure &amp; the Arterial Waveform</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The gap between systolic and diastolic — and the shape of the pressure curve itself — both carry diagnostic information beyond the two numbers on the monitor.</p>
+    </div><p>Pulse pressure (SBP &minus; DBP, normally roughly 40 mmHg) reflects stroke volume and arterial compliance. A pulse pressure
+    that's <b>narrow</b> (roughly &lt;25% of the systolic value) suggests a low stroke-volume state; one that's <b>wide</b> suggests either high stroke
+    volume/low peripheral resistance or a stiff, non-compliant arterial tree.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Narrow pulse pressure</th><th class="">Wide pulse pressure</th></tr></thead>
+        <tbody><tr><td class="">Cardiac tamponade (part of Beck's triad)</td><td class="">Aortic regurgitation (“water-hammer” pulse)</td></tr><tr><td class="">Severe aortic stenosis</td><td class="">Elevated ICP — widening pulse pressure is part of the Cushing reflex, with bradycardia and irregular respirations</td></tr><tr><td class="">Hypovolemic/hemorrhagic shock</td><td class="">Sepsis / fever / any vasodilatory state</td></tr><tr><td class="">Restrictive/constrictive physiology</td><td class="">Thyrotoxicosis, AV fistula</td></tr><tr><td class=""></td><td class="">Stiff arteries of aging — isolated systolic hypertension</td></tr></tbody>
+      </table>
+    </div><h3>The arterial line waveform</h3><p>For a patient on an arterial line, the waveform itself is a continuous physical exam finding. The rapid upstroke reflects left
+    ventricular contractility (dP/dt); the systolic peak approximates SBP; the <b>dicrotic notch</b> marks aortic valve closure, and its clarity and
+    timing can hint at vascular compliance; the diastolic runoff reflects peripheral vascular resistance. A useful, underused fact: as you move from a
+    central (aortic) to a more peripheral (radial, dorsalis pedis) arterial site, the measured systolic pressure actually <i>increases</i> and the
+    waveform narrows and sharpens — a phenomenon called <b>distal pulse pressure amplification</b> — which is why a radial arterial line SBP can
+    legitimately read 5–20 mmHg higher than a central aortic pressure in the same patient at the same moment.</p><div class="diagram"><svg viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="20" x2="40" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="80" y1="20" x2="80" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="120" y1="20" x2="120" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="160" y1="20" x2="160" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="200" y1="20" x2="200" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="240" y1="20" x2="240" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="280" y1="20" x2="280" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="320" y1="20" x2="320" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="360" y1="20" x2="360" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="400" y1="20" x2="400" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="440" y1="20" x2="440" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="480" y1="20" x2="480" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="520" y1="20" x2="520" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="560" y1="20" x2="560" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="600" y1="20" x2="600" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="640" y1="20" x2="640" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="680" y1="20" x2="680" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="720" y1="20" x2="720" y2="280" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="20" x2="740" y2="20" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="50" x2="740" y2="50" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="80" x2="740" y2="80" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="110" x2="740" y2="110" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="140" x2="740" y2="140" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="170" x2="740" y2="170" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="200" x2="740" y2="200" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="230" x2="740" y2="230" stroke="var(--border)" stroke-width="1"></line><line x1="40" y1="260" x2="740" y2="260" stroke="var(--border)" stroke-width="1"></line><path d="M40,250 C 70,250 85,240 95,235 C 110,230 120,110 140,70 C 155,65 170,80 185,105 C 205,140 225,125 240,135 C 248,145 255,160 268,142 C 300,180 340,220 380,240 C 420,250 430,250 440,250 C 470,250 485,240 495,235 C 510,230 520,110 540,70 C 555,65 570,80 585,105 C 605,140 625,125 640,135 C 648,145 655,160 668,142 C 700,180 720,220 740,240 " fill="none" style="stroke:var(--monitor-400)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+    <line x1="140" y1="70" x2="140" y2="20" stroke="var(--monitor-400)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="140" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--monitor-400)">systolic peak</text>
+
+    <line x1="95" y1="235" x2="95" y2="305" stroke="var(--amber-500)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="95" y="320" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--amber-500)">rapid upstroke</text>
+    <text x="95" y="335" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">(contractility)</text>
+
+    <line x1="255" y1="160" x2="255" y2="305" stroke="var(--ember-500)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="255" y="320" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--ember-500)">dicrotic notch</text>
+    <text x="255" y="335" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">(aortic valve closure)</text>
+
+    <line x1="400" y1="245" x2="400" y2="305" stroke="var(--sage-500)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="400" y="320" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--sage-500)">diastolic runoff</text>
+
+    <line x1="20" y1="70" x2="740" y2="70" stroke="var(--monitor-400)" stroke-width="1" stroke-dasharray="2,4" opacity="0.4"></line>
+    <line x1="20" y1="250" x2="740" y2="250" stroke="var(--text-tertiary)" stroke-width="1" stroke-dasharray="2,4" opacity="0.5"></line>
+    <text x="750" y="74" font-family="var(--font-mono)" font-size="11" style="fill:var(--monitor-400)">SBP</text>
+    <text x="750" y="254" font-family="var(--font-mono)" font-size="11" style="fill:var(--text-tertiary)">DBP</text>
+    </svg><div class="cap">Figure 1. Arterial pressure waveform — upstroke, systolic peak, dicrotic notch, and diastolic runoff.</div></div><div class="pearl"><b>Damping check:</b> the fast-flush (“square wave”) test distinguishes an accurate waveform from an over- or under-damped system. Flush the line and watch the return to baseline: 1–2 oscillations before settling is properly damped; no oscillation (sluggish return) is over-damped and <i>underestimates</i> SBP; multiple ringing oscillations is under-damped and <i>overestimates</i> SBP. Air bubbles, kinked tubing, and clot are the usual culprits.</div>  </div>
+</section>
+<section class="block" id="bp-map">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Blood Pressure</span>
+      <h2>Mean Arterial Pressure (MAP)</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The number that actually drives organ perfusion — and, on most monitors, the one that's measured most directly.</p>
+    </div><p>MAP is the average pressure across a full cardiac cycle, not a simple average of SBP and DBP. Because diastole lasts roughly
+    twice as long as systole at a normal heart rate, diastolic pressure is weighted more heavily:</p><div class="panel"><h4>The calculation</h4>
+    <p class="mono" style="font-size:0.95rem;color:var(--text-primary);">MAP ≈ DBP + ⅓(SBP − DBP) &nbsp;=&nbsp; (SBP + 2×DBP) / 3</p>
+    <p style="margin-bottom:0;">This ⅓/⅔ weighting assumes a normal heart rate. As heart rate rises, diastole shortens proportionally more
+    than systole, so the true MAP in a tachycardic patient runs slightly <i>higher</i> than this simplified formula predicts.</p>
+    </div><div class="pearl"><b>Underused fact:</b> an automated oscillometric cuff (the default triage method) doesn't measure SBP or DBP directly at all — it measures MAP first, as the cuff pressure at which oscillation amplitude is greatest, and then derives the SBP and DBP you actually see on the screen algorithmically from that anchor point. The number clinicians pay the least attention to is often the one the machine is most confident about.</div><p>Organ perfusion depends on driving pressure through the vascular bed, not on the peak systolic number — which is why MAP,
+    not SBP, is the target in most perfusion-critical protocols. Cerebral blood flow is held roughly constant by autoregulation across a MAP of
+    approximately 60–150 mmHg in a normotensive patient (this range shifts upward with chronic hypertension, which is part of why rapid correction
+    in a chronically hypertensive patient can drop perfusion below their new, higher autoregulatory floor — see the discharge discussion below).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Context</th><th class="">MAP target</th><th class="">Why</th></tr></thead>
+        <tbody><tr><td class="hl">Septic shock resuscitation</td><td class="">≥65 mmHg (Surviving Sepsis Campaign)</td><td class="">Threshold below which renal and other organ perfusion falls off sharply; cross-reference the Sepsis Atlas for full resuscitation detail</td></tr><tr><td class="hl">Traumatic brain injury / elevated ICP</td><td class="">MAP sufficient to keep cerebral perfusion pressure (CPP = MAP − ICP) roughly 60–70 mmHg</td><td class="">Perfusion, not peak pressure, is what keeps brain tissue alive once ICP is elevated</td></tr><tr><td class="hl">Permissive hypotension, penetrating trauma pre-hemostasis</td><td class="">Lower MAP target (protocols vary) until definitive hemorrhage control</td><td class="">Aims to avoid dislodging an early clot with a supraphysiologic pressure; balanced against the risk of under-perfusing other organs — genuinely debated, protocol-dependent</td></tr><tr><td class="hl">Aortic dissection</td><td class="">Lowest MAP tolerating adequate end-organ perfusion, paired with HR control</td><td class="">Wall stress depends on both pressure and dP/dt — rate control (beta-blocker) is layered in before or with a vasodilator, not after</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> specific MAP targets, especially for permissive hypotension protocols in trauma, vary by institution and evolving evidence — confirm against your trauma center's current massive transfusion/damage-control protocol.</div>  </div>
+</section>
+<section class="block" id="bp-differential">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Blood Pressure</span>
+      <h2>Classification &amp; Differential of Abnormal Readings</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The number alone doesn't diagnose anything — the pattern and the company it keeps does.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Category (ACC/AHA)</th><th class="">Systolic</th><th class="">Diastolic</th></tr></thead>
+        <tbody><tr><td class="hl">Normal</td><td class="">&lt;120</td><td class="">and &lt;80</td></tr><tr><td class="hl">Elevated</td><td class="">120–129</td><td class="">and &lt;80</td></tr><tr><td class="hl">Stage 1 hypertension</td><td class="">130–139</td><td class="">or 80–89</td></tr><tr><td class="hl">Stage 2 hypertension</td><td class="">≥140</td><td class="">or ≥90</td></tr><tr><td class="hl">Severe (formerly “hypertensive urgency”)</td><td class="">&gt;180</td><td class="">and/or &gt;120, without acute target organ injury</td></tr><tr><td class="hl">Hypertensive emergency</td><td class="">Markedly elevated</td><td class=""><b>with</b> acute target organ injury (stroke, ACS, pulmonary edema, AKI, eclampsia, aortic dissection)</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> the 2024 AHA scientific statement formally retired the term “hypertensive urgency” in favor of “severe asymptomatic elevated BP” — both terms still circulate clinically, but the distinction that actually matters is organ injury, not the BP number alone.</div><h3>Differential of an unexpectedly high reading</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Category</th><th class="">Examples</th></tr></thead>
+        <tbody><tr><td class="">Pain / anxiety / white coat</td><td class="">Undertreated pain, panic, first ED visit anxiety</td></tr><tr><td class="">Sympathomimetic</td><td class="">Cocaine, methamphetamine, MAOI + tyramine reaction, stimulant withdrawal</td></tr><tr><td class="">Endocrine</td><td class="">Pheochromocytoma, hyperthyroidism, Cushing syndrome, hyperaldosteronism</td></tr><tr><td class="">Renal</td><td class="">Renal artery stenosis, acute glomerulonephritis, polycystic kidney disease</td></tr><tr><td class="">Neurologic</td><td class="">Elevated ICP (Cushing reflex), autonomic dysreflexia</td></tr><tr><td class="">Obstetric</td><td class="">Preeclampsia/eclampsia — always check a urine pregnancy test in a woman of childbearing age with elevated BP</td></tr><tr><td class="">Medication non-adherence</td><td class="">Most common cause in a patient with known, previously controlled hypertension</td></tr></tbody>
+      </table>
+    </div><h3>Differential of an unexpectedly low reading</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Category</th><th class="">Examples</th></tr></thead>
+        <tbody><tr><td class="">Distributive</td><td class="">Sepsis, anaphylaxis, neurogenic (spinal cord injury), adrenal crisis</td></tr><tr><td class="">Hypovolemic</td><td class="">Hemorrhage, dehydration, third-spacing</td></tr><tr><td class="">Cardiogenic</td><td class="">MI with pump failure, severe arrhythmia, decompensated heart failure</td></tr><tr><td class="">Obstructive</td><td class="">Tension pneumothorax, cardiac tamponade, massive PE</td></tr><tr><td class="">Medication effect</td><td class="">Antihypertensive excess, sedative/opioid, beta-blocker or calcium channel blocker overdose</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="bp-discharge">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">01 · Blood Pressure</span>
+      <h2>Asymptomatic Severe Hypertension: the Discharge Decision</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A genuinely useful case where the evidence has moved meaningfully in the last two years — and where an older mental model can lead you astray.</p>
+    </div><p class="lead-q">“BP is 196/110, no chest pain, no headache, no visual changes, exam is normal — can I just send them home?”</p><p>The short answer your reading landed on is correct as far as it goes: in a truly asymptomatic patient with severely elevated BP
+    and <b>no evidence of acute target organ injury</b>, routine ED screening and routine ED pharmacologic treatment are not required, and the patient
+    can be safely discharged. But the evidence behind that statement has evolved meaningfully, and the current (2025) guidance adds a layer the 2013
+    policy didn't have: <i>whether</i> to start an oral agent before that patient walks out the door.</p><div class="diagram"><svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="60" x2="850" y2="60" style="stroke:var(--border-strong)" stroke-width="2"></line><circle cx="70.0" cy="60" r="7" style="fill:var(--monitor-400)"></circle><text x="70.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--monitor-400)">2013</text><text x="70.0" y="95" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">ACEP Clinical Policy</text><text x="70.0" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">No routine screening</text><text x="70.0" y="133" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">or ED treatment</text><text x="70.0" y="148" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">required for</text><text x="70.0" y="163" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">asymptomatic</text><text x="70.0" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">elevated BP</text><circle cx="260.0" cy="60" r="7" style="fill:var(--amber-500)"></circle><text x="260.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--amber-500)">2015</text><text x="260.0" y="95" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Brody et al.</text><text x="260.0" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Pooled RCT data:</text><text x="260.0" y="133" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">ED-initiated</text><text x="260.0" y="148" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">antihypertensives</text><text x="260.0" y="163" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">lowered BP, no</text><text x="260.0" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">increase in adverse</text><text x="260.0" y="193" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">events</text><circle cx="450.0" cy="60" r="7" style="fill:var(--amber-500)"></circle><text x="450.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--amber-500)">2016</text><text x="450.0" y="95" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">Patel et al.</text><text x="450.0" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">58,535 pts:</text><text x="450.0" y="133" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">ED/hospital referral</text><text x="450.0" y="148" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">→ more admissions,</text><text x="450.0" y="163" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">not better outcomes</text><circle cx="640.0" cy="60" r="7" style="fill:var(--ember-500)"></circle><text x="640.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--ember-500)">2024</text><text x="640.0" y="95" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">AHA Scientific Statement</text><text x="640.0" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Retires</text><text x="640.0" y="133" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">“hypertensive</text><text x="640.0" y="148" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">urgency” — avoid</text><text x="640.0" y="163" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">aggressive/parenteral</text><text x="640.0" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">lowering</text><circle cx="830.0" cy="60" r="7" style="fill:var(--sage-500)"></circle><text x="830.0" y="35" text-anchor="middle" font-family="var(--font-display)" font-weight="600" font-size="16" style="fill:var(--sage-500)">2025</text><text x="830.0" y="95" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" style="fill:var(--text-primary)">ACEP Policy Update</text><text x="830.0" y="118" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">Level C: consider</text><text x="830.0" y="133" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">initiating oral</text><text x="830.0" y="148" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">antihypertensive +</text><text x="830.0" y="163" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--text-tertiary)">outpatient follow-up</text></svg><div class="cap">Figure 2. How the evidence and guidance on asymptomatic severe hypertension evolved, 2013–2025.</div></div><h3>The foundational policy (2013)</h3><div class="evidence"><span class="study-label">Wolf SJ, Lo B, Shih RD, et al. Clinical Policy: Critical Issues in the Evaluation and Management of Adult Patients in the ED With Asymptomatic Elevated Blood Pressure. <i>Ann Emerg Med.</i> 2013;62(1):59–68.</span><p>ACEP's original Level C recommendations: routine screening for acute target organ injury (creatinine, UA, ECG) is <b>not required</b>
+        in truly asymptomatic patients; routine ED medical intervention is <b>not required</b>; and the patient should be referred for outpatient
+        follow-up. Select higher-risk patients (very poor follow-up access, markedly elevated readings) could reasonably get a creatinine check. This is
+        the policy most training programs still teach as “the” answer — and it's the source of the framing in your original question.</p></div><h3>Why aggressive same-visit lowering can actively harm</h3><div class="evidence"><span class="study-label">Bress AP, Anderson TS, Flack JM, et al. The Management of Elevated Blood Pressure in the Acute Care Setting: A Scientific Statement From the American Heart Association. <i>Hypertension.</i> 2024;81(8):e94–e106.</span><p>This statement formally retired the term “hypertensive urgency” and replaced it with severe asymptomatic elevated BP
+        (&gt;180/120 without organ injury), explicitly to stop the reflex referral pattern the old term encouraged. Its central safety point: in a
+        patient whose cerebral blood flow autoregulation has adapted to chronically elevated pressures, a <i>rapid</i> drop in BP — whether from
+        parenteral agents or aggressive oral dosing — can drop cerebral perfusion below the new, higher autoregulatory floor and precipitate an
+        <b>ischemic stroke</b>. The recommendation is to avoid parenteral BP-lowering therapy and avoid aggressively intensifying oral therapy in the
+        acute setting; instead, reinstitute or modestly adjust the patient's oral regimen, ideally coordinated with outpatient follow-up.</p></div><div class="myth"><b>Myth:</b> “A very high number in an asymptomatic patient is itself an emergency I need to bring down before they leave.” The 2024 AHA statement's core message is close to the opposite: for the truly asymptomatic patient, rapid correction is the intervention most likely to cause harm, not the elevated number itself.</div><h3>Does referral/admission actually change outcomes?</h3><div class="evidence"><span class="study-label">Patel KK, Young L, Howell EH, et al. Characteristics and Outcomes of Patients Presenting With Hypertensive Urgency in the Office Setting. <i>JAMA Intern Med.</i> 2016;176(7):981–988.</span><p>Retrospective cohort with propensity matching, Cleveland Clinic system, 2008–2013: of nearly 2.2 million office visits, 58,535
+        (4.6%) met the definition of hypertensive urgency (SBP ≥180 and/or DBP ≥110). Major adverse cardiovascular events (MACE) at short-term
+        follow-up were rare in asymptomatic patients regardless of disposition. Referral to the ED/hospital was associated with <b>more
+        hospitalizations</b> but <b>no improvement in outcomes</b> compared with outpatient management. The less reassuring finding: roughly two-thirds
+        of patients still had uncontrolled hypertension six months later — the real failure here is long-term control, not any short-term
+        catastrophe.</p></div><h3>The study that changed the 2025 ACEP recommendation</h3><div class="evidence"><span class="study-label">Brody A, Rahman T, Reed B, Millis S, Ference B, Flack JM, Levy PD. Safety and Efficacy of Antihypertensive Prescription at Emergency Department Discharge. <i>Acad Emerg Med.</i> 2015;22(5):632–635.</span><p>Retrospective analysis pooling data from two prospective, longitudinal RCTs enrolling ED patients with asymptomatic hypertension.
+        Patients who received a new antihypertensive prescription at ED discharge had a significantly greater systolic BP reduction at short-term
+        follow-up (difference of 19 mmHg, 95% CI 12–26) than those who didn't — <b>without</b> a corresponding increase in adverse effects: no new
+        neurologic deficits, no ischemic events, no severe hypotension (no patient dropped below an SBP of 100 at follow-up) in either group. This was
+        the only study of the studies ACEP's 2025 committee reviewed that met their methodological bar for inclusion (graded Class III), which is itself
+        worth knowing — the evidence base here is real but still thin.</p></div><h3>The current (2025) ACEP recommendation</h3><div class="evidence"><span class="study-label">Gemme S, Meltzer AC, et al. Clinical Policy: A Critical Issue in the Outpatient Management of Adult Patients Presenting to the ED With Asymptomatic Elevated Blood Pressure. Approved by the ACEP Board of Directors, January 22, 2025. <i>Ann Emerg Med.</i> 2025;86(1):e1–e11.</span><p>Building on the Brody et al. data, ACEP <b>amended</b> its 2013 stance: rather than treatment being optional and typically deferred,
+        the updated policy gives a <b>Level C recommendation to consider initiating an oral outpatient antihypertensive medication at ED discharge</b>,
+        paired with a referral for follow-up. This is framed as a reasonable option given how often the ED visit is a patient's only near-term point
+        of contact with the healthcare system — not a mandate, and explicitly not a reason to reach for IV or aggressive oral titration in the
+        department itself.</p></div>
+    <div class="case">
+      <span class="case-label">Practical synthesis</span>
+      <p>Confirm this is genuinely asymptomatic hypertension — a good history and exam (headache,
+        chest pain, dyspnea, visual changes, focal neuro deficit, and a pregnancy test in a woman of childbearing age) rules out hypertensive emergency
+        without needing routine labs or an ECG in the truly asymptomatic patient. If asymptomatic and no organ injury: don't chase the number with IV
+        or aggressive oral agents. Do consider starting or restarting a first-line oral agent (thiazide, ACEI/ARB, dihydropyridine CCB depending on
+        comorbidities) with a concrete, written follow-up plan — particularly for patients whose access to primary care is uncertain, since the ED
+        visit may be their most reliable point of contact. Frame the conversation as partnership rather than dismissal: telling a patient “you don't
+        need to be here” measurably discourages future follow-up and adherence.</p>
+    </div><div class="verify"><b>Verify before use:</b> specific first-line agent selection, starting doses, and required baseline labs (e.g., potassium/creatinine before starting an ACEI/ARB) should be confirmed against current formulary and renal function before prescribing; the studies above address the ED-treat-vs-defer decision, not agent-specific dosing.</div>  </div>
+</section>
+<section class="block" id="hr-detection">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Heart Rate</span>
+      <h2>How It's Detected</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Four ways to count a heartbeat — and they don't always agree with each other.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Method</th><th class="">What it actually measures</th><th class="">Pitfalls</th></tr></thead>
+        <tbody><tr><td class="hl">Manual palpation</td><td class="">A palpable arterial pulse wave — a mechanical event downstream of ventricular contraction</td><td class="">Weak/thready pulses under-counted; a classic (though imprecise) teaching rule is palpable radial ≈ SBP &gt;80–90, femoral &gt;70, carotid &gt;60 — useful as a rough gestalt in a crashing patient, not a substitute for a real BP</td></tr><tr><td class="hl">ECG (cardiac monitor)</td><td class="">Electrical depolarization — counts QRS complexes regardless of whether they generate a mechanical pulse</td><td class="">Will keep “counting” in pulseless electrical activity; the monitor number can be electrically accurate and hemodynamically meaningless</td></tr><tr><td class="hl">Pulse oximetry (plethysmography)</td><td class="">A mechanical, perfusion-dependent pulse — the same waveform discussed in the SpO₂ section below</td><td class="">Under-reads in atrial fibrillation with rapid ventricular response or frequent ectopy, where many electrical beats are too weak to generate a detectable peripheral pulse (a true <i>pulse deficit</i>)</td></tr><tr><td class="hl">Arterial line</td><td class="">Direct mechanical pressure waveform, beat-to-beat</td><td class="">Most accurate at the bedside; subject to the same damping artifacts described in the BP section</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Pulse deficit is a real, checkable finding:</b> in rapid atrial fibrillation, simultaneously counting the apical (auscultated) rate against the radial pulse rate can reveal that the peripheral pulse rate is meaningfully lower than the electrical/cardiac rate — those extra electrical beats aren't generating enough stroke volume to open the arterial valve and eject a palpable pulse.</div>  </div>
+</section>
+<section class="block" id="hr-differential">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Heart Rate</span>
+      <h2>Differential of Tachycardia &amp; Bradycardia</h2>
+      
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Tachycardia — sinus (physiologic/compensatory)</th><th class="">Tachycardia — primary arrhythmia</th></tr></thead>
+        <tbody><tr><td class="">Pain, anxiety, fever</td><td class="">SVT (AVNRT/AVRT)</td></tr><tr><td class="">Hypovolemia, hemorrhage, sepsis</td><td class="">Atrial fibrillation/flutter with RVR</td></tr><tr><td class="">Hypoxia, PE</td><td class="">Ventricular tachycardia</td></tr><tr><td class="">Thyrotoxicosis</td><td class="">Digoxin toxicity (can be tachy <i>or</i> brady)</td></tr><tr><td class="">Sympathomimetics, stimulant use, withdrawal states</td><td class="">Accessory pathway-mediated tachycardia (WPW)</td></tr><tr><td class="">Anemia</td><td class=""></td></tr></tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Bradycardia — physiologic</th><th class="">Bradycardia — pathologic</th></tr></thead>
+        <tbody><tr><td class="">Trained athlete, sleep</td><td class="">High-degree AV block, sick sinus syndrome</td></tr><tr><td class=""></td><td class="">Beta-blocker, calcium channel blocker, digoxin effect/toxicity</td></tr><tr><td class=""></td><td class="">Hyperkalemia</td></tr><tr><td class=""></td><td class="">Hypothyroidism</td></tr><tr><td class=""></td><td class="">Elevated ICP (Cushing reflex — with widened pulse pressure)</td></tr><tr><td class=""></td><td class="">Hypothermia, inferior MI (RCA supplies the SA/AV node in most patients)</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="htn-tachy-approach">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">02 · Heart Rate</span>
+      <h2>The Combined Hypertension + Tachycardia Patient</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Two abnormal numbers that showed up together are a clue, not two separate problems to treat in parallel.</p>
+    </div><p class="lead-q">“BP 178/104, HR 118 — do I treat the pressure, the rate, or figure out what's driving both?”</p><p>The instinct to reach for a beta-blocker because it will “fix both numbers” is exactly the trap here. Elevated BP and HR
+    occurring together are very often both downstream of the same driver — pain, anxiety, a sympathomimetic, thyroid storm, alcohol/benzodiazepine
+    withdrawal, or an evolving hypertensive emergency with reflex sympathetic activation — and treating that driver resolves both numbers at once far
+    more reliably than treating either number in isolation.</p><div class="diagram"><svg viewBox="0 0 920 370" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M188.3,220.0 L241.8,220.0" fill="none" style="stroke:var(--monitor-400);color:var(--monitor-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M383.1,190.6 L511.9,119.4" fill="none" style="stroke:var(--amber-500);color:var(--amber-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M658.1,70.6 Q685.0,75.0 711.8,59.4" fill="none" style="stroke:var(--ember-500);color:var(--ember-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><text x="682.5" y="64.5" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" style="fill:var(--ember-500)">yes</text><path d="M658.1,115.8 L711.8,130.6" fill="none" style="stroke:var(--amber-500);color:var(--amber-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M418.2,247.0 L471.9,263.5" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M658.1,292.0 L711.8,292.0" fill="none" style="stroke:var(--sage-500);color:var(--sage-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="190" width="170" height="60" rx="10" style="fill:var(--monitor-400);fill-opacity:0.10;stroke:var(--monitor-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="105.0" y="212.56">Elevated BP + HR on</tspan><tspan x="105.0" y="227.56">triage</tspan></text><rect x="240" y="190" width="180" height="60" rx="10" style="fill:var(--monitor-400);fill-opacity:0.10;stroke:var(--monitor-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="330.0" y="207.6">Repeat reading: correct</tspan><tspan x="330.0" y="220.1">cuff size, quiet room,</tspan><tspan x="330.0" y="232.6">arm at heart level</tspan></text><rect x="470" y="60" width="190" height="60" rx="10" style="fill:var(--amber-500);fill-opacity:0.10;stroke:var(--amber-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="565.0" y="83.18">Symptoms/signs of</tspan><tspan x="565.0" y="96.93">end-organ injury?</tspan></text><rect x="710" y="10" width="180" height="62" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="800.0" y="23.330000000000002">Hypertensive emergency:</tspan><tspan x="800.0" y="35.205">treat underlying organ</tspan><tspan x="800.0" y="47.08">injury, IV titratable</tspan><tspan x="800.0" y="58.955">agent</tspan></text><rect x="710" y="120" width="180" height="70" rx="10" style="fill:var(--amber-500);fill-opacity:0.10;stroke:var(--amber-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="800.0" y="137.33">No: search secondary</tspan><tspan x="800.0" y="149.205">cause — pain, anxiety,</tspan><tspan x="800.0" y="161.08">stimulant, withdrawal,</tspan><tspan x="800.0" y="172.955">hyperthyroid</tspan></text><rect x="470" y="260" width="190" height="64" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10" style="fill:var(--text-primary)"><tspan x="565.0" y="279.6">Asymptomatic severe HTN</tspan><tspan x="565.0" y="292.1">(BP &gt;180/120, no</tspan><tspan x="565.0" y="304.6">organ injury)</tspan></text><rect x="710" y="250" width="180" height="84" rx="10" style="fill:var(--sage-500);fill-opacity:0.10;stroke:var(--sage-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="9.5" style="fill:var(--text-primary)"><tspan x="800.0" y="274.33">No aggressive/parenteral</tspan><tspan x="800.0" y="286.205">lowering — consider oral</tspan><tspan x="800.0" y="298.08">agent + outpatient</tspan><tspan x="800.0" y="309.955">follow-up (Level C)</tspan></text></svg><div class="cap">Figure 3. Approach to the ED patient presenting with combined hypertension and tachycardia.</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Driver</th><th class="">Clue</th><th class="">Treat</th></tr></thead>
+        <tbody><tr><td class="hl">Undertreated pain</td><td class="">Clear painful stimulus, resolves with analgesia</td><td class="">Analgesia, reassess vitals after</td></tr><tr><td class="hl">Anxiety / panic</td><td class="">Situational trigger, normalizes with reassurance</td><td class="">Address the trigger; avoid reflexively medicating vitals alone</td></tr><tr><td class="hl">Sympathomimetic toxicity</td><td class="">History or exam consistent with stimulant use, dilated pupils, diaphoresis</td><td class="">Benzodiazepines first-line; avoid unopposed alpha concern historically taught — see note below</td></tr><tr><td class="hl">Thyroid storm</td><td class="">Fever, tremor, history of thyroid disease, agitation</td><td class="">Beta-blocker (rate control), thionamide, iodine, steroids per protocol</td></tr><tr><td class="hl">Alcohol/benzodiazepine withdrawal</td><td class="">History, tremor, diaphoresis, hallucinations</td><td class="">Benzodiazepines</td></tr><tr><td class="hl">Evolving hypertensive emergency</td><td class="">Headache, chest pain, focal neuro deficit, visual change</td><td class="">Treat the specific end-organ process; titratable IV agent</td></tr></tbody>
+      </table>
+    </div><div class="myth"><b>Myth, worth re-examining:</b> “Never give a beta-blocker if cocaine/stimulant use is suspected — unopposed alpha stimulation will cause a hypertensive crisis or coronary vasospasm.” The concern originated from a small 1990 catheterization study, and subsequent meta-analyses and a 2024 <i>Journal of Hospital Medicine</i> “Things We Do for No Reason” review have found little clinical evidence of harm, particularly with cardioselective or combined alpha/beta agents like labetalol. That said, current AHA guidance still advises against beta-blocker monotherapy in this setting, and benzodiazepines remain the correct first-line agent regardless — this is a genuinely unsettled area to watch rather than a clean reversal.</div><div class="verify"><b>Verify before use:</b> agent selection and the beta-blocker-in-stimulant-toxicity question specifically should be checked against your institution's current toxicology guidance — this is an area where practice is visibly shifting but formal society recommendations haven't fully caught up to the newer observational data.</div>  </div>
+</section>
+<section class="block" id="rr-detection">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Respiratory Rate</span>
+      <h2>How It's Detected</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The most neglected vital sign in the chart — and the one most often copy-forwarded without ever being re-counted.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Method</th><th class="">How it works</th><th class="">Pitfalls</th></tr></thead>
+        <tbody><tr><td class="hl">Direct observation/count</td><td class="">Counting chest rise over 30–60 seconds</td><td class="">Gold standard, but patient awareness of being watched alters rate; frequently estimated or simply copied from a prior value in practice</td></tr><tr><td class="hl">Impedance pneumography</td><td class="">Thoracic impedance change between two ECG electrodes as the chest wall expands, displayed on the bedside monitor</td><td class="">Motion artifact and shallow breathing both degrade the signal; can overcount with cardiac oscillation artifact or undercount with shallow/rapid breathing</td></tr><tr><td class="hl">Capnography (EtCO₂ waveform)</td><td class="">Direct breath-by-breath waveform from exhaled CO₂ — counts actual ventilatory events, not just chest wall motion</td><td class="">Most reliable continuous method; requires nasal cannula/mask sampling line; increasingly standard for procedural sedation and any patient on opioids</td></tr></tbody>
+      </table>
+    </div><div class="pearl">Respiratory rate is one of the earliest and most sensitive markers of clinical deterioration — it changes before heart rate or blood pressure in many decompensating patients (part of the rationale behind early warning scores like NEWS2) — which makes an actually re-measured, not copy-forwarded, RR disproportionately valuable relative to how little attention it usually gets.</div>  </div>
+</section>
+<section class="block" id="rr-differential">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Respiratory Rate</span>
+      <h2>Differential of Tachypnea &amp; Bradypnea</h2>
+      
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Tachypnea</th><th class="">Bradypnea</th></tr></thead>
+        <tbody><tr><td class="">Hypoxemia (any cause) — PE, pneumonia, pulmonary edema, pneumothorax</td><td class="">Opioid or sedative-hypnotic toxicity</td></tr><tr><td class="">Metabolic acidosis (Kussmaul respirations — DKA, salicylate toxicity, uremia)</td><td class="">Elevated ICP / brainstem injury (irregular pattern, part of Cushing's triad)</td></tr><tr><td class="">Pain, anxiety, fever</td><td class="">Severe hypothyroidism / myxedema</td></tr><tr><td class="">Sepsis (often an early sign, before hypotension)</td><td class="">Profound hypothermia</td></tr><tr><td class="">Central causes: stroke, elevated ICP (early, before bradypnea supervenes)</td><td class="">Neuromuscular fatigue/failure (late, ominous — impending respiratory arrest)</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="aa-gradient">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">03 · Respiratory Rate</span>
+      <h2>The A-a Gradient</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The single calculation that tells you whether hypoxemia lives inside the lung or outside it.</p>
+    </div><p>The alveolar-arterial (A-a) gradient compares the oxygen pressure the alveolus <i>should</i> have (calculated) against what the
+    arterial blood <i>actually</i> has (measured on ABG). A normal gradient with hypoxemia means the lung itself is doing its job correctly and the
+    problem is extrapulmonary (hypoventilation, or low ambient FiO₂ at altitude). An elevated gradient localizes the problem to the lung itself:
+    V/Q mismatch, shunt, or a diffusion defect.</p><div class="diagram"><svg viewBox="0 0 830 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="context-fill" style="fill:inherit"></path>
+  </marker>
+</defs>
+<path d="M168.5,178.0 L221.5,178.0" fill="none" style="stroke:var(--monitor-400);color:var(--monitor-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M368.5,153.5 L422.7,135.4" fill="none" style="stroke:var(--monitor-400);color:var(--monitor-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M368.5,202.5 L422.7,220.6" fill="none" style="stroke:var(--monitor-400);color:var(--monitor-400)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M588.3,133.9 Q620.0,163.8 651.6,153.6" fill="none" style="stroke:var(--amber-500);color:var(--amber-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><path d="M588.3,222.1 Q620.0,192.2 651.6,202.4" fill="none" style="stroke:var(--amber-500);color:var(--amber-500)" stroke-width="1.6"  marker-end="url(#arrow)"></path><rect x="20" y="150" width="150" height="56" rx="10" style="fill:var(--monitor-400);fill-opacity:0.10;stroke:var(--monitor-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" style="fill:var(--text-primary)"><tspan x="95.0" y="172.0">Atmosphere</tspan></text><text x="95.0" y="189.0" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">FiO₂ 21% · PO₂ ≈ 159 mmHg</text><rect x="220" y="150" width="150" height="56" rx="10" style="fill:var(--monitor-400);fill-opacity:0.10;stroke:var(--monitor-400);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="295.0" y="172.0">Trachea (humidified)</tspan></text><text x="295.0" y="187.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">PO₂ ≈ 149 mmHg</text><rect x="420" y="80" width="170" height="56" rx="10" style="fill:var(--amber-500);fill-opacity:0.10;stroke:var(--amber-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="11" style="fill:var(--text-primary)"><tspan x="505.0" y="102.0">Alveolus (PAO₂)</tspan></text><text x="505.0" y="117.75" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">Alveolar gas equation</text><rect x="420" y="220" width="170" height="56" rx="10" style="fill:var(--amber-500);fill-opacity:0.10;stroke:var(--amber-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="505.0" y="242.0">Pulmonary capillary</tspan></text><text x="505.0" y="257.125" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">gas exchange across membrane</text><rect x="650" y="145" width="160" height="66" rx="10" style="fill:var(--ember-500);fill-opacity:0.10;stroke:var(--ember-500);stroke-width:1.4"></rect><text text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="10.5" style="fill:var(--text-primary)"><tspan x="730.0" y="165.49">Arterial blood</tspan><tspan x="730.0" y="178.615">(PaO₂)</tspan></text><text x="730.0" y="193.74" text-anchor="middle" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">measured on ABG</text>
+    <path d="M 605,60 C 630,60 630,240 605,240" fill="none" style="stroke:var(--ember-500)" stroke-width="2"></path>
+    <text x="598" y="145" text-anchor="end" font-family="var(--font-mono)" font-size="12" style="fill:var(--ember-500)">A-a gradient</text>
+    <text x="598" y="162" text-anchor="end" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">= PAO₂ − PaO₂</text>
+    </svg><div class="cap">Figure 4. The oxygen cascade from atmosphere to arterial blood — the A-a gradient is the gap between the calculated alveolar value and the measured arterial value.</div></div><div class="panel"><h4>The calculation</h4>
+    <p class="mono" style="font-size:0.95rem;color:var(--text-primary);">PAO₂ = FiO₂ × (P<sub>atm</sub> − P<sub>H2O</sub>) − (PaCO₂ / R)</p>
+    <p style="margin-bottom:0.4rem;">On room air at sea level, this simplifies to roughly: <span class="mono">PAO₂ ≈ 150 − (PaCO₂ / 0.8)</span></p>
+    <p style="margin-bottom:0;">A-a gradient = PAO₂ (calculated) &minus; PaO₂ (measured on ABG). Expected normal gradient widens with age — a
+    commonly used estimate is roughly (age / 4) + 4 mmHg.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="">Normal A-a gradient + hypoxemia</th><th class="">Elevated A-a gradient + hypoxemia</th></tr></thead>
+        <tbody><tr><td class="">Hypoventilation (opioid overdose, neuromuscular weakness, severe obesity hypoventilation)</td><td class="">V/Q mismatch — PE, COPD, asthma, pneumonia</td></tr><tr><td class="">High altitude / low ambient FiO₂</td><td class="">Shunt — pulmonary edema, ARDS, atelectasis, intracardiac shunt</td></tr><tr><td class=""></td><td class="">Diffusion defect — interstitial lung disease, early pulmonary edema</td></tr></tbody>
+      </table>
+    </div><div class="verify"><b>Verify before use:</b> the age-adjustment formula for expected normal A-a gradient varies slightly across references — treat it as a rough anchor, not a precise cutoff, and always interpret alongside the clinical picture.</div>  </div>
+</section>
+<section class="block" id="spo2-technology">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Pulse Oximetry</span>
+      <h2>How It Actually Works</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">A light-absorption trick that measures a proxy for oxygenation — not oxygenation itself.</p>
+    </div><p>A pulse oximeter shines red (≈660nm) and infrared (≈940nm) light through a perfused tissue bed (fingertip, earlobe) and
+    measures differential absorption: oxyhemoglobin absorbs more infrared and less red light than deoxyhemoglobin. The device isolates the
+    <i>pulsatile</i> component of the absorbed signal — arterial blood, which changes volume with each heartbeat — from the non-pulsatile
+    background (venous blood, tissue, bone), and calculates SpO₂ from the ratio of that pulsatile absorption at the two wavelengths. Critically, this
+    means SpO₂ is a measure of hemoglobin <i>saturation</i>, not oxygen content or delivery — a severely anemic patient can have a normal SpO₂ while
+    carrying dangerously little total oxygen.</p>  </div>
+</section>
+<section class="block" id="spo2-waveform">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Pulse Oximetry</span>
+      <h2>The Plethysmography Waveform</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The waveform on the monitor is a real physical exam finding, not just decoration next to the number.</p>
+    </div><div class="diagram"><svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="20" x2="40" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="80" y1="20" x2="80" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="120" y1="20" x2="120" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="160" y1="20" x2="160" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="200" y1="20" x2="200" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="240" y1="20" x2="240" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="280" y1="20" x2="280" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="320" y1="20" x2="320" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="360" y1="20" x2="360" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="400" y1="20" x2="400" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="440" y1="20" x2="440" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="480" y1="20" x2="480" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="520" y1="20" x2="520" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="560" y1="20" x2="560" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="600" y1="20" x2="600" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="640" y1="20" x2="640" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="680" y1="20" x2="680" y2="250" stroke="var(--border)" stroke-width="1"></line><line x1="720" y1="20" x2="720" y2="250" stroke="var(--border)" stroke-width="1"></line><path d="M40,230 C 60,230 75,225 85,222 C 100,218 110,100 130,70 C 145,67 158,85 175,120 C 195,155 210,130 225,140 C 260,165 300,215 340,225 C 370,230 380,230 390,230 C 410,230 425,225 435,222 C 450,218 460,100 480,70 C 495,67 508,85 525,120 C 545,155 560,130 575,140 C 610,165 650,215 690,225 C 710,230 725,230 740,230 " fill="none" style="stroke:var(--monitor-400)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+    <line x1="130" y1="70" x2="130" y2="20" stroke="var(--monitor-400)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="130" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--monitor-400)">systolic upstroke (anacrotic limb)</text>
+
+    <line x1="225" y1="140" x2="225" y2="270" stroke="var(--ember-500)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="225" y="285" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--ember-500)">dicrotic notch</text>
+
+    <line x1="340" y1="225" x2="340" y2="270" stroke="var(--sage-500)" stroke-width="1" stroke-dasharray="3,3"></line>
+    <text x="340" y="285" text-anchor="middle" font-family="var(--font-mono)" font-size="12" style="fill:var(--sage-500)">diastolic decay</text>
+
+    <path d="M 20,130 L 20,240" style="stroke:var(--amber-500)" stroke-width="2"></path>
+    <text x="10" y="125" text-anchor="start" font-family="var(--font-mono)" font-size="11" style="fill:var(--amber-500)">AC (pulsatile)</text>
+    <path d="M 20,240 L 20,248" style="stroke:var(--text-tertiary)" stroke-width="2"></path>
+    <text x="10" y="262" text-anchor="start" font-family="var(--font-mono)" font-size="10" style="fill:var(--text-tertiary)">DC (non-pulsatile)</text>
+    </svg><div class="cap">Figure 5. The pulse oximetry (plethysmography) waveform — the pulsatile AC signal riding on a non-pulsatile DC baseline.</div></div><p>The waveform's amplitude reflects the <b>perfusion index (PI)</b> — the ratio of pulsatile (AC) to non-pulsatile (DC) signal,
+    typically reported as a percentage. A low PI (roughly &lt;1–2% depending on device) signals poor peripheral perfusion — vasoconstriction, shock,
+    hypothermia, or a poorly positioned probe — and is one of the most common reasons for an unreliable or intermittently dropping-out SpO₂ reading,
+    independent of true oxygenation status.</p><div class="pearl"><b>An underused trick:</b> respirophasic variation in the plethysmography waveform amplitude — the waveform visibly growing and shrinking with the respiratory cycle — is a non-invasive surrogate for pulsus paradoxus, and can be a useful adjunct clue in severe asthma/COPD exacerbation or cardiac tamponade when a blood pressure cuff isn't practical to use breath-by-breath.</div><h3>Common pitfalls</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Cause</th><th class="">Effect on reading</th></tr></thead>
+        <tbody><tr><td class="hl">Motion artifact</td><td class="">Falsely low reading or complete signal dropout — the single most common cause of a bad reading</td></tr><tr><td class="hl">Poor perfusion (shock, hypothermia, severe vasoconstriction)</td><td class="">Low-amplitude signal, unreliable or absent reading; low PI on the waveform is the tell</td></tr><tr><td class="hl">Carbon monoxide poisoning</td><td class="">Carboxyhemoglobin absorbs light very similarly to oxyhemoglobin — standard pulse oximetry reads <b>falsely normal/high</b> even with severe functional hypoxia; requires co-oximetry to detect</td></tr><tr><td class="hl">Methemoglobinemia</td><td class="">MetHb absorbs at both wavelengths, driving SpO₂ toward 85% regardless of true saturation — a reading “stuck” near 85% despite oxygen therapy is a classic clue</td></tr><tr><td class="hl">Dark nail polish / artificial nails</td><td class="">Can falsely lower the reading; reposition to a different digit or use an earlobe probe</td></tr><tr><td class="hl">Ambient light interference</td><td class="">Bright surgical or fluorescent lighting can introduce signal noise</td></tr></tbody>
+      </table>
+    </div>  </div>
+</section>
+<section class="block" id="ambulatory-pulseox">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">04 · Pulse Oximetry</span>
+      <h2>Ambulatory / Exertional Pulse Oximetry</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Resting SpO₂ can be reassuringly normal while exertion tells a completely different story.</p>
+    </div><p class="lead-q">“Resting sat is 97% on room air — does that mean this patient is actually safe to send home?”</p><p>The clearest illustration of why this matters became widely appreciated during the COVID-19 pandemic: patients with significant
+    pneumonitis could have a normal resting SpO₂ (“silent” or “happy” hypoxia) that dropped meaningfully only with exertion. This isn't unique
+    to COVID — the same principle underlies decades of pulmonary practice using the 6-minute walk test (6MWT) to detect exertional desaturation in
+    interstitial lung disease and COPD.</p><div class="evidence"><span class="study-label">COPD exertional desaturation cohort (Cardiology Research and Practice literature; various COPD/ILD 6MWT cohorts)</span>Exertional desaturation (SpO₂ &lt;90% or a drop ≥4% during a 6-minute walk test) is associated with significantly higher mortality in COPD, and shorter 3-minute walk protocols detect the great majority (roughly 87–91% sensitivity in ILD cohorts) of desaturation events identified by the full 6-minute test.</div><div class="evidence"><span class="study-label">Ambulatory vitals in the workup of pulmonary embolism using a standardized 3-minute walk test — CJEM literature</span>A resting room-air SpO₂ cutoff around 95% has been used to help risk-stratify suspected PE into higher- versus lower-risk groups; structured ambulatory (walking) vital sign protocols have also been studied as an adjunct in the ED PE workup, on the logic that a hemodynamically borderline PE may look reassuring at rest and decompensate with exertion.</div><div class="myth"><b>Caution, not a clean endorsement:</b> a 2021 rapid systematic review specific to COVID-19 found that exertional desaturation tests (40-step walk, 1-minute sit-to-stand, 6MWT) had <i>not</i> been formally validated in COVID-19 specifically at the time, despite widespread clinical adoption — the underlying physiology is sound and the tool is reasonable to use, but treat it as a useful bedside gestalt tool rather than a validated, guideline-mandated discharge gatekeeper.</div><div class="verify"><b>Verify before use:</b> specific desaturation thresholds and walk-test protocols (distance, duration, stop criteria) vary by indication and institution — confirm your local protocol before using a specific numeric cutoff as a hard discharge criterion.</div>  </div>
+</section>
+<section class="block" id="ambulation-evidence">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">05 · Discharge Decision-Making</span>
+      <h2>Ambulation Trials &amp; Orthostatic Vitals</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">Widely practiced, weakly validated — worth understanding exactly where the evidence is thin so you can use the tool for what it's actually good at.</p>
+    </div><p class="lead-q">“I had them stand up and walk the hallway before discharge and they felt fine — how much does that actually buy me?”</p><p>Two related but distinct practices get bundled together at the bedside: <b>orthostatic vital signs</b> (measuring BP/HR supine
+    then standing, looking for a numeric drop) and a broader <b>ambulation trial</b> (walking the patient and watching for symptoms — dizziness,
+    altered mental status, or vision changes — rather than chasing a specific number). The evidence for these two is not the same, and conflating
+    them leads to over-trusting a maneuver that's actually a fairly weak diagnostic test.</p><h3>What the numbers alone are worth</h3><div class="evidence"><span class="study-label">Koziol-McLain J, et al. Orthostatic vital signs in emergency department patients. <i>Ann Emerg Med.</i> 1991.</span>In 132 presumed euvolemic ED patients, the statistically normal range of orthostatic change was far wider than commonly assumed: heart rate varied from −5 to +39 bpm on standing, and systolic BP from −20 to +26 mmHg. Using conventional “positive” cutoffs, <b>43% of known-euvolemic patients</b> would have been classified as having abnormal orthostatics.</div><div class="evidence"><span class="study-label">Multiple community cohorts (Raiha 1995; Ooi et al. 1997)</span>In a random sample of well elderly adults, roughly 28% had orthostatic changes meeting standard positive criteria with no association to 10-year outcomes. In asymptomatic nursing home residents, more than half met criteria for orthostatic hypotension at baseline.</div><div class="evidence"><span class="study-label">White JL, et al. Orthostatic vital signs do not predict 30-day serious outcomes in older emergency department patients with syncope. <i>Am J Emerg Med.</i> 2019.</span>Secondary analysis of a multicenter prospective cohort of patients ≥60 years old with syncope/near-syncope: abnormal orthostatic vitals did not predict 30-day serious outcomes. As a diagnostic test for clinically significant volume loss, orthostatics have been reported with sensitivity as low as ~22% (95% CI 6–48%) for moderate blood loss, and are not reliably sensitive to volume losses under roughly 1000 mL (Level B evidence).</div><div class="myth"><b>What this doesn't mean:</b> it doesn't mean orthostatic vitals are useless — it means a numeric cutoff, used alone, is a poor rule-in/rule-out test. A 2022 <i>Journal of Emergency Medicine</i> review reframes their proper use: most valuable in a handful of specific presentations (suspected blood loss, dehydration, unexplained dizziness, weakness, falls) and most informative when interpreted <i>together with symptoms</i> rather than as a number in isolation.</div><h3>Why the ambulation trial (symptom-based) is the more defensible half</h3><p>The strongest evidence-based signal in this whole space isn't the millimeters of mercury — it's whether the patient becomes
+    <b>symptomatic</b> on standing and walking: dizziness, altered mental status, or new vision changes. This reframes the ambulation trial from
+    “a diagnostic test with a pass/fail number” to “a provocative maneuver that surfaces the same instability the patient would otherwise
+    experience at home, alone, without a monitor and a nurse two feet away.” That distinction matters for documentation and for how much weight the
+    trial should carry in a discharge decision:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Finding</th><th class="">What it's worth</th></tr></thead>
+        <tbody><tr><td class="hl">Numeric orthostatic drop, patient feels fine</td><td class="">Weak signal alone — seen in a large minority of normal, euvolemic people; do not anchor a disposition decision on the number in isolation</td></tr><tr><td class="hl">Patient develops dizziness, presyncope, or vision changes on standing/walking, numbers unremarkable</td><td class="">More clinically meaningful than the number — symptoms are what will actually put the patient at risk of a fall at home</td></tr><tr><td class="hl">Both numeric drop and symptoms together</td><td class="">The most consistent combination across the literature reviewed above; still not validated as a formal discharge gatekeeper, but the most defensible version of this test</td></tr><tr><td class="hl">Normal ambulation, no symptoms, stable exam</td><td class="">Reasonable supportive evidence for discharge, but is a reassurance tool alongside clinical judgment — not a substitute for it</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Practical takeaway for the discharge note:</b> document what you actually observed — “ambulated 20 feet in the hallway without dizziness, altered mentation, or visual change, vitals stable” — rather than leaning on “orthostatics negative” as if it were a validated rule-out test. The former is defensible and clinically meaningful; the latter overstates what the maneuver is actually shown to do.</div><div class="verify"><b>Verify before use:</b> evidence quality here is mixed and somewhat dated (much of the core orthostatic vitals literature is from the 1990s–2019); confirm against your institution's current syncope/fall-risk discharge protocol, which may specify its own required ambulation or observation criteria regardless of the underlying evidence quality.</div>  </div>
+</section>
+<section class="block" id="peds-vitals">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="tag">06 · Pediatric Reference</span>
+      <h2>Normal Pediatric Vital Signs by Age</h2>
+      <p style="margin-top:0.4rem;color:var(--text-secondary);max-width:68ch;">The single most common source of a missed pediatric deterioration is applying adult intuition to a pediatric number.</p>
+    </div><p>Unlike adults, there is no single normal range — heart rate and respiratory rate both fall steadily from infancy through
+    adolescence, and a number that's reassuring in a toddler is a red flag in a school-age child. These ranges follow the commonly used PALS reference
+    values.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Age</th><th class="">Heart rate, awake (bpm)</th><th class="">Respiratory rate (breaths/min)</th></tr></thead>
+        <tbody><tr><td class="hl">Neonate (0–3 mo)</td><td class="">100–205</td><td class="">30–53 (infant range)</td></tr><tr><td class="hl">Infant (3 mo–2 y)</td><td class="">100–190</td><td class="">22–37 (toddler, 1–2y)</td></tr><tr><td class="hl">Toddler / Preschool (2–10 y)</td><td class="">60–140</td><td class="">20–28 (preschool, 3–5y) &middot; 18–25 (school-age, 6–11y)</td></tr><tr><td class="hl">Adolescent (&gt;10 y)</td><td class="">60–100</td><td class="">12–20</td></tr></tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="hl">Age</th><th class="">Systolic BP (mmHg)</th><th class="">Diastolic BP (mmHg)</th></tr></thead>
+        <tbody><tr><td class="hl">Neonate (96 h)</td><td class="">67–84</td><td class="">35–53</td></tr><tr><td class="hl">Infant (1–12 mo)</td><td class="">72–104</td><td class="">37–56</td></tr><tr><td class="hl">Toddler (1–2 y)</td><td class="">86–106</td><td class="">42–63</td></tr><tr><td class="hl">Preschool (3–5 y)</td><td class="">89–112</td><td class="">46–72</td></tr><tr><td class="hl">School-age (6–9 y)</td><td class="">97–115</td><td class="">57–76</td></tr><tr><td class="hl">Preadolescent (10–11 y)</td><td class="">102–120</td><td class="">61–80</td></tr><tr><td class="hl">Adolescent (12–15 y)</td><td class="">110–131</td><td class="">64–83</td></tr></tbody>
+      </table>
+    </div><div class="pearl"><b>Tachycardia is the earliest and most sensitive sign of pediatric distress</b> — pain, fever, anxiety, hypovolemia, hypoxia, and early compensated shock all present with tachycardia first, often well before any blood pressure change. Because children maintain blood pressure through vasoconstriction and tachycardia far more effectively than adults, <b>hypotension in a child is a late and ominous finding</b> that indicates decompensated shock — do not wait for a low blood pressure to recognize a sick child.</div><div class="verify"><b>Verify before use:</b> pediatric normal ranges vary modestly across PALS editions and reference sources — confirm against your institution's current PALS-aligned reference chart, particularly at the edges of each age band.</div>  </div>
+</section>
+<footer class="wrap">
+  <p>Vitals Atlas &middot; Volume I of an ongoing series &middot; Built for bedside and educational reference &middot;
+  Verify guideline-anchored figures, cutoffs, and dosing against current institutional/society sources before clinical use.</p>
+</footer>
+<a class="icon-btn top-link" href="#" aria-label="Back to top">↑</a>
+<script>
+(function() {
+  const root = document.documentElement;
+  const stored = localStorage.getItem('vitals-atlas-theme');
+  const theme = stored || 'dark';
+  root.setAttribute('data-theme', theme);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    function paint() {
+      const t = root.getAttribute('data-theme');
+      icon.textContent = t === 'dark' ? '\u2600' : '\u263D';
+    }
+    paint();
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('vitals-atlas-theme', next);
+      paint();
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-rail a');
+    const spy = () => {
+      let current = sections[0] && sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < 140) current = sec.id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    };
+    document.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    const active = document.querySelector('.nav-rail a.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>
