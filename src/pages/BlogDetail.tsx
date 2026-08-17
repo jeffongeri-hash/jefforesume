@@ -572,6 +572,86 @@ const blogPosts = {
       <p><a href="/embeds/gi-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "airway-rsi-pharmacology-atlas": {
+    title: "The Airway Management & RSI Pharmacology Atlas",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Rapid sequence intubation drugs, dosing, device selection, and difficult airway strategy.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/airway-rsi-pharmacology-atlas.html" title="The Airway Management & RSI Pharmacology Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/airway-rsi-pharmacology-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "environmental-emergencies-atlas": {
+    title: "The Environmental Emergencies Atlas",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Heat illness, hypothermia, drowning, altitude, bites and envenomations — recognition and management.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/environmental-emergencies-atlas.html" title="The Environmental Emergencies Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/environmental-emergencies-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "fluid-resuscitation-atlas": {
+    title: "The Fluid Resuscitation Atlas — Crystalloids, Colloids & Clinical Application",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Crystalloid vs colloid selection, volume targets, and resuscitation endpoints at the bedside.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/fluid-resuscitation-atlas.html" title="The Fluid Resuscitation Atlas — Crystalloids, Colloids & Clinical Application" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/fluid-resuscitation-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "vasopressor-hemodynamic-support-atlas": {
+    title: "The Vasopressor & Hemodynamic Support Atlas",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Pressors and inotropes by receptor profile, dosing, shock phenotypes, and refractory rescue strategies.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/vasopressor-hemodynamic-support-atlas.html" title="The Vasopressor & Hemodynamic Support Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/vasopressor-hemodynamic-support-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
+  "withdrawal-syndromes-novel-substances-atlas": {
+    title: "The Withdrawal Syndromes & Novel Substances Atlas",
+    category: "HEALTHCARE",
+    date: "August 17, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>Alcohol, opioid, benzodiazepine withdrawal plus novel substances — scoring, treatment, and disposition.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/withdrawal-syndromes-novel-substances-atlas.html" title="The Withdrawal Syndromes & Novel Substances Atlas" style="width:100%;height:1600px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/withdrawal-syndromes-novel-substances-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "twdfnr-vol1-2025-2026": {
     title: "Things We Do For No Reason Atlas — Vol. 1: 2025–2026",
     category: "HEALTHCARE",

@@ -48,6 +48,56 @@ const AllPosts = () => {
 
   const blogPosts: Post[] = [
     {
+      title: "The Airway Management & RSI Pharmacology Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Rapid sequence intubation drugs, dosing, device selection, and difficult airway strategy.",
+      image: businessPost,
+      slug: "airway-rsi-pharmacology-atlas",
+      tags: ["Emergency Medicine"]
+    },
+    {
+      title: "The Environmental Emergencies Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Heat illness, hypothermia, drowning, altitude, bites and envenomations — recognition and management.",
+      image: businessPost,
+      slug: "environmental-emergencies-atlas",
+      tags: ["Emergency Medicine"]
+    },
+    {
+      title: "The Fluid Resuscitation Atlas — Crystalloids, Colloids & Clinical Application",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Crystalloid vs colloid selection, volume targets, and resuscitation endpoints at the bedside.",
+      image: businessPost,
+      slug: "fluid-resuscitation-atlas",
+      tags: ["Emergency Medicine"]
+    },
+    {
+      title: "The Vasopressor & Hemodynamic Support Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Pressors and inotropes by receptor profile, dosing, shock phenotypes, and refractory rescue strategies.",
+      image: businessPost,
+      slug: "vasopressor-hemodynamic-support-atlas",
+      tags: ["Emergency Medicine"]
+    },
+    {
+      title: "The Withdrawal Syndromes & Novel Substances Atlas",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 17, 2026",
+      excerpt: "Alcohol, opioid, benzodiazepine withdrawal plus novel substances — scoring, treatment, and disposition.",
+      image: businessPost,
+      slug: "withdrawal-syndromes-novel-substances-atlas",
+      tags: ["Emergency Medicine"]
+    },
+    {
       title: "Things We Do For No Reason Atlas — Vol. 1: 2025–2026",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
@@ -1449,6 +1499,12 @@ const AllPosts = () => {
     "msk-extremities-imaging-atlas": "Imaging",
     "abdomen-pelvis-imaging-atlas": "Imaging",
     "neck-softtissue-vascular-imaging-atlas": "Imaging",
+    // Pertinent ER Knowledge
+    "airway-rsi-pharmacology-atlas": "Pertinent ER Knowledge",
+    "environmental-emergencies-atlas": "Pertinent ER Knowledge",
+    "fluid-resuscitation-atlas": "Pertinent ER Knowledge",
+    "vasopressor-hemodynamic-support-atlas": "Pertinent ER Knowledge",
+    "withdrawal-syndromes-novel-substances-atlas": "Pertinent ER Knowledge",
     // Things We Do For No Reason
     "twdfnr-vol1-2025-2026": "Things We Do For No Reason",
     "twdfnr-vol2-2022-2024": "Things We Do For No Reason",
@@ -1478,6 +1534,7 @@ const AllPosts = () => {
     "Imaging",
     "Toxicology",
     "Procedures",
+    "Pertinent ER Knowledge",
     "Things We Do For No Reason",
     "Sports",
     "Off the Clock",
@@ -1503,6 +1560,7 @@ const AllPosts = () => {
     "Imaging": businessPost,
     "Toxicology": imgToxicology,
     "Procedures": imgProcedures,
+    "Pertinent ER Knowledge": imgProcedures,
     "Things We Do For No Reason": businessPost,
     "Sports": imgOffTheClock,
     "Off the Clock": imgOffTheClock,
