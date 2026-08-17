@@ -52,7 +52,7 @@ const AllPosts = () => {
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
       date: "August 17, 2026",
-      excerpt: "Every recent guideline change that alters bedside practice — cardiology, sepsis, radiology, OB/GYN, heme, endocrine, GI, ocular, stroke, renal, MSK, oncology, derm, ENT, trauma, sedation, immunology, environmental, migraine, and EMTALA, in one place.",
+      excerpt: "Every recent guideline change that alters bedside practice — cardiology, sepsis, UTI/ID-GU, radiology, OB/GYN, heme, endocrine, GI, ocular, stroke, renal, MSK, oncology, derm, ENT, trauma, sedation, immunology, environmental, migraine, and EMTALA, in one place.",
       image: businessPost,
       slug: "guideline-changes-atlas",
       tags: ["Guidelines"]

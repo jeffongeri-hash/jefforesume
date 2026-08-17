@@ -581,7 +581,7 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: businessPost,
     content: `
-      <p>Every recent guideline change that alters bedside practice — cardiology, sepsis, radiology, OB/GYN, heme, endocrine, GI, ocular, stroke, renal, MSK, oncology, derm, ENT, trauma, sedation, immunology, environmental, migraine, and EMTALA, in one place.</p>
+      <p>Every recent guideline change that alters bedside practice — cardiology, sepsis, UTI/ID-GU, radiology, OB/GYN, heme, endocrine, GI, ocular, stroke, renal, MSK, oncology, derm, ENT, trauma, sedation, immunology, environmental, migraine, and EMTALA, in one place.</p>
       <p>All volumes of the Guideline Changes Atlas are collected below. Each volume is fully interactive.</p>
       
       <h2>Vol. 1 — Migraine: 2026 AHS ED Update</h2>
@@ -613,6 +613,12 @@ const blogPosts = {
         <iframe src="/embeds/guideline-changes-hematology-vol5.html" title="Vol. 5 — Hematology: Andexanet Alfa Withdrawal" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
       </div>
       <p><a href="/embeds/guideline-changes-hematology-vol5.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
+
+      <h2>Vol. 6 — UTI/ID-GU: 2025 IDSA cUTI Guideline</h2>
+      <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe src="/embeds/guideline-changes-uti-id-gu-vol6.html" title="Vol. 6 — UTI/ID-GU: 2025 IDSA cUTI Guideline" style="width:100%;height:1400px;border:0;display:block;" loading="lazy"></iframe>
+      </div>
+      <p><a href="/embeds/guideline-changes-uti-id-gu-vol6.html" target="_blank" rel="noopener">Open this volume in a new tab →</a></p>
 
       <h2>Vol. 7 — OB/GYN: 2024–2025 ACOG Updates</h2>
       <div class="my-6 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
