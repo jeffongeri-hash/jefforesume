@@ -4,6 +4,8 @@ import Footer from '@/components/Footer';
 import BlogCard from '@/components/BlogCard';
 import PageFilter, { Post } from '@/components/PageFilter';
 import { useState } from 'react';
+import { useReadPosts } from '@/hooks/useReadPosts';
+import { Button } from '@/components/ui/button';
 import techPost from '@/assets/tech-post.jpg';
 import businessPost from '@/assets/business-post.jpg';
 import pslfPost from '@/assets/pslf-hospitals.jpg';
@@ -45,6 +47,8 @@ import imgOffTheClock from '@/assets/blog/off-the-clock.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [readFilter, setReadFilter] = useState<'all' | 'unread' | 'read'>('all');
+  const { isRead, readSlugs } = useReadPosts();
 
   const blogPosts: Post[] = [
     {
@@ -1449,7 +1453,10 @@ const AllPosts = () => {
     }
   ];
 
-  const postsToShow = filteredPosts.length > 0 ? filteredPosts : blogPosts;
+  const basePosts = filteredPosts.length > 0 ? filteredPosts : blogPosts;
+  const postsToShow = basePosts.filter((p) =>
+    readFilter === 'all' ? true : readFilter === 'read' ? isRead(p.slug) : !isRead(p.slug)
+  );
 
   // Map each post slug to a clinical system for grouping.
   const systemBySlug: Record<string, string> = {
