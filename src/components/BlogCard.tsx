@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Download } from 'lucide-react';
+import { Download, Check, Circle } from 'lucide-react';
 import { downloadPostPdf } from '@/lib/downloadPostPdf';
+import { useReadPosts } from '@/hooks/useReadPosts';
 
 interface BlogCardProps {
   title: string;
@@ -22,9 +23,30 @@ const BlogCard = ({
   isSmall = false
 }: BlogCardProps) => {
   const articleUrl = href === '#' ? `/blog/${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}` : href;
-  
+  const slug = articleUrl.split('/').pop() || '';
+  const { isRead, toggleRead } = useReadPosts();
+  const read = isRead(slug);
+
   return (
     <article className="blog-card group cursor-pointer transition-all duration-300 hover:shadow-lg border border-transparent hover:border-black relative">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleRead(slug);
+        }}
+        className={`absolute top-2 left-2 z-10 flex items-center gap-1 px-2 py-1 rounded-full border text-[11px] font-semibold shadow-sm transition-colors ${
+          read
+            ? 'bg-primary text-primary-foreground border-primary'
+            : 'bg-background/90 text-muted-foreground border-border hover:bg-muted'
+        }`}
+        aria-pressed={read}
+        aria-label={read ? `Mark ${title} as unread` : `Mark ${title} as read`}
+      >
+        {read ? <Check className="h-3 w-3" /> : <Circle className="h-3 w-3" />}
+        {read ? 'Read' : 'Unread'}
+      </button>
       <button
         type="button"
         onClick={(e) => {
@@ -41,7 +63,7 @@ const BlogCard = ({
       </button>
       <Link to={articleUrl} className="block focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" aria-label={`Read article: ${title}`}>
         {/* Image */}
-        <div className={`relative overflow-hidden ${isSmall ? 'aspect-[3/2]' : 'aspect-[4/3]'}`}>
+        <div className={`relative overflow-hidden ${isSmall ? 'aspect-[3/2]' : 'aspect-[4/3]'} ${read ? 'opacity-70' : ''}`}>
           <img
             src={image}
             alt={`Article image for: ${title} - A professional photo related to ${category.toLowerCase()}`}
