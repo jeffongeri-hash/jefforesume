@@ -1728,6 +1728,24 @@ const AllPosts = () => {
           showCategoryFilter={true}
         />
 
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {(['all', 'unread', 'read'] as const).map((f) => (
+            <Button
+              key={f}
+              size="sm"
+              variant={readFilter === f ? 'default' : 'outline'}
+              onClick={() => setReadFilter(f)}
+              aria-pressed={readFilter === f}
+            >
+              {f === 'all' ? 'All' : f === 'unread' ? 'Unread' : 'Read'}
+              {f === 'read' && ` (${readSlugs.length})`}
+            </Button>
+          ))}
+          <span className="text-sm text-muted-foreground ml-1">
+            {postsToShow.length} shown
+          </span>
+        </div>
+
         <div className="max-w-4xl mx-auto space-y-12">
           {orderedSystems.map((system) => (
             <section key={system}>
