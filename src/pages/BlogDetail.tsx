@@ -1,7 +1,8 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Download } from 'lucide-react';
+import { Download, Check } from 'lucide-react';
 import { downloadPostPdf, extractEmbedUrl } from '@/lib/downloadPostPdf';
+import { useReadPosts } from '@/hooks/useReadPosts';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -5498,6 +5499,8 @@ const BlogDetail = () => {
   const post = blogPosts[slug as keyof typeof blogPosts] || blogPosts.default;
   const [searchParams] = useSearchParams();
   const embedUrl = extractEmbedUrl((post as { content?: string }).content);
+  const { isRead, markRead, markUnread } = useReadPosts();
+  const read = slug ? isRead(slug) : false;
 
   useEffect(() => {
     if (searchParams.get('download') === '1') {
@@ -5546,8 +5549,18 @@ const BlogDetail = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => downloadPostPdf(embedUrl, post.title)}
+                  onClick={() => (slug ? (read ? markUnread(slug) : markRead(slug)) : undefined)}
                   className="ml-auto print:hidden"
+                  aria-pressed={read}
+                >
+                  <Check className="h-4 w-4 mr-2" />
+                  {read ? 'Read — mark unread' : 'Mark as read'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => downloadPostPdf(embedUrl, post.title)}
+                  className="print:hidden"
                   aria-label={`Download ${post.title} as PDF`}
                 >
                   <Download className="h-4 w-4 mr-2" />
