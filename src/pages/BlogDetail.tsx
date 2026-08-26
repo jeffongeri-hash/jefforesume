@@ -54,6 +54,28 @@ const blogPosts = {
       <p><a href="/embeds/ekg-strip-atlas.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
     `
   },
+  "ekg-atlas-vol3-tachycardia": {
+    title: "EKG Atlas Vol. 3 — Tachycardia Differentiation, Interval Anatomy & Pattern Recognition",
+    category: "HEALTHCARE",
+    date: "August 26, 2026",
+    readTime: "20 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A systematic EKG atlas for tachycardia differentiation, interval anatomy, and pattern recognition — covering rate/rhythm/axis interpretation, QT and interval mechanics, wide- vs narrow-complex algorithms, and the anatomic-electrophysiologic patterns clinicians use at the bedside.</p>
+      <p>The interactive atlas below is best viewed full-screen. Use the toggle inside the frame to switch light and dark modes.</p>
+      <div class="my-8 rounded-xl overflow-hidden border border-border shadow-sm bg-card">
+        <iframe
+          src="/embeds/ekg-atlas-vol3-tachycardia.html"
+          title="EKG Atlas Vol. 3"
+          style="width:100%;height:1600px;border:0;display:block;"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p><a href="/embeds/ekg-atlas-vol3-tachycardia.html" target="_blank" rel="noopener">Open the full atlas in a new tab →</a></p>
+    `
+  },
   "abg-interpreter": {
     title: "ABG Interpreter — Acid-Base, Step by Step",
     category: "HEALTHCARE",
