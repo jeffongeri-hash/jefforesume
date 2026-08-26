@@ -5453,6 +5453,13 @@ const popularPosts = [
     slug: "ekg-strip-atlas"
   },
   {
+    title: "EKG Atlas Vol. 3 — Tachycardia Differentiation, Interval Anatomy & Pattern Recognition",
+    category: "HEALTHCARE",
+    date: "August 26, 2026",
+    image: businessPost,
+    slug: "ekg-atlas-vol3-tachycardia"
+  },
+  {
     title: "Houston Suburb & TMC Neighborhood Guide",
     category: "HEALTHCARE",
     date: "March 16, 2026",
