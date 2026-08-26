@@ -5547,6 +5547,18 @@ const BlogDetail = () => {
                 <span>{post.date}</span>
                 <span>•</span>
                 <span>{post.readTime}</span>
+                {embedUrl && (
+                  <a
+                    href={embedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline print:hidden"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Open Full Atlas
+                  </a>
+                )}
+                <ListenButton embedUrl={embedUrl} html={post.content} title={post.title} />
                 <Button
                   variant="outline"
                   size="sm"
@@ -5568,6 +5580,7 @@ const BlogDetail = () => {
                   Download PDF
                 </Button>
               </div>
+
             </div>
           </div>
         </div>
