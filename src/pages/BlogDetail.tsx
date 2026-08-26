@@ -1,7 +1,8 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Download, Check } from 'lucide-react';
+import { Download, Check, ExternalLink } from 'lucide-react';
 import { downloadPostPdf, extractEmbedUrl } from '@/lib/downloadPostPdf';
+import ListenButton from '@/components/ListenButton';
 import { useReadPosts } from '@/hooks/useReadPosts';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
