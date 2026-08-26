@@ -672,6 +672,16 @@ const AllPosts = () => {
       tags: ["Cardiology", "Vascular", "VTE", "Clinical Education"]
     },
     {
+      title: "EKG Atlas Vol. 3 — Tachycardia Differentiation, Interval Anatomy & Pattern Recognition",
+      category: "HEALTHCARE",
+      subcategory: "Clinical Education",
+      date: "August 26, 2026",
+      excerpt: "Systematic EKG approach to tachycardia differentiation, interval anatomy, and pattern recognition for bedside clinical decision-making.",
+      image: businessPost,
+      slug: "ekg-atlas-vol3-tachycardia",
+      tags: ["Cardiology", "EKG", "Clinical Education"]
+    },
+    {
       title: "Adult Trauma & Resuscitation Atlas",
       category: "HEALTHCARE",
       subcategory: "Clinical Education",
