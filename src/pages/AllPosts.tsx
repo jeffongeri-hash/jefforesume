@@ -1550,6 +1550,7 @@ const AllPosts = () => {
     "cardiothoracic-surgery-atlas-vol1": "Cardiology",
     "vascular-atlas-vol1": "Cardiology",
     "vascular-atlas-vol2": "Cardiology",
+    "ekg-atlas-vol3-tachycardia": "Cardiology",
     "adult-trauma-resuscitation-atlas": "Pulmonary & Critical Care",
     // Hematology
     "hematology-hematopoiesis-atlas": "Hematology",
