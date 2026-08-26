@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EKG Atlas Vol. III — Tachycardia Differentiation, Interval Anatomy & Pattern Recognition</title>
+<style>
+:root{
+  --ekg-red:#c0392b;
+  --ekg-red-dim:#e8b4ac;
+  --ekg-gold:#c8962c;
+  --ekg-green:#2f7d5f;
+  --ekg-blue:#2f5f8f;
+  --trace:#1f8a4c;
+  --bg:#faf7f2;
+  --bg2:#ffffff;
+  --card:#ffffff;
+  --text:#100e0a;
+  --text-dim:#3a352c;
+  --border:#d6cdb9;
+  --nav-bg:#ffffff;
+  --code-bg:#eee6d4;
+  --shadow:0 2px 12px rgba(28,26,23,0.06);
+}
+[data-theme="dark"]{
+  --bg:#15130f;
+  --bg2:#1c1a15;
+  --card:#211f1a;
+  --text:#f0ece2;
+  --text-dim:#cfc8b8;
+  --border:#3a352b;
+  --nav-bg:#1c1a15;
+  --code-bg:#26231d;
+  --ekg-red-dim:#5c2a24;
+  --shadow:0 2px 16px rgba(0,0,0,0.4);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  transition:background .2s,color .2s;
+}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-0.01em;}
+code,.mono,.val{font-family:'JetBrains Mono',monospace;}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px;}
+
+header.top{
+  position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:980px;margin:0 auto;flex-wrap:wrap;gap:10px;}
+.brand{display:flex;flex-direction:column;}
+.brand .t1{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--ekg-red);}
+.brand .t2{font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+.controls{display:flex;gap:8px;align-items:center;}
+select,input[type=search]{
+  font-family:'Inter',sans-serif;font-size:0.85rem;
+  padding:7px 10px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg2);color:var(--text);
+}
+button.theme-btn{
+  border:1px solid var(--border);background:var(--bg2);color:var(--text);
+  border-radius:8px;padding:7px 12px;cursor:pointer;font-size:0.85rem;
+}
+nav.crumbs{max-width:980px;margin:0 auto;padding:0 20px 10px;display:flex;gap:6px;flex-wrap:wrap;}
+nav.crumbs a{
+  font-size:0.78rem;padding:5px 10px;border-radius:20px;background:var(--code-bg);
+  color:var(--text-dim);text-decoration:none;border:1px solid var(--border);
+}
+nav.crumbs a:hover{color:var(--ekg-red);border-color:var(--ekg-red);}
+
+.hero{padding:36px 0 18px;}
+.hero .eyebrow{color:var(--ekg-red);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.hero h1{font-size:2.1rem;margin:.3em 0;}
+.hero p.lede{color:var(--text-dim);font-size:1.02rem;max-width:70ch;}
+.crossref{
+  background:var(--code-bg);border-left:3px solid var(--ekg-gold);
+  padding:10px 14px;border-radius:6px;font-size:0.85rem;color:var(--text-dim);margin:14px 0 0;
+}
+
+section{padding:34px 0;border-top:1px solid var(--border);}
+section h2{font-size:1.5rem;color:var(--ekg-red);margin-bottom:4px;}
+section h2 .num{color:var(--ekg-gold);margin-right:8px;}
+section .subhead{color:var(--text-dim);font-size:0.92rem;margin-bottom:20px;}
+h3{font-size:1.15rem;margin-top:28px;}
+h4{font-size:1rem;margin-top:20px;color:var(--ekg-blue);}
+[data-theme="dark"] h4{color:#8fb4d9;}
+
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;margin:16px 0;box-shadow:var(--shadow);
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+@media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.9rem;}
+th,td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;}
+th{background:var(--code-bg);font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--text-dim);}
+tr:hover{background:var(--code-bg);}
+
+.flag{
+  display:inline-block;font-size:0.72rem;font-weight:700;padding:3px 8px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.03em;margin-right:6px;
+}
+.flag.danger{background:var(--ekg-red-dim);color:#7a1f14;}
+[data-theme="dark"] .flag.danger{color:#ffb4a8;}
+.flag.verify{background:#f0dfa6;color:#3d3009;}
+[data-theme="dark"] .flag.verify{background:#4a3d15;color:#f0dfa6;}
+.flag.pearl{background:#c9e3d4;color:#1f5c3f;}
+[data-theme="dark"] .flag.pearl{background:#1c3a2c;color:#a8d9c0;}
+.flag.myth{background:#d8c9e8;color:#4a2e6b;}
+[data-theme="dark"] .flag.myth{background:#332349;color:#d8c9e8;}
+
+.box{border-radius:10px;padding:14px 16px;margin:14px 0;border:1px solid var(--border);}
+.box.danger{border-color:#c0392b;background:rgba(192,57,43,0.06);}
+.box.verify{border-color:#c8962c;background:rgba(200,150,44,0.08);}
+.box.pearl{border-color:#2f7d5f;background:rgba(47,125,95,0.06);}
+.box.myth{border-color:#8f5fc0;background:rgba(143,95,192,0.07);}
+.box h5{margin:0 0 6px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-transform:uppercase;letter-spacing:.04em;}
+
+.svgwrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin:16px 0;overflow-x:auto;}
+.svgwrap svg{width:100%;height:auto;display:block;}
+.caption{font-size:0.8rem;color:var(--text-dim);margin-top:6px;text-align:center;}
+.ecgstrip{
+  background-color:#fff8f6;
+  background-image:
+    linear-gradient(to right, rgba(190,50,50,0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(190,50,50,0.16) 1px, transparent 1px),
+    linear-gradient(to right, rgba(190,50,50,0.38) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(190,50,50,0.38) 1px, transparent 1px);
+  background-size: 5px 5px, 5px 5px, 25px 25px, 25px 25px;
+  border-radius:8px;
+}
+[data-theme="dark"] .ecgstrip{background-color:#1c130f;}
+.trace{stroke:#1c1a17;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+[data-theme="dark"] .trace{stroke:#f0ece2;}
+.trace-alt{stroke:#2f5f8f;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.hl-box{fill:none;stroke:#c8962c;stroke-width:1.8;stroke-dasharray:5,3;}
+.hl-txt{font-family:'JetBrains Mono',monospace;font-size:11.5px;fill:#4d3800;font-weight:700;}
+[data-theme="dark"] .hl-txt{fill:#ffcf5c;}
+.hl-arrow{stroke:#c8962c;stroke-width:1.8;fill:none;}
+.panel-lbl{font-family:Inter,sans-serif;font-size:13px;font-weight:700;fill:#100e0a;}
+[data-theme="dark"] .panel-lbl{fill:#f0ece2;}
+.panel-lbl.bad{fill:#c0392b;}
+.panel-lbl.good{fill:#2f7d5f;}
+.panel-div{stroke:var(--border);stroke-width:1;stroke-dasharray:3,3;}
+
+.searchbar{margin:10px 0 24px;}
+#searchInput{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:0.95rem;}
+.hidden{display:none !important;}
+mark{background:var(--ekg-gold);color:#1c1a17;padding:0 2px;border-radius:2px;}
+
+footer{padding:30px 0 60px;text-align:center;color:var(--text-dim);font-size:0.82rem;border-top:1px solid var(--border);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.tag{font-size:0.72rem;padding:3px 9px;border-radius:6px;background:var(--code-bg);color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="topbar">
+    <div class="brand">
+      <span class="t1">EKG Atlas — Vol. III</span>
+      <span class="t2">Tachycardia Differentiation · Interval Anatomy · Pattern Recognition</span>
+    </div>
+    <div class="controls">
+      <select id="jumpNav" onchange="if(this.value) location.hash=this.value;">
+        <option value="">Jump to section…</option>
+        <option value="#sec-a">A · Narrow vs. Wide Complex Tachycardia</option>
+        <option value="#sec-b">B · Brugada Algorithm (VT vs. SVT-A)</option>
+        <option value="#sec-c">C · Wave &amp; Interval Anatomy</option>
+        <option value="#sec-d">D · Pseudo-Concerning / Normal Variants</option>
+        <option value="#sec-e">E · Repol. vs. Depol. &amp; Lead Misplacement</option>
+        <option value="#sec-f">F · Posterior STEMI</option>
+        <option value="#sec-g">G · 12-Lead Polarity &amp; Low-Voltage EKGs</option>
+        <option value="#sec-h">H · RBBB/LBBB Recognition &amp; STEMI-in-LBBB</option>
+      </select>
+      <button class="theme-btn" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+  </div>
+  <nav class="crumbs">
+    <a href="#sec-a">A. Narrow/Wide Tach</a>
+    <a href="#sec-b">B. Brugada Algorithm</a>
+    <a href="#sec-c">C. Interval Anatomy</a>
+    <a href="#sec-d">D. Normal Variants</a>
+    <a href="#sec-e">E. Repol/Depol &amp; Leads</a>
+    <a href="#sec-f">F. Posterior STEMI</a>
+    <a href="#sec-g">G. Lead Polarity / Low Voltage</a>
+    <a href="#sec-h">H. RBBB/LBBB &amp; STEMI-in-LBBB</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">EM Clinical Reference · Companion to EKG Vol. I (Arrhythmias &amp; Conduction) &amp; Vol. II (Waveform Changes &amp; Etiologies)</div>
+  <h1>Tachycardia Differentiation, Interval-by-Interval Anatomy &amp; High-Stakes Pattern Recognition</h1>
+  <p class="lede">This volume closes three gaps left after Vols. I–II: (1) a working algorithm for the wide-complex-tachycardia decision at the bedside, (2) a wave/interval-level reference so each abnormality can be pinned to a specific measurement, and (3) the pattern-recognition skills that keep normal variants from being over-called and posterior STEMI from being missed.</p>
+  <div class="crossref">🔗 Cross-reference: Rhythm classification and AV block terminology assume Vol. I (Arrhythmias &amp; Conduction). ST/T-wave etiology tables assume Vol. II (Waveform Changes). This volume does not re-derive either.</div>
+  <div class="searchbar"><input type="search" id="searchInput" placeholder="Search this atlas… (e.g. 'AV dissociation', 'V7-V9', 'aVR')" onkeyup="liveSearch()"></div>
+</div>
+
+<!-- ================= SECTION A ================= -->
+<section id="sec-a">
+  <h2><span class="num">A.</span>Narrow vs. Wide Complex Tachycardia</h2>
+  <div class="subhead">First branch point at the bedside — before any algorithm, before any calipers.</div>
+
+  <div class="box danger">
+    <h5>⚠ Step Zero — Before You Analyze Anything</h5>
+    If the patient is hypotensive, has active chest pain, altered sensorium, or signs of shock: <strong>synchronized cardioversion first.</strong> Wide-complex-tachycardia algorithms are for the stable patient. An unstable patient in a wide-complex tachycardia gets electricity, not calipers.
+  </div>
+
+  <h3>The First Split: QRS Duration</h3>
+  <table>
+    <tr><th>Category</th><th>QRS Duration</th><th>Working Assumption Until Proven Otherwise</th></tr>
+    <tr><td>Narrow complex</td><td>&lt; 120 ms</td><td>Supraventricular in origin — impulse used the His-Purkinje system</td></tr>
+    <tr><td>Wide complex</td><td>≥ 120 ms</td><td><strong>Ventricular tachycardia until proven otherwise</strong> — this default protects patients; treating VT as SVT can kill, treating SVT-A as VT rarely does</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="hlA1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c8962c"/></marker></defs>
+      <line x1="440" y1="20" x2="440" y2="200" class="panel-div"/>
+      <!-- Narrow QRS panel -->
+      <text x="220" y="30" text-anchor="middle" class="panel-lbl good">NARROW &lt; 120 ms</text>
+      <line x1="40" y1="140" x2="400" y2="140" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,140 C55,140 58,125 70,125 C82,125 85,140 100,140
+        L120,140 L126,145 L133,80 L141,175 L149,140 L165,140
+        C185,140 195,110 215,110 C235,110 245,140 265,140
+        L400,140"/>
+      <rect x="120" y="72" width="30" height="110" class="hl-box"/>
+      <line x1="135" y1="65" x2="135" y2="30" class="hl-arrow" marker-end="url(#hlA1)"/>
+      <text x="135" y="20" text-anchor="middle" class="hl-txt">QRS ~90ms</text>
+      <text x="220" y="205" text-anchor="middle" class="hl-txt">Look for: RS complex present, supraventricular origin</text>
+
+      <!-- Wide QRS panel -->
+      <text x="670" y="30" text-anchor="middle" class="panel-lbl bad">WIDE ≥ 120 ms</text>
+      <line x1="480" y1="140" x2="860" y2="140" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,140 L560,140
+        L566,150 L578,55 L594,185 L612,140 L630,140
+        C655,120 665,155 690,140 L860,140"/>
+      <rect x="560" y="48" width="70" height="140" class="hl-box"/>
+      <line x1="595" y1="40" x2="595" y2="30" class="hl-arrow" marker-end="url(#hlA1)"/>
+      <text x="595" y="20" text-anchor="middle" class="hl-txt">QRS ~150ms</text>
+      <text x="670" y="205" text-anchor="middle" class="hl-txt">Look for: slurred, notched, no clean RS</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. A1 — Same paper speed, same box grid. The wide-complex beat is measured onset-to-offset of the QRS, not eyeballed — put calipers on it.</div>
+  </div>
+
+  <h3>Narrow Complex Tachycardia — Differential by Regularity</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Regular</h4>
+      <ul>
+        <li>Sinus tachycardia</li>
+        <li>AVNRT (typical, slow-fast)</li>
+        <li>AVRT (orthodromic, via accessory pathway)</li>
+        <li>Atrial flutter with fixed-ratio conduction (esp. 2:1)</li>
+        <li>Atrial tachycardia (unifocal)</li>
+        <li>Junctional tachycardia</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Irregularly Irregular</h4>
+      <ul>
+        <li>Atrial fibrillation with rapid ventricular response</li>
+        <li>Atrial flutter with variable block</li>
+        <li>Multifocal atrial tachycardia (MAT) — ≥3 distinct P-wave morphologies</li>
+        <li>Frequent PACs superimposed on sinus tach</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box pearl">
+    <h5>Pearl — The 2:1 Flutter Trap</h5>
+    Atrial flutter conducting 2:1 produces a regular narrow-complex tachycardia around 150 bpm that looks maddeningly like sinus tach or AVNRT. Flutter waves are often buried in the preceding T wave. If the rate is <em>persistently</em> and <em>precisely</em> ~150, suspect flutter and look for a second flutter wave hiding in the T wave — vagal maneuvers or adenosine can unmask the sawtooth by transiently increasing the block ratio.
+  </div>
+
+  <h3>Wide Complex Tachycardia — Differential</h3>
+  <table>
+    <tr><th>Etiology</th><th>Mechanism</th><th>Concerning Feature</th></tr>
+    <tr><td>Ventricular tachycardia (monomorphic)</td><td>Reentry around scar (post-MI), or idiopathic focus</td><td><span class="flag danger">High risk</span> can degenerate to VF; treat as VT if any doubt</td></tr>
+    <tr><td>Ventricular tachycardia (polymorphic) / Torsades</td><td>Triggered activity in setting of prolonged QT</td><td><span class="flag danger">High risk</span> — check baseline QTc, offending drugs, electrolytes (K, Mg, Ca)</td></tr>
+    <tr><td>SVT with pre-existing bundle branch block</td><td>Any SVT conducted through fixed BBB</td><td>Compare to prior ECG — identical morphology to baseline BBB favors SVT-A</td></tr>
+    <tr><td>SVT with rate-related (functional) aberrancy</td><td>Ashman phenomenon — long-short cycle causes transient aberrant conduction, classically in new-onset AF</td><td>Look for the triggering long-short R-R sequence</td></tr>
+    <tr><td>Antidromic AVRT (pre-excited tachycardia)</td><td>Impulse travels down accessory pathway, up the His system — the QRS <em>is</em> the delta wave</td><td><span class="flag danger">AV nodal blockers (adenosine, CCB, beta-blockers) are contraindicated</span> — can accelerate conduction down the pathway and precipitate VF, especially in pre-excited AF</td></tr>
+    <tr><td>Hyperkalemia-induced wide complex rhythm</td><td>Severe K+ widens QRS toward a sine-wave pattern</td><td>Check a potassium before committing to an antiarrhythmic pathway — empiric calcium is reasonable if suspicion is high</td></tr>
+    <tr><td>Sodium-channel blocker toxicity (TCA, others)</td><td>Slowed phase 0 depolarization widens QRS</td><td>Terminal R wave in aVR &gt; 3 mm and R/S ratio &gt; 0.7 in aVR suggest Na-channel blockade — treat with sodium bicarbonate, not typical antiarrhythmics</td></tr>
+  </table>
+
+  <div class="box danger">
+    <h5>⚠ Concerning Features That Push Toward VT Regardless of Algorithm Step</h5>
+    <ul style="margin:4px 0 0;">
+      <li>Age &gt; 35 with any history of structural heart disease or prior MI (VT probability &gt;90% in this population alone)</li>
+      <li>Extreme QRS widths (&gt;160 ms in RBBB morphology, &gt;180 ms in LBBB morphology)</li>
+      <li>Fusion beats or capture beats (pathognomonic for AV dissociation → VT)</li>
+      <li>Positive or negative concordance across the entire precordium (all V1–V6 same direction)</li>
+      <li>Hemodynamic instability disproportionate to the rate</li>
+    </ul>
+  </div>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="hlA2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c8962c"/></marker></defs>
+      <text x="450" y="26" text-anchor="middle" class="panel-lbl bad">Monomorphic wide-complex run with a CAPTURE BEAT</text>
+      <line x1="30" y1="120" x2="870" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,120 L90,120 L96,130 L108,45 L124,175 L142,120 L160,120
+        L220,120 L226,130 L238,45 L254,175 L272,120 L290,120
+        L330,120 L336,105 L344,95 L352,140 L360,120 L364,120
+        L420,120 L426,130 L438,45 L454,175 L472,120 L490,120
+        L550,120 L556,130 L568,45 L584,175 L602,120 L620,120
+      "/>
+      <rect x="322" y="80" width="46" height="80" class="hl-box"/>
+      <line x1="345" y1="70" x2="345" y2="40" class="hl-arrow" marker-end="url(#hlA2)"/>
+      <text x="345" y="30" text-anchor="middle" class="hl-txt">narrow "capture" beat</text>
+      <text x="345" y="180" text-anchor="middle" class="hl-txt" style="fill:#2a2620">sinus impulse briefly captures the ventricle</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. A2 — A capture (or fusion) beat interrupting an otherwise wide, regular run is near-pathognomonic for VT — it proves the atria and ventricles are running independently.</div>
+  </div>
+</section>
+
+<!-- ================= SECTION B ================= -->
+<section id="sec-b">
+  <h2><span class="num">B.</span>The Brugada Algorithm — VT vs. SVT with Aberrancy</h2>
+  <div class="subhead">Four sequential yes/no questions. A single "yes" at any step ends the algorithm: it's VT.</div>
+
+  <div class="box verify">
+    <h5>🔍 Verify — Performance Data</h5>
+    Brugada et al.'s original 1991 derivation (384 VT, 170 SVT-A) reported <span class="val">98.7%</span> sensitivity and <span class="val">96.5%</span> specificity for VT. <strong>Real-world validation has not reproduced this.</strong> Subsequent studies (Isenhour et al. and others) found meaningfully lower accuracy when applied by working clinicians rather than algorithm derivers, and most published WCT criteria — Brugada included — carry high specificity but comparatively low sensitivity (roughly 20–50% in some series) for VT. Practical translation: a "negative" algorithm (pointing toward SVT-A) does <em>not</em> reliably exclude VT. <strong>If in doubt, treat as VT.</strong>
+  </div>
+
+  <div class="svgwrap">
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        .brg-box{fill:var(--card,#fff);stroke:#c0392b;stroke-width:2;}
+        .brg-yes{fill:#c0392b;stroke:#c0392b;}
+        .brg-txt{font-family:Inter,sans-serif;font-size:14px;fill:#1c1a17;}
+        .brg-txt-b{font-family:Inter,sans-serif;font-size:14px;fill:#1c1a17;font-weight:700;}
+        .brg-lbl{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#2a2620;}
+        .brg-arrow{stroke:#5a564f;stroke-width:1.8;fill:none;marker-end:url(#brgArrow);}
+        .brg-final{fill:#f6dede;stroke:#c0392b;stroke-width:2.5;}
+        .brg-final2{fill:#dcefe5;stroke:#2f7d5f;stroke-width:2.5;}
+      </style>
+      <defs>
+        <marker id="brgArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#403c34"/></marker>
+      </defs>
+      <rect x="330" y="10" width="240" height="46" rx="8" class="brg-box"/>
+      <text x="450" y="38" text-anchor="middle" class="brg-txt-b">Step 1: Absence of an</text>
+      <text x="450" y="52" text-anchor="middle" class="brg-txt-b" style="font-size:12px">RS complex in ALL precordial leads?</text>
+      <line x1="450" y1="56" x2="450" y2="90" class="brg-arrow"/>
+      <text x="465" y="78" class="brg-lbl">YES</text>
+      <rect x="620" y="20" width="240" height="60" rx="8" class="brg-final"/>
+      <text x="740" y="45" text-anchor="middle" class="brg-txt-b">= VT</text>
+      <text x="740" y="63" text-anchor="middle" class="brg-lbl" style="font-size:11px">(pure QS or pure R in V1–V6)</text>
+      <line x1="580" y1="45" x2="620" y2="45" class="brg-arrow"/>
+      <text x="590" y="38" class="brg-lbl">YES</text>
+
+      <rect x="330" y="100" width="240" height="46" rx="8" class="brg-box"/>
+      <text x="450" y="122" text-anchor="middle" class="brg-txt-b">Step 2: R to S interval</text>
+      <text x="450" y="138" text-anchor="middle" class="brg-txt-b" style="font-size:12px">&gt; 100 ms in ANY precordial lead?</text>
+      <line x1="450" y1="146" x2="450" y2="180" class="brg-arrow"/>
+      <text x="465" y="168" class="brg-lbl">YES</text>
+      <rect x="620" y="110" width="240" height="60" rx="8" class="brg-final"/>
+      <text x="740" y="135" text-anchor="middle" class="brg-txt-b">= VT</text>
+      <text x="740" y="153" text-anchor="middle" class="brg-lbl" style="font-size:11px">(slurred, slow downstroke)</text>
+      <line x1="580" y1="135" x2="620" y2="135" class="brg-arrow"/>
+      <text x="590" y="128" class="brg-lbl">YES</text>
+
+      <rect x="330" y="190" width="240" height="46" rx="8" class="brg-box"/>
+      <text x="450" y="212" text-anchor="middle" class="brg-txt-b">Step 3: AV dissociation</text>
+      <text x="450" y="228" text-anchor="middle" class="brg-txt-b" style="font-size:12px">present?</text>
+      <line x1="450" y1="236" x2="450" y2="270" class="brg-arrow"/>
+      <text x="465" y="258" class="brg-lbl">YES</text>
+      <rect x="620" y="200" width="240" height="60" rx="8" class="brg-final"/>
+      <text x="740" y="225" text-anchor="middle" class="brg-txt-b">= VT</text>
+      <text x="740" y="243" text-anchor="middle" class="brg-lbl" style="font-size:11px">± fusion/capture beats</text>
+      <line x1="580" y1="225" x2="620" y2="225" class="brg-arrow"/>
+      <text x="590" y="218" class="brg-lbl">YES</text>
+
+      <rect x="330" y="280" width="240" height="46" rx="8" class="brg-box"/>
+      <text x="450" y="302" text-anchor="middle" class="brg-txt-b">Step 4: Morphology criteria</text>
+      <text x="450" y="318" text-anchor="middle" class="brg-txt-b" style="font-size:12px">for VT in BOTH V1 &amp; V6?</text>
+      <line x1="450" y1="326" x2="450" y2="360" class="brg-arrow"/>
+      <text x="465" y="348" class="brg-lbl">YES</text>
+      <rect x="620" y="290" width="240" height="60" rx="8" class="brg-final"/>
+      <text x="740" y="315" text-anchor="middle" class="brg-txt-b">= VT</text>
+      <text x="740" y="333" text-anchor="middle" class="brg-lbl" style="font-size:11px">RBBB: mono/biphasic V1, R/S&lt;1 V6</text>
+      <line x1="580" y1="315" x2="620" y2="315" class="brg-arrow"/>
+      <text x="590" y="308" class="brg-lbl">YES</text>
+
+      <line x1="450" y1="370" x2="450" y2="400" class="brg-arrow"/>
+      <text x="465" y="392" class="brg-lbl">NO to all four</text>
+      <rect x="330" y="404" width="240" height="60" rx="8" class="brg-final2"/>
+      <text x="450" y="430" text-anchor="middle" class="brg-txt-b">= SVT with aberrancy</text>
+      <text x="450" y="448" text-anchor="middle" class="brg-lbl" style="font-size:11px">but sensitivity here is imperfect —</text>
+
+      <rect x="180" y="484" width="540" height="30" rx="6" fill="none" stroke="#c8962c" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="450" y="503" text-anchor="middle" class="brg-lbl" style="fill:#4d3800">if any clinical doubt remains, treat empirically as VT</text>
+    </svg>
+    <div class="caption">Fig. B1 — Brugada 4-step algorithm. Each "yes" is terminal. A full "no" pathway favors SVT-A but does not rule out VT with the same confidence.</div>
+  </div>
+
+  <h3>Step-by-Step Detail</h3>
+  <table>
+    <tr><th>Step</th><th>What You're Measuring</th><th>Why It Points to VT</th></tr>
+    <tr><td>1</td><td>Look across all six precordial leads for an RS complex (any biphasic R-then-S). If NONE exists — every lead is purely monophasic (all R) or purely negative (QS) — that's Step 1 positive.</td><td>SVT conducted through the normal His-Purkinje system almost always produces an RS somewhere in the precordium. Ventricular myocyte-to-myocyte conduction (VT) is slow and disorganized enough to abolish RS morphology entirely across the precordium.</td></tr>
+    <tr><td>2</td><td>In the precordial lead with the clearest RS complex, measure from the onset of R to the nadir of S.</td><td>Cell-to-cell ventricular conduction is slower than conduction via the His-Purkinje system, so VT produces a longer R-to-S interval. &gt;100 ms is the cutoff.</td></tr>
+    <tr><td>3</td><td>Look for P waves marching through the QRS complexes at their own independent rate, unrelated to the QRS rate — plus fusion beats (a QRS that looks like a hybrid of sinus-conducted and ventricular-origin complexes) or capture beats (an occasional narrow, normally-conducted QRS interrupting the wide-complex run).</td><td>AV dissociation means the atria and ventricles are being driven by two separate pacemakers — only possible if the ventricular rhythm did not originate from a supraventricular source. Fusion/capture beats are the single most specific finding for VT on the entire algorithm.</td></tr>
+    <tr><td>4</td><td>Apply BBB-morphology-specific criteria. <strong>RBBB-pattern (dominant R in V1):</strong> monophasic R, biphasic qR, or "rabbit ears" with left peak taller than right in V1 favor VT; R/S ratio &lt;1 in V6 favors VT. <strong>LBBB-pattern (dominant S in V1):</strong> broad R wave &gt;30ms in V1, notched/slurred S-wave downstroke in V1, or any Q wave in V6 favor VT.</td><td>These reproduce the classic bundle-branch-block morphologies as they would appear with a ventricular focus vs. a supraventricular one conducted through a fixed or functional BBB.</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="hlB1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c8962c"/></marker></defs>
+
+      <!-- Step 1 panel -->
+      <text x="225" y="24" text-anchor="middle" class="panel-lbl">Step 1 — no RS anywhere in precordium?</text>
+      <text x="115" y="42" text-anchor="middle" class="hl-txt">V1–V3 (SVT-A: has RS)</text>
+      <line x1="30" y1="90" x2="200" y2="90" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace-alt" d="M30,90 L60,90 L65,100 L72,55 L80,115 L88,90 L200,90"/>
+      <text x="335" y="42" text-anchor="middle" class="hl-txt" style="fill:#c0392b">V1–V3 (VT: monophasic R, no S)</text>
+      <line x1="250" y1="90" x2="420" y2="90" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M250,90 L280,90 L288,88 L300,35 L312,88 L320,90 L420,90"/>
+      <rect x="288" y="30" width="26" height="65" class="hl-box"/>
+      <line x1="301" y1="24" x2="301" y2="48" class="hl-arrow" marker-end="url(#hlB1)"/>
+      <text x="301" y="118" text-anchor="middle" class="hl-txt">no S wave = Step 1 positive → VT</text>
+
+      <line x1="30" y1="140" x2="870" y2="140" class="panel-div"/>
+
+      <!-- Step 2 panel -->
+      <text x="225" y="164" text-anchor="middle" class="panel-lbl">Step 2 — R-to-S interval &gt; 100 ms?</text>
+      <text x="115" y="182" text-anchor="middle" class="hl-txt">fast downstroke (SVT-A)</text>
+      <line x1="30" y1="230" x2="200" y2="230" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace-alt" d="M30,230 L60,230 L65,240 L72,195 L80,255 L88,230 L200,230"/>
+      <text x="335" y="182" text-anchor="middle" class="hl-txt" style="fill:#c0392b">slurred, slow downstroke (VT)</text>
+      <line x1="250" y1="230" x2="420" y2="230" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M250,230 L280,230 L285,238 L292,195 C300,210 305,235 320,250 L340,230 L420,230"/>
+      <rect x="292" y="192" width="48" height="65" class="hl-box"/>
+      <text x="316" y="278" text-anchor="middle" class="hl-txt">R→S &gt; 100ms = Step 2 positive → VT</text>
+
+      <line x1="30" y1="300" x2="870" y2="300" class="panel-div"/>
+
+      <!-- Step 3 panel -->
+      <text x="450" y="322" text-anchor="middle" class="panel-lbl">Step 3 — AV dissociation (independent P waves)</text>
+      <line x1="480" y1="370" x2="870" y2="370" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,370 L520,370 L526,380 L538,325 L554,405 L572,370 L590,370
+        L630,370 L636,380 L648,325 L664,405 L682,370 L700,370
+        L740,370 L746,380 L758,325 L774,405 L792,370 L810,370"/>
+      <circle cx="500" cy="358" r="3.5" fill="#2f5f8f"/>
+      <circle cx="605" cy="358" r="3.5" fill="#2f5f8f"/>
+      <circle cx="760" cy="358" r="3.5" fill="#2f5f8f"/>
+      <text x="605" y="340" text-anchor="middle" class="hl-txt" style="fill:#2f5f8f">independent P waves (dots), unrelated to QRS timing → VT</text>
+
+      <line x1="30" y1="410" x2="870" y2="410" class="panel-div"/>
+
+      <!-- Step 4 label -->
+      <text x="225" y="432" text-anchor="middle" class="panel-lbl">Step 4 — V1/V6 morphology (RBBB pattern)</text>
+      <text x="115" y="452" text-anchor="middle" class="hl-txt">SVT-A: rSR' in V1, R/S&gt;1 in V6</text>
+      <text x="670" y="452" text-anchor="middle" class="hl-txt" style="fill:#c0392b">VT: mono/biphasic V1, R/S&lt;1 V6, taller left "rabbit ear"</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. B2 — The four Brugada steps, each shown as the SVT-A finding (blue) vs. the VT finding (red/highlighted) that ends the algorithm.</div>
+  </div>
+
+  <div class="box myth">
+    <h5>🚫 Myth: "Regular rate excludes VT"</h5>
+    Monomorphic VT is <em>by definition</em> regular. A perfectly regular wide-complex tachycardia is not reassuring — it is exactly what VT looks like. Regularity alone carries no diagnostic weight in this differential.
+  </div>
+
+  <h3>Complementary / Alternative Approaches</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>aVR Algorithm (Vereckei)</h4>
+      <p>A single-lead shortcut using lead aVR alone:</p>
+      <ul>
+        <li>Initial R wave in aVR → VT</li>
+        <li>Initial r or q wave &gt;40 ms in aVR → VT</li>
+        <li>Notching on the initial downstroke of a predominantly negative QRS in aVR → VT</li>
+        <li>Ventricular activation velocity ratio (Vi/Vt, comparing voltage change in the first 40ms vs. last 40ms of the QRS): ratio ≤1 → VT; ratio &gt;1 → SVT-A</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--text-dim);">Faster to apply at the bedside than the full 4-step Brugada sequence; performs comparably in most validation cohorts.</p>
+    </div>
+    <div class="card">
+      <h4>Clinical / Historical Clues (Support, Don't Replace, the ECG)</h4>
+      <ul>
+        <li>Prior MI or known structural heart disease → VT until proven otherwise (pretest probability alone is >90% in this group)</li>
+        <li>Identical morphology to a documented baseline BBB on a prior ECG → favors SVT-A</li>
+        <li>Documented pre-excitation (short PR, delta wave) on a prior sinus ECG → consider antidromic AVRT</li>
+        <li>History of paroxysmal SVT previously terminated by adenosine/vagal maneuvers → favors SVT-A, but is not proof</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box danger">
+    <h5>⚠ If You Cannot Decide</h5>
+    Treat as VT. The consequence of treating SVT-A as VT (typically just observation or a rate-control approach) is far smaller than the consequence of treating true VT as SVT-A — AV nodal blockers given to VT do nothing helpful and waste time; AV nodal blockers given to a pre-excited tachycardia can precipitate VF.
+  </div>
+</section>
+
+<!-- ================= SECTION C ================= -->
+<section id="sec-c">
+  <h2><span class="num">C.</span>Wave &amp; Interval Anatomy — Normal Values and What Changes Them</h2>
+  <div class="subhead">Every deflection has a distance and a duration. Knowing both lets you localize an abnormality to a specific electrophysiologic step.</div>
+
+  <div class="svgwrap">
+    <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        .grid-line{stroke:#e0d8c8;stroke-width:1;}
+        .grid-line-bold{stroke:#c9bfa8;stroke-width:1.2;}
+        .ekgtrace{stroke:#c0392b;stroke-width:2.4;fill:none;}
+        .lbl-c{font-family:'JetBrains Mono',monospace;font-size:12px;fill:#2a2620;}
+        .lbl-b{font-family:Inter,sans-serif;font-size:13px;fill:#1c1a17;font-weight:600;}
+        .measure{stroke:#2f5f8f;stroke-width:1.4;}
+        .measure-txt{font-family:'JetBrains Mono',monospace;font-size:11px;fill:#2f5f8f;}
+      </style>
+      <rect x="0" y="0" width="900" height="260" fill="#fdfaf3"/>
+      <g>
+        <!-- fine grid -->
+        <g opacity="0.5">
+        <!-- vertical lines every 20px -->
+        </g>
+      </g>
+      <!-- baseline -->
+      <line x1="30" y1="170" x2="870" y2="170" stroke="#e0d8c8" stroke-width="1"/>
+      <!-- single complex trace: P, QRS, T -->
+      <path class="ekgtrace" d="M 60,170
+        C 75,170 80,150 95,150 C 110,150 115,170 130,170
+        L 165,170
+        L 175,170 L 182,178 L 195,90 L 210,205 L 222,160 L 240,160
+        C 260,160 275,120 300,120 C 320,120 335,160 355,160
+        L 500,160
+      "/>
+      <!-- labels for waves -->
+      <text x="95" y="135" text-anchor="middle" class="lbl-b">P</text>
+      <text x="195" y="80" text-anchor="middle" class="lbl-b">R</text>
+      <text x="180" y="200" text-anchor="middle" class="lbl-b" style="font-size:11px">Q</text>
+      <text x="215" y="222" text-anchor="middle" class="lbl-b" style="font-size:11px">S</text>
+      <text x="300" y="108" text-anchor="middle" class="lbl-b">T</text>
+
+      <!-- measurement brackets -->
+      <line x1="60" y1="230" x2="165" y2="230" class="measure"/>
+      <line x1="60" y1="225" x2="60" y2="235" class="measure"/>
+      <line x1="165" y1="225" x2="165" y2="235" class="measure"/>
+      <text x="112" y="246" text-anchor="middle" class="measure-txt">PR interval</text>
+
+      <line x1="175" y1="245" x2="240" y2="245" class="measure"/>
+      <line x1="175" y1="240" x2="175" y2="250" class="measure"/>
+      <line x1="240" y1="240" x2="240" y2="250" class="measure"/>
+      <text x="207" y="258" text-anchor="middle" class="measure-txt">QRS</text>
+
+      <line x1="175" y1="30" x2="355" y2="30" class="measure"/>
+      <line x1="175" y1="25" x2="175" y2="35" class="measure"/>
+      <line x1="355" y1="25" x2="355" y2="35" class="measure"/>
+      <text x="265" y="20" text-anchor="middle" class="measure-txt">QT interval</text>
+
+      <line x1="60" y1="60" x2="130" y2="60" class="measure"/>
+      <line x1="60" y1="55" x2="60" y2="65" class="measure"/>
+      <line x1="130" y1="55" x2="130" y2="65" class="measure"/>
+      <text x="95" y="50" text-anchor="middle" class="measure-txt">P wave</text>
+    </svg>
+    <div class="caption">Fig. C1 — Landmark deflections and the intervals measured between them (schematic, not to precise scale).</div>
+  </div>
+
+  <h3>P Wave</h3>
+  <table>
+    <tr><th>Parameter</th><th>Normal</th><th>Abnormal &amp; Meaning</th></tr>
+    <tr><td>Duration</td><td>&lt; 120 ms</td><td>&gt;120 ms, notched ("P mitrale") → left atrial enlargement</td></tr>
+    <tr><td>Amplitude (lead II)</td><td>&lt; 2.5 mm</td><td>&gt;2.5 mm, peaked ("P pulmonale") → right atrial enlargement</td></tr>
+    <tr><td>Terminal negative deflection (V1)</td><td>&lt; 1 mm depth × &lt;40 ms duration ("Ptf-V1")</td><td>Larger terminal negativity → left atrial abnormality; correlates with AF risk</td></tr>
+    <tr><td>Axis</td><td>0° to +75°</td><td>Retrograde/inverted P in II, III, aVF → junctional or ectopic atrial origin, not sinus</td></tr>
+    <tr><td>Morphology consistency</td><td>Uniform shape beat to beat</td><td>≥3 distinct morphologies → multifocal atrial tachycardia; absent altogether → AF or a junctional/paced rhythm</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="15" x2="300" y2="175" class="panel-div"/>
+      <line x1="600" y1="15" x2="600" y2="175" class="panel-div"/>
+      <text x="150" y="30" text-anchor="middle" class="panel-lbl good">Normal P wave</text>
+      <line x1="30" y1="110" x2="270" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,110 C55,110 60,95 75,95 C90,95 95,110 120,110 L270,110"/>
+      <rect x="55" y="88" width="40" height="26" class="hl-box"/>
+      <text x="150" y="150" text-anchor="middle" class="hl-txt">&lt;120ms wide, &lt;2.5mm tall</text>
+
+      <text x="450" y="30" text-anchor="middle" class="panel-lbl bad">"P mitrale" (LAE)</text>
+      <line x1="330" y1="110" x2="570" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M330,110 C350,110 355,92 368,92 C374,96 378,96 384,92 C397,92 402,110 420,110 L570,110"/>
+      <rect x="350" y="86" width="55" height="28" class="hl-box"/>
+      <text x="450" y="150" text-anchor="middle" class="hl-txt">notched, &gt;120ms wide</text>
+
+      <text x="750" y="30" text-anchor="middle" class="panel-lbl bad">"P pulmonale" (RAE)</text>
+      <line x1="630" y1="110" x2="870" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M630,110 C650,110 656,80 672,80 C688,80 694,110 720,110 L870,110"/>
+      <rect x="654" y="76" width="24" height="38" class="hl-box"/>
+      <text x="750" y="150" text-anchor="middle" class="hl-txt">tall &amp; peaked, &gt;2.5mm</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. C2 — P-wave morphology: normal vs. left atrial enlargement (notched, wide) vs. right atrial enlargement (tall, peaked). Best assessed in lead II.</div>
+  </div>
+
+  <h3>PR Interval</h3>
+  <table>
+    <tr><th>Value</th><th>Interpretation</th></tr>
+    <tr><td>120–200 ms</td><td>Normal AV conduction time</td></tr>
+    <tr><td>&gt; 200 ms, fixed</td><td>First-degree AV block</td></tr>
+    <tr><td>&gt; 200 ms with progressive lengthening then a dropped beat</td><td>Second-degree AV block, Mobitz I (Wenckebach)</td></tr>
+    <tr><td>&lt; 120 ms with a delta wave</td><td>Pre-excitation (WPW) — accessory pathway bypasses the AV node's normal decremental delay</td></tr>
+    <tr><td>&lt; 120 ms without a delta wave</td><td>Low atrial or junctional rhythm origin, or enhanced AV nodal conduction (Lown-Ganong-Levine variant, not a distinct disease entity by current consensus)</td></tr>
+    <tr><td>Variable, no relationship between P and QRS</td><td>Complete (third-degree) AV block — the PR interval isn't a real interval at all, since atria and ventricles are dissociated</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="15" x2="300" y2="175" class="panel-div"/>
+      <line x1="600" y1="15" x2="600" y2="175" class="panel-div"/>
+      <text x="150" y="28" text-anchor="middle" class="panel-lbl good">Normal PR (120–200ms)</text>
+      <line x1="30" y1="110" x2="270" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,110 C45,110 48,98 58,98 C68,98 71,110 82,110 L100,110 L104,118 L110,60 L118,150 L124,110 L270,110"/>
+      <rect x="58" y="90" width="46" height="30" class="hl-box"/>
+      <text x="150" y="150" text-anchor="middle" class="hl-txt">P → QRS onset, one PR width</text>
+
+      <text x="450" y="28" text-anchor="middle" class="panel-lbl bad">1st-degree block (&gt;200ms)</text>
+      <line x1="330" y1="110" x2="570" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M330,110 C345,110 348,98 358,98 C368,98 371,110 382,110 L420,110 L424,118 L430,60 L438,150 L444,110 L570,110"/>
+      <rect x="358" y="90" width="66" height="30" class="hl-box"/>
+      <text x="450" y="150" text-anchor="middle" class="hl-txt">long, fixed PR every beat</text>
+
+      <text x="750" y="28" text-anchor="middle" class="panel-lbl bad">Pre-excitation (short PR + delta)</text>
+      <line x1="630" y1="110" x2="870" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M630,110 C642,110 645,100 652,100 C659,100 660,105 670,105 L680,118 L686,60 L694,150 L700,110 L870,110"/>
+      <rect x="652" y="98" width="30" height="15" class="hl-box"/>
+      <text x="750" y="150" text-anchor="middle" class="hl-txt">short PR, slurred upstroke (delta)</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. C3 — PR interval patterns. Note the delta-wave slur onto the QRS upstroke, distinct from a normal sharp QRS onset.</div>
+  </div>
+
+  <h3>QRS Complex &amp; Q Wave</h3>
+  <table>
+    <tr><th>Parameter</th><th>Normal</th><th>Abnormal &amp; Meaning</th></tr>
+    <tr><td>QRS duration</td><td>&lt; 100 ms (up to 110 ms often still called normal)</td><td>100–119 ms → nonspecific intraventricular conduction delay; ≥120 ms → complete BBB, ventricular rhythm, or toxin-mediated Na-channel blockade</td></tr>
+    <tr><td>Q wave duration</td><td>&lt; 40 ms (1 small box) in most leads; small "septal" q waves normal in I, aVL, V5–V6</td><td>≥40 ms duration → pathologic Q wave, suggests prior transmural infarction</td></tr>
+    <tr><td>Q wave depth</td><td>&lt; 25% of the following R-wave amplitude</td><td>Depth ≥25% of R-wave amplitude (even if narrow) → also counts as pathologic</td></tr>
+    <tr><td>Q wave in III / aVF alone</td><td>Can be a normal positional variant</td><td>Isolated inferior Q waves are unreliable alone — compare to prior ECG and correlate with II</td></tr>
+    <tr><td>R-wave progression (V1→V6)</td><td>Progressive increase in R-wave amplitude</td><td>Poor progression → anteroseptal infarct, LVH, LBBB, or lead misplacement; reversed (R2&gt;R3) → consider posterior involvement or lead swap</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="15" x2="300" y2="175" class="panel-div"/>
+      <line x1="600" y1="15" x2="600" y2="175" class="panel-div"/>
+      <text x="150" y="28" text-anchor="middle" class="panel-lbl good">Normal septal q (I, aVL, V5-6)</text>
+      <line x1="30" y1="110" x2="270" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,110 L110,110 L114,118 L120,100 L128,20 L136,110 L270,110"/>
+      <rect x="112" y="98" width="10" height="24" class="hl-box"/>
+      <text x="150" y="150" text-anchor="middle" class="hl-txt">narrow, &lt;25% of R height</text>
+
+      <text x="450" y="28" text-anchor="middle" class="panel-lbl bad">Pathologic Q wave</text>
+      <line x1="330" y1="110" x2="570" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M330,110 L400,110 L406,118 L416,170 L428,90 L436,110 L570,110"/>
+      <rect x="404" y="115" width="26" height="58" class="hl-box"/>
+      <text x="450" y="150" text-anchor="middle" class="hl-txt">≥40ms wide AND/OR ≥25% of R</text>
+
+      <text x="750" y="28" text-anchor="middle" class="panel-lbl bad">Poor R-wave progression (V1→V4)</text>
+      <path class="trace" d="M632,140 L648,140 L652,90 L656,140 L666,140" />
+      <path class="trace" d="M690,140 L706,140 L710,95 L714,140 L724,140" />
+      <path class="trace" d="M748,140 L764,140 L768,100 L772,140 L782,140" />
+      <path class="trace" d="M806,140 L822,140 L826,100 L830,140 L840,140" />
+      <line x1="620" y1="140" x2="860" y2="140" stroke="#c9bfa8" stroke-width="1"/>
+      <text x="650" y="158" text-anchor="middle" class="hl-txt" style="font-size:10px">V1</text>
+      <text x="708" y="158" text-anchor="middle" class="hl-txt" style="font-size:10px">V2</text>
+      <text x="766" y="158" text-anchor="middle" class="hl-txt" style="font-size:10px">V3</text>
+      <text x="824" y="158" text-anchor="middle" class="hl-txt" style="font-size:10px">V4</text>
+      <rect x="746" y="88" width="40" height="55" class="hl-box"/>
+      <text x="750" y="175" text-anchor="middle" class="hl-txt">R fails to grow lead-to-lead</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. C4 — Q-wave criteria and R-wave progression. Both duration and depth-relative-to-R count toward "pathologic."</div>
+  </div>
+
+  <h3>QT / QTc Interval</h3>
+  <table>
+    <tr><th>Parameter</th><th>Normal</th><th>Abnormal &amp; Meaning</th></tr>
+    <tr><td>QTc (Bazett), men</td><td>&lt; 440–450 ms</td><td>&gt;500 ms carries substantially elevated torsades risk, particularly with new-onset bradycardia or a pause</td></tr>
+    <tr><td>QTc (Bazett), women</td><td>&lt; 460 ms</td><td>Same escalation of torsades risk above ~500 ms</td></tr>
+    <tr><td>QTc &lt; 340 ms</td><td>—</td><td>Short QT syndrome — rare inherited channelopathy, associated with SCD and AF</td></tr>
+    <tr><td>Measurement pitfall</td><td>—</td><td>Bazett's formula over-corrects at fast heart rates and under-corrects at slow rates — sanity-check any QTc calculated on a tachycardic tracing</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="440" y1="15" x2="440" y2="175" class="panel-div"/>
+      <text x="220" y="28" text-anchor="middle" class="panel-lbl good">Normal QT</text>
+      <line x1="30" y1="110" x2="410" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,110 L90,110 L95,120 L104,50 L112,150 L120,110 L150,110
+        C165,100 175,95 190,95 C205,95 215,105 225,110 L410,110"/>
+      <rect x="104" y="20" width="130" height="100" class="hl-box"/>
+      <text x="169" y="150" text-anchor="middle" class="hl-txt">QT proportionate to R-R</text>
+
+      <text x="670" y="28" text-anchor="middle" class="panel-lbl bad">Prolonged QT → Torsades onset</text>
+      <line x1="470" y1="110" x2="870" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M470,110 L500,110 L505,120 L514,45 L522,160 L530,110 L580,110
+        C600,95 615,90 630,100 C645,110 655,90 665,100
+        C675,110 685,60 695,120 C705,80 715,140 725,90
+        C735,130 745,70 755,120 C765,90 775,110 800,105 L870,105"/>
+      <rect x="514" y="18" width="66" height="150" class="hl-box"/>
+      <text x="547" y="14" text-anchor="middle" class="hl-txt">markedly long QT</text>
+      <text x="700" y="150" text-anchor="middle" class="hl-txt">twisting amplitude/axis around baseline</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. C5 — A markedly prolonged QT setting up the "R-on-T" trigger for polymorphic VT (torsades de pointes).</div>
+  </div>
+
+  <div class="box verify">
+    <h5>🔍 Verify Locally — QTc-Prolonging Drug Lists</h5>
+    Antiemetics (ondansetron, droperidol), antipsychotics (haloperidol, quetiapine), macrolides, fluoroquinolones, methadone, and many antiarrhythmics all prolong QT. Institutional order sets and pharmacy QT-risk calculators should be checked before co-administering — this list changes as new agents are added.
+  </div>
+
+  <h3>ST Segment</h3>
+  <table>
+    <tr><th>Parameter</th><th>Normal</th><th>Abnormal &amp; Meaning</th></tr>
+    <tr><td>Baseline position</td><td>Isoelectric, ±0.5mm in most leads</td><td>See STEMI criteria (Vol. II) for elevation thresholds by lead/age/sex</td></tr>
+    <tr><td>J-point elevation, V2/V3 only</td><td>Up to ~2mm (men &lt;40) is a recognized normal variant threshold</td><td>Explains why V2/V3 require a higher STEMI cutoff than other leads</td></tr>
+    <tr><td>ST depression morphology</td><td>—</td><td>Horizontal or downsloping depression ≥0.5mm is pathologic; upsloping depression is far less specific for ischemia</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="15" x2="300" y2="175" class="panel-div"/>
+      <line x1="600" y1="15" x2="600" y2="175" class="panel-div"/>
+      <text x="150" y="28" text-anchor="middle" class="panel-lbl good">Isoelectric ST</text>
+      <line x1="30" y1="110" x2="270" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,110 L100,110 L104,118 L110,55 L118,150 L124,110 L160,110 C170,100 180,95 190,100 L270,110"/>
+      <rect x="124" y="98" width="66" height="16" class="hl-box"/>
+      <text x="150" y="150" text-anchor="middle" class="hl-txt">flat, returns to baseline</text>
+
+      <text x="450" y="28" text-anchor="middle" class="panel-lbl bad">Elevation (convex, "tombstone")</text>
+      <line x1="330" y1="120" x2="570" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M330,120 L400,120 L404,128 L410,60 L418,160 L424,90 C440,75 460,75 480,95 L570,110"/>
+      <rect x="424" y="70" width="56" height="45" class="hl-box"/>
+      <text x="450" y="150" text-anchor="middle" class="hl-txt">domed, elevated above baseline</text>
+
+      <text x="750" y="28" text-anchor="middle" class="panel-lbl bad">Depression (horizontal)</text>
+      <line x1="630" y1="110" x2="870" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M630,110 L700,110 L704,118 L710,50 L718,150 L724,110 L740,128 C755,128 765,128 775,128 L830,120 L870,110"/>
+      <rect x="740" y="122" width="35" height="12" class="hl-box"/>
+      <text x="750" y="150" text-anchor="middle" class="hl-txt">flat, planed-off below baseline</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. C6 — ST-segment morphology. Convexity/"tombstoning" and horizontal planing are the shapes to flag; upsloping depression is a much softer finding.</div>
+  </div>
+</section>
+
+<!-- ================= SECTION D ================= -->
+<section id="sec-d">
+  <h2><span class="num">D.</span>Pseudo-Concerning EKGs — Normal Variants That Mimic Disease</h2>
+  <div class="subhead">Patterns that are physiologically normal in specific populations but visually overlap with STEMI, cardiomyopathy, or channelopathy.</div>
+
+  <div class="box verify">
+    <h5>🔍 Terminology Note</h5>
+    Older literature (including the original International Criteria) labeled this the "Black athlete pattern." Current sports-cardiology consensus explicitly recommends against race-based naming and criteria; this pattern is now framed as a benign repolarization variant that happens to occur at substantially higher frequency in athletes of Black/Afro-Caribbean descent — the content below reflects that framing while flagging the population where clinical suspicion for "abnormal" ECG findings should be tempered.
+  </div>
+
+  <h3>1. Early Repolarization / Anterior ST-Elevation-with-TWI Pattern</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>What It Looks Like</h4>
+      <ul>
+        <li>J-point elevation with convex ("domed") ST-segment elevation in V1–V4</li>
+        <li>Followed by T-wave inversion confined to those same leads</li>
+        <li>Seen in an estimated ~12% of male athletes of African/Afro-Caribbean descent in published cohorts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Why It Gets Mistaken For</h4>
+      <ul>
+        <li>Anterior STEMI (the ST elevation)</li>
+        <li>ARVC or HCM (the T-wave inversion)</li>
+        <li>Brugada syndrome pattern (J-point/ST elevation in right precordial leads)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <text x="450" y="28" text-anchor="middle" class="panel-lbl">V1–V4 — Early repolarization / anterior TWI variant</text>
+      <line x1="60" y1="120" x2="840" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M60,120 L130,120 L134,128 L140,60 L148,150 L154,120 L170,105
+        C190,90 210,90 230,105 C245,115 260,145 285,150 C305,153 320,150 335,140 L380,130
+        L450,120 L454,128 L460,60 L468,150 L474,120 L490,105
+        C510,90 530,90 550,105 C565,115 580,145 605,150 C625,153 640,150 655,140 L700,130 L840,120"/>
+      <rect x="154" y="55" width="180" height="100" class="hl-box"/>
+      <text x="244" y="45" text-anchor="middle" class="hl-txt">J-point elevation → domed ST → TWI, all in V1-V4</text>
+      <rect x="474" y="55" width="180" height="100" class="hl-box"/>
+    </svg>
+    </div>
+    <div class="caption">Fig. D1 — J-point/ST elevation with a convex, "domed" upstroke immediately preceding T-wave inversion, confined to V1–V4. No reciprocal depression, no pathologic Q.</div>
+  </div>
+
+  <div class="box pearl">
+    <h5>Pearl — What Keeps It Benign</h5>
+    <ul style="margin:4px 0 0;">
+      <li>TWI is confined to V1–V4 — extension into the lateral leads (V5–V6) should prompt further workup</li>
+      <li>ST elevation precedes the TWI and has a concave-then-convex "domed" morphology rather than the classic coved Brugada Type 1 pattern</li>
+      <li>No reciprocal ST depression, no pathologic Q waves, no conduction abnormality</li>
+      <li>Asymptomatic, young, athletic — clinical context does the heavy lifting here</li>
+    </ul>
+  </div>
+
+  <h3>2. Persistent Juvenile T-Wave Pattern (PJTWP)</h3>
+  <table>
+    <tr><th>Feature</th><th>Detail</th></tr>
+    <tr><td>Definition</td><td>Asymmetric T-wave inversion in V1–V4 that fails to convert to the normal upright adult pattern; the "juvenile" pattern is expected in children ≤16 years but persists into adulthood in a subset, disproportionately Black women</td></tr>
+    <tr><td>Key distinguishing feature</td><td>No associated ST-segment deviation (unlike the early repolarization variant above)</td></tr>
+    <tr><td>Reported frequency</td><td>Roughly 15% of Black women vs. ~4% of white women showed anterior TWI in one comparative UK cohort; a US cohort of professional football players found ~4.3% of Black players vs. ~1% of white players</td></tr>
+    <tr><td>Mimics</td><td>HCM, ARVC, anterior ischemia — the differentiator is the absence of ST changes plus a stable, unchanged appearance on serial tracings</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 170" xmlns="http://www.w3.org/2000/svg">
+      <text x="450" y="26" text-anchor="middle" class="panel-lbl">V1–V4 — Persistent juvenile T-wave pattern</text>
+      <line x1="60" y1="100" x2="840" y2="100" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M60,100 L130,100 L134,108 L140,45 L148,135 L154,100 L175,100
+        C195,100 210,120 230,120 C250,120 265,100 285,100
+        L450,100 L454,108 L460,45 L468,135 L474,100 L495,100
+        C515,100 530,120 550,120 C570,120 585,100 605,100 L840,100"/>
+      <rect x="154" y="98" width="130" height="24" class="hl-box"/>
+      <text x="219" y="145" text-anchor="middle" class="hl-txt">asymmetric TWI, ST segment stays flat/isoelectric</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. D2 — Compare to Fig. D1: same location (V1–V4), but no preceding ST elevation at all — the key feature that separates PJTWP from the early-repol variant and from ischemia.</div>
+  </div>
+
+  <h3>3. Athlete's Heart — The Full Constellation</h3>
+  <div class="grid3">
+    <div class="card"><h4>Normal in Trained Athletes</h4>
+      <ul>
+        <li>Sinus bradycardia (even into the 30s–40s at rest)</li>
+        <li>Sinus arrhythmia</li>
+        <li>First-degree AV block</li>
+        <li>Mobitz I (Wenckebach) — should resolve with exercise</li>
+        <li>Incomplete RBBB</li>
+        <li>Isolated voltage criteria for LVH (without other markers of pathologic hypertrophy)</li>
+        <li>Early repolarization pattern in inferolateral leads</li>
+      </ul>
+    </div>
+    <div class="card"><h4>Needs Further Workup</h4>
+      <ul>
+        <li>T-wave inversion beyond V1–V4 or extending to lateral leads</li>
+        <li>Any pathologic Q wave</li>
+        <li>Complete LBBB or RBBB</li>
+        <li>QTc &gt;470ms (men) / &gt;480ms (women)</li>
+        <li>Brugada Type 1 pattern (see box below)</li>
+        <li>Profound axis deviation</li>
+        <li>Ventricular pre-excitation</li>
+      </ul>
+    </div>
+    <div class="card"><h4>Why the Distinction Matters</h4>
+      <p>Preparticipation ECG screening produces false positives when normal athletic adaptation is misread as pathology — the downside is unnecessary restriction from sport, cost, and anxiety. Missing a true pathologic pattern is the alternative failure mode. The distinguishing features above exist specifically to keep both error rates down.</p>
+    </div>
+  </div>
+
+  <div class="box danger">
+    <h5>⚠ Do Not Confuse This Section With True Brugada Syndrome</h5>
+    The benign anterior repolarization variant above is a right-precordial ST-elevation-with-TWI pattern, but it is not Brugada syndrome. True Brugada Type 1 pattern is a distinct, genuinely concerning finding: a <strong>coved</strong> (not domed) ST-segment elevation ≥2mm in V1–V2 with a gradually descending ST segment directly into an inverted T wave, without a preceding upstroke. It is associated with a channelopathy (typically SCN5A) and risk of sudden cardiac death from polymorphic VT/VF. Any coved morphology in V1–V2 — regardless of the patient's demographics or athletic status — warrants cardiology referral, not reassurance. This atlas volume does not cover the Brugada syndrome diagnostic criteria (Type 1/2/3) or risk stratification in depth; flag for a dedicated channelopathy volume if wanted.
+  </div>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="15" x2="450" y2="175" class="panel-div"/>
+      <text x="225" y="28" text-anchor="middle" class="panel-lbl good">V1/V2 — Benign "domed" variant</text>
+      <line x1="40" y1="120" x2="420" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,120 L120,120 L124,128 L130,60 L138,150 L144,120 L160,105
+        C185,88 210,88 235,105 C250,118 270,145 300,150 L420,140"/>
+      <rect x="160" y="82" width="75" height="70" class="hl-box"/>
+      <text x="197" y="70" text-anchor="middle" class="hl-txt">upstroke rises THEN curves down (domed)</text>
+
+      <text x="675" y="28" text-anchor="middle" class="panel-lbl bad">V1/V2 — Brugada Type 1 (coved)</text>
+      <line x1="480" y1="120" x2="860" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,120 L560,120 L564,128 L570,60 L578,150 L584,60
+        C600,55 615,65 630,85 C650,110 665,130 690,140 L860,140"/>
+      <rect x="584" y="52" width="70" height="95" class="hl-box"/>
+      <text x="619" y="42" text-anchor="middle" class="hl-txt" style="fill:#c0392b">peaks sharply THEN descends straight into inverted T — no dome</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. D3 — The distinguishing shape: a domed (rounded, convex-then-concave) upstroke is the benign variant; a straight, descending "coved" ramp directly into the inverted T is Type 1 Brugada.</div>
+  </div>
+</section>
+
+<!-- ================= SECTION E ================= -->
+<section id="sec-e">
+  <h2><span class="num">E.</span>Repolarization vs. Depolarization Abnormalities, and Spotting Lead Misplacement</h2>
+  <div class="subhead">Two different troubleshooting questions that get conflated: "is this a real repolarization problem, or an artifact of depolarization" — and separately, "are the leads even on correctly."</div>
+
+  <h3>Depolarization Abnormality vs. Repolarization Abnormality</h3>
+  <p>The QRS complex represents depolarization; the ST segment and T wave represent repolarization. A large fraction of "abnormal" ST-T changes are not primary repolarization disease — they are the expected, secondary consequence of an abnormal QRS. Recognizing this prevents chasing a repolarization diagnosis (ischemia, pericarditis, electrolyte) when the real driver is a depolarization problem.</p>
+
+  <table>
+    <tr><th>If the QRS shows...</th><th>Expect this secondary ST-T change</th><th>Rule</th></tr>
+    <tr><td>LBBB</td><td>ST-T discordant to the terminal QRS deflection (ST elevation where the QRS is negative, depression where it's positive)</td><td>Appropriate discordance is expected and not ischemic — <em>concordant</em> ST changes (same direction as QRS) or excessively discordant elevation (Sgarbossa/Smith-modified criteria) are what should worry you</td></tr>
+    <tr><td>RBBB</td><td>ST-T changes typically confined to V1–V3, discordant to the terminal R'</td><td>ST-T changes outside V1–V3, or any change concordant with a positive QRS, are not explained by the conduction delay alone</td></tr>
+    <tr><td>LVH (voltage criteria met)</td><td>"Strain pattern" — downsloping ST depression with asymmetric T-wave inversion in leads with the tallest R waves (typically I, aVL, V5–V6)</td><td>This is a secondary repolarization change from the hypertrophied myocardium, not primary ischemia — but cannot fully exclude concurrent ischemia in a symptomatic patient</td></tr>
+    <tr><td>Ventricular pacing</td><td>Discordant ST-T changes analogous to LBBB (paced beats are, mechanically, a form of induced LBBB-like conduction)</td><td>Same Sgarbossa-type discordance rules apply; modified Sgarbossa criteria were validated in this setting too</td></tr>
+    <tr><td>Pre-excitation (WPW)</td><td>Secondary ST-T changes wherever the delta wave most distorts the QRS</td><td>Can mimic inferior or anterior infarct patterns — always check for a short PR and delta wave before reading a Q wave as pathologic</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="15" x2="450" y2="175" class="panel-div"/>
+      <text x="225" y="26" text-anchor="middle" class="panel-lbl good">Appropriate discordance (LBBB — not ischemic)</text>
+      <line x1="40" y1="100" x2="420" y2="100" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,100 L100,100 L104,108 L112,155 L124,50 L136,90 L145,80
+        C160,75 175,80 190,95 L420,110"/>
+      <rect x="145" y="72" width="45" height="45" class="hl-box"/>
+      <text x="167" y="145" text-anchor="middle" class="hl-txt">QRS mostly negative → ST elevates (opposite direction)</text>
+
+      <text x="675" y="26" text-anchor="middle" class="panel-lbl bad">Concordant ST elevation (real ischemia)</text>
+      <line x1="480" y1="100" x2="860" y2="100" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,100 L540,100 L544,108 L552,155 L564,50 L576,60
+        C592,55 608,58 622,68 L860,80"/>
+      <rect x="576" y="52" width="46" height="45" class="hl-box"/>
+      <text x="622" y="145" text-anchor="middle" class="hl-txt" style="fill:#c0392b">QRS mostly negative → ST ALSO elevates (same direction)</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. E1 — Compare the ST segment's direction to the QRS's dominant direction. Same direction (concordant) is the red flag; opposite direction (discordant) is the expected, benign secondary change.</div>
+  </div>
+
+  <div class="box pearl">
+    <h5>Pearl — The One-Line Rule</h5>
+    Before calling any ST-T abnormality "ischemia," ask: does the QRS itself explain it? If there's a wide QRS, paced rhythm, or voltage-criteria LVH, the ST-T change is very likely secondary — evaluate it against discordance rules, not against standard STEMI criteria.
+  </div>
+
+  <h3>Recognizing Primary Repolarization Abnormalities</h3>
+  <ul>
+    <li><strong>Concordant ST elevation or depression</strong> with a wide QRS (same direction as the majority QRS deflection) — not explained by the conduction pattern, should be treated as ischemic until proven otherwise</li>
+    <li><strong>Diffuse, concave ST elevation with PR depression</strong> across multiple territories, plus PR elevation in aVR — favors pericarditis over infarct</li>
+    <li><strong>Diffuse T-wave changes tracking a lab value</strong> (peaked, narrow-based T waves with a normal QRS in hyperkalemia; flattened T waves with U waves in hypokalemia) — primary metabolic repolarization change, QRS is initially preserved until the electrolyte disturbance is severe</li>
+  </ul>
+
+  <h3>Lead Misplacement / Reversal — Recognition Patterns</h3>
+  <table>
+    <tr><th>Reversal</th><th>Classic Tell</th></tr>
+    <tr><td>LA/RA (left arm / right arm) reversal</td><td>Negative P wave, QRS, and T wave in lead I with an otherwise normal-looking rhythm; lead aVR becomes positive (aVR is almost never upright in a true sinus rhythm) — this combination is the single most reliable tell</td></tr>
+    <tr><td>LA/LL (left arm / left leg) reversal</td><td>Subtle — lead I resembles the normal lead II, lead II resembles normal lead I; often only caught by comparing to a prior tracing</td></tr>
+    <tr><td>RA/LL reversal</td><td>Global negative deflection pattern across I, II, III with an inverted P wave in lead II and a bizarre, often unrecognizable frontal-plane axis</td></tr>
+    <tr><td>Precordial lead swap (e.g., V1/V2)</td><td>Sudden loss of the expected progressive R-wave growth from V1→V6 — an abrupt jump or reversal in R-wave amplitude between adjacent leads that doesn't fit any known infarct pattern</td></tr>
+    <tr><td>V7-V9 mistaken/rotated placement</td><td>Poor electrode contact and excessive artifact from placement directly over the spinous processes rather than 2–3cm lateral, paraspinally — degrades the very-low-amplitude posterior signal you're trying to capture</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="15" x2="450" y2="175" class="panel-div"/>
+      <text x="225" y="26" text-anchor="middle" class="panel-lbl good">Lead I — normal placement</text>
+      <line x1="40" y1="100" x2="420" y2="100" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,100 C55,100 58,90 68,90 C78,90 81,100 92,100
+        L108,100 L112,108 L120,55 L128,140 L134,100 L150,100
+        C170,100 180,85 195,85 C210,85 220,100 235,100 L420,100"/>
+      <rect x="60" y="82" width="18" height="14" class="hl-box"/>
+      <text x="69" y="72" text-anchor="middle" class="hl-txt">upright P, R, T</text>
+
+      <text x="675" y="26" text-anchor="middle" class="panel-lbl bad">Lead I — LA/RA reversal</text>
+      <line x1="480" y1="100" x2="860" y2="100" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,100 C495,100 498,110 508,110 C518,110 521,100 532,100
+        L548,100 L552,92 L560,145 L568,60 L574,100 L590,100
+        C610,100 620,115 635,115 C650,115 660,100 675,100 L860,100"/>
+      <rect x="500" y="105" width="18" height="14" class="hl-box"/>
+      <text x="509" y="140" text-anchor="middle" class="hl-txt" style="fill:#c0392b">everything flips negative — check aVR too</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. E2 — LA/RA reversal: lead I turns entirely negative (P, QRS, and T all inverted) and aVR — almost never upright in sinus rhythm — becomes positive. That combination is the tell.</div>
+  </div>
+
+  <div class="box danger">
+    <h5>⚠ When Posterior Leads "Don't Match" the Standard 12-Lead</h5>
+    If V7–V9 show ST elevation but V1–V3 don't show the expected reciprocal depression, recheck electrode positioning before concluding the finding is real — a positioning error is common and should be excluded first. Conversely, ST depression in V1–V3 without posterior leads applied is itself an indication to place them, not a reason to dismiss the finding.
+  </div>
+</section>
+
+<!-- ================= SECTION F ================= -->
+<section id="sec-f">
+  <h2><span class="num">F.</span>Posterior STEMI</h2>
+  <div class="subhead">The infarct the standard 12-lead ECG is not designed to see directly.</div>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="hlF1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c8962c"/></marker></defs>
+      <line x1="450" y1="15" x2="450" y2="230" class="panel-div"/>
+      <text x="225" y="28" text-anchor="middle" class="panel-lbl bad">V1–V3 (mirror-image reciprocal)</text>
+      <line x1="60" y1="110" x2="420" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M60,110 L120,110 L128,95 L140,170 L155,120 L175,120
+        C195,120 200,150 230,150 C260,150 275,130 300,130 L420,120"/>
+      <rect x="175" y="118" width="125" height="34" class="hl-box"/>
+      <line x1="237" y1="112" x2="237" y2="40" class="hl-arrow" marker-end="url(#hlF1)"/>
+      <text x="237" y="30" text-anchor="middle" class="hl-txt">horizontal ST depression</text>
+      <rect x="120" y="90" width="35" height="80" class="hl-box"/>
+      <text x="137" y="200" text-anchor="middle" class="hl-txt">tall, broad R (R/S&gt;1 in V2)</text>
+
+      <text x="675" y="28" text-anchor="middle" class="panel-lbl bad">V7–V9 (direct injury pattern)</text>
+      <line x1="480" y1="110" x2="860" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,110 L540,110 L548,125 L560,55 L575,105 L595,105
+        C615,105 620,80 650,80 C680,80 695,100 720,100 L860,100"/>
+      <rect x="595" y="76" width="60" height="30" class="hl-box"/>
+      <line x1="625" y1="72" x2="625" y2="40" class="hl-arrow" marker-end="url(#hlF1)"/>
+      <text x="625" y="30" text-anchor="middle" class="hl-txt">≥0.5mm ST elevation</text>
+      <text x="625" y="200" text-anchor="middle" class="hl-txt">± Q wave — the true injury, directly visualized</text>
+
+      <line x1="230" y1="250" x2="670" y2="250" stroke="#c8962c" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="450" y="270" text-anchor="middle" class="hl-txt">invert one panel and it overlays the other — same electrical event, opposite viewpoint</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. F1 — Posterior injury produces true ST elevation only in the posterior leads (V7–V9); the standard anterior leads (V1–V3) record a mirror-image reciprocal pattern.</div>
+  </div>
+
+  <h3>Diagnostic Criteria</h3>
+  <table>
+    <tr><th>Location</th><th>Finding</th><th>Threshold</th></tr>
+    <tr><td>V1–V3 (anteroseptal, reciprocal)</td><td>Horizontal ST-segment depression with an upright, often tall T wave</td><td>Any degree in the right clinical context should trigger posterior lead placement — this is the trigger to look further, not itself diagnostic</td></tr>
+    <tr><td>V1–V3</td><td>Tall, broad R wave (&gt;30ms duration, R/S ratio &gt;1 in V2) with abnormal R-wave progression (R in V2–V3 larger than R in V4–V6)</td><td>Represents a reciprocal, mirror-image "Q wave" of the posterior infarct</td></tr>
+    <tr><td>V7–V9 (posterior, direct)</td><td>ST-segment elevation</td><td><strong>≥0.5mm in a single posterior lead is diagnostic</strong> — a deliberately lower threshold than the standard 1mm used elsewhere, because the posterior wall sits far from the recording electrode and produces a smaller signal</td></tr>
+    <tr><td>V7–V9, men &lt;40</td><td>ST-segment elevation</td><td>≥1mm cutoff improves specificity in this subgroup</td></tr>
+  </table>
+
+  <div class="box verify">
+    <h5>🔍 Verify — Outcomes Data on Missed Posterior Involvement</h5>
+    A 2021 retrospective study of LCx-territory STEMI found that in roughly 7% of patients, the infarct was detectable only on synthesized posterior leads (not the standard 12-lead) — and that subgroup carried substantially higher cardiac mortality at both 3 months and 1 year compared to those detected on standard leads. This is the outcomes argument for a low threshold to apply V7–V9 whenever V1–V3 show unexplained ST depression with ischemic symptoms.
+  </div>
+
+  <h3>Lead Placement (Get This Right or the Criteria Don't Apply)</h3>
+  <table>
+    <tr><th>Lead</th><th>Position</th></tr>
+    <tr><td>V7</td><td>Left posterior axillary line, same horizontal plane as V6</td></tr>
+    <tr><td>V8</td><td>Tip of the left scapula, same horizontal plane as V6</td></tr>
+    <tr><td>V9</td><td>Left paraspinal region (2–3cm lateral to the spinous processes — not directly over them), same horizontal plane as V6</td></tr>
+  </table>
+
+  <h3>What Else Is Usually Present</h3>
+  <ul>
+    <li>Posterior STEMI is very rarely isolated — look hard for concurrent inferior (II, III, aVF) or lateral (I, aVL, V5–V6) ST elevation, since the culprit is most often the left circumflex or a dominant right coronary artery supplying the posterolateral wall</li>
+    <li>In inferior STEMI, ST elevation in III &gt; II suggests RCA occlusion (which can also supply the posterior wall) — a cue to actively look for posterior extension rather than stopping the read at "inferior STEMI"</li>
+    <li>Right ventricular infarction is a separate question requiring right-sided leads (V3R, V4R) — do not assume it's excluded just because posterior leads were checked</li>
+  </ul>
+
+  <h3>Key Mimic / Pitfall</h3>
+  <div class="box myth">
+    <h5>🚫 Pitfall: Right Ventricular Hypertrophy Looks Similar in V1–V3</h5>
+    RVH also produces ST depression with large R waves in the right precordial leads, and can be genuinely difficult to distinguish from posterior injury on the anterior leads alone. Clinical context (acute ischemic symptoms vs. known chronic RVH/pulmonary hypertension), comparison to prior ECGs, and the direct posterior leads themselves are what separate the two — don't rely on V1–V3 morphology alone.
+  </div>
+
+  <div class="box danger">
+    <h5>⚠ Bottom Line</h5>
+    Isolated ST depression in V1–V3 with ischemic symptoms should be treated as an active STEMI equivalent until posterior leads prove otherwise — not downgraded to "non-STEMI" by default. This is one of the more common causes of a delayed catheterization lab activation.
+  </div>
+</section>
+
+<!-- ================= SECTION G ================= -->
+<section id="sec-g">
+  <h2><span class="num">G.</span>12-Lead Polarity Reference &amp; Low-Voltage EKGs</h2>
+  <div class="subhead">What each lead should look like when nothing is wrong — and what it means when the whole tracing is just... small.</div>
+
+  <h3>Expected QRS Polarity, Lead by Lead</h3>
+  <p>This assumes a normal axis (−30° to +90°) and normal conduction. Use it two ways: to sanity-check a single lead against what it "should" look like, and as a fast lead-reversal check (Section E) — a lead that's flipped from this table, in isolation, is a placement problem until proven otherwise.</p>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+      <!-- Row 1: I, II, III, aVR -->
+      <text x="112" y="24" text-anchor="middle" class="panel-lbl">I</text>
+      <line x1="30" y1="80" x2="195" y2="80" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,80 L90,80 L94,86 L100,30 L106,80 L195,80"/>
+      <text x="112" y="140" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE</text>
+
+      <text x="337" y="24" text-anchor="middle" class="panel-lbl">II</text>
+      <line x1="255" y1="80" x2="420" y2="80" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M255,80 L315,80 L319,88 L326,20 L332,80 L420,80"/>
+      <text x="337" y="140" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE (usually tallest)</text>
+
+      <text x="562" y="24" text-anchor="middle" class="panel-lbl">III</text>
+      <line x1="480" y1="80" x2="645" y2="80" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,80 L540,80 L544,86 L550,55 L556,95 L562,80 L645,80"/>
+      <text x="562" y="140" text-anchor="middle" class="hl-txt" style="fill:#6b4f08">VARIABLE (axis-dependent)</text>
+
+      <text x="787" y="24" text-anchor="middle" class="panel-lbl">aVR</text>
+      <line x1="705" y1="80" x2="870" y2="80" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M705,80 L765,80 L769,74 L775,130 L781,80 L870,80"/>
+      <rect x="769" y="70" width="12" height="64" class="hl-box"/>
+      <text x="787" y="140" text-anchor="middle" class="hl-txt" style="fill:#8f1f14">NEGATIVE — upright here = check leads</text>
+
+      <line x1="15" y1="160" x2="885" y2="160" class="panel-div"/>
+
+      <text x="112" y="184" text-anchor="middle" class="panel-lbl">aVL</text>
+      <line x1="30" y1="240" x2="195" y2="240" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,240 L90,240 L94,246 L100,210 L106,250 L112,240 L195,240"/>
+      <text x="112" y="300" text-anchor="middle" class="hl-txt" style="fill:#6b4f08">VARIABLE (often small)</text>
+
+      <text x="337" y="184" text-anchor="middle" class="panel-lbl">aVF</text>
+      <line x1="255" y1="240" x2="420" y2="240" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M255,240 L315,240 L319,246 L325,195 L331,240 L420,240"/>
+      <text x="337" y="300" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE</text>
+
+      <text x="562" y="184" text-anchor="middle" class="panel-lbl">V1</text>
+      <line x1="480" y1="240" x2="645" y2="240" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,240 L540,240 L544,232 L550,240 L556,290 L562,240 L645,240"/>
+      <text x="562" y="300" text-anchor="middle" class="hl-txt" style="fill:#8f1f14">NEGATIVE (rS)</text>
+
+      <text x="787" y="184" text-anchor="middle" class="panel-lbl">V2</text>
+      <line x1="705" y1="240" x2="870" y2="240" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M705,240 L765,240 L769,228 L775,240 L781,282 L787,240 L870,240"/>
+      <text x="787" y="300" text-anchor="middle" class="hl-txt" style="fill:#8f1f14">NEGATIVE / biphasic</text>
+
+      <line x1="15" y1="320" x2="885" y2="320" class="panel-div"/>
+
+      <text x="112" y="344" text-anchor="middle" class="panel-lbl">V3</text>
+      <line x1="30" y1="400" x2="195" y2="400" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,400 L90,400 L94,392 L100,355 L106,400 L112,415 L118,400 L195,400"/>
+      <text x="112" y="460" text-anchor="middle" class="hl-txt" style="fill:#6b4f08">TRANSITION (R≈S)</text>
+
+      <text x="337" y="344" text-anchor="middle" class="panel-lbl">V4</text>
+      <line x1="255" y1="400" x2="420" y2="400" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M255,400 L315,400 L319,392 L325,340 L331,400 L337,408 L343,400 L420,400"/>
+      <text x="337" y="460" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE (R&gt;S begins)</text>
+
+      <text x="562" y="344" text-anchor="middle" class="panel-lbl">V5</text>
+      <line x1="480" y1="400" x2="645" y2="400" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,400 L540,400 L544,392 L550,325 L556,400 L645,400"/>
+      <text x="562" y="460" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE</text>
+
+      <text x="787" y="344" text-anchor="middle" class="panel-lbl">V6</text>
+      <line x1="705" y1="400" x2="870" y2="400" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M705,400 L765,400 L769,392 L775,320 L781,400 L870,400"/>
+      <text x="787" y="460" text-anchor="middle" class="hl-txt" style="fill:#1f5c3f">POSITIVE (tallest, no/tiny S)</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. G1 — Expected QRS polarity across all 12 leads in a structurally normal heart with a normal axis. aVR is the single most useful "sanity check" lead — it should almost never be upright.</div>
+  </div>
+
+  <table>
+    <tr><th>Lead</th><th>Expected Polarity</th><th>If Flipped From Expected</th></tr>
+    <tr><td>I</td><td>Positive</td><td>Negative in I with positive II/III → consider right-axis deviation, dextrocardia, or LA/RA reversal (Section E)</td></tr>
+    <tr><td>II</td><td>Positive</td><td>Negative P or QRS in II with a normal-looking I → consider ectopic atrial rhythm or limb lead misplacement</td></tr>
+    <tr><td>III</td><td>Variable — depends on frontal axis</td><td>Isolated Q wave here is often positional and non-pathologic; correlate with II before calling it an inferior infarct</td></tr>
+    <tr><td>aVR</td><td>Negative</td><td>Upright P-QRS-T in aVR with a "normal" rhythm elsewhere → LA/RA reversal until proven otherwise; a genuinely positive terminal deflection in aVR during a wide-complex tachycardia is also a VT clue (Vereckei, Section B)</td></tr>
+    <tr><td>aVL</td><td>Variable, often small</td><td>Large voltage + ST depression here specifically can be an early, subtle sign of an occluding lesion ("aVL reciprocal change") even before inferior leads clearly elevate</td></tr>
+    <tr><td>aVF</td><td>Positive</td><td>Negative aVF with negative II/III → superior axis, consider prior inferior infarct with fibrosis or a paced rhythm</td></tr>
+    <tr><td>V1</td><td>Negative (rS)</td><td>Tall, broad R (R/S&gt;1) → RVH, posterior MI (Section F), RBBB, WPW with a posteroseptal pathway, or Duchenne muscular dystrophy</td></tr>
+    <tr><td>V2</td><td>Negative / biphasic</td><td>Similar differential to V1; also the highest-yield lead for Brugada Type 1 coved morphology (Section D)</td></tr>
+    <tr><td>V3</td><td>Transition zone (R≈S)</td><td>Transition delayed to V4–V5 → poor R-wave progression (anteroseptal infarct, LVH, LBBB); transition early (before V2) → posterior involvement, WPW, or lead misplacement</td></tr>
+    <tr><td>V4</td><td>Positive, R&gt;S</td><td>Failure to become R-dominant by here → same poor-progression differential as V3</td></tr>
+    <tr><td>V5</td><td>Positive</td><td>Deep S persisting here → consider RVH, or precordial leads placed too medially</td></tr>
+    <tr><td>V6</td><td>Positive, tallest R, minimal/no S</td><td>A qR or QS pattern here → pathologic Q wave (Section C) until proven otherwise</td></tr>
+  </table>
+
+  <h3>Low-Voltage EKG</h3>
+  <table>
+    <tr><th>Criterion</th><th>Threshold</th></tr>
+    <tr><td>Limb leads</td><td>Peak-to-peak QRS amplitude &lt;5mm in every limb lead (I, II, III, aVR, aVL, aVF)</td></tr>
+    <tr><td>Precordial leads</td><td>Peak-to-peak QRS amplitude &lt;10mm in every precordial lead (V1–V6)</td></tr>
+    <tr><td>Combined/generalized low voltage</td><td>Both criteria met simultaneously — the more specific finding for a true generalized process rather than a technical or positional issue</td></tr>
+  </table>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="hlG1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c8962c"/></marker></defs>
+      <line x1="450" y1="15" x2="450" y2="175" class="panel-div"/>
+      <text x="225" y="26" text-anchor="middle" class="panel-lbl good">Normal amplitude</text>
+      <line x1="40" y1="110" x2="420" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,110 C55,110 58,98 68,98 C78,98 81,110 92,110 L108,110 L112,120 L118,35 L126,155 L132,110 L150,110
+        C170,110 180,80 195,80 C210,80 220,110 235,110 L420,110"/>
+      <rect x="112" y="30" width="20" height="130" class="hl-box"/>
+      <text x="122" y="20" text-anchor="middle" class="hl-txt">QRS 15–20mm peak-to-peak</text>
+
+      <text x="675" y="26" text-anchor="middle" class="panel-lbl bad">Low voltage</text>
+      <line x1="480" y1="105" x2="860" y2="105" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,105 C495,105 497,101 502,101 C507,101 509,105 514,105 L522,105 L524,109 L527,90 L530,110 L533,105 L545,105
+        C555,105 558,98 563,98 C568,98 571,105 578,105 L860,105"/>
+      <rect x="522" y="88" width="12" height="24" class="hl-box"/>
+      <line x1="528" y1="84" x2="528" y2="45" class="hl-arrow" marker-end="url(#hlG1)"/>
+      <text x="528" y="35" text-anchor="middle" class="hl-txt">&lt;5mm limb / &lt;10mm precordial</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. G2 — Same calibration, same grid. Compare peak-to-peak QRS height directly against the box grid, not against how the tracing "feels."</div>
+  </div>
+
+  <h3>Causes</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Cardiac</h4>
+      <ul>
+        <li>Pericardial effusion / tamponade — fluid dampens the signal reaching surface electrodes; look for electrical alternans as a companion clue in large effusions</li>
+        <li>Infiltrative cardiomyopathy (cardiac amyloidosis) — classic, high-yield combination</li>
+        <li>Dilated cardiomyopathy, end-stage</li>
+        <li>Constrictive pericarditis</li>
+        <li>Extensive myocardial fibrosis / prior massive infarction</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Extracardiac</h4>
+      <ul>
+        <li>COPD / hyperinflated lungs (air is a poor conductor — insulates the signal)</li>
+        <li>Obesity (increased tissue distance from heart to electrode)</li>
+        <li>Pleural effusion</li>
+        <li>Pneumothorax</li>
+        <li>Anasarca / generalized volume overload</li>
+        <li>Myxedema (severe hypothyroidism) — often with bradycardia as a companion finding</li>
+        <li>Technical: incorrect gain/calibration setting — always confirm calibration before treating this as a clinical finding</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box pearl">
+    <h5>Pearl — The Amyloid Tell</h5>
+    Low QRS voltage on ECG <em>despite</em> a thickened left ventricle on echocardiogram is a discordance that should raise infiltrative cardiomyopathy (amyloidosis) specifically — a normal hypertrophied ventricle should generate more voltage, not less. This voltage/wall-thickness mismatch is one of the highest-yield pattern-recognition cues in cardiac amyloid.
+  </div>
+</section>
+
+<!-- ================= SECTION H ================= -->
+<section id="sec-h">
+  <h2><span class="num">H.</span>RBBB &amp; LBBB Recognition — Subtle Patterns and STEMI-in-LBBB</h2>
+  <div class="subhead">The classic teaching examples are easy. The ones that actually get missed are borderline.</div>
+
+  <h3>RBBB — Classic vs. Subtle</h3>
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="15" x2="450" y2="185" class="panel-div"/>
+      <text x="225" y="26" text-anchor="middle" class="panel-lbl bad">Classic RBBB — V1</text>
+      <line x1="40" y1="110" x2="420" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,110 L120,110 L126,120 L134,95 L142,45 L150,90 L158,60 L166,105 L420,105"/>
+      <rect x="126" y="40" width="42" height="80" class="hl-box"/>
+      <text x="147" y="30" text-anchor="middle" class="hl-txt">"rabbit ears" rSR', QRS ≥120ms</text>
+      <text x="225" y="165" text-anchor="middle" class="hl-txt">wide, unmistakable terminal R'</text>
+
+      <text x="675" y="26" text-anchor="middle" class="panel-lbl bad">Subtle / incomplete RBBB — V1</text>
+      <line x1="480" y1="110" x2="860" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,110 L560,110 L565,118 L572,95 L578,75 L584,92 L590,80 L598,108 L860,105"/>
+      <rect x="565" y="72" width="33" height="46" class="hl-box"/>
+      <text x="581" y="30" text-anchor="middle" class="hl-txt">small terminal notch, QRS 100–119ms</text>
+      <text x="675" y="165" text-anchor="middle" class="hl-txt" style="fill:#c0392b">easy to read past — look for ANY terminal notch in V1</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. H1 — Complete RBBB is hard to miss. Incomplete/early RBBB is a subtle terminal slur or small second R' that's often skimmed over — it still tells you about right-sided conduction.</div>
+  </div>
+
+  <h3>LBBB — Classic vs. Subtle</h3>
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="15" x2="450" y2="185" class="panel-div"/>
+      <text x="225" y="26" text-anchor="middle" class="panel-lbl bad">Classic LBBB — V6</text>
+      <line x1="40" y1="110" x2="420" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M40,110 L120,110 L126,102 L136,40 C146,32 154,32 162,42 L172,110 L420,110"/>
+      <rect x="120" y="28" width="58" height="82" class="hl-box"/>
+      <text x="149" y="20" text-anchor="middle" class="hl-txt">broad, notched, monomorphic R; no Q</text>
+      <text x="225" y="165" text-anchor="middle" class="hl-txt">QRS ≥120ms, notch is obvious</text>
+
+      <text x="675" y="26" text-anchor="middle" class="panel-lbl bad">Subtle / borderline LBBB — V6</text>
+      <line x1="480" y1="110" x2="860" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M480,110 L560,110 L565,103 L574,50 C580,46 585,47 590,52 L600,110 L860,110"/>
+      <rect x="560" y="44" width="42" height="66" class="hl-box"/>
+      <text x="581" y="30" text-anchor="middle" class="hl-txt">gentle slur near the peak, QRS just &gt;120ms</text>
+      <text x="675" y="165" text-anchor="middle" class="hl-txt" style="fill:#c0392b">no Q wave in I/V6 is the clue you can still catch</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. H2 — Subtle LBBB is easy to read as "just a wide QRS." The absence of any Q wave in I and V6, plus a broad monomorphic R even without an obvious notch, is what should trigger the diagnosis.</div>
+  </div>
+
+  <table>
+    <tr><th></th><th>RBBB</th><th>LBBB</th></tr>
+    <tr><td>QRS duration (complete)</td><td>≥120ms</td><td>≥120ms</td></tr>
+    <tr><td>QRS duration (incomplete)</td><td>100–119ms</td><td>100–119ms (less commonly labeled "incomplete LBBB" in practice)</td></tr>
+    <tr><td>V1 morphology</td><td>rSR' or qR ("rabbit ears")</td><td>Broad, often notched QS or rS</td></tr>
+    <tr><td>V6 / lead I morphology</td><td>Wide, slurred S wave</td><td>Broad, notched, monomorphic R; <strong>no Q wave</strong></td></tr>
+    <tr><td>Axis</td><td>Usually normal</td><td>Can be normal or left-deviated</td></tr>
+    <tr><td>Clinical association</td><td>Often incidental / normal variant, but can indicate right heart strain (PE) or structural disease</td><td>More often reflects underlying structural heart disease — new LBBB in a symptomatic patient is a higher-acuity finding</td></tr>
+  </table>
+
+  <h3>STEMI in the Presence of LBBB — Sgarbossa &amp; Modified Sgarbossa Criteria</h3>
+  <div class="box danger">
+    <h5>⚠ Why This Matters</h5>
+    Standard STEMI ST-elevation criteria (Section F reference, Vol. II) do not apply when a LBBB (or a ventricular-paced rhythm) is present, because LBBB itself produces expected, discordant ST-T changes (Section E) that would otherwise mask or mimic infarction. Sgarbossa's criteria — and its more sensitive modified version — exist specifically to read through the LBBB.
+  </div>
+
+  <table>
+    <tr><th>Criterion (Original Sgarbossa)</th><th>Finding</th><th>Points</th></tr>
+    <tr><td>1</td><td>Concordant ST elevation ≥1mm in any lead with a positive (upright) QRS</td><td>5</td></tr>
+    <tr><td>2</td><td>Concordant ST depression ≥1mm in V1, V2, or V3</td><td>3</td></tr>
+    <tr><td>3 (original)</td><td>Excessively discordant ST elevation ≥5mm in a lead with a negative (predominantly S-wave) QRS</td><td>2</td></tr>
+  </table>
+  <p style="font-size:0.9rem;color:var(--text-dim);">A total score ≥3 is considered specific for infarction. The problem: the original fixed 5mm cutoff for criterion 3 is highly specific but poorly sensitive — a large S wave can require a disproportionately large absolute ST elevation to ever trigger it.</p>
+
+  <div class="box verify">
+    <h5>🔍 Modified (Smith) Sgarbossa Criteria — Higher Sensitivity</h5>
+    Criterion 3 is replaced with a <strong>proportional</strong> measurement: ST-elevation / S-wave depth ratio ≤ −0.25 in any lead with a discordant ST-elevation-to-negative-QRS relationship. This scales the required ST elevation to the size of the preceding S wave rather than using one fixed number, and is meaningfully more sensitive than the original criterion 3 without a large loss of specificity.
+  </div>
+
+  <div class="svgwrap">
+    <div class="ecgstrip">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="15" x2="300" y2="285" class="panel-div"/>
+      <line x1="600" y1="15" x2="600" y2="285" class="panel-div"/>
+
+      <text x="150" y="26" text-anchor="middle" class="panel-lbl bad">Criterion 1 — concordant STE</text>
+      <line x1="30" y1="130" x2="270" y2="130" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M30,130 L90,130 L96,122 L104,55 L112,90 C125,80 140,80 152,95 L270,110"/>
+      <rect x="112" y="78" width="42" height="35" class="hl-box"/>
+      <text x="150" y="150" text-anchor="middle" class="hl-txt">R upright, ST ALSO elevated (same direction)</text>
+      <text x="150" y="270" text-anchor="middle" class="hl-txt">5 pts — most specific single finding</text>
+
+      <text x="450" y="26" text-anchor="middle" class="panel-lbl bad">Criterion 2 — concordant STD (V1-3)</text>
+      <line x1="330" y1="120" x2="570" y2="120" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M330,120 L390,120 L394,128 L400,155 L408,110 C420,125 435,125 448,140 L570,130"/>
+      <rect x="408" y="105" width="42" height="38" class="hl-box"/>
+      <text x="450" y="150" text-anchor="middle" class="hl-txt">QRS negative, ST ALSO depressed</text>
+      <text x="450" y="270" text-anchor="middle" class="hl-txt">3 pts — in right precordial leads only</text>
+
+      <text x="750" y="26" text-anchor="middle" class="panel-lbl bad">Modified Crit. 3 — excess discordance</text>
+      <line x1="630" y1="110" x2="870" y2="110" stroke="#c9bfa8" stroke-width="1"/>
+      <path class="trace" d="M630,110 L680,110 L684,102 L692,190 L700,150 C715,130 730,128 745,138 L870,120"/>
+      <rect x="692" y="126" width="53" height="26" class="hl-box"/>
+      <text x="750" y="150" text-anchor="middle" class="hl-txt">ST rise disproportionate to S-wave depth</text>
+      <text x="750" y="205" text-anchor="middle" class="hl-txt" style="fill:#c0392b">ST/S ratio ≤ −0.25 → positive</text>
+    </svg>
+    </div>
+    <div class="caption">Fig. H3 — The three Sgarbossa-family findings. Any one of the three, in the presence of LBBB or ventricular pacing, should prompt activation as an infarct until proven otherwise.</div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  EKG Atlas Vol. III — companion to Vol. I (Arrhythmias &amp; Conduction) and Vol. II (Waveform Changes &amp; Etiologies).<br>
+  All dosing, protocol-dependent thresholds, and rapidly-evolving criteria carry a "verify locally" flag. For education and point-of-care reference; not a substitute for institutional protocol or attending judgment.
+</footer>
+
+<script>
+function toggleTheme(){
+  const b=document.body;
+  b.setAttribute('data-theme', b.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function liveSearch(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const sections=document.querySelectorAll('section');
+  // remove old marks
+  document.querySelectorAll('mark').forEach(m=>{
+    const parent=m.parentNode;
+    parent.replaceChild(document.createTextNode(m.textContent), m);
+    parent.normalize();
+  });
+  if(!q){
+    sections.forEach(s=>s.classList.remove('hidden'));
+    return;
+  }
+  sections.forEach(sec=>{
+    const text=sec.textContent.toLowerCase();
+    if(text.includes(q)){
+      sec.classList.remove('hidden');
+    } else {
+      sec.classList.add('hidden');
+    }
+  });
+}
+</script>
+</body>
+</html>
