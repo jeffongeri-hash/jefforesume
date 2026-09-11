@@ -5703,6 +5703,11 @@ const BlogDetail = () => {
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
+              {slug === 'retirement-accounts-401k-ira-explained' && <RetirementAnimations />}
+              {slug === 'stock-market-basics-owning-a-piece' && <StockAnimations />}
+              {slug === 'four-types-of-fire-explained' && <FireAnimations />}
+
+
               {/* Tax Calculator - only on PSLF post */}
               {slug === 'pslf-qualifying-hospitals-california-arizona' && (
                 <TaxCalculator />
