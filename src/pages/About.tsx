@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { EditorialHero } from '@/components/EditorialPage';
-import profileHeadshot from '@/assets/profile-headshot.png';
+import profileHeadshot from '@/assets/headshot.jpeg';
 
 const focus = [
   { index: '01', label: 'Emergency medicine', body: 'High-acuity, undifferentiated patients — the front door of the hospital.' },
@@ -43,11 +43,13 @@ const About = () => {
 
         {/* Portrait band */}
         <section className="bg-ink-deep">
-          <img
-            src={profileHeadshot}
-            alt="Jefney Ongeri, PA-C"
-            className="h-[46vh] w-full object-cover object-top md:h-[62vh]"
-          />
+          <div className="container-blog pb-16">
+            <img
+              src={profileHeadshot}
+              alt="Jefney Ongeri, PA-C"
+              className="aspect-[4/5] w-full max-w-sm object-cover object-top"
+            />
+          </div>
         </section>
 
         {/* Stats */}
