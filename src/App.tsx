@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const AllPosts = lazy(() => import("./pages/AllPosts"));
 const Investments = lazy(() => import("./pages/Investments"));
+const FinanceGuides = lazy(() => import("./pages/FinanceGuides"));
 const Podcast = lazy(() => import("./pages/Podcast"));
 const Professional = lazy(() => import("./pages/Professional"));
 const Accolades = lazy(() => import("./pages/Accolades"));
