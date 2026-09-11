@@ -1,168 +1,248 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import WaveDivider from '@/components/WaveDivider';
-import FloatingShapes from '@/components/FloatingShapes';
-import GlassCard from '@/components/GlassCard';
-import ParallaxShapes from '@/components/ParallaxShapes';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
-import { ParallaxHero } from '@/hooks/useParallax';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Stethoscope, TrendingUp, BookOpen, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Linkedin, Mail } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import headshot from '@/assets/headshot.jpeg';
+import heroImage from '@/assets/home/hero-ed-corridor.jpg';
+import sectionInvestments from '@/assets/home/section-investments.jpg';
+import sectionAtlas from '@/assets/home/section-atlas.jpg';
+
+const chapters = [
+  {
+    index: '01',
+    label: 'Clinical',
+    title: 'Emergency medicine, at the bedside',
+    body:
+      'Certified Physician Assistant with a neuroscience background and training across high-volume emergency departments. Case logs, procedures, education, and publications in one place.',
+    href: '/professional',
+    cta: 'View the portfolio',
+    image: heroImage,
+  },
+  {
+    index: '02',
+    label: 'Capital',
+    title: 'A portfolio built the slow way',
+    body:
+      'Holdings, trade history, and the thinking behind them — plus plain-language finance guides on retirement accounts, market basics, and financial independence.',
+    href: '/investments',
+    cta: 'Open the portfolio',
+    image: sectionInvestments,
+  },
+  {
+    index: '03',
+    label: 'Atlas',
+    title: 'A reference library that keeps growing',
+    body:
+      'Hundreds of illustrated clinical atlases — cardiology to imaging, guideline changes to procedures — written for the moment you actually need them.',
+    href: '/posts',
+    cta: 'Browse the atlases',
+    image: sectionAtlas,
+  },
+];
+
+const stats = [
+  { value: 'PA-C', label: 'Board certified' },
+  { value: '20+', label: 'Clinical systems covered' },
+  { value: '300+', label: 'Illustrated atlases' },
+  { value: 'EM', label: 'Primary focus' },
+];
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper">
       <Helmet>
-        <title>Jefney Ongeri, PA-C | Physician Assistant, Emergency Medicine & Investor</title>
-        <meta name="description" content="Jefney Ongeri is a Certified Physician Assistant specializing in emergency medicine, clinical research, and investment strategy. Explore Jefney Ongeri's professional portfolio." />
+        <title>Jefney Ongeri, PA-C | Emergency Medicine PA, Atlases & Investing</title>
+        <meta
+          name="description"
+          content="Jefney Ongeri, PA-C — emergency medicine physician assistant, author of an illustrated clinical atlas library, and long-term investor. Explore the portfolio, atlases, and finance guides."
+        />
         <link rel="canonical" href="https://jefneyongeri.com/" />
       </Helmet>
       <Header />
+
       <main id="main-content">
-        {/* Hero Section */}
-        <ParallaxHero className="py-20 md:py-32 bg-gradient-to-br from-primary/90 via-primary/70 to-accent/50 relative overflow-hidden">
-          <FloatingShapes />
-          <div className="container-blog relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <AnimatedSection className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 backdrop-blur-sm bg-background/20 dark:bg-secondary/20 rounded-full text-foreground dark:text-secondary text-sm font-medium border border-background/30">
-                  <Stethoscope className="h-4 w-4" />
-                  Physician Assistant | Clinical Researcher
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight font-serif">
-                  <span className="bg-gradient-to-r from-teal-400 via-emerald-300 to-violet-500 bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] dark:from-teal-300 dark:via-cyan-200 dark:to-purple-400">
-                    Jefney Ongeri
-                  </span>
-                  <span className="text-white/90 drop-shadow-md dark:text-white/90">, PA-C</span>
-                </h1>
-                <p className="text-xl text-muted-foreground dark:text-primary-foreground/80 leading-relaxed max-w-lg">
-                  Healthcare professional passionate about patient care, clinical research, and building innovative solutions for modern medicine.
-                </p>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <Button size="lg" variant="secondary" className="btn-shimmer group" asChild>
-                    <Link to="/professional">
-                      View Portfolio
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                  <Button size="lg" variant="outline" className="bg-transparent border-foreground/30 text-foreground hover:bg-foreground/10 dark:border-primary-foreground/30 dark:text-primary-foreground dark:hover:bg-primary-foreground/10 transition-all duration-300" asChild>
-                    <Link to="/investments">
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      Investments
-                    </Link>
-                  </Button>
-                </div>
-              </AnimatedSection>
-              <AnimatedSection delay={200} className="flex justify-center lg:justify-end">
-                <div className="relative group">
-                  <div className="absolute -inset-4 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-full blur-2xl transition-all duration-500 group-hover:from-secondary/40 group-hover:to-accent/20" />
-                  <div className="absolute -inset-1 bg-gradient-to-br from-primary/50 to-accent/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <img 
-                    src={headshot} 
-                    alt="Jefney Ongeri - Physician Assistant" 
-                    className="relative w-64 h-64 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-secondary/50 shadow-2xl transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-              </AnimatedSection>
+        {/* ===== Cinematic hero ===== */}
+        <section className="relative min-h-[88vh] md:min-h-screen flex flex-col justify-end overflow-hidden bg-ink-deep">
+          <img
+            src={heroImage}
+            alt="Emergency department corridor at dusk"
+            width={1920}
+            height={1280}
+            className="absolute inset-0 h-full w-full object-cover opacity-80 scale-105 animate-[reveal-up_1.6s_cubic-bezier(0.16,1,0.3,1)_both]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/25" />
+
+          <div className="container-blog relative z-10 pb-16 pt-40 md:pb-24">
+            <p className="kicker text-on-media/70 reveal-up">
+              Physician Assistant &nbsp;·&nbsp; Emergency Medicine &nbsp;·&nbsp; Investor
+            </p>
+
+            <h1 className="mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
+              Jefney Ongeri<span className="text-editorial">.</span>
+            </h1>
+
+            <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end reveal-up">
+              <p className="text-on-media/75 text-lg leading-relaxed">
+                Patient-centered emergency care, an illustrated clinical reference library, and a
+                long-horizon investment portfolio — documented openly, in one place.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/professional"
+                  className="group inline-flex items-center gap-2 bg-on-media px-6 py-3 text-sm font-medium uppercase tracking-widest text-ink-deep transition-colors hover:bg-editorial hover:text-on-media"
+                >
+                  View portfolio
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/posts"
+                  className="group inline-flex items-center gap-2 border border-on-media/40 px-6 py-3 text-sm font-medium uppercase tracking-widest text-on-media transition-colors hover:border-on-media"
+                >
+                  Read the atlases
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+                </Link>
+              </div>
             </div>
           </div>
-        </ParallaxHero>
-        
-        <WaveDivider color="fill-background" className="-mt-1" />
 
-        {/* Quick Links Section */}
-        <section className="py-20 bg-background relative">
-          <div className="container-blog">
-            <div className="grid md:grid-cols-3 gap-8">
-              <AnimatedSection>
-                <Link to="/professional" className="group block h-full">
-                  <GlassCard className="p-8 h-full">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <Stethoscope className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2 font-serif group-hover:text-primary transition-colors duration-300">Professional Portfolio</h3>
-                    <p className="text-muted-foreground">Clinical experience, education, certifications, and publications.</p>
-                    <div className="mt-4 flex items-center text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="text-sm font-medium">Learn more</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </GlassCard>
+          {/* Chapter index strip */}
+          <div className="relative z-10 border-t border-on-media/15">
+            <div className="container-blog grid grid-cols-1 sm:grid-cols-3">
+              {chapters.map((c) => (
+                <Link
+                  key={c.index}
+                  to={c.href}
+                  className="group flex items-baseline gap-3 border-b border-on-media/10 py-4 sm:border-b-0 sm:border-r sm:border-on-media/10 sm:pr-6 last:border-r-0"
+                >
+                  <span className="kicker text-editorial">{c.index}</span>
+                  <span className="kicker text-on-media/80 transition-colors group-hover:text-on-media">
+                    {c.label}
+                  </span>
+                  <ArrowUpRight className="ml-auto h-4 w-4 text-on-media/50 transition-transform group-hover:-translate-y-0.5 group-hover:text-on-media" />
                 </Link>
-              </AnimatedSection>
-              
-              <AnimatedSection delay={100}>
-                <Link to="/investments" className="group block h-full">
-                  <GlassCard className="p-8 h-full">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <TrendingUp className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2 font-serif group-hover:text-primary transition-colors duration-300">Investment Portfolio</h3>
-                    <p className="text-muted-foreground">Current holdings, trade history, and investment insights.</p>
-                    <div className="mt-4 flex items-center text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="text-sm font-medium">View portfolio</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </GlassCard>
-                </Link>
-              </AnimatedSection>
-              
-              <AnimatedSection delay={200}>
-                <Link to="/posts" className="group block h-full">
-                  <GlassCard className="p-8 h-full">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <BookOpen className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2 font-serif group-hover:text-primary transition-colors duration-300">Blog & Insights</h3>
-                    <p className="text-muted-foreground">Thoughts on medicine, healthcare, and professional development.</p>
-                    <div className="mt-4 flex items-center text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="text-sm font-medium">Read articles</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </GlassCard>
-                </Link>
-              </AnimatedSection>
+              ))}
             </div>
           </div>
         </section>
 
-        <WaveDivider color="fill-muted/30" className="-mb-1" flip />
-        
-        {/* About Preview Section */}
-        <section className="py-20 bg-muted/30 relative overflow-hidden">
-          <ParallaxShapes />
-          <div className="container-blog relative z-10">
-            <AnimatedSection className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 font-serif">
-                About M<Link to="/licenses-admin#a4f7c92e6b18d0f34c8b5e21f9d7a6103e5c2b89a0d4f16e7b3c95a218f6d04c" className="text-foreground no-underline cursor-text" aria-hidden="true">e</Link>
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                I'm a certified Physician Assistant with a passion for patient-centered care and clinical research. 
-                With a background in neuroscience and experience at leading healthcare institutions, I bring a 
-                unique perspective to medicine. I'm also the co-founder of Medi-Sync Applications, working to 
-                innovate healthcare technology solutions.
-              </p>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <Button className="btn-shimmer group" asChild>
-                  <a href="https://www.linkedin.com/in/jefney-ongeri/" target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="h-4 w-4 mr-2" />
-                    Connect on LinkedIn
-                    <ArrowRight className="ml-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
-                  </a>
-                </Button>
-                <Button variant="outline" className="transition-all duration-300 hover:-translate-y-0.5" asChild>
-                  <a href="mailto:jeffongeri@gmail.com">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Get in Touch
-                  </a>
-                </Button>
+        {/* ===== Stats band ===== */}
+        <section className="bg-ink text-ink-foreground">
+          <div className="container-blog grid grid-cols-2 gap-y-10 py-14 md:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label} className="px-2">
+                <p className="font-serif text-4xl md:text-5xl">{s.value}</p>
+                <p className="kicker mt-2 text-ink-foreground/60">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ===== Chapter bands ===== */}
+        {chapters.map((c, i) => (
+          <section
+            key={c.index}
+            className={i % 2 === 0 ? 'bg-paper' : 'bg-paper-alt'}
+          >
+            <div className="container-blog py-20 md:py-28">
+              <AnimatedSection>
+                <div
+                  className={`grid items-center gap-10 lg:grid-cols-2 lg:gap-20 ${
+                    i % 2 === 1 ? 'lg:[&>figure]:order-2' : ''
+                  }`}
+                >
+                  <figure className="relative overflow-hidden">
+                    <img
+                      src={c.image}
+                      alt={c.title}
+                      loading="lazy"
+                      width={1280}
+                      height={960}
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.03]"
+                    />
+                    <figcaption className="kicker absolute left-0 top-0 bg-ink px-3 py-2 text-ink-foreground">
+                      {c.index} / {c.label}
+                    </figcaption>
+                  </figure>
+
+                  <div>
+                    <div className="editorial-rule mb-8" />
+                    <h2 className="font-serif text-4xl leading-tight text-ink md:text-5xl">
+                      {c.title}
+                    </h2>
+                    <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/70">{c.body}</p>
+                    <Link
+                      to={c.href}
+                      className="group mt-8 inline-flex items-center gap-2 border-b border-ink/30 pb-1 text-sm font-medium uppercase tracking-widest text-ink transition-colors hover:border-editorial hover:text-editorial"
+                    >
+                      {c.cta}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </div>
+              </AnimatedSection>
+            </div>
+          </section>
+        ))}
+
+        {/* ===== About band ===== */}
+        <section className="bg-ink text-ink-foreground">
+          <div className="container-blog py-20 md:py-28">
+            <AnimatedSection>
+              <div className="grid items-center gap-12 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-20">
+                <img
+                  src={headshot}
+                  alt="Jefney Ongeri, PA-C"
+                  loading="lazy"
+                  className="aspect-[4/5] w-full max-w-xs object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                />
+                <div>
+                  <p className="kicker text-editorial">
+                    About M
+                    <Link
+                      to="/licenses-admin#a4f7c92e6b18d0f34c8b5e21f9d7a6103e5c2b89a0d4f16e7b3c95a218f6d04c"
+                      className="text-editorial no-underline cursor-text"
+                      aria-hidden="true"
+                    >
+                      e
+                    </Link>
+                  </p>
+                  <h2 className="mt-6 font-serif text-3xl leading-snug md:text-4xl">
+                    Medicine first. Everything else is built around it.
+                  </h2>
+                  <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-foreground/70">
+                    I'm a certified Physician Assistant focused on emergency medicine, with a
+                    background in neuroscience and experience across leading healthcare
+                    institutions. I write clinical atlases to keep my own practice sharp, and I
+                    invest with the same long-view discipline I bring to the department. I'm also
+                    the co-founder of Medi-Sync Applications.
+                  </p>
+                  <div className="mt-9 flex flex-wrap gap-3">
+                    <a
+                      href="https://www.linkedin.com/in/jefney-ongeri/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 bg-ink-foreground px-6 py-3 text-sm font-medium uppercase tracking-widest text-ink transition-colors hover:bg-editorial hover:text-on-media"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                      Connect on LinkedIn
+                    </a>
+                    <a
+                      href="mailto:jeffongeri@gmail.com"
+                      className="group inline-flex items-center gap-2 border border-ink-foreground/40 px-6 py-3 text-sm font-medium uppercase tracking-widest text-ink-foreground transition-colors hover:border-ink-foreground"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Get in touch
+                    </a>
+                  </div>
+                </div>
               </div>
             </AnimatedSection>
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );
