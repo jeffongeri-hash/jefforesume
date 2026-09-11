@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Linkedin, Mail } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import headshot from '@/assets/headshot.jpeg';
-import heroImage from '@/assets/home/hero-ed-corridor.jpg';
+import heroImageAsset from '@/assets/home/hero-investing-hand.png.asset.json';
+
+const heroImage = heroImageAsset.url;
 import sectionInvestmentsAsset from '@/assets/home/section-investments.jpg.asset.json';
 import sectionAtlas from '@/assets/home/section-atlas.jpg';
 
