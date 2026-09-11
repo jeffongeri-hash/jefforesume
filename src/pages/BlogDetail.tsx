@@ -46,11 +46,11 @@ const blogPosts = {
     heroImage: imgFinanceRetirement,
     content: `
       <p>A retirement account isn't an investment — it's a container with tax rules wrapped around whatever you put inside it. Understanding the container is most of the battle.</p>
-      <h2>401(k): the workplace plan</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">401(k): the workplace plan</h2>
       <p>Contributions come straight out of your paycheck before you ever see the money, which is exactly why it works. Many employers add a match on top — a percentage of your own contribution, added for free. That match is part of your compensation, and it disappears if you don't contribute enough to earn it.</p>
-      <h2>IRA: the account you open yourself</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">IRA: the account you open yourself</h2>
       <p><strong>Traditional</strong> means you skip taxes now and pay them in retirement. <strong>Roth</strong> means you pay taxes now and withdraw tax-free later. If you expect to earn more later in your career than you do today, the Roth is usually the stronger play early on.</p>
-      <h2>The order most people should fund them</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The order most people should fund them</h2>
       <ul>
         <li>Contribute enough to the 401(k) to capture the full employer match.</li>
         <li>Build a small emergency cushion so you never have to raid retirement money.</li>
@@ -69,11 +69,11 @@ const blogPosts = {
     heroImage: imgFinanceStocks,
     content: `
       <p>Most of the anxiety around investing comes from treating the market as a scoreboard rather than what it is: a place to buy fractional ownership of real businesses.</p>
-      <h2>What you're actually buying</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">What you're actually buying</h2>
       <p>A share entitles you to a slice of a company's future earnings. The price moves daily because millions of people constantly re-guess what those earnings will be. The business itself changes far more slowly than its stock price does.</p>
-      <h2>Index funds do the boring thing well</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Index funds do the boring thing well</h2>
       <p>Instead of picking winners, a broad index fund buys a slice of hundreds or thousands of companies at once, at a very low cost. It's the default answer for most long-term money because it removes the single largest risk — being wrong about one company.</p>
-      <h2>The rules that survive every market cycle</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The rules that survive every market cycle</h2>
       <ul>
         <li>Invest money you won't need for at least five years.</li>
         <li>Automate contributions so timing decisions never come up.</li>
@@ -92,16 +92,16 @@ const blogPosts = {
     heroImage: imgFinanceFire,
     content: `
       <p>FIRE — Financial Independence, Retire Early — is less about quitting work and more about reaching the point where work becomes optional.</p>
-      <h2>The number</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The number</h2>
       <p>The common shorthand is roughly 25 times your annual spending, paired with withdrawing about 4% of the portfolio each year. Notice what that means: cutting your spending lowers the target and raises the savings rate at the same time, which is why it moves the date so dramatically.</p>
-      <h2>Which version fits you</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Which version fits you</h2>
       <ul>
         <li><strong>Lean FIRE</strong> — a deliberately small budget and the earliest possible exit.</li>
         <li><strong>Coast FIRE</strong> — save aggressively early, then let compounding finish the job while you work a job you enjoy.</li>
         <li><strong>Barista FIRE</strong> — part-time income covers the gap, often for the health benefits.</li>
         <li><strong>Fat FIRE</strong> — a larger nest egg with no lifestyle compromises, and a longer runway to get there.</li>
       </ul>
-      <h2>A note for clinicians</h2>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">A note for clinicians</h2>
       <p>High income accelerates all of this, but only if lifestyle inflation stays behind it. The gap between what you earn and what you spend is the entire equation.</p>
     `
   },
