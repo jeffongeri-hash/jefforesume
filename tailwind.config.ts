@@ -18,6 +18,16 @@ export default {
         serif: ['Playfair Display', 'serif'],
       },
       colors: {
+        paper: {
+          DEFAULT: "hsl(var(--paper))",
+          alt: "hsl(var(--paper-alt))",
+        },
+        ink: {
+          DEFAULT: "hsl(var(--ink))",
+          deep: "hsl(var(--ink-deep))",
+          foreground: "hsl(var(--ink-foreground))",
+        },
+        editorial: "hsl(var(--editorial))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
