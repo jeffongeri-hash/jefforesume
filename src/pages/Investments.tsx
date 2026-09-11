@@ -19,6 +19,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import PortfolioAssistant from '@/components/PortfolioAssistant';
 import PerformanceChart from '@/components/PerformanceChart';
+import PortfolioProgress from '@/components/PortfolioProgress';
 import StockPriceUpdater from '@/components/StockPriceUpdater';
 import FinanceExplainers from '@/components/FinanceExplainers';
 interface Holding {
@@ -216,8 +217,15 @@ const Investments = () => {
           </Card>
         )}
 
-        {/* Performance Chart */}
+        {/* Progress tracker + real position performance */}
         {!loading && (
+          <div className="max-w-4xl mx-auto mb-12">
+            <PortfolioProgress holdings={holdings} />
+          </div>
+        )}
+
+        {/* Performance over time (once trade history exists) */}
+        {!loading && trades.length > 0 && (
           <div className="max-w-4xl mx-auto mb-12">
             <PerformanceChart trades={trades} holdings={holdings} />
           </div>
