@@ -201,62 +201,64 @@ const Professional = () => {
       <Header />
       <main id="main-content">
         {/* Hero Section */}
-        <ParallaxHero className="py-20 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/10">
-          <div className="container-blog">
-            <AnimatedSection className="max-w-4xl mx-auto text-center">
-              <div className="w-36 h-36 mx-auto mb-6 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
-                <img 
-                  src={headshot} 
-                  alt="Jefney Ongeri - Physician Assistant" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Jefney Ongeri, PA-C
-              </h1>
-              <p className="text-xl text-muted-foreground mb-2">
-                Physician Assistant | Clinical Researcher | Healthcare Innovator
-              </p>
-              <p className="text-lg text-muted-foreground mb-6">
-                Des Moines University PA Program Class of '25
-              </p>
-              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-8">
-                <span className="flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
-                  Fishers, Indiana
-                </span>
-                <span>•</span>
-                <span>500+ connections</span>
-              </div>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <Button asChild>
-                  <a href="https://www.linkedin.com/in/jefney-ongeri/" target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="h-4 w-4 mr-2" />
-                    Connect on LinkedIn
+        <section className="bg-ink-deep text-on-media">
+          <div className="container-blog pb-16 pt-32 md:pb-20 md:pt-40">
+            <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+              <div>
+                <p className="kicker text-on-media/60 reveal-up">
+                  Portfolio &nbsp;·&nbsp; Physician Assistant &nbsp;·&nbsp; Clinical Researcher
+                </p>
+                <h1 className="mt-5 font-serif leading-[0.95] text-5xl sm:text-6xl md:text-7xl reveal-up">
+                  Jefney Ongeri, PA-C<span className="text-editorial">.</span>
+                </h1>
+                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-on-media/70 reveal-up">
+                  Emergency medicine, clinical research, and healthcare innovation — Des Moines
+                  University PA Program, Class of '25.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-on-media/60">
+                  <span className="inline-flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    Fishers, Indiana
+                  </span>
+                  <span>•</span>
+                  <span>500+ connections</span>
+                </div>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a
+                    href="https://www.linkedin.com/in/jefney-ongeri/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-on-media px-6 py-3 text-sm font-medium uppercase tracking-widest text-ink-deep transition-colors hover:bg-editorial hover:text-on-media"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                    LinkedIn
                   </a>
-                </Button>
-                <Button variant="outline" asChild>
-                  <a href="mailto:jeffongeri@gmail.com">
-                    <Mail className="h-4 w-4 mr-2" />
+                  <a
+                    href="mailto:jeffongeri@gmail.com"
+                    className="inline-flex items-center gap-2 border border-on-media/40 px-6 py-3 text-sm font-medium uppercase tracking-widest text-on-media transition-colors hover:border-on-media"
+                  >
+                    <Mail className="h-4 w-4" />
                     jeffongeri@gmail.com
                   </a>
-                </Button>
+                </div>
               </div>
-            </AnimatedSection>
+              <img
+                src={headshot}
+                alt="Jefney Ongeri - Physician Assistant"
+                className="h-64 w-56 object-cover object-top md:h-80 md:w-64"
+              />
+            </div>
           </div>
-        </ParallaxHero>
-        
-        <WaveDivider color="fill-primary/10" className="-mb-1" flip />
 
-        {/* Open to Opportunities Banner */}
-        <section className="py-6 bg-primary/10 border-y border-primary/20">
-          <div className="container-blog text-center">
-            <p className="text-lg font-medium text-foreground">
-              <span className="inline-flex items-center gap-2">
-                <Heart className="h-5 w-5 text-primary" />
-                Open to opportunities: Physician Assistant, Advanced Practice Provider, Nurse Practitioner roles
-              </span>
-            </p>
+          {/* Open to Opportunities Banner */}
+          <div className="border-t border-on-media/15">
+            <div className="container-blog py-5">
+              <p className="kicker inline-flex items-center gap-2 text-on-media/70">
+                <Heart className="h-4 w-4 text-editorial" />
+                Open to opportunities — Physician Assistant, Advanced Practice Provider, Nurse
+                Practitioner roles
+              </p>
+            </div>
           </div>
         </section>
 
