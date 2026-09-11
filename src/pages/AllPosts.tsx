@@ -44,6 +44,9 @@ const imgObgynNew = imgObgynAsset.url;
 import imgToxicology from '@/assets/blog/toxicology.jpg';
 import imgProcedures from '@/assets/blog/procedures.jpg';
 import imgOffTheClock from '@/assets/blog/off-the-clock.jpg';
+import imgFinanceRetirement from '@/assets/blog/finance-retirement.jpg';
+import imgFinanceStocks from '@/assets/blog/finance-stocks.jpg';
+import imgFinanceFire from '@/assets/blog/finance-fire.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
@@ -51,6 +54,36 @@ const AllPosts = () => {
   const { isRead, readSlugs } = useReadPosts();
 
   const blogPosts: Post[] = [
+    {
+      title: "Retirement Accounts, Explained — 401(k), IRA & the Employer Match",
+      category: "FINANCE",
+      subcategory: "Personal Finance",
+      date: "September 10, 2026",
+      excerpt: "Animated walk-through of how retirement accounts actually grow, why the first decade of contributions matters most, and how to capture every dollar of an employer match.",
+      image: imgFinanceRetirement,
+      slug: "retirement-accounts-401k-ira-explained",
+      tags: ["Personal Finance"]
+    },
+    {
+      title: "Stock Market Basics — Owning a Piece, Not Placing a Bet",
+      category: "FINANCE",
+      subcategory: "Personal Finance",
+      date: "September 10, 2026",
+      excerpt: "What a share actually is, why daily price swings are noise, and an animated look at what diversification does to your downside.",
+      image: imgFinanceStocks,
+      slug: "stock-market-basics-owning-a-piece",
+      tags: ["Personal Finance"]
+    },
+    {
+      title: "The Four Types of FIRE — Financial Independence on Your Terms",
+      category: "FINANCE",
+      subcategory: "Personal Finance",
+      date: "September 10, 2026",
+      excerpt: "Your savings rate sets the clock. An animated breakdown of Lean, Coast, Barista, and Fat FIRE, and how to pick the one that fits your life.",
+      image: imgFinanceFire,
+      slug: "four-types-of-fire-explained",
+      tags: ["Personal Finance"]
+    },
     {
       title: "Guideline Changes Atlas — Master Collection",
       category: "HEALTHCARE",

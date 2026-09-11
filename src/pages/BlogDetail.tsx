@@ -30,8 +30,81 @@ import sjCommuteMap1 from '@/assets/sj-commute-map-1.png';
 import sjCommuteMap2 from '@/assets/sj-commute-map-2.png';
 import phoenixSuburbs from '@/assets/phoenix-suburbs.jpg';
 import houstonSuburbs from '@/assets/houston-suburbs.jpg';
+import imgFinanceRetirement from '@/assets/blog/finance-retirement.jpg';
+import imgFinanceStocks from '@/assets/blog/finance-stocks.jpg';
+import imgFinanceFire from '@/assets/blog/finance-fire.jpg';
+import { RetirementAnimations, StockAnimations, FireAnimations } from '@/components/finance/FinanceAnimations';
 
 const blogPosts = {
+  "retirement-accounts-401k-ira-explained": {
+    title: "Retirement Accounts, Explained — 401(k), IRA & the Employer Match",
+    category: "FINANCE",
+    date: "September 10, 2026",
+    readTime: "7 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: imgFinanceRetirement,
+    content: `
+      <p>A retirement account isn't an investment — it's a container with tax rules wrapped around whatever you put inside it. Understanding the container is most of the battle.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">401(k): the workplace plan</h2>
+      <p>Contributions come straight out of your paycheck before you ever see the money, which is exactly why it works. Many employers add a match on top — a percentage of your own contribution, added for free. That match is part of your compensation, and it disappears if you don't contribute enough to earn it.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">IRA: the account you open yourself</h2>
+      <p><strong>Traditional</strong> means you skip taxes now and pay them in retirement. <strong>Roth</strong> means you pay taxes now and withdraw tax-free later. If you expect to earn more later in your career than you do today, the Roth is usually the stronger play early on.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The order most people should fund them</h2>
+      <ul class="list-disc pl-6 space-y-1 my-4">
+        <li>Contribute enough to the 401(k) to capture the full employer match.</li>
+        <li>Build a small emergency cushion so you never have to raid retirement money.</li>
+        <li>Fund a Roth IRA up to the annual limit.</li>
+        <li>Come back and max the 401(k) if there's room left.</li>
+      </ul>
+    `
+  },
+  "stock-market-basics-owning-a-piece": {
+    title: "Stock Market Basics — Owning a Piece, Not Placing a Bet",
+    category: "FINANCE",
+    date: "September 10, 2026",
+    readTime: "6 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: imgFinanceStocks,
+    content: `
+      <p>Most of the anxiety around investing comes from treating the market as a scoreboard rather than what it is: a place to buy fractional ownership of real businesses.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">What you're actually buying</h2>
+      <p>A share entitles you to a slice of a company's future earnings. The price moves daily because millions of people constantly re-guess what those earnings will be. The business itself changes far more slowly than its stock price does.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Index funds do the boring thing well</h2>
+      <p>Instead of picking winners, a broad index fund buys a slice of hundreds or thousands of companies at once, at a very low cost. It's the default answer for most long-term money because it removes the single largest risk — being wrong about one company.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The rules that survive every market cycle</h2>
+      <ul class="list-disc pl-6 space-y-1 my-4">
+        <li>Invest money you won't need for at least five years.</li>
+        <li>Automate contributions so timing decisions never come up.</li>
+        <li>Keep costs low; fees compound against you exactly like returns compound for you.</li>
+        <li>Don't sell during downturns — that's when your automatic contributions buy the most.</li>
+      </ul>
+    `
+  },
+  "four-types-of-fire-explained": {
+    title: "The Four Types of FIRE — Financial Independence on Your Terms",
+    category: "FINANCE",
+    date: "September 10, 2026",
+    readTime: "6 min read",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: imgFinanceFire,
+    content: `
+      <p>FIRE — Financial Independence, Retire Early — is less about quitting work and more about reaching the point where work becomes optional.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The number</h2>
+      <p>The common shorthand is roughly 25 times your annual spending, paired with withdrawing about 4% of the portfolio each year. Notice what that means: cutting your spending lowers the target and raises the savings rate at the same time, which is why it moves the date so dramatically.</p>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Which version fits you</h2>
+      <ul class="list-disc pl-6 space-y-1 my-4">
+        <li><strong>Lean FIRE</strong> — a deliberately small budget and the earliest possible exit.</li>
+        <li><strong>Coast FIRE</strong> — save aggressively early, then let compounding finish the job while you work a job you enjoy.</li>
+        <li><strong>Barista FIRE</strong> — part-time income covers the gap, often for the health benefits.</li>
+        <li><strong>Fat FIRE</strong> — a larger nest egg with no lifestyle compromises, and a longer runway to get there.</li>
+      </ul>
+      <h2 class="text-xl font-bold text-foreground mt-8 mb-2">A note for clinicians</h2>
+      <p>High income accelerates all of this, but only if lifestyle inflation stays behind it. The gap between what you earn and what you spend is the entire equation.</p>
+    `
+  },
   "ekg-strip-atlas": {
     title: "EKG Strip Atlas — Pattern, Location & Mechanism",
     category: "HEALTHCARE",
@@ -5629,6 +5702,11 @@ const BlogDetail = () => {
                   prose-strong:text-foreground"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
+
+              {slug === 'retirement-accounts-401k-ira-explained' && <RetirementAnimations />}
+              {slug === 'stock-market-basics-owning-a-piece' && <StockAnimations />}
+              {slug === 'four-types-of-fire-explained' && <FireAnimations />}
+
 
               {/* Tax Calculator - only on PSLF post */}
               {slug === 'pslf-qualifying-hospitals-california-arizona' && (
