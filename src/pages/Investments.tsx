@@ -166,6 +166,18 @@ const Investments = () => {
         {/* Animated financial term explainers */}
         <FinanceExplainers />
 
+        {/* Link to the standalone finance guides */}
+        <div className="max-w-4xl mx-auto mb-12 text-center">
+          <Link
+            to="/finance-guides"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-6 py-4 font-medium text-foreground transition-colors hover:bg-muted"
+          >
+            <TrendingUp className="h-5 w-5 text-secondary" />
+            Explore the Finance Guides — retirement accounts, stock basics &amp; FIRE
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+
         {/* Portfolio Allocation Chart */}
         {!loading && sectorAllocation.length > 0 && (
           <Card className="max-w-4xl mx-auto mb-12">
