@@ -16,7 +16,7 @@ interface StockQuote {
 }
 
 interface StockPriceUpdaterProps {
-  onPricesUpdated: () => void;
+  onPricesUpdated: (updatedAt?: Date) => void;
 }
 
 const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
@@ -25,7 +25,7 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
   const [quotes, setQuotes] = useState<StockQuote[]>([]);
   const { toast } = useToast();
 
-  const fetchPrices = async () => {
+  const fetchPrices = async (silent = false) => {
     setIsUpdating(true);
     try {
       const response = await fetch(
@@ -46,23 +46,22 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
 
       const data = await response.json();
       setQuotes(data.prices || []);
-      setLastUpdated(new Date());
+      const at = new Date();
+      setLastUpdated(at);
+      onPricesUpdated(at);
 
-      if (data.updated > 0) {
+      if (!silent) {
         toast({
-          title: 'Prices Updated',
-          description: `Updated ${data.updated} stock price${data.updated > 1 ? 's' : ''}.`,
-        });
-        onPricesUpdated();
-      } else {
-        toast({
-          title: 'Prices Current',
-          description: 'All stock prices are up to date.',
+          title: data.updated > 0 ? 'Prices Updated' : 'Prices Current',
+          description:
+            data.updated > 0
+              ? `Updated ${data.updated} price${data.updated > 1 ? 's' : ''}.`
+              : 'All prices are up to date.',
         });
       }
     } catch (error) {
       console.error('Error fetching prices:', error);
-      toast({
+      if (!silent) toast({
         variant: 'destructive',
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to update prices',
@@ -72,24 +71,27 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
     }
   };
 
-  // Auto-refresh every 5 minutes during market hours
+  // Live tracking: refresh on load, then every 2 minutes while the US market is open
   useEffect(() => {
-    const checkAndUpdate = () => {
-      const now = new Date();
-      const hour = now.getHours();
-      const day = now.getDay();
-      
-      // Only auto-update during market hours (9:30 AM - 4 PM ET, Mon-Fri)
-      // Simplified check - adjust timezone as needed
-      const isMarketHours = day >= 1 && day <= 5 && hour >= 9 && hour < 16;
-      
-      if (isMarketHours && !lastUpdated) {
-        fetchPrices();
-      }
+    const isMarketOpen = () => {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        weekday: 'short',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      }).formatToParts(new Date());
+      const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
+      const weekday = get('weekday');
+      if (['Sat', 'Sun'].includes(weekday)) return false;
+      const minutes = Number(get('hour')) * 60 + Number(get('minute'));
+      return minutes >= 9 * 60 + 30 && minutes < 16 * 60;
     };
 
-    checkAndUpdate();
-    const interval = setInterval(checkAndUpdate, 5 * 60 * 1000); // 5 minutes
+    fetchPrices(true);
+    const interval = setInterval(() => {
+      if (isMarketOpen()) fetchPrices(true);
+    }, 2 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
