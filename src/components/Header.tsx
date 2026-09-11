@@ -46,6 +46,7 @@ const Header = () => {
       label: 'Investments',
       items: [
         { name: 'Portfolio', href: '/investments', icon: TrendingUp, desc: 'Holdings and thesis' },
+        { name: 'Finance Guides', href: '/finance-guides', icon: TrendingUp, desc: 'Animated money explainers' },
         { name: 'IV Strike', href: '/iv-strike-selector', icon: Calculator, desc: 'Options strike selector' },
         { name: 'Covered Call', href: '/covered-call-master', icon: DollarSign, desc: 'Covered call planner' },
       ],
