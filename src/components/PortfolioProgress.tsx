@@ -22,7 +22,8 @@ interface Props {
 }
 
 const GOAL_KEY = 'portfolio-goal-target';
-const DEFAULT_GOAL = 50000;
+const DEFAULT_GOAL = 265000;
+const OUTSIDE_KEY = 'portfolio-outside-savings';
 
 const MILESTONES = [0.25, 0.5, 0.75, 1];
 
@@ -38,6 +39,9 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
   const [goal, setGoal] = useState<number>(DEFAULT_GOAL);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(String(DEFAULT_GOAL));
+  const [outside, setOutside] = useState<number>(0);
+  const [outsideEditing, setOutsideEditing] = useState(false);
+  const [outsideDraft, setOutsideDraft] = useState('0');
 
   useEffect(() => {
     const stored = localStorage.getItem(GOAL_KEY);
@@ -45,7 +49,21 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
       setGoal(Number(stored));
       setDraft(stored);
     }
+    const storedOutside = localStorage.getItem(OUTSIDE_KEY);
+    if (storedOutside && !Number.isNaN(Number(storedOutside))) {
+      setOutside(Number(storedOutside));
+      setOutsideDraft(storedOutside);
+    }
   }, []);
+
+  const saveOutside = () => {
+    const next = Number(outsideDraft.replace(/[^0-9.]/g, ''));
+    if (next >= 0) {
+      setOutside(next);
+      localStorage.setItem(OUTSIDE_KEY, String(next));
+    }
+    setOutsideEditing(false);
+  };
 
   const saveGoal = () => {
     const next = Number(draft.replace(/[^0-9.]/g, ''));
@@ -74,16 +92,19 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
     return list.sort((a, b) => b.value - a.value);
   }, [holdings]);
 
-  const totalValue = rows.reduce((s, r) => s + r.value, 0);
+  const brokerageValue = rows.reduce((s, r) => s + r.value, 0);
+  const totalValue = brokerageValue + outside;
   const totalCost = rows.reduce((s, r) => s + r.cost, 0);
-  const totalGain = totalValue - totalCost;
+  const totalGain = brokerageValue - totalCost;
   const goalPercent = goal > 0 ? Math.min((totalValue / goal) * 100, 100) : 0;
   const remaining = Math.max(goal - totalValue, 0);
 
+  const positionsTotal = brokerageValue;
   const invested = rows.filter((r) => r.asset_type !== 'Money Market');
   const cash = rows.filter((r) => r.asset_type === 'Money Market');
   const cashValue = cash.reduce((s, r) => s + r.value, 0);
-  const cashPercent = totalValue > 0 ? (cashValue / totalValue) * 100 : 0;
+  const totalCash = cashValue + outside;
+  const cashPercent = totalValue > 0 ? (totalCash / totalValue) * 100 : 0;
 
   const best = invested.reduce<(typeof rows)[number] | null>(
     (top, r) => (!top || r.gainPercent > top.gainPercent ? r : top),
@@ -164,10 +185,40 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">Cash on hand</p>
               <p className="text-lg font-semibold text-foreground">
-                {formatCurrency(cashValue)}{' '}
+                {formatCurrency(totalCash)}{' '}
                 <span className="text-sm text-muted-foreground">({cashPercent.toFixed(0)}%)</span>
               </p>
             </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <span>Savings & cash held outside this portfolio:</span>
+            {outsideEditing ? (
+              <>
+                <Input
+                  value={outsideDraft}
+                  onChange={(e) => setOutsideDraft(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && saveOutside()}
+                  className="h-8 w-32"
+                  inputMode="decimal"
+                  aria-label="Outside savings amount"
+                />
+                <Button size="sm" onClick={saveOutside}>
+                  <Check className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setOutsideEditing(true)}
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                {formatCurrency(outside)}
+              </button>
+            )}
+            <span className="text-xs">
+              (brokerage positions: {formatCurrency(positionsTotal)})
+            </span>
           </div>
 
           {pricesUpdatedAt && (
