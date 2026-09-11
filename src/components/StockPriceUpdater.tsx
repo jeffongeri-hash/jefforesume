@@ -111,7 +111,7 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
           <Button
             variant="outline"
             size="sm"
-            onClick={fetchPrices}
+            onClick={() => fetchPrices()}
             disabled={isUpdating}
             className="gap-2"
           >

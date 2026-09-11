@@ -49,6 +49,7 @@ const Investments = () => {
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pricesUpdatedAt, setPricesUpdatedAt] = useState<Date | null>(null);
 
   const fetchData = async () => {
     const [holdingsRes, tradesRes] = await Promise.all([
@@ -127,7 +128,12 @@ const Investments = () => {
 
         {/* Stock Price Updater */}
         <div className="max-w-4xl mx-auto mb-8">
-          <StockPriceUpdater onPricesUpdated={fetchData} />
+          <StockPriceUpdater
+            onPricesUpdated={(at) => {
+              setPricesUpdatedAt(at ?? new Date());
+              fetchData();
+            }}
+          />
         </div>
 
         {/* Investment Philosophy */}
@@ -220,7 +226,7 @@ const Investments = () => {
         {/* Progress tracker + real position performance */}
         {!loading && (
           <div className="max-w-4xl mx-auto mb-12">
-            <PortfolioProgress holdings={holdings} />
+            <PortfolioProgress holdings={holdings} pricesUpdatedAt={pricesUpdatedAt} />
           </div>
         )}
 
