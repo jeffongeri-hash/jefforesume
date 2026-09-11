@@ -28,6 +28,7 @@ export default {
           foreground: "hsl(var(--ink-foreground))",
         },
         editorial: "hsl(var(--editorial))",
+        "on-media": "hsl(var(--on-media))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
