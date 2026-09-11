@@ -300,7 +300,11 @@ export const StockAnimations = () => (
 const SavingsRateVisual = ({ t }: { t: number }) => {
   const u = easeOut(seg(t, 0.05, 0.8));
   const rate = Math.round(10 + 40 * u);
-  const years = Math.round(51 - 0.86 * (rate - 10) * 0.98 - (rate >= 50 ? 0 : 0));
+  // Approximate years-to-FI for a given savings rate (7% real return, 4% withdrawal).
+  const TABLE: Record<number, number> = { 10: 51, 20: 37, 30: 28, 40: 22, 50: 17 };
+  const lo = Math.max(10, Math.min(40, Math.floor(rate / 10) * 10));
+  const hi = lo + 10;
+  const years = Math.round(TABLE[lo] + ((TABLE[hi] - TABLE[lo]) * (rate - lo)) / 10);
   const R = 60;
   const circ = 2 * Math.PI * R;
   return (

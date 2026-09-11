@@ -51,7 +51,7 @@ const blogPosts = {
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">IRA: the account you open yourself</h2>
       <p><strong>Traditional</strong> means you skip taxes now and pay them in retirement. <strong>Roth</strong> means you pay taxes now and withdraw tax-free later. If you expect to earn more later in your career than you do today, the Roth is usually the stronger play early on.</p>
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The order most people should fund them</h2>
-      <ul>
+      <ul class="list-disc pl-6 space-y-1 my-4">
         <li>Contribute enough to the 401(k) to capture the full employer match.</li>
         <li>Build a small emergency cushion so you never have to raid retirement money.</li>
         <li>Fund a Roth IRA up to the annual limit.</li>
@@ -74,7 +74,7 @@ const blogPosts = {
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Index funds do the boring thing well</h2>
       <p>Instead of picking winners, a broad index fund buys a slice of hundreds or thousands of companies at once, at a very low cost. It's the default answer for most long-term money because it removes the single largest risk — being wrong about one company.</p>
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The rules that survive every market cycle</h2>
-      <ul>
+      <ul class="list-disc pl-6 space-y-1 my-4">
         <li>Invest money you won't need for at least five years.</li>
         <li>Automate contributions so timing decisions never come up.</li>
         <li>Keep costs low; fees compound against you exactly like returns compound for you.</li>
@@ -95,7 +95,7 @@ const blogPosts = {
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">The number</h2>
       <p>The common shorthand is roughly 25 times your annual spending, paired with withdrawing about 4% of the portfolio each year. Notice what that means: cutting your spending lowers the target and raises the savings rate at the same time, which is why it moves the date so dramatically.</p>
       <h2 class="text-xl font-bold text-foreground mt-8 mb-2">Which version fits you</h2>
-      <ul>
+      <ul class="list-disc pl-6 space-y-1 my-4">
         <li><strong>Lean FIRE</strong> — a deliberately small budget and the earliest possible exit.</li>
         <li><strong>Coast FIRE</strong> — save aggressively early, then let compounding finish the job while you work a job you enjoy.</li>
         <li><strong>Barista FIRE</strong> — part-time income covers the gap, often for the health benefits.</li>
