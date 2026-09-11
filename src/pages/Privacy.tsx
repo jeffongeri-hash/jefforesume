@@ -1,119 +1,134 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet-async';
+import { EditorialHero } from '@/components/EditorialPage';
+
+const sections: { title: string; body?: string; list?: string[]; body2?: string }[] = [
+  {
+    title: 'Information we collect',
+    body: 'This site collects information you provide directly — for example when you subscribe, leave a comment, or send a message. Limited technical information about your device is collected automatically.',
+    list: [
+      'Email address for newsletter subscriptions',
+      'Name and contact details when you reach out',
+      'Comments and feedback left on articles',
+      'Any other information you choose to provide',
+    ],
+  },
+  {
+    title: 'How the information is used',
+    body: 'Collected information is used to:',
+    list: [
+      'Provide, maintain, and improve the site',
+      'Send updates you have asked to receive',
+      'Respond to your questions and comments',
+      'Understand how the site is used',
+      'Detect and prevent abuse',
+      'Meet legal obligations',
+    ],
+  },
+  {
+    title: 'Information sharing',
+    body: 'Personal information is never sold or traded. It may be shared only:',
+    list: [
+      'With your explicit consent',
+      'To comply with a valid legal process',
+      'To protect the rights, property, or safety of the site and its readers',
+      'With service providers who help operate the site, under confidentiality obligations',
+    ],
+  },
+  {
+    title: 'Cookies and tracking',
+    body: 'Cookies and similar technologies are used to keep the site working, remember preferences, and understand traffic. You can control cookies in your browser, though some features may stop working if you disable them.',
+  },
+  {
+    title: 'Data security',
+    body: 'Reasonable technical and organizational measures protect personal information against unauthorized access, alteration, or disclosure. No internet service can promise absolute security.',
+  },
+  {
+    title: 'Your rights',
+    body: 'Depending on where you live, you may have the right to:',
+    list: [
+      'Access a copy of your personal information',
+      'Correct or update it',
+      'Delete it',
+      'Restrict or object to processing',
+      'Receive it in a portable format',
+      'Withdraw consent at any time',
+    ],
+  },
+  {
+    title: "Children's privacy",
+    body: 'This site is not intended for children under 13, and information is not knowingly collected from them. If you believe otherwise, please get in touch and it will be removed.',
+  },
+  {
+    title: 'Changes to this policy',
+    body: 'This policy may be updated from time to time. Any changes appear on this page with a revised date below.',
+  },
+  {
+    title: 'Contact',
+    body: 'Questions about privacy? Email jeffongeri@gmail.com or use the contact form.',
+  },
+];
 
 const Privacy = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-paper">
+      <Helmet>
+        <title>Privacy Policy | Jefney Ongeri, PA-C</title>
+        <meta
+          name="description"
+          content="How jefneyongeri.com collects, uses, and protects your information."
+        />
+        <link rel="canonical" href="https://jefneyongeri.com/privacy" />
+      </Helmet>
       <Header />
-      
-      <main id="main-content" className="container-blog py-12">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-            Privacy Policy
-          </h1>
-          
-          <div className="prose prose-lg max-w-none text-muted-foreground space-y-8">
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">1. Information We Collect</h2>
-              <p>
-                At Nexus Blog, we collect information you provide directly to us, such as when you subscribe to our newsletter, leave comments, or contact us. We also automatically collect certain information about your device when you use our website.
-              </p>
-              <h3 className="text-xl font-medium text-foreground mt-6 mb-3">Information you provide to us:</h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Email address for newsletter subscriptions</li>
-                <li>Name and contact information when you reach out to us</li>
-                <li>Comments and feedback you leave on our articles</li>
-                <li>Any other information you choose to provide</li>
-              </ul>
-            </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">2. How We Use Your Information</h2>
-              <p>
-                We use the information we collect to:
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-2">
-                <li>Provide, maintain, and improve our services</li>
-                <li>Send you newsletters and updates (with your consent)</li>
-                <li>Respond to your comments and questions</li>
-                <li>Analyze how our website is used to improve user experience</li>
-                <li>Detect and prevent fraud and abuse</li>
-                <li>Comply with legal obligations</li>
-              </ul>
-            </section>
+      <main id="main-content">
+        <EditorialHero
+          kicker="Legal · Policies"
+          title="Privacy policy"
+          intro="What is collected on this site, why it is collected, and the control you have over it."
+        />
 
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">3. Information Sharing</h2>
-              <p>
-                We do not sell, trade, or otherwise transfer your personal information to third parties except in the following circumstances:
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-2">
-                <li>With your explicit consent</li>
-                <li>To comply with legal requirements or valid legal processes</li>
-                <li>To protect our rights, property, or safety, or that of our users</li>
-                <li>With service providers who assist us in operating our website (under strict confidentiality agreements)</li>
-              </ul>
-            </section>
+        <section className="bg-paper">
+          <div className="container-blog py-16 md:py-24">
+            <div className="max-w-3xl">
+              {sections.map((s, i) => (
+                <article key={s.title} className="border-t border-ink/15 py-10 first:border-t-0 first:pt-0">
+                  <div className="flex gap-6">
+                    <span className="kicker mt-2 shrink-0 text-editorial">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <h2 className="font-serif text-2xl leading-tight text-ink md:text-3xl">
+                        {s.title}
+                      </h2>
+                      {s.body && (
+                        <p className="mt-4 text-lg leading-relaxed text-ink/70">{s.body}</p>
+                      )}
+                      {s.list && (
+                        <ul className="mt-5 space-y-2">
+                          {s.list.map((item) => (
+                            <li key={item} className="flex gap-3 text-ink/70">
+                              <span className="mt-2 h-1 w-4 shrink-0 bg-editorial" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
 
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">4. Cookies and Tracking</h2>
-              <p>
-                We use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and understand where our visitors are coming from. You can control cookies through your browser settings, but disabling them may affect website functionality.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">5. Data Security</h2>
-              <p>
-                We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no internet-based service can be 100% secure, and we cannot guarantee absolute security.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">6. Your Rights</h2>
-              <p>
-                Depending on your location, you may have certain rights regarding your personal information, including:
-              </p>
-              <ul className="list-disc pl-6 mt-4 space-y-2">
-                <li>The right to access and receive a copy of your personal information</li>
-                <li>The right to correct or update your information</li>
-                <li>The right to delete your information</li>
-                <li>The right to restrict or object to processing</li>
-                <li>The right to data portability</li>
-                <li>The right to withdraw consent</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">7. Children's Privacy</h2>
-              <p>
-                Our website is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">8. Changes to This Policy</h2>
-              <p>
-                We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "last updated" date below.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-4">9. Contact Us</h2>
-              <p>
-                If you have any questions about this Privacy Policy or our privacy practices, please contact us at privacy@nexusblog.com or through our website contact form.
-              </p>
-            </section>
-
-            <div className="mt-12 pt-8 border-t border-border">
-              <p className="text-sm text-muted-foreground">
-                Last updated: September 2024
+              <p className="kicker mt-10 border-t border-ink/15 pt-8 text-ink/50">
+                Last updated: September 2026
               </p>
             </div>
           </div>
-        </div>
+        </section>
       </main>
-      
+
       <Footer />
     </div>
   );
