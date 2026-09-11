@@ -20,6 +20,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recha
 import PortfolioAssistant from '@/components/PortfolioAssistant';
 import PerformanceChart from '@/components/PerformanceChart';
 import StockPriceUpdater from '@/components/StockPriceUpdater';
+import FinanceExplainers from '@/components/FinanceExplainers';
 interface Holding {
   id: string;
   symbol: string;
@@ -161,6 +162,9 @@ const Investments = () => {
             </div>
           </div>
         </div>
+
+        {/* Animated financial term explainers */}
+        <FinanceExplainers />
 
         {/* Portfolio Allocation Chart */}
         {!loading && sectorAllocation.length > 0 && (
