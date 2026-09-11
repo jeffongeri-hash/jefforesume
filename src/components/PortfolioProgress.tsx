@@ -18,6 +18,7 @@ interface Holding {
 
 interface Props {
   holdings: Holding[];
+  pricesUpdatedAt?: Date | null;
 }
 
 const GOAL_KEY = 'portfolio-goal-target';
@@ -33,7 +34,7 @@ const formatCurrency = (value: number, compact = false) =>
     maximumFractionDigits: compact ? 1 : 0,
   }).format(value);
 
-const PortfolioProgress = ({ holdings }: Props) => {
+const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
   const [goal, setGoal] = useState<number>(DEFAULT_GOAL);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(String(DEFAULT_GOAL));
@@ -168,6 +169,14 @@ const PortfolioProgress = ({ holdings }: Props) => {
               </p>
             </div>
           </div>
+
+          {pricesUpdatedAt && (
+            <p className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
+              Live prices as of{' '}
+              {pricesUpdatedAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            </p>
+          )}
 
           {best && (
             <p className="text-sm text-muted-foreground">

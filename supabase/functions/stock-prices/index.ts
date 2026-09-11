@@ -35,7 +35,7 @@ serve(async (req) => {
     // Get all holdings
     const { data: holdings, error: holdingsError } = await supabase
       .from("holdings")
-      .select("id, symbol, current_price");
+      .select("id, symbol, current_price, asset_type");
 
     if (holdingsError) throw holdingsError;
     if (!holdings || holdings.length === 0) {
@@ -48,7 +48,26 @@ serve(async (req) => {
     const quotes: StockQuote[] = [];
     const updates: { id: string; current_price: number }[] = [];
 
+    const CASH_TYPES = ["Money Market", "Cash"];
+
     for (const holding of holdings) {
+      // Cash / money market funds hold a $1.00 NAV — no quote needed
+      if (CASH_TYPES.includes(holding.asset_type ?? "")) {
+        quotes.push({
+          symbol: holding.symbol,
+          currentPrice: 1,
+          change: 0,
+          percentChange: 0,
+          high: 1,
+          low: 1,
+          open: 1,
+          previousClose: 1,
+        });
+        if (Number(holding.current_price) !== 1) {
+          updates.push({ id: holding.id, current_price: 1 });
+        }
+        continue;
+      }
       try {
         const response = await fetch(
           `https://finnhub.io/api/v1/quote?symbol=${holding.symbol}&token=${FINNHUB_API_KEY}`
