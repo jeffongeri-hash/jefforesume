@@ -6,8 +6,10 @@ import { ArrowRight, ArrowUpRight, Linkedin, Mail } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import headshot from '@/assets/headshot.jpeg';
 import heroImage from '@/assets/home/hero-ed-corridor.jpg';
-import sectionInvestments from '@/assets/home/section-investments.jpg';
+import sectionInvestmentsAsset from '@/assets/home/section-investments.jpg.asset.json';
 import sectionAtlas from '@/assets/home/section-atlas.jpg';
+
+const sectionInvestments = sectionInvestmentsAsset.url;
 
 const chapters = [
   {
