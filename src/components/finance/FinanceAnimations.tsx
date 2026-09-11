@@ -329,7 +329,7 @@ const SavingsRateVisual = ({ t }: { t: number }) => {
           </div>
         </div>
         <div className="text-center">
-          <div className="text-3xl font-bold text-foreground">{Math.max(years, 17)}</div>
+          <div className="text-3xl font-bold text-foreground">{years}</div>
           <div className="text-xs text-muted-foreground">years to financial independence</div>
         </div>
       </div>
