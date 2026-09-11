@@ -44,9 +44,6 @@ const imgObgynNew = imgObgynAsset.url;
 import imgToxicology from '@/assets/blog/toxicology.jpg';
 import imgProcedures from '@/assets/blog/procedures.jpg';
 import imgOffTheClock from '@/assets/blog/off-the-clock.jpg';
-import imgFinanceRetirement from '@/assets/blog/finance-retirement.jpg';
-import imgFinanceStocks from '@/assets/blog/finance-stocks.jpg';
-import imgFinanceFire from '@/assets/blog/finance-fire.jpg';
 
 const AllPosts = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
