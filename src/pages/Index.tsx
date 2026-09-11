@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Linkedin, Mail } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import headshot from '@/assets/headshot.jpeg';
-import heroImage from '@/assets/home/hero-ed-corridor.jpg';
+import heroImageAsset from '@/assets/home/hero-investing-hand.png.asset.json';
+
+const heroImage = heroImageAsset.url;
 import sectionInvestmentsAsset from '@/assets/home/section-investments.jpg.asset.json';
 import sectionAtlas from '@/assets/home/section-atlas.jpg';
 
@@ -69,7 +71,7 @@ const Index = () => {
         <section className="relative min-h-[88vh] md:min-h-screen flex flex-col justify-end overflow-hidden bg-ink-deep">
           <img
             src={heroImage}
-            alt="Emergency department corridor at dusk"
+            alt="Glowing stock chart hovering above an open hand"
             width={1920}
             height={1280}
             className="absolute inset-0 h-full w-full object-cover opacity-80 scale-105 animate-[reveal-up_1.6s_cubic-bezier(0.16,1,0.3,1)_both]"
