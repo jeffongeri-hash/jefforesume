@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -9,6 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,19 +20,13 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'PORTFOLIO', href: '/professional' },
-    { name: 'RESUME', href: '/resume' },
-    { name: 'ACCOLADES', href: '/accolades' },
-    { name: 'INVESTMENTS', href: '/investments' },
-    { name: 'IV STRIKE', href: '/iv-strike-selector' },
-    { name: 'COVERED CALL', href: '/covered-call-master' },
-    { name: 'CA MOVE', href: '/ca-move-planner' },
-    { name: 'CARE ABROAD', href: '/care-abroad' },
-    { name: 'PAYCHECK', href: '/paycheck-analyzer' },
-    { name: 'SAC HEALTH', href: '/sacramento-healthcare' },
-    { name: 'VACATION', href: '/vacation' },
-    { name: 'BLOG', href: '/posts' },
+  useEffect(() => setIsMenuOpen(false), [location.pathname]);
+
+  const primaryNavItems = [
+    { name: 'Professional', href: '/professional', matches: ['/professional', '/resume', '/accolades'] },
+    { name: 'Investments', href: '/investments', matches: ['/investments', '/finance-guides', '/iv-strike-selector', '/covered-call-master'] },
+    { name: 'Care Abroad', href: '/care-abroad', matches: ['/care-abroad'] },
+    { name: 'Writing', href: '/posts', matches: ['/posts', '/blog'] },
   ];
 
   const mobileNavGroups = [
@@ -78,142 +73,125 @@ const Header = () => {
 
   return (
     <header 
-      className={cn(
-        "sticky top-0 z-50 transition-all duration-500 ease-out",
-        isScrolled 
-          ? "bg-background/80 backdrop-blur-lg border-b border-border/50 shadow-sm" 
-          : "bg-background border-b border-border"
-      )}
+      className={cn("sticky top-0 z-50 border-b font-clinical transition-all duration-300", isScrolled ? "border-border bg-background/95 shadow-sm backdrop-blur-lg" : "border-border bg-background")}
     >
-      <div className="container-blog">
+      <div className="mx-auto max-w-[90rem] px-5 sm:px-8">
         <div 
           className={cn(
-            "flex items-center justify-between transition-all duration-500",
+            "grid grid-cols-[1fr_auto] items-center gap-4 transition-all duration-300 xl:grid-cols-[minmax(18rem,1fr)_auto_minmax(18rem,1fr)]",
             isScrolled ? "h-16" : "h-20"
           )}
         >
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="block group">
-              <h1 
-                className={cn(
-                  "font-bold text-foreground transition-all duration-500 font-serif",
-                  isScrolled ? "text-lg" : "text-xl"
-                )}
-              >
-                Jefney Ongeri
-                <span className="text-muted-foreground transition-colors duration-300 group-hover:text-primary">, PA-C</span>
-              </h1>
+            <Link to="/" className="group block py-2" aria-label="Jefney Ongeri, PA-C home">
+              <p className={cn("font-journal font-bold leading-none text-foreground transition-all duration-300", isScrolled ? "text-base sm:text-lg" : "text-lg sm:text-xl")}>
+                Jefney Ongeri<span className="font-normal text-primary">, PA-C</span>
+              </p>
+              <p className="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:block">Emergency medicine · Investing</p>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
-            {navItems.map((item) => (
+          <nav className="hidden xl:flex h-full items-center gap-8" role="navigation" aria-label="Main navigation">
+            {primaryNavItems.map((item) => {
+              const isActive = item.matches.some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
+              return (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "nav-link transition-all duration-300",
-                  isScrolled ? "text-xs" : "text-sm"
+                  "relative flex h-full items-center text-[13px] font-semibold text-muted-foreground transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-center after:bg-primary after:transition-transform hover:text-foreground",
+                  isActive ? "text-foreground after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
                 )}
+                aria-current={isActive ? 'page' : undefined}
               >
                 {item.name}
               </Link>
-            ))}
+            )})}
           </nav>
 
-          {/* Social Links & Search */}
-          <div className="hidden xl:flex items-center space-x-3">
-            {socialLinks.map(({ icon: Icon, href, label }) => (
-              <Button 
-                key={label} 
-                variant="ghost" 
-                size="sm" 
-                className={cn(
-                  "transition-all duration-300 hover:bg-primary/10 hover:text-primary",
-                  isScrolled ? "h-8 w-8 p-0" : "h-9 w-9 p-0"
-                )}
-                asChild
-              >
-                <a href={href} aria-label={label}>
-                  <Icon className={cn("transition-all duration-300", isScrolled ? "h-3.5 w-3.5" : "h-4 w-4")} />
-                </a>
-              </Button>
-            ))}
-            
+          <div className="hidden items-center justify-end gap-2 xl:flex">
             <Button 
               variant="ghost" 
               size="sm" 
-              className={cn(
-                "transition-all duration-300 hover:bg-primary/10 hover:text-primary",
-                isScrolled ? "h-8 w-8 p-0" : "h-9 w-9 p-0"
-              )}
+              className="h-10 w-10 p-0 text-muted-foreground hover:bg-secondary hover:text-foreground"
               aria-label="Search articles"
               onClick={() => navigate('/search')}
             >
-              <Search className={cn("transition-all duration-300", isScrolled ? "h-3.5 w-3.5" : "h-4 w-4")} />
+              <Search className="h-4 w-4" />
             </Button>
             <ThemeToggle />
+            <Button variant="outline" className="ml-2 h-10 gap-2 rounded-md border-foreground/20 px-4 text-xs font-semibold uppercase tracking-[0.1em]" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-expanded={isMenuOpen} aria-controls="site-directory">
+              {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />} Browse
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 xl:hidden">
             <ThemeToggle />
             <Button
-              variant="ghost"
-              size="sm"
+              variant="outline"
+              size="icon"
+              className="h-10 w-10 rounded-md border-foreground/20"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={isMenuOpen}
+              aria-controls="site-directory"
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <div
+          id="site-directory"
           className={cn(
-            "xl:hidden overflow-hidden transition-[max-height,opacity] duration-500 ease-out",
-            isMenuOpen ? "max-h-[85vh] opacity-100" : "max-h-0 opacity-0"
+            "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
+            isMenuOpen ? "max-h-[calc(100vh-4rem)] opacity-100" : "max-h-0 opacity-0"
           )}
         >
-          <div className="border-t border-border/60 max-h-[80vh] overflow-y-auto pb-6 pt-5 -mx-4 px-4">
-            <div className="mb-5">
-              <button
+          <div className="-mx-5 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-border bg-secondary/50 px-5 pb-8 pt-6 sm:-mx-8 sm:px-8 xl:mx-0 xl:grid xl:grid-cols-[15rem_1fr] xl:gap-12 xl:px-0 xl:py-8">
+            <div>
+              <p className="font-journal text-2xl text-foreground">Explore</p>
+              <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Clinical resources, professional work, investment tools, and planning guides.</p>
+              <Button
                 type="button"
+                variant="outline"
                 onClick={() => {
                   setIsMenuOpen(false);
                   navigate('/search');
                 }}
-                className="w-full flex items-center gap-3 rounded-xl border border-border bg-muted/40 hover:bg-muted transition-colors px-4 py-3 text-sm text-muted-foreground"
+                className="mt-5 w-full justify-start gap-3 rounded-md bg-background px-4 text-sm text-muted-foreground xl:w-52"
                 aria-label="Search articles"
               >
                 <Search className="h-4 w-4" />
-                <span>Search posts, tools, atlases…</span>
-              </button>
+                <span>Search the site</span>
+              </Button>
             </div>
 
-            <nav className="space-y-6" role="navigation" aria-label="Mobile navigation">
+            <nav className="mt-8 grid gap-8 sm:grid-cols-2 xl:mt-0 xl:grid-cols-4" role="navigation" aria-label="Site directory">
               {mobileNavGroups.map((group) => (
                 <div key={group.label}>
-                  <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
+                  <div className="mb-3 border-b border-border pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
                     {group.label}
                   </div>
-                  <div className="rounded-2xl border border-border/60 bg-card/40 divide-y divide-border/50 overflow-hidden">
+                  <div className="space-y-1">
                     {group.items.map(({ name, href, icon: Icon, desc }) => (
                       <Link
                         key={name}
                         to={href}
                         onClick={() => setIsMenuOpen(false)}
-                        className="group flex items-center gap-3 px-4 py-3 hover:bg-primary/5 transition-colors"
+                        className="group flex items-center gap-3 rounded-md px-2 py-2.5 transition-colors hover:bg-background"
                       >
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <span className="flex h-8 w-8 flex-none items-center justify-center rounded-md bg-background text-primary ring-1 ring-border transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                           <Icon className="h-4 w-4" />
                         </span>
-                        <span className="flex flex-col leading-tight">
+                        <span className="min-w-0 flex-1 leading-tight">
                           <span className="text-sm font-semibold text-foreground">{name}</span>
-                          <span className="text-xs text-muted-foreground">{desc}</span>
+                          <span className="mt-1 block text-xs text-muted-foreground">{desc}</span>
                         </span>
+                        <ChevronRight className="h-4 w-4 flex-none text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                       </Link>
                     ))}
                   </div>
@@ -221,7 +199,7 @@ const Header = () => {
               ))}
             </nav>
 
-            <div className="mt-6 pt-5 border-t border-border/60 flex items-center justify-between">
+            <div className="mt-8 flex items-center justify-between border-t border-border pt-5 xl:col-span-2">
               <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground/80">Follow</span>
               <div className="flex items-center gap-2">
                 {socialLinks.map(({ icon: Icon, href, label }) => (
