@@ -101,7 +101,6 @@ function ivSignal(iv,hv){
 
 // ─── CSS ──────────────────────────────────────────────────────────────────────
 const CSS=`
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#050810;--bg1:#090D1A;--bg2:#0D1220;--bg3:#111827;
@@ -210,7 +209,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans)}
 .sr-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.08em}
 .sr-val{font-family:var(--mono);font-size:12px;font-weight:600}
 /* EM TABLE */
-.em-wrap{background:var(--bg1);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.em-wrap{background:var(--bg1);border:1px solid var(--border);border-radius:10px;overflow-x:auto}
 .em-head{padding:11px 16px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
 .em-head-title{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.16em}
@@ -260,7 +259,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans)}
 .chain-table tr:hover td{background:rgba(255,255,255,.015)}
 .chain-table tr.itm td{background:rgba(0,212,255,.025)}
 .chain-table tr.atm td{background:rgba(0,229,160,.04);font-weight:600}
-.chain-scroll{max-height:480px;overflow-y:auto}
+.chain-scroll{max-height:480px;overflow:auto}
 .pop-pill{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);
   font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;white-space:nowrap}
 .pnl-cell{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
@@ -326,6 +325,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans)}
   vertical-align:middle;animation:blink .8s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .disc{font-family:var(--mono);font-size:8.5px;color:var(--text3);text-align:center;padding:5px 0}
+@media(max-width:760px){
+  .hdr{position:relative;padding:12px 16px;align-items:flex-start}
+  .hdr-left{width:100%}
+  .badges{width:100%;gap:6px}
+  .badge{padding:4px 7px}
+  .layout{grid-template-columns:minmax(0,1fr);min-height:0}
+  .left{border-right:0;border-bottom:1px solid var(--border);padding:16px;overflow:visible}
+  .right{padding:16px;overflow:visible;min-width:0}
+  .field input,.field select{min-height:44px;font-size:16px}
+  .mtab,.btn-fetch,.btn-analyze{min-height:44px}
+  .hero{padding:14px}
+  .hero-stats{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .hero-stats>div{text-align:left!important}
+  .hstat-val{text-align:left}
+  .vix-sr{width:100%;margin-left:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .sr-item{text-align:left}
+  .em-table,.chain-table,.gm-table{min-width:680px}
+  .chain-head,.chain-filters,.em-head,.greeks-head{padding-left:12px;padding-right:12px}
+  .chain-filter-btn{min-height:36px;padding:7px 10px}
+  .greeks-inputs{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px}
+  .greeks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gm-wrap{padding-left:12px;padding-right:12px}
+  .ai-body{font-size:13px}
+  .chk-item{padding:10px}
+}
+@media(max-width:380px){
+  .row3{grid-template-columns:1fr 1fr}
+  .hero-stats,.vix-sr{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 `;
 
 // ─── EXPECTED MOVE TABLE ──────────────────────────────────────────────────────

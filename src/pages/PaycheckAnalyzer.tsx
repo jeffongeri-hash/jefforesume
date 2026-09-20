@@ -219,7 +219,7 @@ function AllocRow({ item, gross, onChange, onRemove, accentColor }) {
     : (item.amount || 0);
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 90px 100px 80px 36px",
+    <div className="alloc-row" style={{ display: "grid", gridTemplateColumns: "1fr 90px 100px 80px 36px",
       gap: 8, alignItems: "center", padding: "8px 0",
       borderBottom: "1px solid rgba(255,255,255,.04)" }}>
       <input value={item.name} onChange={e => onChange({ ...item, name: e.target.value })}
@@ -574,7 +574,6 @@ export default function PaycheckAnalyzer() {
   }, [gross, taxes, period, state, filingStatus, pre401k, pre401kType, preHSA, preHSAType, extraWith, extraWithType, totalInvest, totalSave, investAnnual, saveAnnual, netPay]);
 
   const CSS = `
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       --bg:#04080F;--bg1:#080D1A;--bg2:#0B1120;--bg3:#0F1628;
@@ -826,6 +825,47 @@ export default function PaycheckAnalyzer() {
     .net-row td{background:rgba(0,229,160,.04)!important}
     .disc{font-family:var(--mono);font-size:8px;color:var(--text3);
       text-align:center;padding:16px 0;border-top:1px solid var(--border)}
+    .main-layout{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:360px minmax(0,1fr);min-height:calc(100vh - 65px)}
+    @media(max-width:760px){
+      .hdr{position:relative;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:flex-start}
+      .hdr-inner{padding:0;width:100%}
+      .hdr-net{width:100%;text-align:left;padding:10px 0 2px;border-top:1px solid var(--border)}
+      .hdr-net-val{font-size:20px}
+      .main-layout{grid-template-columns:minmax(0,1fr);min-height:0}
+      .left{border-right:0;border-bottom:1px solid var(--border);padding:16px;overflow:visible;min-width:0}
+      .right{padding:16px;overflow:visible;min-width:0}
+      .inp,select{min-height:44px;font-size:16px}
+      .period-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .ptab{min-height:42px;display:flex;align-items:center;justify-content:center;padding:7px 4px}
+      .zip-btn,.add-btn,.ai-btn{min-height:44px}
+      .alloc-row{grid-template-columns:minmax(0,1fr) 84px 36px!important;gap:8px!important}
+      .alloc-row>input:first-child{grid-column:1/-1;min-height:44px;font-size:16px!important}
+      .alloc-row>div{grid-column:1}
+      .alloc-row>input[type=number]{grid-column:2;grid-row:2;min-height:38px;font-size:16px!important}
+      .alloc-row>span{grid-column:1/3;grid-row:3;text-align:left!important}
+      .alloc-row>button{grid-column:3;grid-row:2;min-width:36px;min-height:36px}
+      .panel-hdr{padding:12px;align-items:flex-start;gap:8px;flex-wrap:wrap}
+      .panel-body{padding:14px}
+      .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;scrollbar-width:thin}
+      .tab{white-space:nowrap;min-height:40px;display:flex;align-items:center;padding:7px 13px}
+      .data-table{min-width:650px}
+      .w4-grid{grid-template-columns:1fr}
+      .tracker-amounts{gap:12px;align-items:flex-start}
+      .tracker-edit-row{flex-wrap:wrap}
+      .tracker-edit-inp{min-width:0}
+      .tracker-body{padding:13px}
+      .milestone-row{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px}
+      .ms-label{width:auto}
+      .ms-val{grid-column:2;width:auto;text-align:left}
+      .ai-body{font-size:13px}
+    }
+    @media(max-width:380px){
+      .row2{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr}
+      .tracker-amounts{flex-direction:column}
+      .tracker-limit{text-align:left}
+    }
   `;
 
   const hasData = !!gross && +gross > 0;
@@ -853,7 +893,7 @@ export default function PaycheckAnalyzer() {
           )}
         </div>
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "360px 1fr", minHeight: "calc(100vh - 65px)" }}>
+        <div className="main-layout">
 
           {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
           <div className="left">

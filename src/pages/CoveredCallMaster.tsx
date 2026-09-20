@@ -159,7 +159,6 @@ function buildLadder({ S, iv, dte, perYear, ticker, cycleId, costBasis, isLEAP, 
 
 // ─── CSS ──────────────────────────────────────────────────────────────────────
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#05070E;--bg1:#090C16;--bg2:#0D1120;--bg3:#121829;
@@ -295,7 +294,7 @@ select option{background:#0D1120}
 .lad tr:hover td{background:rgba(16,224,192,.04)}
 .lad tr.best td{background:rgba(16,224,192,.07)}
 .lad tr.atm td{background:rgba(255,159,69,.05)}
-.lad-scroll{max-height:520px;overflow-y:auto}
+.lad-scroll{max-height:520px;overflow:auto}
 .kpill{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px}
 .tag{font-family:var(--mono);font-size:7.5px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.04em}
 .tag-con{background:rgba(34,229,132,.1);color:var(--green);border:1px solid rgba(34,229,132,.22)}
@@ -332,6 +331,40 @@ select option{background:#0D1120}
 .cursor{display:inline-block;width:2px;height:12px;background:var(--accent);margin-left:2px;animation:bl .8s step-end infinite}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
 .note{font-family:var(--mono);font-size:9px;color:var(--text2);line-height:1.7;background:rgba(255,255,255,.02);border-radius:7px;padding:10px 12px;border:1px solid var(--border)}
+@media(max-width:760px){
+  .hdr{position:relative;padding:12px 16px;align-items:flex-start}
+  .hdr-l{width:100%}
+  .badges{width:100%;gap:6px}
+  .badge{padding:4px 7px}
+  .layout{grid-template-columns:minmax(0,1fr);min-height:0}
+  .left{border-right:0;border-bottom:1px solid var(--border);padding:16px;overflow:visible}
+  .right{padding:16px;overflow:visible;min-width:0}
+  .field input,.field select{min-height:44px;font-size:16px}
+  .tick-tab,.mode-tab,.btn,.cyc-tab{min-height:44px}
+  .hero{padding:14px;align-items:flex-start}
+  .hero-stats{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  .hs{text-align:left}
+  .pick-body{grid-template-columns:1fr;padding:16px;gap:16px}
+  .pick-strike{text-align:left;padding:0 0 14px;border-right:0;border-bottom:1px solid var(--border)}
+  .pick-strike-v{font-size:34px}
+  .pick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;scrollbar-width:thin}
+  .tab{white-space:nowrap;min-height:40px;display:flex;align-items:center}
+  .panel-h{align-items:flex-start}
+  .lad{min-width:980px}
+  .panel-b{padding:14px}
+  .cyc-grid{grid-template-columns:1fr}
+  .hist-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+  .hist-bar-wrap{grid-column:1/-1;grid-row:2;margin:0}
+  .hist-row span:first-child{min-width:0!important}
+  .panel-b>div[style*="display: flex"]{flex-direction:column}
+  .panel-b>div[style*="display: flex"]>div:first-child{min-width:0!important}
+  .ai-b{font-size:13px}
+}
+@media(max-width:380px){
+  .row3{grid-template-columns:1fr 1fr}
+  .hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 `;
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
