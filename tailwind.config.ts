@@ -16,6 +16,8 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
+        journal: ['Libre Baskerville', 'Georgia', 'serif'],
+        clinical: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         paper: {
