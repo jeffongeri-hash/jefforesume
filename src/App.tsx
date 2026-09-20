@@ -33,6 +33,7 @@ const Vacation = lazy(() => import("./pages/Vacation"));
 const IVStrikeSelector = lazy(() => import("./pages/IVStrikeSelector"));
 const CAMovePlanner = lazy(() => import("./pages/CAMovePlanner"));
 const CareAbroad = lazy(() => import("./pages/CareAbroad"));
+const CareAbroadTimeline = lazy(() => import("./pages/CareAbroadTimeline"));
 const PaycheckAnalyzer = lazy(() => import("./pages/PaycheckAnalyzer"));
 const SacramentoHealthcareHub = lazy(() => import("./pages/SacramentoHealthcareHub"));
 const CoveredCallMaster = lazy(() => import("./pages/CoveredCallMaster"));
@@ -77,6 +78,7 @@ const App = () => (
                 <Route path="/iv-strike-selector" element={<IVStrikeSelector />} />
                 <Route path="/ca-move-planner" element={<CAMovePlanner />} />
                 <Route path="/care-abroad" element={<CareAbroad />} />
+                <Route path="/care-abroad/timeline" element={<CareAbroadTimeline />} />
                 <Route path="/paycheck-analyzer" element={<PaycheckAnalyzer />} />
                 <Route path="/sacramento-healthcare" element={<SacramentoHealthcareHub />} />
                 <Route path="/covered-call-master" element={<CoveredCallMaster />} />
