@@ -27,6 +27,7 @@ const Header = () => {
     { name: 'IV STRIKE', href: '/iv-strike-selector' },
     { name: 'COVERED CALL', href: '/covered-call-master' },
     { name: 'CA MOVE', href: '/ca-move-planner' },
+    { name: 'CARE ABROAD', href: '/care-abroad' },
     { name: 'PAYCHECK', href: '/paycheck-analyzer' },
     { name: 'SAC HEALTH', href: '/sacramento-healthcare' },
     { name: 'VACATION', href: '/vacation' },
@@ -55,6 +56,7 @@ const Header = () => {
       label: 'Career Tools',
       items: [
         { name: 'CA Move Planner', href: '/ca-move-planner', icon: MapPin, desc: 'Relocation modeling' },
+        { name: 'Care Abroad', href: '/care-abroad', icon: Stethoscope, desc: 'International care planning' },
         { name: 'Paycheck Analyzer', href: '/paycheck-analyzer', icon: Calculator, desc: 'Take-home breakdown' },
         { name: 'Sacramento Health', href: '/sacramento-healthcare', icon: Stethoscope, desc: 'Hospital hub' },
         { name: 'Vacation', href: '/vacation', icon: Plane, desc: 'Trip planning' },
