@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope, ChevronRight, House } from 'lucide-react';
+import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope, ChevronRight, House, Earth } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -53,6 +53,7 @@ const Header = () => {
         { name: 'CA Move Planner', href: '/ca-move-planner', icon: MapPin, desc: 'Relocation modeling' },
         { name: 'Care Abroad', href: '/care-abroad', icon: Stethoscope, desc: 'International care planning' },
         { name: 'Sumerlin Trails', href: '/sumerlin-trails', icon: House, desc: 'Home projects and HOA guide' },
+        { name: 'Kenya Trip', href: '/kenya-trip', icon: Earth, desc: 'UK stop and Nairobi planning' },
         { name: 'Paycheck Analyzer', href: '/paycheck-analyzer', icon: Calculator, desc: 'Take-home breakdown' },
         { name: 'Sacramento Health', href: '/sacramento-healthcare', icon: Stethoscope, desc: 'Hospital hub' },
         { name: 'Vacation', href: '/vacation', icon: Plane, desc: 'Trip planning' },
