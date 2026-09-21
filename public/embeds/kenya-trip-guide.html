@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kenya trip guide: UK stop, then Nairobi</title>
+<style>
+:root{
+  --bg:#eef1ec; --surface:#ffffff; --ink:#12241c; --ink-2:#48594f; --line:#cbd5cd;
+  --green:#0b7a4b; --green-bg:#dcefe4;
+  --amber:#7a4e00; --amber-bg:#fbedc8; --amber-line:#d9a21b;
+  --red:#a3241c; --red-bg:#f8dcd9; --red-line:#c8322b;
+  --focus:#1a5fd0;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1a15; --surface:#16251e; --ink:#e6efe9; --ink-2:#a8b9af; --line:#2c3e35;
+    --green:#4cc58a; --green-bg:#123524;
+    --amber:#f0c05a; --amber-bg:#3a2c0b; --amber-line:#b8862a;
+    --red:#ff9088; --red-bg:#411b18; --red-line:#d9534a;
+    --focus:#7fb0ff;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-text-size-adjust:100%}
+a{color:var(--green);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);line-height:1.2;margin:0;font-weight:700}
+h2{font-size:1.9rem;margin-bottom:.4rem}
+h3{font-size:1.2rem;margin:1.8rem 0 .5rem}
+p{margin:.6rem 0;max-width:68ch}
+ul,ol{padding-left:1.25rem;max-width:68ch}
+li{margin:.3rem 0}
+
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:0 56px;max-width:1120px;margin:0 auto;padding:0 24px}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:32px 0}
+nav.toc a{display:block;padding:6px 12px;color:var(--ink-2);text-decoration:none;border-left:3px solid var(--line);font-size:.95rem}
+nav.toc a[aria-current="true"]{border-left-color:var(--green);color:var(--ink);font-weight:600}
+nav.toc a.sos{color:var(--red);font-weight:600;border-left-color:var(--red-line)}
+main{padding:32px 0 96px;min-width:0}
+section{padding:44px 0 8px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.lede{font-size:1.1rem;color:var(--ink-2)}
+
+/* hero */
+.hero{padding:8px 0 36px}
+.hero h1{font-size:clamp(2.2rem,5.5vw,3.6rem);letter-spacing:-.01em;max-width:16ch}
+.hero .sub{font-size:1.15rem;color:var(--ink-2);max-width:52ch;margin-top:1rem}
+.route{display:grid;grid-template-columns:1fr 1fr 1fr;margin:34px 0 10px;position:relative}
+.route::before{content:"";position:absolute;left:8%;right:8%;top:15px;border-top:3px solid var(--green);z-index:0}
+.route .stop{position:relative;z-index:1;text-align:center;padding:0 8px}
+.route .dot{width:32px;height:32px;border-radius:50%;background:var(--green);border:4px solid var(--bg);margin:0 auto 8px;box-shadow:0 0 0 2px var(--green)}
+.route .stop.open .dot{background:var(--amber-line);box-shadow:0 0 0 2px var(--amber-line)}
+.route b{display:block;font-family:var(--serif);font-size:1.15rem}
+.route span{display:block;font-size:.92rem;color:var(--ink-2)}
+.countdown{display:flex;align-items:baseline;gap:10px;margin-top:22px;flex-wrap:wrap}
+.countdown .n{font-family:var(--serif);font-size:3rem;font-weight:700;color:var(--green);line-height:1}
+.offline-note{font-size:.92rem;color:var(--ink-2);margin-top:14px}
+
+/* callouts */
+.callout{border-left:6px solid var(--amber-line);background:var(--amber-bg);padding:14px 18px;border-radius:2px 10px 10px 2px;margin:20px 0;max-width:76ch}
+.callout.red{border-left-color:var(--red-line);background:var(--red-bg)}
+.callout.green{border-left-color:var(--green);background:var(--green-bg)}
+.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}
+.callout strong.t{font-family:var(--serif);font-size:1.1rem}
+
+.chip{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.85rem;font-weight:700;white-space:nowrap}
+.chip.ok{background:var(--green-bg);color:var(--green)}
+.chip.care{background:var(--amber-bg);color:var(--amber)}
+.chip.no{background:var(--red-bg);color:var(--red)}
+
+/* tables */
+.scroll{overflow-x:auto;margin:16px 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:560px;background:var(--surface);font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--serif);font-size:1rem;background:transparent;border-bottom:2px solid var(--ink)}
+tbody th{font-family:var(--sans);font-size:.95rem;font-weight:600;border-bottom:1px solid var(--line)}
+td.s-ok{border-left:5px solid var(--green)}
+td.s-care{border-left:5px solid var(--amber-line)}
+td.s-no{border-left:5px solid var(--red-line)}
+td .w{display:block;font-weight:700;font-size:.9rem}
+td.s-ok .w{color:var(--green)}td.s-care .w{color:var(--amber)}td.s-no .w{color:var(--red)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.filters button{font:inherit;font-size:.92rem;padding:6px 14px;border-radius:999px;border:1.5px solid var(--ink-2);background:transparent;color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* options columns */
+.options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:18px 0}
+.option{background:var(--surface);padding:16px 18px 18px;border-top:6px solid var(--green)}
+.option.b{border-top-color:var(--amber-line);border-radius:0 0 14px 0}
+.option.c{border-top-color:var(--ink-2);border-radius:0 0 0 14px}
+.option h3{margin:0 0 .4rem;font-size:1.1rem}
+.option p,.option li{font-size:.95rem}
+
+/* timeline */
+.tl-bar{position:relative;height:10px;background:var(--line);border-radius:6px;margin:44px 8px 18px}
+.tl-fill{position:absolute;left:0;top:0;bottom:0;background:var(--green);border-radius:6px;width:0}
+.tl-dot{position:absolute;top:-6px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--surface);border:4px solid var(--green)}
+.tl-dot.past{background:var(--green)}
+.tl-dot.end{border-color:var(--amber-line);background:var(--amber-line)}
+.tl-list{list-style:none;padding:0;margin:0}
+.tl-list li{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.tl-list .d{font-weight:700}
+.tl-list li.past{opacity:.6}
+
+/* flow */
+.flow{list-style:none;margin:18px 0;padding:0;max-width:640px}
+.flow>li{position:relative;padding:0 0 22px 46px;margin:0}
+.flow>li::before{content:"";position:absolute;left:15px;top:32px;bottom:0;border-left:3px solid var(--line)}
+.flow>li:last-child::before{display:none}
+.flow .num{position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700}
+.flow b{display:block;font-family:var(--serif);font-size:1.1rem}
+.flow .else{margin-top:8px;padding:8px 12px;background:var(--red-bg);border-left:4px solid var(--red-line);font-size:.93rem;border-radius:2px 8px 8px 2px}
+
+/* checklist */
+.progress{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0 4px;max-width:420px}
+.progress>div{height:100%;background:var(--green);width:0;transition:width .25s}
+.check-group h3{margin-top:1.6rem}
+.check-group ul{list-style:none;padding:0}
+.check-group li{margin:0}
+.check-group label{display:flex;gap:12px;align-items:flex-start;padding:9px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.check-group input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--green)}
+.check-group input:checked+span{text-decoration:line-through;color:var(--ink-2)}
+
+/* money */
+.conv{display:flex;gap:14px;flex-wrap:wrap;align-items:end;margin:16px 0;padding:16px;background:var(--surface);border-radius:12px 2px 12px 2px;max-width:640px}
+.conv label{display:block;font-size:.9rem;color:var(--ink-2);margin-bottom:4px}
+.conv input{font:inherit;padding:8px 10px;width:150px;border:1.5px solid var(--ink-2);border-radius:6px;background:var(--bg);color:var(--ink)}
+.bars{margin:14px 0;max-width:760px}
+.bar-row{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.bar-row .lab b{display:block;font-size:.95rem}
+.bar-row .lab span{font-size:.85rem;color:var(--ink-2)}
+.track{position:relative;height:16px;background:var(--line);border-radius:8px}
+.range{position:absolute;top:0;bottom:0;background:var(--green);border-radius:8px;min-width:10px}
+
+/* contacts */
+.sos-list{list-style:none;padding:0;margin:16px 0;max-width:760px}
+.sos-list li{display:grid;grid-template-columns:1fr auto;gap:8px 18px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.sos-list b{display:block}
+.sos-list small{color:var(--ink-2)}
+.sos-list a.call{font-weight:700;font-size:1.05rem;text-decoration:none;padding:6px 14px;border:2px solid var(--red-line);border-radius:999px;color:var(--red);white-space:nowrap}
+
+.two-col{columns:2 260px;column-gap:40px;max-width:820px}
+.two-col li{break-inside:avoid}
+.src li{overflow-wrap:anywhere}
+footer{padding:20px 0 60px;color:var(--ink-2);font-size:.9rem;border-top:1px solid var(--line);margin-top:40px}
+
+@media (max-width:900px){
+  .layout{display:block;padding:0 16px}
+  nav.toc{position:sticky;top:0;z-index:10;display:flex;overflow-x:auto;height:auto;padding:0;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px;padding:0 16px}
+  nav.toc a{white-space:nowrap;border-left:0;border-bottom:3px solid transparent;padding:12px 12px}
+  nav.toc a[aria-current="true"]{border-bottom-color:var(--green)}
+  nav.toc a.sos{border-bottom-color:var(--red-line)}
+  main{padding-top:20px}
+  .options{grid-template-columns:1fr}
+  .route{grid-template-columns:1fr;gap:18px}
+  .route::before{left:15px;right:auto;top:10px;bottom:10px;border-top:0;border-left:3px solid var(--green)}
+  .route .stop{text-align:left;padding-left:48px}
+  .route .dot{position:absolute;left:0;top:0;margin:0}
+  .bar-row{grid-template-columns:1fr}
+  .tl-list li{grid-template-columns:90px 1fr}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress>div{transition:none}}
+@media print{
+  nav.toc,.filters,.conv{display:none}
+  .layout{display:block}
+  body{background:#fff;color:#000}
+  section{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc" id="toc" aria-label="Sections">
+  <a href="#plan">The Dec 2 plan</a>
+  <a href="#defense">Self-defense</a>
+  <a href="#safety">Safety on the ground</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#entry">Entry and health</a>
+  <a href="#money">Money</a>
+  <a href="#getting-around">Getting around</a>
+  <a href="#uk">UK leg</a>
+  <a href="#ranges">Shooting ranges</a>
+  <a href="#sources">Sources and gaps</a>
+  <a href="#emergency" class="sos">Emergency numbers</a>
+</nav>
+
+<main>
+
+<header class="hero" id="top">
+  <h1>Kenya trip guide</h1>
+  <p class="sub">A UK stop for Manchester United on December 2, then Nairobi. Built from your ChatGPT research report, with a self-defense and legal section added and one big scheduling problem flagged.</p>
+
+  <div class="route" aria-label="Trip route">
+    <div class="stop"><div class="dot"></div><b>Home, US</b><span>Passport, UK ETA, Kenya eTA</span></div>
+    <div class="stop open"><div class="dot"></div><b>UK, Dec 2</b><span>Newcastle v Man United, 20:00. Not in London.</span></div>
+    <div class="stop"><div class="dot"></div><b>Nairobi</b><span>Level 2 advisory. Buy local gear after landing.</span></div>
+  </div>
+
+  <div class="countdown">
+    <span class="n" id="days">--</span>
+    <span id="days-label">days until December 2</span>
+  </div>
+  <p class="offline-note">This file needs no internet. Save it to your phone or laptop and it will open offline in Kenya. Your checklist ticks are remembered on the same device.</p>
+</header>
+
+<!-- PLAN -->
+<section id="plan">
+  <h2>The December 2 plan needs a decision</h2>
+  <p class="lede">The Premier League schedule lists Wednesday 2 December, 20:00, Newcastle United v Manchester United. That is at St James' Park in Newcastle, about three hours by train from London. The one-day London layover in your report does not fit this match.</p>
+
+  <div class="callout">
+    <p><strong class="t">Why a same-day layover fails</strong></p>
+    <p>The match ends around 22:00, and Newcastle is hours from Heathrow. Kickoff times can be moved for TV, so recheck the week before.</p>
+  </div>
+
+  <div class="options">
+    <div class="option a">
+      <h3>Overnight in Newcastle</h3>
+      <p>Fly into London, take the train north, see the match, sleep there, and fly on to Nairobi the next day.</p>
+      <ul>
+        <li>Keeps your Dec 2 game</li>
+        <li>Adds one to two days in the UK</li>
+        <li>Check for a Newcastle departure through a hub such as Amsterdam or London</li>
+      </ul>
+    </div>
+    <div class="option b">
+      <h3>Pick a London match</h3>
+      <p>Same schedule, London grounds: Crystal Palace v Man United on Saturday 12 December, and Arsenal v Man United on Saturday 19 December.</p>
+      <ul>
+        <li>Fits your one-day London plan</li>
+        <li>Kickoff times not yet set</li>
+        <li>Only works if your dates can move</li>
+      </ul>
+    </div>
+    <div class="option c">
+      <h3>Go straight to Newcastle</h3>
+      <p>Skip London and route directly into Newcastle or Manchester, then continue to Nairobi.</p>
+      <ul>
+        <li>Fewer border crossings</li>
+        <li>Fewer transatlantic flight choices</li>
+        <li>Compare fares and connections</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Prep timeline to December 2</h3>
+  <p>Your report recommends a travel clinic four to eight weeks before departure. This timeline assumes you leave close to Dec 2; shift the dates if you fly earlier.</p>
+  <div class="tl-bar" id="tl-bar" role="img" aria-label="Timeline from today to December 2"><div class="tl-fill" id="tl-fill"></div></div>
+  <ul class="tl-list" id="tl-list"></ul>
+</section>
+
+<!-- DEFENSE -->
+<section id="defense">
+  <h2>Self-defense: what you can carry, and where</h2>
+  <p class="lede">The rules change at every border on your route. What is fine in Kenya can be a serious crime in the UK. Filter the table to see what fits your situation.</p>
+
+  <div class="filters" role="group" aria-label="Filter items">
+    <button type="button" data-filter="all" aria-pressed="true">All items</button>
+    <button type="button" data-filter="ok" aria-pressed="false">Fine everywhere</button>
+    <button type="button" data-filter="care" aria-pressed="false">Needs care</button>
+    <button type="button" data-filter="no" aria-pressed="false">Do not bring</button>
+  </div>
+
+  <div class="scroll">
+  <table id="matrix">
+    <thead><tr><th>Item</th><th>Flying from the US</th><th>UK</th><th>Kenya</th><th>My advice</th></tr></thead>
+    <tbody>
+      <tr data-status="ok"><th>Personal alarm</th>
+        <td class="s-ok"><span class="w">Fine</span>Carry-on works</td>
+        <td class="s-ok"><span class="w">Legal</span>One source says police call alarms the only fully legal product</td>
+        <td class="s-ok"><span class="w">Legal</span>Listed as legal by local guides</td>
+        <td>Bring it. Loud, non-lethal, no legal risk.</td></tr>
+      <tr data-status="ok"><th>Plain flashlight with strobe (500+ lumens)</th>
+        <td class="s-ok"><span class="w">Fine</span>Carry-on works</td>
+        <td class="s-ok"><span class="w">Legal</span>Avoid strike-bezel "tactical" models</td>
+        <td class="s-ok"><span class="w">Legal</span></td>
+        <td>Bring it. A strobe in the eyes can briefly disorient someone.</td></tr>
+      <tr data-status="ok"><th>Door wedge or portable door lock</th>
+        <td class="s-ok"><span class="w">Fine</span></td>
+        <td class="s-ok"><span class="w">Legal</span></td>
+        <td class="s-ok"><span class="w">Legal</span></td>
+        <td>Bring it. Hotel and rental break-ins are usually opportunistic.</td></tr>
+      <tr data-status="ok"><th>Anti-theft bag, decoy wallet</th>
+        <td class="s-ok"><span class="w">Fine</span></td>
+        <td class="s-ok"><span class="w">Legal</span></td>
+        <td class="s-ok"><span class="w">Legal</span></td>
+        <td>Bring it. Locking zippers, slash-resistant strap, a wallet with small cash and an expired card.</td></tr>
+      <tr data-status="care"><th>Pepper spray</th>
+        <td class="s-care"><span class="w">Check</span>Checked bag only, one container up to 4 fl. oz. (118 ml) with a safety mechanism. Some airlines ban it outright.</td>
+        <td class="s-no"><span class="w">Banned</span>Prohibited weapon under Section 5 of the Firearms Act 1968. Prison sentences of up to 10 years.</td>
+        <td class="s-care"><span class="w">Unclear</span>Sources conflict. Some say allowed for self-defense, others say civilians cannot have it.</td>
+        <td>Do not carry it from home. Buy in Nairobi only if legality is confirmed, and leave it there.</td></tr>
+      <tr data-status="no"><th>Taser or stun gun</th>
+        <td class="s-care"><span class="w">Check</span>Not in carry-on</td>
+        <td class="s-no"><span class="w">Banned</span>Prohibited weapon</td>
+        <td class="s-no"><span class="w">Banned</span>Classified as a firearm needing a permit</td>
+        <td>Skip. A tourist cannot get the permit.</td></tr>
+      <tr data-status="no"><th>Firearms</th>
+        <td class="s-no"><span class="w">No</span>Needs permits you will not have</td>
+        <td class="s-no"><span class="w">Banned</span></td>
+        <td class="s-no"><span class="w">Banned</span>A US carry permit is not valid there</td>
+        <td>Not an option. Use a supervised range for practice (see the ranges section).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p id="matrix-empty" hidden>No items in this category.</p>
+
+  <h3>If you want a pepper spray: the safe order of steps</h3>
+  <ol class="flow">
+    <li><span class="num">1</span><b>Confirm it is legal to carry in Kenya</b>
+      <p>Ask the Kenyan embassy or consulate, your tour operator, or a licensed local security firm. Get the answer in writing if you can. I found no authoritative Kenyan source; the blogs disagree.</p>
+      <div class="else">Not confirmed, or a vague answer: skip the spray. Rely on the alarm and strobe flashlight.</div></li>
+    <li><span class="num">2</span><b>Buy it in Nairobi after you land</b>
+      <p>From a shop that gives a receipt, not from home. This avoids airline bans and the UK border on the way in.</p></li>
+    <li><span class="num">3</span><b>Carry it where you can reach it</b>
+      <p>A spray at the bottom of a bag does nothing. Keep it out of stadiums, airports, and any government building.</p></li>
+    <li><span class="num">4</span><b>Leave it behind before you fly out</b>
+      <p>Give it to your host or dispose of it. Never put it in luggage that passes through the UK, or through any airport you have not checked.</p></li>
+  </ol>
+
+  <div class="callout red">
+    <p><strong class="t">The UK is the trap</strong></p>
+    <p>One American student wrote that she forgot pepper spray in her purse and had it confiscated at Parliament's security check, then waited for police. Nothing you buy for Kenya should touch UK soil.</p>
+  </div>
+
+  <h3>Reality check on non-lethal tools</h3>
+  <p>None of these is a guaranteed attacker-stopper. Sprays fail in wind or at the wrong range, and a person who is high can keep coming. For a plain mugging, handing over a decoy wallet is usually safer than fighting. The alarm, strobe, and spray matter in the worse cases, where you are being grabbed, dragged toward a car, or targeted for kidnapping. A short self-defense class before you go matters more than any gadget, because a tool you have not practiced with can be taken and used against you.</p>
+</section>
+
+<!-- SAFETY -->
+<section id="safety">
+  <h2>Safety on the ground</h2>
+  <div class="callout">
+    <p><strong class="t">US advisory: Level 2, Exercise Increased Caution</strong></p>
+    <p>Renewed July 28, 2026, citing crime, kidnapping, terrorism, unrest, health, and traffic safety. Demonstrations in Nairobi and other cities since 2024 have at times turned violent, and a transport strike in May 2026 stopped movement for nearly two days.</p>
+  </div>
+
+  <h3>Places the advisory says not to go</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Area</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td class="s-no"><span class="w">Do not travel</span>Nairobi neighborhoods of Eastleigh and Kibera</td><td>Crime and kidnapping</td></tr>
+      <tr><td class="s-no"><span class="w">Do not travel</span>Garissa, Wajir, Mandera, Lamu, Tana River (except Tsavo National Park), Kilifi north of highway C103, and coastal areas north of Malindi</td><td>Kidnapping and terrorism</td></tr>
+      <tr><td class="s-no"><span class="w">Do not travel</span>West Pokot County and western Turkana County</td><td>Crime</td></tr>
+      <tr><td class="s-care"><span class="w">Increased caution</span>Everywhere else, including central Nairobi</td><td>Crime, unrest, traffic</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>What to do in each situation</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Situation</th><th>Do</th><th>Avoid</th></tr></thead>
+    <tbody>
+      <tr><th>Robbery of phone or wallet</th><td>Hand over the decoy wallet. Older OSAC guidance says do not physically resist a robbery.</td><td>Reaching for a weapon or spray. It can escalate a robbery that would otherwise end quickly.</td></tr>
+      <tr><th>Grabbed, dragged, or pushed toward a vehicle</th><td>Alarm, shout, strobe in the eyes, run toward crowds and lit places.</td><td>Going quietly. This is the case where fighting back matters.</td></tr>
+      <tr><th>Ride-hailing</th><td>Match the driver, plate, and car to the app. Share your live location with someone at home.</td><td>Cancelling the app ride to continue privately with the driver.</td></tr>
+      <tr><th>Walking</th><td>Use ride-hailing after dark. Keep phones and cameras out of sight near roads and open car windows.</td><td>Walking unfamiliar areas at night, and wearing expensive jewelry.</td></tr>
+      <tr><th>Demonstrations</th><td>Leave early and change plans. Monitor local media.</td><td>Large political gatherings.</td></tr>
+      <tr><th>Afterward</th><td>Move somewhere public and call 999 or 112. Then contact the US Embassy.</td><td>Confronting the attacker.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Road traffic is a bigger statistical risk than crime. Kenya drives on the left; wear a seat belt and avoid unsafe vehicles.</p>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+  <h2>Pre-departure checklist</h2>
+  <p class="lede">Tap to tick items off. Your progress stays on this device.</p>
+  <div class="progress" aria-hidden="true"><div id="prog"></div></div>
+  <p id="prog-text" style="margin:0;color:var(--ink-2);font-size:.92rem"></p>
+  <div id="check-root"></div>
+</section>
+
+<!-- ENTRY AND HEALTH -->
+<section id="entry">
+  <h2>Entry, embassies, and health</h2>
+
+  <h3>Kenya</h3>
+  <ul>
+    <li>Apply for the Kenya eTA online before you fly unless you are exempt. It asks for passport details, a selfie, itinerary, accommodation, and payment. Save the approval PDF offline and print a copy.</li>
+    <li>Your passport needs at least 6 months of validity after arrival and a blank page.</li>
+    <li>Yellow fever proof may be required if you arrive from a country with transmission risk. Arriving from the UK does not trigger that.</li>
+  </ul>
+
+  <h3>United Kingdom</h3>
+  <ul>
+    <li>A US traveler entering the UK normally needs a UK ETA. The fee is GBP 20. Apply only through the official website or app.</li>
+    <li>Staying airside during a layover may differ. If you leave the airport at all, get the ETA.</li>
+  </ul>
+
+  <h3>Tell the US government</h3>
+  <p>Enroll both the UK and Kenya in STEP, with dates and lodging. It sends embassy security, demonstration, health, and advisory alerts, and helps locate you in an emergency. Also buy travel insurance that covers emergency evacuation.</p>
+
+  <h3>Vaccines and prevention for Kenya</h3>
+  <p>This is a preparation checklist drawn from the CDC positions in your report, not an individualized prescription. A travel-medicine clinician should tailor it to your exact destinations. For a Nairobi-only trip the picture is simpler; adding a safari or coast changes it.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Vaccine or measure</th><th>CDC position for Kenya</th><th>When it matters most</th></tr></thead>
+    <tbody>
+      <tr><th>Routine and MMR</th><td>Be current on routine immunizations, and fully vaccinated against measles.</td><td>All travelers</td></tr>
+      <tr><th>Hepatitis A</th><td>Recommended for unvaccinated travelers age 1 and older.</td><td>Food and water exposure, even on standard trips</td></tr>
+      <tr><th>Typhoid</th><td>Recommended for most travelers.</td><td>Smaller cities, rural areas, eating broadly outside major hotels</td></tr>
+      <tr><th>Hepatitis B</th><td>Recommended for unvaccinated travelers under 60; may be considered for age 60 and older.</td><td>Medical care, body-fluid exposure, tattoos, longer stays</td></tr>
+      <tr><th>Yellow fever</th><td>Recommended for many Kenyan areas, generally not for Nairobi-only travel. Entry certificate depends on where you arrive from.</td><td>Safari and travel beyond Nairobi</td></tr>
+      <tr><th>Malaria prophylaxis</th><td>Recommended for many areas below 2,500 m including game parks. Central Nairobi generally does not need it, but mosquito precautions still matter.</td><td>Safari, coast, rural and lower-altitude travel</td></tr>
+      <tr><th>Rabies pre-exposure</th><td>Consider based on animal exposure and access to prompt post-exposure care.</td><td>Remote travel, long stays, animal contact</td></tr>
+      <tr><th>Meningococcal ACWY</th><td>Recommended for meningitis-belt areas in the dry season, roughly December to June.</td><td>Northern areas</td></tr>
+      <tr><th>Cholera</th><td>May be considered for selected travelers to active transmission areas.</td><td>Specific outbreaks; usually not routine for Nairobi tourism</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Medications and supplies</h3>
+  <ul class="two-col">
+    <li>All prescriptions in original labeled containers, enough for the trip plus a delay buffer</li>
+    <li>A printed and digital medication list with generic names, doses, and allergies</li>
+    <li>Copies of prescriptions for medications and glasses or contacts</li>
+    <li>Acetaminophen or ibuprofen, an antihistamine, motion-sickness medication if you use it</li>
+    <li>Oral rehydration salts; bismuth subsalicylate or loperamide only where safe for you</li>
+    <li>Discuss a standby antibiotic for significant traveler's diarrhea with your clinician</li>
+    <li>Malaria prophylaxis if your route includes risk areas, filled before you leave</li>
+    <li>DEET or picaridin repellent, sunscreen, hand sanitizer, wound-care and blister supplies, tweezers, thermometer</li>
+    <li>Documentation for injectables, controlled substances, or epinephrine, and check Kenyan and UK import rules</li>
+  </ul>
+</section>
+
+<!-- MONEY -->
+<section id="money">
+  <h2>Money and payments</h2>
+  <div class="callout green">
+    <p><strong class="t">Payment setup</strong></p>
+    <p>A no-foreign-fee Visa, a backup Mastercard or second card, a debit or ATM card kept separately, Apple Pay or Google Pay, TouristTap, and a modest amount of Kenyan shillings. Do not depend on a single card.</p>
+  </div>
+
+  <h3>Ways to pay in shillings without a Kenyan bank account</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Option</th><th>How it works</th><th>Limitation</th></tr></thead>
+    <tbody>
+      <tr><th>TouristTap</th><td>Kenya Tourism Ministry-backed system. Pay local merchants by international card; they receive shillings.</td><td>Newer platform, merchant coverage still growing.</td></tr>
+      <tr><th>Visa or Mastercard contactless</th><td>Merchant charges in KES, your issuer converts.</td><td>Foreign transaction fees unless your card has none.</td></tr>
+      <tr><th>Pesapal Mobile, Visa QR</th><td>Link a Visa card for scan-to-pay.</td><td>Acceptance and app support are not universal.</td></tr>
+      <tr><th>M-PESA</th><td>Kenya's main mobile wallet.</td><td>Needs Safaricom setup; a foreign Visa is not the simplest way to fund it.</td></tr>
+      <tr><th>I&amp;M Safari prepaid card</th><td>Kenyan prepaid Visa.</td><td>Loading is mainly through I&amp;M channels or M-Pesa.</td></tr>
+      <tr><th>Wise and Revolut, US-issued</th><td>Normally good travel-money options elsewhere.</td><td class="s-no"><span class="w">Do not rely on them</span>Both list Kenya as an excluded country for US cards.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Cash</h3>
+  <ul>
+    <li>Do not exchange a large amount of shillings in the US. A Kenyan bank ATM or authorized bureau is usually more practical.</li>
+    <li>If a terminal or ATM offers to charge you in USD, decline and choose KES in Kenya or GBP in the UK.</li>
+    <li>A working backup of KSh 10,000 to 20,000 suits many travelers. Any US bills you carry should generally be post-2014 and in clean condition.</li>
+  </ul>
+
+  <h3>Currency converter</h3>
+  <div class="conv">
+    <div><label for="rate">Shillings per US dollar</label><input id="rate" type="number" step="0.001" value="129.329" inputmode="decimal"></div>
+    <div><label for="usd">US dollars</label><input id="usd" type="number" value="100" inputmode="decimal"></div>
+    <div><label for="kes">Kenyan shillings</label><input id="kes" type="number" inputmode="decimal"></div>
+  </div>
+  <p style="font-size:.92rem;color:var(--ink-2)">Default rate is from your report, dated 20 September 2026. Update it before you travel.</p>
+
+  <h3>What things cost in Nairobi</h3>
+  <p>Bars show the low to high range on one shared scale. Figures come from Numbeo and BestKenya, third-party estimates, so treat them as rough.</p>
+  <div class="bars" id="bars"></div>
+</section>
+
+<!-- GETTING AROUND -->
+<section id="getting-around">
+  <h2>Getting around, power, and apps</h2>
+
+  <h3>Ride-hailing in Nairobi</h3>
+  <ul>
+    <li>Uber and Bolt both operate, and Little is a Kenyan alternative. Bolt is useful for comparing fares.</li>
+    <li>Match the driver, license plate, and vehicle before you get in. Do not cancel an app ride to continue privately.</li>
+    <li>Allow large time buffers for traffic, especially at rush hour, in rain, and on airport trips.</li>
+  </ul>
+
+  <h3>Power</h3>
+  <p>The UK and Kenya both use Type G plugs, so one UK-style adapter works in both. Mains is around 230 V in the UK and 240 V in Kenya, both 50 Hz. If a charger says "INPUT 100-240 V, 50/60 Hz," you only need a plug adapter. A US-only 120 V hair dryer or heater cannot be plugged in directly.</p>
+
+  <h3>Apps to install and sign into before you leave</h3>
+  <p>Sign in while you still have US SMS access, and download offline Google Maps areas for London or Newcastle and Nairobi.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>App</th><th>Where</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><th>Google Maps (offline areas)</th><td>UK and Kenya</td><td>Navigation without data</td></tr>
+      <tr><th>WhatsApp</th><td>Kenya especially</td><td>Hotels, drivers, and tour operators use it</td></tr>
+      <tr><th>Uber</th><td>UK and Kenya</td><td>Ride-hailing</td></tr>
+      <tr><th>Bolt and Little</th><td>Kenya</td><td>Fare comparison and local ride-hailing</td></tr>
+      <tr><th>TouristTap</th><td>Kenya</td><td>Card payments to Kenyan merchants</td></tr>
+      <tr><th>Pesapal Mobile</th><td>Kenya</td><td>Visa QR pay; verify current app availability</td></tr>
+      <tr><th>MySafaricom and M-PESA</th><td>Kenya</td><td>After you get a Safaricom SIM</td></tr>
+      <tr><th>Kenya eTA</th><td>Kenya</td><td>Save and retrieve your approval</td></tr>
+      <tr><th>UK ETA app</th><td>UK</td><td>Official ETA application</td></tr>
+      <tr><th>TfL Go, Citymapper, National Rail</th><td>UK</td><td>London and national rail planning</td></tr>
+      <tr><th>Your airline and bank apps</th><td>Both</td><td>Boarding passes, delays, fraud alerts, card lock</td></tr>
+      <tr><th>Jumia</th><td>Kenya</td><td>Online marketplace, useful for local gear; Carrefour is the hypermarket option</td></tr>
+      <tr><th>Google or Apple Translate</th><td>Both</td><td>English is widely used in Kenya, but Swahili phrases help</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- UK LEG -->
+<section id="uk">
+  <h2>The UK leg</h2>
+  <div class="callout">
+    <p>Which of these applies depends on the option you pick in the December 2 plan.</p>
+  </div>
+
+  <h3>If you overnight in Newcastle</h3>
+  <ul>
+    <li>Fly into London (or a closer airport), take the train north, and stay overnight. I could not confirm current train times or fares, so book through an official rail source.</li>
+    <li>Away tickets for Man United are hard to get. Use the club's official hospitality or official resale, because ticket scams are common.</li>
+    <li>Wear neutral clothing in home-fan areas and pubs.</li>
+    <li>Leave any alarm, flashlight, or spray at your hotel on match day and check the club's prohibited-items list.</li>
+    <li>Get your UK ETA (GBP 20) before you fly.</li>
+  </ul>
+
+  <h3>If you do a one-day London stop instead</h3>
+  <ul>
+    <li>A layover of about 10 to 12 hours or more gives real margin. Six to eight hours is tight for immigration, travel into the city, and re-clearing security.</li>
+    <li>The Elizabeth line is usually the easiest rail connection from Heathrow to central London. Heathrow Express is faster to Paddington but costs more.</li>
+    <li>Contactless Visa, Mastercard, or Apple Pay works on TfL. Tap in and out with the same card or device.</li>
+    <li>A compact route: Westminster and Big Ben, Westminster Abbey, Buckingham Palace, Trafalgar Square, Covent Garden. Avoid criss-crossing the city.</li>
+  </ul>
+</section>
+
+<!-- RANGES -->
+<section id="ranges">
+  <h2>Shooting ranges in Kenya</h2>
+  <div class="callout red">
+    <p>A US carry permit or firearm license does not authorize possession, purchase, import, or carry in Kenya. For a visitor, supervised range use with range-provided equipment is far simpler than trying to bring or acquire a firearm. Confirm eligibility directly with the Kenyan Firearms Licensing Board.</p>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Contact or range</th><th>Details</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><th>Firearms Licensing Board</th><td>info@firearms.or.ke, +254 20 2000219 or +254 20 2100525</td><td>Official licensing authority. Confirm current rules.</td></tr>
+      <tr><th>JCK Target Practice Range, Ngong Racecourse</th><td>+254 742 596 421, jckshootingrange@gmail.com</td><td>Licensed, six bays, licensed range and safety officers. Tuesday to Sunday, 8am to 6pm.</td></tr>
+      <tr><th>Kenya Regiment Rifle Club</th><td>Contact the club</td><td>Confirm visitor access first.</td></tr>
+      <tr><th>NGAO Kenya and IDPA range, Kirigiti, Kiambu</th><td>+254 769 707323</td><td>Outdoor range. Confirm visitor access.</td></tr>
+      <tr><th>Kenya Bunduki range</th><td>Through its official page</td><td>Indoor range. Verify current public access.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>These contacts come from your ChatGPT report and I did not independently confirm them. Call ahead.</p>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <h2>Sources and what I could not verify</h2>
+
+  <div class="callout">
+    <p><strong class="t">Open questions</strong></p>
+    <ul>
+      <li>Pepper spray in Kenya: local sources conflict and I found no authoritative legal text.</li>
+      <li>Kenyan customs rules for importing any self-defense item.</li>
+      <li>Which airlines allow pepper spray. Rules differ by carrier, and some ban it entirely.</li>
+      <li>Whether Carrefour or Jumia stock each item I suggest.</li>
+      <li>Train times to Newcastle and connections out of Newcastle.</li>
+      <li>The Dec 2 kickoff time. It is from the schedule and can change.</li>
+      <li>Nairobi prices and the exchange rate. These are estimates from your report.</li>
+      <li>I did not find or vet any videos, so none are included.</li>
+    </ul>
+  </div>
+
+  <h3>Official links</h3>
+  <ul class="src two-col">
+    <li><a href="https://etakenya.go.ke/">Kenya eTA</a></li>
+    <li><a href="https://www.gov.uk/eta">UK ETA</a></li>
+    <li><a href="https://step.state.gov/">STEP enrollment</a></li>
+    <li><a href="https://travel.state.gov/en/international-travel/travel-advisories/kenya.html">US State Department: Kenya</a></li>
+    <li><a href="https://travel.state.gov/en/international-travel/travel-advisories/united-kingdom.html">US State Department: UK</a></li>
+    <li><a href="https://ke.usembassy.gov/">US Embassy Kenya</a></li>
+    <li><a href="https://wwwnc.cdc.gov/travel/destinations/traveler/vfr/kenya">CDC: Kenya traveler health</a></li>
+    <li><a href="https://www.cdc.gov/malaria/travelers/country_table/k.html">CDC: malaria in Kenya</a></li>
+    <li><a href="https://www.gov.uk/foreign-travel-advice/kenya/entry-requirements">UK FCDO: Kenya entry</a></li>
+    <li><a href="https://www.tsa.gov/travel/security-screening/whatcanibring/items/pepper-spray">TSA: pepper spray</a></li>
+    <li><a href="https://www.tourism.go.ke/tap-into-kenya-tourist-tap-17-4-2026/">Kenya Ministry of Tourism: TouristTap</a></li>
+    <li><a href="https://firearms.ecitizen.go.ke/">Kenya Firearms Licensing Board</a></li>
+    <li><a href="https://new.kenyalaw.org/akn/ke/act/1953/40">Kenya Firearms Act</a></li>
+    <li><a href="https://www.premierleague.com/en/news/4675130/all-of-manchester-uniteds-fixtures-for-202627-premier-league-season">Man United 2026/27 fixtures</a></li>
+    <li><a href="https://tfl.gov.uk/travel-information/visiting-london/getting-around-london/best-ways-for-visitors-to-pay">TfL: paying as a visitor</a></li>
+    <li><a href="https://tfl.gov.uk/modes/elizabeth-line/getting-to-and-from-heathrow-on-the-elizabeth-line">TfL: Elizabeth line from Heathrow</a></li>
+  </ul>
+  <h3>Health and evacuation</h3>
+  <ul class="src two-col">
+    <li><a href="https://hospitals.aku.edu/nairobi/Departments/Pages/emergency.aspx">Aga Khan Nairobi emergency</a></li>
+    <li><a href="https://amref.org/contacts/">AMREF Flying Doctors</a></li>
+  </ul>
+</section>
+
+<!-- EMERGENCY -->
+<section id="emergency">
+  <h2>Emergency numbers</h2>
+  <p>Save these in your phone before you fly. Tap a number to call.</p>
+  <ul class="sos-list">
+    <li><div><b>Kenya police and emergency services</b><small>Ambulance response can be variable</small></div><a class="call" href="tel:999">999</a></li>
+    <li><div><b>Kenya, alternate emergency line</b></div><a class="call" href="tel:112">112</a></li>
+    <li><div><b>US Embassy Nairobi</b><small>Main and after-hours line. kenya_acs@state.gov</small></div><a class="call" href="tel:+254203636000">+254 20 363 6000</a></li>
+    <li><div><b>Aga Khan University Hospital, adult A&amp;E</b><small>24-hour emergency department, Nairobi</small></div><a class="call" href="tel:+254203662021">+254 20 366 2021</a></li>
+    <li><div><b>AMREF Flying Doctors</b><small>Emergency evacuation. emergency@flydoc.org</small></div><a class="call" href="tel:+254733639088">+254 733 639 088</a></li>
+    <li><div><b>UK emergency services</b><small>Police, fire, ambulance</small></div><a class="call" href="tel:999">999</a></li>
+    <li><div><b>US Embassy London</b><small>Main and after-hours switchboard</small></div><a class="call" href="tel:+442074999000">+44 20 7499 9000</a></li>
+    <li><div><b>US State Department, from overseas</b><small>Urgent consular help</small></div><a class="call" href="tel:+12025014444">+1 202 501 4444</a></li>
+  </ul>
+</section>
+
+<footer>
+  Prepared September 20, 2026 from your research report plus additional research on self-defense rules, the fixture schedule, and the current advisory. Entry rules, advisories, prices, and hours change, so recheck official sources shortly before you travel. This is a planning aid, not legal or medical advice.
+</footer>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var TARGET = new Date(2026, 11, 2);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var DAY = 86400000;
+
+  /* countdown */
+  var days = Math.round((TARGET - today) / DAY);
+  var dEl = document.getElementById('days');
+  var dLab = document.getElementById('days-label');
+  if (days > 0) { dEl.textContent = days; dLab.textContent = days === 1 ? 'day until December 2' : 'days until December 2'; }
+  else if (days === 0) { dEl.textContent = 'Today'; dLab.textContent = 'is December 2'; }
+  else { dEl.textContent = '0'; dLab.textContent = 'December 2 has passed'; }
+
+  /* prep timeline */
+  function fmt(d){ return d.toLocaleDateString('en-US', {month:'short', day:'numeric'}); }
+  var miles = [
+    {d:new Date(2026,9,7),  s:'Eight weeks out. Book your travel-clinic visit.'},
+    {d:new Date(2026,10,4), s:'Four weeks out. Vaccines and malaria plan done.'},
+    {d:new Date(2026,10,25),s:'One week out. Recheck the advisory, kickoff time, and rates. Download offline maps.'},
+    {d:TARGET,              s:'Match day.', end:true}
+  ];
+  var span = Math.max(TARGET - today, DAY);
+  var bar = document.getElementById('tl-bar');
+  var list = document.getElementById('tl-list');
+  var fill = document.getElementById('tl-fill');
+  var passedAll = today >= TARGET;
+  fill.style.width = passedAll ? '100%' : '0%';
+  miles.forEach(function(m){
+    var pct = Math.min(100, Math.max(0, ((m.d - today) / span) * 100));
+    var isPast = m.d < today;
+    var dot = document.createElement('div');
+    dot.className = 'tl-dot' + (isPast ? ' past' : '') + (m.end ? ' end' : '');
+    dot.style.left = pct + '%';
+    bar.appendChild(dot);
+    var li = document.createElement('li');
+    if (isPast) li.className = 'past';
+    li.innerHTML = '<span class="d">' + fmt(m.d) + '</span><span>' + m.s + '</span>';
+    list.appendChild(li);
+  });
+
+  /* legal filter */
+  var btns = document.querySelectorAll('.filters button');
+  var rows = document.querySelectorAll('#matrix tbody tr');
+  var empty = document.getElementById('matrix-empty');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var f = b.getAttribute('data-filter');
+      btns.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      var shown = 0;
+      rows.forEach(function(r){
+        var show = f === 'all' || r.getAttribute('data-status') === f;
+        r.hidden = !show; if (show) shown++;
+      });
+      empty.hidden = shown !== 0;
+    });
+  });
+
+  /* checklist */
+  var groups = [
+    {t:'Documents', items:[
+      'Passport valid 6+ months after arrival, with a blank page',
+      'Kenya eTA approved, PDF saved offline and printed',
+      'UK ETA approved (GBP 20) if you will pass UK border control',
+      'Enrolled in STEP for the UK and Kenya',
+      'Copies of passport and prescriptions, stored separately'
+    ]},
+    {t:'Health', items:[
+      'Travel-clinic visit booked with your exact itinerary',
+      'Routine vaccines, hepatitis A, and typhoid reviewed',
+      'Malaria plan decided (depends on whether you leave Nairobi)',
+      'Travel insurance with emergency evacuation',
+      'Medications in labeled containers plus a medication list'
+    ]},
+    {t:'Money', items:[
+      'No-foreign-fee Visa, backup Mastercard, and a separate debit card',
+      'TouristTap installed and set up',
+      'Some Kenyan shillings for backup (KSh 10,000 to 20,000 is a typical range)',
+      'Bank and card apps signed in while you have US SMS access'
+    ]},
+    {t:'Tech and power', items:[
+      'Offline maps for the UK stop and Nairobi',
+      'Uber, Bolt, Little, WhatsApp installed and signed in',
+      'Type G adapter; every charger says 100-240 V',
+      'Emergency numbers saved in your phone',
+      'This guide saved to your phone for offline use'
+    ]},
+    {t:'Safety kit', items:[
+      'Personal alarm',
+      'Bright strobe flashlight (plain, not strike-bezel)',
+      'Door wedge or portable door lock',
+      'Anti-theft bag and a decoy wallet',
+      'Decided about pepper spray (only after confirming Kenyan legality; buy there, leave it there)',
+      'Dec 2 plan chosen and tickets bought from an official source'
+    ]}
+  ];
+  var KEY = 'kenya-guide-checks-v1';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { saved = {}; }
+  var root = document.getElementById('check-root');
+  var total = 0;
+  groups.forEach(function(g, gi){
+    var div = document.createElement('div'); div.className = 'check-group';
+    var h = document.createElement('h3'); h.textContent = g.t; div.appendChild(h);
+    var ul = document.createElement('ul');
+    g.items.forEach(function(txt, ii){
+      var id = 'c' + gi + '_' + ii; total++;
+      var li = document.createElement('li');
+      var lab = document.createElement('label');
+      var inp = document.createElement('input'); inp.type = 'checkbox'; inp.id = id; inp.checked = !!saved[id];
+      var sp = document.createElement('span'); sp.textContent = txt;
+      inp.addEventListener('change', function(){
+        saved[id] = inp.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e) {}
+        updateProgress();
+      });
+      lab.appendChild(inp); lab.appendChild(sp); li.appendChild(lab); ul.appendChild(li);
+    });
+    div.appendChild(ul); root.appendChild(div);
+  });
+  function updateProgress(){
+    var done = root.querySelectorAll('input:checked').length;
+    document.getElementById('prog').style.width = (total ? (done / total * 100) : 0) + '%';
+    document.getElementById('prog-text').textContent = done + ' of ' + total + ' done';
+  }
+  updateProgress();
+
+  /* converter and price bars */
+  var rateEl = document.getElementById('rate');
+  var usdEl = document.getElementById('usd');
+  var kesEl = document.getElementById('kes');
+  function rate(){ var r = parseFloat(rateEl.value); return r > 0 ? r : 129.329; }
+  function n(x, d){ return x.toLocaleString('en-US', {maximumFractionDigits: d}); }
+  function fromUsd(){ var u = parseFloat(usdEl.value); kesEl.value = isNaN(u) ? '' : Math.round(u * rate() * 100) / 100; }
+  function fromKes(){ var k = parseFloat(kesEl.value); usdEl.value = isNaN(k) ? '' : Math.round(k / rate() * 100) / 100; }
+  usdEl.addEventListener('input', fromUsd);
+  kesEl.addEventListener('input', fromKes);
+  rateEl.addEventListener('input', function(){ fromUsd(); drawBars(); });
+  fromUsd();
+
+  var costs = [
+    ['Inexpensive restaurant meal', 700, 1000],
+    ['Local or casual meal', 500, 1200],
+    ['Mid-range dinner for two', 4500, 4500],
+    ['Cappuccino', 320, 320],
+    ['Short Uber or Bolt ride', 350, 700],
+    ['Airport (JKIA) to central Nairobi', 1200, 2000],
+    ['Basic grocery run', 1500, 4000]
+  ];
+  var MAX = 4500;
+  var barsEl = document.getElementById('bars');
+  function drawBars(){
+    var r = rate(); barsEl.innerHTML = '';
+    costs.forEach(function(c){
+      var single = c[1] === c[2];
+      var left = (c[1] / MAX) * 100;
+      var width = single ? 0 : ((c[2] - c[1]) / MAX) * 100;
+      var kesTxt = single ? 'About KSh ' + n(c[1], 0) : 'KSh ' + n(c[1], 0) + ' to ' + n(c[2], 0);
+      var usdTxt = single ? '$' + n(c[1] / r, 2) : '$' + n(c[1] / r, 2) + ' to $' + n(c[2] / r, 2);
+      var row = document.createElement('div'); row.className = 'bar-row';
+      row.innerHTML = '<div class="lab"><b>' + c[0] + '</b><span>' + kesTxt + ' (' + usdTxt + ')</span></div>' +
+        '<div class="track" role="img" aria-label="' + c[0] + ': ' + kesTxt + '"><div class="range" style="left:' + left + '%;width:' + (single ? 1.2 : width) + '%"></div></div>';
+      barsEl.appendChild(row);
+    });
+  }
+  drawBars();
+
+  /* nav highlight */
+  var links = document.querySelectorAll('nav.toc a');
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(a){ a.removeAttribute('aria-current'); });
+          var a = map[e.target.id]; if (a) a.setAttribute('aria-current', 'true');
+        }
+      });
+    }, {rootMargin: '-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){ var s = document.getElementById(id); if (s) io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
