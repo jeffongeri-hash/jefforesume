@@ -72,6 +72,8 @@ interface DirectiveEntry {
   organ_donation: ScenarioAnswer;
   surrogate_decision_maker: string;
   additional_notes: string;
+  life_insurance: string;
+  disability_insurance: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -99,6 +101,8 @@ const emptyEntry = (): DirectiveEntry => ({
   organ_donation: emptyScenario(),
   surrogate_decision_maker: "",
   additional_notes: "",
+  life_insurance: "",
+  disability_insurance: "",
 });
 
 // ---------------------------------------------------------------------------
