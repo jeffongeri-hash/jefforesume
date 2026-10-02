@@ -53,6 +53,84 @@ export type Database = {
         }
         Relationships: []
       }
+      family_directives: {
+        Row: {
+          additional_notes: string | null
+          allergies: string | null
+          care_setting: Json | null
+          coma_pvs: Json | null
+          cpr: Json | null
+          created_at: string
+          date_of_birth: string | null
+          dementia: Json | null
+          dialysis: Json | null
+          emergency_contacts: Json | null
+          financial_burden: Json | null
+          id: string
+          medications: string | null
+          nutrition_hydration: Json | null
+          organ_donation: Json | null
+          pain_vs_alertness: Json | null
+          person_name: string
+          primary_care_physician: string | null
+          relationship: string | null
+          stroke_paralysis: Json | null
+          surrogate_decision_maker: string | null
+          updated_at: string
+          ventilation: Json | null
+        }
+        Insert: {
+          additional_notes?: string | null
+          allergies?: string | null
+          care_setting?: Json | null
+          coma_pvs?: Json | null
+          cpr?: Json | null
+          created_at?: string
+          date_of_birth?: string | null
+          dementia?: Json | null
+          dialysis?: Json | null
+          emergency_contacts?: Json | null
+          financial_burden?: Json | null
+          id?: string
+          medications?: string | null
+          nutrition_hydration?: Json | null
+          organ_donation?: Json | null
+          pain_vs_alertness?: Json | null
+          person_name: string
+          primary_care_physician?: string | null
+          relationship?: string | null
+          stroke_paralysis?: Json | null
+          surrogate_decision_maker?: string | null
+          updated_at?: string
+          ventilation?: Json | null
+        }
+        Update: {
+          additional_notes?: string | null
+          allergies?: string | null
+          care_setting?: Json | null
+          coma_pvs?: Json | null
+          cpr?: Json | null
+          created_at?: string
+          date_of_birth?: string | null
+          dementia?: Json | null
+          dialysis?: Json | null
+          emergency_contacts?: Json | null
+          financial_burden?: Json | null
+          id?: string
+          medications?: string | null
+          nutrition_hydration?: Json | null
+          organ_donation?: Json | null
+          pain_vs_alertness?: Json | null
+          person_name?: string
+          primary_care_physician?: string | null
+          relationship?: string | null
+          stroke_paralysis?: Json | null
+          surrogate_decision_maker?: string | null
+          updated_at?: string
+          ventilation?: Json | null
+        }
+        Relationships: []
+      }
       holdings: {
         Row: {
           asset_type: string | null

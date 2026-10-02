@@ -36,6 +36,7 @@ const CareAbroad = lazy(() => import("./pages/CareAbroad"));
 const CareAbroadTimeline = lazy(() => import("./pages/CareAbroadTimeline"));
 const SumerlinTrails = lazy(() => import("./pages/SumerlinTrails"));
 const KenyaTrip = lazy(() => import("./pages/KenyaTrip"));
+const FamilyDirective = lazy(() => import("./pages/FamilyDirective"));
 const PaycheckAnalyzer = lazy(() => import("./pages/PaycheckAnalyzer"));
 const SacramentoHealthcareHub = lazy(() => import("./pages/SacramentoHealthcareHub"));
 const CoveredCallMaster = lazy(() => import("./pages/CoveredCallMaster"));
@@ -83,6 +84,7 @@ const App = () => (
                 <Route path="/care-abroad/timeline" element={<CareAbroadTimeline />} />
                 <Route path="/sumerlin-trails" element={<SumerlinTrails />} />
                 <Route path="/kenya-trip" element={<KenyaTrip />} />
+                <Route path="/family-directive" element={<FamilyDirective />} />
                 <Route path="/paycheck-analyzer" element={<PaycheckAnalyzer />} />
                 <Route path="/sacramento-healthcare" element={<SacramentoHealthcareHub />} />
                 <Route path="/covered-call-master" element={<CoveredCallMaster />} />
