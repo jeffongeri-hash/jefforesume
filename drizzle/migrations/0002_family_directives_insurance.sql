@@ -1,0 +1,1 @@
+ALTER TABLE public.family_directives ADD COLUMN life_insurance text, ADD COLUMN disability_insurance text;

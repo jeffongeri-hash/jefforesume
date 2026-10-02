@@ -10,7 +10,7 @@ const json = (b: unknown, s = 200) =>
 const FIELDS = [
   "person_name","relationship","date_of_birth","primary_care_physician","emergency_contacts","medications","allergies",
   "cpr","ventilation","nutrition_hydration","dialysis","coma_pvs","stroke_paralysis","dementia","pain_vs_alertness",
-  "care_setting","financial_burden","organ_donation","surrogate_decision_maker","additional_notes",
+  "care_setting","financial_burden","organ_donation","surrogate_decision_maker","additional_notes","life_insurance","disability_insurance",
 ];
 const clean = (p: Record<string, unknown> = {}) => {
   const o: Record<string, unknown> = {};
@@ -32,9 +32,9 @@ Deno.serve(async (req) => {
     switch (action) {
       case "check": return json({ data: true });
       case "list": r = await t.select("*").order("person_name"); break;
-      case "insert": r = await t.insert(clean(payload)).select().single(); break;
+      case "insert": return json({ error: "Not allowed" });
       case "update": r = await t.update(clean(payload)).eq("id", id).select().single(); break;
-      case "delete": r = await t.delete().eq("id", id); break;
+      case "delete": return json({ error: "Not allowed" });
       default: return json({ error: "Unknown action" });
     }
     if (r.error) return json({ error: r.error.message });

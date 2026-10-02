@@ -64,9 +64,11 @@ export type Database = {
           date_of_birth: string | null
           dementia: Json | null
           dialysis: Json | null
+          disability_insurance: string | null
           emergency_contacts: Json | null
           financial_burden: Json | null
           id: string
+          life_insurance: string | null
           medications: string | null
           nutrition_hydration: Json | null
           organ_donation: Json | null
@@ -89,9 +91,11 @@ export type Database = {
           date_of_birth?: string | null
           dementia?: Json | null
           dialysis?: Json | null
+          disability_insurance?: string | null
           emergency_contacts?: Json | null
           financial_burden?: Json | null
           id?: string
+          life_insurance?: string | null
           medications?: string | null
           nutrition_hydration?: Json | null
           organ_donation?: Json | null
@@ -114,9 +118,11 @@ export type Database = {
           date_of_birth?: string | null
           dementia?: Json | null
           dialysis?: Json | null
+          disability_insurance?: string | null
           emergency_contacts?: Json | null
           financial_burden?: Json | null
           id?: string
+          life_insurance?: string | null
           medications?: string | null
           nutrition_hydration?: Json | null
           organ_donation?: Json | null

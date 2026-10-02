@@ -72,6 +72,8 @@ interface DirectiveEntry {
   organ_donation: ScenarioAnswer;
   surrogate_decision_maker: string;
   additional_notes: string;
+  life_insurance: string;
+  disability_insurance: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -99,6 +101,8 @@ const emptyEntry = (): DirectiveEntry => ({
   organ_donation: emptyScenario(),
   surrogate_decision_maker: "",
   additional_notes: "",
+  life_insurance: "",
+  disability_insurance: "",
 });
 
 // ---------------------------------------------------------------------------
@@ -442,13 +446,7 @@ export default function FamilyDirective() {
           </div>
 
           <div className="flex justify-between items-center print:hidden">
-            <h2 className="font-semibold text-slate-800">Entries</h2>
-            <button
-              onClick={startNew}
-              className="bg-slate-900 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-slate-800"
-            >
-              + New person
-            </button>
+            <h2 className="font-semibold text-slate-800">Choose your name</h2>
           </div>
 
           {loading ? (
@@ -489,11 +487,6 @@ export default function FamilyDirective() {
             <button onClick={goPrint} className="text-sm border border-slate-300 rounded-md px-3 py-1.5 hover:border-slate-500">
               Print / Save as PDF
             </button>
-            {selectedId !== "new" && (
-              <button onClick={deleteEntry} className="text-sm text-red-600 border border-red-200 rounded-md px-3 py-1.5 hover:bg-red-50">
-                Delete
-              </button>
-            )}
           </div>
         </div>
 
@@ -594,6 +587,20 @@ export default function FamilyDirective() {
             onChange={(v) => setDraft({ ...draft, surrogate_decision_maker: v })}
           />
           <TextArea label="Anything else your family should know" value={draft.additional_notes} onChange={(v) => setDraft({ ...draft, additional_notes: v })} />
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="font-semibold text-slate-800 text-lg">Insurance to Look Into</h2>
+          <TextArea
+            label="Life insurance (company, policy #, beneficiary, through work or private)"
+            value={draft.life_insurance}
+            onChange={(v) => setDraft({ ...draft, life_insurance: v })}
+          />
+          <TextArea
+            label="Long-term disability insurance (company, policy #, through work or private)"
+            value={draft.disability_insurance}
+            onChange={(v) => setDraft({ ...draft, disability_insurance: v })}
+          />
         </section>
 
         <div className="flex items-center gap-3 print:hidden">
