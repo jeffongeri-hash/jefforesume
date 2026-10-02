@@ -483,11 +483,6 @@ export default function FamilyDirective() {
             <button onClick={goPrint} className="text-sm border border-slate-300 rounded-md px-3 py-1.5 hover:border-slate-500">
               Print / Save as PDF
             </button>
-            {selectedId !== "new" && (
-              <button onClick={deleteEntry} className="text-sm text-red-600 border border-red-200 rounded-md px-3 py-1.5 hover:bg-red-50">
-                Delete
-              </button>
-            )}
           </div>
         </div>
 
