@@ -22,7 +22,7 @@ const SumerlinTrails = () => (
     <Header />
     <main id="main-content" className="bg-background">
       <iframe
-        src="/embeds/sumerlin-trails-guide.html"
+        src="/embeds/sumerlin-trails-guide.html?v=2"
         title="Sumerlin Trails home projects, contractors, and HOA guide"
         className="block h-[calc(100vh-4rem)] min-h-[48rem] w-full border-0 md:h-[calc(100vh-5rem)]"
       />
