@@ -35,12 +35,21 @@ const META: Record<string, { title: string; description: string }> = {
   },
 };
 
+// Tool pages whose visible title isn't a heading get a screen-reader H1.
+const HIDDEN_H1: Record<string, string> = {
+  "/iv-strike-selector": "IV Strike Selector",
+  "/covered-call-master": "Covered Call Master",
+  "/paycheck-analyzer": "Paycheck Analyzer",
+};
+
 const RouteSeo = () => {
   const { pathname } = useLocation();
   const path = pathname.replace(/\/$/, "") || "/";
   const meta = META[path];
   if (!meta) return null;
   return (
+    <>
+    {HIDDEN_H1[path] && <h1 className="sr-only">{HIDDEN_H1[path]}</h1>}
     <Helmet>
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
@@ -49,6 +58,7 @@ const RouteSeo = () => {
       <meta property="og:url" content={`${BASE}${path}`} />
       <link rel="canonical" href={`${BASE}${path}`} />
     </Helmet>
+    </>
   );
 };
 
