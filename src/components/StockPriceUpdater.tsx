@@ -113,13 +113,13 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
             size="sm"
             onClick={() => fetchPrices()}
             disabled={isUpdating}
-            className="gap-2"
+            className="gap-2 bg-background/80 backdrop-blur-sm font-semibold text-foreground"
           >
             <RefreshCw className={`h-4 w-4 ${isUpdating ? 'animate-spin' : ''}`} />
             {isUpdating ? 'Updating...' : 'Refresh Prices'}
           </Button>
           {lastUpdated && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1 font-semibold">
               <Clock className="h-3 w-3" />
               Updated {formatTime(lastUpdated)}
             </Badge>
