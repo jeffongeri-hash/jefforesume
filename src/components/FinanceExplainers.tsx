@@ -447,10 +447,10 @@ const ExplainerCard = ({ item }: { item: Item }) => {
 const FinanceExplainers = () => (
   <section aria-labelledby="finance-explainers" className="mb-12">
     <div className="mb-8 text-center">
-      <h2 id="finance-explainers" className="text-3xl font-bold text-foreground">
+      <h2 id="finance-explainers" className="text-3xl font-extrabold text-ink-deep drop-shadow-sm">
         Financial Terms, Explained
       </h2>
-      <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">
+      <p className="mx-auto mt-2 max-w-2xl font-semibold text-ink-deep">
         The concepts behind the portfolio above — each one animated so the idea lands in a few seconds.
       </p>
     </div>

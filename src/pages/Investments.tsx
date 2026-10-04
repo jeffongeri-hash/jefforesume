@@ -116,10 +116,10 @@ const Investments = () => {
       <Header />
       <main id="main-content" className="container-blog py-12 relative">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4 drop-shadow-sm">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-ink-deep mb-4 drop-shadow-sm">
             Investment Portfolio
           </h1>
-          <p className="text-lg font-semibold text-foreground max-w-2xl mx-auto drop-shadow-sm">
+          <p className="text-lg font-semibold text-ink-deep max-w-2xl mx-auto drop-shadow-sm">
             A transparent look at Jefney Ongeri's personal investment journey. View current holdings and recent trades.
           </p>
           <Badge variant="outline" className="mt-4 bg-background/80 backdrop-blur-sm border-foreground/30 text-foreground font-bold">
