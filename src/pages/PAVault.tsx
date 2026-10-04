@@ -44,7 +44,7 @@ export default function PAVault() {
           name="description"
           content="Private job tracker and credential vault for per-diem and local PA opportunities in the Sacramento and Placer County region."
         />
-        <link rel="canonical" href="https://jefneyongeri.com/pa-vault" />
+        <link rel="canonical" href="https://jeffongeri.com/pa-vault" />
       </Helmet>
       <Header />
       <main id="main-content">

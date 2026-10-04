@@ -62,7 +62,7 @@ const Index = () => {
           name="description"
           content="Jefney Ongeri, PA-C — emergency medicine physician assistant, author of an illustrated clinical atlas library, and long-term investor. Explore the portfolio, atlases, and finance guides."
         />
-        <link rel="canonical" href="https://jefneyongeri.com/" />
+        <link rel="canonical" href="https://jeffongeri.com/" />
       </Helmet>
       <Header />
 

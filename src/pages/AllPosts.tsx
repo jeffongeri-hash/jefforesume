@@ -1719,7 +1719,7 @@ const AllPosts = () => {
         <title>All Posts by Jefney Ongeri | Healthcare, Technology & Finance Blog</title>
         <meta name="description" content="Browse all blog posts by Jefney Ongeri covering healthcare careers, PSLF, relocation guides, technology trends, and professional development." />
         <meta name="keywords" content="Jefney Ongeri, blog, healthcare, technology, PSLF, relocation, physician assistant" />
-        <link rel="canonical" href="https://jefneyongeri.com/posts" />
+        <link rel="canonical" href="https://jeffongeri.com/posts" />
       </Helmet>
       <Header />
       <main id="main-content" className="container-blog py-12">

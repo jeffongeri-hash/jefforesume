@@ -45,7 +45,7 @@ const Contact = () => {
         <title>Contact Jefney Ongeri | Get in Touch</title>
         <meta name="description" content="Contact Jefney Ongeri — reach out for questions, collaborations, or professional inquiries." />
         <meta name="keywords" content="Jefney Ongeri, contact, physician assistant, get in touch" />
-        <link rel="canonical" href="https://jefneyongeri.com/contact" />
+        <link rel="canonical" href="https://jeffongeri.com/contact" />
       </Helmet>
       <Header />
       

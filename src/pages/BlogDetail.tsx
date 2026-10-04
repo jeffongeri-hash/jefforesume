@@ -5621,7 +5621,7 @@ const BlogDetail = () => {
         <meta property="og:title" content={`${post.title} — Jefney Ongeri`} />
         <meta property="og:type" content="article" />
         <meta property="og:author" content="Jefney Ongeri" />
-        <link rel="canonical" href={`https://jefneyongeri.com/blog/${slug}`} />
+        <link rel="canonical" href={`https://jeffongeri.com/blog/${slug}`} />
       </Helmet>
       <ReadingProgress />
       <Header />

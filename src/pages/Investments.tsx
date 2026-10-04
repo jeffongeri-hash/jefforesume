@@ -109,7 +109,7 @@ const Investments = () => {
         <title>Jefney Ongeri — Investment Portfolio | Stock Holdings & Performance</title>
         <meta name="description" content="Jefney Ongeri's investment portfolio tracker with real-time stock holdings, performance charts, and trade history." />
         <meta name="keywords" content="Jefney Ongeri, investments, portfolio, stock market, financial planning" />
-        <link rel="canonical" href="https://jefneyongeri.com/investments" />
+        <link rel="canonical" href="https://jeffongeri.com/investments" />
       </Helmet>
       <Header />
       <main id="main-content" className="container-blog py-12">

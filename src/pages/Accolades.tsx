@@ -51,7 +51,7 @@ const Accolades = () => {
         <title>Jefney Ongeri — Accolades | Patient Testimonials & Recognition</title>
         <meta name="description" content="Patient testimonials and professional recognition for Jefney Ongeri, PA-C — reflecting a commitment to compassionate, thorough emergency care." />
         <meta name="keywords" content="Jefney Ongeri, accolades, patient testimonials, PA-C recognition, healthcare awards" />
-        <link rel="canonical" href="https://jefneyongeri.com/accolades" />
+        <link rel="canonical" href="https://jeffongeri.com/accolades" />
       </Helmet>
       <Header />
       
