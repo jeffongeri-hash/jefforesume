@@ -133,10 +133,10 @@ const StockPriceUpdater = ({ onPricesUpdated }: StockPriceUpdaterProps) => {
             <Badge
               key={quote.symbol}
               variant="outline"
-              className={`gap-1 py-1.5 ${
+              className={`gap-1 py-1.5 font-semibold bg-background/85 backdrop-blur-sm ${
                 quote.change >= 0 
-                  ? 'border-green-500/30 text-green-600 dark:text-green-400' 
-                  : 'border-red-500/30 text-red-600 dark:text-red-400'
+                  ? 'border-green-700/50 text-green-800 dark:text-green-300' 
+                  : 'border-red-700/50 text-red-800 dark:text-red-300'
               }`}
             >
               <span className="font-bold">{quote.symbol}</span>
