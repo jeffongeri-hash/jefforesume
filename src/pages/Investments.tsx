@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import CloudsBackground from '@/components/CloudsBackground';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -104,7 +105,8 @@ const Investments = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen">
+      <div className="fixed inset-0 -z-10"><CloudsBackground className="h-full w-full" /></div>
       <Helmet>
         <title>Jefney Ongeri — Investment Portfolio | Stock Holdings & Performance</title>
         <meta name="description" content="Jefney Ongeri's investment portfolio tracker with real-time stock holdings, performance charts, and trade history." />
@@ -112,7 +114,7 @@ const Investments = () => {
         <link rel="canonical" href="https://jeffongeri.com/investments" />
       </Helmet>
       <Header />
-      <main id="main-content" className="container-blog py-12">
+      <main id="main-content" className="container-blog py-12 relative">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Investment Portfolio
