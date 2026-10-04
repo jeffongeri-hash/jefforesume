@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import SkipLink from "@/components/SkipLink";
+import RouteSeo from "@/components/RouteSeo";
 import { Suspense, lazy } from "react";
 import Index from "./pages/Index";
 
@@ -56,6 +57,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <RouteSeo />
             <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
               <Routes>
                 <Route path="/" element={<Index />} />

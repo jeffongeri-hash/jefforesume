@@ -7,13 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Import all post data
-import businessPost from '@/assets/business-post.jpg';
-import fashionPost from '@/assets/fashion-post.jpg';
-import techPost from '@/assets/tech-post.jpg';
-import lifestylePost from '@/assets/lifestyle-post.jpg';
-import fashionLifestyle from '@/assets/fashion-lifestyle.jpg';
-import workLifestyle from '@/assets/work-lifestyle.jpg';
+import { blogPosts } from './AllPosts';
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,125 +15,7 @@ const SearchResults = () => {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   
   // All posts data combined from different pages
-  const allPosts = useMemo(() => [
-    // Fashion posts
-    {
-      title: "The Rise of Fashion Blogging: The Role of Influencers in the Industry",
-      category: "FASHION",
-      date: "September 20, 2025",
-      excerpt: "Explore how fashion bloggers and influencers have transformed the industry landscape.",
-      image: fashionPost,
-      slug: "rise-of-fashion-blogging"
-    },
-    {
-      title: "Fashion Week Highlights: Trends That Define the Season",
-      category: "FASHION", 
-      date: "September 8, 2024",
-      excerpt: "A comprehensive look at the standout moments from this season's fashion weeks.",
-      image: fashionLifestyle,
-      slug: "fashion-week-highlights"
-    },
-    // Technology posts
-    {
-      title: "AI and Machine Learning: Transforming Business Operations",
-      category: "TECHNOLOGY",
-      date: "September 18, 2024", 
-      excerpt: "Discover how artificial intelligence is revolutionizing the way businesses operate.",
-      image: techPost,
-      slug: "ai-machine-learning-business"
-    },
-    {
-      title: "The Rise of Artificial Intelligence in Everyday Life",
-      category: "TECHNOLOGY",
-      date: "September 18, 2024",
-      excerpt: "Exploring how AI is transforming industries and reshaping our daily experiences.",
-      image: techPost,
-      slug: "ai-everyday-life"
-    },
-    {
-      title: "Blockchain Beyond Cryptocurrency: Real-World Applications",
-      category: "TECHNOLOGY",
-      date: "September 12, 2024",
-      excerpt: "Discovering innovative uses of blockchain technology across various sectors.",
-      image: fashionLifestyle,
-      slug: "blockchain-real-world-applications"
-    },
-    {
-      title: "The Future of Web Development: Trends to Watch in 2024",
-      category: "TECHNOLOGY",
-      date: "September 8, 2024",
-      excerpt: "Key technologies and frameworks shaping the next generation of web applications.",
-      image: techPost,
-      slug: "web-development-trends-2024"
-    },
-    {
-      title: "Cybersecurity Best Practices for Small Businesses",
-      category: "TECHNOLOGY",
-      date: "September 5, 2024",
-      excerpt: "Essential security measures every small business should implement to protect their data.",
-      image: fashionLifestyle,
-      slug: "cybersecurity-small-business"
-    },
-    // Business posts
-    {
-      title: "Sustainable Business Practices for Modern Entrepreneurs",
-      category: "BUSINESS",
-      date: "September 15, 2024",
-      excerpt: "Learn how to build a sustainable business that benefits both profit and planet.",
-      image: businessPost,
-      slug: "sustainable-business-practices"
-    },
-    {
-      title: "The Future of Remote Work: Trends and Predictions",
-      category: "BUSINESS",
-      date: "September 10, 2024",
-      excerpt: "Analyzing the evolution of remote work and what lies ahead.",
-      image: workLifestyle,
-      slug: "future-remote-work"
-    },
-    {
-      title: "Building a Personal Brand in the Digital Age",
-      category: "BUSINESS",
-      date: "September 3, 2024",
-      excerpt: "Essential strategies for creating and maintaining your online presence.",
-      image: businessPost,
-      slug: "personal-brand-digital-age"
-    },
-    // Lifestyle posts
-    {
-      title: "Mindful Living: Creating Balance in a Busy World",
-      category: "LIFESTYLE",
-      date: "September 12, 2024",
-      excerpt: "Practical tips for incorporating mindfulness into your daily routine.",
-      image: lifestylePost,
-      slug: "mindful-living-balance"
-    },
-    {
-      title: "Wellness Trends: What's Actually Worth Your Time",
-      category: "LIFESTYLE",
-      date: "September 1, 2024",
-      excerpt: "Separating wellness fads from genuinely beneficial practices.",
-      image: lifestylePost,
-      slug: "wellness-trends-worth-time"
-    },
-    // Podcast episodes
-    {
-      title: "The Future of Digital Storytelling: A Conversation with Content Creators",
-      category: "PODCAST",
-      date: "September 20, 2024",
-      excerpt: "Join us as we explore how digital platforms are reshaping the way we tell and consume stories.",
-      image: lifestylePost,
-      slug: "future-digital-storytelling"
-    },
-    {
-      title: "Building Authentic Brands in the Social Media Age",
-      category: "PODCAST",
-      date: "September 14, 2024",
-      excerpt: "Industry experts discuss strategies for creating genuine connections with audiences online.",
-      image: fashionPost,
-      slug: "authentic-brands-social-media"
-    }
-  ], []);
+  const allPosts = blogPosts;
 
   // Filter posts based on search query
   const filteredPosts = useMemo(() => {
