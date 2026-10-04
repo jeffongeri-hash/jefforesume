@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-// @ts-expect-error vanta has no types
+// @ts-ignore vanta has no types
 import FOG from 'vanta/dist/vanta.fog.min';
 
 const FogBackground = ({ className = '' }: { className?: string }) => {
