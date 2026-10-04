@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import FogBackground from '@/components/FogBackground';
 import Footer from '@/components/Footer';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { Link } from 'react-router-dom';
@@ -69,14 +70,8 @@ const Index = () => {
       <main id="main-content">
         {/* ===== Cinematic hero ===== */}
         <section className="relative min-h-[88vh] md:min-h-screen flex flex-col justify-end overflow-hidden bg-ink-deep">
-          <img
-            src={heroImage}
-            alt="Glowing stock chart hovering above an open hand"
-            width={1920}
-            height={1280}
-            className="absolute inset-0 h-full w-full object-cover opacity-80 scale-105 animate-[reveal-up_1.6s_cubic-bezier(0.16,1,0.3,1)_both]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/25" />
+          <FogBackground className="absolute inset-0 h-full w-full" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/40 to-transparent" />
 
           <div className="container-blog relative z-10 pb-16 pt-40 md:pb-24">
             <p className="kicker text-on-media/70 reveal-up">
