@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import createGlobe from 'cobe';
 import { cn } from '@/lib/utils';
-import headshot from '@/assets/headshot.jpeg';
 
 const caseMix = [
   { name: 'Cardiovascular', value: 60 },
@@ -112,18 +111,18 @@ const CredentialSkeleton = () => (
 );
 
 const ResearchSkeleton = () => (
-  <a href="#publications-heading" className="group/image relative mt-6 block h-full">
-    <img
-      src={headshot}
-      alt="Jefney Ongeri"
-      width={800}
-      height={600}
-      loading="lazy"
-      className="aspect-[4/3] max-h-72 w-full rounded-sm object-cover object-top transition-all duration-200 group-hover/image:blur-sm"
-    />
-    <span className="absolute inset-0 m-auto flex h-fit w-fit items-center rounded-full bg-background/90 px-4 py-2 text-sm font-semibold text-foreground opacity-0 transition-opacity group-hover/image:opacity-100">
-      View publications ↓
-    </span>
+  <a href="#publications-heading" className="group relative mt-6 block rounded-sm border border-border bg-background p-5 shadow-2xl transition-transform hover:-translate-y-1">
+    <p className="kicker text-muted-foreground">Peer-reviewed · Pharmacogenetics</p>
+    <div className="mt-4 space-y-2">
+      <div className="h-3 w-4/5 rounded bg-foreground/80" />
+      <div className="h-3 w-3/5 rounded bg-foreground/60" />
+    </div>
+    <div className="mt-5 space-y-1.5">
+      {[100, 94, 98, 88, 96, 70].map((w, i) => (
+        <div key={i} className="h-2 rounded bg-muted" style={{ width: `${w}%` }} />
+      ))}
+    </div>
+    <p className="mt-5 text-sm font-semibold text-primary">View publications ↓</p>
   </a>
 );
 

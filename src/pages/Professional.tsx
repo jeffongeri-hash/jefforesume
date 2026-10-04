@@ -198,7 +198,7 @@ const Professional = () => {
         <link rel="canonical" href="https://jeffongeri.com/professional" />
       </Helmet>
       <Header />
-      <main id="main-content">
+      <main id="main-content" className="pro-grid">
         {/* Hero Section */}
         <section className="bg-ink-deep text-on-media">
           <div className="container-blog pb-16 pt-32 md:pb-20 md:pt-40">
@@ -319,7 +319,7 @@ const Professional = () => {
 
 
         {/* Education Section */}
-        <section className="py-16 bg-paper-alt" aria-labelledby="education-heading">
+        <section className="py-16 " aria-labelledby="education-heading">
           <div className="container-blog">
             <AnimatedSection>
               <div className="flex items-center gap-3 mb-8">
@@ -374,7 +374,7 @@ const Professional = () => {
 
 
         {/* Clinical Training Experience */}
-        <section className="py-16 bg-paper-alt" aria-labelledby="training-heading">
+        <section className="py-16 " aria-labelledby="training-heading">
           <div className="container-blog">
             <AnimatedSection>
               <div className="flex items-center gap-3 mb-2">
@@ -742,7 +742,7 @@ const Professional = () => {
 
 
         {/* Clinical Skills & Specialties */}
-        <section className="py-16 bg-paper-alt" aria-labelledby="skills-heading">
+        <section className="py-16 " aria-labelledby="skills-heading">
           <div className="container-blog">
             <AnimatedSection>
               <div className="flex items-center gap-3 mb-8">
@@ -845,7 +845,7 @@ const Professional = () => {
         {(volunteerWork.length > 0 || organizations.length > 0) && (
           <>
             <Separator />
-            <section className="py-16 bg-paper-alt" aria-labelledby="volunteer-heading">
+            <section className="py-16 " aria-labelledby="volunteer-heading">
               <div className="container-blog">
                 <div className="grid md:grid-cols-2 gap-12">
                   {volunteerWork.length > 0 && (
