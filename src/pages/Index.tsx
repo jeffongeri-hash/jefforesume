@@ -86,7 +86,7 @@ const Index = () => {
               >
                 <Spotlight className="left-[calc(50vw+13rem)] top-[calc(100vh-16rem)] !h-[50rem] !w-[70rem] md:!w-[90rem]" fill="white" />
               </div>
-              <h1 className="relative z-[2] mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
+              <h1 className="relative z-[2] mt-6 font-serif text-on-media [text-shadow:0_2px_24px_hsl(var(--ink-deep)/0.55)] leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
                 Jefney Ongeri<span className="text-editorial">.</span>
               </h1>
             </div>
