@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import headshot from '@/assets/headshot.jpeg';
+import ProfessionalFeatures from '@/components/ProfessionalFeatures';
 
 const Professional = () => {
   const [chartView, setChartView] = useState<'pie' | 'bar'>('pie');
@@ -259,6 +260,8 @@ const Professional = () => {
             </div>
           </div>
         </section>
+
+        <ProfessionalFeatures />
 
         {/* Clinical Experience Section */}
         <section className="py-16" aria-labelledby="experience-heading">
