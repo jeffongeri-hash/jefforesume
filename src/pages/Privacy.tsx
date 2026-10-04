@@ -77,9 +77,9 @@ const Privacy = () => {
         <title>Privacy Policy | Jefney Ongeri, PA-C</title>
         <meta
           name="description"
-          content="How jefneyongeri.com collects, uses, and protects your information."
+          content="How jeffongeri.com collects, uses, and protects your information."
         />
-        <link rel="canonical" href="https://jefneyongeri.com/privacy" />
+        <link rel="canonical" href="https://jeffongeri.com/privacy" />
       </Helmet>
       <Header />
 

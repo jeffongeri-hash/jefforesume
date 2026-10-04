@@ -118,7 +118,7 @@ const Resume = () => {
         <title>Jefney Ongeri — Resume | PA-C, Emergency Medicine & Clinical Research</title>
         <meta name="description" content="Resume of Jefney Ongeri, PA-C — education, certifications, clinical experience in emergency medicine, and professional accomplishments." />
         <meta name="keywords" content="Jefney Ongeri, resume, PA-C, physician assistant resume, emergency medicine" />
-        <link rel="canonical" href="https://jefneyongeri.com/resume" />
+        <link rel="canonical" href="https://jeffongeri.com/resume" />
       </Helmet>
       <Header />
       <main id="main-content" className="container-blog py-12">

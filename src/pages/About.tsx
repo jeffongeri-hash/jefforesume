@@ -30,7 +30,7 @@ const About = () => {
           name="description"
           content="Learn about Jefney Ongeri — a Physician Assistant specializing in emergency medicine, clinical research, and patient-centered care. PA graduate, Class of 2025."
         />
-        <link rel="canonical" href="https://jefneyongeri.com/about" />
+        <link rel="canonical" href="https://jeffongeri.com/about" />
       </Helmet>
       <Header />
 

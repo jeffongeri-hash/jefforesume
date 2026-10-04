@@ -6,7 +6,7 @@ import { EditorialHero } from '@/components/EditorialPage';
 const sections: { title: string; body?: string; list?: string[] }[] = [
   {
     title: 'Acceptance of terms',
-    body: 'By using jefneyongeri.com you agree to these terms, which govern your use of the site and everything published on it.',
+    body: 'By using jeffongeri.com you agree to these terms, which govern your use of the site and everything published on it.',
   },
   {
     title: 'Use license',
@@ -61,9 +61,9 @@ const Terms = () => {
         <title>Terms of Service | Jefney Ongeri, PA-C</title>
         <meta
           name="description"
-          content="Terms of service for jefneyongeri.com, including educational-use and no-medical-advice disclaimers."
+          content="Terms of service for jeffongeri.com, including educational-use and no-medical-advice disclaimers."
         />
-        <link rel="canonical" href="https://jefneyongeri.com/terms" />
+        <link rel="canonical" href="https://jeffongeri.com/terms" />
       </Helmet>
       <Header />
 
