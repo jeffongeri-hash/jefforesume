@@ -119,7 +119,7 @@ const ResearchSkeleton = () => (
       width={800}
       height={600}
       loading="lazy"
-      className="aspect-[4/3] h-full w-full rounded-sm object-cover object-top transition-all duration-200 group-hover/image:blur-sm"
+      className="aspect-[4/3] max-h-72 w-full rounded-sm object-cover object-top transition-all duration-200 group-hover/image:blur-sm"
     />
     <span className="absolute inset-0 m-auto flex h-fit w-fit items-center rounded-full bg-background/90 px-4 py-2 text-sm font-semibold text-foreground opacity-0 transition-opacity group-hover/image:opacity-100">
       View publications ↓
