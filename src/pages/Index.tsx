@@ -80,7 +80,12 @@ const Index = () => {
             </p>
 
             <div className="relative">
-              <Spotlight className="left-[45%] top-[10%] !h-[50rem] !w-[70rem] md:!w-[90rem]" fill="white" />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-0 left-[-50vw] right-[-50vw] h-[100vh] overflow-hidden [mask-image:linear-gradient(to_bottom,black_75%,transparent)]"
+              >
+                <Spotlight className="left-[calc(50vw+35%)] top-[35%] !h-[50rem] !w-[70rem] md:!w-[90rem]" fill="white" />
+              </div>
               <h1 className="relative z-[2] mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
                 Jefney Ongeri<span className="text-editorial">.</span>
               </h1>
