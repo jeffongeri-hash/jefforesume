@@ -86,7 +86,7 @@ const Index = () => {
               </h1>
             </div>
 
-            <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end reveal-up">
+            <div className="relative z-[2] mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end reveal-up">
               <p className="text-on-media/75 text-lg leading-relaxed">
                 Patient-centered emergency care, an illustrated clinical reference library, and a
                 long-horizon investment portfolio — documented openly, in one place.
