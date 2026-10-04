@@ -5621,7 +5621,27 @@ const BlogDetail = () => {
         <meta property="og:title" content={`${post.title} — Jefney Ongeri`} />
         <meta property="og:type" content="article" />
         <meta property="og:author" content="Jefney Ongeri" />
+        <meta property="og:url" content={`https://jeffongeri.com/blog/${slug}`} />
         <link rel="canonical" href={`https://jeffongeri.com/blog/${slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://jeffongeri.com/" },
+                { "@type": "ListItem", position: 2, name: "Articles", item: "https://jeffongeri.com/posts" },
+                { "@type": "ListItem", position: 3, name: post.title, item: `https://jeffongeri.com/blog/${slug}` },
+              ],
+            },
+            {
+              "@type": "Article",
+              headline: post.title,
+              author: { "@type": "Person", name: "Jefney Ongeri, PA-C", url: "https://jeffongeri.com/about" },
+              mainEntityOfPage: `https://jeffongeri.com/blog/${slug}`,
+            },
+          ],
+        })}</script>
       </Helmet>
       <ReadingProgress />
       <Header />
