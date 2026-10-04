@@ -157,12 +157,18 @@ const Globe = ({ className }: { className?: string }) => {
         { location: [39.7684, -86.1581], size: 0.07 }, // Indianapolis
         { location: [39.9568, -86.0134], size: 0.04 }, // Fishers
       ],
-      onRender: (state) => {
-        state.phi = phi;
-        phi += 0.01;
-      },
     });
-    return () => globe.destroy();
+    let raf = 0;
+    const tick = () => {
+      phi += 0.01;
+      globe.update({ phi });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      globe.destroy();
+    };
   }, []);
 
   return (
