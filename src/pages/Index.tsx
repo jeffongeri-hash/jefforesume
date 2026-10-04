@@ -80,7 +80,7 @@ const Index = () => {
             </p>
 
             <div className="relative">
-              <Spotlight className="-top-[26rem] -left-24 md:-top-[34rem] md:-left-40" fill="white" />
+              <Spotlight className="left-[45%] top-[10%] !h-[50rem] !w-[70rem] md:!w-[90rem]" fill="white" />
               <h1 className="relative z-[2] mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
                 Jefney Ongeri<span className="text-editorial">.</span>
               </h1>
