@@ -106,7 +106,7 @@ const Investments = () => {
 
   return (
     <div className="relative min-h-screen">
-      <CloudsBackground className="fixed inset-0 -z-10 h-screen w-screen" />
+      <div className="fixed inset-0 -z-10"><CloudsBackground className="h-full w-full" /></div>
       <Helmet>
         <title>Jefney Ongeri — Investment Portfolio | Stock Holdings & Performance</title>
         <meta name="description" content="Jefney Ongeri's investment portfolio tracker with real-time stock holdings, performance charts, and trade history." />
