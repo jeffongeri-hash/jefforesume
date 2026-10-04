@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import FogBackground from '@/components/FogBackground';
+import { Spotlight } from '@/components/ui/spotlight';
 import Footer from '@/components/Footer';
 import { AnimatedSection } from '@/hooks/useScrollAnimation';
 import { Link } from 'react-router-dom';
@@ -78,11 +79,14 @@ const Index = () => {
               Physician Assistant &nbsp;·&nbsp; Emergency Medicine &nbsp;·&nbsp; Investor
             </p>
 
-            <h1 className="mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
-              Jefney Ongeri<span className="text-editorial">.</span>
-            </h1>
+            <div className="relative">
+              <Spotlight className="left-[45%] top-[10%] !h-[50rem] !w-[70rem] md:!w-[90rem]" fill="white" />
+              <h1 className="relative z-[2] mt-6 font-serif text-on-media leading-[0.92] text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] reveal-up">
+                Jefney Ongeri<span className="text-editorial">.</span>
+              </h1>
+            </div>
 
-            <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end reveal-up">
+            <div className="relative z-[2] mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end reveal-up">
               <p className="text-on-media/75 text-lg leading-relaxed">
                 Patient-centered emergency care, an illustrated clinical reference library, and a
                 long-horizon investment portfolio — documented openly, in one place.
