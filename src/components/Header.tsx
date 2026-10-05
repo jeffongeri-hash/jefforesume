@@ -26,6 +26,7 @@ const Header = () => {
     { name: 'Professional', href: '/professional', matches: ['/professional', '/resume', '/accolades'] },
     { name: 'Investments', href: '/investments', matches: ['/investments', '/finance-guides', '/iv-strike-selector', '/covered-call-master'] },
     { name: 'Care Abroad', href: '/care-abroad', matches: ['/care-abroad'] },
+    { name: 'Trading Volatility', href: '/trading-volatility', matches: ['/trading-volatility'] },
     { name: 'Writing', href: '/posts', matches: ['/posts', '/blog'] },
   ];
 
@@ -63,6 +64,7 @@ const Header = () => {
       label: 'Writing',
       items: [
         { name: 'All Blog Posts', href: '/posts', icon: BookOpen, desc: 'Clinical & career atlases' },
+        { name: 'Trading Volatility', href: '/trading-volatility', icon: BookOpen, desc: 'Illustrated options ebook' },
       ],
     },
   ];
