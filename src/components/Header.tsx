@@ -27,6 +27,7 @@ const Header = () => {
     { name: 'Investments', href: '/investments', matches: ['/investments', '/finance-guides', '/iv-strike-selector', '/covered-call-master'] },
     { name: 'Care Abroad', href: '/care-abroad', matches: ['/care-abroad'] },
     { name: 'Trading Volatility', href: '/trading-volatility', matches: ['/trading-volatility'] },
+    { name: 'Drone', href: '/drone', matches: ['/drone'] },
     { name: 'Writing', href: '/posts', matches: ['/posts', '/blog'] },
   ];
 
@@ -58,6 +59,13 @@ const Header = () => {
         { name: 'Paycheck Analyzer', href: '/paycheck-analyzer', icon: Calculator, desc: 'Take-home breakdown' },
         { name: 'Sacramento Health', href: '/sacramento-healthcare', icon: Stethoscope, desc: 'Hospital hub' },
         { name: 'Vacation', href: '/vacation', icon: Plane, desc: 'Trip planning' },
+      ],
+    },
+    {
+      label: 'Drone',
+      items: [
+        { name: 'Aerial Cinematography', href: '/drone', icon: Plane, desc: 'Drone work overview' },
+        { name: 'Galleries', href: '/drone/gallery', icon: Earth, desc: 'Aerial photo & video galleries' },
       ],
     },
     {
