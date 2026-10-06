@@ -3,7 +3,9 @@ import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Camera, User } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { SEOHead } from '@/components/seo/SEOHead';
+import { Helmet } from 'react-helmet-async';
+import Header from '@/components/Header';
+import DroneNav from '@/drone/DroneNav';
 import { ScrollReveal } from '@/drone/components/ScrollReveal';
 import { getProjectBySlug } from '@/drone/projects';
 import { ImageWithLightbox } from '@/drone/components/ImageWithLightbox';
@@ -110,7 +112,7 @@ export default function ProjectDetail() {
 
   // 404 if project not found
   if (!project) {
-    return <Navigate to="/404" replace />;
+    return <Navigate to="/drone/gallery" replace />;
   }
 
   const allImages = [...project.images, ...uploadedImages];

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { projects } from '@/drone/projects';
 import { FeaturedCarousel } from '@/drone/components/FeaturedCarousel';
-import { SEOHead } from '@/components/seo/SEOHead';
+import { Helmet } from 'react-helmet-async';
+import Header from '@/components/Header';
+import DroneNav from '@/drone/DroneNav';
 import { motion } from 'framer-motion';
 import { Instagram } from 'lucide-react';
 import { photographerInfo } from '@/drone/photographer';
