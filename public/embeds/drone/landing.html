@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jefney Ongeri — Aerial Cinematography</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Barlow+Condensed:wght@200;300;400;500;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+/* ─────────────────────── TOKENS ─────────────────────── */
+:root{
+  --black:  #0a0a0c;
+  --black2: #0d0d10;
+  --black3: #111116;
+  --panel:  #14141a;
+  --teal:   #00c8b0;
+  --teal2:  #00ffe8;
+  --white:  #f2f0ed;
+  --mist:   rgba(242,240,237,0.55);
+  --dim:    rgba(242,240,237,0.28);
+  --faint:  rgba(242,240,237,0.10);
+  --border: rgba(242,240,237,0.07);
+  --serif:  'Spectral', Georgia, serif;
+  --cond:   'Barlow Condensed', sans-serif;
+  --body:   'Barlow', sans-serif;
+}
+
+/* ─────────────────────── RESET ─────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--black);color:var(--white);font-family:var(--body);font-weight:300;overflow-x:hidden;cursor:auto;}
+
+/* ─────────────────────── NOISE OVERLAY ─────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity:0.4;
+}
+
+/* ─────────────────────── CURSOR ─────────────────────── */
+#cur-r{position:fixed;width:38px;height:38px;border:1px solid rgba(0,200,176,0.45);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .22s,height .22s,border-color .22s;}
+#cur-d{position:fixed;width:5px;height:5px;background:var(--teal);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+body.hov #cur-r{width:56px;height:56px;border-color:rgba(0,200,176,0.7);}
+
+/* ─────────────────────── NAV ─────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 2.5rem;
+  transition:background .4s,padding .3s,border-color .3s;
+  border-bottom:1px solid transparent;
+}
+#nav.stuck{
+  background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);
+  padding:1rem 2.5rem;border-bottom-color:var(--border);
+}
+.nav-logo{font-family:var(--serif);font-size:1rem;font-weight:300;letter-spacing:.04em;color:var(--white);line-height:1.2;text-decoration:none;}
+.nav-logo span{display:block;font-style:italic;font-size:.9rem;color:var(--mist);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--teal);transition:width .25s;}
+.nav-links a:hover,.nav-links a.cur{color:var(--white);}
+.nav-links a.cur::after{width:100%;}
+.nav-moon{background:none;border:none;color:var(--dim);font-size:.95rem;cursor:auto;padding:.2rem;transition:color .2s;}
+.nav-moon:hover{color:var(--teal);}
+
+/* ─────────────────────── HERO ─────────────────────── */
+.hero{position:relative;height:100vh;min-height:700px;overflow:hidden;}
+#hero-canvas{display:none;}
+.hero-videos{position:absolute;inset:0;width:100%;height:100%;}
+.hero-videos video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease;}
+.hero-videos video.on{opacity:1;}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,12,.92) 0%,rgba(10,10,12,.4) 40%,rgba(10,10,12,.08) 72%,transparent 100%);
+}
+.hero-body{
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:0 2.5rem;
+}
+.hero-meta{
+  font-family:var(--cond);font-size:.95rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;
+  color:#0a0a0a;margin-bottom:.65rem;text-shadow:0 1px 2px rgba(255,255,255,.35);
+  display:flex;align-items:center;gap:.45rem;
+  opacity:0;animation:fadeUp .7s .2s forwards;
+}
+.hero-meta s2{color:#333;}
+.hero-h1{
+  font-family:var(--serif);
+  font-size:clamp(3.4rem,9.5vw,9rem);font-weight:300;font-style:italic;
+  line-height:.9;color:var(--white);
+  opacity:0;animation:fadeUp .8s .35s forwards;
+}
+.hero-h1 em{font-style:normal;font-weight:200;color:var(--teal);}
+.hero-desc{
+  font-family:var(--body);font-size:.82rem;line-height:1.85;
+  color:var(--dim);max-width:380px;margin-top:.9rem;margin-bottom:1.2rem;
+  opacity:0;animation:fadeUp .7s .55s forwards;
+}
+.hero-details{
+  display:flex;flex-direction:column;gap:.18rem;margin-bottom:1.6rem;
+  opacity:0;animation:fadeUp .7s .7s forwards;
+}
+.hero-detail{font-family:var(--cond);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);}
+.hero-tabs{
+  display:flex;border-top:1px solid var(--border);
+  opacity:0;animation:fadeUp .7s .85s forwards;
+}
+.hero-tab{
+  flex:1;padding:1.05rem 0;
+  font-family:var(--cond);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);cursor:auto;
+  border-top:2px solid transparent;margin-top:-1px;
+  transition:color .25s,border-color .25s;
+}
+.hero-tab.on{color:var(--white);border-top-color:var(--teal);}
+.hero-tab:hover:not(.on){color:var(--mist);}
+
+/* ─────────────────────── PORTFOLIO STRIP ─────────────────────── */
+.port-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:3rem 2.5rem 1.6rem;
+}
+.port-title{font-family:var(--serif);font-size:clamp(2.2rem,5vw,4.2rem);font-weight:300;color:var(--white);}
+.port-title em{font-style:italic;color:var(--teal);}
+.port-hint{font-family:var(--cond);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:.4rem;}
+.port-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:2px;margin:0 2px 2px;}
+.port-card{position:relative;overflow:hidden;cursor:auto;aspect-ratio:16/10;}
+.port-card-canvas{display:none;}
+.port-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.port-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,12,.78) 0%,transparent 55%);}
+.port-card-info{position:absolute;bottom:1.3rem;left:1.4rem;z-index:2;}
+.port-card-num{font-family:var(--cond);font-size:.52rem;letter-spacing:.2em;color:var(--dim);margin-bottom:.3rem;}
+.port-card-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;font-style:italic;color:var(--white);}
+.port-card-tag{position:absolute;top:1rem;right:1.1rem;z-index:2;font-family:var(--cond);font-size:.5rem;letter-spacing:.2em;color:var(--teal);text-transform:uppercase;}
+.port-card-bg{position:absolute;inset:0;transition:transform .65s ease;}
+.port-card:hover .port-card-bg{transform:scale(1.04);}
+
+/* ─────────────────────── MARQUEE ─────────────────────── */
+.marquee-strip{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:.75rem 0;overflow:hidden;background:rgba(0,200,176,.03);
+}
+.marquee-track{display:inline-flex;animation:marquee 28s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:var(--cond);font-size:.58rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:rgba(0,200,176,.5);padding:0 2.2rem;}
+.marquee-dot{display:inline-block;width:3px;height:3px;background:rgba(0,200,176,.3);border-radius:50%;vertical-align:middle;}
+
+/* ─────────────────────── ABOUT STRIP ─────────────────────── */
+.about-strip{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--border);
+}
+.about-left{padding:4rem 2.5rem;border-right:1px solid var(--border);}
+.about-label{font-family:var(--cond);font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;display:flex;align-items:center;gap:.7rem;}
+.about-label::before{content:'';width:24px;height:1px;background:var(--teal);}
+.about-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1.1;color:var(--white);margin-bottom:1.2rem;}
+.about-h2 em{font-style:italic;color:var(--teal);}
+.about-body{font-size:.85rem;line-height:1.9;color:var(--dim);max-width:420px;}
+.about-right{padding:4rem 2.5rem;display:flex;flex-direction:column;gap:2.5rem;}
+.about-stat-n{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--teal);line-height:1;}
+.about-stat-l{font-family:var(--cond);font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-top:.25rem;}
+
+/* ─────────────────────── TECHNIQUES ─────────────────────── */
+.tech-section{border-top:1px solid var(--border);padding:4rem 0;}
+.tech-inner{padding:0 2.5rem;}
+.tech-header{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:3rem;}
+.tech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.tech-card{
+  background:var(--black2);padding:2rem 1.8rem;
+  position:relative;overflow:hidden;cursor:auto;
+  transition:background .25s;
+}
+.tech-card:hover{background:var(--black3);}
+.tech-card::before{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1px;background:var(--teal);
+  transition:width .4s ease;
+}
+.tech-card:hover::before{width:100%;}
+.tech-card-num{font-family:var(--serif);font-size:3.5rem;font-weight:200;color:rgba(0,200,176,.08);line-height:1;position:absolute;top:1rem;right:1.2rem;}
+.tech-card-title{font-family:var(--serif);font-size:1.25rem;font-weight:400;font-style:italic;color:var(--white);margin-bottom:.55rem;}
+.tech-card-desc{font-size:.78rem;color:var(--dim);line-height:1.72;margin-bottom:.9rem;}
+.tech-card-specs{display:flex;flex-wrap:wrap;gap:.4rem;}
+.spec{font-family:var(--cond);font-size:.48rem;letter-spacing:.12em;padding:.22rem .55rem;background:var(--faint);color:var(--dim);border-radius:1px;}
+.tech-hero-tag{font-family:var(--cond);font-size:.45rem;letter-spacing:.15em;padding:.2rem .5rem;background:var(--teal);color:var(--black);text-transform:uppercase;margin-left:.5rem;vertical-align:middle;}
+
+/* ─────────────────────── PRICING ─────────────────────── */
+.pricing-section{border-top:1px solid var(--border);padding:4rem 0;}
+.pricing-inner{padding:0 2.5rem;}
+.pricing-tabs-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-top:2.5rem;}
+.ptab{
+  font-family:var(--cond);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.8rem 1.8rem;background:transparent;border:none;cursor:auto;
+  color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .2s,border-color .2s;
+}
+.ptab.on{color:var(--white);border-bottom-color:var(--teal);}
+.ptab:hover:not(.on){color:var(--mist);}
+.pricing-pane{display:none;padding-top:2px;}
+.pricing-pane.on{display:block;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1px;}
+.price-card{
+  background:var(--black2);padding:2.2rem 1.8rem;
+  transition:background .2s;position:relative;
+}
+.price-card:hover{background:var(--black3);}
+.price-card.feat{background:var(--panel);}
+.price-card.feat::before{
+  content:'Most Popular';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  font-family:var(--cond);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.22rem .8rem;background:var(--teal);color:var(--black);
+}
+.price-tier{font-family:var(--cond);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:.3rem;}
+.price-name{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);margin-bottom:1.4rem;}
+.price-amount{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--teal);line-height:1;}
+.price-period{font-family:var(--cond);font-size:.52rem;letter-spacing:.14em;color:var(--dim);margin-top:.25rem;margin-bottom:1.5rem;}
+.price-div{height:1px;background:var(--border);margin-bottom:1.4rem;}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.price-list li{font-size:.78rem;color:var(--dim);display:flex;gap:.6rem;align-items:flex-start;line-height:1.5;}
+.price-list li::before{content:'—';color:var(--teal);opacity:.6;flex-shrink:0;}
+.price-cta{
+  display:block;text-align:center;margin-top:1.8rem;
+  font-family:var(--cond);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.72rem;border:1px solid var(--border);color:var(--dim);
+  text-decoration:none;cursor:auto;transition:all .25s;
+}
+.price-card.feat .price-cta{border-color:rgba(0,200,176,.4);color:var(--teal);}
+.price-cta:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,200,176,.05);}
+
+/* ─────────────────────── PROCESS ─────────────────────── */
+.process-section{border-top:1px solid var(--border);padding:4rem 0;}
+.process-inner{padding:0 2.5rem;}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
+.process-step{background:var(--black2);padding:2.2rem 1.8rem;}
+.process-n{font-family:var(--serif);font-size:3rem;font-weight:200;color:rgba(0,200,176,.12);line-height:1;margin-bottom:1rem;}
+.process-title{font-family:var(--serif);font-size:1rem;font-weight:400;font-style:italic;color:var(--white);margin-bottom:.55rem;}
+.process-desc{font-size:.78rem;color:var(--dim);line-height:1.72;}
+
+/* ─────────────────────── TESTIMONIALS ─────────────────────── */
+.testi-section{border-top:1px solid var(--border);padding:4rem 0;}
+.testi-inner{padding:0 2.5rem;}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
+.testi-card{background:var(--black2);padding:2.2rem 1.8rem;transition:background .25s;}
+.testi-card:hover{background:var(--black3);}
+.testi-stars{display:flex;gap:2px;margin-bottom:.8rem;}
+.testi-star{color:var(--teal);font-size:.7rem;}
+.testi-quote-mark{font-family:var(--serif);font-size:2.5rem;font-weight:200;color:var(--teal);line-height:1;margin-bottom:.7rem;}
+.testi-text{font-family:var(--serif);font-size:.95rem;font-weight:300;font-style:italic;color:var(--mist);line-height:1.78;margin-bottom:1.4rem;}
+.testi-author{font-family:var(--cond);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+.testi-author span{color:var(--teal);}
+
+/* ─────────────────────── CONTACT ─────────────────────── */
+.contact-section{border-top:1px solid var(--border);padding:5rem 0;}
+.contact-inner{padding:0 2.5rem;}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:3rem;}
+.form{display:flex;flex-direction:column;gap:.9rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.form-group{display:flex;flex-direction:column;gap:.35rem;}
+.form-label{font-family:var(--cond);font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);}
+.form-input,.form-select,.form-textarea{
+  background:rgba(255,255,255,.025);border:1px solid var(--border);
+  color:var(--white);font-family:var(--body);font-size:.83rem;font-weight:300;
+  padding:.8rem 1rem;outline:none;transition:border-color .2s;cursor:auto;width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(0,200,176,.5);}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(242,240,237,.15);}
+.form-select{appearance:none;}
+.form-textarea{min-height:110px;resize:vertical;}
+.form-submit{
+  font-family:var(--cond);font-size:.62rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;
+  padding:.95rem 2.2rem;background:var(--teal);color:var(--black);
+  border:none;cursor:auto;align-self:flex-start;margin-top:.4rem;transition:background .2s;
+}
+.form-submit:hover{background:var(--teal2);}
+.contact-info{padding-top:.3rem;}
+.contact-item{display:flex;gap:1rem;padding:1.4rem 0;border-bottom:1px solid var(--border);}
+.contact-icon{color:var(--teal);flex-shrink:0;margin-top:2px;}
+.contact-lbl{font-family:var(--cond);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:.28rem;}
+.contact-val{font-size:.88rem;color:var(--mist);}
+.contact-cert{
+  margin-top:1.8rem;padding:1.1rem 1.2rem;
+  border:1px solid rgba(0,200,176,.18);background:rgba(0,200,176,.03);
+}
+.contact-cert-title{font-family:var(--cond);font-size:.58rem;letter-spacing:.18em;color:var(--teal);text-transform:uppercase;margin-bottom:.35rem;}
+.contact-cert-body{font-size:.76rem;color:var(--dim);line-height:1.65;}
+
+/* ─────────────────────── FOOTER ─────────────────────── */
+footer{
+  border-top:1px solid var(--border);padding:2rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.2rem;
+}
+.footer-copy{font-family:var(--cond);font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+.footer-links{display:flex;gap:1.8rem;list-style:none;}
+.footer-links a{font-family:var(--cond);font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--teal);}
+
+/* ─────────────────────── SECTION HEADER ─────────────────────── */
+.sec-label{font-family:var(--cond);font-size:.55rem;letter-spacing:.38em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;}
+.sec-label::before{content:'';width:22px;height:1px;background:var(--teal);}
+.sec-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1.1;color:var(--white);}
+.sec-h2 em{font-style:italic;color:var(--teal);}
+.sec-desc{font-size:.85rem;line-height:1.9;color:var(--dim);max-width:500px;margin-top:.65rem;}
+
+/* ─────────────────────── REVEAL ─────────────────────── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.reveal.d1{transition-delay:.1s;}.reveal.d2{transition-delay:.2s;}.reveal.d3{transition-delay:.3s;}
+
+/* ─────────────────────── ANIMATIONS ─────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ─────────────────────── MOBILE ─────────────────────── */
+@media(max-width:860px){
+  .nav-links{display:none;}
+  .hero-h1{font-size:clamp(3rem,12vw,5.5rem);}
+  .about-strip,.contact-layout{grid-template-columns:1fr;}
+  .about-right{flex-direction:row;flex-wrap:wrap;}
+  .tech-grid,.pricing-grid,.testi-grid{grid-template-columns:1fr;}
+  .process-grid{grid-template-columns:1fr 1fr;}
+  .port-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- cursor -->
+<div id="cur-r" style="display:none"></div>
+<div id="cur-d" style="display:none"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<!-- nav removed: parent app provides the site header -->
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-videos">
+    <video class="hv on" data-idx="0" src="/embeds/drone/videos/rooftop.mp4" poster="/embeds/drone/videos/rooftop-poster.jpg" muted loop playsinline autoplay preload="metadata"></video>
+    <video class="hv" data-idx="1" src="https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Timeline_1_cdz63u.mp4" muted loop playsinline preload="metadata"></video>
+    <video class="hv" data-idx="2" src="/embeds/drone/videos/midwest-avanta.mp4" poster="/embeds/drone/videos/midwest-avanta-poster.jpg" muted loop playsinline preload="metadata"></video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-body">
+    <div class="hero-meta">Drone <s2>·</s2> Video <s2>·</s2> Featured <s2>·</s2> 01 / 03</div>
+    <h1 class="hero-h1">Neighborhood<br>Aerials<em>.</em></h1>
+    <p class="hero-desc">Comprehensive aerial documentation of residential neighborhoods, perfect for real estate marketing and community showcase.</p>
+    <div class="hero-details">
+      <div class="hero-detail">Fishers, IN</div>
+      <div class="hero-detail">2025</div>
+      <div class="hero-detail">4 Frames</div>
+    </div>
+    <div class="hero-tabs">
+      <div class="hero-tab on" onclick="switchTab(this,0)">Neighborhood Aerials</div>
+      <div class="hero-tab" onclick="switchTab(this,1)">Midwest Landscapes</div>
+      <div class="hero-tab" onclick="switchTab(this,2)">First Person View</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PORTFOLIO ══════════ -->
+<section id="portfolio">
+  <div class="port-head reveal">
+    <div class="port-title"><em>The</em> portfolio.</div>
+    <div class="port-hint">← Drag · 03 Collections →</div>
+  </div>
+  <div class="port-grid">
+    <div class="port-card reveal">
+      <canvas class="port-card-canvas" id="pc1"></canvas>
+      <video class="port-card-video pc-slideshow" data-offset="0" src="/embeds/drone/videos/rooftop.mp4" poster="/embeds/drone/videos/rooftop-poster.jpg" muted loop playsinline autoplay preload="metadata"></video>
+      <div class="port-card-tag">Drone · Video</div>
+      <div class="port-card-info">
+        <div class="port-card-num">— 01</div>
+        <div class="port-card-name">Neighborhood Aerials</div>
+      </div>
+    </div>
+    <div class="port-card reveal d1">
+      <canvas class="port-card-canvas" id="pc2"></canvas>
+      <video class="port-card-video pc-slideshow" data-offset="1" src="https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Timeline_1_cdz63u.mp4" muted loop playsinline autoplay preload="metadata"></video>
+      <div class="port-card-tag">Drone · Video</div>
+      <div class="port-card-info">
+        <div class="port-card-num">— 02</div>
+        <div class="port-card-name">Midwest Landscapes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">Real Estate</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Weddings</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Waterloo, IA</span><span class="marquee-dot"></span>
+    <span class="marquee-item">4K Video</span><span class="marquee-dot"></span>
+    <span class="marquee-item">24-Hr Delivery</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Aerial Cinematography</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Real Estate</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Weddings</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Waterloo, IA</span><span class="marquee-dot"></span>
+    <span class="marquee-item">4K Video</span><span class="marquee-dot"></span>
+    <span class="marquee-item">24-Hr Delivery</span><span class="marquee-dot"></span>
+    <span class="marquee-item">Aerial Cinematography</span><span class="marquee-dot"></span>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="about-strip" id="about">
+  <div class="about-left reveal">
+    <div class="about-label">About</div>
+    <h2 class="about-h2">The world looks different<br><em>from up here.</em></h2>
+    <p class="about-body">Jefney Ongeri is an FAA Part 107 certified aerial cinematographer capturing the Midwest from perspectives no ground camera can reach. Specialising in real estate listings and wedding films, every frame is composed with the same intentionality as the properties and moments being captured. Based in Iowa — available statewide.</p>
+  </div>
+  <div class="about-right reveal d1">
+    <div>
+      <div class="about-stat-n">24hr</div>
+      <div class="about-stat-l">Average Delivery</div>
+    </div>
+    <div>
+      <div class="about-stat-n">Part 107</div>
+      <div class="about-stat-l">FAA Certified</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TECHNIQUES ══════════ -->
+<section class="tech-section" id="techniques">
+  <div class="tech-inner">
+    <div class="tech-header reveal">
+      <div>
+        <div class="sec-label">Cinematic Toolkit</div>
+        <h2 class="sec-h2">Every shot, <em>precisely executed</em></h2>
+      </div>
+      <p class="sec-desc">11 real estate techniques. 8 wedding sequences. Each chosen for maximum visual impact — never arbitrary, always intentional.</p>
+    </div>
+    <div class="tech-grid reveal d1">
+      <div class="tech-card">
+        <div class="tech-card-num">01</div>
+        <div class="tech-card-title">Full Property Orbit</div>
+        <p class="tech-card-desc">180° arc around the front facade — revealing street presence, landscaping, and architectural width in one continuous sweep. The foundational shot of every listing.</p>
+        <div class="tech-card-specs"><span class="spec">40–60 ft</span><span class="spec">10–15 sec</span><span class="spec">All packages</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-num">04</div>
+        <div class="tech-card-title">Front Facade Reveal <span class="tech-hero-tag">Hero</span></div>
+        <p class="tech-card-desc">Starts close and low — simultaneously pulls back and rises to unveil the full facade. The emotional anchor of every property video. This is the money shot.</p>
+        <div class="tech-card-specs"><span class="spec">8 ft → 50 ft</span><span class="spec">8–12 sec</span><span class="spec">Standard+</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-num">09</div>
+        <div class="tech-card-title">Low Angle Backyard Skim</div>
+        <p class="tech-card-desc">Drone skims 3–5 ft above the grass or pool surface — a ground-hugging pass that makes outdoor spaces feel vast and immersive. Exceptional over water.</p>
+        <div class="tech-card-specs"><span class="spec">3–8 ft</span><span class="spec">6–10 sec</span><span class="spec">Premium</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-num">11</div>
+        <div class="tech-card-title">Grand Pullback</div>
+        <p class="tech-card-desc">The closing shot. Drone centres on the home, then slowly pulls back and rises — shrinking the property into the surrounding landscape. The last frame viewers see.</p>
+        <div class="tech-card-specs"><span class="spec">30 ft → 120 ft</span><span class="spec">12–18 sec</span><span class="spec">All packages</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-num">W01</div>
+        <div class="tech-card-title">Venue Reveal <span class="tech-hero-tag">Hero</span></div>
+        <p class="tech-card-desc">Drone rises from behind the tree line to reveal the full ceremony venue in one sweeping motion. The cinematic first impression that defines the entire wedding film.</p>
+        <div class="tech-card-specs"><span class="spec">30 ft → 80 ft</span><span class="spec">10–15 sec</span><span class="spec">All wedding pkgs</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-num">W04</div>
+        <div class="tech-card-title">First Kiss Elevation <span class="tech-hero-tag">Hero</span></div>
+        <p class="tech-card-desc">At the moment of the first kiss, the drone rises — pulling the frame wider to reveal the couple within the full ceremony landscape. The most emotional aerial shot in the film.</p>
+        <div class="tech-card-specs"><span class="spec">20 ft → 60 ft</span><span class="spec">6–10 sec</span><span class="spec">Standard+</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRICING ══════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="reveal">
+      <div class="sec-label">Transparent Pricing</div>
+      <h2 class="sec-h2">Iowa market rates, <em>no surprises</em></h2>
+      <p class="sec-desc">Calibrated to the Iowa market. No hidden fees. Travel within 25 miles included in every package. FAA Part 107 certified and fully insured.</p>
+    </div>
+    <div class="pricing-tabs-row reveal d1">
+      <button class="ptab on" onclick="showPricing('re',this)">Real Estate</button>
+      <button class="ptab" onclick="showPricing('wed',this)">Weddings</button>
+    </div>
+
+    <!-- Real Estate -->
+    <div class="pricing-pane on" id="pp-re">
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-name">Essential</div>
+          <div class="price-amount">$149</div>
+          <div class="price-period">Flat rate · 1–2 hr shoot</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Front property orbit</li>
+            <li>Grand pullback end clip</li>
+            <li>10–15 edited aerial photos</li>
+            <li>60-sec edited video reel</li>
+            <li>24-hr digital delivery</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Essential</a>
+        </div>
+        <div class="price-card feat">
+          <div class="price-tier">Best Value</div>
+          <div class="price-name">Standard</div>
+          <div class="price-amount">$299</div>
+          <div class="price-period">Flat rate · 2–3 hr shoot</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Front + back orbit</li>
+            <li>Front facade reveal (hero)</li>
+            <li>Back facade rise</li>
+            <li>Low-angle tight shots ×2</li>
+            <li>20–30 edited aerial photos</li>
+            <li>2-min video with music</li>
+            <li>24-hr delivery</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Standard</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Luxury & Acreage</div>
+          <div class="price-name">Premium</div>
+          <div class="price-amount">$499</div>
+          <div class="price-period">Flat rate · 3–4 hr shoot</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Full 11-shot technique suite</li>
+            <li>Backyard reveal + pool skim</li>
+            <li>Feature orbits ×4</li>
+            <li>30–40 edited aerial photos</li>
+            <li>3-min cinematic film</li>
+            <li>Color grade + licensed music</li>
+            <li>Social vertical cut (9:16)</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Premium</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weddings -->
+    <div class="pricing-pane" id="pp-wed">
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Add-On</div>
+          <div class="price-name">Highlights</div>
+          <div class="price-amount">$499</div>
+          <div class="price-period">Flat rate · 2 hr coverage</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Venue reveal hero shot</li>
+            <li>First kiss elevation</li>
+            <li>Golden hour landscape</li>
+            <li>Grand pullback outro</li>
+            <li>10–15 edited aerial photos</li>
+            <li>90-sec highlight reel</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Highlights</a>
+        </div>
+        <div class="price-card feat">
+          <div class="price-tier">Most Popular</div>
+          <div class="price-name">Cinematic</div>
+          <div class="price-amount">$899</div>
+          <div class="price-period">Flat rate · 4 hr coverage</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Full 8-technique wedding suite</li>
+            <li>Ceremony orbit</li>
+            <li>Portrait orbit — golden hour</li>
+            <li>Bride / groom walk shot</li>
+            <li>20–30 edited aerial photos</li>
+            <li>3–5 min cinematic film</li>
+            <li>Color grade + soundtrack</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Cinematic</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">All-Day</div>
+          <div class="price-name">Full Day</div>
+          <div class="price-amount">$1,499</div>
+          <div class="price-period">Flat rate · 6–8 hr coverage</div>
+          <div class="price-div"></div>
+          <ul class="price-list">
+            <li>Everything in Cinematic</li>
+            <li>First dance reveal</li>
+            <li>Reception overview</li>
+            <li>Same-day teaser reel</li>
+            <li>30–50 edited aerial photos</li>
+            <li>5–8 min wedding film</li>
+            <li>Vertical social cut</li>
+          </ul>
+          <a href="#contact" class="price-cta">Book Full Day</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROCESS ══════════ -->
+<section class="process-section">
+  <div class="process-inner">
+    <div class="reveal">
+      <div class="sec-label">How It Works</div>
+      <h2 class="sec-h2">Simple from <em>booking to delivery</em></h2>
+    </div>
+    <div class="process-grid reveal d1">
+      <div class="process-step">
+        <div class="process-n">01</div>
+        <div class="process-title">Book Online</div>
+        <p class="process-desc">Fill out the contact form with your property, date, and service. Confirmation within 2 hours and your shoot window is locked in.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-n">02</div>
+        <div class="process-title">Weather Check</div>
+        <p class="process-desc">Iowa weather monitored 48 hours out. If conditions aren't ideal we reschedule at no charge — never sacrificing quality for convenience.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-n">03</div>
+        <div class="process-title">Shoot Day</div>
+        <p class="process-desc">LAANC airspace authorization handled automatically. We arrive, fly the shot plan, and you don't need to be present — though you're welcome to watch.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-n">04</div>
+        <div class="process-title">24-hr Delivery</div>
+        <p class="process-desc">Color-graded photos and edited video via private download link within 24 hours. MLS-ready files, social cuts, and 4K masters all included.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="sec-label">Get In Touch</div>
+      <h2 class="sec-h2">Book your <em>shoot</em></h2>
+      <p class="sec-desc">Fill out the form and we'll confirm availability within 2 business hours.</p>
+    </div>
+    <div class="contact-layout">
+      <form class="form reveal d1" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Jefney" required></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Ongeri" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="hello@example.com" required></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" placeholder="(515) 000-0000"></div>
+        <div class="form-group">
+          <label class="form-label">Service</label>
+          <select class="form-select form-input">
+            <option value="" disabled selected>Select a service...</option>
+            <option>Real Estate — Essential ($149)</option>
+            <option>Real Estate — Standard ($299)</option>
+            <option>Real Estate — Premium ($499)</option>
+            <option>Photos Only ($99)</option>
+            <option>Wedding — Highlights ($499)</option>
+            <option>Wedding — Cinematic ($899)</option>
+            <option>Wedding — Full Day ($1,499)</option>
+            <option>Custom / Bundle Quote</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Shoot Date</label><input class="form-input" type="date"></div>
+          <div class="form-group"><label class="form-label">Location</label><input class="form-input" type="text" placeholder="City, Iowa"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Details</label><textarea class="form-textarea" placeholder="Property size, venue name, special shots..."></textarea></div>
+        <button type="submit" class="form-submit" id="sub-btn">Send Inquiry →</button>
+        <div id="form-ok" style="display:none;font-family:var(--cond);font-size:.6rem;letter-spacing:.2em;color:var(--teal);margin-top:.4rem;">✓ MESSAGE RECEIVED — WE'LL BE IN TOUCH WITHIN 2 HOURS</div>
+      </form>
+      <div class="contact-info reveal d2">
+        <div class="contact-item">
+          <div class="contact-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 14a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3.12h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><div class="contact-lbl">Phone</div><div class="contact-val">(515) 000-0000</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="contact-lbl">Email</div><div class="contact-val">jeffongeri17@gmail.com</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="contact-lbl">Response Time</div><div class="contact-val">Within 2 business hours</div></div>
+        </div>
+        <div class="contact-item" style="border:none;">
+          <div class="contact-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="contact-lbl">Service Area</div><div class="contact-val">Iowa Statewide · No travel fee within 25 mi</div></div>
+        </div>
+        <div class="contact-cert">
+          <div class="contact-cert-title">✓ FAA Part 107 · Fully Insured · LAANC Authorized</div>
+          <p class="contact-cert-body">All airspace authorizations handled automatically before every shoot. Near Des Moines, Cedar Rapids, or any Iowa airport — fully covered.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-copy">© 2026 Jefney Ongeri · Iowa · FAA Part 107 Certified</div>
+  <ul class="footer-links">
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#techniques">Techniques</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+/* ── CURSOR ── */
+const cr=document.getElementById('cur-r'),cd=document.getElementById('cur-d');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px';});
+(function lerp(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(lerp);})();
+document.querySelectorAll('a,button,.hero-tab,.port-card,.tech-card,.price-card,.testi-card,.ptab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+/* ── NAV SCROLL ── */
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  navEl.classList.toggle('stuck',window.scrollY>60);
+  // active nav link
+  const ids=['hero','portfolio','techniques','pricing','about','contact'];
+  let cur='';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-140)cur=id;});
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    const href=a.getAttribute('href').replace('#','');
+    a.classList.toggle('cur',href===cur);
+  });
+});
+
+/* ── HERO CANVAS ── */
+(function(){
+  const canvas=document.getElementById('hero-canvas');
+  const ctx=canvas.getContext('2d');
+  const stars=Array.from({length:180},()=>({x:Math.random(),y:Math.random()*.7,r:Math.random()*1+.2,a:Math.random(),da:.0015+Math.random()*.003}));
+  let t=0,trail=[];
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  // hero data per tab
+  const scenes=[
+    {sky1:'#080c16',sky2:'#121e30',gnd1:'#18281a',gnd2:'#0c160c',fog:'rgba(0,200,176,0.06)',title:'Neighborhood',houses:9},
+    {sky1:'#0a0e18',sky2:'#182030',gnd1:'#1e2c18',gnd2:'#101808',fog:'rgba(0,200,176,0.05)',title:'Midwest',houses:5},
+    {sky1:'#080a10',sky2:'#10182a',gnd1:'#141a20',gnd2:'#0c1018',fog:'rgba(0,180,180,0.05)',title:'First Person View',houses:12},
+  ];
+  let curScene=0;
+
+  function drawScene(){
+    const W=canvas.width,H=canvas.height;
+    const sc=scenes[curScene];
+    ctx.clearRect(0,0,W,H);
+    // sky
+    const sG=ctx.createLinearGradient(0,0,0,H*.72);
+    sG.addColorStop(0,sc.sky1);sG.addColorStop(1,sc.sky2);
+    ctx.fillStyle=sG;ctx.fillRect(0,0,W,H*.72);
+    // ground
+    const gG=ctx.createLinearGradient(0,H*.68,0,H);
+    gG.addColorStop(0,sc.gnd1);gG.addColorStop(1,sc.gnd2);
+    ctx.fillStyle=gG;ctx.fillRect(0,H*.68,W,H*.32);
+    // horizon fog
+    const hG=ctx.createRadialGradient(W*.5,H*.72,0,W*.5,H*.72,W*.5);
+    hG.addColorStop(0,sc.fog);hG.addColorStop(1,'transparent');
+    ctx.fillStyle=hG;ctx.fillRect(0,0,W,H);
+    // stars
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0)s.da*=-1;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.a*.6})`;ctx.fill();});
+    // horizon line
+    ctx.beginPath();ctx.moveTo(0,H*.72);ctx.lineTo(W,H*.72);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();
+    // rooftops silhouette
+    ctx.fillStyle='rgba(0,0,0,.5)';
+    const n=sc.houses;
+    for(let i=0;i<n;i++){
+      const hx=(i/n)*W*.88+W*.06;
+      const hw=W*.065+Math.sin(i*1.7)*W*.015;
+      const hh=H*.09+Math.sin(i*2.3)*H*.03;
+      ctx.beginPath();ctx.moveTo(hx,H*.72);ctx.lineTo(hx,H*.72-hh*.45);ctx.lineTo(hx+hw*.5,H*.72-hh);ctx.lineTo(hx+hw,H*.72-hh*.45);ctx.lineTo(hx+hw,H*.72);ctx.closePath();ctx.fill();
+      // window glow
+      if(Math.random()>.5){const wG=ctx.createRadialGradient(hx+hw*.5,H*.72-hh*.6,0,hx+hw*.5,H*.72-hh*.6,hw*.25);wG.addColorStop(0,'rgba(255,220,120,.06)');wG.addColorStop(1,'transparent');ctx.fillStyle=wG;ctx.fillRect(hx,H*.68,hw,hh);}
+    }
+    // drone
+    t+=.005;
+    const dx=W*.65+Math.cos(t)*W*.1+Math.sin(t*.7)*W*.04;
+    const dy=H*.32+Math.sin(t*1.2)*H*.055;
+    trail.push({x:dx,y:dy});if(trail.length>70)trail.shift();
+    if(trail.length>2){ctx.beginPath();ctx.moveTo(trail[0].x,trail[0].y);trail.forEach((p,i)=>{if(i>0)ctx.lineTo(p.x,p.y);});ctx.strokeStyle='rgba(0,200,176,.25)';ctx.lineWidth=1.4;ctx.stroke();}
+    const dG2=ctx.createRadialGradient(dx,dy,0,dx,dy,30);dG2.addColorStop(0,'rgba(0,200,176,.3)');dG2.addColorStop(1,'transparent');ctx.fillStyle=dG2;ctx.fillRect(dx-30,dy-30,60,60);
+    ctx.save();ctx.translate(dx,dy);
+    [[-18,0],[18,0],[0,-14],[0,14]].forEach(([ax,ay])=>{ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(ax,ay);ctx.strokeStyle='rgba(255,255,255,.45)';ctx.lineWidth=1.7;ctx.stroke();ctx.beginPath();ctx.ellipse(ax,ay,7,2.2,0,0,Math.PI*2);ctx.fillStyle='rgba(0,200,176,.4)';ctx.fill();});
+    ctx.beginPath();ctx.arc(0,0,2.8,0,Math.PI*2);ctx.fillStyle='#00c8b0';ctx.fill();
+    ctx.restore();
+    requestAnimationFrame(drawScene);
+  }
+  drawScene();
+
+  // expose scene switcher
+  window._switchHeroScene=function(idx){curScene=idx;trail=[];};
+})();
+
+/* ── PORTFOLIO CARDS ── */
+function makeCard(id,c1,c2,c3){
+  const cvs=document.getElementById(id);if(!cvs)return;
+  const ctx=cvs.getContext('2d');
+  function resize(){cvs.width=cvs.offsetWidth;cvs.height=cvs.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    const W=cvs.width,H=cvs.offsetHeight||cvs.height;
+    cvs.height=H;
+    const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,c1);g.addColorStop(.55,c2);g.addColorStop(1,c3);
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(0,0,0,.42)';ctx.fillRect(0,H*.58,W,H*.42);
+    for(let i=0;i<7;i++){const hx=(i/7)*W*.9+W*.05;const hw=W*.1+Math.sin(i*1.9)*W*.02;const hh=H*.13+Math.sin(i*2.3)*H*.05;ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();ctx.moveTo(hx,H*.58);ctx.lineTo(hx,H*.58-hh*.45);ctx.lineTo(hx+hw*.5,H*.58-hh);ctx.lineTo(hx+hw,H*.58-hh*.45);ctx.lineTo(hx+hw,H*.58);ctx.closePath();ctx.fill();}
+    // teal horizon glow
+    const hG=ctx.createRadialGradient(W*.5,H*.58,0,W*.5,H*.58,W*.35);hG.addColorStop(0,'rgba(0,200,176,.07)');hG.addColorStop(1,'transparent');ctx.fillStyle=hG;ctx.fillRect(0,0,W,H);
+  }
+  draw();
+}
+window.addEventListener('load',()=>{
+  makeCard('pc1','#0a0e18','#121e2a','#0c1a14');
+  makeCard('pc2','#0a1018','#101e30','#0a1818');
+});
+
+/* ── HERO TAB SWITCH ── */
+const tabData=[
+  {meta:'01 / 03',title:'Neighborhood<br>Aerials<em>.</em>',desc:'Comprehensive aerial documentation of residential neighborhoods, perfect for real estate marketing and community showcase.',loc:'Waterloo, IA',year:'2025',frames:'4 Frames'},
+  {meta:'02 / 03',title:'Midwest<br>Landscapes<em>.</em>',desc:'The rolling farmlands and natural beauty of the Midwest captured from stunning aerial perspectives, showcasing the vastness and patterns of the land.',loc:'Waterloo, IA',year:'2025',frames:'2 Frames'},
+  {meta:'03 / 03',title:'First<br>Person View<em>.</em>',desc:'Immersive first-person-view drone footage that puts you in the pilot seat, capturing dynamic low-altitude flights and acrobatic maneuvers with cinematic fluidity.',loc:'Waterloo, IA',year:'2025',frames:'6 Frames'},
+];
+function switchTab(el,idx){
+  document.querySelectorAll('.hero-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  const d=tabData[idx];
+  document.querySelector('.hero-meta').innerHTML=`Drone <s2>·</s2> Video <s2>·</s2> Featured <s2>·</s2> ${d.meta}`;
+  document.querySelector('.hero-h1').innerHTML=d.title;
+  document.querySelector('.hero-desc').textContent=d.desc;
+  const dets=document.querySelectorAll('.hero-detail');
+  dets[0].textContent=d.loc;dets[1].textContent=d.year;dets[2].textContent=d.frames;
+  if(window._switchHeroScene)window._switchHeroScene(idx);
+  document.querySelectorAll('.hero-videos video').forEach(v=>{
+    if(Number(v.dataset.idx)===idx){v.classList.add('on');v.play().catch(()=>{});}
+    else{v.classList.remove('on');}
+  });
+}
+
+/* ── PRICING TABS ── */
+function showPricing(cat,btn){
+  document.querySelectorAll('.pricing-pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pp-'+cat).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ── FORM ── */
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('sub-btn');
+  btn.textContent='Sending...';
+  setTimeout(()=>{
+    document.getElementById('form-ok').style.display='block';
+    btn.style.display='none';
+  },700);
+}
+
+/* ── COUNTERS ── */
+function countUp(elId,target,suffix,dur){
+  const el=document.getElementById(elId);if(!el)return;
+  let start=null;
+  function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/dur,1);const ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target)+suffix;if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){countUp('cnt1',480,'',1800);countUp('cnt2',68,'%',1500);cntObs.disconnect();}});
+},{threshold:.4});
+const c1el=document.getElementById('cnt1');if(c1el)cntObs.observe(c1el);
+
+/* ── SCROLL REVEAL ── */
+const revObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ── PORTFOLIO CARD SLIDESHOW (rotates videos every 10s) ── */
+(function(){
+  const pool=[
+    {src:'/videos/rooftop.mp4',poster:'/videos/rooftop-poster.jpg'},
+    {src:'https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Timeline_1_cdz63u.mp4',poster:'https://res.cloudinary.com/dxrwuu6d4/video/upload/so_0,f_jpg,q_auto,w_1280/Timeline_1_cdz63u.jpg'},
+    {src:'https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/River_4_ykzyjs.mp4',poster:'https://res.cloudinary.com/dxrwuu6d4/video/upload/so_0,f_jpg,q_auto,w_1280/River_4_ykzyjs.jpg'},
+    {src:'https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Avanta_6_n66qt6.mp4',poster:'https://res.cloudinary.com/dxrwuu6d4/video/upload/so_0,f_jpg,q_auto,w_1280/Avanta_6_n66qt6.jpg'},
+    {src:'https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Avanta_4_u1dubk.mp4',poster:'https://res.cloudinary.com/dxrwuu6d4/video/upload/so_0,f_jpg,q_auto,w_1280/Avanta_4_u1dubk.jpg'},
+    {src:'https://res.cloudinary.com/dxrwuu6d4/video/upload/f_auto,q_auto,vc_auto,w_1280/Aerial_view_lbzwpy.mp4',poster:'https://res.cloudinary.com/dxrwuu6d4/video/upload/so_0,f_jpg,q_auto,w_1280/Aerial_view_lbzwpy.jpg'}
+  ];
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  const vids=Array.from(document.querySelectorAll('.pc-slideshow'));
+  const state=vids.map(v=>Number(v.dataset.offset||0));
+  setInterval(()=>{
+    vids.forEach((v,i)=>{
+      state[i]=(state[i]+vids.length)%pool.length;
+      // advance to the next item not currently shown on another card
+      let next=(state[i]+1)%pool.length;
+      const others=state.filter((_,j)=>j!==i);
+      let guard=0;
+      while(others.includes(next)&&guard++<pool.length){next=(next+1)%pool.length;}
+      state[i]=next;
+      const item=pool[next];
+      v.style.opacity='0';
+      setTimeout(()=>{
+        v.src=item.src;
+        v.poster=item.poster;
+        v.load();
+        v.play().catch(()=>{});
+        v.style.opacity='1';
+      },400);
+    });
+  },10000);
+  vids.forEach(v=>{v.style.transition='opacity .4s ease';});
+})();
+</script>
+</body>
+</html>
