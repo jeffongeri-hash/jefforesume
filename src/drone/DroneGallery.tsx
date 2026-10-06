@@ -80,10 +80,9 @@ export default function Portfolio() {
 
   return (
     <>
-      <SEOHead 
-        title="Iowa Drone Portfolio — Aerial Videography & Photography"
-        description="Drone portfolio from an Iowa operator based in Waterloo & Cedar Falls — real estate aerials, wedding videography, rooftop inspections, and landscape work across Iowa."
-      />
+      <Helmet><title>Drone Galleries | Jefney Ongeri</title><meta name="description" content="Aerial drone photography and videography galleries by Jefney Ongeri from Waterloo, Cedar Falls and across Iowa." /><link rel="canonical" href="https://jeffongeri.com/drone/gallery" /></Helmet>
+      <Header />
+      <DroneNav />
       
       <div className="min-h-screen">
         {/* Hero Section */}

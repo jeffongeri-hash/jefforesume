@@ -45,6 +45,9 @@ const CoveredCallMaster = lazy(() => import("./pages/CoveredCallMaster"));
 const PAVault = lazy(() => import("./pages/PAVault"));
 const PublicLicenses = lazy(() => import("./pages/PublicLicenses"));
 const LicensesAdmin = lazy(() => import("./pages/LicensesAdmin"));
+const DroneLanding = lazy(() => import("./drone/DroneLanding"));
+const DroneGallery = lazy(() => import("./drone/DroneGallery"));
+const DroneProject = lazy(() => import("./drone/DroneProject"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -95,6 +98,9 @@ const App = () => (
                 <Route path="/pa-vault/*" element={<PAVault />} />
                 <Route path="/my-licenses" element={<PublicLicenses />} />
                 <Route path="/licenses-admin" element={<LicensesAdmin />} />
+                <Route path="/drone" element={<DroneLanding />} />
+                <Route path="/drone/gallery" element={<DroneGallery />} />
+                <Route path="/drone/gallery/:slug" element={<DroneProject />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

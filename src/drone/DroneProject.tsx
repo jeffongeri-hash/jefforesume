@@ -130,12 +130,9 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <SEOHead
-        title={project.title}
-        description={project.description}
-        image={coverOverride?.isVideo ? project.coverImage : heroSrc}
-        type="article"
-      />
+      <Helmet><title>{`${project.title} | Drone Gallery | Jefney Ongeri`}</title><meta name="description" content={project.description} /><link rel="canonical" href={`https://jeffongeri.com/drone/gallery/${project.slug}`} /></Helmet>
+      <Header />
+      <DroneNav />
       
       <div className="min-h-screen">
         {/* Hero Image - 70vh */}
