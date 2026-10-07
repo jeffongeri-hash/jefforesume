@@ -13,6 +13,7 @@ import { Lightbox } from '@/drone/components/Lightbox';
 import { supabase } from '@/drone/droneClient';
 import type { ProjectImage } from '@/drone/types';
 import { fetchCovers } from '@/drone/projectCovers';
+import { ParallaxVideos } from '@/drone/components/ParallaxVideos';
 
 /**
  * Project detail page with hero image, gallery, and full-screen lightbox
