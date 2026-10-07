@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { projects } from '@/drone/projects';
-import { FeaturedCarousel } from '@/drone/components/FeaturedCarousel';
+import { FocusTiltGallery } from '@/drone/components/FocusTiltGallery';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import DroneNav from '@/drone/DroneNav';
@@ -112,7 +112,7 @@ export default function Portfolio() {
               Aerial photography and videography
             </p>
           </div>
-          <FeaturedCarousel projects={droneWork} />
+          <FocusTiltGallery projects={droneWork} />
         </section>
 
         {otherWork.length > 0 && (
@@ -123,7 +123,7 @@ export default function Portfolio() {
                 Botanical studies and short-form edits
               </p>
             </div>
-            <FeaturedCarousel projects={otherWork} />
+            <FocusTiltGallery projects={otherWork} />
           </section>
         )}
 
