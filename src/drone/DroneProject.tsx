@@ -13,6 +13,7 @@ import { Lightbox } from '@/drone/components/Lightbox';
 import { supabase } from '@/drone/droneClient';
 import type { ProjectImage } from '@/drone/types';
 import { fetchCovers } from '@/drone/projectCovers';
+import { ParallaxVideos } from '@/drone/components/ParallaxVideos';
 
 /**
  * Project detail page with hero image, gallery, and full-screen lightbox
@@ -231,22 +232,38 @@ export default function ProjectDetail() {
         </motion.div>
       </section>
 
-        {/* Image Gallery - Edge to edge */}
+        {/* Photos - Edge to edge */}
         <section className="py-12 md:py-16">
           <div className="space-y-8 md:space-y-12">
-            {allImages.map((image, index) => (
-              <ScrollReveal key={image.id} delay={index * 0.1}>
-                <ImageWithLightbox
-                  image={image}
-                  onClick={() => openLightbox(index)}
-                  priority={index === 0}
-                  index={0}
-                  className="w-full"
-                />
-              </ScrollReveal>
-            ))}
+            {allImages.map((image, index) =>
+              image.videoSrc ? null : (
+                <ScrollReveal key={image.id} delay={0.1}>
+                  <ImageWithLightbox
+                    image={image}
+                    onClick={() => openLightbox(index)}
+                    priority={index === 0}
+                    index={0}
+                    className="w-full"
+                  />
+                </ScrollReveal>
+              )
+            )}
           </div>
         </section>
+
+        {/* Videos - parallax columns */}
+        {allImages.some((m) => m.videoSrc) && (
+          <section className="border-t border-border pt-12 md:pt-16 overflow-hidden">
+            <div className="max-w-6xl mx-auto px-6">
+              <h2 className="text-2xl md:text-3xl font-light tracking-wide">Videos</h2>
+              <p className="text-sm text-muted-foreground font-light mt-1">Tap any clip to watch it full screen</p>
+            </div>
+            <ParallaxVideos
+              items={allImages.map((media, index) => ({ media, index })).filter((x) => x.media.videoSrc)}
+              onOpen={openLightbox}
+            />
+          </section>
+        )}
 
         {/* Lightbox */}
         <Lightbox
