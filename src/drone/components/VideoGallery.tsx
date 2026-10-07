@@ -134,6 +134,7 @@ export default function VideoGallery() {
   });
 
   const videos = data?.pages.flatMap((p) => p.videos) ?? [];
+  if (error || (!isLoading && videos.length === 0)) return null;
 
   return (
     <section className="py-12 md:py-16 border-t border-border"><div className="max-w-7xl mx-auto px-6 lg:px-8">
