@@ -47,7 +47,10 @@ Deno.serve(async (req) => {
     const apiKey = Deno.env.get("YOUTUBE_API_KEY");
     const channel = Deno.env.get("YOUTUBE_CHANNEL");
     if (!apiKey || !channel) {
-      throw new Error("Missing YOUTUBE_API_KEY or YOUTUBE_CHANNEL secret.");
+      // Not configured yet: return an empty list so the page stays quiet.
+      return new Response(JSON.stringify({ videos: [], nextPageToken: null, configured: false }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const body = await req.json().catch(() => ({}));
