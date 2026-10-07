@@ -11,8 +11,9 @@ export function ParallaxVideos({ items, onOpen }: { items: Item[]; onOpen: (inde
   const up = useTransform(scrollYProgress, [0, 1], [120, -120]);
   const down = useTransform(scrollYProgress, [0, 1], [-120, 120]);
 
-  const third = Math.ceil(items.length / 3);
-  const cols = [items.slice(0, third), items.slice(third, 2 * third), items.slice(2 * third)];
+  // Deal clips round-robin so every column gets some
+  const cols: Item[][] = [[], [], []];
+  items.forEach((it, i) => cols[i % 3].push(it));
   const motions: MotionValue<number>[] = [up, down, up];
 
   return (
