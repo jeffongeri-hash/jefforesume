@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Instagram } from 'lucide-react';
 import { photographerInfo } from '@/drone/photographer';
 import { supabase } from '@/drone/droneClient';
+import VideoGallery from '@/drone/components/VideoGallery';
 
 const INSTAGRAM_REELS = [
   'https://www.instagram.com/reel/DZQtCNno2zx/',
@@ -125,6 +126,8 @@ export default function Portfolio() {
             <FeaturedCarousel projects={otherWork} />
           </section>
         )}
+
+        <VideoGallery />
 
         {/* Instagram Feed CTA */}
         <section className="py-16 md:py-24 px-6 lg:px-8 border-t border-border">
