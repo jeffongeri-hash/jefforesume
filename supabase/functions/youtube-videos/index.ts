@@ -79,6 +79,12 @@ Deno.serve(async (req) => {
       `https://www.googleapis.com/youtube/v3/playlistItems?${params}`
     );
     const data = await res.json();
+    if (res.status === 404) {
+      // Channel has no uploads yet — the uploads playlist doesn't exist.
+      return new Response(JSON.stringify({ videos: [], nextPageToken: null }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     if (!res.ok) {
       throw new Error(data?.error?.message ?? "YouTube API request failed.");
     }
