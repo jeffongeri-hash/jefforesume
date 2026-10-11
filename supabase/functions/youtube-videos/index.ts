@@ -20,9 +20,16 @@ let cachedUploadsPlaylistId: string | null = null;
 async function getUploadsPlaylistId(apiKey: string, channel: string) {
   if (cachedUploadsPlaylistId) return cachedUploadsPlaylistId;
 
-  const lookup = channel.startsWith("UC")
-    ? `id=${encodeURIComponent(channel)}`
-    : `forHandle=${encodeURIComponent(channel.startsWith("@") ? channel : "@" + channel)}`;
+  // Accept full URLs, @handles, bare handles or UC... ids
+  let c = channel.trim();
+  const idMatch = c.match(/channel\/(UC[\w-]+)/);
+  const handleMatch = c.match(/youtube\.com\/(@[\w.-]+)/);
+  if (idMatch) c = idMatch[1];
+  else if (handleMatch) c = handleMatch[1];
+  c = c.replace(/[/?#].*$/, "");
+  const lookup = /^UC[\w-]{20,}$/.test(c)
+    ? `id=${encodeURIComponent(c)}`
+    : `forHandle=${encodeURIComponent(c.startsWith("@") ? c : "@" + c)}`;
 
   const res = await fetch(
     `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&${lookup}&key=${apiKey}`
