@@ -38,7 +38,9 @@ async function getUploadsPlaylistId(apiKey: string, channel: string) {
   const uploads = data?.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
   if (!uploads) {
     throw new Error(
-      "Could not find channel. Check the YOUTUBE_CHANNEL secret (channel ID or @handle)."
+      data?.error?.message
+        ? `YouTube said: ${data.error.message}`
+        : "Could not find channel. Check the YOUTUBE_CHANNEL secret (channel ID or @handle)."
     );
   }
   cachedUploadsPlaylistId = uploads;
