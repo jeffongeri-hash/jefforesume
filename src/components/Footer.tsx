@@ -46,7 +46,7 @@ const Footer = () => {
         
         <div className="border-t border-border mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © <Link to="/freedom-countdown" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">{new Date().getFullYear()}</Link> Jefney Ongeri, PA-C. All rights reserved.
+            © <Link to="/freedom-countdown" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">{new Date().getFullYear()}</Link> <Link to="/sacramento-healthcare" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">Jefney</Link> Ongeri, <Link to="/paycheck-analyzer" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">PA-C</Link>. <Link to="/iv-strike-selector" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">All</Link> <Link to="/covered-call-master" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">rights</Link> <Link to="/ca-move-planner" className="text-muted-foreground hover:text-muted-foreground no-underline cursor-text">reserved</Link>.
           </p>
         </div>
       </div>

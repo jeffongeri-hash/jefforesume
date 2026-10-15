@@ -1,4 +1,3 @@
-import OwnerOnly from '@/components/OwnerOnly';
 import { useEffect, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import CloudsBackground from '@/components/CloudsBackground';
@@ -383,7 +382,7 @@ const Investments = () => {
         </div>
       </main>
       <Footer />
-      <OwnerOnly><PortfolioAssistant /></OwnerOnly>
+      <PortfolioAssistant />
     </div>
   );
 };

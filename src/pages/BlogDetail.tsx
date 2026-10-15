@@ -1,4 +1,3 @@
-import OwnerOnly from '@/components/OwnerOnly';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Download, Check, ExternalLink } from 'lucide-react';
@@ -5838,13 +5837,13 @@ const BlogDetail = () => {
                       { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000", ring: "Close-In", commute: "8 min to TMC", vibe: "Nightlife hub", highlight: "Lowest rents" },
                     ]}
                   />
-                  <OwnerOnly><PSLFHospitalFinder /></OwnerOnly>
+                  <PSLFHospitalFinder />
                 </>
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}
               {slug === 'pslf-hospital-finder-by-city-zip' && (
-                <OwnerOnly><PSLFHospitalFinder /></OwnerOnly>
+                <PSLFHospitalFinder />
               )}
               
               {/* Share */}
