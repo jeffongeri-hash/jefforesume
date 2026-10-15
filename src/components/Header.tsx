@@ -24,7 +24,7 @@ const Header = () => {
 
   const primaryNavItems = [
     { name: 'Professional', href: '/professional', matches: ['/professional', '/resume', '/accolades'] },
-    { name: 'Investments', href: '/investments', matches: ['/investments', '/finance-guides', '/iv-strike-selector', '/covered-call-master'] },
+    { name: 'Investments', href: '/investments', matches: ['/investments', '/finance-guides'] },
     { name: 'Care Abroad', href: '/care-abroad', matches: ['/care-abroad'] },
     { name: 'Trading Volatility', href: '/trading-volatility', matches: ['/trading-volatility'] },
     { name: 'Drone', href: '/drone', matches: ['/drone'] },
@@ -45,19 +45,14 @@ const Header = () => {
       items: [
         { name: 'Portfolio', href: '/investments', icon: TrendingUp, desc: 'Holdings and thesis' },
         { name: 'Finance Guides', href: '/finance-guides', icon: TrendingUp, desc: 'Animated money explainers' },
-        { name: 'IV Strike', href: '/iv-strike-selector', icon: Calculator, desc: 'Options strike selector' },
-        { name: 'Covered Call', href: '/covered-call-master', icon: DollarSign, desc: 'Covered call planner' },
       ],
     },
     {
       label: 'Career Tools',
       items: [
-        { name: 'CA Move Planner', href: '/ca-move-planner', icon: MapPin, desc: 'Relocation modeling' },
         { name: 'Care Abroad', href: '/care-abroad', icon: Stethoscope, desc: 'International care planning' },
         { name: 'Sumerlin Trails', href: '/sumerlin-trails', icon: House, desc: 'Home projects and HOA guide' },
         { name: 'Kenya Trip', href: '/kenya-trip', icon: Earth, desc: 'UK stop and Nairobi planning' },
-        { name: 'Paycheck Analyzer', href: '/paycheck-analyzer', icon: Calculator, desc: 'Take-home breakdown' },
-        { name: 'Sacramento Health', href: '/sacramento-healthcare', icon: Stethoscope, desc: 'Hospital hub' },
         { name: 'Vacation', href: '/vacation', icon: Plane, desc: 'Trip planning' },
       ],
     },

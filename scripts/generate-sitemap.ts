@@ -6,10 +6,7 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/", "/about", "/professional", "/resume", "/accolades", "/contact",
-  "/posts", "/investments", "/finance-guides", "/podcast",
-  "/iv-strike-selector", "/covered-call-master", "/paycheck-analyzer",
-  "/ca-move-planner", "/care-abroad", "/care-abroad/timeline",
-  "/sacramento-healthcare", "/privacy", "/terms",
+  "/posts", "/investments", "/finance-guides", "/podcast", "/care-abroad", "/care-abroad/timeline", "/privacy", "/terms",
 ]
 
 const postsSrc = readFileSync(resolve("src/pages/AllPosts.tsx"), "utf8")

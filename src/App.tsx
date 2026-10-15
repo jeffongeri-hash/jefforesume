@@ -1,3 +1,4 @@
+import OwnerOnly from "@/components/OwnerOnly";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -84,17 +85,17 @@ const App = () => (
                 <Route path="/freedom-countdown" element={<FreedomCountdown />} />
                 <Route path="/day-trip" element={<DayTrip />} />
                 <Route path="/vacation" element={<Vacation />} />
-                <Route path="/iv-strike-selector" element={<IVStrikeSelector />} />
-                <Route path="/ca-move-planner" element={<CAMovePlanner />} />
+                <Route path="/iv-strike-selector" element={<OwnerOnly fallback={<NotFound />}><IVStrikeSelector /></OwnerOnly>} />
+                <Route path="/ca-move-planner" element={<OwnerOnly fallback={<NotFound />}><CAMovePlanner /></OwnerOnly>} />
                 <Route path="/care-abroad" element={<CareAbroad />} />
                 <Route path="/care-abroad/timeline" element={<CareAbroadTimeline />} />
                 <Route path="/sumerlin-trails" element={<SumerlinTrails />} />
                 <Route path="/kenya-trip" element={<KenyaTrip />} />
                 <Route path="/trading-volatility" element={<TradingVolatility />} />
                 <Route path="/family-directive" element={<FamilyDirective />} />
-                <Route path="/paycheck-analyzer" element={<PaycheckAnalyzer />} />
-                <Route path="/sacramento-healthcare" element={<SacramentoHealthcareHub />} />
-                <Route path="/covered-call-master" element={<CoveredCallMaster />} />
+                <Route path="/paycheck-analyzer" element={<OwnerOnly fallback={<NotFound />}><PaycheckAnalyzer /></OwnerOnly>} />
+                <Route path="/sacramento-healthcare" element={<OwnerOnly fallback={<NotFound />}><SacramentoHealthcareHub /></OwnerOnly>} />
+                <Route path="/covered-call-master" element={<OwnerOnly fallback={<NotFound />}><CoveredCallMaster /></OwnerOnly>} />
                 <Route path="/pa-vault/*" element={<PAVault />} />
                 <Route path="/my-licenses" element={<PublicLicenses />} />
                 <Route path="/licenses-admin" element={<LicensesAdmin />} />

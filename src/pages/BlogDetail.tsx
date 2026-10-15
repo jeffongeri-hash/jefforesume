@@ -1,3 +1,4 @@
+import OwnerOnly from '@/components/OwnerOnly';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Download, Check, ExternalLink } from 'lucide-react';
@@ -2178,7 +2179,7 @@ const blogPosts = {
     authorAvatar: "/placeholder-avatar.jpg",
     heroImage: sacramentoSuburbs,
     content: `
-      <p>If you're a <strong>physician assistant considering a <a href="/ca-move-planner" style="color:inherit;text-decoration:none;cursor:text">relocation to Sacramento</a></strong>, the city proper isn't your only option — and often isn't the best one. This guide covers <strong>12 Sacramento-orbit suburbs</strong> across three rings, all analyzed with the same framework: commute to Sacramento hospitals, 3BR house feasibility, and monthly surplus on a single PA income (~$7,812/month take-home after taxes, 12% traditional 401k, and HSA).</p>
+      <p>If you're a <strong>physician assistant considering a relocation to Sacramento</strong>, the city proper isn't your only option — and often isn't the best one. This guide covers <strong>12 Sacramento-orbit suburbs</strong> across three rings, all analyzed with the same framework: commute to Sacramento hospitals, 3BR house feasibility, and monthly surplus on a single PA income (~$7,812/month take-home after taxes, 12% traditional 401k, and HSA).</p>
 
       <div class="my-6 p-5 rounded-lg border border-primary/30 bg-primary/5">
         <h3 class="text-base font-bold text-foreground mb-2">TL;DR — Best Sacramento Suburbs for a PA Relocation</h3>
@@ -5837,13 +5838,13 @@ const BlogDetail = () => {
                       { name: "Midtown", url: "https://www.zillow.com/midtown-houston-tx/rentals/3-_beds/", rent: "$1,500–$2,000", ring: "Close-In", commute: "8 min to TMC", vibe: "Nightlife hub", highlight: "Lowest rents" },
                     ]}
                   />
-                  <PSLFHospitalFinder />
+                  <OwnerOnly><PSLFHospitalFinder /></OwnerOnly>
                 </>
               )}
 
               {/* PSLF Hospital Finder - only on finder post */}
               {slug === 'pslf-hospital-finder-by-city-zip' && (
-                <PSLFHospitalFinder />
+                <OwnerOnly><PSLFHospitalFinder /></OwnerOnly>
               )}
               
               {/* Share */}
