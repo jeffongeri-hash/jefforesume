@@ -144,10 +144,8 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-2">
-            <p className="text-3xl font-bold text-foreground">{formatCurrency(totalValue)}</p>
-            <p className="text-sm text-muted-foreground">
-              of {formatCurrency(goal)} — {formatCurrency(remaining)} to go
-            </p>
+            <p className="text-3xl font-bold text-foreground">{goalPercent.toFixed(1)}%</p>
+            <p className="text-sm text-muted-foreground">of goal reached</p>
           </div>
 
           <div className="relative">
@@ -158,7 +156,7 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
                   key={m}
                   className={totalValue >= goal * m ? 'font-semibold text-secondary' : ''}
                 >
-                  {formatCurrency(goal * m, true)}
+                  {Math.round(m * 100)}%
                 </span>
               ))}
             </div>
@@ -170,8 +168,8 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
               <p className="text-lg font-semibold text-foreground">{goalPercent.toFixed(1)}%</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">Invested</p>
-              <p className="text-lg font-semibold text-foreground">{formatCurrency(totalCost)}</p>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Positions</p>
+              <p className="text-lg font-semibold text-foreground">{rows.length}</p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">Unrealized</p>
@@ -179,46 +177,15 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
                 className={`text-lg font-semibold ${totalGain >= 0 ? 'text-green-600' : 'text-red-600'}`}
               >
                 {totalGain >= 0 ? '+' : ''}
-                {formatCurrency(totalGain)}
+                {totalCost > 0 ? ((totalGain / totalCost) * 100).toFixed(1) : '0.0'}%
               </p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">Cash on hand</p>
               <p className="text-lg font-semibold text-foreground">
-                {formatCurrency(totalCash)}{' '}
-                <span className="text-sm text-muted-foreground">({cashPercent.toFixed(0)}%)</span>
+                {cashPercent.toFixed(0)}%
               </p>
             </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span>Savings & cash held outside this portfolio:</span>
-            {outsideEditing ? (
-              <>
-                <Input
-                  value={outsideDraft}
-                  onChange={(e) => setOutsideDraft(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && saveOutside()}
-                  className="h-8 w-32"
-                  inputMode="decimal"
-                  aria-label="Outside savings amount"
-                />
-                <Button size="sm" onClick={saveOutside}>
-                  <Check className="h-4 w-4" />
-                </Button>
-              </>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setOutsideEditing(true)}
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                {formatCurrency(outside)}
-              </button>
-            )}
-            <span className="text-xs">
-              (brokerage positions: {formatCurrency(positionsTotal)})
-            </span>
           </div>
 
           {pricesUpdatedAt && (
@@ -263,7 +230,7 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
                     <span className="ml-2 text-sm text-muted-foreground">{r.name}</span>
                   </div>
                   <div className="text-right">
-                    <span className="font-medium text-foreground">{formatCurrency(r.value)}</span>
+                    <span className="font-medium text-foreground">{weight.toFixed(1)}%</span>
                     <span
                       className={`ml-3 inline-flex items-center text-sm font-medium ${up ? 'text-green-600' : 'text-red-600'}`}
                     >
@@ -279,10 +246,7 @@ const PortfolioProgress = ({ holdings, pricesUpdatedAt }: Props) => {
                 </div>
                 <Progress value={weight} className="h-2" />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {r.shares.toLocaleString(undefined, { maximumFractionDigits: 4 })} shares @{' '}
-                    {formatCurrency(r.average_cost)} avg
-                  </span>
+                  <span />
                   <span>{weight.toFixed(1)}% of portfolio</span>
                 </div>
               </div>
