@@ -214,7 +214,7 @@ const Investments = () => {
                       ))}
                     </Pie>
                     <Tooltip 
-                      formatter={(value: number) => formatCurrency(value)} 
+                      formatter={(value: number) => { const t = sectorAllocation.reduce((a: number, x: any) => a + x.value, 0); return t ? `${((value / t) * 100).toFixed(1)}%` : '—'; }} 
                       contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }}
                     />
                     <Legend />
@@ -232,66 +232,8 @@ const Investments = () => {
           </div>
         )}
 
-        {/* Performance over time (once trade history exists) */}
-        {!loading && trades.length > 0 && (
-          <div className="max-w-4xl mx-auto mb-12">
-            <PerformanceChart trades={trades} holdings={holdings} />
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Value</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? '—' : formatCurrency(totalValue)}
-                  </p>
-                </div>
-                <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
-                  <DollarSign className="h-5 w-5 text-secondary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Cost Basis</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {loading ? '—' : formatCurrency(totalCost)}
-                  </p>
-                </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <PieChartIcon className="h-5 w-5 text-primary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Gain/Loss</p>
-                  <p className={`text-2xl font-bold ${totalGainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {loading ? '—' : formatCurrency(totalGainLoss)}
-                  </p>
-                </div>
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${totalGainLoss >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
-                  {totalGainLoss >= 0 ? (
-                    <TrendingUp className="h-5 w-5 text-green-600" />
-                  ) : (
-                    <TrendingDown className="h-5 w-5 text-red-600" />
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
+        
+        <div className="grid grid-cols-1 max-w-xs gap-6 mb-12">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -340,11 +282,9 @@ const Investments = () => {
                         <tr className="border-b border-border">
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">Symbol</th>
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">Name</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Shares</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Avg Cost</th>
+                                                    <th className="text-right py-3 px-4 font-medium text-muted-foreground">Avg Cost</th>
                           <th className="text-right py-3 px-4 font-medium text-muted-foreground">Current</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Value</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Gain/Loss</th>
+                                                    <th className="text-right py-3 px-4 font-medium text-muted-foreground">Return</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -364,13 +304,11 @@ const Investments = () => {
                                 )}
                               </td>
                               <td className="py-3 px-4 text-muted-foreground">{holding.name}</td>
-                              <td className="py-3 px-4 text-right text-foreground">{holding.shares.toLocaleString()}</td>
                               <td className="py-3 px-4 text-right text-muted-foreground">{formatCurrency(holding.average_cost)}</td>
                               <td className="py-3 px-4 text-right text-foreground">{formatCurrency(currentPrice)}</td>
-                              <td className="py-3 px-4 text-right font-medium text-foreground">{formatCurrency(value)}</td>
+                              
                               <td className={`py-3 px-4 text-right font-medium ${gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {formatCurrency(gainLoss)}
-                                <span className="block text-xs">{formatPercent(gainLossPercent)}</span>
+                                {formatPercent(gainLossPercent)}
                               </td>
                             </tr>
                           );
@@ -405,10 +343,8 @@ const Investments = () => {
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">Type</th>
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">Symbol</th>
                           <th className="text-left py-3 px-4 font-medium text-muted-foreground">Name</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Shares</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Price</th>
-                          <th className="text-right py-3 px-4 font-medium text-muted-foreground">Total</th>
-                        </tr>
+                                                    <th className="text-right py-3 px-4 font-medium text-muted-foreground">Price</th>
+                                                  </tr>
                       </thead>
                       <tbody>
                         {trades.map((trade) => (
@@ -423,9 +359,8 @@ const Investments = () => {
                             </td>
                             <td className="py-3 px-4 font-bold text-foreground">{trade.symbol}</td>
                             <td className="py-3 px-4 text-muted-foreground">{trade.name}</td>
-                            <td className="py-3 px-4 text-right text-foreground">{trade.shares.toLocaleString()}</td>
                             <td className="py-3 px-4 text-right text-muted-foreground">{formatCurrency(trade.price)}</td>
-                            <td className="py-3 px-4 text-right font-medium text-foreground">{formatCurrency(trade.total_value)}</td>
+                            
                           </tr>
                         ))}
                       </tbody>
