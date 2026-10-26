@@ -48,6 +48,7 @@ const LicensesAdmin = lazy(() => import("./pages/LicensesAdmin"));
 const DroneLanding = lazy(() => import("./drone/DroneLanding"));
 const DroneGallery = lazy(() => import("./drone/DroneGallery"));
 const DroneProject = lazy(() => import("./drone/DroneProject"));
+const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -101,6 +102,7 @@ const App = () => (
                 <Route path="/drone" element={<DroneLanding />} />
                 <Route path="/drone/gallery" element={<DroneGallery />} />
                 <Route path="/drone/gallery/:slug" element={<DroneProject />} />
+                <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
