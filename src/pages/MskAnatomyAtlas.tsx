@@ -107,12 +107,16 @@ const MskAnatomyAtlas = () => {
                     );
                   })}
                 </g>
-                {visible.filter((s) => s.id === selected || s.id === hover).map((s) => (
-                  <g key={`l-${s.id}`} pointerEvents="none">
-                    <rect x={Math.min(Math.max(s.label[0] - 70, 2), 258)} y={s.label[1] - 12} width="140" height="20" rx="4" fill="hsl(var(--foreground))" opacity="0.85" />
-                    <text x={Math.min(Math.max(s.label[0], 72), 328)} y={s.label[1] + 2} textAnchor="middle" fontSize="11" fill="hsl(var(--background))">{s.name}</text>
-                  </g>
-                ))}
+                {visible.filter((s) => s.id === selected || s.id === hover).map((s) => {
+                  const w = s.name.length * 6 + 16;
+                  const x = Math.min(Math.max(s.label[0] - w / 2, 2), 398 - w);
+                  return (
+                    <g key={`l-${s.id}`} pointerEvents="none">
+                      <rect x={x} y={s.label[1] - 12} width={w} height="20" rx="4" fill="hsl(var(--foreground))" opacity="0.85" />
+                      <text x={x + w / 2} y={s.label[1] + 2} textAnchor="middle" style={{ fontSize: 11 }} fill="hsl(var(--background))">{s.name}</text>
+                    </g>
+                  );
+                })}
               </svg>
             </div>
           </div>
