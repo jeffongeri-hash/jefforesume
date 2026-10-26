@@ -27,7 +27,7 @@ const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: numb
   lumbar: { names: ["Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum"], pad: 0.45 },
 };
 
-type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3 };
+type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3; sheet: boolean };
 
 export interface ViewerProps {
   layers: Record<Sys, boolean>;
@@ -121,7 +121,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
           const mat = new THREE.MeshStandardMaterial({ color: colorFor(s.id, name), roughness: ROUGH[s.id], metalness: 0, side: THREE.DoubleSide });
           (m.material as THREE.Material)?.dispose?.();
           m.material = mat; m.userData.anat = name; m.userData.sys = s.id;
-          e.items.push({ mesh: m, sys: s.id, name, mat, box: new THREE.Box3(), orig: m.position.clone(), delta: new THREE.Vector3() });
+          e.items.push({ mesh: m, sys: s.id, name, mat, box: new THREE.Box3(), orig: m.position.clone(), delta: new THREE.Vector3(), sheet: /fascia|septum|retinacul|aponeur|tract$/i.test(name) && !/iliotibial/i.test(name) });
         });
         root.add(gltf.scene);
         root.updateMatrixWorld(true);
@@ -282,7 +282,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       it.mesh.visible = vis;
       if (!vis) continue;
       picks.push(it.mesh);
-      const op = P.isolateSelected ? 1 : P.opacity[it.sys] * (P.dimMode === "dim" && !inR ? 0.08 : 1);
+      const op = P.isolateSelected ? 1 : P.opacity[it.sys] * (it.sheet && !isSel ? 0.12 : 1) * (P.dimMode === "dim" && !inR ? 0.08 : 1);
       it.mat.opacity = op; it.mat.transparent = op < 0.995; it.mat.depthWrite = op >= 0.995;
       it.mat.emissive.copy(isSel || it.name === e.hover ? HILITE : new THREE.Color(0));
       it.mat.emissiveIntensity = isSel ? 0.6 : 0.28;
