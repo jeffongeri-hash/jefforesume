@@ -255,7 +255,10 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const box = e.regionBox ?? wholeBox();
+    const tight = r === "full" ? null : unionOf(ANCHORS[r].names);
+    if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
+    const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
+    e.frame = box;
     if (r === "full" && e.view === "lateral") e.view = "anterior";
     if (r === "lumbar" && (e.view === "anterior")) e.view = "posterior";
     frameBox(box, undefined, instant);
@@ -297,7 +300,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useImperativeHandle(ref, () => ({
-    preset: (p) => { eng.current.view = p; frameBox(eng.current.regionBox ?? wholeBox(), p); },
+    preset: (p) => { eng.current.view = p; frameBox(eng.current.frame ?? wholeBox(), p); },
     reset: () => { eng.current.view = propsRef.current.region === "lumbar" ? "posterior" : "anterior"; applyRegion(); },
     frameNames: (names) => {
       const b = unionOf(names); if (b.isEmpty()) return;
@@ -349,7 +352,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       <div className="absolute right-3 top-3 h-[64px] w-[64px]" style={{ perspective: 400 }} aria-label="Orientation cube">
         <div ref={cube} className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
           {faces.map(([l, tr, p]) => (
-            <button key={l} disabled={!p} onClick={() => p && (eng.current.view = p as Preset, frameBox(eng.current.regionBox ?? wholeBox(), p as Preset))}
+            <button key={l} disabled={!p} onClick={() => p && (eng.current.view = p as Preset, frameBox(eng.current.frame ?? wholeBox(), p as Preset))}
               aria-label={p ? `${p} view` : undefined} tabIndex={-1}
               className="absolute inset-0 flex items-center justify-center border border-primary/60 bg-card/85 text-sm font-bold text-foreground"
               style={{ transform: `${tr} translateZ(32px)`, backfaceVisibility: "hidden" }}>{l}</button>
