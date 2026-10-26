@@ -369,6 +369,11 @@ const Professional = () => {
                 </AnimatedSection>
               ))}
             </div>
+            <a href="/msk-anatomy-atlas" className="mt-6 block rounded-xl border border-border bg-card p-6 transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">Clinical learning · Unit 01</p>
+              <h3 className="mt-1 font-bold text-foreground">MSK Anatomy Atlas</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Interactive, layered shoulder, knee and lumbar spine anatomy with clinical correlations.</p>
+            </a>
           </div>
         </section>
 
