@@ -13,7 +13,7 @@ export type DimMode = "none" | "dim" | "isolate";
 // Anatomical illustration palette (content colours, not UI chrome)
 export const SYSTEMS: { id: Sys; file: string; label: string; color: string }[] = [
   { id: "bone", file: "skeletal", label: "Bone", color: "#e9dfc8" },
-  { id: "muscle", file: "muscular", label: "Muscle", color: "#b4463e" },
+  { id: "muscle", file: "muscular", label: "Muscle", color: "#9e3a33" },
   { id: "joint", file: "joints", label: "Joints & ligaments", color: "#d9c58a" },
   { id: "nerve", file: "nervous", label: "Nerves", color: "#e6b81c" },
   { id: "vessel", file: "cardiovascular", label: "Vessels", color: "#c62a30" },
@@ -23,7 +23,7 @@ const HILITE = new THREE.Color("#12a4c9");
 
 const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: number }> = {
   shoulder: { names: ["Scapula.r", "Clavicle.r", "Articular capsule of glenohumeral joint.r", "Glenoid labrum.r"], pad: 0.35 },
-  knee: { names: ["Patella.r", "Articular capsule of knee joint.r", "Medial meniscus.r", "Lateral meniscus.r", "Fibular collateral ligament.r"], pad: 0.9 },
+  knee: { names: ["Patella.r", "Articular capsule of knee joint.r", "Medial meniscus.r", "Lateral meniscus.r", "Fibular collateral ligament.r"], pad: 0.4 },
   lumbar: { names: ["Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum"], pad: 0.45 },
 };
 
