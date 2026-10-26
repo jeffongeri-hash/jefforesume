@@ -64,7 +64,7 @@ const MskAnatomyAtlas = () => {
     const ms = meshesFor(rid, id);
     setSelectedMesh(ms[0] ?? null);
     if (ms[0]) {
-      const sys = SYSTEMS.find((s) => meshNames.indexOf(ms[0]) >= 0) && guessSys(ms[0]);
+      const sys = guessSys(ms[0]);
       if (sys) setLayers((p) => ({ ...p, [sys]: true }));
       setTimeout(() => viewer.current?.frameNames(ms), 50);
     }
