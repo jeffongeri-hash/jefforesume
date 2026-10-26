@@ -115,8 +115,12 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
         gltf.scene.traverse((o) => {
           const m = o as THREE.Mesh;
           if (!m.isMesh) return;
-          const raw = m.name && !/^mesh|_\d+$/i.test(m.name) ? m.name : m.parent?.name || m.name;
-          const name = raw.replace(/_\d+$/, "");
+          let o2: THREE.Object3D | null = m, name = m.name;
+          while (o2) {
+            const a = gltf.parser.associations.get(o2 as any) as { nodes?: number } | undefined;
+            if (a && a.nodes !== undefined) { name = gltf.parser.json.nodes[a.nodes].name ?? name; break; }
+            o2 = o2.parent;
+          }
           const mat = new THREE.MeshStandardMaterial({ color: colorFor(s.id, name), roughness: ROUGH[s.id], metalness: 0, side: THREE.DoubleSide });
           (m.material as THREE.Material)?.dispose?.();
           m.material = mat; m.userData.anat = name; m.userData.sys = s.id;
