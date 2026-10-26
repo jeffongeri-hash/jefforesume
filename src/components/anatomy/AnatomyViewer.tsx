@@ -94,7 +94,6 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = !reduced; controls.dampingFactor = 0.12; controls.screenSpacePanning = true;
     const e = eng.current;
-    (window as any).__anat = e;
     Object.assign(e, { renderer, scene, camera, controls, root, items: [] as Item[], pickables: [] as THREE.Object3D[], dirty: true, tween: null, reduced, ant: 1, right: -1, regionBox: null as THREE.Box3 | null, view: "anterior" as Preset });
 
     const resize = () => {
