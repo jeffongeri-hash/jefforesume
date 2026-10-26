@@ -30,7 +30,7 @@ const MskAnatomyAtlas = () => {
   const [studyId, setStudyId] = useState(REGIONS[0].id);
   const region: Region = REGIONS.find((r) => r.id === studyId)!;
   const [layers, setLayers] = useState<Record<Sys, boolean>>(REGION_DEFAULT_LAYERS.shoulder);
-  const [opacity, setOpacity] = useState<Record<Sys, number>>({ bone: 1, muscle: 0.85, joint: 1, nerve: 1, vessel: 1 });
+  const [opacity, setOpacity] = useState<Record<Sys, number>>({ bone: 1, muscle: 1, joint: 1, nerve: 1, vessel: 1 });
   const [dimMode, setDimMode] = useState<DimMode>("dim");
   const [explode, setExplode] = useState(0);
   const [isolateSel, setIsolateSel] = useState(false);
