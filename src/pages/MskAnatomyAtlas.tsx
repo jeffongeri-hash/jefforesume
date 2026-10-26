@@ -209,7 +209,7 @@ const MskAnatomyAtlas = () => {
             <div className="flex justify-between px-2 text-[11px] uppercase tracking-wider text-muted-foreground">
               <span>← {view.orientation[0]}</span><span>{view.orientation[1]} →</span>
             </div>
-            <svg viewBox="-130 0 760 470" className="h-auto w-full" role="group" aria-label={`${region.name}, ${view.caption}`}>
+            <svg viewBox="-180 0 860 470" className="h-auto w-full" role="group" aria-label={`${region.name}, ${view.caption}`}>
               <defs>
                 <radialGradient id="g-bone" cx="35%" cy="30%" r="80%"><stop offset="0" stopColor="#fbf6ea" /><stop offset="1" stopColor="#d6c7a6" /></radialGradient>
                 <linearGradient id="g-msup" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#c9534b" /><stop offset="1" stopColor="#8f2f2f" /></linearGradient>
