@@ -112,15 +112,12 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const loadSys = (s: (typeof SYSTEMS)[number]) => new Promise<void>((resolve) => {
       loader.load(`/anatomy-models/${s.file}.glb`, (gltf) => {
         if (cancelled) return resolve();
+        const orig = new Map<string, string>();
+        for (const n of gltf.parser.json.nodes ?? []) if (n.name && n.mesh !== undefined) orig.set(THREE.PropertyBinding.sanitizeNodeName(n.name), n.name);
         gltf.scene.traverse((o) => {
           const m = o as THREE.Mesh;
           if (!m.isMesh) return;
-          let o2: THREE.Object3D | null = m, name = m.name;
-          while (o2) {
-            const a = gltf.parser.associations.get(o2 as any) as { nodes?: number } | undefined;
-            if (a && a.nodes !== undefined) { name = gltf.parser.json.nodes[a.nodes].name ?? name; break; }
-            o2 = o2.parent;
-          }
+          const name = orig.get(m.name) ?? orig.get(m.parent?.name ?? "") ?? m.name;
           const mat = new THREE.MeshStandardMaterial({ color: colorFor(s.id, name), roughness: ROUGH[s.id], metalness: 0, side: THREE.DoubleSide });
           (m.material as THREE.Material)?.dispose?.();
           m.material = mat; m.userData.anat = name; m.userData.sys = s.id;
