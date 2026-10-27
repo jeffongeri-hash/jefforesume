@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SHOULDER_PATH, shoulderSpecialist, matchShoulderSpecialist } from "@/data/msk/shoulderSpecialist";
 import { ARM_PATH, armSpecialist, matchArmMesh } from "@/data/msk/armSpecialist";
+import { ELBOW_FOREARM_PATH, elbowForearmSpecialist, matchElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -30,6 +31,7 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
   elbow: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
   forearm: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
   "wrist-hand": { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
+  "elbow-forearm": { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
   digits: { bone: true, muscle: false, joint: true, nerve: true, vessel: true },
   knee: { bone: true, muscle: false, joint: true, nerve: true, vessel: true },
   lumbar: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
@@ -38,10 +40,11 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
 const MskAnatomyAtlas = () => {
   const { pathname } = useLocation();
   const armUnit = pathname === ARM_PATH;
-  const specialist = pathname === SHOULDER_PATH || armUnit;
-  const module = armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
-  const STUDY_REGIONS = armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
-  const match = (name: string, prefer?: string) => armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
+  const efUnit = pathname === ELBOW_FOREARM_PATH;
+  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit;
+  const module = efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
+  const STUDY_REGIONS = efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
+  const match = (name: string, prefer?: string) => efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
   const [labelMode,setLabelMode] = useState<LabelMode>("selected");
   const title = module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
   const description = module ? `${module.intro} Real reference meshes with focused structure notes and clinical examination landmarks.` : "Interactive 3D reference anatomy of the shoulder, knee and lumbar spine, with clinical study notes and examination landmarks.";
@@ -118,7 +121,7 @@ const MskAnatomyAtlas = () => {
     return (module ? [module] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
       .sort((a, b) => Number(!a.s.name.toLowerCase().includes(q)) - Number(!b.s.name.toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [query, specialist, armUnit]);
+  }, [query, specialist, armUnit, efUnit]);
 
   const mappedIds = useMemo(() => {
     const set = new Set<string>();
@@ -166,13 +169,18 @@ const MskAnatomyAtlas = () => {
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Right arm anatomy<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Brachial compartments, humeral landmarks and arm neurovascular relationships.</p>
           </Link>
+          <Link to={ELBOW_FOREARM_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Specialist unit · Elbow & Forearm</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Right elbow & forearm anatomy<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Elbow joints and stabilizers, flexor and extensor compartments, and median, ulnar and radial nerve courses.</p>
+          </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
           <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
@@ -225,7 +233,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
@@ -322,8 +330,8 @@ const MskAnatomyAtlas = () => {
               <input type="search" value={indexFilter} onChange={(e) => setIndexFilter(e.target.value)} aria-label={`Filter ${region.name} structures`}
                 placeholder="Filter structures" className="mt-2 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
               <div className="mt-2 max-h-96 overflow-y-auto pr-1">
-                {LAYERS.map((l) => {
-                  const items = indexList.filter((s) => LAYER_OF[s.tissue] === l.id);
+                {(("groups" in region ? (region.groups as string[]).map((g) => ({ id: g, label: g })) : LAYERS) as { id: string; label: string }[]).map((l) => {
+                  const items = indexList.filter((s) => "groups" in region ? (s as { group?: string }).group === l.id : LAYER_OF[s.tissue] === l.id);
                   if (!items.length) return null;
                   return (
                     <div key={l.id} className="mt-2">
@@ -351,8 +359,11 @@ const MskAnatomyAtlas = () => {
           </div>
         </div>
 
-        {specialist && <nav aria-label="Shoulder and Arm modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
-          <Button variant="outline" asChild><Link to={armUnit ? SHOULDER_PATH : ARM_PATH}>{armUnit ? <ArrowLeft /> : <ArrowRight />}{armUnit ? "Previous: Shoulder" : "Next: Arm"}</Link></Button>
+        {specialist && <nav aria-label="Upper extremity specialist modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
+          {armUnit && <Button variant="outline" asChild><Link to={SHOULDER_PATH}><ArrowLeft />Previous: Shoulder</Link></Button>}
+          {efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowLeft />Previous: Arm</Link></Button>}
+          {!armUnit && !efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
+          {armUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowRight />Next: Elbow & Forearm</Link></Button>}
         </nav>}
         <p className="mt-6 rounded-md border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Educational use only.</strong> This interactive 3D model and its simplified notes are for orientation and anatomy review, not radiographic interpretation, diagnosis, or procedural planning. The meshes represent a single reference anatomy and will not match every patient.

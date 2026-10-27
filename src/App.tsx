@@ -104,6 +104,7 @@ const App = () => (
                 <Route path="/drone/gallery/:slug" element={<DroneProject />} />
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/arm" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/upper-extremity/elbow-forearm" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/shoulder" element={<MskAnatomyAtlas />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
