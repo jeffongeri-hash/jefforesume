@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { UPPER_MODULES, matchUpperMesh } from './upperExtremity';
-import { matchMesh } from './meshMap';
+import { UPPER_MODULES, matchUpperMesh } from '../src/data/msk/upperExtremity';
+import { matchMesh } from '../src/data/msk/meshMap';
 
 describe('upper-extremity reference integrity', () => {
  test('provides all six dedicated modules without replacing old regions', () => {
