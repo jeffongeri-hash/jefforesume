@@ -92,7 +92,9 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     if (!hasWebGL()) { setNoGL(true); return; }
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 768px)").matches;
-    const renderer = new THREE.WebGLRenderer({ antialias: !mobile, alpha: true, powerPreference: "high-performance" });
+    let renderer: THREE.WebGLRenderer;
+    try { renderer = new THREE.WebGLRenderer({ antialias: !mobile, alpha: true, powerPreference: "high-performance" }); }
+    catch { setNoGL(true); return; }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 2));
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.domElement.style.touchAction = "none";
@@ -331,7 +333,9 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const P = propsRef.current; const rb: THREE.Box3 | null = e.regionBox;
     const picks: THREE.Object3D[] = [];
     for (const it of e.items as Item[]) {
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!/arm|elbow|forearm|wrist-hand|digits/.test(P.region) || !it.name.endsWith(".l"));
+      const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
+      const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated));
       it.mat.clippingPlanes = P.dimMode === "isolate" && !P.isolateSelected ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
@@ -353,12 +357,16 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   useEffect(() => { applyRegion(); apply(); }, [props.region]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => { eng.current.dirty = true; });
+
   useImperativeHandle(ref, () => ({
     preset: (p) => { eng.current.view = p; frameBox(eng.current.frame ?? wholeBox(), p); },
     reset: () => { eng.current.view = propsRef.current.region === "lumbar" ? "posterior" : "anterior"; applyRegion(); },
     frameNames: (names) => {
       const b = unionOf(names); if (b.isEmpty()) return;
-      const s = b.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.6;
+      if (eng.current.regionBox && propsRef.current.dimMode === "isolate") b.intersect(eng.current.regionBox);
+      if (b.isEmpty()) return;
+      const s = b.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.25;
       frameBox(b.expandByVector(new THREE.Vector3(m, m, m)));
     },
     meshSystem: (name) => find(name)?.sys ?? null,
