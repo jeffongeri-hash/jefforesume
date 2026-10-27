@@ -65,7 +65,7 @@ export const NECK_MESH_MAP: Record<string, string> = {
   "Right subclavian vein": "subclavian"
 };
 
-export const neckSpecialist: Region & { intro: string; groups: readonly string[] } = {
+export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; groups: readonly string[]; structures: (StructureInfo & { group: typeof NECK_GROUPS[number] })[] } = {
  id: 'neck', name: 'Neck & Cervical Region', groups: NECK_GROUPS,
  intro: 'Right and central cervical anatomy from the occipital skull base through C7–T1: cervical joints, superficial and deep muscles, fascial relations, and neurovascular courses. Pain distributions are educational orientation, not diagnosis or treatment planning.',
  structures: [
