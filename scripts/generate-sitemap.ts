@@ -13,7 +13,7 @@ const postsSrc = readFileSync(resolve("src/pages/AllPosts.tsx"), "utf8")
 const slugs = new Set<string>(["finance-retirement", "finance-stocks", "finance-fire"])
 for (const m of postsSrc.matchAll(/slug:\s*['"]([a-z0-9-]+)['"]/g)) slugs.add(m[1])
 
-const upperPaths = ["shoulder"].map(s => `/msk-anatomy-atlas/upper-extremity/${s}`);
+const upperPaths = ["shoulder", "arm"].map(s => `/msk-anatomy-atlas/upper-extremity/${s}`);
 const paths = [...staticPaths, ...upperPaths, ...[...slugs].map((s) => `/blog/${s}`)]
 const xml = [
   `<?xml version="1.0" encoding="UTF-8"?>`,

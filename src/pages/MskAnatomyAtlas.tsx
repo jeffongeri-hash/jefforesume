@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SHOULDER_PATH, shoulderSpecialist, matchShoulderSpecialist } from "@/data/msk/shoulderSpecialist";
+import { ARM_PATH, armSpecialist, matchArmMesh } from "@/data/msk/armSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -36,10 +37,11 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
 
 const MskAnatomyAtlas = () => {
   const { pathname } = useLocation();
-  const specialist = pathname === SHOULDER_PATH;
-  const module = specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
-  const STUDY_REGIONS = specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
-  const match = (name: string, prefer?: string) => specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
+  const armUnit = pathname === ARM_PATH;
+  const specialist = pathname === SHOULDER_PATH || armUnit;
+  const module = armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
+  const STUDY_REGIONS = armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
+  const match = (name: string, prefer?: string) => armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
   const [labelMode,setLabelMode] = useState<LabelMode>("selected");
   const title = module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
   const description = module ? `${module.intro} Real reference meshes with focused structure notes and clinical examination landmarks.` : "Interactive 3D reference anatomy of the shoulder, knee and lumbar spine, with clinical study notes and examination landmarks.";
@@ -113,10 +115,10 @@ const MskAnatomyAtlas = () => {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (q.length < 2) return [];
-    return (specialist ? [shoulderSpecialist] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
+    return (module ? [module] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
       .sort((a, b) => Number(!a.s.name.toLowerCase().includes(q)) - Number(!b.s.name.toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [query, specialist]);
+  }, [query, specialist, armUnit]);
 
   const mappedIds = useMemo(() => {
     const set = new Set<string>();
@@ -150,7 +152,7 @@ const MskAnatomyAtlas = () => {
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
           {module && <><span>/</span><span>Upper Extremity</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist Shoulder`}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
         <p className="mt-3 max-w-3xl text-muted-foreground">{module ? module.intro : "An interactive 3D anatomy viewer built from real anatomical meshes, with shoulder, knee and lumbar study notes, clinical relationships and examination landmarks."}</p>
         {!specialist && <section className="mt-6 max-w-xl" aria-label="Specialist shoulder unit">
@@ -159,13 +161,18 @@ const MskAnatomyAtlas = () => {
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Right shoulder anatomy<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Focused 3D anatomy, rotator cuff, joint stabilizers and clinical examination landmarks.</p>
           </Link>
+          <Link to={ARM_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Specialist unit · Arm</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Right arm anatomy<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Brachial compartments, humeral landmarks and arm neurovascular relationships.</p>
+          </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
-          <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? "Search shoulder structures" : "Search all structures"}</label>
+          <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
@@ -218,7 +225,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={specialist && focus === "shoulder"} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
@@ -344,6 +351,9 @@ const MskAnatomyAtlas = () => {
           </div>
         </div>
 
+        {specialist && <nav aria-label="Shoulder and Arm modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
+          <Button variant="outline" asChild><Link to={armUnit ? SHOULDER_PATH : ARM_PATH}>{armUnit ? <ArrowLeft /> : <ArrowRight />}{armUnit ? "Previous: Shoulder" : "Next: Arm"}</Link></Button>
+        </nav>}
         <p className="mt-6 rounded-md border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Educational use only.</strong> This interactive 3D model and its simplified notes are for orientation and anatomy review, not radiographic interpretation, diagnosis, or procedural planning. The meshes represent a single reference anatomy and will not match every patient.
         </p>
