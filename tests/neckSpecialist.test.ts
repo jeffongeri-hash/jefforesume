@@ -31,6 +31,9 @@ test('every mapping is an actual raw GLB mesh node and links an existing entry',
 test('membership excludes left neck and unrelated limb/back meshes', () => {
   expect(matchNeckMesh('Sternocleidomastoid muscle.r')).toEqual({regionId: 'neck', id: 'scm'});
   expect(matchNeckMesh('Descending part of trapezius muscle.r')?.id).toBe('trapezius');
+  expect(matchNeckMesh('Vertebra T1')?.id).toBe('c7');
+  expect(matchNeckMesh('Right subclavian vein')?.id).toBe('subclavian-vein');
+  expect(neck.structures.find(s => s.id === 'subclavian-vein')?.tissue).toBe('vein');
   expect(isNeckMesh('Atlas (C1)')).toBe(true);
   for (const name of ['Sternocleidomastoid muscle.l', 'Humerus.r', 'Multifidus lumborum muscle.r', 'Rotatores.r']) expect(isNeckMesh(name)).toBe(false);
 });
