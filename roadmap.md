@@ -1,6 +1,5 @@
-# Upper-extremity release
-- [x] Add six specialist modules and hub navigation, preserving existing study content.
-- [x] Extend real mesh focus, selection and camera-tracking labels; reuse loaded GLBs.
-- [x] Verify six routes, mobile navigation, mesh/data-only selection and labels.
-- [x] Update metadata/sitemap and complete security review (two pre-existing warnings, no critical findings).
-- [x] Request publishing of the verified release to jeffongeri.com.
+# Shoulder-only release (supersedes broad upper-extremity release)
+- [ ] Expose only the dedicated shoulder unit and its overview link; retain all existing MSK study data and assets.
+- [ ] Tighten specialist right-shoulder framing and named mesh filtering without changing overview framing.
+- [ ] Verify desktop/phone route, labels, real-mesh selection and data-only entry.
+- [ ] Review security and request publishing of the shoulder-only release.
