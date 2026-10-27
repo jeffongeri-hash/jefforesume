@@ -14,6 +14,7 @@ export const NECK_MESH_MAP: Record<string, string> = {
   "Vertebra C5": "c5",
   "Vertebra C6": "c6",
   "Vertebra C7": "c7",
+  "Vertebra T1": "c7",
   "Intervertebral disc C2-C3": "discs",
   "Intervertebral disc C3-C4": "discs",
   "Intervertebral disc C4-C5": "discs",
@@ -62,7 +63,7 @@ export const NECK_MESH_MAP: Record<string, string> = {
   "Internal jugular vein.r": "ijv",
   "Vertebral artery.r": "vertebral",
   "Right subclavian artery": "subclavian",
-  "Right subclavian vein": "subclavian"
+  "Right subclavian vein": "subclavian-vein"
 };
 
 export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; groups: readonly string[]; structures: (StructureInfo & { group: typeof NECK_GROUPS[number] })[] } = {
@@ -151,7 +152,7 @@ export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; group
     "name": "C1 \u2014 atlas",
     "tissue": "bone",
     "role": "Ring supports occipital condyles; no body or true spinous process.",
-    "relations": "Lateral masses and anterior/posterior arches surround the dens; vertebral artery crosses posterior arch.",
+    "relations": "Atlas ring surrounds the spinal canal; anterior arch and transverse ligament retain the dens. Vertebral artery crosses the posterior arch.",
     "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms.",
     "attachments": "Longus colli to anterior tubercle; rectus capitis anterior/lateralis to lateral mass/transverse process; obliquus superior/inferior to transverse process."
   },
@@ -217,10 +218,10 @@ export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; group
   {
     "group": "Bones & cervical joints",
     "id": "c7",
-    "name": "C7 vertebra",
+    "name": "C7 vertebra & T1 boundary reference",
     "tissue": "bone",
     "role": "Subaxial cervical support and motion segment.",
-    "relations": "Body, pedicles, laminae, articular pillars and processes form one mesh; vertebral foramina enclose the cord.",
+    "relations": "Body, pedicles, laminae, articular pillars and processes form one mesh; vertebral foramina enclose the cord. A separate T1 bone mesh marks the inferior boundary; the C7\u2013T1 joint itself remains index-only.",
     "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms.",
     "attachments": "Longus colli attaches anteriorly; posterior elements receive segmental extensors. C3\u2013C6 anterior transverse tubercles anchor anterior scalene; C2\u2013C7 posterior tubercles anchor middle scalene."
   },
@@ -842,10 +843,19 @@ export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; group
   {
     "group": "Nerves & vessels",
     "id": "subclavian",
-    "name": "Subclavian artery & vein \u2014 root of neck",
+    "name": "Subclavian artery \u2014 root of neck",
     "tissue": "artery",
     "role": "Upper-limb inflow and venous return.",
-    "relations": "Artery posterior to anterior scalene; vein anterior. Artery/plexus share scalene interval; vein does not. Both right meshes cropped.",
+    "relations": "Artery passes posterior to anterior scalene through the scalene interval with brachial plexus; first rib forms inferior boundary. Right artery mesh is regionally clipped.",
+    "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms."
+  },
+  {
+    "group": "Nerves & vessels",
+    "id": "subclavian-vein",
+    "name": "Subclavian vein \u2014 root of neck",
+    "tissue": "vein",
+    "role": "Upper-limb venous return to the venous angle.",
+    "relations": "Passes anterior to anterior scalene, behind clavicle and over first rib; does not enter scalene triangle. Joins internal jugular vein. Right vein is regionally clipped.",
     "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms."
   },
   {
@@ -878,19 +888,10 @@ export const neckSpecialist: Omit<Region, 'structures'> & { intro: string; group
   {
     "group": "Clinical surface anatomy",
     "id": "scm-referral",
-    "name": "SCM & scalene myofascial referral concepts",
+    "name": "Cervical myofascial referral concepts",
     "tissue": "space",
     "role": "Educational descriptions of overlapping referred pain.",
-    "relations": "SCM referral concepts include occipital/temporal or facial regions; scalene concepts include shoulder/upper-limb regions. These are not validated patient-specific maps or proof of a trigger point. Index only \u2014 no separate mesh in this reference model.",
-    "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms."
-  },
-  {
-    "group": "Clinical surface anatomy",
-    "id": "posterior-referral",
-    "name": "Trapezius, levator & suboccipital referral concepts",
-    "tissue": "space",
-    "role": "Muscle-related referral may be non-dermatomal.",
-    "relations": "Upper trapezius concepts include lateral neck/temple; levator neck/superomedial scapular area; suboccipitals posterior head. Distribution cannot distinguish headache, neuralgia or cervicalgia. Index only \u2014 no separate mesh in this reference model.",
+    "relations": "SCM referral concepts include occipital/temporal or facial regions; scalene concepts include shoulder/upper-limb regions. These are not validated patient-specific maps or proof of a trigger point. Index only \u2014 no separate mesh in this reference model. Upper trapezius concepts include lateral neck/temple; levator neck/superomedial scapular area; suboccipitals posterior head. Distribution cannot distinguish headache, neuralgia or cervicalgia. Index only \u2014 no separate mesh in this reference model.",
     "clinical": "Anatomy learning only; this structure or distribution cannot establish the cause of symptoms."
   },
   {
