@@ -214,7 +214,7 @@ const MskAnatomyAtlas = () => {
         </div>
 
         <div className="mt-4 grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_minmax(340px,1fr)]">
-          <div className="flex flex-col gap-3">
+          <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
                 <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} dimMode={focus === "full" ? "none" : dimMode}
@@ -228,22 +228,22 @@ const MskAnatomyAtlas = () => {
               {([["selected","Selected only"],["hover","Hover + selected"],["off","Off"]] as [LabelMode,string][]).map(([value,label])=><Button key={value} variant={labelMode===value ? "default" : "outline"} aria-pressed={labelMode===value} onClick={()=>setLabelMode(value)} className="rounded-md">{label}</Button>)}
             </fieldset>
             {/* Layers */}
-            <fieldset className="rounded-xl border border-border bg-card p-4">
+            <fieldset className="min-w-0 rounded-lg border border-border bg-card p-4">
               <legend className="px-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Layers & transparency</legend>
               <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
                 {SYSTEMS.map((s) => (
-                  <div key={s.id} className="flex items-center gap-3">
+                  <div key={s.id} className="flex min-w-0 items-center gap-3">
                     <label className="flex min-h-[38px] w-40 shrink-0 cursor-pointer items-center gap-2 text-sm text-foreground">
                       <input type="checkbox" className="h-4 w-4 accent-primary" checked={layers[s.id]} onChange={(e) => setLayers((p) => ({ ...p, [s.id]: e.target.checked }))} />
                       <span aria-hidden className="h-3 w-3 rounded-full" style={{ background: s.color }} />{s.label}
                     </label>
                     <input type="range" min={0.1} max={1} step={0.05} value={opacity[s.id]} disabled={!layers[s.id]} aria-label={`${s.label} opacity`}
-                      onChange={(e) => setOpacity((p) => ({ ...p, [s.id]: Number(e.target.value) }))} className="w-full accent-primary disabled:opacity-40" />
+                      onChange={(e) => setOpacity((p) => ({ ...p, [s.id]: Number(e.target.value) }))} className="min-w-0 w-full accent-primary disabled:opacity-40" />
                   </div>
                 ))}
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <label htmlFor="explode" className="w-40 shrink-0 text-sm text-foreground">Explode region</label>
-                  <input id="explode" type="range" min={0} max={1} step={0.02} value={explode} onChange={(e) => setExplode(Number(e.target.value))} className="w-full accent-primary" />
+                  <input id="explode" type="range" min={0} max={1} step={0.02} value={explode} onChange={(e) => setExplode(Number(e.target.value))} className="min-w-0 w-full accent-primary" />
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap gap-2 border-t border-border pt-3">
@@ -256,7 +256,7 @@ const MskAnatomyAtlas = () => {
             </fieldset>
           </div>
 
-          <div className="flex flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-6">
             <aside aria-live="polite" className="rounded-xl border border-border bg-card p-6 shadow-sm">
               {selectedMesh ? (
                 <>
