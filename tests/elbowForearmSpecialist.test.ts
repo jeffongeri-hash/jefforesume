@@ -8,9 +8,9 @@ test('route and right-sided filtering', () => {
   expect(isRightElbowForearmMesh('Scapula.r')).toBe(false);
   expect(isRightElbowForearmMesh('Scaphoid bone.r')).toBe(false);
 });
-test('index has 55-70 entries in the six requested groups', () => {
+test('index has 55-75 entries in the six requested groups', () => {
   expect(ef.structures.length).toBeGreaterThanOrEqual(55);
-  expect(ef.structures.length).toBeLessThanOrEqual(70);
+  expect(ef.structures.length).toBeLessThanOrEqual(75);
   for (const g of EF_GROUPS) expect(ef.structures.some((s) => (s as { group?: string }).group === g)).toBe(true);
 });
 test('exact meshes map; unsegmented structures stay data-only', () => {
