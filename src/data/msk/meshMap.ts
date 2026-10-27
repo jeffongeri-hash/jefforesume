@@ -1,3 +1,4 @@
+import { matchUpperMesh } from "./upperExtremity";
 /**
  * Reconciles exact mesh names from the Z-Anatomy / BodyParts3D GLB files
  * to the atlas study entries (region id + structure id).
@@ -61,6 +62,7 @@ export const sideOf = (name: string) => (/\.r$/i.test(name) ? "Right" : /\.l$/i.
 
 export function matchMesh(name: string, prefer?: string): { regionId: string; id: string } | null {
   const n = baseName(name).toLowerCase();
+  if (prefer && prefer !== "shoulder" && !RULES[prefer]) return matchUpperMesh(n, prefer);
   if (/fascia/.test(n) && !/thoracolumbar/.test(n)) return null;
   const order = prefer && RULES[prefer] ? [prefer, ...Object.keys(RULES).filter((r) => r !== prefer)] : Object.keys(RULES);
   for (const r of order) for (const [re, id] of RULES[r]) if (re.test(n)) return { regionId: r, id };

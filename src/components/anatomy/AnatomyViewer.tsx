@@ -3,11 +3,13 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { baseName } from "@/data/msk/meshMap";
+import { Button } from "@/components/ui/button";
+import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
-export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar";
+export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits";
 export type Preset = "anterior" | "posterior" | "lateral" | "superior";
+export type LabelMode = "selected" | "hover" | "off";
 export type DimMode = "none" | "dim" | "isolate";
 
 // Anatomical illustration palette (content colours, not UI chrome)
@@ -21,8 +23,15 @@ export const SYSTEMS: { id: Sys; file: string; label: string; color: string }[] 
 const VEIN = "#3c5ca8", CART = "#bcdbe6", FASCIA = "#d8c9a6";
 const HILITE = new THREE.Color("#12a4c9");
 
+const MODEL_CACHE = new Map<string, Promise<GLTF>>();
+
 const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: number }> = {
   shoulder: { names: ["Scapula.r", "Clavicle.r", "Articular capsule of glenohumeral joint.r", "Glenoid labrum.r"], pad: 0.35 },
+  arm: { names: ["Humerus.r"], pad: 0.12 },
+  elbow: { names: ["Articular capsule of elbow joint.r"], pad: 0.3 },
+  forearm: { names: ["Radius.r", "Ulna.r"], pad: 0.12 },
+  "wrist-hand": { names: ["Scaphoid bone.r", "Hamate bone.r", "First metacarpal bone.r", "Fifth metacarpal bone.r", "Proximal phalanx of third finger of hand.r"], pad: 0.2 },
+  digits: { names: ["Proximal phalanx of first finger of hand.r", "Distal phalanx of first finger of hand.r", "Proximal phalanx of fifth finger of hand.r", "Distal phalanx of fifth finger of hand.r", "Distal phalanx of third finger of hand.r"], pad: 0.12 },
   knee: { names: ["Patella.r", "Articular capsule of knee joint.r", "Medial meniscus.r", "Lateral meniscus.r", "Fibular collateral ligament.r"], pad: 0.4 },
   lumbar: { names: ["Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum"], pad: 0.45 },
 };
@@ -37,6 +46,7 @@ export interface ViewerProps {
   explode: number;
   isolateSelected: boolean;
   selected: string | null;
+  labels?: LabelMode;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -45,6 +55,7 @@ export interface ViewerHandle {
   reset: () => void;
   frameNames: (names: string[]) => void;
   meshNames: () => string[];
+  meshSystem: (name: string) => Sys | null;
 }
 
 function colorFor(sys: Sys, name: string) {
@@ -52,7 +63,7 @@ function colorFor(sys: Sys, name: string) {
   if (sys === "vessel") return /vein|venous|sinus|vena/.test(n) ? VEIN : SYSTEMS[4].color;
   if (sys === "muscle" && /fascia|bursa|retinacul|septum|aponeur|sheath|tendon/.test(n)) return FASCIA;
   if (sys === "joint" && /disc|menisc|labrum|cartilage|symphysis|nucleus|fat pad/.test(n)) return CART;
-  return SYSTEMS.find((s) => s.id === sys)!.color;
+  return SYSTEMS.find((s) => s.id === sys)?.color ?? SYSTEMS[0].color;
 }
 const ROUGH: Record<Sys, number> = { bone: 0.78, muscle: 0.55, joint: 0.6, nerve: 0.38, vessel: 0.32 };
 
@@ -63,27 +74,33 @@ const hasWebGL = () => {
 export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function AnatomyViewer(props, ref) {
   const wrap = useRef<HTMLDivElement>(null);
   const cube = useRef<HTMLDivElement>(null);
+  const hoverBadge = useRef<HTMLDivElement>(null);
+  const selectedBadge = useRef<HTMLDivElement>(null);
   const propsRef = useRef(props); propsRef.current = props;
   const eng = useRef<any>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [errors, setErrors] = useState<string[]>([]);
   const [noGL, setNoGL] = useState(false);
-  const [hover, setHover] = useState<{ name: string; x: number; y: number } | null>(null);
+  const [hover, setHover] = useState<string | null>(null);
   const [orient, setOrient] = useState({ ant: 1, right: -1 });
   const [attempt, setAttempt] = useState(0);
 
   // ---------- setup ----------
   useEffect(() => {
-    const el = wrap.current!;
+    const el = wrap.current;
+    if (!el) return;
     if (!hasWebGL()) { setNoGL(true); return; }
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 768px)").matches;
-    const renderer = new THREE.WebGLRenderer({ antialias: !mobile, alpha: true, powerPreference: "high-performance" });
+    let renderer: THREE.WebGLRenderer;
+    try { renderer = new THREE.WebGLRenderer({ antialias: !mobile, alpha: true, powerPreference: "high-performance" }); }
+    catch { setNoGL(true); return; }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 2));
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.domElement.style.touchAction = "none";
     renderer.domElement.setAttribute("aria-label", "Interactive 3D anatomy model. Drag to rotate, scroll or pinch to zoom.");
     el.prepend(renderer.domElement);
+    renderer.localClippingEnabled = true;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 200);
     scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8070, 0.75));
@@ -108,31 +125,39 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const draco = new DRACOLoader().setDecoderPath("/draco/");
     const loader = new GLTFLoader().setDRACOLoader(draco);
     let cancelled = false;
-    const loadSys = (s: (typeof SYSTEMS)[number]) => new Promise<void>((resolve) => {
-      loader.load(`/anatomy-models/${s.file}.glb`, (gltf) => {
-        if (cancelled) return resolve();
+    const loadSys = async (s: (typeof SYSTEMS)[number]) => {
+      const url = `/anatomy-models/${s.file}.glb`;
+      try {
+        let pending = MODEL_CACHE.get(url);
+        if (!pending) {
+          pending = new Promise<GLTF>((resolve, reject) => loader.load(url, resolve,
+            (ev) => { if (!cancelled && ev.total) setProgress(p => ({...p,[s.file]:ev.loaded/ev.total})); }, reject));
+          MODEL_CACHE.set(url, pending);
+        }
+        const gltf = await pending;
+        if (cancelled) return;
         const orig = new Map<string, string>();
         for (const n of gltf.parser.json.nodes ?? []) if (n.name && n.mesh !== undefined) orig.set(THREE.PropertyBinding.sanitizeNodeName(n.name), n.name);
-        gltf.scene.traverse((o) => {
+        const instance = gltf.scene.clone(true);
+        instance.traverse((o) => {
           const m = o as THREE.Mesh;
           if (!m.isMesh) return;
           const name = orig.get(m.name) ?? orig.get(m.parent?.name ?? "") ?? m.name;
           const mat = new THREE.MeshStandardMaterial({ color: colorFor(s.id, name), roughness: ROUGH[s.id], metalness: 0, side: THREE.DoubleSide });
-          (m.material as THREE.Material)?.dispose?.();
           m.material = mat; m.userData.anat = name; m.userData.sys = s.id;
           e.items.push({ mesh: m, sys: s.id, name, mat, box: new THREE.Box3(), orig: m.position.clone(), delta: new THREE.Vector3(), sheet: /fascia|septum|retinacul|aponeur|tract$/i.test(name) && !/iliotibial/i.test(name) });
         });
-        root.add(gltf.scene);
-        root.updateMatrixWorld(true);
+        root.add(instance); root.updateMatrixWorld(true);
         for (const it of e.items) if (it.box.isEmpty()) it.box.setFromObject(it.mesh);
-        setProgress((p) => ({ ...p, [s.file]: 1 }));
-        if (s.id === "bone") { detectOrientation(); applyRegion(true); }
-        apply();
-        propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
-        resolve();
-      }, (ev) => { if (ev.total) setProgress((p) => ({ ...p, [s.file]: ev.loaded / ev.total })); },
-      () => { setErrors((x) => [...x, s.label]); resolve(); });
-    });
+        setProgress(p => ({...p,[s.file]:1}));
+        if (s.id === "bone") detectOrientation();
+        if (s.id === "bone" || s.id === "joint") applyRegion(true);
+        apply(); propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
+      } catch {
+        MODEL_CACHE.delete(url);
+        if (!cancelled) setErrors(x => [...x,s.label]);
+      }
+    };
     loadSys(SYSTEMS[0]).then(() => Promise.all(SYSTEMS.slice(1).map(loadSys)));
 
     // picking
@@ -143,8 +168,13 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       ndc.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
       const hits = ray.intersectObjects(e.pickables, false);
-      const solid = hits.find((h) => ((h.object as THREE.Mesh).material as THREE.MeshStandardMaterial).opacity > 0.2);
-      return ((solid ?? hits[0])?.object.userData.anat as string) ?? null;
+      const visibleHits = hits.filter(h => {
+        const mat = (h.object as THREE.Mesh).material as THREE.MeshStandardMaterial;
+        return mat.opacity > 0.2 && !(mat.clippingPlanes ?? []).some(p => p.distanceToPoint(h.point) < 0);
+      });
+      const hit = visibleHits[0];
+      if (hit) e.hoverPoint = hit.object.worldToLocal(hit.point.clone());
+      return (hit?.object.userData.anat as string) ?? null;
     };
     let down: { x: number; y: number } | null = null;
     let hoverQueued = false;
@@ -159,9 +189,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       requestAnimationFrame(() => {
         hoverQueued = false;
         const n = pick(ev.clientX, ev.clientY);
-        const r = el.getBoundingClientRect();
         if (n !== e.hover) { e.hover = n; apply(); }
-        setHover(n ? { name: n, x: ev.clientX - r.left, y: ev.clientY - r.top } : null);
+        setHover(n);
       });
     };
     const onLeave = () => { e.hover = null; setHover(null); apply(); };
@@ -187,6 +216,27 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       if (!e.dirty) return;
       e.dirty = false;
       renderer.render(scene, camera);
+      const updateBadge = (badge: HTMLDivElement | null, name: string | null, hovering: boolean) => {
+        if (!badge || !name) return;
+        const item = find(name);
+        if (!item || !item.mesh.visible || (hovering && name === propsRef.current.selected)) { badge.style.visibility = "hidden"; return; }
+        const point = hovering && e.hoverPoint ? item.mesh.localToWorld(e.hoverPoint.clone()) : new THREE.Box3().setFromObject(item.mesh).getCenter(new THREE.Vector3());
+        if (e.regionBox && propsRef.current.dimMode === "isolate") point.clamp(e.regionBox.min, e.regionBox.max);
+        point.project(camera);
+        if (point.z < -1 || point.z > 1) { badge.style.visibility = "hidden"; return; }
+        const x = (point.x + 1) * el.clientWidth / 2, y = (1 - point.y) * el.clientHeight / 2;
+        const bx = Math.max(8, Math.min(el.clientWidth - badge.offsetWidth - 8, x + 24));
+        const by = Math.max(80, Math.min(el.clientHeight - badge.offsetHeight - 90, y - 36));
+        badge.style.visibility = "visible"; badge.style.left = `${bx}px`; badge.style.top = `${by}px`;
+        const line = badge.firstElementChild as HTMLElement | null;
+        if (line) {
+          const dx = x-bx, dy = y-by;
+          line.style.width = `${Math.hypot(dx,dy)}px`;
+          line.style.transform = `rotate(${Math.atan2(dy,dx)}rad)`;
+        }
+      };
+      updateBadge(selectedBadge.current, propsRef.current.selected, false);
+      updateBadge(hoverBadge.current, e.hover, true);
       if (cube.current) {
         rot.extractRotation(camera.matrixWorldInverse);
         const m = S.clone().multiply(rot).multiply(S);
@@ -199,7 +249,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       cancelled = true; cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); draco.dispose();
       cvs.removeEventListener("pointerdown", onDown); cvs.removeEventListener("pointerup", onUp);
       cvs.removeEventListener("pointermove", onMove); cvs.removeEventListener("pointerleave", onLeave);
-      root.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { m.geometry.dispose(); (m.material as THREE.Material).dispose(); } });
+      root.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { (m.material as THREE.Material).dispose(); } });
       renderer.dispose(); cvs.remove();
       eng.current = {};
     };
@@ -236,7 +286,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
     const dist = (r / Math.sin(fit / 2)) * 1.02;
-    const p1 = center.clone().add(dirFor(e.view)!.multiplyScalar(dist));
+    const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
     e.camera.near = dist / 100; e.camera.far = dist * 20; e.camera.updateProjectionMatrix();
     e.controls.minDistance = r * 0.15; e.controls.maxDistance = dist * 6;
     if (instant || e.reduced) { e.camera.position.copy(p1); e.controls.target.copy(center); e.tween = null; e.dirty = true; }
@@ -258,6 +308,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
+    e.clip = e.regionBox ? [
+      new THREE.Plane(new THREE.Vector3(1,0,0),-e.regionBox.min.x),new THREE.Plane(new THREE.Vector3(-1,0,0),e.regionBox.max.x),
+      new THREE.Plane(new THREE.Vector3(0,1,0),-e.regionBox.min.y),new THREE.Plane(new THREE.Vector3(0,-1,0),e.regionBox.max.y),
+      new THREE.Plane(new THREE.Vector3(0,0,1),-e.regionBox.min.z),new THREE.Plane(new THREE.Vector3(0,0,-1),e.regionBox.max.z),
+    ] : [];
     if (r === "full" && e.view === "lateral") e.view = "anterior";
     if (r === "lumbar" && (e.view === "anterior")) e.view = "posterior";
     frameBox(box, undefined, instant);
@@ -267,7 +322,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       it.box.getCenter(tmp); const dir = tmp.clone().sub(c);
       const world = dir.multiplyScalar(span * 0.6 / Math.max(dir.length(), span * 0.1));
-      const par = it.mesh.parent!;
+      const par = it.mesh.parent;
+      if (!par) continue;
       a.copy(tmp); b.copy(tmp).add(world); par.worldToLocal(a); par.worldToLocal(b);
       it.delta.copy(b).sub(a);
     }
@@ -277,7 +333,10 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const P = propsRef.current; const rb: THREE.Box3 | null = e.regionBox;
     const picks: THREE.Object3D[] = [];
     for (const it of e.items as Item[]) {
-      const inR = !rb || rb.intersectsBox(it.box);
+      const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
+      const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated));
+      it.mat.clippingPlanes = P.dimMode === "isolate" && !P.isolateSelected ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.isolateSelected && P.selected) vis = isSel;
@@ -296,16 +355,21 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   }
 
   useEffect(() => { applyRegion(); apply(); }, [props.region]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => { eng.current.dirty = true; });
 
   useImperativeHandle(ref, () => ({
     preset: (p) => { eng.current.view = p; frameBox(eng.current.frame ?? wholeBox(), p); },
     reset: () => { eng.current.view = propsRef.current.region === "lumbar" ? "posterior" : "anterior"; applyRegion(); },
     frameNames: (names) => {
       const b = unionOf(names); if (b.isEmpty()) return;
-      const s = b.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.6;
+      if (eng.current.regionBox && propsRef.current.dimMode === "isolate") b.intersect(eng.current.regionBox);
+      if (b.isEmpty()) return;
+      const s = b.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.25;
       frameBox(b.expandByVector(new THREE.Vector3(m, m, m)));
     },
+    meshSystem: (name) => find(name)?.sys ?? null,
     meshNames: () => ((eng.current.items ?? []) as Item[]).map((i) => i.name),
   }));
 
@@ -341,20 +405,30 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       {errors.length > 0 && (
         <div role="alert" className="absolute left-3 top-3 max-w-xs rounded-md border border-destructive bg-card p-3 text-xs text-foreground">
           Could not load: {errors.join(", ")}.{" "}
-          <button className="font-semibold text-primary underline" onClick={() => { setErrors([]); setProgress({}); setAttempt((a) => a + 1); }}>Retry</button>
+          <Button variant="link" className="font-semibold text-primary underline" onClick={() => { setErrors([]); setProgress({}); setAttempt((a) => a + 1); }}>Retry</Button>
         </div>
       )}
-      {hover && (
-        <div className="pointer-events-none absolute z-10 rounded bg-foreground px-2 py-1 text-xs font-semibold text-background shadow" style={{ left: hover.x + 14, top: hover.y + 10 }}>{baseName(hover.name)}</div>
+      {props.labels !== "off" && props.selected && (
+        <div ref={selectedBadge} data-testid="selected-mesh-label" className="pointer-events-none absolute z-20 max-w-[min(260px,75%)] rounded border border-primary bg-card/95 px-3 py-2 text-xs text-foreground shadow-md">
+          <span aria-hidden className="absolute left-0 top-0 origin-left border-t border-primary" />
+          <span className="block text-[10px] font-semibold uppercase text-primary">Selected</span>
+          <span className="relative break-words font-semibold">{props.selected}</span>
+        </div>
+      )}
+      {props.labels === "hover" && hover && hover !== props.selected && (
+        <div ref={hoverBadge} data-testid="hover-mesh-label" className="pointer-events-none absolute z-10 max-w-[min(260px,75%)] rounded border border-border bg-card/95 px-3 py-2 text-xs font-semibold text-foreground shadow-md">
+          <span aria-hidden className="absolute left-0 top-0 origin-left border-t border-primary" />
+          <span className="relative break-words">{hover}</span>
+        </div>
       )}
       {/* Orientation cube */}
       <div className="absolute right-3 top-3 h-[64px] w-[64px]" style={{ perspective: 400 }} aria-label="Orientation cube">
         <div ref={cube} className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
           {faces.map(([l, tr, p]) => (
-            <button key={l} disabled={!p} onClick={() => p && (eng.current.view = p as Preset, frameBox(eng.current.frame ?? wholeBox(), p as Preset))}
+            <Button variant="outline" key={l} disabled={!p} onClick={() => p && (eng.current.view = p as Preset, frameBox(eng.current.frame ?? wholeBox(), p as Preset))}
               aria-label={p ? `${p} view` : undefined} tabIndex={-1}
               className="absolute inset-0 flex items-center justify-center border border-primary/60 bg-card/85 text-sm font-bold text-foreground"
-              style={{ transform: `${tr} translateZ(32px)`, backfaceVisibility: "hidden" }}>{l}</button>
+              style={{ transform: `${tr} translateZ(32px)`, backfaceVisibility: "hidden" }}>{l}</Button>
           ))}
         </div>
       </div>
