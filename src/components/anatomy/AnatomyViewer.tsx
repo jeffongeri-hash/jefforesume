@@ -6,10 +6,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Button } from "@/components/ui/button";
 import { isRightShoulderMesh } from "@/data/msk/shoulderSpecialist";
 import { isRightArmMesh } from "@/data/msk/armSpecialist";
+import { isRightElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
-export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits";
+export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm";
 export type Preset = "anterior" | "posterior" | "lateral" | "superior";
 export type LabelMode = "selected" | "hover" | "off";
 export type DimMode = "none" | "dim" | "isolate";
@@ -32,6 +33,7 @@ const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: numb
   arm: { names: ["Humerus.r"], pad: 0.12 },
   elbow: { names: ["Articular capsule of elbow joint.r"], pad: 0.3 },
   forearm: { names: ["Radius.r", "Ulna.r"], pad: 0.12 },
+  "elbow-forearm": { names: ["Radius.r", "Ulna.r"], pad: 0.1 },
   "wrist-hand": { names: ["Scaphoid bone.r", "Hamate bone.r", "First metacarpal bone.r", "Fifth metacarpal bone.r", "Proximal phalanx of third finger of hand.r"], pad: 0.2 },
   digits: { names: ["Proximal phalanx of first finger of hand.r", "Distal phalanx of first finger of hand.r", "Proximal phalanx of fifth finger of hand.r", "Distal phalanx of fifth finger of hand.r", "Distal phalanx of third finger of hand.r"], pad: 0.12 },
   knee: { names: ["Patella.r", "Articular capsule of knee joint.r", "Medial meniscus.r", "Lateral meniscus.r", "Fibular collateral ligament.r"], pad: 0.4 },
@@ -51,6 +53,7 @@ export interface ViewerProps {
   labels?: LabelMode;
   specialistShoulder?: boolean;
   specialistArm?: boolean;
+  specialistElbowForearm?: boolean;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -289,7 +292,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = size.length() / 2;
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
-    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm
+    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm
       ? Math.max(size.y, size.x / e.camera.aspect) / (2 * Math.tan(fov / 2)) * 1.15 + size.z * 0.5
       : (r / Math.sin(fit / 2)) * 1.02;
     const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
@@ -305,6 +308,13 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       const humerus = find("Humerus.r");
       if (humerus) { const proximal = humerus.box.clone(); proximal.min.y = proximal.max.y - (proximal.max.y-proximal.min.y)*0.35; b.union(proximal); }
       return b.isEmpty() ? null : b.expandByScalar(b.getSize(new THREE.Vector3()).length()*0.045);
+    }
+    if (r === "elbow-forearm" && propsRef.current.specialistElbowForearm && !b.isEmpty()) {
+      const humerus = find("Humerus.r");
+      if (humerus) { const distal = humerus.box.clone(); distal.max.y = distal.min.y + (distal.max.y-distal.min.y)*0.22; b.union(distal); }
+      const t = (b.max.y-b.min.y)*0.1;
+      b.min.x -= t; b.max.x += t; b.min.z -= t; b.max.z += t;
+      return b;
     }
     if (r === "arm" && propsRef.current.specialistArm && !b.isEmpty()) {
       const height = b.max.y-b.min.y;
@@ -322,7 +332,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
+    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
@@ -353,7 +363,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
       const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name));
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name));
       it.mat.clippingPlanes = P.dimMode === "isolate" && !P.isolateSelected ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
@@ -372,7 +382,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     e.pickables = picks; e.dirty = true;
   }
 
-  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
