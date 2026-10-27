@@ -1,5 +1,5 @@
-# Arm-only next release
-- [x] Add dedicated right-arm study data, named-mesh focus and route; preserve shoulder except requested navigation.
-- [x] Expose only Shoulder and Arm cards, navigation and sitemap entries.
-- [x] Test real arm rendering, index selection, data-only entry, labels/camera tracking and phone layout; regression-check Shoulder.
-- [x] Review security (two pre-existing warnings, no critical findings) and request publishing.
+# Elbow & Forearm release
+- [x] Add combined right elbow/forearm study data, named-mesh focus and route; keep Shoulder and Arm unchanged except navigation.
+- [x] Expose only Shoulder, Arm and Elbow & Forearm cards, navigation and sitemap entries.
+- [ ] Test rendering, selection, data-only entry, label tracking and phone layout; regression-check Shoulder/Arm.
+- [ ] Review security and request publishing.
