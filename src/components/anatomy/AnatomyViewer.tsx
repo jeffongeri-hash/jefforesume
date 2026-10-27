@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Button } from "@/components/ui/button";
+import { isRightShoulderMesh } from "@/data/msk/shoulderSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
@@ -47,6 +48,7 @@ export interface ViewerProps {
   isolateSelected: boolean;
   selected: string | null;
   labels?: LabelMode;
+  specialistShoulder?: boolean;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -295,6 +297,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   function regionBox(r: FocusRegion): THREE.Box3 | null {
     if (r === "full") return null;
     const a = ANCHORS[r]; const b = unionOf(a.names);
+    if (r === "shoulder" && propsRef.current.specialistShoulder) {
+      const humerus = find("Humerus.r");
+      if (humerus) { const proximal = humerus.box.clone(); proximal.min.y = proximal.max.y - (proximal.max.y-proximal.min.y)*0.35; b.union(proximal); }
+      return b.isEmpty() ? null : b.expandByScalar(b.getSize(new THREE.Vector3()).length()*0.045);
+    }
     if (b.isEmpty()) return null;
     const s = b.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * a.pad;
     return b.expandByVector(new THREE.Vector3(m, m, m));
@@ -304,7 +311,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const tight = r === "full" ? null : unionOf(ANCHORS[r].names);
+    const tight = propsRef.current.specialistShoulder ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
@@ -335,7 +342,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
       const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated));
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name));
       it.mat.clippingPlanes = P.dimMode === "isolate" && !P.isolateSelected ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
@@ -354,7 +361,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     e.pickables = picks; e.dirty = true;
   }
 
-  useEffect(() => { applyRegion(); apply(); }, [props.region]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
@@ -427,7 +434,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
           {faces.map(([l, tr, p]) => (
             <Button variant="outline" key={l} disabled={!p} onClick={() => p && (eng.current.view = p as Preset, frameBox(eng.current.frame ?? wholeBox(), p as Preset))}
               aria-label={p ? `${p} view` : undefined} tabIndex={-1}
-              className="absolute inset-0 flex items-center justify-center border border-primary/60 bg-card/85 text-sm font-bold text-foreground"
+              className="absolute inset-0 h-full w-full p-0 flex items-center justify-center border border-primary/60 bg-card/85 text-sm font-bold text-foreground"
               style={{ transform: `${tr} translateZ(32px)`, backfaceVisibility: "hidden" }}>{l}</Button>
           ))}
         </div>
