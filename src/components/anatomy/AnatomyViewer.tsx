@@ -287,7 +287,9 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = size.length() / 2;
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
-    const dist = (r / Math.sin(fit / 2)) * 1.02;
+    const dist = propsRef.current.specialistShoulder
+      ? Math.max(size.y, size.x / e.camera.aspect) / (2 * Math.tan(fov / 2)) * 1.15 + size.z * 0.5
+      : (r / Math.sin(fit / 2)) * 1.02;
     const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
     e.camera.near = dist / 100; e.camera.far = dist * 20; e.camera.updateProjectionMatrix();
     e.controls.minDistance = r * 0.15; e.controls.maxDistance = dist * 6;
