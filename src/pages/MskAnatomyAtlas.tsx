@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { SHOULDER_PATH, shoulderSpecialist, matchShoulderSpecialist } from "@/data/msk/shoulderSpecialist";
 import { ARM_PATH, armSpecialist, matchArmMesh } from "@/data/msk/armSpecialist";
 import { ELBOW_FOREARM_PATH, elbowForearmSpecialist, matchElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
+import { NECK_PATH, neckSpecialist, matchNeckMesh } from "@/data/msk/neckSpecialist";
 import { WRIST_HAND_PATH, wristHandSpecialist, matchWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
@@ -27,6 +28,7 @@ const PRESETS: Preset[] = ["anterior", "posterior", "lateral", "superior"];
 
 const ALL_ON: Record<Sys, boolean> = { bone: true, muscle: true, joint: true, nerve: true, vessel: true };
 const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
+  neck: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
   shoulder: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
   arm: { bone: true, muscle: true, joint: false, nerve: true, vessel: true },
   elbow: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
@@ -40,17 +42,18 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
 
 const MskAnatomyAtlas = () => {
   const { pathname } = useLocation();
+  const neckUnit = pathname === NECK_PATH;
   const armUnit = pathname === ARM_PATH;
   const efUnit = pathname === ELBOW_FOREARM_PATH;
   const whUnit = pathname === WRIST_HAND_PATH;
-  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit;
-  const module = whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
-  const STUDY_REGIONS = whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
-  const match = (name: string, prefer?: string) => whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
+  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit || neckUnit;
+  const module = neckUnit ? neckSpecialist : whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
+  const STUDY_REGIONS = neckUnit ? [neckSpecialist] : whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
+  const match = (name: string, prefer?: string) => neckUnit && prefer === "neck" ? matchNeckMesh(name) : whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
   const [labelMode,setLabelMode] = useState<LabelMode>("selected");
-  const title = module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
+  const title = neckUnit ? "Neck & Cervical Region — 3D Anatomy Atlas" : module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
   const description = module ? `${module.intro} Real reference meshes with focused structure notes and clinical examination landmarks.` : "Interactive 3D reference anatomy of the shoulder, knee and lumbar spine, with clinical study notes and examination landmarks.";
-  const canonical = module ? `${BASE}/upper-extremity/${module.id}` : BASE;
+  const canonical = neckUnit ? `https://jeffongeri.com${NECK_PATH}` : module ? `${BASE}/upper-extremity/${module.id}` : BASE;
   const viewer = useRef<ViewerHandle>(null);
   const [focus, setFocus] = useState<FocusRegion>((module?.id ?? "shoulder") as FocusRegion);
   const [studyId, setStudyId] = useState(module?.id ?? REGIONS[0].id);
@@ -123,7 +126,7 @@ const MskAnatomyAtlas = () => {
     return (module ? [module] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
       .sort((a, b) => Number(!a.s.name.toLowerCase().includes(q)) - Number(!b.s.name.toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [query, specialist, armUnit, efUnit, whUnit]);
+  }, [query, specialist, armUnit, efUnit, whUnit, neckUnit]);
 
   const mappedIds = useMemo(() => {
     const set = new Set<string>();
@@ -155,7 +158,7 @@ const MskAnatomyAtlas = () => {
         <nav aria-label="Atlas breadcrumb" className="mb-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <Link to="/professional" className="hover:text-primary">Professional</Link><span>/</span>
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
-          {module && <><span>/</span><span>Upper Extremity</span><span>/</span><span className="text-foreground">{module.name}</span></>}
+          {module && <><span>/</span><span>{neckUnit ? "Axial" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
@@ -181,13 +184,18 @@ const MskAnatomyAtlas = () => {
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Right wrist & hand anatomy<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Carpal bones and ligaments, carpal tunnel and Guyon canal, extensor compartments, intrinsic hand groups and palmar arches.</p>
           </Link>
+          <Link to={NECK_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Axial specialist unit · Neck</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Neck & Cervical Region<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Skull base through C7–T1, deep neck muscles, fascial relations and educational pain anatomy.</p>
+          </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
           <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
@@ -209,7 +217,7 @@ const MskAnatomyAtlas = () => {
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Region focus</p>
             <div role="group" aria-label="Region focus" className="flex flex-wrap gap-2">
-              {(module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
+              {(neckUnit ? ["neck"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
                 <Button variant="outline" key={f} aria-pressed={focus === f} onClick={() => changeFocus(f)} className={btn(focus === f)}>
                   {f === "full" ? "Full body" : STUDY_REGIONS.find((r) => r.id === f)?.name ?? f}
                 </Button>
@@ -229,7 +237,7 @@ const MskAnatomyAtlas = () => {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Other structures</p>
             <div role="group" aria-label="Other structures" className="flex flex-wrap gap-1 rounded-md border border-border bg-card p-1">
               {([["none", "Show"], ["dim", "Dim"], ["isolate", "Hide"]] as [DimMode, string][]).map(([m, l]) => (
-                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full"}
+                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit}
                   className={cn("min-h-[34px] rounded px-3 text-sm disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", dimMode === m ? "bg-secondary font-semibold text-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Button>
               ))}
             </div>
@@ -240,7 +248,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
@@ -304,7 +312,7 @@ const MskAnatomyAtlas = () => {
                     ))}
                   </dl>
                   {!selectedMesh && linked.length === 0 && meshNames.length > 0 && (
-                    <p className="mt-3 text-xs text-muted-foreground">No separate mesh in this reference model. This is an indexed educational structure, not a separately selectable 3D part.</p>
+                    <p className="mt-3 text-xs text-muted-foreground">{neckUnit ? "Index only — no separate mesh in this reference model." : "No separate mesh in this reference model."} This is an indexed educational structure, not a separately selectable 3D part.</p>
                   )}
                 </div>
               ) : selectedMesh ? (
@@ -366,14 +374,16 @@ const MskAnatomyAtlas = () => {
           </div>
         </div>
 
-        {specialist && <nav aria-label="Upper extremity specialist modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
+        {specialist && <nav aria-label="Atlas specialist modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
           {armUnit && <Button variant="outline" asChild><Link to={SHOULDER_PATH}><ArrowLeft />Previous: Shoulder</Link></Button>}
           {efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowLeft />Previous: Arm</Link></Button>}
           {whUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowLeft />Previous: Elbow & Forearm</Link></Button>}
           {efUnit && <Button variant="outline" asChild><Link to={WRIST_HAND_PATH}><ArrowRight />Next: Wrist & Hand</Link></Button>}
-          {!armUnit && !efUnit && !whUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
+          {!neckUnit && !armUnit && !efUnit && !whUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
           {armUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowRight />Next: Elbow & Forearm</Link></Button>}
+          <Button variant="outline" asChild><Link to={neckUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
         </nav>}
+        {neckUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Occipital bone, C1/C2 and C3–C7 are whole meshes: nuchal lines, mastoid, dens and processes are index-only landmarks. Cervical facets, uncovertebral joints, small cervical plexus/occipital branches, phrenic nerve, most fascial spaces, semispinalis capitis and cervical-specific rotatores have no independent mesh. Long muscles, nerves and vessels are clipped to this region; cut ends are not natural terminations. Left-sided soft tissues and the full-body view are excluded.</p>}
         <p className="mt-6 rounded-md border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Educational use only.</strong> This interactive 3D model and its simplified notes are for orientation and anatomy review, not radiographic interpretation, diagnosis, or procedural planning. The meshes represent a single reference anatomy and will not match every patient.
         </p>

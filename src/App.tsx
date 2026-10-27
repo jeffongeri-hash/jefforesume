@@ -103,6 +103,7 @@ const App = () => (
                 <Route path="/drone/gallery" element={<DroneGallery />} />
                 <Route path="/drone/gallery/:slug" element={<DroneProject />} />
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/arm" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/elbow-forearm" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/wrist-hand" element={<MskAnatomyAtlas />} />
