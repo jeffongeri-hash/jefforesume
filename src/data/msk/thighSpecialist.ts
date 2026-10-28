@@ -161,6 +161,7 @@ const RULES: [RegExp, string][] = [
   [/^sciatic nerve$/, 'sciatic-nerve'], [/^tibial nerve$/, 'tibial-division'], [/^common fibular nerve$/, 'common-fibular-division'],
   [/^(posterior femoral cutaneous nerve|(anterior|posterior) root of posterior femoral cutaneous nerve)$/, 'pfcn'],
   [/^lateral femoral cutaneous nerve$/, 'lfcn'],
+  [/^(genitofemoral nerve|(femoral|genital) branch of genitofemoral nerve|ilio-inguinal nerve)$/, 'genitofemoral'],
   // vessels
   [/^femoral artery$/, 'femoral-artery'], [/^femoral vein$/, 'femoral-vein'],
   [/^deep femoral (artery|vein)$/, 'deep-femoral'],
