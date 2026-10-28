@@ -10,6 +10,7 @@ import { isRightElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
 import { isNeckMesh } from "@/data/msk/neckSpecialist";
 import { isRightWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { isBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
+import { isHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
