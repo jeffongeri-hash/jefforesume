@@ -82,7 +82,7 @@ const MskAnatomyAtlas = () => {
     setFocus(id as FocusRegion); setStudyId(id); setLayers(REGION_DEFAULT_LAYERS[id]);
     setOpacity({bone:1,muscle:specialist ? 0.4 : 1,joint:1,nerve:1,vessel:1});
     setDimMode(module ? "isolate" : "dim"); setSelectedMesh(null); setStructure(null);
-    setIndexFilter(""); setQuery(""); setIsolateSel(false); setExplode(0); setBackLevel("whole");
+    setIndexFilter(""); setQuery(""); setIsolateSel(false); setExplode(0); setBackLevel("whole"); setHipSide("whole");
   }, [pathname]);
 
   const studyRegion = STUDY_REGIONS.find((r) => r.id === structure?.r) ?? region;
@@ -134,7 +134,7 @@ const MskAnatomyAtlas = () => {
     return (module ? [module] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
       .sort((a, b) => Number(!a.s.name.toLowerCase().includes(q)) - Number(!b.s.name.toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [query, specialist, armUnit, efUnit, whUnit, neckUnit]);
+  }, [query, specialist, armUnit, efUnit, whUnit, neckUnit, hipUnit]);
 
   const mappedIds = useMemo(() => {
     const set = new Set<string>();
