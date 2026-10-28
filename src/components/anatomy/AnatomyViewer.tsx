@@ -9,10 +9,11 @@ import { isRightArmMesh } from "@/data/msk/armSpecialist";
 import { isRightElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
 import { isNeckMesh } from "@/data/msk/neckSpecialist";
 import { isRightWristHandMesh } from "@/data/msk/wristHandSpecialist";
+import { isBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
-export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck";
+export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back";
 export type Preset = "anterior" | "posterior" | "lateral" | "superior";
 export type LabelMode = "selected" | "hover" | "off";
 export type DimMode = "none" | "dim" | "isolate";
