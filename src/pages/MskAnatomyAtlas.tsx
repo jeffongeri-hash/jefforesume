@@ -8,6 +8,7 @@ import { ELBOW_FOREARM_PATH, elbowForearmSpecialist, matchElbowForearmMesh } fro
 import { NECK_PATH, neckSpecialist, matchNeckMesh } from "@/data/msk/neckSpecialist";
 import { WRIST_HAND_PATH, wristHandSpecialist, matchWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { BACK_PATH, BACK_LEVELS, backSpineSpecialist, matchBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
+import { HIP_PELVIS_PATH, HIP_SIDES, hipPelvisSpecialist, matchHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -40,6 +41,7 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
   knee: { bone: true, muscle: false, joint: true, nerve: true, vessel: true },
   lumbar: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
   back: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  "hip-pelvis": { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
 };
 
 const MskAnatomyAtlas = () => {
@@ -49,15 +51,17 @@ const MskAnatomyAtlas = () => {
   const efUnit = pathname === ELBOW_FOREARM_PATH;
   const whUnit = pathname === WRIST_HAND_PATH;
   const backUnit = pathname === BACK_PATH;
-  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit || neckUnit || backUnit;
-  const module = neckUnit ? neckSpecialist : backUnit ? backSpineSpecialist : whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
-  const STUDY_REGIONS = neckUnit ? [neckSpecialist] : backUnit ? [backSpineSpecialist] : whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
-  const match = (name: string, prefer?: string) => neckUnit && prefer === "neck" ? matchNeckMesh(name) : backUnit && prefer === "back" ? matchBackMesh(name) : whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
+  const hipUnit = pathname === HIP_PELVIS_PATH;
+  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit || neckUnit || backUnit || hipUnit;
+  const module = neckUnit ? neckSpecialist : backUnit ? backSpineSpecialist : hipUnit ? hipPelvisSpecialist : whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
+  const STUDY_REGIONS = neckUnit ? [neckSpecialist] : backUnit ? [backSpineSpecialist] : hipUnit ? [hipPelvisSpecialist] : whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
+  const match = (name: string, prefer?: string) => neckUnit && prefer === "neck" ? matchNeckMesh(name) : backUnit && prefer === "back" ? matchBackMesh(name) : hipUnit && prefer === "hip-pelvis" ? matchHipPelvisMesh(name) : whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
   const [labelMode,setLabelMode] = useState<LabelMode>("selected");
   const [backLevel, setBackLevel] = useState<BackLevel>("whole");
-  const title = neckUnit ? "Neck & Cervical Region — 3D Anatomy Atlas" : backUnit ? "Back & Spine — Cervical, Thoracic & Lumbar 3D Anatomy Atlas" : module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
+  const [hipSide, setHipSide] = useState<HipSide>("whole");
+  const title = neckUnit ? "Neck & Cervical Region — 3D Anatomy Atlas" : backUnit ? "Back & Spine — Cervical, Thoracic & Lumbar 3D Anatomy Atlas" : hipUnit ? "Hip & Pelvis 3D Anatomy Atlas" : module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
   const description = module ? `${module.intro} Real reference meshes with focused structure notes and clinical examination landmarks.` : "Interactive 3D reference anatomy of the shoulder, knee and lumbar spine, with clinical study notes and examination landmarks.";
-  const canonical = neckUnit ? `https://jeffongeri.com${NECK_PATH}` : backUnit ? `https://jeffongeri.com${BACK_PATH}` : module ? `${BASE}/upper-extremity/${module.id}` : BASE;
+  const canonical = neckUnit ? `https://jeffongeri.com${NECK_PATH}` : backUnit ? `https://jeffongeri.com${BACK_PATH}` : hipUnit ? `https://jeffongeri.com${HIP_PELVIS_PATH}` : module ? `${BASE}/upper-extremity/${module.id}` : BASE;
   const viewer = useRef<ViewerHandle>(null);
   const [focus, setFocus] = useState<FocusRegion>((module?.id ?? "shoulder") as FocusRegion);
   const [studyId, setStudyId] = useState(module?.id ?? REGIONS[0].id);
@@ -78,7 +82,7 @@ const MskAnatomyAtlas = () => {
     setFocus(id as FocusRegion); setStudyId(id); setLayers(REGION_DEFAULT_LAYERS[id]);
     setOpacity({bone:1,muscle:specialist ? 0.4 : 1,joint:1,nerve:1,vessel:1});
     setDimMode(module ? "isolate" : "dim"); setSelectedMesh(null); setStructure(null);
-    setIndexFilter(""); setQuery(""); setIsolateSel(false); setExplode(0); setBackLevel("whole");
+    setIndexFilter(""); setQuery(""); setIsolateSel(false); setExplode(0); setBackLevel("whole"); setHipSide("whole");
   }, [pathname]);
 
   const studyRegion = STUDY_REGIONS.find((r) => r.id === structure?.r) ?? region;
@@ -130,7 +134,7 @@ const MskAnatomyAtlas = () => {
     return (module ? [module] : STUDY_REGIONS).flatMap((r) => r.structures.filter((s) => Object.values(s).join(" ").toLowerCase().includes(q)).map((s) => ({ r, s })))
       .sort((a, b) => Number(!a.s.name.toLowerCase().includes(q)) - Number(!b.s.name.toLowerCase().includes(q)))
       .slice(0, 40);
-  }, [query, specialist, armUnit, efUnit, whUnit, neckUnit]);
+  }, [query, specialist, armUnit, efUnit, whUnit, neckUnit, hipUnit]);
 
   const mappedIds = useMemo(() => {
     const set = new Set<string>();
@@ -162,7 +166,7 @@ const MskAnatomyAtlas = () => {
         <nav aria-label="Atlas breadcrumb" className="mb-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <Link to="/professional" className="hover:text-primary">Professional</Link><span>/</span>
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
-          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
+          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : hipUnit ? "Lower Extremity" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
@@ -198,13 +202,18 @@ const MskAnatomyAtlas = () => {
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Back & Spine — Cervical, Thoracic & Lumbar<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Occiput to sacrum in three switchable levels: vertebrae and discs, deep back muscles, thoracolumbar fascia and dorsal rami.</p>
           </Link>
+          <Link to={HIP_PELVIS_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Hip & Pelvis</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Hip & Pelvis<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Bilateral pelvis and proximal femora with left/right hip focus: hip joint and ligaments, gluteals and deep rotators, iliopsoas, adductors and lumbosacral plexus relations.</p>
+          </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
           <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : hipUnit ? "e.g. piriformis, sciatic nerve, acetabular labrum" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
@@ -226,7 +235,7 @@ const MskAnatomyAtlas = () => {
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Region focus</p>
             <div role="group" aria-label="Region focus" className="flex flex-wrap gap-2">
-              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
+              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : hipUnit ? ["hip-pelvis"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
                 <Button variant="outline" key={f} aria-pressed={focus === f} onClick={() => changeFocus(f)} className={btn(focus === f)}>
                   {f === "full" ? "Full body" : STUDY_REGIONS.find((r) => r.id === f)?.name ?? f}
                 </Button>
@@ -245,6 +254,18 @@ const MskAnatomyAtlas = () => {
               </div>
             </div>
           )}
+          {hipUnit && (
+            <div>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Hip focus</p>
+              <div role="group" aria-label="Hip focus" className="flex flex-wrap gap-2">
+                {HIP_SIDES.map((s) => (
+                  <Button variant="outline" key={s.id} aria-pressed={hipSide === s.id} onClick={() => setHipSide(s.id)} className={btn(hipSide === s.id)}>
+                    {s.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Camera</p>
             <div role="group" aria-label="Camera view" className="flex flex-wrap gap-1 rounded-md border border-border bg-card p-1">
@@ -258,7 +279,7 @@ const MskAnatomyAtlas = () => {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Other structures</p>
             <div role="group" aria-label="Other structures" className="flex flex-wrap gap-1 rounded-md border border-border bg-card p-1">
               {([["none", "Show"], ["dim", "Dim"], ["isolate", "Hide"]] as [DimMode, string][]).map(([m, l]) => (
-                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit || backUnit}
+                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit || backUnit || hipUnit}
                   className={cn("min-h-[34px] rounded px-3 text-sm disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", dimMode === m ? "bg-secondary font-semibold text-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Button>
               ))}
 
@@ -270,7 +291,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} specialistBack={backUnit} backLevel={backLevel} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} specialistBack={backUnit} backLevel={backLevel} specialistHipPelvis={hipUnit} hipSide={hipSide} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
@@ -405,10 +426,13 @@ const MskAnatomyAtlas = () => {
           {armUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowRight />Next: Elbow & Forearm</Link></Button>}
           {neckUnit && <Button variant="outline" asChild><Link to={BACK_PATH}><ArrowRight />Next: Back & Spine</Link></Button>}
           {backUnit && <Button variant="outline" asChild><Link to={NECK_PATH}><ArrowLeft />Previous: Neck & Cervical Region</Link></Button>}
-          <Button variant="outline" asChild><Link to={neckUnit || backUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit || backUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
+          {backUnit && <Button variant="outline" asChild><Link to={HIP_PELVIS_PATH}><ArrowRight />Next: Hip & Pelvis</Link></Button>}
+          {hipUnit && <Button variant="outline" asChild><Link to={BACK_PATH}><ArrowLeft />Previous: Back & Spine</Link></Button>}
+          <Button variant="outline" asChild><Link to={neckUnit || backUnit || hipUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit || backUnit || hipUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
         </nav>}
         {neckUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Occipital bone, C1/C2 and C3–C7 are whole meshes: nuchal lines, mastoid, dens and processes are index-only landmarks. Cervical facets, uncovertebral joints, small cervical plexus/occipital branches, phrenic nerve, most fascial spaces, semispinalis capitis and cervical-specific rotatores have no independent mesh. Long muscles, nerves and vessels are clipped to this region; cut ends are not natural terminations. Left-sided soft tissues and the full-body view are excluded.</p>}
         {backUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Vertebrae, sacrum and hip bones are whole meshes: spinous/transverse processes, pedicles, laminae, pars, facet joints and uncovertebral joints are index-only landmarks on them. Discs are whole-disc meshes (annulus/nucleus not separated). Dorsal rami, medial branches, cluneal nerves, costovertebral joint capsules and segmental vessels have no independent mesh. The spine-level tabs crop and frame the same bilateral model; cut edges of long muscles, nerves and vessels are not natural terminations. Semispinalis capitis is represented by the semispinalis colli mesh.</p>}
+        {hipUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Hip bone, sacrum and femur are whole meshes: ilium/ischium/pubis, the acetabulum, ASIS/AIIS, PSIS/PIIS, ischial spine and tuberosity, pubic tubercle, obturator foramen, femoral head/neck and both trochanters are index-only landmarks on them. Articular cartilage, the femoral triangle, sciatic foramina, pelvic-floor fascia and the inferior gluteal nerve have no independent mesh. The hip-focus tabs crop and frame the same bilateral model; cut edges of long muscles, nerves and vessels (hamstrings, quadriceps, femoral and iliac vessels) are not natural terminations.</p>}
         <p className="mt-6 rounded-md border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Educational use only.</strong> This interactive 3D model and its simplified notes are for orientation and anatomy review, not radiographic interpretation, diagnosis, or procedural planning. The meshes represent a single reference anatomy and will not match every patient.
         </p>

@@ -10,10 +10,11 @@ import { isRightElbowForearmMesh } from "@/data/msk/elbowForearmSpecialist";
 import { isNeckMesh } from "@/data/msk/neckSpecialist";
 import { isRightWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { isBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
+import { isHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
-export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back";
+export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back" | "hip-pelvis";
 export type Preset = "anterior" | "posterior" | "lateral" | "superior";
 export type LabelMode = "selected" | "hover" | "off";
 export type DimMode = "none" | "dim" | "isolate";
@@ -34,6 +35,7 @@ const MODEL_CACHE = new Map<string, Promise<GLTF>>();
 const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: number }> = {
   neck: { names: ["Atlas (C1)", "Axis (C2)", "Vertebra C3", "Vertebra C4", "Vertebra C5", "Vertebra C6", "Vertebra C7", "Vertebra T1"], pad: 0.1 },
   back: { names: ["Atlas (C1)", "Vertebra C7", "Vertebra T6", "Vertebra T12", "Vertebra L3", "Vertebra L5", "Sacrum"], pad: 0.25 },
+  "hip-pelvis": { names: ["Hip bone.r", "Hip bone.l", "Sacrum", "Coccyx", "Femur.r", "Femur.l"], pad: 0.2 },
   shoulder: { names: ["Scapula.r", "Clavicle.r", "Articular capsule of glenohumeral joint.r", "Glenoid labrum.r"], pad: 0.35 },
   arm: { names: ["Humerus.r"], pad: 0.12 },
   elbow: { names: ["Articular capsule of elbow joint.r"], pad: 0.3 },
@@ -63,6 +65,8 @@ export interface ViewerProps {
   specialistNeck?: boolean;
   specialistBack?: boolean;
   backLevel?: BackLevel;
+  specialistHipPelvis?: boolean;
+  hipSide?: HipSide;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -301,7 +305,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = size.length() / 2;
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
-    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack
+    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis
       ? Math.max(size.y, size.x / e.camera.aspect) / (2 * Math.tan(fov / 2)) * 1.15 + size.z * 0.5
       : (r / Math.sin(fit / 2)) * 1.02;
     const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
@@ -344,6 +348,32 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       bb.min.y -= h * 0.05; bb.max.y += h * 0.05;
       return bb;
     }
+    if (r === "hip-pelvis" && propsRef.current.specialistHipPelvis) {
+      // Bilateral pelvis + proximal femora; side tabs crop to one hip, keeping the sacral midline.
+      const side = propsRef.current.hipSide ?? "whole";
+      const bones = (suffix: string) => [`Hip bone.${suffix}`, `Femur.${suffix}`];
+      const names = side === "whole" ? ["Hip bone.r", "Hip bone.l", "Sacrum", "Coccyx", "Femur.r", "Femur.l"] : ["Sacrum", "Coccyx", ...bones(side === "right" ? "r" : "l")];
+      const bb = unionOf(names);
+      if (bb.isEmpty()) return null;
+      // Keep only the proximal ~45% of the femur(a) by raising the box bottom.
+      for (const n of names.filter((n) => n.startsWith("Femur"))) {
+        const it = find(n);
+        if (it) bb.min.y = Math.max(bb.min.y, it.box.max.y - (it.box.max.y - it.box.min.y) * 0.45);
+      }
+      const h = bb.max.y - bb.min.y;
+      bb.min.y -= h * 0.06; bb.max.y += h * 0.08;
+      bb.min.z -= h * 0.22; bb.max.z += h * 0.22;
+      if (side === "whole") { bb.min.x -= h * 0.18; bb.max.x += h * 0.18; }
+      else {
+        // Side view: crop just past the sacral midline toward the focused hip.
+        const sacrum = find("Sacrum");
+        const midX = sacrum ? sacrum.box.getCenter(new THREE.Vector3()).x : (bb.min.x + bb.max.x) / 2;
+        const rightSign = eng.current.right ?? -1; // +1 or -1 depending on model orientation
+        if ((side === "right") === (rightSign > 0)) { bb.min.x = Math.max(bb.min.x, midX - h * 0.12); bb.max.x += h * 0.2; }
+        else { bb.max.x = Math.min(bb.max.x, midX + h * 0.12); bb.min.x -= h * 0.2; }
+      }
+      return bb;
+    }
     if (r === "shoulder" && propsRef.current.specialistShoulder) {
       const humerus = find("Humerus.r");
       if (humerus) { const proximal = humerus.box.clone(); proximal.min.y = proximal.max.y - (proximal.max.y-proximal.min.y)*0.35; b.union(proximal); }
@@ -381,7 +411,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
+    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
@@ -412,8 +442,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
       const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name)) && (!P.specialistBack || isBackMesh(it.name));
-      it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name)) && (!P.specialistBack || isBackMesh(it.name)) && (!P.specialistHipPelvis || isHipPelvisMesh(it.name));
+      it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || P.specialistHipPelvis || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
@@ -431,7 +461,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     e.pickables = picks; e.dirty = true;
   }
 
-  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel, props.specialistHipPelvis, props.hipSide]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
