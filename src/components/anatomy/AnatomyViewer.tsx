@@ -65,6 +65,8 @@ export interface ViewerProps {
   specialistNeck?: boolean;
   specialistBack?: boolean;
   backLevel?: BackLevel;
+  specialistHipPelvis?: boolean;
+  hipSide?: HipSide;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -303,7 +305,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = size.length() / 2;
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
-    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack
+    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis
       ? Math.max(size.y, size.x / e.camera.aspect) / (2 * Math.tan(fov / 2)) * 1.15 + size.z * 0.5
       : (r / Math.sin(fit / 2)) * 1.02;
     const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
