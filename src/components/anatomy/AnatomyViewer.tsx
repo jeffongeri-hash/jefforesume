@@ -14,7 +14,7 @@ import { isHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
-export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back";
+export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back" | "hip-pelvis";
 export type Preset = "anterior" | "posterior" | "lateral" | "superior";
 export type LabelMode = "selected" | "hover" | "off";
 export type DimMode = "none" | "dim" | "isolate";
@@ -35,6 +35,7 @@ const MODEL_CACHE = new Map<string, Promise<GLTF>>();
 const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: number }> = {
   neck: { names: ["Atlas (C1)", "Axis (C2)", "Vertebra C3", "Vertebra C4", "Vertebra C5", "Vertebra C6", "Vertebra C7", "Vertebra T1"], pad: 0.1 },
   back: { names: ["Atlas (C1)", "Vertebra C7", "Vertebra T6", "Vertebra T12", "Vertebra L3", "Vertebra L5", "Sacrum"], pad: 0.25 },
+  "hip-pelvis": { names: ["Hip bone.r", "Hip bone.l", "Sacrum", "Coccyx", "Femur.r", "Femur.l"], pad: 0.2 },
   shoulder: { names: ["Scapula.r", "Clavicle.r", "Articular capsule of glenohumeral joint.r", "Glenoid labrum.r"], pad: 0.35 },
   arm: { names: ["Humerus.r"], pad: 0.12 },
   elbow: { names: ["Articular capsule of elbow joint.r"], pad: 0.3 },
