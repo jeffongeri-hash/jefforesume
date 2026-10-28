@@ -369,8 +369,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
         const sacrum = find("Sacrum");
         const midX = sacrum ? sacrum.box.getCenter(new THREE.Vector3()).x : (bb.min.x + bb.max.x) / 2;
         const rightSign = e.right; // +1 or -1 depending on model orientation
-        if ((side === "right") === (rightSign > 0)) { bb.min.x = Math.min(bb.min.x, midX - h * 0.12); bb.max.x += h * 0.2; }
-        else { bb.max.x = Math.max(bb.max.x, midX + h * 0.12); bb.min.x -= h * 0.2; }
+        if ((side === "right") === (rightSign > 0)) { bb.min.x = Math.max(bb.min.x, midX - h * 0.12); bb.max.x += h * 0.2; }
+        else { bb.max.x = Math.min(bb.max.x, midX + h * 0.12); bb.min.x -= h * 0.2; }
       }
       return bb;
     }
