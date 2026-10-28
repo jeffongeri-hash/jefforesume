@@ -8,6 +8,7 @@ import { ELBOW_FOREARM_PATH, elbowForearmSpecialist, matchElbowForearmMesh } fro
 import { NECK_PATH, neckSpecialist, matchNeckMesh } from "@/data/msk/neckSpecialist";
 import { WRIST_HAND_PATH, wristHandSpecialist, matchWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { BACK_PATH, BACK_LEVELS, backSpineSpecialist, matchBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
+import { HIP_PELVIS_PATH, HIP_SIDES, hipPelvisSpecialist, matchHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -40,6 +41,7 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
   knee: { bone: true, muscle: false, joint: true, nerve: true, vessel: true },
   lumbar: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
   back: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  "hip-pelvis": { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
 };
 
 const MskAnatomyAtlas = () => {
