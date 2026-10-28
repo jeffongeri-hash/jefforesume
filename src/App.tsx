@@ -49,6 +49,7 @@ const DroneLanding = lazy(() => import("./drone/DroneLanding"));
 const DroneGallery = lazy(() => import("./drone/DroneGallery"));
 const DroneProject = lazy(() => import("./drone/DroneProject"));
 const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
+const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -103,6 +104,7 @@ const App = () => (
                 <Route path="/drone/gallery" element={<DroneGallery />} />
                 <Route path="/drone/gallery/:slug" element={<DroneProject />} />
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/movement-injury" element={<MskMovementMechanics />} />
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/lower-extremity/hip-pelvis" element={<MskAnatomyAtlas />} />

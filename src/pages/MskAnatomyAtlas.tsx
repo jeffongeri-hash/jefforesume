@@ -14,6 +14,7 @@ import { KNEE_PATH, kneeSpecialist, matchKneeMesh } from "@/data/msk/kneeSpecial
 import { CALF_PATH, calfSpecialist, matchCalfMesh } from "@/data/msk/calfSpecialist";
 import { ANKLE_FOOT_PATH, ankleFootSpecialist, matchAnkleFootMesh } from "@/data/msk/ankleFootSpecialist";
 import { FACE_PATH, faceSpecialist, matchFaceMesh } from "@/data/msk/faceSpecialist";
+import { MECHANICS_PATH } from '@/data/msk/movementMechanics';
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -248,6 +249,7 @@ const MskAnatomyAtlas = () => {
             <p className="mt-2 text-sm text-muted-foreground">Facial skeleton and landmarks, the TMJ, muscles of expression and mastication, parotid and facial nerve relations, trigeminal branches and superficial facial vessels.</p>
           </Link>
         </section>}
+        {!specialist && <Link to={MECHANICS_PATH} className="mt-3 block max-w-xl rounded-md border border-border bg-card p-4 hover:border-primary"><p className="text-xs font-semibold uppercase text-primary">Specialist unit · Mechanics lab</p><h2 className="mt-2 font-journal text-xl">Movement &amp; Injury Mechanics</h2><p className="mt-2 text-sm text-muted-foreground">Controlled 3D movement phases, muscle roles and educational injury mechanisms.</p></Link>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
@@ -458,6 +460,7 @@ const MskAnatomyAtlas = () => {
         </div>
 
         {specialist && <nav aria-label="Atlas specialist modules" className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
+          <Button variant="outline" asChild><Link to={MECHANICS_PATH}>Movement &amp; Injury Mechanics</Link></Button>
           {armUnit && <Button variant="outline" asChild><Link to={SHOULDER_PATH}><ArrowLeft />Previous: Shoulder</Link></Button>}
           {efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowLeft />Previous: Arm</Link></Button>}
           {whUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowLeft />Previous: Elbow & Forearm</Link></Button>}

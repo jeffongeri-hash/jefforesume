@@ -5,7 +5,7 @@ import { resolve } from "path"
 const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
-  "/", "/about", "/professional", "/resume", "/accolades", "/contact",
+  "/", "/about", "/professional", "/resume", "/accolades", "/contact", "/msk-anatomy-atlas/movement-injury",
   "/posts", "/investments", "/finance-guides", "/podcast", "/care-abroad", "/care-abroad/timeline", "/msk-anatomy-atlas", "/privacy", "/terms",
 ]
 

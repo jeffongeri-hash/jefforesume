@@ -17,6 +17,8 @@ import { isCalfMesh } from "@/data/msk/calfSpecialist";
 import { isAnkleFootMesh } from "@/data/msk/ankleFootSpecialist";
 import { isFaceMesh } from "@/data/msk/faceSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import { advance, duration, keyframe, motionAllowed, phaseHighlights, type Mechanic } from '@/data/msk/movementMechanics';
+import { boneInRig, FRAME_ANCHORS, PIVOT_ANCHOR } from '@/data/msk/mechanicsRig';
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
 export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back" | "hip-pelvis" | "thigh" | "calf" | "ankle-foot" | "face";
@@ -56,7 +58,12 @@ const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: numb
   lumbar: { names: ["Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum"], pad: 0.45 },
 };
 
-type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3; sheet: boolean };
+type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3; sheet: boolean; restWorld?: THREE.Matrix4; restLocal?: THREE.Matrix4 };
+
+export interface MechanicsPlayback {
+  mechanic: Mechanic; playing: boolean; speed: number; reduced: boolean;
+  seek: { time: number; revision: number }; onTime: (time: number) => void;
+}
 
 export interface ViewerProps {
   layers: Record<Sys, boolean>;
@@ -81,6 +88,8 @@ export interface ViewerProps {
   specialistCalf?: boolean;
   specialistAnkleFoot?: boolean;
   specialistFace?: boolean;
+  mechanics?: MechanicsPlayback;
+  relationshipCue?: { name: string; anchor: string } | null;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -110,6 +119,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   const cube = useRef<HTMLDivElement>(null);
   const hoverBadge = useRef<HTMLDivElement>(null);
   const selectedBadge = useRef<HTMLDivElement>(null);
+  const relationshipBadge = useRef<HTMLDivElement>(null);
   const propsRef = useRef(props); propsRef.current = props;
   const eng = useRef<any>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
@@ -182,7 +192,9 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
           e.items.push({ mesh: m, sys: s.id, name, mat, box: new THREE.Box3(), orig: m.position.clone(), delta: new THREE.Vector3(), sheet: /fascia|septum|retinacul|aponeur|tract$/i.test(name) && !/iliotibial/i.test(name) });
         });
         root.add(instance); root.updateMatrixWorld(true);
-        for (const it of e.items) if (it.box.isEmpty()) it.box.setFromObject(it.mesh);
+        for (const it of e.items) if (it.box.isEmpty()) {
+          it.box.setFromObject(it.mesh); it.restWorld = it.mesh.matrixWorld.clone(); it.restLocal = it.mesh.matrix.clone();
+        }
         setProgress(p => ({...p,[s.file]:1}));
         if (s.id === "bone") detectOrientation();
         if (s.id === "bone" || s.id === "joint") applyRegion(true);
@@ -239,6 +251,15 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const loop = (t: number) => {
       raf = requestAnimationFrame(loop);
       const dt = Math.min((t - last) / 1000, 0.05); last = t;
+      const motion = propsRef.current.mechanics;
+      if (motion) {
+        e.motionTime = advance(e.motionTime ?? 0, dt, motion.speed, duration(motion.mechanic), motionAllowed(motion.playing, motion.reduced));
+        if (motionAllowed(motion.playing, motion.reduced)) {
+          if (t - (e.motionReport ?? 0) > 180) { motion.onTime(e.motionTime); e.motionReport = t; }
+          apply();
+        }
+        if (e.dirty) poseMechanics();
+      }
       if (e.tween) {
         const tw = e.tween; tw.t = Math.min(1, tw.t + dt / 0.6);
         const k = 1 - Math.pow(1 - tw.t, 3);
@@ -250,6 +271,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       if (!e.dirty) return;
       e.dirty = false;
       renderer.render(scene, camera);
+      if ((e.items as Item[]).some(i => i.sys === 'muscle')) el.dataset.sceneReady = '1';
+      if (motion) {
+        el.dataset.motionAngle = String(keyframe(motion.mechanic, e.motionTime ?? 0).angle);
+        el.dataset.highlightedMeshes = phaseHighlights(motion.mechanic, e.motionTime ?? 0).join('|');
+      }
       const updateBadge = (badge: HTMLDivElement | null, name: string | null, hovering: boolean) => {
         if (!badge || !name) return;
         const item = find(name);
@@ -271,6 +297,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       };
       updateBadge(selectedBadge.current, propsRef.current.selected, false);
       updateBadge(hoverBadge.current, e.hover, true);
+      updateBadge(relationshipBadge.current, propsRef.current.relationshipCue?.anchor ?? null, false);
       if (cube.current) {
         rot.extractRotation(camera.matrixWorldInverse);
         const m = S.clone().multiply(rot).multiply(S);
@@ -474,9 +501,54 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     return b.expandByVector(new THREE.Vector3(m, m, m));
   }
   function wholeBox() { const b = new THREE.Box3(); for (const it of (eng.current.items ?? []) as Item[]) if (it.sys === "bone") b.union(it.box); return b; }
+  function poseMechanics() {
+    const e = eng.current, motion = propsRef.current.mechanics;
+    if (!motion || !e.items) return;
+    const anchor = find(PIVOT_ANCHOR[motion.mechanic.rig]);
+    if (!anchor) return;
+    const rig = motion.mechanic.rig;
+    const pivot = anchor.box.getCenter(new THREE.Vector3());
+    if (['shoulder','hip','knee','elbow','squat'].includes(rig)) pivot.y = anchor.box.max.y;
+    const k = keyframe(motion.mechanic, e.motionTime ?? 0);
+    const axis = new THREE.Vector3(motion.mechanic.axis === 'x' ? 1 : 0, motion.mechanic.axis === 'y' ? 1 : 0, motion.mechanic.axis === 'z' ? -e.right : 0);
+    const transform = new THREE.Matrix4().makeTranslation(pivot.x,pivot.y,pivot.z)
+      .multiply(new THREE.Matrix4().makeRotationAxis(axis, THREE.MathUtils.degToRad(k.angle)))
+      .multiply(new THREE.Matrix4().makeTranslation(-pivot.x,-pivot.y,-pivot.z));
+    for (const it of e.items as Item[]) {
+      if (!it.restLocal || !it.restWorld || !it.mesh.parent) continue;
+      if (it.sys !== 'bone') continue;
+      // Intact reference bones only; no tendon, muscle or ligament deformation.
+      const world = it.restWorld.clone();
+      if (boneInRig(it.name, rig)) {
+        world.premultiply(transform);
+        if (motion.mechanic.id === 'patella' && it.name === 'Patella.r') world.elements[12] += e.right * anchor.box.getSize(new THREE.Vector3()).y * 0.025 * k.angle / 12;
+        if (rig === 'squat' && boneInRig(it.name,'knee')) {
+          const tibia = find('Tibia.r');
+          if (tibia) {
+            const kp = tibia.box.getCenter(new THREE.Vector3()); kp.y=tibia.box.max.y;
+            const bend = new THREE.Matrix4().makeTranslation(kp.x,kp.y,kp.z).multiply(new THREE.Matrix4().makeRotationX(THREE.MathUtils.degToRad(-k.secondary))).multiply(new THREE.Matrix4().makeTranslation(-kp.x,-kp.y,-kp.z));
+            world.copy(it.restWorld).premultiply(bend).premultiply(transform);
+          }
+        }
+      }
+      const local = new THREE.Matrix4().copy(it.mesh.parent.matrixWorld).invert().multiply(world);
+      local.decompose(it.mesh.position,it.mesh.quaternion,it.mesh.scale);
+    }
+    e.root.updateMatrixWorld(true);
+  }
   function applyRegion(instant = false) {
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
+    if (propsRef.current.mechanics) {
+      const spec = propsRef.current.mechanics.mechanic;
+      const names = [...FRAME_ANCHORS[spec.rig], ...spec.phases.flatMap(p=>p.roles.flatMap(r=>phaseHighlights({...spec,phases:[p]},0)))];
+      const box = unionOf(names);
+      if (box.isEmpty()) return;
+      box.expandByScalar(box.getSize(new THREE.Vector3()).length()*0.18);
+      e.regionBox=null; e.clip=[]; e.frame=box;
+      e.view=['elbow','knee','ankle','squat','hip','trunk'].includes(spec.rig)?'lateral':'anterior';
+      frameBox(box,undefined,instant); return;
+    }
     e.regionBox = regionBox(r);
     const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis || propsRef.current.specialistThigh || propsRef.current.specialistKnee || propsRef.current.specialistCalf || propsRef.current.specialistAnkleFoot || propsRef.current.specialistFace ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
@@ -505,6 +577,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   function apply() {
     const e = eng.current; if (!e.items) return;
     const P = propsRef.current; const rb: THREE.Box3 | null = e.regionBox;
+    const active = new Set(P.mechanics ? phaseHighlights(P.mechanics.mechanic,e.motionTime??0) : []);
+    const related = new Set(P.mechanics ? P.mechanics.mechanic.phases.flatMap(p=>p.roles.flatMap(r=>phaseHighlights({...P.mechanics?.mechanic,phases:[p]} as Mechanic,0))) : []);
     const picks: THREE.Object3D[] = [];
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
@@ -513,14 +587,15 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || P.specialistHipPelvis || P.specialistThigh || P.specialistKnee || P.specialistCalf || P.specialistAnkleFoot || P.specialistFace || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
+      if (P.mechanics) vis=P.layers[it.sys] && (related.has(it.name) || (it.sys==='bone' && (boneInRig(it.name,P.mechanics.mechanic.rig) || FRAME_ANCHORS[P.mechanics.mechanic.rig].some(n=>n===it.name))) || it.name===P.relationshipCue?.anchor);
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
       it.mesh.visible = vis;
       if (!vis) continue;
       picks.push(it.mesh);
       const op = P.isolateSelected ? 1 : P.opacity[it.sys] * (it.sheet && !isSel ? 0.12 : 1) * (P.dimMode === "dim" && !inR ? 0.08 : 1);
       it.mat.opacity = op; it.mat.transparent = op < 0.995; it.mat.depthWrite = op >= 0.995;
-      it.mat.emissive.copy(isSel || it.name === e.hover ? HILITE : new THREE.Color(0));
-      it.mat.emissiveIntensity = isSel ? 0.6 : 0.28;
+      it.mat.emissive.copy(isSel || it.name === e.hover || active.has(it.name) ? HILITE : new THREE.Color(0));
+      it.mat.emissiveIntensity = isSel ? 0.6 : active.has(it.name) ? 0.45 : 0.28;
       it.mesh.renderOrder = it.mat.transparent ? 1 : 0;
       const k = inR ? P.explode : 0;
       it.mesh.position.copy(it.orig).addScaledVector(it.delta, k);
@@ -532,6 +607,12 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
+  useEffect(() => {
+    if (!props.mechanics) return;
+    eng.current.motionTime=props.mechanics.seek.time;
+    apply(); eng.current.dirty=true;
+  },[props.mechanics?.seek.revision,props.mechanics?.mechanic.id]);
+  useEffect(() => { if(props.mechanics) { applyRegion(true); apply(); } },[props.mechanics?.mechanic.id]);
 
   useImperativeHandle(ref, () => ({
     preset: (p) => { eng.current.view = p; frameBox(eng.current.frame ?? wholeBox(), p); },
@@ -595,6 +676,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
           <span className="relative break-words">{hover}</span>
         </div>
       )}
+      {props.relationshipCue && <div ref={relationshipBadge} data-testid="relationship-label" className="pointer-events-none absolute z-20 max-w-[min(240px,65%)] rounded border border-primary bg-card/95 px-3 py-2 text-xs text-foreground">
+        <span aria-hidden className="absolute left-0 top-0 origin-left border-t border-primary" />
+        <span className="relative block font-semibold">{props.relationshipCue.name}</span>
+        <span className="relative block">Index-only relationship · connected to {props.relationshipCue.anchor}</span>
+      </div>}
       {/* Orientation cube */}
       <div className="absolute right-3 top-3 h-[64px] w-[64px]" style={{ perspective: 400 }} aria-label="Orientation cube">
         <div ref={cube} className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
