@@ -235,7 +235,7 @@ const MskAnatomyAtlas = () => {
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Region focus</p>
             <div role="group" aria-label="Region focus" className="flex flex-wrap gap-2">
-              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
+              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : hipUnit ? ["hip-pelvis"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
                 <Button variant="outline" key={f} aria-pressed={focus === f} onClick={() => changeFocus(f)} className={btn(focus === f)}>
                   {f === "full" ? "Full body" : STUDY_REGIONS.find((r) => r.id === f)?.name ?? f}
                 </Button>
@@ -249,6 +249,18 @@ const MskAnatomyAtlas = () => {
                 {BACK_LEVELS.map((l) => (
                   <Button variant="outline" key={l.id} aria-pressed={backLevel === l.id} onClick={() => setBackLevel(l.id)} className={btn(backLevel === l.id)}>
                     {l.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+          {hipUnit && (
+            <div>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Hip focus</p>
+              <div role="group" aria-label="Hip focus" className="flex flex-wrap gap-2">
+                {HIP_SIDES.map((s) => (
+                  <Button variant="outline" key={s.id} aria-pressed={hipSide === s.id} onClick={() => setHipSide(s.id)} className={btn(hipSide === s.id)}>
+                    {s.label}
                   </Button>
                 ))}
               </div>
