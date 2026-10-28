@@ -106,6 +106,11 @@ const App = () => (
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/lower-extremity/hip-pelvis" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/lower-extremity/thigh" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/lower-extremity/knee" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/lower-extremity/calf" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/lower-extremity/ankle-foot" element={<MskAnatomyAtlas />} />
+                <Route path="/msk-anatomy-atlas/axial/face" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/arm" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/elbow-forearm" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/upper-extremity/wrist-hand" element={<MskAnatomyAtlas />} />
