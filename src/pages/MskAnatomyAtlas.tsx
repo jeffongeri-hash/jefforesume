@@ -253,7 +253,7 @@ const MskAnatomyAtlas = () => {
         <div className="relative mt-6 max-w-xl">
           <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : hipUnit ? "e.g. piriformis, sciatic nerve, acetabular labrum" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : hipUnit ? "e.g. piriformis, sciatic nerve, acetabular labrum" : thighUnit ? "e.g. rectus femoris, femoral triangle, saphenous" : kneeUnit ? "e.g. ACL, medial meniscus, popliteus" : calfUnit ? "e.g. soleus, tibialis posterior, sural nerve" : ankleUnit ? "e.g. talus, deltoid ligament, tarsal tunnel" : faceUnit ? "e.g. masseter, TMJ disc, infraorbital foramen" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
@@ -275,7 +275,7 @@ const MskAnatomyAtlas = () => {
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Region focus</p>
             <div role="group" aria-label="Region focus" className="flex flex-wrap gap-2">
-              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : hipUnit ? ["hip-pelvis"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
+              {(neckUnit ? ["neck"] as FocusRegion[] : backUnit ? ["back"] as FocusRegion[] : hipUnit ? ["hip-pelvis"] as FocusRegion[] : thighUnit ? ["thigh"] as FocusRegion[] : kneeUnit ? ["knee"] as FocusRegion[] : calfUnit ? ["calf"] as FocusRegion[] : ankleUnit ? ["ankle-foot"] as FocusRegion[] : faceUnit ? ["face"] as FocusRegion[] : module ? [module.id, "full"] as FocusRegion[] : ["shoulder", "knee", "lumbar", "full"] as FocusRegion[]).map((f) => (
                 <Button variant="outline" key={f} aria-pressed={focus === f} onClick={() => changeFocus(f)} className={btn(focus === f)}>
                   {f === "full" ? "Full body" : STUDY_REGIONS.find((r) => r.id === f)?.name ?? f}
                 </Button>
@@ -319,7 +319,7 @@ const MskAnatomyAtlas = () => {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Other structures</p>
             <div role="group" aria-label="Other structures" className="flex flex-wrap gap-1 rounded-md border border-border bg-card p-1">
               {([["none", "Show"], ["dim", "Dim"], ["isolate", "Hide"]] as [DimMode, string][]).map(([m, l]) => (
-                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit || backUnit || hipUnit}
+                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit || backUnit || hipUnit || thighUnit || kneeUnit || calfUnit || ankleUnit || faceUnit}
                   className={cn("min-h-[34px] rounded px-3 text-sm disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", dimMode === m ? "bg-secondary font-semibold text-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Button>
               ))}
 
@@ -331,7 +331,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} specialistBack={backUnit} backLevel={backLevel} specialistHipPelvis={hipUnit} hipSide={hipSide} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} specialistBack={backUnit} backLevel={backLevel} specialistHipPelvis={hipUnit} hipSide={hipSide} specialistThigh={thighUnit} specialistKnee={kneeUnit} specialistCalf={calfUnit} specialistAnkleFoot={ankleUnit} specialistFace={faceUnit} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
