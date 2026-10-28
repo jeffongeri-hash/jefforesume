@@ -73,7 +73,7 @@ test('all muscles carry origin, insertion, action and innervation; red flags use
   for (const s of back.structures.filter(s => s.tissue.startsWith('muscle'))) {
     expect(Boolean(s.origin && s.insertion && s.innervation && s.role)).toBe(true);
   }
-  expect(back.structures.find(s => s.id === 'red-flags')?.relations).toContain('urgent clinical assessment');
+  expect(back.structures.find(s => s.id === 'red-flags')?.clinical).toContain('urgent clinical assessment');
   expect(back.structures.find(s => s.id === 'cauda')?.clinical).toContain('urgent clinical assessment');
   expect(back.structures.find(s => s.id === 'trap-upper')?.innervation).toContain('accessory nerve (XI)');
   expect(back.structures.find(s => s.id === 'ql')?.insertion).toContain('Twelfth rib');
