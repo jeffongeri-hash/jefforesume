@@ -156,7 +156,9 @@ const RULES: [RegExp, string][] = [
   [/^tibial nerve$/, 'tibial-nerve'], [/^common fibular nerve$/, 'common-fibular'],
   [/^deep fibular nerve$/, 'deep-fibular'], [/^(superficial fibular nerve|dorsal digital branches of superficial fibular nerve)$/, 'superficial-fibular'],
   [/^sural nerve$/, 'sural'], [/^(medial sural cutaneous nerve|sural communicating branch of common fibular nerve)$/, 'medial-sural'],
-  [/^saphenous nerve$/, 'saphenous-leg'],
+  [/^saphenous nerve$/, 'saphenous-leg'], [/^medial crural cutaneous branches of saphenous nerve$/, 'medial-crural'],
+  [/^tendon sheath of tibialis posterior muscle$/, 'tibialis-posterior-sheath'],
+  [/^muscular branches of deep fibular nerve$/, 'deep-fibular-branches'],
   // vessels
   [/^anterior tibial (artery|veins)$/, 'anterior-tibial'], [/^posterior tibial (artery|veins)$/, 'posterior-tibial'],
   [/^fibular (artery|veins)$|^calcaneal branches of fibular artery$/, 'fibular-artery'],
