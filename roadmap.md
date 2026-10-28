@@ -5,7 +5,7 @@
 - [x] Hub/navigation, route, metadata and 172-entry sitemap
 - [x] 82 automated tests; desktop/phone playback, reduced motion and anatomy selection checks; Shoulder, Knee, Ankle & Foot regressions
 - [x] Fresh security scan: no critical findings, two existing unrelated warnings
-- [ ] Publishing request and production-content verification
+- [x] Published release snapshot a301a3ac12a1feae4d7f9155c659308e0b9fbc36; production browser confirmed route H1, real GLBs, injury selection and step control (HTTP 200)
 
 ## Previous atlas releases
 
