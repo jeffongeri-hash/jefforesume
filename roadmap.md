@@ -1,10 +1,11 @@
 # Roadmap — MSK Movement & Injury Mechanics
 
-- [ ] Separate movement/injury library and pure keyframe/playback rules
-- [ ] Opt-in real-GLB kinematic viewer, controls, role cards and honest mesh cues
-- [ ] Hub/navigation, route, metadata and sitemap integration
-- [ ] Automated and desktop/phone checks; Shoulder, Knee, Ankle & Foot regressions
-- [ ] Security check, publishing request and production-content verification
+- [x] Separate library: 15 movements, 10 injuries, 113 distinct structured records
+- [x] Opt-in real-GLB bone overlays, controls, role cards and index-only connected cues
+- [x] Hub/navigation, route, metadata and 172-entry sitemap
+- [x] 82 automated tests; desktop/phone playback, reduced motion and anatomy selection checks; Shoulder, Knee, Ankle & Foot regressions
+- [x] Fresh security scan: no critical findings, two existing unrelated warnings
+- [ ] Publishing request and production-content verification
 
 ## Previous atlas releases
 
