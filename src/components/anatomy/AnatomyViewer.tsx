@@ -355,10 +355,10 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       const names = side === "whole" ? ["Hip bone.r", "Hip bone.l", "Sacrum", "Coccyx", "Femur.r", "Femur.l"] : ["Sacrum", "Coccyx", ...bones(side === "right" ? "r" : "l")];
       const bb = unionOf(names);
       if (bb.isEmpty()) return null;
-      // Keep only the proximal ~45% of the femur(a).
+      // Keep only the proximal ~45% of the femur(a) by raising the box bottom.
       for (const n of names.filter((n) => n.startsWith("Femur"))) {
         const it = find(n);
-        if (it) bb.max.y = Math.min(bb.max.y, it.box.max.y - (it.box.max.y - it.box.min.y) * 0.45);
+        if (it) bb.min.y = Math.max(bb.min.y, it.box.max.y - (it.box.max.y - it.box.min.y) * 0.45);
       }
       const h = bb.max.y - bb.min.y;
       bb.min.y -= h * 0.06; bb.max.y += h * 0.08;
