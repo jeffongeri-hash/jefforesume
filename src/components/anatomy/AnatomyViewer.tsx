@@ -33,6 +33,7 @@ const MODEL_CACHE = new Map<string, Promise<GLTF>>();
 
 const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: number }> = {
   neck: { names: ["Atlas (C1)", "Axis (C2)", "Vertebra C3", "Vertebra C4", "Vertebra C5", "Vertebra C6", "Vertebra C7", "Vertebra T1"], pad: 0.1 },
+  back: { names: ["Atlas (C1)", "Vertebra C7", "Vertebra T6", "Vertebra T12", "Vertebra L3", "Vertebra L5", "Sacrum"], pad: 0.25 },
   shoulder: { names: ["Scapula.r", "Clavicle.r", "Articular capsule of glenohumeral joint.r", "Glenoid labrum.r"], pad: 0.35 },
   arm: { names: ["Humerus.r"], pad: 0.12 },
   elbow: { names: ["Articular capsule of elbow joint.r"], pad: 0.3 },
@@ -60,6 +61,8 @@ export interface ViewerProps {
   specialistElbowForearm?: boolean;
   specialistWristHand?: boolean;
   specialistNeck?: boolean;
+  specialistBack?: boolean;
+  backLevel?: BackLevel;
   onSelect: (meshName: string | null) => void;
   onLoaded?: (names: string[]) => void;
 }
@@ -298,7 +301,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = size.length() / 2;
     const fov = (e.camera.fov * Math.PI) / 180;
     const fit = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * e.camera.aspect));
-    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck
+    const dist = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack
       ? Math.max(size.y, size.x / e.camera.aspect) / (2 * Math.tan(fov / 2)) * 1.15 + size.z * 0.5
       : (r / Math.sin(fit / 2)) * 1.02;
     const p1 = center.clone().add(dirFor(e.view).multiplyScalar(dist));
@@ -321,6 +324,25 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       b.min.z -= h * 0.24; b.max.z += h * 0.32;
       b.min.y -= h * 0.04;
       return b;
+    }
+    if (r === "back" && propsRef.current.specialistBack) {
+      // Posterior axial column, framed per selected level; skull is cropped, never used whole as an anchor.
+      const level = propsRef.current.backLevel ?? "whole";
+      const C = ["Atlas (C1)", "Axis (C2)", "Vertebra C3", "Vertebra C4", "Vertebra C5", "Vertebra C6", "Vertebra C7", "Vertebra T1"];
+      const T = ["Vertebra T1", "Vertebra T2", "Vertebra T3", "Vertebra T4", "Vertebra T5", "Vertebra T6", "Vertebra T7", "Vertebra T8", "Vertebra T9", "Vertebra T10", "Vertebra T11", "Vertebra T12"];
+      const L = ["Vertebra T12", "Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum", "Coccyx", "Hip bone.r", "Hip bone.l"];
+      const bb = level === "cervical" ? unionOf(C) : level === "thoracic" ? unionOf(T) : level === "lumbar" ? unionOf(L) : unionOf([...C, ...T, ...L]);
+      if (bb.isEmpty()) return null;
+      const occiput = find("Occipital bone"); const atlas = find("Atlas (C1)");
+      if ((level === "cervical" || level === "whole") && occiput && atlas) {
+        const cv = bb.getSize(new THREE.Vector3()).y;
+        bb.max.y = Math.min(occiput.box.max.y, atlas.box.max.y + cv * 0.38);
+      }
+      const h = bb.max.y - bb.min.y;
+      bb.min.x -= h * 0.5; bb.max.x += h * 0.5;
+      bb.min.z -= h * 0.3; bb.max.z += h * 0.3;
+      bb.min.y -= h * 0.05; bb.max.y += h * 0.05;
+      return bb;
     }
     if (r === "shoulder" && propsRef.current.specialistShoulder) {
       const humerus = find("Humerus.r");
@@ -359,7 +381,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
+    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
@@ -369,7 +391,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       new THREE.Plane(new THREE.Vector3(0,0,1),-e.regionBox.min.z),new THREE.Plane(new THREE.Vector3(0,0,-1),e.regionBox.max.z),
     ] : [];
     if (r === "full" && e.view === "lateral") e.view = "anterior";
-    if (r === "lumbar" && (e.view === "anterior")) e.view = "posterior";
+    if ((r === "lumbar" || r === "back") && (e.view === "anterior")) e.view = "posterior";
     frameBox(box, undefined, instant);
     // explode vectors relative to the focus centre, converted into each mesh's parent space
     const c = box.getCenter(new THREE.Vector3()); const span = box.getSize(new THREE.Vector3()).length();
@@ -390,8 +412,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
       const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name));
-      it.mat.clippingPlanes = (P.specialistNeck || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name)) && (!P.specialistBack || isBackMesh(it.name));
+      it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
@@ -409,14 +431,14 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     e.pickables = picks; e.dirty = true;
   }
 
-  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
 
   useImperativeHandle(ref, () => ({
     preset: (p) => { eng.current.view = p; frameBox(eng.current.frame ?? wholeBox(), p); },
-    reset: () => { eng.current.view = propsRef.current.region === "lumbar" ? "posterior" : "anterior"; applyRegion(); },
+    reset: () => { eng.current.view = propsRef.current.region === "lumbar" || propsRef.current.region === "back" ? "posterior" : "anterior"; applyRegion(); },
     frameNames: (names) => {
       const b = unionOf(names); if (b.isEmpty()) return;
       if (eng.current.regionBox && propsRef.current.dimMode === "isolate") b.intersect(eng.current.regionBox);
