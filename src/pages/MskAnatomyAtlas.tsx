@@ -181,7 +181,7 @@ const MskAnatomyAtlas = () => {
         <nav aria-label="Atlas breadcrumb" className="mb-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <Link to="/professional" className="hover:text-primary">Professional</Link><span>/</span>
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
-          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : hipUnit ? "Lower Extremity" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
+          {module && <><span>/</span><span>{neckUnit || backUnit || faceUnit ? "Axial" : hipUnit || thighUnit || kneeUnit || calfUnit || ankleUnit ? "Lower Extremity" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
@@ -221,6 +221,31 @@ const MskAnatomyAtlas = () => {
             <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Hip & Pelvis</span>
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Hip & Pelvis<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Bilateral pelvis and proximal femora with left/right hip focus: hip joint and ligaments, gluteals and deep rotators, iliopsoas, adductors and lumbosacral plexus relations.</p>
+          </Link>
+          <Link to={THIGH_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Thigh</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Thigh<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Femur and its landmarks, quadriceps, adductor and hamstring compartments, fascia lata and IT tract, femoral triangle and adductor canal, and thigh neurovascular relations.</p>
+          </Link>
+          <Link to={KNEE_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Knee</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Knee<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Femorotibial and patellofemoral joints, menisci, cruciate and collateral ligaments, extensor mechanism, popliteal fossa and the genicular neurovascular relations.</p>
+          </Link>
+          <Link to={CALF_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Leg & Calf</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Leg & Calf<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Tibia and fibula, the four leg compartments, triceps surae and Achilles tendon, crural fascia, and the tibial, fibular and sural nerve and vessel courses.</p>
+          </Link>
+          <Link to={ANKLE_FOOT_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Ankle & Foot</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Ankle & Foot<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Talocrural, subtalar and midtarsal joints, all tarsals, metatarsals and toes, ankle ligament complexes, plantar fascia and arches, intrinsic muscles and the tarsal tunnel.</p>
+          </Link>
+          <Link to={FACE_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Axial specialist unit · Face</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Face<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Facial skeleton and landmarks, the TMJ, muscles of expression and mastication, parotid and facial nerve relations, trigeminal branches and superficial facial vessels.</p>
           </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
