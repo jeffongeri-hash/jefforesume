@@ -509,8 +509,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     for (const it of e.items as Item[]) {
       const upper = /arm|elbow|forearm|wrist-hand|digits/.test(P.region);
       const unrelated = /pectoralis|serratus|latissimus|trapezius|rib|sternum|vertebra|intercostal|thoracic|abdominal/.test(it.name.toLowerCase());
-      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name)) && (!P.specialistBack || isBackMesh(it.name)) && (!P.specialistHipPelvis || isHipPelvisMesh(it.name));
-      it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || P.specialistHipPelvis || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
+      const inR = (!rb || rb.intersectsBox(it.box)) && (!upper || (!it.name.endsWith(".l") && !unrelated)) && (!P.specialistShoulder || isRightShoulderMesh(it.name)) && (!P.specialistArm || isRightArmMesh(it.name)) && (!P.specialistElbowForearm || isRightElbowForearmMesh(it.name)) && (!P.specialistWristHand || isRightWristHandMesh(it.name)) && (!P.specialistNeck || isNeckMesh(it.name)) && (!P.specialistBack || isBackMesh(it.name)) && (!P.specialistHipPelvis || isHipPelvisMesh(it.name)) && (!P.specialistThigh || isThighMesh(it.name)) && (!P.specialistKnee || isKneeMesh(it.name)) && (!P.specialistCalf || isCalfMesh(it.name)) && (!P.specialistAnkleFoot || isAnkleFootMesh(it.name)) && (!P.specialistFace || isFaceMesh(it.name));
+      it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || P.specialistHipPelvis || P.specialistThigh || P.specialistKnee || P.specialistCalf || P.specialistAnkleFoot || P.specialistFace || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
@@ -528,7 +528,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     e.pickables = picks; e.dirty = true;
   }
 
-  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel, props.specialistHipPelvis, props.hipSide]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel, props.specialistHipPelvis, props.hipSide, props.specialistThigh, props.specialistKnee, props.specialistCalf, props.specialistAnkleFoot, props.specialistFace]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { apply(); }, [props.layers, props.opacity, props.dimMode, props.explode, props.isolateSelected, props.selected, props.labels]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { eng.current.dirty = true; });
