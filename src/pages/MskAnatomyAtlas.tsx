@@ -462,13 +462,22 @@ const MskAnatomyAtlas = () => {
           {efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowLeft />Previous: Arm</Link></Button>}
           {whUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowLeft />Previous: Elbow & Forearm</Link></Button>}
           {efUnit && <Button variant="outline" asChild><Link to={WRIST_HAND_PATH}><ArrowRight />Next: Wrist & Hand</Link></Button>}
-          {!neckUnit && !armUnit && !efUnit && !whUnit && !backUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
+          {!neckUnit && !armUnit && !efUnit && !whUnit && !backUnit && !hipUnit && !thighUnit && !kneeUnit && !calfUnit && !ankleUnit && !faceUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
           {armUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowRight />Next: Elbow & Forearm</Link></Button>}
           {neckUnit && <Button variant="outline" asChild><Link to={BACK_PATH}><ArrowRight />Next: Back & Spine</Link></Button>}
           {backUnit && <Button variant="outline" asChild><Link to={NECK_PATH}><ArrowLeft />Previous: Neck & Cervical Region</Link></Button>}
           {backUnit && <Button variant="outline" asChild><Link to={HIP_PELVIS_PATH}><ArrowRight />Next: Hip & Pelvis</Link></Button>}
           {hipUnit && <Button variant="outline" asChild><Link to={BACK_PATH}><ArrowLeft />Previous: Back & Spine</Link></Button>}
-          <Button variant="outline" asChild><Link to={neckUnit || backUnit || hipUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit || backUnit || hipUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
+          {hipUnit && <Button variant="outline" asChild><Link to={THIGH_PATH}><ArrowRight />Next: Thigh</Link></Button>}
+          {thighUnit && <Button variant="outline" asChild><Link to={HIP_PELVIS_PATH}><ArrowLeft />Previous: Hip & Pelvis</Link></Button>}
+          {thighUnit && <Button variant="outline" asChild><Link to={KNEE_PATH}><ArrowRight />Next: Knee</Link></Button>}
+          {kneeUnit && <Button variant="outline" asChild><Link to={THIGH_PATH}><ArrowLeft />Previous: Thigh</Link></Button>}
+          {kneeUnit && <Button variant="outline" asChild><Link to={CALF_PATH}><ArrowRight />Next: Leg & Calf</Link></Button>}
+          {calfUnit && <Button variant="outline" asChild><Link to={KNEE_PATH}><ArrowLeft />Previous: Knee</Link></Button>}
+          {calfUnit && <Button variant="outline" asChild><Link to={ANKLE_FOOT_PATH}><ArrowRight />Next: Ankle & Foot</Link></Button>}
+          {ankleUnit && <Button variant="outline" asChild><Link to={CALF_PATH}><ArrowLeft />Previous: Leg & Calf</Link></Button>}
+          {faceUnit && <Button variant="outline" asChild><Link to={NECK_PATH}><ArrowLeft />Axial: Neck & Cervical Region</Link></Button>}
+          <Button variant="outline" asChild><Link to={neckUnit || backUnit || hipUnit || thighUnit || kneeUnit || calfUnit || ankleUnit || faceUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit || backUnit || hipUnit || thighUnit || kneeUnit || calfUnit || ankleUnit || faceUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
         </nav>}
         {neckUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Occipital bone, C1/C2 and C3–C7 are whole meshes: nuchal lines, mastoid, dens and processes are index-only landmarks. Cervical facets, uncovertebral joints, small cervical plexus/occipital branches, phrenic nerve, most fascial spaces, semispinalis capitis and cervical-specific rotatores have no independent mesh. Long muscles, nerves and vessels are clipped to this region; cut ends are not natural terminations. Left-sided soft tissues and the full-body view are excluded.</p>}
         {backUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Vertebrae, sacrum and hip bones are whole meshes: spinous/transverse processes, pedicles, laminae, pars, facet joints and uncovertebral joints are index-only landmarks on them. Discs are whole-disc meshes (annulus/nucleus not separated). Dorsal rami, medial branches, cluneal nerves, costovertebral joint capsules and segmental vessels have no independent mesh. The spine-level tabs crop and frame the same bilateral model; cut edges of long muscles, nerves and vessels are not natural terminations. Semispinalis capitis is represented by the semispinalis colli mesh.</p>}
