@@ -1,4 +1,12 @@
-# Roadmap — overnight MSK atlas expansion (complete)
+# Roadmap — MSK Movement & Injury Mechanics
+
+- [ ] Separate movement/injury library and pure keyframe/playback rules
+- [ ] Opt-in real-GLB kinematic viewer, controls, role cards and honest mesh cues
+- [ ] Hub/navigation, route, metadata and sitemap integration
+- [ ] Automated and desktop/phone checks; Shoulder, Knee, Ankle & Foot regressions
+- [ ] Security check, publishing request and production-content verification
+
+## Previous atlas releases
 
 - [x] 1. Thigh — /msk-anatomy-atlas/lower-extremity/thigh (76 entries, 9 groups) — LIVE (200)
 - [x] 2. Knee — /msk-anatomy-atlas/lower-extremity/knee (85 entries, 8 groups) — LIVE (200)
