@@ -162,7 +162,7 @@ const MskAnatomyAtlas = () => {
         <nav aria-label="Atlas breadcrumb" className="mb-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <Link to="/professional" className="hover:text-primary">Professional</Link><span>/</span>
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
-          {module && <><span>/</span><span>{neckUnit ? "Axial" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
+          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
@@ -258,7 +258,7 @@ const MskAnatomyAtlas = () => {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Other structures</p>
             <div role="group" aria-label="Other structures" className="flex flex-wrap gap-1 rounded-md border border-border bg-card p-1">
               {([["none", "Show"], ["dim", "Dim"], ["isolate", "Hide"]] as [DimMode, string][]).map(([m, l]) => (
-                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit}
+                <Button variant="outline" key={m} aria-pressed={dimMode === m} onClick={() => setDimMode(m)} disabled={focus === "full" || neckUnit || backUnit}
                   className={cn("min-h-[34px] rounded px-3 text-sm disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", dimMode === m ? "bg-secondary font-semibold text-foreground" : "text-muted-foreground hover:text-foreground")}>{l}</Button>
               ))}
 
@@ -270,7 +270,7 @@ const MskAnatomyAtlas = () => {
           <div className="flex min-w-0 flex-col gap-3">
             <div className="h-[62vh] min-h-[380px] rounded-xl border border-border bg-card p-1.5 shadow-sm md:h-[74vh]">
               <Suspense fallback={<div className="flex h-full items-center justify-center text-sm text-muted-foreground" role="status">Preparing 3D viewer…</div>}>
-                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} dimMode={focus === "full" ? "none" : dimMode}
+                <AnatomyViewer ref={viewer} layers={layers} opacity={opacity} region={focus} specialistShoulder={pathname === SHOULDER_PATH && focus === "shoulder"} specialistArm={armUnit && focus === "arm"} specialistElbowForearm={efUnit && focus === "elbow-forearm"} specialistWristHand={whUnit && focus === "wrist-hand"} specialistNeck={neckUnit} specialistBack={backUnit} backLevel={backLevel} dimMode={focus === "full" ? "none" : dimMode}
                   explode={explode} isolateSelected={isolateSel} selected={selectedMesh} labels={labelMode} onSelect={onSelectMesh} onLoaded={setMeshNames} />
               </Suspense>
             </div>
@@ -401,11 +401,14 @@ const MskAnatomyAtlas = () => {
           {efUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowLeft />Previous: Arm</Link></Button>}
           {whUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowLeft />Previous: Elbow & Forearm</Link></Button>}
           {efUnit && <Button variant="outline" asChild><Link to={WRIST_HAND_PATH}><ArrowRight />Next: Wrist & Hand</Link></Button>}
-          {!neckUnit && !armUnit && !efUnit && !whUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
+          {!neckUnit && !armUnit && !efUnit && !whUnit && !backUnit && <Button variant="outline" asChild><Link to={ARM_PATH}><ArrowRight />Next: Arm</Link></Button>}
           {armUnit && <Button variant="outline" asChild><Link to={ELBOW_FOREARM_PATH}><ArrowRight />Next: Elbow & Forearm</Link></Button>}
-          <Button variant="outline" asChild><Link to={neckUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
+          {neckUnit && <Button variant="outline" asChild><Link to={BACK_PATH}><ArrowRight />Next: Back & Spine</Link></Button>}
+          {backUnit && <Button variant="outline" asChild><Link to={NECK_PATH}><ArrowLeft />Previous: Neck & Cervical Region</Link></Button>}
+          <Button variant="outline" asChild><Link to={neckUnit || backUnit ? "/msk-anatomy-atlas" : NECK_PATH}>{neckUnit || backUnit ? "Full atlas / specialist hub" : "Axial: Neck & Cervical Region"}</Link></Button>
         </nav>}
         {neckUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Occipital bone, C1/C2 and C3–C7 are whole meshes: nuchal lines, mastoid, dens and processes are index-only landmarks. Cervical facets, uncovertebral joints, small cervical plexus/occipital branches, phrenic nerve, most fascial spaces, semispinalis capitis and cervical-specific rotatores have no independent mesh. Long muscles, nerves and vessels are clipped to this region; cut ends are not natural terminations. Left-sided soft tissues and the full-body view are excluded.</p>}
+        {backUnit && <p className="mt-4 text-sm text-muted-foreground"><strong className="text-foreground">Reference limitations.</strong> Vertebrae, sacrum and hip bones are whole meshes: spinous/transverse processes, pedicles, laminae, pars, facet joints and uncovertebral joints are index-only landmarks on them. Discs are whole-disc meshes (annulus/nucleus not separated). Dorsal rami, medial branches, cluneal nerves, costovertebral joint capsules and segmental vessels have no independent mesh. The spine-level tabs crop and frame the same bilateral model; cut edges of long muscles, nerves and vessels are not natural terminations. Semispinalis capitis is represented by the semispinalis colli mesh.</p>}
         <p className="mt-6 rounded-md border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Educational use only.</strong> This interactive 3D model and its simplified notes are for orientation and anatomy review, not radiographic interpretation, diagnosis, or procedural planning. The meshes represent a single reference anatomy and will not match every patient.
         </p>
