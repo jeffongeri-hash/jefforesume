@@ -166,7 +166,7 @@ const MskAnatomyAtlas = () => {
         <nav aria-label="Atlas breadcrumb" className="mb-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <Link to="/professional" className="hover:text-primary">Professional</Link><span>/</span>
           <Link to="/msk-anatomy-atlas" className="hover:text-primary">MSK Atlas</Link>
-          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
+          {module && <><span>/</span><span>{neckUnit || backUnit ? "Axial" : hipUnit ? "Lower Extremity" : "Upper Extremity"}</span><span>/</span><span className="text-foreground">{module.name}</span></>}
         </nav>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Unit 01 · Musculoskeletal{module && ` · Specialist ${module.name}`}</p>
         <h1 className="mt-2 font-journal text-4xl leading-tight text-foreground md:text-5xl">{module ? module.name : "MSK Anatomy Atlas"}</h1>
@@ -202,13 +202,18 @@ const MskAnatomyAtlas = () => {
             <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Back & Spine — Cervical, Thoracic & Lumbar<ArrowRight className="h-4 w-4" /></h2>
             <p className="mt-2 text-sm text-muted-foreground">Occiput to sacrum in three switchable levels: vertebrae and discs, deep back muscles, thoracolumbar fascia and dorsal rami.</p>
           </Link>
+          <Link to={HIP_PELVIS_PATH} className="mt-3 block rounded-md border border-border bg-card p-4 hover:border-primary focus-visible:ring-2 focus-visible:ring-ring">
+            <span className="text-xs font-semibold uppercase text-primary">Lower extremity specialist unit · Hip & Pelvis</span>
+            <h2 className="mt-2 flex items-center justify-between font-journal text-xl text-foreground">Hip & Pelvis<ArrowRight className="h-4 w-4" /></h2>
+            <p className="mt-2 text-sm text-muted-foreground">Bilateral pelvis and proximal femora with left/right hip focus: hip joint and ligaments, gluteals and deep rotators, iliopsoas, adductors and lumbosacral plexus relations.</p>
+          </Link>
         </section>}
         {specialist && <Button variant="outline" asChild className="mt-5 rounded-md"><Link to="/msk-anatomy-atlas"><ArrowLeft />Full MSK overview</Link></Button>}
 
         <div className="relative mt-6 max-w-xl">
           <label htmlFor="atlas-search" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{specialist ? `Search ${module?.name.toLowerCase()} structures` : "Search all structures"}</label>
           <input id="atlas-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
+            placeholder={neckUnit ? "e.g. SCM, C2, greater occipital" : backUnit ? "e.g. multifidus, SI joint, L4–L5 disc" : hipUnit ? "e.g. piriformis, sciatic nerve, acetabular labrum" : whUnit ? "e.g. scaphoid, Guyon canal, compartment I" : efUnit ? "e.g. supinator, PIN, annular ligament" : armUnit ? "e.g. radial nerve, brachialis, profunda" : specialist ? "e.g. supraspinatus, labrum, axillary nerve" : "e.g. axillary nerve, L5, pes anserinus, Lachman"}
             className="mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
           {query.trim().length >= 2 && (
             <ul className="absolute z-30 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg" aria-label="Search results">
