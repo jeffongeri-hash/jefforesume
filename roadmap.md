@@ -8,4 +8,4 @@
 - [x] Route in App.tsx, sitemap + generate-sitemap script, metadata
 - [x] Tests: `tests/backSpineSpecialist.test.ts` — 30/30 pass, build clean
 - [x] Playwright desktop/phone: multifidus real-mesh select, lumbar facet index-only, level switching, label tracking after camera change, no overflow/errors; Neck regression + hub cards verified
-- [ ] Security scan check + publish
+- [x] Security scan check (no critical findings; two pre-existing warnings) + publish requested
