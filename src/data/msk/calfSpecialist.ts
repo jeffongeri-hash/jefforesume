@@ -158,6 +158,9 @@ const RULES: [RegExp, string][] = [
   [/^(flexor digitorum longus|flexor digitorum profundus)$/, 'fdl'], [/^flexor hallucis longus$/, 'fhl'],
   // fascia
   [/^crural fascia$/, 'crural-fascia'],
+  [/^flexor retinaculum of ankle$/, 'flexor-retinaculum'],
+  [/^common tendon sheath of fibularis muscles$/, 'fibular-sheath'],
+  [/^inferior fibular retinaculum$/, 'fibular-retinacula'],
   // nerves
   [/^tibial nerve$/, 'tibial-nerve'], [/^common fibular nerve$/, 'common-fibular'],
   [/^deep fibular nerve$/, 'deep-fibular'], [/^(superficial fibular nerve|dorsal digital branches of superficial fibular nerve)$/, 'superficial-fibular'],
