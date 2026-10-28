@@ -388,6 +388,59 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       }
       return bb;
     }
+    if (r === "thigh" && propsRef.current.specialistThigh) {
+      // Right femur region: trim the proximal hip and the distal condyles so the thigh is the focus.
+      const femur = find("Femur.r");
+      if (!femur) return null;
+      const bb = femur.box.clone();
+      const len = bb.max.y - bb.min.y;
+      bb.max.y -= len * 0.1; bb.min.y += len * 0.14;
+      const t = len * 0.16; bb.min.x -= t; bb.max.x += t; bb.min.z -= t; bb.max.z += t;
+      return bb;
+    }
+    if (r === "knee" && propsRef.current.specialistKnee) {
+      // Distal femur + proximal tibia/fibula + patella.
+      const bb = unionOf(["Patella.r", "Articular capsule of knee joint.r", "Medial meniscus.r", "Lateral meniscus.r"]);
+      for (const [n, frac, top] of [["Femur.r", 0.3, false], ["Tibia.r", 0.28, true], ["Fibula.r", 0.28, true]] as const) {
+        const it = find(n);
+        if (it) { const d = it.box.clone(); if (top) d.max.y = d.min.y + (d.max.y - d.min.y) * frac; else d.min.y = d.max.y - (d.max.y - d.min.y) * frac; bb.union(d); }
+      }
+      if (bb.isEmpty()) return null;
+      const h = bb.max.y - bb.min.y; const t = h * 0.14;
+      bb.min.x -= t; bb.max.x += t; bb.min.z -= t; bb.max.z += t; bb.min.y -= h * 0.05; bb.max.y += h * 0.05;
+      return bb;
+    }
+    if (r === "calf" && propsRef.current.specialistCalf) {
+      // Tibia/fibula between the knee and the ankle.
+      const bb = unionOf(["Tibia.r", "Fibula.r"]);
+      if (bb.isEmpty()) return null;
+      const len = bb.max.y - bb.min.y;
+      bb.max.y -= len * 0.2; bb.min.y += len * 0.16;
+      const t = len * 0.13; bb.min.x -= t; bb.max.x += t; bb.min.z -= t; bb.max.z += t;
+      return bb;
+    }
+    if (r === "ankle-foot" && propsRef.current.specialistAnkleFoot) {
+      // Distal tibia/fibula + the whole foot skeleton.
+      const bb = unionOf(ANCHORS["ankle-foot"].names);
+      for (const n of ["Tibia.r", "Fibula.r"]) {
+        const it = find(n);
+        if (it) { const d = it.box.clone(); d.max.y = d.min.y + (d.max.y - d.min.y) * 0.16; bb.union(d); }
+      }
+      if (bb.isEmpty()) return null;
+      const h = bb.max.y - bb.min.y; const t = h * 0.16;
+      bb.min.x -= t; bb.max.x += t; bb.min.y -= h * 0.1; bb.max.y += h * 0.35; bb.min.z -= t; bb.max.z += t;
+      return bb;
+    }
+    if (r === "face" && propsRef.current.specialistFace) {
+      // Facial skeleton: crop the cranial vault above the brow and keep the mandible.
+      const bb = unionOf(ANCHORS.face.names);
+      if (bb.isEmpty()) return null;
+      const frontal = find("Frontal bone");
+      if (frontal) bb.max.y = Math.min(bb.max.y, frontal.box.min.y + (frontal.box.max.y - frontal.box.min.y) * 0.45);
+      const h = bb.max.y - bb.min.y;
+      bb.min.x -= h * 0.42; bb.max.x += h * 0.42; bb.min.z -= h * 0.3; bb.max.z += h * 0.42; bb.min.y -= h * 0.08;
+      return bb;
+    }
     if (r === "shoulder" && propsRef.current.specialistShoulder) {
       const humerus = find("Humerus.r");
       if (humerus) { const proximal = humerus.box.clone(); proximal.min.y = proximal.max.y - (proximal.max.y-proximal.min.y)*0.35; b.union(proximal); }
@@ -425,7 +478,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const e = eng.current; if (!e.items) return;
     const r = propsRef.current.region;
     e.regionBox = regionBox(r);
-    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
+    const tight = propsRef.current.specialistShoulder || propsRef.current.specialistArm || propsRef.current.specialistElbowForearm || propsRef.current.specialistWristHand || propsRef.current.specialistNeck || propsRef.current.specialistBack || propsRef.current.specialistHipPelvis || propsRef.current.specialistThigh || propsRef.current.specialistKnee || propsRef.current.specialistCalf || propsRef.current.specialistAnkleFoot || propsRef.current.specialistFace ? e.regionBox?.clone() : r === "full" ? null : unionOf(ANCHORS[r].names);
     if (tight && !tight.isEmpty()) { const s = tight.getSize(new THREE.Vector3()); const m = Math.max(s.x, s.y, s.z) * 0.12; tight.expandByVector(new THREE.Vector3(m, m, m)); }
     const box = tight && !tight.isEmpty() ? tight : e.regionBox ?? wholeBox();
     e.frame = box;
