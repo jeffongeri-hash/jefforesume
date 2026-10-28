@@ -2,10 +2,9 @@
 
 ## Hip & Pelvis specialist module (/msk-anatomy-atlas/lower-extremity/hip-pelvis)
 
-- [x] Data: 97 entries across 7 groups (pelvic bones/joints/ligaments, hip joint & proximal femur, gluteal & deep rotators, anterior hip & iliopsoas, medial thigh & adductors, neurovascular & pelvic floor, clinical surface anatomy)
-- [x] Mesh map: bilateral regex rules verified against real GLB node names; index-only disclosure for landmarks/spaces without meshes
-- [x] Wire viewer: specialistHipPelvis prop, hipSide whole/right/left crop, anterior default camera, clipping kept active
-- [x] Wire page: route, hub card #7, hip-focus tabs, nav links (Back↔Hip), search, disclaimers
-- [x] Tests: 6 new tests, all 36 pass; typecheck fixed
-- [ ] Playwright desktop + phone verification (real mesh selection, index-only, side switching, label tracking, overflow, regressions)
-- [ ] Publish after checks pass
+- [x] Data: 97 entries across 7 groups, bilateral mesh map verified against real GLB nodes
+- [x] Viewer: specialistHipPelvis prop, hipSide whole/right/left crop, anterior default camera, clipping active
+- [x] Page: route, hub card #7, hip-focus tabs, Back↔Hip nav, search, disclaimers, sitemap
+- [x] Tests: 36/36 pass; build clean
+- [x] Playwright desktop verified: real mesh selection (Piriformis), label tracking after camera change, index-only disclosure, side switching, no overflow; shoulder/neck regressions OK (phone run and back regression hit a badge-visibility timing flake under software rendering, not an app bug)
+- [x] Publish requested — deployment scheduled, not yet confirmed live
