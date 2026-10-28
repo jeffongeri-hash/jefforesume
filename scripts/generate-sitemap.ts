@@ -14,7 +14,7 @@ const slugs = new Set<string>(["finance-retirement", "finance-stocks", "finance-
 for (const m of postsSrc.matchAll(/slug:\s*['"]([a-z0-9-]+)['"]/g)) slugs.add(m[1])
 
 const upperPaths = ["shoulder", "arm", "elbow-forearm", "wrist-hand"].map(s => `/msk-anatomy-atlas/upper-extremity/${s}`);
-const paths = [...staticPaths, "/msk-anatomy-atlas/axial/neck", "/msk-anatomy-atlas/axial/back", ...upperPaths, ...[...slugs].map((s) => `/blog/${s}`)]
+const paths = [...staticPaths, "/msk-anatomy-atlas/axial/neck", "/msk-anatomy-atlas/axial/back", "/msk-anatomy-atlas/lower-extremity/hip-pelvis", ...upperPaths, ...[...slugs].map((s) => `/blog/${s}`)]
 const xml = [
   `<?xml version="1.0" encoding="UTF-8"?>`,
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
