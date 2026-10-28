@@ -1,10 +1,11 @@
-# Roadmap
+# Roadmap — overnight MSK atlas expansion
 
-## Hip & Pelvis specialist module (/msk-anatomy-atlas/lower-extremity/hip-pelvis)
+Pattern per module: data file (entries + mesh map + membership) → viewer wiring → page wiring (route, hub card, nav) → App route + sitemap → tests → build check → Playwright spot-check → publish.
 
-- [x] Data: 97 entries across 7 groups, bilateral mesh map verified against real GLB nodes
-- [x] Viewer: specialistHipPelvis prop, hipSide whole/right/left crop, anterior default camera, clipping active
-- [x] Page: route, hub card #7, hip-focus tabs, Back↔Hip nav, search, disclaimers, sitemap
-- [x] Tests: 36/36 pass; build clean
-- [x] Playwright desktop verified: real mesh selection (Piriformis), label tracking after camera change, index-only disclosure, side switching, no overflow; shoulder/neck regressions OK (phone run and back regression hit a badge-visibility timing flake under software rendering, not an app bug)
-- [x] Publish requested — deployment scheduled, not yet confirmed live
+- [ ] 1. Thigh — /msk-anatomy-atlas/lower-extremity/thigh (75–95 entries)
+- [ ] 2. Knee — /msk-anatomy-atlas/lower-extremity/knee (85–105 entries)
+- [ ] 3. Leg / Calf — /msk-anatomy-atlas/lower-extremity/calf (80–100 entries)
+- [ ] 4. Ankle & Foot — /msk-anatomy-atlas/lower-extremity/ankle-foot (100–120 entries, incl. toes)
+- [ ] 5. Face — /msk-anatomy-atlas/axial/face (90–110 entries)
+- [ ] 6. Gap audit — hub sequence complete; add bridging unit only if clearly needed
+- [ ] Final: full regression + publish
