@@ -1,11 +1,11 @@
-# Roadmap — overnight MSK atlas expansion
+# Roadmap — overnight MSK atlas expansion (complete)
 
-Pattern per module: data file (entries + mesh map + membership) → viewer wiring → page wiring (route, hub card, nav) → App route + sitemap → tests → build check → Playwright spot-check → publish.
-
-- [ ] 1. Thigh — /msk-anatomy-atlas/lower-extremity/thigh (75–95 entries)
-- [ ] 2. Knee — /msk-anatomy-atlas/lower-extremity/knee (85–105 entries)
-- [ ] 3. Leg / Calf — /msk-anatomy-atlas/lower-extremity/calf (80–100 entries)
-- [ ] 4. Ankle & Foot — /msk-anatomy-atlas/lower-extremity/ankle-foot (100–120 entries, incl. toes)
-- [ ] 5. Face — /msk-anatomy-atlas/axial/face (90–110 entries)
-- [ ] 6. Gap audit — hub sequence complete; add bridging unit only if clearly needed
-- [ ] Final: full regression + publish
+- [x] 1. Thigh — /msk-anatomy-atlas/lower-extremity/thigh (76 entries, 9 groups)
+- [x] 2. Knee — /msk-anatomy-atlas/lower-extremity/knee (85 entries, 8 groups)
+- [x] 3. Leg / Calf — /msk-anatomy-atlas/lower-extremity/calf (80 entries, 9 groups)
+- [x] 4. Ankle & Foot incl. toes — /msk-anatomy-atlas/lower-extremity/ankle-foot (102 entries, 10 groups)
+- [x] 5. Face — /msk-anatomy-atlas/axial/face (90 entries, 9 groups)
+- [x] Gap audit — chains continuous (hip→toes; neck/back/face axial); hand digits release stays gated on explicit request per release-scope memory; no bridge unit needed
+- [x] Tests: 72/72 pass; build clean; AGENTS.md updated
+- [x] Playwright desktop+phone: all 5 pages select real meshes, labels track camera, index-only disclosure, no overflow/errors; shoulder/hip/neck regressions pass; hub shows 12 cards
+- [ ] Publish (requested this turn)
