@@ -53,7 +53,7 @@ export default function MskMovementMechanics() {
    <p className="mt-3 max-w-3xl text-sm text-muted-foreground">Intact reference anatomy · illustrative kinematic sequences · {STRUCTURED_ENTRY_COUNT} structured study records. Anatomy education, not diagnosis, treatment or procedural guidance.</p>
    <div className="mt-6 flex flex-wrap gap-3 border-y border-border py-4">
     <div role="group" aria-label="Mechanics mode" className="flex gap-1 rounded-md border border-border p-1">{(['movement','injury'] as const).map(k=><Button key={k} variant={kind===k?'default':'ghost'} aria-pressed={kind===k} onClick={()=>{setKind(k);setRegion('All regions');setQuery('');const m=MECHANICS.find(m=>m.kind===k);if(m)choose(m.id);}}>{k==='movement'?'Movement':'Injury mechanism'}</Button>)}</div>
-    <input aria-label="Search mechanics" type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search movements or mechanisms" className="min-h-11 min-w-0 flex-1 rounded-md border border-input bg-card px-3 text-sm"/>
+    <input aria-label="Search mechanics" type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search movements or mechanisms" className="min-h-11 min-w-[180px] flex-1 rounded-md border border-input bg-card px-3 text-sm"/>
     <select aria-label="Filter region" value={region} onChange={e=>setRegion(e.target.value)} className="min-h-11 max-w-full rounded-md border border-input bg-card px-3 text-sm">{['All regions',...new Set(MECHANICS.filter(m=>m.kind===kind).map(m=>m.region))].map(r=><option key={r}>{r}</option>)}</select>
    </div>
    <div className="mt-5 grid items-start gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">

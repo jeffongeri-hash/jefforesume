@@ -16,12 +16,12 @@ export const ANATOMY: AnatomyRole[] = [
  a('serratus','Serratus anterior',['Serratus anterior muscle.r'],'Long thoracic nerve, C5–C7','Protraction, upward rotation and posterior tilt of the scapula against thorax.','Scapula.r'),
  a('trap','Upper / lower trapezius',['Descending part of trapezius muscle.r','Ascending part of trapezius muscle.r'],'Accessory nerve; C3–C4 proprioceptive contribution','With serratus, upwardly rotates scapula; middle fibers stabilize/retract.','Scapula.r'),
  a('triceps','Triceps brachii',['Long head of triceps brachii.r','Lateral head of triceps brachii.r','Medial head of triceps brachii.r'],'Radial nerve, C6–C8','Elbow extension; long head also crosses the glenohumeral joint.','Ulna.r'),
- a('biceps','Biceps / brachialis',['Long head of biceps brachii.r','Short head of biceps brachii.r','Brachialis muscle.r'],'Musculocutaneous nerve, C5–C6; radial contribution to brachialis','Brachialis flexes regardless of forearm rotation; biceps also supinates.','Radius.r'),
+ a('biceps','Biceps / brachialis',['Long head of biceps brachii.r','Short head of biceps brachii.r','Brachialis muscle.r'],'Musculocutaneous nerve, C5–C6; variable accessory radial contribution to brachialis','Brachialis flexes regardless of forearm rotation; biceps also supinates.','Radius.r'),
  a('pronators','Flexor–pronator group',['Pronator quadratus.r','Superficial head of pronator teres.r','Flexor carpi radialis.r'],'Median nerve; anterior interosseous branch to pronator quadratus','Pronation and dynamic medial-elbow support; not every flexor is represented here.','Ulna.r'),
  a('supinator','Supinator',['Supinator.r'],'Deep radial nerve, C6–C7','Rotates radius around ulna; biceps especially contributes with a flexed elbow.','Radius.r'),
  a('wrist-ext','Wrist extensors',['Extensor carpi radialis longus.r','Extensor carpi radialis brevis.r'],'Radial nerve / deep radial branch, C6–C8','Maintain wrist extension against flexor torque during grip.','Radius.r'),
- a('grip','Finger flexors',['Flexor digitorum superficialis.r'],'Median nerve; FDP dual median/ulnar supply','Extrinsic flexor tension creates wrist-flexion torque; extensors counterbalance.','Scaphoid bone.r'),
- a('scm','Sternocleidomastoid',['Sternocleidomastoid muscle.r'],'Accessory nerve; C2–C3 sensory contribution','Unilateral activation rotates head contralaterally, with ipsilateral side flexion.','Axis (C2)'),
+ a('grip','Finger flexors',['Humero-ulnar head of flexor digitorum superficialis.r','Radial head of flexor digitorum superficialis.r'],'Median nerve; FDP dual median/ulnar supply','Extrinsic flexor tension creates wrist-flexion torque; extensors counterbalance.','Scaphoid bone.r'),
+ a('scm','Sternocleidomastoid',['Sternocleidomastoid muscle.r'],'Accessory nerve motor supply; C2–C3 proprioceptive fibers','Unilateral activation rotates head contralaterally, with ipsilateral side flexion.','Axis (C2)'),
  a('splenius','Splenius capitis',['Splenius capitis muscle.r'],'Posterior cervical rami','Ipsilateral head rotation and extension; deep cervical stabilizers coordinate.','Atlas (C1)'),
  a('back','Lumbar multifidus',['Multifidus lumborum muscle.r'],'Posterior spinal rami','Segmental control and extension; erector spinae adds a larger extensor moment.','Vertebra L3'),
  a('iliopsoas','Iliopsoas',['Iliacus muscle.r','Psoas major.r'],'Femoral nerve to iliacus, L2–L3; anterior rami L1–L3 to psoas','Hip flexion; psoas also has lumbar attachments.','Femur.r'),
@@ -133,11 +133,11 @@ export const MECHANICS: Mechanic[] = [
  p('load','Tendon load orientation','A highlight marks tendon-region anatomy, not a tear or impingement diagnosis.','Elevated reference position.',80,[r('supra','At-risk structure','Cuff tendon relation'),r('infra','Stabilizer','Posterior cuff contribution')])
  ],'Mechanical concept: cuff load and subacromial proximity change with position and scapular motion.','Pain is not explained by a simple pinching animation; tendon biology and space are not simulated.'),
  injury('high-ankle','High ankle external-rotation mechanism','Ankle','ankle','y','Distal tibiofibular mortise and syndesmosis',[
- p('mortise','Reference mortise','Talus sits within distal tibia/fibula.','Reference ankle.',0,[r('syndesmosis','Stabilizer','Distal tibiofibular restraint')]),
+ p('mortise','Reference mortise','Talus sits within distal tibia/fibula.','Talus within the distal tibiofibular mortise.',0,[r('syndesmosis','Stabilizer','Distal tibiofibular restraint')]),
  p('rotation','External-rotation cue','Relative external rotation may load syndesmotic restraints.','Small talar/foot rotation; no measured widening.',18,[r('syndesmosis','At-risk structure','Anterior/posterior tibiofibular ligaments')])
  ],'Typical concept: foot externally rotates relative to leg, often with dorsiflexion.','Interosseous membrane, medial ankle and proximal fibula are associated anatomy; no fracture prediction.'),
  injury('inversion','Lateral ankle inversion mechanism','Ankle','ankle','z','Subtalar/lateral ankle and ATFL/CFL relations',[
- p('reference','Reference foot','Reference ligament relations are described.','Neutral foot.',0,[r('atfl','Stabilizer','Lateral restraint relation')]),
+ p('reference','Reference foot','Reference ligament relations are described.','Foot at neutral reference alignment.',0,[r('atfl','Stabilizer','Lateral restraint relation')]),
  p('invert','Inversion cue','Inversion, particularly with plantarflexion, can load lateral restraints.','Simplified inward tilt; subtalar axis is not precisely rigged.',20,[r('atfl','At-risk structure','ATFL/CFL anatomy remains index-only')])
  ],'Typical concept: foot rolls inward under a lateral loading event.','ATFL and CFL are not separate model meshes; talus-linked cues disclose the relationship, not a ligament tear.'),
  injury('achilles-load','Achilles sudden push-off load','Ankle & calf','ankle','x','Triceps surae, calcaneal tendon and heel',[

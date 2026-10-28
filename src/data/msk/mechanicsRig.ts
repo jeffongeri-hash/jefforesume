@@ -1,7 +1,7 @@
 import type { Mechanic } from './movementMechanics';
 export function boneInRig(name: string, rig: Mechanic['rig']): boolean {
  if(rig==='neck') return /^(Occipital bone|Frontal bone|Mandible|Maxilla\.[rl]|Temporal bone\.[rl]|Parietal bone\.[rl])$/.test(name);
- if(rig==='trunk') return /^(Vertebra (T|C)|Atlas|Axis|Rib|Sternum)/.test(name);
+ if(rig==='trunk') return /^(Vertebra (T|C|L)|Atlas|Axis|Rib|Sternum)/.test(name);
  if(!name.endsWith('.r')) return false;
  const hand=/metacarpal|finger of hand|Scaphoid|Lunate|Triquetrum|Pisiform|Trapezium|Trapezoid|Capitate|Hamate/.test(name);
  const foot=/metatarsal|finger of foot|Talus|Calcaneus|Navicular|Cuboid|cuneiform|Sesamoid bones of foot/.test(name);
