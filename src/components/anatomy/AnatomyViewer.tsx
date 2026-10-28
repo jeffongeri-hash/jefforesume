@@ -348,6 +348,32 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       bb.min.y -= h * 0.05; bb.max.y += h * 0.05;
       return bb;
     }
+    if (r === "hip-pelvis" && propsRef.current.specialistHipPelvis) {
+      // Bilateral pelvis + proximal femora; side tabs crop to one hip, keeping the sacral midline.
+      const side = propsRef.current.hipSide ?? "whole";
+      const bones = (suffix: string) => [`Hip bone.${suffix}`, `Femur.${suffix}`];
+      const names = side === "whole" ? ["Hip bone.r", "Hip bone.l", "Sacrum", "Coccyx", "Femur.r", "Femur.l"] : ["Sacrum", "Coccyx", ...bones(side === "right" ? "r" : "l")];
+      const bb = unionOf(names);
+      if (bb.isEmpty()) return null;
+      // Keep only the proximal ~45% of the femur(a).
+      for (const n of names.filter((n) => n.startsWith("Femur"))) {
+        const it = find(n);
+        if (it) bb.max.y = Math.min(bb.max.y, it.box.max.y - (it.box.max.y - it.box.min.y) * 0.45);
+      }
+      const h = bb.max.y - bb.min.y;
+      bb.min.y -= h * 0.06; bb.max.y += h * 0.08;
+      bb.min.z -= h * 0.22; bb.max.z += h * 0.22;
+      if (side === "whole") { bb.min.x -= h * 0.18; bb.max.x += h * 0.18; }
+      else {
+        // Side view: crop just past the sacral midline toward the focused hip.
+        const sacrum = find("Sacrum");
+        const midX = sacrum ? sacrum.box.getCenter(new THREE.Vector3()).x : (bb.min.x + bb.max.x) / 2;
+        const rightSign = e.right; // +1 or -1 depending on model orientation
+        if ((side === "right") === (rightSign > 0)) { bb.min.x = Math.min(bb.min.x, midX - h * 0.12); bb.max.x += h * 0.2; }
+        else { bb.max.x = Math.max(bb.max.x, midX + h * 0.12); bb.min.x -= h * 0.2; }
+      }
+      return bb;
+    }
     if (r === "shoulder" && propsRef.current.specialistShoulder) {
       const humerus = find("Humerus.r");
       if (humerus) { const proximal = humerus.box.clone(); proximal.min.y = proximal.max.y - (proximal.max.y-proximal.min.y)*0.35; b.union(proximal); }
