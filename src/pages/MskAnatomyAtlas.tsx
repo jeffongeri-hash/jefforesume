@@ -9,6 +9,11 @@ import { NECK_PATH, neckSpecialist, matchNeckMesh } from "@/data/msk/neckSpecial
 import { WRIST_HAND_PATH, wristHandSpecialist, matchWristHandMesh } from "@/data/msk/wristHandSpecialist";
 import { BACK_PATH, BACK_LEVELS, backSpineSpecialist, matchBackMesh, type BackLevel } from "@/data/msk/backSpineSpecialist";
 import { HIP_PELVIS_PATH, HIP_SIDES, hipPelvisSpecialist, matchHipPelvisMesh, type HipSide } from "@/data/msk/hipPelvisSpecialist";
+import { THIGH_PATH, thighSpecialist, matchThighMesh } from "@/data/msk/thighSpecialist";
+import { KNEE_PATH, kneeSpecialist, matchKneeMesh } from "@/data/msk/kneeSpecialist";
+import { CALF_PATH, calfSpecialist, matchCalfMesh } from "@/data/msk/calfSpecialist";
+import { ANKLE_FOOT_PATH, ankleFootSpecialist, matchAnkleFootMesh } from "@/data/msk/ankleFootSpecialist";
+import { FACE_PATH, faceSpecialist, matchFaceMesh } from "@/data/msk/faceSpecialist";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -42,6 +47,10 @@ const REGION_DEFAULT_LAYERS: Record<string, Record<Sys, boolean>> = {
   lumbar: { bone: true, muscle: false, joint: true, nerve: true, vessel: false },
   back: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
   "hip-pelvis": { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  thigh: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  calf: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  "ankle-foot": { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
+  face: { bone: true, muscle: true, joint: true, nerve: true, vessel: true },
 };
 
 const MskAnatomyAtlas = () => {
@@ -52,16 +61,22 @@ const MskAnatomyAtlas = () => {
   const whUnit = pathname === WRIST_HAND_PATH;
   const backUnit = pathname === BACK_PATH;
   const hipUnit = pathname === HIP_PELVIS_PATH;
-  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit || neckUnit || backUnit || hipUnit;
-  const module = neckUnit ? neckSpecialist : backUnit ? backSpineSpecialist : hipUnit ? hipPelvisSpecialist : whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
-  const STUDY_REGIONS = neckUnit ? [neckSpecialist] : backUnit ? [backSpineSpecialist] : hipUnit ? [hipPelvisSpecialist] : whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
-  const match = (name: string, prefer?: string) => neckUnit && prefer === "neck" ? matchNeckMesh(name) : backUnit && prefer === "back" ? matchBackMesh(name) : hipUnit && prefer === "hip-pelvis" ? matchHipPelvisMesh(name) : whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
+  const thighUnit = pathname === THIGH_PATH;
+  const kneeUnit = pathname === KNEE_PATH;
+  const calfUnit = pathname === CALF_PATH;
+  const ankleUnit = pathname === ANKLE_FOOT_PATH;
+  const faceUnit = pathname === FACE_PATH;
+  const specialist = pathname === SHOULDER_PATH || armUnit || efUnit || whUnit || neckUnit || backUnit || hipUnit || thighUnit || kneeUnit || calfUnit || ankleUnit || faceUnit;
+  const module = neckUnit ? neckSpecialist : backUnit ? backSpineSpecialist : hipUnit ? hipPelvisSpecialist : thighUnit ? thighSpecialist : kneeUnit ? kneeSpecialist : calfUnit ? calfSpecialist : ankleUnit ? ankleFootSpecialist : faceUnit ? faceSpecialist : whUnit ? wristHandSpecialist : efUnit ? elbowForearmSpecialist : armUnit ? armSpecialist : specialist ? {...shoulderSpecialist,intro:"The right shoulder girdle: clavicle, scapula and proximal humerus, rotator cuff, joint stabilizers and axillary neurovascular relationships."} : undefined;
+  const STUDY_REGIONS = neckUnit ? [neckSpecialist] : backUnit ? [backSpineSpecialist] : hipUnit ? [hipPelvisSpecialist] : thighUnit ? [thighSpecialist] : kneeUnit ? [kneeSpecialist] : calfUnit ? [calfSpecialist] : ankleUnit ? [ankleFootSpecialist] : faceUnit ? [faceSpecialist] : whUnit ? [wristHandSpecialist] : efUnit ? [elbowForearmSpecialist] : armUnit ? [armSpecialist] : specialist ? [shoulderSpecialist, ...REGIONS.filter(r=>r.id!=="shoulder")] : REGIONS;
+  const match = (name: string, prefer?: string) => neckUnit && prefer === "neck" ? matchNeckMesh(name) : backUnit && prefer === "back" ? matchBackMesh(name) : hipUnit && prefer === "hip-pelvis" ? matchHipPelvisMesh(name) : thighUnit && prefer === "thigh" ? matchThighMesh(name) : kneeUnit && prefer === "knee" ? matchKneeMesh(name) : calfUnit && prefer === "calf" ? matchCalfMesh(name) : ankleUnit && prefer === "ankle-foot" ? matchAnkleFootMesh(name) : faceUnit && prefer === "face" ? matchFaceMesh(name) : whUnit && prefer === "wrist-hand" ? matchWristHandMesh(name) : efUnit && prefer === "elbow-forearm" ? matchElbowForearmMesh(name) : armUnit && prefer === "arm" ? matchArmMesh(name) : specialist && prefer === "shoulder" ? (matchShoulderSpecialist(name) !== undefined ? matchShoulderSpecialist(name) : matchMesh(name,prefer)) : matchMesh(name,prefer);
   const [labelMode,setLabelMode] = useState<LabelMode>("selected");
   const [backLevel, setBackLevel] = useState<BackLevel>("whole");
   const [hipSide, setHipSide] = useState<HipSide>("whole");
-  const title = neckUnit ? "Neck & Cervical Region — 3D Anatomy Atlas" : backUnit ? "Back & Spine — Cervical, Thoracic & Lumbar 3D Anatomy Atlas" : hipUnit ? "Hip & Pelvis 3D Anatomy Atlas" : module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
+  const LOWER_TITLE = (m: { name: string }) => `${m.name} — Lower Extremity 3D Anatomy Atlas`;
+  const title = neckUnit ? "Neck & Cervical Region — 3D Anatomy Atlas" : backUnit ? "Back & Spine — Cervical, Thoracic & Lumbar 3D Anatomy Atlas" : faceUnit ? "Face — 3D Anatomy Atlas" : hipUnit ? "Hip & Pelvis 3D Anatomy Atlas" : thighUnit || kneeUnit || calfUnit || ankleUnit ? LOWER_TITLE(module as { name: string }) : module ? `${module.name} — Upper Extremity 3D Anatomy Atlas` : "MSK Anatomy Atlas — Interactive 3D Study Hub";
   const description = module ? `${module.intro} Real reference meshes with focused structure notes and clinical examination landmarks.` : "Interactive 3D reference anatomy of the shoulder, knee and lumbar spine, with clinical study notes and examination landmarks.";
-  const canonical = neckUnit ? `https://jeffongeri.com${NECK_PATH}` : backUnit ? `https://jeffongeri.com${BACK_PATH}` : hipUnit ? `https://jeffongeri.com${HIP_PELVIS_PATH}` : module ? `${BASE}/upper-extremity/${module.id}` : BASE;
+  const canonical = neckUnit ? `https://jeffongeri.com${NECK_PATH}` : backUnit ? `https://jeffongeri.com${BACK_PATH}` : hipUnit ? `https://jeffongeri.com${HIP_PELVIS_PATH}` : thighUnit ? `https://jeffongeri.com${THIGH_PATH}` : kneeUnit ? `https://jeffongeri.com${KNEE_PATH}` : calfUnit ? `https://jeffongeri.com${CALF_PATH}` : ankleUnit ? `https://jeffongeri.com${ANKLE_FOOT_PATH}` : faceUnit ? `https://jeffongeri.com${FACE_PATH}` : module ? `${BASE}/upper-extremity/${module.id}` : BASE;
   const viewer = useRef<ViewerHandle>(null);
   const [focus, setFocus] = useState<FocusRegion>((module?.id ?? "shoulder") as FocusRegion);
   const [studyId, setStudyId] = useState(module?.id ?? REGIONS[0].id);
