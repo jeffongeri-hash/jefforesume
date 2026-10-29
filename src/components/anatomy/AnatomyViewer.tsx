@@ -18,7 +18,9 @@ import { isAnkleFootMesh } from "@/data/msk/ankleFootSpecialist";
 import { isFaceMesh } from "@/data/msk/faceSpecialist";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { advance, duration, keyframe, motionAllowed, phaseHighlights, type Mechanic } from '@/data/msk/movementMechanics';
-import { boneInRig, FRAME_ANCHORS, PIVOT_ANCHOR } from '@/data/msk/mechanicsRig';
+import { FRAME_ANCHORS, PIVOT_ANCHOR } from '@/data/msk/mechanicsRig';
+
+import { attachmentWeight, meshActivations } from '@/data/msk/muscleMotion';
 
 export type Sys = "bone" | "muscle" | "joint" | "nerve" | "vessel";
 export type FocusRegion = "full" | "shoulder" | "knee" | "lumbar" | "arm" | "elbow" | "forearm" | "wrist-hand" | "digits" | "elbow-forearm" | "neck" | "back" | "hip-pelvis" | "thigh" | "calf" | "ankle-foot" | "face";
@@ -58,7 +60,7 @@ const ANCHORS: Record<Exclude<FocusRegion, "full">, { names: string[]; pad: numb
   lumbar: { names: ["Vertebra L1", "Vertebra L2", "Vertebra L3", "Vertebra L4", "Vertebra L5", "Sacrum"], pad: 0.45 },
 };
 
-type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3; sheet: boolean; restWorld?: THREE.Matrix4; restLocal?: THREE.Matrix4 };
+type Item = { mesh: THREE.Mesh; sys: Sys; name: string; mat: THREE.MeshStandardMaterial; box: THREE.Box3; orig: THREE.Vector3; delta: THREE.Vector3; sheet: boolean; restWorld?: THREE.Matrix4; restLocal?: THREE.Matrix4; restVertices?: Float32Array; worldVertices?: Float32Array };
 
 export interface MechanicsPlayback {
   mechanic: Mechanic; playing: boolean; speed: number; reduced: boolean;
@@ -197,8 +199,8 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
         }
         setProgress(p => ({...p,[s.file]:1}));
         if (s.id === "bone") detectOrientation();
-        if (s.id === "bone" || s.id === "joint") applyRegion(true);
-        apply(); propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
+        if (s.id === "bone" || s.id === "joint" || propsRef.current.mechanics) applyRegion(true);
+        e.poseSignature=null; apply(); propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
       } catch {
         MODEL_CACHE.delete(url);
         if (!cancelled) setErrors(x => [...x,s.label]);
@@ -310,7 +312,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       cancelled = true; cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); draco.dispose();
       cvs.removeEventListener("pointerdown", onDown); cvs.removeEventListener("pointerup", onUp);
       cvs.removeEventListener("pointermove", onMove); cvs.removeEventListener("pointerleave", onLeave);
-      root.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { (m.material as THREE.Material).dispose(); } });
+      root.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { (m.material as THREE.Material).dispose(); if(m.userData.privateMotionGeometry)m.geometry.dispose(); } });
       renderer.dispose(); cvs.remove();
       eng.current = {};
     };
@@ -507,33 +509,60 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const anchor = find(PIVOT_ANCHOR[motion.mechanic.rig]);
     if (!anchor) return;
     const rig = motion.mechanic.rig;
+    const k = keyframe(motion.mechanic, e.motionTime ?? 0);
+    const signature = `${motion.mechanic.id}:${k.angle.toFixed(2)}:${k.secondary.toFixed(2)}`;
+    if(e.poseSignature===signature)return;
+    e.poseSignature=signature;
     const pivot = anchor.box.getCenter(new THREE.Vector3());
     if (['shoulder','hip','knee','elbow','squat'].includes(rig)) pivot.y = anchor.box.max.y;
-    const k = keyframe(motion.mechanic, e.motionTime ?? 0);
-    const axis = new THREE.Vector3(motion.mechanic.axis === 'x' ? 1 : 0, motion.mechanic.axis === 'y' ? 1 : 0, motion.mechanic.axis === 'z' ? -e.right : 0);
-    const transform = new THREE.Matrix4().makeTranslation(pivot.x,pivot.y,pivot.z)
-      .multiply(new THREE.Matrix4().makeRotationAxis(axis, THREE.MathUtils.degToRad(k.angle)))
-      .multiply(new THREE.Matrix4().makeTranslation(-pivot.x,-pivot.y,-pivot.z));
-    for (const it of e.items as Item[]) {
-      if (!it.restLocal || !it.restWorld || !it.mesh.parent) continue;
-      if (it.sys !== 'bone') continue;
-      // Intact reference bones only; no tendon, muscle or ligament deformation.
-      const world = it.restWorld.clone();
-      if (boneInRig(it.name, rig)) {
-        world.premultiply(transform);
-        if (motion.mechanic.id === 'patella' && it.name === 'Patella.r') world.elements[12] += e.right * anchor.box.getSize(new THREE.Vector3()).y * 0.025 * k.angle / 12;
-        if (rig === 'squat' && boneInRig(it.name,'knee')) {
-          const tibia = find('Tibia.r');
-          if (tibia) {
-            const kp = tibia.box.getCenter(new THREE.Vector3()); kp.y=tibia.box.max.y;
-            const bend = new THREE.Matrix4().makeTranslation(kp.x,kp.y,kp.z).multiply(new THREE.Matrix4().makeRotationX(THREE.MathUtils.degToRad(-k.secondary))).multiply(new THREE.Matrix4().makeTranslation(-kp.x,-kp.y,-kp.z));
-            world.copy(it.restWorld).premultiply(bend).premultiply(transform);
-          }
-        }
-      }
-      const local = new THREE.Matrix4().copy(it.mesh.parent.matrixWorld).invert().multiply(world);
-      local.decompose(it.mesh.position,it.mesh.quaternion,it.mesh.scale);
+    const point=new THREE.Vector3(),turned=new THREE.Vector3(),local=new THREE.Vector3();
+    const joint=(name:string,top=true)=>{const it=find(name);const v=it?.box.getCenter(new THREE.Vector3())??pivot.clone();if(it&&top)v.y=it.box.max.y;return v;};
+    const axis=new THREE.Vector3(motion.mechanic.axis==='x'?1:0,motion.mechanic.axis==='y'?1:0,motion.mechanic.axis==='z'?-e.right:0);
+    const length=anchor.box.getSize(new THREE.Vector3()).y;
+    const joints=[{p:pivot,axis,angle:k.angle,band:Math.max(length*0.28,0.025)}];
+    if(rig==='squat') {
+      joints.push({p:joint('Tibia.r'),axis:new THREE.Vector3(1,0,0),angle:-k.secondary,band:length*0.18});
+      joints.push({p:joint('Talus.r',false),axis:new THREE.Vector3(1,0,0),angle:k.secondary-k.angle,band:length*0.08});
     }
+    if(motion.mechanic.id==='throw') {
+      const t=k.index;
+      joints.push({p:joint('Ulna.r'),axis:new THREE.Vector3(1,0,0),angle:[35,85,15,30][t],band:length*0.18});
+      joints.push({p:pivot,axis:new THREE.Vector3(0,1,0),angle:[0,-55,45,15][t],band:length*0.25});
+    }
+    if(motion.mechanic.id==='shoulder-dislocation')joints.push({p:pivot,axis:new THREE.Vector3(0,1,0),angle:35+k.angle*0.3,band:length*0.25});
+    if(motion.mechanic.id==='pivot')joints.push({p:pivot,axis:new THREE.Vector3(0,0,1),angle:k.angle*0.3,band:length*0.15});
+    if(motion.mechanic.id==='inversion')joints.push({p:pivot,axis:new THREE.Vector3(1,0,0),angle:-k.angle*0.45,band:0.035});
+    let displacement=0,changed=0;
+    for (const it of e.items as Item[]) {
+      if(it.sys==='bone'||!it.restWorld||!it.mesh.visible)continue;
+      if(rig==='shoulder'&&/trapezius|serratus/.test(it.name.toLowerCase()))continue;
+      if(!it.worldVertices) {
+        it.mesh.geometry=it.mesh.geometry.clone();it.mesh.userData.privateMotionGeometry=true;
+        const attr=it.mesh.geometry.getAttribute('position');
+        it.restVertices=new Float32Array(attr.array);it.worldVertices=new Float32Array(attr.count*3);
+        for(let i=0;i<attr.count;i++){point.fromBufferAttribute(attr,i).applyMatrix4(it.restWorld);point.toArray(it.worldVertices,i*3);}
+      }
+      const dest=it.mesh.geometry.getAttribute('position') as THREE.BufferAttribute;
+      const inverse=it.restWorld.clone().invert();
+      for(let i=0;i<dest.count;i++){
+        point.fromArray(it.worldVertices,i*3);const restY=point.y;
+        // Blend child-segment rotation into parent across the joint. Origins stay proximal;
+        // insertion vertices follow the child, so crossing muscles bend rather than detach.
+        for(let j=joints.length-1;j>=0;j--){const q=joints[j];let w=attachmentWeight(restY,q.p.y,q.band);
+          if(rig==='shoulder'&&/pectoralis|latissimus/.test(it.name.toLowerCase())) {
+            const lateral=(point.x-q.p.x)*e.right;
+            w=Math.max(0,Math.min(1,(lateral+length*.12)/(length*.22)));
+          }
+          turned.copy(point).sub(q.p).applyAxisAngle(q.axis,THREE.MathUtils.degToRad(q.angle)).add(q.p);
+          point.lerp(turned,w);
+        }
+        if(i===Math.floor(dest.count/2)){local.fromArray(it.worldVertices,i*3);displacement+=point.distanceTo(local);}
+        local.copy(point).applyMatrix4(inverse);dest.setXYZ(i,local.x,local.y,local.z);
+      }
+      dest.needsUpdate=true;it.mesh.geometry.computeVertexNormals();it.mesh.geometry.computeBoundingSphere();it.mesh.geometry.computeBoundingBox();changed++;
+    }
+    if(wrap.current){wrap.current.dataset.deformedMeshes=String(changed);wrap.current.dataset.vertexDisplacement=String(displacement);}
+
     e.root.updateMatrixWorld(true);
   }
   function applyRegion(instant = false) {
@@ -541,10 +570,10 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = propsRef.current.region;
     if (propsRef.current.mechanics) {
       const spec = propsRef.current.mechanics.mechanic;
-      const names = [...FRAME_ANCHORS[spec.rig], ...spec.phases.flatMap(p=>p.roles.flatMap(r=>phaseHighlights({...spec,phases:[p]},0)))];
+      const names = [...FRAME_ANCHORS[spec.rig], ...spec.phases.flatMap(p=>phaseHighlights({...spec,phases:[p]},0)).filter(n=>!(spec.rig==='shoulder'&&/Gluteus/.test(n)))];
       const box = unionOf(names);
       if (box.isEmpty()) return;
-      box.expandByScalar(box.getSize(new THREE.Vector3()).length()*0.18);
+      box.expandByScalar(box.getSize(new THREE.Vector3()).length()*0.08);
       e.regionBox=null; e.clip=[]; e.frame=box;
       e.view=['elbow','knee','ankle','squat','hip','trunk'].includes(spec.rig)?'lateral':'anterior';
       frameBox(box,undefined,instant); return;
@@ -577,6 +606,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   function apply() {
     const e = eng.current; if (!e.items) return;
     const P = propsRef.current; const rb: THREE.Box3 | null = e.regionBox;
+    const roles = P.mechanics ? meshActivations(P.mechanics.mechanic,e.motionTime??0) : new Map();
     const active = new Set(P.mechanics ? phaseHighlights(P.mechanics.mechanic,e.motionTime??0) : []);
     const related = new Set(P.mechanics ? P.mechanics.mechanic.phases.flatMap(p=>p.roles.flatMap(r=>phaseHighlights({...P.mechanics?.mechanic,phases:[p]} as Mechanic,0))) : []);
     const picks: THREE.Object3D[] = [];
@@ -587,20 +617,32 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       it.mat.clippingPlanes = (P.specialistNeck || P.specialistBack || P.specialistHipPelvis || P.specialistThigh || P.specialistKnee || P.specialistCalf || P.specialistAnkleFoot || P.specialistFace || (P.dimMode === "isolate" && !P.isolateSelected)) ? e.clip : [];
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
-      if (P.mechanics) vis=P.layers[it.sys] && (related.has(it.name) || (it.sys==='bone' && (boneInRig(it.name,P.mechanics.mechanic.rig) || FRAME_ANCHORS[P.mechanics.mechanic.rig].some(n=>n===it.name))) || it.name===P.relationshipCue?.anchor);
+      if (P.mechanics) {
+        const frame=unionOf([...FRAME_ANCHORS[P.mechanics.mechanic.rig]]); frame.expandByScalar(frame.getSize(new THREE.Vector3()).length()*0.15);
+        const lower=['hip','knee','ankle','squat'].includes(P.mechanics.mechanic.rig);
+        const regionMatch=lower?/femoris|vastus|gluteus|tibialis|fibularis|gastrocnemius|soleus|semitend|semimembr|iliac|psoas|popliteus|calcaneal|adductor/.test(it.name.toLowerCase()):/deltoid|supraspin|infraspin|subscapular|teres|brachii|brachialis|pronator|supinator|carpi|digitorum|pectoralis|serratus|latissimus|trapezius/.test(it.name.toLowerCase());
+        const context=it.sys==='muscle' && !it.name.endsWith('.l') && !it.sheet && regionMatch && !!frame?.intersectsBox(it.box);
+        const risk=roles.get(it.name)==='risk';
+        vis=it.sys!=='bone' && (risk?P.layers.joint:P.layers[it.sys]) && (related.has(it.name)||context||it.name===P.relationshipCue?.anchor);
+        if(P.mechanics.mechanic.rig==='shoulder'&&/Gluteus/.test(it.name))vis=false;
+      }
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
       it.mesh.visible = vis;
       if (!vis) continue;
       picks.push(it.mesh);
-      const op = P.isolateSelected ? 1 : P.opacity[it.sys] * (it.sheet && !isSel ? 0.12 : 1) * (P.dimMode === "dim" && !inR ? 0.08 : 1);
+      const role=roles.get(it.name);
+      const op = P.mechanics ? (active.has(it.name)||isSel ? (role==='risk'?0.95:1) : 0.1) : P.isolateSelected ? 1 : P.opacity[it.sys] * (it.sheet && !isSel ? 0.12 : 1) * (P.dimMode === "dim" && !inR ? 0.08 : 1);
       it.mat.opacity = op; it.mat.transparent = op < 0.995; it.mat.depthWrite = op >= 0.995;
-      it.mat.emissive.copy(isSel || it.name === e.hover || active.has(it.name) ? HILITE : new THREE.Color(0));
-      it.mat.emissiveIntensity = isSel ? 0.6 : active.has(it.name) ? 0.45 : 0.28;
+      const token=role ? `--anatomy-${role}` : '--anatomy-reference';
+      if(P.mechanics){const value=getComputedStyle(document.documentElement).getPropertyValue(token).trim();it.mat.color.set(value?`hsl(${value.split(/\s+/).join(',')})`:SYSTEMS[1].color);}
+      it.mat.emissive.copy(P.mechanics ? it.mat.color : isSel || it.name === e.hover || active.has(it.name) ? HILITE : new THREE.Color(0));
+      it.mat.emissiveIntensity = P.mechanics ? (active.has(it.name)?0.22:0) : isSel ? 0.6 : active.has(it.name) ? 0.45 : 0.28;
       it.mesh.renderOrder = it.mat.transparent ? 1 : 0;
       const k = inR ? P.explode : 0;
-      it.mesh.position.copy(it.orig).addScaledVector(it.delta, k);
+      if(!P.mechanics)it.mesh.position.copy(it.orig).addScaledVector(it.delta, k);
     }
     e.pickables = picks; e.dirty = true;
+    if(P.mechanics&&wrap.current){wrap.current.dataset.visibleBones=String(e.items.filter((i:Item)=>i.sys==='bone'&&i.mesh.visible).length);wrap.current.dataset.visibleMuscles=String(e.items.filter((i:Item)=>i.sys==='muscle'&&i.mesh.visible).length);}
   }
 
   useEffect(() => { applyRegion(); apply(); }, [props.region, props.specialistShoulder, props.specialistArm, props.specialistElbowForearm, props.specialistWristHand, props.specialistNeck, props.specialistBack, props.backLevel, props.specialistHipPelvis, props.hipSide, props.specialistThigh, props.specialistKnee, props.specialistCalf, props.specialistAnkleFoot, props.specialistFace]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -609,7 +651,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
   useEffect(() => { eng.current.dirty = true; });
   useEffect(() => {
     if (!props.mechanics) return;
-    eng.current.motionTime=props.mechanics.seek.time;
+    eng.current.motionTime=props.mechanics.seek.time; eng.current.poseSignature=null;
     apply(); eng.current.dirty=true;
   },[props.mechanics?.seek.revision,props.mechanics?.mechanic.id]);
   useEffect(() => { if(props.mechanics) { applyRegion(true); apply(); } },[props.mechanics?.mechanic.id]);
@@ -694,7 +736,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       </div>
       {/* Legend */}
       <ul className="pointer-events-none absolute bottom-3 left-3 space-y-0.5 rounded-md bg-card/90 px-2.5 py-2 text-[11px] text-foreground shadow-sm">
-        {SYSTEMS.map((s) => (
+        {SYSTEMS.filter(s=>!props.mechanics || s.id!=="bone").map((s) => (
           <li key={s.id} className="flex items-center gap-1.5"><span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />{s.label}{s.id === "vessel" && <><span aria-hidden className="ml-1 h-2.5 w-2.5 rounded-full" style={{ background: VEIN }} />veins</>}</li>
         ))}
       </ul>
