@@ -1,4 +1,11 @@
-# Roadmap — MSK Movement & Injury Mechanics
+# Roadmap — Movement revision and physiology lab
+
+- [ ] Muscle-led movement: hidden bones, role colors, synchronized nerves and separate risk overlays, attachment-weighted motion
+- [ ] Three source-checked physiology lessons, interactive diagrams and linked navigation/metadata/sitemap
+- [ ] Automated tests, desktop/phone/reduced-motion checks and regional regressions
+- [ ] Security check, publish, production verification and honest limitations
+
+## Previous movement release
 
 - [x] Separate library: 15 movements, 10 injuries, 113 distinct structured records
 - [x] Opt-in real-GLB bone overlays, controls, role cards and index-only connected cues
