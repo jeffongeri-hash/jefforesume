@@ -535,6 +535,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     let displacement=0,changed=0;
     for (const it of e.items as Item[]) {
       if(it.sys==='bone'||!it.restWorld||!it.mesh.visible)continue;
+      if(rig==='shoulder'&&/trapezius|serratus/.test(it.name.toLowerCase()))continue;
       if(!it.worldVertices) {
         it.mesh.geometry=it.mesh.geometry.clone();it.mesh.userData.privateMotionGeometry=true;
         const attr=it.mesh.geometry.getAttribute('position');
@@ -547,7 +548,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
         point.fromArray(it.worldVertices,i*3);const restY=point.y;
         // Blend child-segment rotation into parent across the joint. Origins stay proximal;
         // insertion vertices follow the child, so crossing muscles bend rather than detach.
-        for(let j=joints.length-1;j>=0;j--){const q=joints[j];const w=attachmentWeight(restY,q.p.y,q.band);
+        for(let j=joints.length-1;j>=0;j--){const q=joints[j];let w=attachmentWeight(restY,q.p.y,q.band);
+          if(rig==='shoulder'&&/pectoralis|latissimus/.test(it.name.toLowerCase())) {
+            const lateral=(point.x-q.p.x)*e.right;
+            w=Math.max(0,Math.min(1,(lateral+length*.12)/(length*.22)));
+          }
           turned.copy(point).sub(q.p).applyAxisAngle(q.axis,THREE.MathUtils.degToRad(q.angle)).add(q.p);
           point.lerp(turned,w);
         }
@@ -614,7 +619,9 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.mechanics) {
         const frame=unionOf([...FRAME_ANCHORS[P.mechanics.mechanic.rig]]); frame.expandByScalar(frame.getSize(new THREE.Vector3()).length()*0.15);
-        const context=it.sys==='muscle' && !it.name.endsWith('.l') && !it.sheet && !!frame?.intersectsBox(it.box);
+        const lower=['hip','knee','ankle','squat'].includes(P.mechanics.mechanic.rig);
+        const regionMatch=lower?/femoris|vastus|gluteus|tibialis|fibularis|gastrocnemius|soleus|semitend|semimembr|iliac|psoas|popliteus|calcaneal|adductor/.test(it.name.toLowerCase()):/deltoid|supraspin|infraspin|subscapular|teres|brachii|brachialis|pronator|supinator|carpi|digitorum|pectoralis|serratus|latissimus|trapezius/.test(it.name.toLowerCase());
+        const context=it.sys==='muscle' && !it.name.endsWith('.l') && !it.sheet && regionMatch && !!frame?.intersectsBox(it.box);
         const risk=roles.get(it.name)==='risk';
         vis=it.sys!=='bone' && (risk?P.layers.joint:P.layers[it.sys]) && (related.has(it.name)||context||it.name===P.relationshipCue?.anchor);
         if(P.mechanics.mechanic.rig==='shoulder'&&/Gluteus/.test(it.name))vis=false;
