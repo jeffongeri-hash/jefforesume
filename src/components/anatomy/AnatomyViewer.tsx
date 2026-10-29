@@ -200,7 +200,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
         setProgress(p => ({...p,[s.file]:1}));
         if (s.id === "bone") detectOrientation();
         if (s.id === "bone" || s.id === "joint" || propsRef.current.mechanics) applyRegion(true);
-        apply(); propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
+        e.poseSignature=null; apply(); propsRef.current.onLoaded?.(e.items.map((i: Item) => i.name));
       } catch {
         MODEL_CACHE.delete(url);
         if (!cancelled) setErrors(x => [...x,s.label]);
@@ -565,7 +565,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
     const r = propsRef.current.region;
     if (propsRef.current.mechanics) {
       const spec = propsRef.current.mechanics.mechanic;
-      const names = [...FRAME_ANCHORS[spec.rig], ...spec.phases.flatMap(p=>p.roles.flatMap(r=>phaseHighlights({...spec,phases:[p]},0)))];
+      const names = [...FRAME_ANCHORS[spec.rig], ...spec.phases.flatMap(p=>phaseHighlights({...spec,phases:[p]},0)).filter(n=>!(spec.rig==='shoulder'&&/Gluteus/.test(n)))];
       const box = unionOf(names);
       if (box.isEmpty()) return;
       box.expandByScalar(box.getSize(new THREE.Vector3()).length()*0.08);
@@ -613,9 +613,11 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       const isSel = it.name === P.selected;
       let vis = P.layers[it.sys] && (P.dimMode !== "isolate" || inR);
       if (P.mechanics) {
-        const frame=e.frame as THREE.Box3|undefined;
+        const frame=unionOf([...FRAME_ANCHORS[P.mechanics.mechanic.rig]]); frame.expandByScalar(frame.getSize(new THREE.Vector3()).length()*0.15);
         const context=it.sys==='muscle' && !it.name.endsWith('.l') && !it.sheet && !!frame?.intersectsBox(it.box);
-        vis=it.sys!=='bone' && P.layers[it.sys] && (related.has(it.name)||context||it.name===P.relationshipCue?.anchor);
+        const risk=roles.get(it.name)==='risk';
+        vis=it.sys!=='bone' && (risk?P.layers.joint:P.layers[it.sys]) && (related.has(it.name)||context||it.name===P.relationshipCue?.anchor);
+        if(P.mechanics.mechanic.rig==='shoulder'&&/Gluteus/.test(it.name))vis=false;
       }
       if (P.isolateSelected && P.selected) vis = isSel && (!P.specialistNeck || inR);
       it.mesh.visible = vis;
@@ -625,7 +627,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       const op = P.mechanics ? (active.has(it.name)||isSel ? (role==='risk'?0.95:1) : 0.1) : P.isolateSelected ? 1 : P.opacity[it.sys] * (it.sheet && !isSel ? 0.12 : 1) * (P.dimMode === "dim" && !inR ? 0.08 : 1);
       it.mat.opacity = op; it.mat.transparent = op < 0.995; it.mat.depthWrite = op >= 0.995;
       const token=role ? `--anatomy-${role}` : '--anatomy-reference';
-      if(P.mechanics){const value=getComputedStyle(document.documentElement).getPropertyValue(token).trim();it.mat.color.set(value?`hsl(${value.replaceAll(' ', ',')})`:SYSTEMS[1].color);}
+      if(P.mechanics){const value=getComputedStyle(document.documentElement).getPropertyValue(token).trim();it.mat.color.set(value?`hsl(${value.split(/\s+/).join(',')})`:SYSTEMS[1].color);}
       it.mat.emissive.copy(P.mechanics ? it.mat.color : isSel || it.name === e.hover || active.has(it.name) ? HILITE : new THREE.Color(0));
       it.mat.emissiveIntensity = P.mechanics ? (active.has(it.name)?0.22:0) : isSel ? 0.6 : active.has(it.name) ? 0.45 : 0.28;
       it.mesh.renderOrder = it.mat.transparent ? 1 : 0;
@@ -727,7 +729,7 @@ export const AnatomyViewer = forwardRef<ViewerHandle, ViewerProps>(function Anat
       </div>
       {/* Legend */}
       <ul className="pointer-events-none absolute bottom-3 left-3 space-y-0.5 rounded-md bg-card/90 px-2.5 py-2 text-[11px] text-foreground shadow-sm">
-        {SYSTEMS.map((s) => (
+        {SYSTEMS.filter(s=>!props.mechanics || s.id!=="bone").map((s) => (
           <li key={s.id} className="flex items-center gap-1.5"><span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />{s.label}{s.id === "vessel" && <><span aria-hidden className="ml-1 h-2.5 w-2.5 rounded-full" style={{ background: VEIN }} />veins</>}</li>
         ))}
       </ul>

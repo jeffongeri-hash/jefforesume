@@ -162,9 +162,9 @@ export function duration(m: Mechanic) { return m.phases.length * PHASE_SECONDS; 
 export function phaseAt(m: Mechanic,time: number) { return Math.min(m.phases.length-1,Math.max(0,Math.floor(time/PHASE_SECONDS))); }
 export function advance(time: number,dt: number,speed: number,total: number,playing: boolean) { return playing ? (time + Math.max(0,Math.min(dt,0.1))*speed) % total : time; }
 export function keyframe(m: Mechanic,time: number) {
- const index=phaseAt(m,time), current=m.phases[index], previous=m.phases[(index+m.phases.length-1)%m.phases.length];
+ const index=phaseAt(m,time), current=m.phases[index], previous=m.phases[(index+1)%m.phases.length];
  const t=Math.min(1, Math.max(0,(time-index*PHASE_SECONDS)/PHASE_SECONDS)); const k=t*t*(3-2*t);
- return {index,angle:previous.angle+(current.angle-previous.angle)*k,secondary:(previous.secondary??0)+((current.secondary??0)-(previous.secondary??0))*k};
+ return {index,angle:current.angle+(previous.angle-current.angle)*k,secondary:(current.secondary??0)+((previous.secondary??0)-(current.secondary??0))*k};
 }
 export function phaseHighlights(m: Mechanic,time: number) { return m.phases[phaseAt(m,time)].roles.flatMap(r=>ANATOMY.find(a=>a.id===r.anatomy)?.meshes??[]); }
 export function motionAllowed(playing: boolean,reduced: boolean) { return playing && !reduced; }
