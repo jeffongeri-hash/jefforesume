@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import Header from '@/components/Header';
@@ -262,6 +263,7 @@ const Professional = () => {
         </section>
 
         <ProfessionalFeatures />
+        <section aria-label="Clinical resources" className="container-blog border-y border-border py-6"><h2 className="font-serif text-2xl text-foreground">Clinical resources</h2><div className="mt-3 flex flex-wrap gap-3"><Button asChild variant="outline"><Link to="/physiology-animation-lab">Physiology Animation Lab</Link></Button><Button asChild variant="outline"><Link to="/msk-anatomy-atlas/movement-injury">MSK Movement &amp; Injury Mechanics</Link></Button></div></section>
 
         {/* Clinical Experience Section */}
         <section className="py-16" aria-labelledby="experience-heading">
