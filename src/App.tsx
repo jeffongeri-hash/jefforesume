@@ -57,6 +57,7 @@ const SepsisShockLesson = lazy(() => import("./pages/SepsisShockLesson"));
 const LadOcclusionLesson = lazy(() => import("./pages/LadOcclusionLesson"));
 const McaStrokeLesson = lazy(() => import("./pages/McaStrokeLesson"));
 const HemorrhagicStrokeLesson = lazy(() => import("./pages/HemorrhagicStrokeLesson"));
+const UpperAirwayLesson = lazy(() => import("./pages/UpperAirwayLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -120,6 +121,7 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/lad-occlusion-myocardial-infarction" element={<LadOcclusionLesson />} />
                 <Route path="/pathophysiology-atlas/mca-ischemic-stroke" element={<McaStrokeLesson />} />
                 <Route path="/pathophysiology-atlas/hemorrhagic-stroke" element={<HemorrhagicStrokeLesson />} />
+                <Route path="/pathophysiology-atlas/upper-airway-obstruction" element={<UpperAirwayLesson />} />
                 <Route path="/msk-anatomy-atlas/movement-injury" element={<MskMovementMechanics />} />
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />

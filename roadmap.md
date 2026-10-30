@@ -1,14 +1,20 @@
 # Emergency Pathophysiology Atlas
 
+## Active: Upper-airway obstruction comparison (preview only)
+- [x] Croup / epiglottitis / foreign-body data, sagittal animation and phase-specific mechanisms
+- [x] Hub, route, metadata, sitemap and five direct source links verified (HTTP 200)
+- [x] 139 automated tests; desktop/phone variants, controls, keyboard, reduced motion and six prior-lesson regressions
+- [x] Preview only; report limitations and URL (commit is platform-managed; exact per-request cost unavailable)
+
 - [x] Lesson 1: Bowel perforation → peritonitis → systemic deterioration (/pathophysiology-atlas/bowel-perforation), hub, links, sitemap, tests, desktop/phone checks — not published (user asked to hold)
 - [x] Lesson 2: Retropharyngeal abscess (/pathophysiology-atlas/retropharyngeal-abscess) — preview only, not published
 
 # Roadmap — Movement revision and physiology lab
 
-- [ ] Muscle-led movement: hidden bones, role colors, synchronized nerves and separate risk overlays, attachment-weighted motion
-- [ ] Three source-checked physiology lessons, interactive diagrams and linked navigation/metadata/sitemap
-- [ ] Automated tests, desktop/phone/reduced-motion checks and regional regressions
-- [ ] Security check, publish, production verification and honest limitations
+- [x] Muscle-led movement: hidden bones, role colors, synchronized nerves and separate risk overlays, attachment-weighted motion (completed in prior work)
+- [x] Three source-checked physiology lessons, interactive diagrams and linked navigation/metadata/sitemap (completed in prior work)
+- [x] Automated tests, desktop/phone/reduced-motion checks and regional regressions (completed in prior work)
+- [ ] Production release of later physiology revisions — paused for user preview approval; current request explicitly forbids publishing
 
 ## Previous movement release
 
