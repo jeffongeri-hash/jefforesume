@@ -21,9 +21,9 @@ export const STRUCTURES = {
 };
 export type StructureId = keyof typeof STRUCTURES;
 export const SOURCES = [
-  { name: 'Royal Children’s Hospital: Acute upper airway obstruction', url: 'https://www.rch.org.au/clinicalguide/guideline_index/Acute_upper_airway_obstruction/' },
-  { name: 'Royal Children’s Hospital: Croup (Laryngotracheobronchitis)', url: 'https://www.rch.org.au/clinicalguide/guideline_index/Croup_Laryngotracheobronchitis/' },
-  { name: 'Royal Children’s Hospital: Foreign bodies inhaled', url: 'https://www.rch.org.au/clinicalguide/guideline_index/Foreign_bodies_inhaled/' },
+  { name: 'Royal Children’s Hospital: Acute upper airway obstruction', url: 'https://www.rch.org.au/clinicalguide/guideline_index/acute_upper_airway_obstruction/' },
+  { name: 'Royal Children’s Hospital: Croup (Laryngotracheobronchitis)', url: 'https://www.rch.org.au/clinicalguide/guideline_index/croup_laryngotracheobronchitis/' },
+  { name: 'Royal Children’s Hospital: Foreign body inhalation', url: 'https://www.rch.org.au/clinicalguide/guideline_index/Foreign_body_inhalation/' },
   { name: 'Canadian Paediatric Society: Acute management of croup in the emergency department', url: 'https://cps.ca/documents/position/acute-management-of-croup' },
   { name: 'MSD Manual Professional: Epiglottitis (ENT)', url: 'https://www.msdmanuals.com/professional/ear-nose-and-throat-disorders/laryngeal-disorders/epiglottitis' },
 ];
