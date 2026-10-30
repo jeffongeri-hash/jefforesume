@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
-import { SEPSIS_DEEP, CORONARY_DEEP, strokeDeep, HEM_DEEP } from './deepMechanisms';
-import * as sepsis from './sepsisShock';
-import * as lad from './ladOcclusion';
-import * as stroke from './mcaStroke';
-import * as hem from './hemorrhagicStroke';
+import { describe, it, expect } from 'bun:test';
+import { SEPSIS_DEEP, CORONARY_DEEP, strokeDeep, HEM_DEEP } from '../src/data/pathophysiology/deepMechanisms';
+import * as sepsis from '../src/data/pathophysiology/sepsisShock';
+import * as lad from '../src/data/pathophysiology/ladOcclusion';
+import * as stroke from '../src/data/pathophysiology/mcaStroke';
+import * as hem from '../src/data/pathophysiology/hemorrhagicStroke';
 
 const ok = (d: any) => { expect(d).toBeTruthy(); expect(d.sections.length).toBeGreaterThanOrEqual(1); expect(d.refs.length).toBeGreaterThanOrEqual(1); d.refs.forEach((r: any) => expect(r.url).toMatch(/^https:\/\//)); };
 
