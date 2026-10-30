@@ -1,5 +1,11 @@
 # Emergency Pathophysiology Atlas
 
+## Active: Upper-airway obstruction comparison (preview only)
+- [ ] Croup / epiglottitis / foreign-body data, sagittal animation and phase-specific mechanisms
+- [ ] Hub, route, metadata, sitemap and source verification
+- [ ] Automated tests, desktop/phone/accessibility and prior-lesson regressions
+- [ ] Report limitations, preview URL and unavailable commit/cost details; do not publish
+
 - [x] Lesson 1: Bowel perforation → peritonitis → systemic deterioration (/pathophysiology-atlas/bowel-perforation), hub, links, sitemap, tests, desktop/phone checks — not published (user asked to hold)
 - [x] Lesson 2: Retropharyngeal abscess (/pathophysiology-atlas/retropharyngeal-abscess) — preview only, not published
 
