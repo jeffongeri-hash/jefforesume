@@ -7,11 +7,13 @@ import { RETROPHARYNGEAL_PATH } from '@/data/pathophysiology/retropharyngealAbsc
 import { SEPSIS_PATH } from '@/data/pathophysiology/sepsisShock';
 import { LAD_PATH } from '@/data/pathophysiology/ladOcclusion';
 import { MCA_STROKE_PATH } from '@/data/pathophysiology/mcaStroke';
+import { HEMORRHAGIC_STROKE_PATH } from '@/data/pathophysiology/hemorrhagicStroke';
 
 export const PATHO_LESSONS = [
   { path: SEPSIS_PATH, system: 'Infection · Shock', title: 'Sepsis → Distributive Shock', blurb: 'Innate recognition, NO-related vasodilation, glycocalyx loss, capillary leak and heterogeneous capillary flow, with lactate limits.' },
-  { path: LAD_PATH, system: 'Cardiac · Coronary', title: 'LAD Occlusion → Ischemia / Infarction', blurb: 'Thrombotic occlusion, ATP and contractility loss, subendocardial wavefront, troponin rise/fall and ECG territory concepts.' },
-  { path: MCA_STROKE_PATH, system: 'Neurologic · Stroke', title: 'MCA Ischemic Stroke: Core & Penumbra', blurb: 'Occlusion, collateral recruitment, core vs potentially salvageable tissue, and conceptual NCCT/CTA/CT perfusion limits.' },
+  { path: LAD_PATH, system: 'Cardiac · Coronary', title: 'Coronary Occlusion: LAD vs RCA', blurb: 'Selectable LAD or RCA occlusion, dominance and territory map, ECG lead groups, troponin, possible RV involvement and the RV→LV preload chain.' },
+  { path: MCA_STROKE_PATH, system: 'Neurologic · Stroke', title: 'Ischemic Stroke: MCA, ACA, PCA & Basilar', blurb: 'Lateral and medial territory maps by hemisphere, symptom associations, collaterals, core vs penumbra, and CTA vs perfusion limits.' },
+  { path: HEMORRHAGIC_STROKE_PATH, system: 'Neurologic · Haemorrhage', title: 'Hemorrhagic Stroke: ICH vs SAH', blurb: 'Vessel rupture, haematoma expansion risk, oedema, mass effect, hydrocephalus and raised ICP as possible outcomes, with NCCT concept.' },
   { path: BOWEL_PERFORATION_PATH, system: 'Gastrointestinal · Surgical abdomen', title: 'Bowel Perforation → Peritonitis → Systemic Deterioration', blurb: 'Five scrubbable phases from intact containment to possible sepsis physiology, with synchronized clinical signals and limits.' },
   { path: RETROPHARYNGEAL_PATH, system: 'Head & neck · Airway', title: 'Retropharyngeal Abscess', blurb: 'Sagittal fascial-space anatomy, node infection, phlegmon vs abscess, possible airway narrowing and mediastinal spread risk.' },
 ];
@@ -21,7 +23,7 @@ export default function PathophysiologyAtlas() {
     <div className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>Emergency Pathophysiology Atlas | Jefney Ongeri, PA-C</title>
-        <meta name="description" content="Interactive, source-cited conceptual animations of emergency pathophysiology for clinicians, including sepsis, LAD occlusion, MCA stroke, bowel perforation and retropharyngeal abscess." />
+        <meta name="description" content="Interactive, source-cited conceptual animations of emergency pathophysiology for clinicians, including sepsis, LAD vs RCA occlusion, ischemic and hemorrhagic stroke, bowel perforation and retropharyngeal abscess." />
         <link rel="canonical" href={`https://jeffongeri.com${PATHO_HUB_PATH}`} />
         <meta property="og:title" content="Emergency Pathophysiology Atlas" />
         <meta property="og:description" content="Conceptual, phase-by-phase emergency pathophysiology lessons with clinical signals and sources." />
