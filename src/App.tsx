@@ -53,6 +53,9 @@ const PhysiologyAnimationLab = lazy(() => import("./pages/PhysiologyAnimationLab
 const PathophysiologyAtlas = lazy(() => import("./pages/PathophysiologyAtlas"));
 const BowelPerforationLesson = lazy(() => import("./pages/BowelPerforationLesson"));
 const RetropharyngealAbscessLesson = lazy(() => import("./pages/RetropharyngealAbscessLesson"));
+const SepsisShockLesson = lazy(() => import("./pages/SepsisShockLesson"));
+const LadOcclusionLesson = lazy(() => import("./pages/LadOcclusionLesson"));
+const McaStrokeLesson = lazy(() => import("./pages/McaStrokeLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -112,6 +115,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
                 <Route path="/pathophysiology-atlas/bowel-perforation" element={<BowelPerforationLesson />} />
                 <Route path="/pathophysiology-atlas/retropharyngeal-abscess" element={<RetropharyngealAbscessLesson />} />
+                <Route path="/pathophysiology-atlas/sepsis-distributive-shock" element={<SepsisShockLesson />} />
+                <Route path="/pathophysiology-atlas/lad-occlusion-myocardial-infarction" element={<LadOcclusionLesson />} />
+                <Route path="/pathophysiology-atlas/mca-ischemic-stroke" element={<McaStrokeLesson />} />
                 <Route path="/msk-anatomy-atlas/movement-injury" element={<MskMovementMechanics />} />
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />

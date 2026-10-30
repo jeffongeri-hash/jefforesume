@@ -11,3 +11,4 @@
 
 - Physiology lessons keep source-linked phase content and pure conceptual state in a separate data module; SVG teaching diagrams consume the same timeline state as controls and explanations, never patient/diagnostic values.
 - Emergency Pathophysiology Atlas lessons live under `/pathophysiology-atlas/*`, each with a pure React-free data/state module in `src/data/pathophysiology/` driving a code-native SVG scene; the hub lists lessons from one array so new lessons add a card without touching others.
+- New Emergency Pathophysiology Atlas lessons reuse `src/data/pathophysiology/timeline.ts` (shared 5-phase timing) and `src/components/pathophysiology/sceneKit.tsx` (hit targets, labels, meters); the Physiology Animation Lab stays an overview and links to the detailed atlas lesson instead of duplicating it.
