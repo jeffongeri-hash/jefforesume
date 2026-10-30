@@ -40,7 +40,7 @@ export default function BowelPerforationLesson() {
 
   const index = phaseAt(time), phase = PHASES[index];
   const seek = (t: number) => { setPlaying(false); setTime(clampTime(t)); };
-  const goPhase = (i: number) => seek(phaseStart(i) + (reduced ? 4.9 : 0));
+  const goPhase = (i: number) => seek(phaseStart(i) + 4.9); // land on the fully developed state of each phase
   const togglePlay = () => { if (time >= LESSON_DURATION - 0.01) setTime(0); setPlaying(p => !p); };
   const info = selected ? STRUCTURES[selected] : null;
 
