@@ -12,6 +12,7 @@ export default function UpperAirwayScene({ time, variant, normal = false, showLa
   const label = (x: number, y: number, text: string, anchor: 'start' | 'end' | 'middle' = 'start') => <Label show={showLabels} x={x} y={y} anchor={anchor}>{text}</Label>;
   const line = (x1: number, y1: number, x2: number, y2: number) => showLabels && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pv('ink', 0.45)} />;
   const objectY = s.level === 'larynx' ? 278 : 372;
+  const centralFlow = s.condition === 'foreign-body' && s.level === 'bronchus' ? 1 : s.flow;
   const airPath = 'M 149 125 Q 222 105 275 132 L 301 162 L 301 223 Q 303 246 282 264 L 252 297 L 252 424';
   return <svg viewBox="0 0 720 650" role="group" aria-label={title ?? 'Illustrative sagittal airway: anterior left, posterior right; separate lungs inset'} className="patho-scene block h-auto w-full rounded-lg"
     data-condition={s.condition} data-patency={s.patency.toFixed(3)} data-subglottic={s.subglottic.toFixed(3)} data-supraglottic={s.supraglottic.toFixed(3)} data-object={s.object.toFixed(3)} data-level={s.level}>
@@ -42,7 +43,7 @@ export default function UpperAirwayScene({ time, variant, normal = false, showLa
       <path d={`M 229 318 Q ${231 + 16 * s.subglottic} 330 229 345 M 274 318 Q ${272 - 16 * s.subglottic} 330 274 345`} stroke={s.subglottic > 0.02 ? pv('inflame') : pv('mucosa')} strokeWidth={6 + 8 * s.subglottic} fill="none" />
       {label(449, 325, 'Subglottis / cricoid')}{line(439, 321, 282, 330)}</g>
     {/* Flow moves along a fixed anatomical route, with reduced downstream transport. */}
-    <path d={airPath} fill="none" stroke={pv('fluid', 0.65)} strokeWidth="3" strokeDasharray="5 10" strokeDashoffset={-time * 13 * s.flow} aria-hidden />
+    <path d={airPath} fill="none" stroke={pv('fluid', 0.65)} strokeWidth="3" strokeDasharray="5 10" strokeDashoffset={-time * 13 * centralFlow} aria-hidden />
     {Array.from({ length: 5 }, (_, i) => <path key={i} d={`M 246 ${358 + ((time * 32 * s.flow + i * 14) % 62)} l 6 6 l 6 -6`} stroke={pv('fluid', s.level === 'bronchus' ? 0.9 : s.flow)} strokeWidth="2" fill="none" aria-hidden />)}
     {s.object > 0 && s.level !== 'bronchus' && <g {...hit('object')}><ellipse cx="253" cy={objectY} rx={8 + 15 * (1 - s.patency)} ry="12" fill={pv('contents')} stroke={pv('alert')} strokeWidth="2" opacity={s.object} />{label(449, objectY - 20, 'Object: selected level')}{line(439, objectY - 24, 267, objectY)}</g>}
     <line x1="20" y1="448" x2="700" y2="448" stroke={pv('membrane', 0.3)} />
@@ -50,7 +51,8 @@ export default function UpperAirwayScene({ time, variant, normal = false, showLa
     <g {...hit('chest')}>
       <path d="M 192 485 L 192 508 L 153 536 M 192 508 L 232 536" stroke={pv('membrane')} strokeWidth="13" fill="none" />
       <path d="M 153 509 Q 100 509 91 578 Q 112 616 170 594 L 170 544 Z M 232 509 Q 284 509 293 578 Q 271 616 215 594 L 215 544 Z" fill={pv('fluid', 0.15)} stroke={pv('membrane')} strokeWidth="2" />
-      <path d="M 193 486 L 193 508 L 153 540 M 193 508 L 232 540" stroke={pv('fluid', s.flow)} strokeWidth="3" strokeDasharray="5 6" strokeDashoffset={-time * 20 * s.flow} fill="none" />
+      <path d="M 193 486 L 193 508 L 153 540" stroke={pv('fluid', centralFlow)} strokeWidth="3" strokeDasharray="5 6" strokeDashoffset={-time * 20 * centralFlow} fill="none" />
+      <path d="M 193 508 L 232 540" stroke={pv('fluid', s.flow)} strokeWidth="3" strokeDasharray="5 6" strokeDashoffset={-time * 20 * s.flow} fill="none" />
       <path d={`M 81 550 l ${13 * s.effort} 8 l ${-13 * s.effort} 8 M 302 550 l ${-13 * s.effort} 8 l ${13 * s.effort} 8`} stroke={pv('alert', s.effort)} strokeWidth="3" fill="none" />
       {label(20, 630, s.risk > 0.1 ? 'Possible fatigue ≠ improvement' : 'Retractions reflect pressure cost')}
     </g>
