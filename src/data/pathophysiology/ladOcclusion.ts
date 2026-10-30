@@ -68,7 +68,7 @@ export const VARIATIONS = [
   { title: 'Partial vs total occlusion', text: 'Partial or intermittent occlusion may cause NSTEMI patterns; total occlusion classically STEMI — but correlation is imperfect (“occlusion MI” without ST elevation exists).' },
   { title: 'Non-atherothrombotic causes', text: 'Spontaneous coronary artery dissection, spasm, embolism and supply–demand mismatch can produce MI with different mechanisms.' },
   { title: 'Coronary dominance', text: 'Right-dominant in most people, left-dominant or co-dominant in others; this decides which artery an inferior MI arises from.' },
-  { title: 'RV involvement is variable', text: 'Proximal RCA occlusion may involve the RV; distal RCA or circumflex occlusion usually does not. RV involvement does not always cause hypotension, and hypotension after nitrates is not specific to RV infarction.' },
+  { title: 'RV involvement is variable', text: 'Proximal RCA occlusion may involve the RV; distal RCA or circumflex occlusion usually does not. RV involvement does not always cause hypotension. In one small study of inferior MI, most — but not all — patients with marked nitrate-associated hypotension had ECG evidence of RV involvement (Ferguson 1989), so the association is real but imperfect.' },
   { title: 'ECG territory is approximate', text: 'Lead groups map loosely to walls; lead placement, conduction disease, prior MI and pacing alter patterns.' },
 ];
 
