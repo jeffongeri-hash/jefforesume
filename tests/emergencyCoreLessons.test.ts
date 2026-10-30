@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'bun:test';
 import * as sep from '../src/data/pathophysiology/sepsisShock';
 import * as lad from '../src/data/pathophysiology/ladOcclusion';
 import * as mca from '../src/data/pathophysiology/mcaStroke';
