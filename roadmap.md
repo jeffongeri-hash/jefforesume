@@ -1,10 +1,10 @@
 # Emergency Pathophysiology Atlas
 
 ## Active: Respiratory expansion (preview only)
-- [ ] Four dedicated respiratory routes, phase-specific mechanisms/signals and shared conceptual anatomy
-- [ ] Hub, metadata and sitemap integration; professional source verification
-- [ ] Automated tests, desktop/phone, keyboard/reduced motion and prior-lesson regressions
-- [ ] Report routes, exact results, limitations and credit availability; do not publish
+- [x] Four dedicated respiratory routes and ten scenarios, phase-specific mechanisms/signals and shared conceptual anatomy
+- [x] Hub, metadata and 185-entry sitemap; seven source links HTTP 200, ESC/ERS DOI registry verified (publisher 403); current GINA CO2 guidance checked
+- [x] 154 automated tests (15 new); eight desktop/phone flows, keyboard/reduced motion, seven prior-lesson regressions; no page errors or horizontal overflow
+- [x] Preview only, no deployment; report routes and limitations (platform-managed commit ID and exact request credits unavailable)
 
 ## Active: Upper-airway obstruction comparison (preview only)
 - [x] Croup / epiglottitis / foreign-body data, sagittal animation and phase-specific mechanisms
