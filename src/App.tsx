@@ -50,6 +50,8 @@ const DroneGallery = lazy(() => import("./drone/DroneGallery"));
 const DroneProject = lazy(() => import("./drone/DroneProject"));
 const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
 const PhysiologyAnimationLab = lazy(() => import("./pages/PhysiologyAnimationLab"));
+const PathophysiologyAtlas = lazy(() => import("./pages/PathophysiologyAtlas"));
+const BowelPerforationLesson = lazy(() => import("./pages/BowelPerforationLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -106,6 +108,8 @@ const App = () => (
                 <Route path="/drone/gallery/:slug" element={<DroneProject />} />
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
+                <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
+                <Route path="/pathophysiology-atlas/bowel-perforation" element={<BowelPerforationLesson />} />
                 <Route path="/msk-anatomy-atlas/movement-injury" element={<MskMovementMechanics />} />
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />
