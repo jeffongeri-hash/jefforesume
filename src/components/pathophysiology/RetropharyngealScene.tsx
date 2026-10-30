@@ -26,7 +26,7 @@ export default function RetropharyngealScene({ time, normal = false, showLabels,
   const label = (x: number, y: number, t: string, a: 'start' | 'end' | 'middle' = 'start') => showLabels && <text x={x} y={y} textAnchor={a} fontSize="12" fill={v('ink')} className="pointer-events-none">{t}</text>;
   const wallPath = `M 140 ${TOP} ` + ys.map(y => `L ${wallX(y)} ${y}`).join(' ') + ` L 200 ${FUSION + 40} L 140 ${FUSION + 40} Z`;
   const rpPath = `M ${bpPts[0]} ` + bpPts.slice(1).map(p => `L ${p}`).join(' ') + ` L ${ALAR} ${FUSION} L ${ALAR} ${TOP} Z`;
-  const minAir = Math.min(...ys.map(wallX)) - 150; // airway width at narrowest (schematic)
+
   const spreadDots = Array.from({ length: 18 }, (_, i) => i / 18 < s.spread ? { x: ALAR + 6 + rnd(i, 1) * (PREV - ALAR - 12), y: 220 + (i / 18) * 240 * s.spread + rnd(i, 2) * 10 } : null).filter(Boolean) as { x: number; y: number }[];
   const microbes = Array.from({ length: 14 }, (_, i) => i / 14 < s.node ? { x: 280 + rnd(i, 3) * 30, y: 110 + rnd(i, 4) * 60 + Math.sin(time + i) * 2 } : null).filter(Boolean) as { x: number; y: number }[];
 
@@ -53,7 +53,7 @@ export default function RetropharyngealScene({ time, normal = false, showLabels,
       {/* retropharyngeal space */}
       <g {...hit('retropharyngeal-space')}>
         <path d={rpPath} fill={s.phlegmon > 0.02 ? v('inflame', 0.12 + 0.4 * s.phlegmon) : v('panel')} stroke="none" />
-        {label(ALAR + 6, FUSION + 14, 'Retropharyngeal space ends (fascial fusion)')}
+        {label(ALAR - 14, FUSION + 14, 'Retropharyngeal space ends (fascial fusion)', 'end')}
       </g>
       <g {...hit('buccopharyngeal-fascia')}><polyline points={bpPts.join(' ')} fill="none" stroke={v('membrane')} strokeWidth={sw('buccopharyngeal-fascia', 2)} strokeDasharray="5 3" /></g>
       <g {...hit('lymph-nodes')}>
@@ -88,7 +88,7 @@ export default function RetropharyngealScene({ time, normal = false, showLabels,
       <rect x="572" y="420" width="196" height="10" rx="5" fill={v('membrane', 0.25)} />
       <rect x="572" y="420" width={196 * s.airway} height="10" rx="5" fill={s.airway > 0.8 ? v('fluid') : v('alert')} data-airway-bar />
       <text x="572" y="450" fontSize="10" fill={v('ink', 0.75)}>Schematic only — not a measurement,</text>
-      <text x="572" y="463" fontSize="10" fill={v('ink', 0.75)}>not a CT, not one patient. ({minAir > 0 ? 'patent' : 'narrowed'})</text>
+      <text x="572" y="463" fontSize="10" fill={v('ink', 0.75)}>not a CT, not one patient.</text>
     </svg>
   );
 }
