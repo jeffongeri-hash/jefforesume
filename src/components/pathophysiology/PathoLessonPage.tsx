@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Pause, Play, RotateCcw, SkipBack, SkipForward } from 'lucide-react';
 import Header from '@/components/Header';
@@ -7,10 +7,18 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { PATHO_HUB_PATH, SPEEDS, type Phase as BowelPhase } from '@/data/pathophysiology/bowelPerforation';
 
-export type LessonConfig = { path: string; lessonNo: number; title: string; metaTitle: string; metaDescription: string; ogDescription: string; crumb: string; normalTitle?: string; intro: string; variationsIntro: string; variationsTitle?: string; extra?: { title: string; items: string[] }[]; data: { LESSON_DURATION: number; PHASES: (Omit<BowelPhase, 'focus'> & { focus: string[] })[]; STRUCTURES: Record<string, { label: string; explanation: string }>; VARIATIONS: { title: string; text: string }[]; CANNOT_DETERMINE: string[]; ESCALATION_NOTE: string; SOURCES: { name: string; url: string }[]; clampTime: (t: number) => number; phaseAt: (t: number) => number; phaseStart: (i: number) => number; tick: (t: number, dt: number, s: number) => { time: number; playing: boolean } }; Scene: ComponentType<{ time: number; normal?: boolean; compact?: boolean; showLabels: boolean; selected: any; onSelect: (id: any) => void; title?: string }> };
+export type SceneExtraProps = { variant?: string; side?: 'left' | 'right' };
+export type CompanionProps = { time: number; normal: boolean; variant: string; side: 'left' | 'right'; phaseIndex: number; reduced: boolean };
+export type LessonConfig = { variants?: { param: string; legend: string; options: { id: string; label: string; hint: string }[] }; sides?: { param: string; legend: string; hideFor?: string[] }; Companion?: ComponentType<CompanionProps>; companionTitle?: string; path: string; lessonNo: number; title: string; metaTitle: string; metaDescription: string; ogDescription: string; crumb: string; normalTitle?: string; intro: string; variationsIntro: string; variationsTitle?: string; extra?: { title: string; items: string[] }[]; data: { phasesFor?: (variant: string) => (Omit<BowelPhase, 'focus'> & { focus: string[] })[]; LESSON_DURATION: number; PHASES: (Omit<BowelPhase, 'focus'> & { focus: string[] })[]; STRUCTURES: Record<string, { label: string; explanation: string }>; VARIATIONS: { title: string; text: string }[]; CANNOT_DETERMINE: string[]; ESCALATION_NOTE: string; SOURCES: { name: string; url: string }[]; clampTime: (t: number) => number; phaseAt: (t: number) => number; phaseStart: (i: number) => number; tick: (t: number, dt: number, s: number) => { time: number; playing: boolean } }; Scene: ComponentType<{ time: number; normal?: boolean; compact?: boolean; showLabels: boolean; selected: any; onSelect: (id: any) => void; title?: string } & SceneExtraProps> };
 
 export default function PathoLessonPage({ config }: { config: LessonConfig }) {
-  const { LESSON_DURATION, PHASES, STRUCTURES, VARIATIONS, CANNOT_DETERMINE, ESCALATION_NOTE, SOURCES, clampTime, phaseAt, phaseStart, tick } = config.data; const Scene = config.Scene;
+  const [params, setParams] = useSearchParams();
+  const vOpts = config.variants?.options ?? [];
+  const variant = (config.variants && vOpts.find(o => o.id === params.get(config.variants!.param))?.id) ?? vOpts[0]?.id ?? '';
+  const side: 'left' | 'right' = config.sides && params.get(config.sides.param) === 'right' ? 'right' : 'left';
+  const setParam = (k: string, v: string) => { const n = new URLSearchParams(params); n.set(k, v); setParams(n, { replace: true }); };
+  const showSides = !!config.sides && !(config.sides.hideFor ?? []).includes(variant);
+  const { LESSON_DURATION, STRUCTURES, VARIATIONS, CANNOT_DETERMINE, ESCALATION_NOTE, SOURCES, clampTime, phaseAt, phaseStart, tick } = config.data; const Scene = config.Scene; const PHASES = config.data.phasesFor ? config.data.phasesFor(variant) : config.data.PHASES; const Companion = config.Companion;
   const [time, setTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<number>(1);
@@ -64,9 +72,13 @@ export default function PathoLessonPage({ config }: { config: LessonConfig }) {
 
           <div className="mt-6 grid items-start gap-7 xl:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]">
             <section aria-label="Animated conceptual scene" className="min-w-0">
+              {(config.variants || showSides) && <div className="mb-3 flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-border bg-card p-3">
+                {config.variants && <fieldset><legend className="text-xs font-semibold uppercase text-muted-foreground">{config.variants.legend}</legend><div role="radiogroup" aria-label={config.variants.legend} className="mt-1 flex flex-wrap gap-1">{vOpts.map(o => <Button key={o.id} size="sm" role="radio" aria-checked={variant === o.id} variant={variant === o.id ? 'secondary' : 'outline'} title={o.hint} onClick={() => setParam(config.variants!.param, o.id)} className="min-h-9">{o.label}</Button>)}</div><p className="mt-1 max-w-xl text-xs text-muted-foreground">{vOpts.find(o => o.id === variant)?.hint}</p></fieldset>}
+                {showSides && <fieldset><legend className="text-xs font-semibold uppercase text-muted-foreground">{config.sides!.legend}</legend><div role="radiogroup" aria-label={config.sides!.legend} className="mt-1 flex gap-1">{(['left', 'right'] as const).map(sd => <Button key={sd} size="sm" role="radio" aria-checked={side === sd} variant={side === sd ? 'secondary' : 'outline'} onClick={() => setParam(config.sides!.param, sd)} className="min-h-9 capitalize">{sd} hemisphere</Button>)}</div></fieldset>}
+              </div>}
               <div className={compare ? 'grid gap-3 md:grid-cols-2' : ''}>
-                {compare && <figure><figcaption className="mb-1 text-xs font-semibold text-muted-foreground">Normal reference</figcaption><Scene time={time} normal compact showLabels={showLabels} selected={selected} onSelect={setSelected} title={config.normalTitle ?? "Normal reference: intact bowel and peritoneum"} /></figure>}
-                <figure><figcaption className={compare ? 'mb-1 text-xs font-semibold text-muted-foreground' : 'sr-only'}>Phase {index + 1}: {phase.short}</figcaption><Scene time={time} showLabels={showLabels} selected={selected} onSelect={setSelected} /></figure>
+                {compare && <figure><figcaption className="mb-1 text-xs font-semibold text-muted-foreground">Normal reference</figcaption><Scene variant={variant} side={side} time={time} normal compact showLabels={showLabels} selected={selected} onSelect={setSelected} title={config.normalTitle ?? "Normal reference: intact bowel and peritoneum"} /></figure>}
+                <figure><figcaption className={compare ? 'mb-1 text-xs font-semibold text-muted-foreground' : 'sr-only'}>Phase {index + 1}: {phase.short}</figcaption><Scene variant={variant} side={side} time={time} showLabels={showLabels} selected={selected} onSelect={setSelected} /></figure>
               </div>
               <p className="mt-2 text-xs text-muted-foreground">Tap or press Enter on any structure to pin its explanation.</p>
 
@@ -89,6 +101,7 @@ export default function PathoLessonPage({ config }: { config: LessonConfig }) {
                 {reduced && <p role="status" className="text-xs font-semibold">Reduced motion on: playback disabled. Use phase steps or the scrubber to view each static state.</p>}
               </div>
 
+              {Companion && <section aria-label={config.companionTitle ?? 'Linked demonstration'} className="mt-6 rounded-lg border border-border bg-card p-4"><h2 className="font-journal text-2xl">{config.companionTitle ?? 'Linked demonstration'}</h2><Companion time={time} normal={false} variant={variant} side={side} phaseIndex={index} reduced={reduced} /></section>}
               <section aria-label="Clinical signals" className="mt-6 rounded-lg border border-border bg-card p-4" aria-live="polite">
                 <h2 className="font-journal text-2xl">Clinical Signals — phase {index + 1}</h2>
                 <h3 className="mt-3 text-xs font-semibold uppercase text-muted-foreground">Bedside context</h3>
