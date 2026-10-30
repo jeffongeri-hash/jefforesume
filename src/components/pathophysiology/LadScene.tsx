@@ -22,7 +22,7 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
     return `M ${p(r2, a0)} A ${r2} ${r2} 0 0 1 ${p(r2, a1)} L ${p(r1, a1)} A ${r1} ${r1} 0 0 0 ${p(r1, a0)} Z`;
   };
   const a0 = -Math.PI * 0.95, a1 = -Math.PI * 0.2; // anterior + septal sector (schematic)
-  const injR = RI + (RO - RI) * s.injury / 0.7;
+  const injR = RI + (RO - RI) * s.injury; // never shown as automatically transmural
 
   return (
     <svg viewBox="0 0 800 500" role="img" aria-label={title ?? 'Conceptual anterior heart and short-axis schematic: LAD occlusion and myocardial territory'} className="block h-auto w-full rounded-lg patho-scene" style={{ background: pv('bg') }}
@@ -70,7 +70,7 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
         <rect x="490" y="330" width="290" height="70" rx="8" fill={pv('panel')} stroke={pv('ink', sel('myocyte') ? 1 : 0.2)} strokeWidth={sel('myocyte') ? 2.5 : 1} />
         <Meter x={505} y={355} w={120} label="ATP (concept)" value={s.atp} color={pv('alert')} />
         <Meter x={645} y={355} w={120} label="Contractility" value={s.contractility} color={pv('fluid')} />
-        <Meter x={505} y={388} w={260} label="" value={s.injury / 0.7} color={pv('inflame')} />
+        <Meter x={505} y={388} w={260} label="" value={s.injury} color={pv('inflame')} />
         <text x="505" y="384" fontSize="11" fill={pv('ink', 0.85)} aria-hidden>Irreversible injury extent (concept)</text>
       </g>
       <g {...hit('ecg')}>
