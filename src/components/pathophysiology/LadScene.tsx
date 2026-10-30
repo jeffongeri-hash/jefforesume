@@ -78,12 +78,12 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
       <g {...hit('territory')} transform={`translate(330 320) scale(${terrSqueeze}) translate(-330 -320)`}>
         <path d={LAD_TERR} fill={pv('membrane', v === 'lad' ? 0.6 * s.anteriorIschemia : 0)} stroke={pv('fluid', sel('territory') ? 1 : 0.45)} strokeWidth={sel('territory') ? 2.5 : 1.2} strokeDasharray="6 4" />
         {v === 'lad' && s.injury > 0.01 && <path d="M 312 262 Q 345 280 350 340 Q 335 392 300 414 Q 312 360 312 300 Z" fill={pv('inflame', 0.9)} opacity={Math.min(1, s.injury * 2)} />}
-        <Label show={showLabels} x={392} y={392}>LAD territory (variable)</Label>
+        <Label show={showLabels} x={440} y={466} anchor="end">LAD territory (variable)</Label>
       </g>
       <g {...hit('inferior')}>
         <path d={INFERIOR_BAND} fill={pv('membrane', v === 'rca' ? 0.75 * s.inferiorIschemia : 0.08)} stroke={pv('contents', sel('inferior') ? 1 : 0.5)} strokeWidth={sel('inferior') ? 2.5 : 1} strokeDasharray="3 3" />
         {v === 'rca' && s.injury > 0.01 && <path d={INFERIOR_BAND} fill={pv('inflame', 0.85)} opacity={Math.min(1, s.injury * 1.6)} />}
-        <Label show={showLabels} x={150} y={420} anchor="end">Inferior wall (under surface)</Label>
+        <Label show={showLabels} x={-60} y={384}>Inferior wall (under surface)</Label>
       </g>
 
       {/* Coronary arteries */}
@@ -102,7 +102,7 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
         {dots(8, 1).map((f, i) => { const [x, y] = qAt(RCAP, f); return <circle key={i} cx={x} cy={y} r={2.8} fill={pv('rbc', f > RCA_OCC ? rcaFlow : 1)} />; })}
         <Label show={showLabels} x={104} y={204} anchor="end">RCA (right AV groove)</Label>
       </g>
-      <g {...hit('pda')}><path d="M 166 338 Q 190 372 214 386 Q 246 414 268 438" stroke={pv('contents', 0.35 + 0.65 * rcaFlow)} strokeWidth={vStroke('pda', 3)} fill="none" strokeDasharray="5 4" /><Label show={showLabels} x={150} y={440} anchor="end">→ PDA (dashed: hidden inferior surface)</Label></g>
+      <g {...hit('pda')}><path d="M 166 338 Q 190 372 214 386 Q 246 414 268 438" stroke={pv('contents', 0.35 + 0.65 * rcaFlow)} strokeWidth={vStroke('pda', 3)} fill="none" strokeDasharray="5 4" /><Label show={showLabels} x={-60} y={400}>PDA (dashed = hidden inferior surface)</Label></g>
       <g {...hit('plaque')}>
         <circle cx={occ[0]} cy={occ[1]} r={9} fill={pv('panel', 0.01)} stroke={pv('ink', sel('plaque') ? 1 : 0.4)} strokeWidth={sel('plaque') ? 2.5 : 1} />
         {s.thrombus > 0.02 && <ellipse cx={occ[0]} cy={occ[1]} rx={3 + 5 * s.thrombus} ry={4 + 6 * s.thrombus} fill={pv('rbc', 0.95)} stroke={pv('ink', 0.6)} />}
@@ -134,7 +134,7 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
       <Label show={showLabels} x={SX - RO - 12} y={SY + 4} anchor="middle" size={10}>RV</Label>
       <Label show={showLabels} x={SX - RO + 2} y={SY + RO - 8} anchor="end" size={9}>Septum</Label>
       <Label show={showLabels} x={SX} y={SY + 4} anchor="middle" size={9}>LV</Label>
-      <g {...hit('dominance')} transform="translate(520 262)">
+      <g {...hit('dominance')} transform="translate(470 262)">
         {[['LAD', 'fluid'], ['RCA', 'contents'], ['LCx', 'lcx']].map(([n, c], i) => <g key={n} transform={`translate(${i * 70} 0)`}><rect width="12" height="12" fill={pv(c, 0.6)} /><text x="16" y="10" fontSize="10" fill={pv('ink', 0.85)}>{n}</text></g>)}
         <rect x="210" width="12" height="12" fill={`url(#${pid}-hatch-lcx)`} stroke={pv('ink', 0.3)} /><text x="226" y="10" fontSize="10" fill={pv('ink', 0.85)}>variable / dominance</text>
         <rect x="0" y="18" width="12" height="12" fill={pv('membrane', 0.8)} /><text x="16" y="28" fontSize="10" fill={pv('ink', 0.85)}>ischemic</text>

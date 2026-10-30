@@ -86,7 +86,7 @@ export default function HemorrhagicStrokeScene({ time, normal = false, showLabel
           <rect width="122" height="120" rx="6" fill={pv('bg')} stroke={pv(k === v ? 'alert' : 'ink', k === v ? 0.9 : 0.3)} />
           <ellipse cx="61" cy="58" rx="46" ry="44" fill={pv('ink', 0.28)} stroke={pv('ink', 0.85)} strokeWidth="4" />
           <path d="M 49 46 Q 61 40 73 46 L 73 60 Q 61 56 49 60 Z" fill={pv('bg', 0.9)} />
-          {k === 'ich' ? <circle cx="80" cy="56" r={k === v ? 6 + 10 * s.hematoma : 12} fill={pv('ink', 0.95)} /> : <path d="M 40 86 Q 61 76 82 86 M 20 60 Q 30 58 38 64 M 102 60 Q 92 58 84 64 M 30 34 l 8 6 M 92 34 l -8 6" fill="none" stroke={pv('ink', 0.95)} strokeWidth={k === v ? 1.5 + 3 * s.sahSpread : 3} />}
+          {k === 'ich' ? <circle cx="80" cy="56" r={k === v ? 6 + 10 * s.hematoma : 12} fill={pv('ink', 0.95)} /> : <path d="M 61 60 L 61 80 M 61 72 L 47 82 M 61 72 L 75 82 M 61 64 L 45 58 M 61 64 L 77 58 M 18 50 l 8 2 M 104 50 l -8 2 M 34 22 l 5 7 M 88 22 l -5 7" fill="none" stroke={pv('ink', 0.95)} strokeWidth={k === v ? 1.5 + 2.5 * s.sahSpread : 3} strokeLinecap="round" />}
           <text x="61" y="114" fontSize="9" textAnchor="middle" fill={pv('ink', 0.8)}>{k === 'ich' ? 'ICH: bright blood in tissue' : 'SAH: bright cisterns/sulci'}</text>
         </g>)}
         <text x="534" y="424" fontSize="9" fill={pv('ink', 0.75)}>Acute blood is hyperdense. SAH sensitivity is highest early</text>
