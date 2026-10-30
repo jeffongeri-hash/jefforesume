@@ -95,7 +95,7 @@ export const SOURCES = [
   { name: 'Albers GW, et al. Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging (DEFUSE 3). N Engl J Med 2018', url: 'https://doi.org/10.1056/NEJMoa1713973' },
   { name: 'Campbell BCV, et al. Ischaemic stroke. Nat Rev Dis Primers 2019', url: 'https://doi.org/10.1038/s41572-019-0118-8' },
   { name: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology 1998', url: 'https://doi.org/10.1212/WNL.50.6.1699' },
-  { name: 'Mattle HP, et al. Basilar artery occlusion. Lancet Neurol 2011', url: 'https://doi.org/10.1016/S1474-4422(11)70228-2' },
+  { name: 'Mattle HP, et al. Basilar artery occlusion. Lancet Neurol 2011', url: 'https://doi.org/10.1016/S1474-4422(11)70229-0' },
   { name: 'AANS: Cerebrovascular Imaging', url: 'https://www.aans.org/patients/conditions-treatments/cerebrovascular-imaging/' },
 ];
 
