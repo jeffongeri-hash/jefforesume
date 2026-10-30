@@ -8,8 +8,10 @@ import { SEPSIS_PATH } from '@/data/pathophysiology/sepsisShock';
 import { LAD_PATH } from '@/data/pathophysiology/ladOcclusion';
 import { MCA_STROKE_PATH } from '@/data/pathophysiology/mcaStroke';
 import { HEMORRHAGIC_STROKE_PATH } from '@/data/pathophysiology/hemorrhagicStroke';
+import { UPPER_AIRWAY_PATH } from '@/data/pathophysiology/upperAirway';
 
 export const PATHO_LESSONS = [
+  { path: UPPER_AIRWAY_PATH, system: 'Pediatric · ENT · Airway', title: 'Upper-Airway Obstruction: Croup, Epiglottitis & Foreign Body', blurb: 'Sagittal airway comparison, subglottic vs supraglottic inflammation, variable object levels, airflow and effort, with phase-specific clinical mechanisms.' },
   { path: SEPSIS_PATH, system: 'Infection · Shock', title: 'Sepsis → Distributive Shock', blurb: 'Innate recognition, NO-related vasodilation, glycocalyx loss, capillary leak and heterogeneous capillary flow, with lactate limits.' },
   { path: LAD_PATH, system: 'Cardiac · Coronary', title: 'Coronary Occlusion: LAD vs RCA', blurb: 'Selectable LAD or RCA occlusion, dominance and territory map, ECG lead groups, troponin, possible RV involvement and the RV→LV preload chain.' },
   { path: MCA_STROKE_PATH, system: 'Neurologic · Stroke', title: 'Ischemic Stroke: MCA, ACA, PCA & Basilar', blurb: 'Lateral and medial territory maps by hemisphere, symptom associations, collaterals, core vs penumbra, and CTA vs perfusion limits.' },
@@ -23,7 +25,7 @@ export default function PathophysiologyAtlas() {
     <div className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>Emergency Pathophysiology Atlas | Jefney Ongeri, PA-C</title>
-        <meta name="description" content="Interactive, source-cited conceptual animations of emergency pathophysiology for clinicians, including sepsis, LAD vs RCA occlusion, ischemic and hemorrhagic stroke, bowel perforation and retropharyngeal abscess." />
+        <meta name="description" content="Interactive, source-cited emergency pathophysiology lessons: upper-airway obstruction, sepsis, coronary occlusion, ischemic and hemorrhagic stroke, bowel perforation and retropharyngeal abscess." />
         <link rel="canonical" href={`https://jeffongeri.com${PATHO_HUB_PATH}`} />
         <meta property="og:title" content="Emergency Pathophysiology Atlas" />
         <meta property="og:description" content="Conceptual, phase-by-phase emergency pathophysiology lessons with clinical signals and sources." />
