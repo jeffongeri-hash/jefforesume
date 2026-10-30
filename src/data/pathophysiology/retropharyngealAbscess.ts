@@ -25,7 +25,7 @@ export const STRUCTURES: Record<StructureId, { label: string; explanation: strin
   collection: { label: 'Phlegmon / abscess', explanation: 'Phlegmon: diffuse inflammatory oedema and cellulitis without a discrete pus cavity. Abscess: a localised pus collection, often with an enhancing rim on contrast imaging. The two lie on a spectrum and imaging cannot always separate them.' },
 };
 
-export type Phase = BasePhase & { focus: StructureId[] };
+export type Phase = Omit<BasePhase, 'focus'> & { focus: StructureId[] };
 
 export const PHASES: Phase[] = [
   {
