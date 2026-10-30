@@ -143,3 +143,73 @@ const CONTENT: Record<RespiratoryCondition, Record<PhaseId, Content>> = {
     ] },
   },
 };
+
+const imaging: Record<RespiratoryCondition, string> = {
+  bronchiolitis: 'Typical bronchiolitis is assessed clinically; routine blood tests and chest radiographs are not recommended. Radiographic changes may mimic pneumonia and do not grade small-airway obstruction. Viral testing does not establish severity. No simulated scan is shown.',
+  'asthma-exacerbation': 'Chest imaging is not a direct measurement of bronchospasm and is not routine in uncomplicated asthma exacerbation; it can help assess suspected complications or alternative diagnoses. Peak flow/spirometry quantify airflow when feasible, but effort and technique matter and tests must not delay assessment of severe distress.',
+  'copd-exacerbation': 'Chest imaging may identify pneumonia, pneumothorax or edema but cannot by itself establish an exacerbation. CT emphysema and stable spirometry characterize baseline disease, not the sole acute cause. Blood-gas pH, CO₂ and bicarbonate require baseline, oxygen-exposure and sampling context.',
+  'pulmonary-hypertension': 'Echocardiography estimates PH probability and RV structure/function; pressure estimates can be inaccurate and do not confirm PH. Right-heart catheterization establishes hemodynamics in appropriate specialist assessment. V/Q imaging supports investigation for chronic thromboembolic disease; CT and pulmonary function assess causes, not a universal diagnostic image.',
+};
+export function sourcesFor(c: RespiratoryCondition): DeepRef[] { return c === 'bronchiolitis' ? [R.nice, R.rch] : c === 'asthma-exacerbation' ? [R.gina, R.asthma] : c === 'copd-exacerbation' ? [R.gold, R.copd] : [R.ph, R.rv]; }
+function scenarioSection(c: RespiratoryCondition, v: string, id: PhaseId) {
+  const scenario = scenarioFor(c, v);
+  let text = scenario.hint;
+  if (c === 'pulmonary-hypertension') {
+    const detail: Record<string, Record<PhaseId, string>> = {
+      pah: { normal: 'Healthy reference has a patent low-resistance arteriole.', trigger: 'Endothelial signaling imbalance, proliferation and remodeling are a Group 1 example; not all PAH has the same initiating cause.', obstruction: 'Medial hypertrophy and intimal remodeling narrow distal vessels, increasing PVR and pulsatile RV load.', burden: 'RV hypertrophy can initially preserve output despite increased arterial load.', risk: 'If RV–arterial coupling fails, forward flow and LV filling can fall while venous pressure rises.' },
+      'left-heart': { normal: 'Normal left atrial pressure provides a low downstream pressure for pulmonary venous drainage.', trigger: 'Elevated left atrial pressure is transmitted back into the pulmonary circulation; this is not primary small-artery PAH.', obstruction: 'Isolated post-capillary PH can have elevated pressure without raised PVR. Combined disease may add vascular remodeling and increased PVR.', burden: 'Sustained pulmonary pressure loads the RV, while LV disease also directly affects filling and output.', risk: 'Congestion and low output may reflect both ventricles; RV failure cannot be inferred from PH alone.' },
+      'lung-hypoxia': { normal: 'Healthy alveolar oxygenation and a preserved vascular bed support low resistance.', trigger: 'Underlying lung disease can produce hypoxia, hypoxic vasoconstriction and varying vascular-bed loss.', obstruction: 'Vasoconstriction and remodeling can increase PVR; the associated parenchymal gas-exchange problem is shown separately.', burden: 'Chronic RV loading varies with pulmonary disease and vascular phenotype; not all lung disease causes severe PH.', risk: 'RV dysfunction may combine with hypoxemia and ventilatory limitation; no identical failure mechanism is assumed.' },
+      cteph: { normal: 'Normal pulmonary arteries conduct blood without organized obstruction.', trigger: 'Persistent organized thromboembolic material obstructs portions of the pulmonary arterial tree; this is chronic disease, not an acute clot timeline.', obstruction: 'Obstructed proximal vessels plus secondary distal microvasculopathy increase RV load; obstruction is heterogeneous.', burden: 'The RV adapts to chronic load; V/Q defects inform etiologic investigation, not a synthetic diagnostic scan.', risk: 'Maladaptation can reduce output and cause congestion; chronic thromboembolic disease is not universally associated with the same degree of PH.' },
+    };
+    text = detail[scenario.id][id];
+  } else if (c === 'bronchiolitis' && scenario.id === 'young-infant') text += id === 'trigger' || id === 'risk' ? ' Immature respiratory control and low reserve can contribute to apnea independently of a steadily worsening obstruction sequence.' : ' Pediatric airway caliber and feeding reserve are emphasized; no apnea event is assumed in every infant.';
+  else if (c === 'asthma-exacerbation') text += id === 'trigger' ? (scenario.id === 'allergen' ? ' IgE-dependent mast-cell activation is highlighted; histamine and leukotrienes contribute to contraction and permeability.' : ' Viral epithelial injury and innate signaling are highlighted rather than assuming IgE-dependent activation.') : ' Downstream muscle contraction, edema and mucus can converge despite different initiating pathways.';
+  else if (c === 'copd-exacerbation') text += scenario.id === 'emphysema' ? ' Alveolar attachments, exchange surface and recoil are reduced at baseline; acute inflammation adds expiratory limitation.' : ' Baseline wall remodeling and secretions are emphasized; acute inflammation adds to existing limitation.';
+  return { h: `Selected scenario · ${scenario.label}`, t: text };
+}
+export function respiratoryDeep(c: RespiratoryCondition, v: string, phase: string): Deep | undefined {
+  if (!IDS.includes(phase as PhaseId)) return undefined;
+  const id = phase as PhaseId;
+  return { sections: [scenarioSection(c, v, id), ...CONTENT[c][id].sections, { h: 'Investigations and imaging — limits', t: imaging[c] }], refs: sourcesFor(c) };
+}
+export function phasesFor(c: RespiratoryCondition, v: string): GenericPhase<StructureId>[] {
+  return IDS.map(id => {
+    const x = CONTENT[c][id];
+    const focus: StructureId[] = c === 'pulmonary-hypertension' ? ['vessel', 'rv', 'lv'] : c === 'bronchiolitis' ? ['bronchiole', 'mucus', 'alveoli'] : c === 'asthma-exacerbation' ? ['bronchi', 'muscle', 'mucus'] : ['bronchiole', 'alveoli', 'mucus'];
+    return { id, name: x.short, short: x.short, explanation: `${x.explanation} ${scenarioSection(c, v, id).t}`, bedside: [...x.bedside], labs: x.labs.map(l => ({ ...l })), focus };
+  });
+}
+export function respiratoryState(c: RespiratoryCondition, time: number, v?: string, normal = false) {
+  const t = clampTime(time), scenario = scenarioFor(c, v).id;
+  const cause = normal ? 0 : ramp(t, 5, 9), obstruction = normal ? 0 : ramp(t, 10, 14), burden = normal ? 0 : ramp(t, 15, 19), risk = normal ? 0 : ramp(t, 20, 24);
+  const ph = c === 'pulmonary-hypertension';
+  const baseline = !normal && c === 'copd-exacerbation' ? 0.22 : 0;
+  const muscle = c === 'asthma-exacerbation' ? obstruction : 0;
+  const edema = ph ? 0 : cause * (c === 'bronchiolitis' ? 0.6 : 0.35);
+  const mucus = ph ? 0 : obstruction * (c === 'copd-exacerbation' && scenario === 'emphysema' ? 0.3 : 0.65) + baseline;
+  const airwayNarrowing = ph ? 0 : Math.min(0.8, baseline + obstruction * 0.58);
+  const emphysema = !normal && c === 'copd-exacerbation' && scenario === 'emphysema' ? 0.7 : 0;
+  const pvr = ph && scenario !== 'left-heart' ? obstruction : 0;
+  const downstreamPressure = ph && scenario === 'left-heart' ? obstruction : 0;
+  const vascularLoad = ph ? obstruction : 0;
+  return { condition: c, scenario, cause, obstruction, burden, risk, baseline, muscle, edema, mucus, airwayNarrowing, emphysema, pvr, downstreamPressure, vascularLoad,
+    trapping: ph ? 0 : baseline + burden * 0.6,
+    collapse: c === 'bronchiolitis' ? obstruction * 0.65 : 0,
+    mismatch: normal ? 0 : ph ? (scenario === 'lung-hypoxia' ? obstruction * 0.55 : 0) : baseline + obstruction * 0.6,
+    rvHypertrophy: ph ? burden : 0, rvDilation: ph ? risk * 0.7 : 0,
+    forwardFlow: ph ? 1 - risk * 0.45 : 1,
+    airFlow: ph ? 1 : Math.max(0.15, 1 - airwayNarrowing - risk * 0.16),
+  };
+}
+export function dataFor(c: RespiratoryCondition) {
+  return {
+    STRUCTURES, PHASES: phasesFor(c, ''), phasesFor: (v: string) => phasesFor(c, v), SOURCES: sourcesFor(c),
+    VARIATIONS: [
+      { title: 'Teaching phases, not a disease clock', text: 'Animation seconds separate mechanisms. PH remodeling is generally chronic; exacerbation trajectories and pediatric apnea vary. The final risk branch is not inevitable.' },
+      { title: 'Anatomy and phenotypes vary', text: 'The bronchiolar and alveolar cutaways are magnified conceptual insets, not continuous sections or diagnostic images. Mixed airway, parenchymal, cardiac and vascular disease may coexist.' },
+      { title: 'Clinical interpretation', text: imaging[c] },
+    ],
+    CANNOT_DETERMINE: ['An individual diagnosis, airway radius, pressure, gas value, severity or trajectory.', 'An imaging diagnosis from these illustrative lung, vessel or chamber shapes.', 'The cause from a single blood gas, BNP value, oxygen saturation or pressure estimate.', 'Patient-specific management, procedure decisions, medication choice or dosing.'],
+    ESCALATION_NOTE: c === 'pulmonary-hypertension' ? 'Syncope, rapidly worsening breathlessness, chest pain or signs of low output require urgent clinical assessment; severe symptoms warrant emergency services. This is conceptual education, not an individualized treatment plan.' : 'Apnea, cyanosis, severe breathing difficulty, exhaustion, altered responsiveness or poor air movement require prompt emergency assessment; severe symptoms warrant emergency services. Preserved oxygen saturation alone does not establish adequate ventilation or reserve.',
+  };
+}
