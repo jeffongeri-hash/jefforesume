@@ -4,8 +4,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BOWEL_PERFORATION_PATH, PATHO_HUB_PATH } from '@/data/pathophysiology/bowelPerforation';
 import { RETROPHARYNGEAL_PATH } from '@/data/pathophysiology/retropharyngealAbscess';
+import { SEPSIS_PATH } from '@/data/pathophysiology/sepsisShock';
+import { LAD_PATH } from '@/data/pathophysiology/ladOcclusion';
+import { MCA_STROKE_PATH } from '@/data/pathophysiology/mcaStroke';
 
 export const PATHO_LESSONS = [
+  { path: SEPSIS_PATH, system: 'Infection · Shock', title: 'Sepsis → Distributive Shock', blurb: 'Innate recognition, NO-related vasodilation, glycocalyx loss, capillary leak and heterogeneous capillary flow, with lactate limits.' },
+  { path: LAD_PATH, system: 'Cardiac · Coronary', title: 'LAD Occlusion → Ischemia / Infarction', blurb: 'Thrombotic occlusion, ATP and contractility loss, subendocardial wavefront, troponin rise/fall and ECG territory concepts.' },
+  { path: MCA_STROKE_PATH, system: 'Neurologic · Stroke', title: 'MCA Ischemic Stroke: Core & Penumbra', blurb: 'Occlusion, collateral recruitment, core vs potentially salvageable tissue, and conceptual NCCT/CTA/CT perfusion limits.' },
   { path: BOWEL_PERFORATION_PATH, system: 'Gastrointestinal · Surgical abdomen', title: 'Bowel Perforation → Peritonitis → Systemic Deterioration', blurb: 'Five scrubbable phases from intact containment to possible sepsis physiology, with synchronized clinical signals and limits.' },
   { path: RETROPHARYNGEAL_PATH, system: 'Head & neck · Airway', title: 'Retropharyngeal Abscess', blurb: 'Sagittal fascial-space anatomy, node infection, phlegmon vs abscess, possible airway narrowing and mediastinal spread risk.' },
 ];
@@ -15,7 +21,7 @@ export default function PathophysiologyAtlas() {
     <div className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>Emergency Pathophysiology Atlas | Jefney Ongeri, PA-C</title>
-        <meta name="description" content="Interactive, source-cited conceptual animations of emergency pathophysiology for clinicians, starting with bowel perforation and peritonitis." />
+        <meta name="description" content="Interactive, source-cited conceptual animations of emergency pathophysiology for clinicians, including sepsis, LAD occlusion, MCA stroke, bowel perforation and retropharyngeal abscess." />
         <link rel="canonical" href={`https://jeffongeri.com${PATHO_HUB_PATH}`} />
         <meta property="og:title" content="Emergency Pathophysiology Atlas" />
         <meta property="og:description" content="Conceptual, phase-by-phase emergency pathophysiology lessons with clinical signals and sources." />
