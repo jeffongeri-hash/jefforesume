@@ -16,7 +16,7 @@ export default function StrokeSymptomPanel({ time, variant, side, phaseIndex }: 
   const isAffected = (bodySide: 'left' | 'right') => d.bilateral || bodySide === contra;
   const fill = (w: number, bodySide: 'left' | 'right') => pv('inflame', isAffected(bodySide) ? 0.12 + 0.75 * w * on * (d.bilateral && bodySide === side ? 0.7 : 1) : 0.05);
   const P = { right: 0, left: 1 } as const; // index across viewer's x
-  const bx = (bs: 'left' | 'right', a: number, b: number) => (P[bs] === 0 ? a : b);
+  const bx = (bs: 'left' | 'right', a: string, b: string) => (P[bs] === 0 ? a : b);
   const field = (eye: number) => {
     // visual fields as seen by the patient: left field on the left
     const cx = 60 + eye * 90;
