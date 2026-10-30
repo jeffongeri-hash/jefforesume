@@ -1,9 +1,10 @@
+import { HEM_DEEP } from '@/data/pathophysiology/deepMechanisms';
 import PathoLessonPage from '@/components/pathophysiology/PathoLessonPage';
 import HemorrhagicStrokeScene from '@/components/pathophysiology/HemorrhagicStrokeScene';
 import * as data from '@/data/pathophysiology/hemorrhagicStroke';
 
 export default function HemorrhagicStrokeLesson() {
-  return <PathoLessonPage config={{
+  return <PathoLessonPage config={{ deep: (v: string, id: string) => HEM_DEEP[v === 'sah' ? 'sah' : 'ich'][id],
     path: data.HEMORRHAGIC_STROKE_PATH, lessonNo: 6, crumb: 'Hemorrhagic stroke: ICH vs SAH',
     title: 'Hemorrhagic Stroke: Intracerebral vs Subarachnoid Haemorrhage',
     metaTitle: 'Hemorrhagic Stroke: ICH vs SAH Pathophysiology | Emergency Pathophysiology Atlas',

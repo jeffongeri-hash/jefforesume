@@ -1,9 +1,10 @@
+import { SEPSIS_DEEP } from '@/data/pathophysiology/deepMechanisms';
 import PathoLessonPage from '@/components/pathophysiology/PathoLessonPage';
 import SepsisScene from '@/components/pathophysiology/SepsisScene';
 import * as data from '@/data/pathophysiology/sepsisShock';
 
 export default function SepsisShockLesson() {
-  return <PathoLessonPage config={{
+  return <PathoLessonPage config={{ deep: (_v: string, id: string) => SEPSIS_DEEP[id],
     path: data.SEPSIS_PATH, lessonNo: 3, crumb: 'Sepsis & distributive shock',
     title: 'Sepsis → Distributive Shock: Host Response, Vasodilation, Leak and Uneven Perfusion',
     metaTitle: 'Sepsis & Distributive Shock Pathophysiology | Emergency Pathophysiology Atlas',
