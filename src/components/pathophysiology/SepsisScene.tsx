@@ -38,7 +38,7 @@ export default function SepsisScene({ time, normal = false, showLabels, selected
 
       {/* Arteriole cross-section */}
       <g {...hit('smooth-muscle')}>
-        <circle cx={cx} cy={cy} r={R + 8 + smTh / 2} fill="none" stroke={pv('wall', 0.85)} strokeWidth={smTh} strokeDasharray="10 4" strokeWidth-opacity="1" />
+        <circle cx={cx} cy={cy} r={R + 8 + smTh / 2} fill="none" stroke={pv('wall', 0.85)} strokeWidth={smTh} strokeDasharray="10 4" />
         <Label show={showLabels} x={cx} y={cy + 100} anchor="middle">Smooth muscle (relaxes)</Label>
       </g>
       <g {...hit('endothelium')}>
