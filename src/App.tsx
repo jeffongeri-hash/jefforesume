@@ -52,6 +52,7 @@ const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
 const PhysiologyAnimationLab = lazy(() => import("./pages/PhysiologyAnimationLab"));
 const PathophysiologyAtlas = lazy(() => import("./pages/PathophysiologyAtlas"));
 const BowelPerforationLesson = lazy(() => import("./pages/BowelPerforationLesson"));
+const RetropharyngealAbscessLesson = lazy(() => import("./pages/RetropharyngealAbscessLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -110,6 +111,7 @@ const App = () => (
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
                 <Route path="/pathophysiology-atlas/bowel-perforation" element={<BowelPerforationLesson />} />
+                <Route path="/pathophysiology-atlas/retropharyngeal-abscess" element={<RetropharyngealAbscessLesson />} />
                 <Route path="/msk-anatomy-atlas/movement-injury" element={<MskMovementMechanics />} />
                 <Route path="/msk-anatomy-atlas/axial/neck" element={<MskAnatomyAtlas />} />
                 <Route path="/msk-anatomy-atlas/axial/back" element={<MskAnatomyAtlas />} />

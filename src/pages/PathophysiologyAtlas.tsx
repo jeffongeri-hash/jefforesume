@@ -3,9 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BOWEL_PERFORATION_PATH, PATHO_HUB_PATH } from '@/data/pathophysiology/bowelPerforation';
+import { RETROPHARYNGEAL_PATH } from '@/data/pathophysiology/retropharyngealAbscess';
 
 export const PATHO_LESSONS = [
   { path: BOWEL_PERFORATION_PATH, system: 'Gastrointestinal · Surgical abdomen', title: 'Bowel Perforation → Peritonitis → Systemic Deterioration', blurb: 'Five scrubbable phases from intact containment to possible sepsis physiology, with synchronized clinical signals and limits.' },
+  { path: RETROPHARYNGEAL_PATH, system: 'Head & neck · Airway', title: 'Retropharyngeal Abscess', blurb: 'Sagittal fascial-space anatomy, node infection, phlegmon vs abscess, possible airway narrowing and mediastinal spread risk.' },
 ];
 
 export default function PathophysiologyAtlas() {
