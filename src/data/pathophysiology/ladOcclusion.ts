@@ -88,7 +88,7 @@ export const SOURCES = [
   { name: 'Reimer KA, Jennings RB, et al. The wavefront phenomenon of ischemic cell death. Circulation 1977', url: 'https://doi.org/10.1161/01.CIR.56.5.786' },
   { name: 'Rao SV, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes. Circulation', url: 'https://doi.org/10.1161/CIR.0000000000001309' },
   { name: 'Byrne RA, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J', url: 'https://doi.org/10.1093/eurheartj/ehad191' },
-  { name: 'Namana V, et al. Right ventricular infarction. Cardiovasc Revasc Med 2018 / Inohara T, et al. Right ventricular myocardial infarction: from pathophysiology to prognosis (PMC review)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3716484/' },
+  { name: 'Right ventricular myocardial infarction: from pathophysiology to prognosis (review, PMC3716484)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3716484/' },
   { name: 'StatPearls: Right Ventricular Myocardial Infarction (NCBI Bookshelf)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK431048/' },
   { name: 'Ferguson JJ, et al. Significance of nitroglycerin-induced hypotension with inferior wall acute myocardial infarction. Am J Cardiol 1989', url: 'https://doi.org/10.1016/0002-9149(89)90525-0' },
   { name: 'American Heart Association: About Heart Attacks', url: 'https://www.heart.org/en/health-topics/heart-attack/about-heart-attacks' },
