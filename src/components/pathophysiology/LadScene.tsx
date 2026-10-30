@@ -152,7 +152,7 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
           return <g key={lead}><text x={x} y={y - 14} fontSize="9" fill={pv(hl ? 'alert' : 'ink', hl ? 1 : 0.65)}>{lead}</text><path d={`M ${x} ${y} h10 l3 3 l4 -20 l4 23 l3 ${-6 + st} h12 q 8 ${-10} 16 ${-st} h20`} fill="none" stroke={pv(hl ? 'alert' : 'ink', hl ? 1 : 0.6)} strokeWidth="1.6" /></g>;
         }))}
         {v === 'rca' && (() => { const x = 462, y = 478, st = -8 * s.rvIschemia, hl = s.rvIschemia > 0.2; return <g><text x={x} y={y - 14} fontSize="9" fill={pv(hl ? 'alert' : 'ink', 0.85)}>V4R (right-sided)</text><path d={`M ${x} ${y} h10 l3 3 l4 -20 l4 23 l3 ${-6 + st} h12 q 8 -10 16 ${-st} h20`} fill="none" stroke={pv(hl ? 'alert' : 'ink', 0.8)} strokeWidth="1.6" /><text x={x + 96} y={y - 2} fontSize="9" fill={pv('ink', 0.7)}>may change with RV involvement; often transient</text></g>; })()}
-        <text x="462" y={v === 'rca' ? 502 : 452} fontSize="9" fill={pv('ink', 0.7)}>{ecg.note.length > 95 ? ecg.note.slice(0, ecg.note.indexOf(';') + 1) : ecg.note}</text>
+        <text x="462" y={v === 'rca' ? 502 : 452} fontSize="9" fill={pv('ink', 0.7)}>Highlighted leads face the territory; small downward offsets = reciprocal change</text>
       </g>
 
       {/* Energetics meters */}
