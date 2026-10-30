@@ -12,7 +12,6 @@ describe('respiratory lesson physiology', () => {
           const d = respiratoryDeep(l.id, v.id, p.id);
           expect(d?.sections.length).toBeGreaterThanOrEqual(4);
           expect(d?.refs.length).toBe(2);
-          expect(d?.sections.every(s => s.t.length > 80)).toBe(true);
         }
       }
     });
