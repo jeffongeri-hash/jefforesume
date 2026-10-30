@@ -51,7 +51,8 @@ export default function RespiratoryScene({ condition, time, variant, normal = fa
     <g {...hit('bronchiole')}><circle cx="437" cy="187" r="76" fill="none" stroke={pv('ink', 0.01)} strokeWidth="10" />{label(535, 200, 'Remaining lumen')}</g>
     <text x="332" y="295" fontSize="11" fill={pv('ink', 0.8)}>{ph ? 'Airway remains patent in this vascular example' : condition === 'bronchiolitis' ? 'Edema + sloughed cells; not muscle spasm' : condition === 'copd-exacerbation' ? 'Baseline limitation + acute change' : 'Contraction + edema + mucus'}</text>
     <line x1="22" y1="397" x2="778" y2="397" stroke={pv('ink', 0.2)} />
-    <text x="22" y="421" fontSize="13" fill={pv('ink')}>Acinar / alveolar inset · gas and blood are separate</text>
+    <text x="22" y="421" fontSize="13" fill={pv('ink')}>Alveolar inset</text>
+    <text x="22" y="438" fontSize="11" fill={pv('ink', 0.7)}>Separate gas / blood compartments</text>
     <g {...hit('alveoli')}>
       <path d="M 110 443 L 110 474 M 110 474 L 63 514 M 110 474 L 159 514" stroke={pv('mucosa')} strokeWidth="13" fill="none" />
       {[[62, 532], [94, 559], [145, 555], [171, 529]].map(([x, y], i) => {
@@ -78,7 +79,7 @@ export default function RespiratoryScene({ condition, time, variant, normal = fa
     <text x="512" y="421" fontSize="13" fill={pv('ink')}>Separate ventricular cutaway</text>
     <g {...hit('rv')}>
       <path d={`M 648 461 Q ${516 - s.rvDilation * 18} 447 ${523 - s.rvDilation * 15} 535 Q 540 ${638 + s.rvDilation * 15} 679 600 Q 601 594 592 536 Q 591 482 648 461 Z`} fill={pv('vein', 0.25)} stroke={pv('vein')} strokeWidth={5 + s.rvHypertrophy * 9} />
-      {label(515, 661, 'RV: pressure load → adaptation')}
+      {label(515, 661, ph && !normal ? 'RV: pressure load → adaptation' : 'RV: reference chamber')}
     </g>
     <g {...hit('lv')}>
       <path d={`M 670 465 Q 739 492 721 559 Q 702 619 647 592 Q ${582 + s.rvDilation * 22} 560 ${605 + s.rvDilation * 20} 509 Q 626 464 670 465 Z`} fill={pv('wall', 0.35)} stroke={pv('wall')} strokeWidth="17" />
