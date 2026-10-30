@@ -1,6 +1,7 @@
 # Emergency Pathophysiology Atlas
 
 - [x] Lesson 1: Bowel perforation → peritonitis → systemic deterioration (/pathophysiology-atlas/bowel-perforation), hub, links, sitemap, tests, desktop/phone checks — not published (user asked to hold)
+- [x] Lesson 2: Retropharyngeal abscess (/pathophysiology-atlas/retropharyngeal-abscess) — preview only, not published
 
 # Roadmap — Movement revision and physiology lab
 
