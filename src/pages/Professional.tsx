@@ -263,7 +263,7 @@ const Professional = () => {
         </section>
 
         <ProfessionalFeatures />
-        <section aria-label="Clinical resources" className="container-blog border-y border-border py-6"><h2 className="font-serif text-2xl text-foreground">Clinical resources</h2><div className="mt-3 flex flex-wrap gap-3"><Button asChild variant="outline"><Link to="/physiology-animation-lab">Physiology Animation Lab</Link></Button><Button asChild variant="outline"><Link to="/msk-anatomy-atlas/movement-injury">MSK Movement &amp; Injury Mechanics</Link></Button></div></section>
+        <section aria-label="Clinical resources" className="container-blog border-y border-border py-6"><h2 className="font-serif text-2xl text-foreground">Clinical resources</h2><div className="mt-3 flex flex-wrap gap-3"><Button asChild variant="outline"><Link to="/physiology-animation-lab">Physiology Animation Lab</Link></Button><Button asChild variant="outline"><Link to="/msk-anatomy-atlas/movement-injury">MSK Movement &amp; Injury Mechanics</Link></Button><Button asChild variant="outline"><Link to="/pathophysiology-atlas">Emergency Pathophysiology Atlas</Link></Button></div></section>
 
         {/* Clinical Experience Section */}
         <section className="py-16" aria-labelledby="experience-heading">
