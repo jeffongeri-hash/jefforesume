@@ -42,18 +42,18 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
   const ecg = ecgPattern(v);
   const SX = 645, SY = 165, RO = 72, RI = 42;
   const [p1x, p1y] = polar(SX, SY, RO, -125), [p2x, p2y] = polar(SX, SY, RO, 125);
-  const rvCrescent = `M ${p1x} ${p1y} A 70 70 0 1 0 ${p2x} ${p2y} A ${RO} ${RO} 0 0 1 ${p1x} ${p1y} Z`;
+  const rvCrescent = `M ${p1x} ${p1y} A 62 62 0 0 0 ${p2x} ${p2y} A ${RO} ${RO} 0 0 1 ${p1x} ${p1y} Z`;
   const injR = RI + (RO - RI) * s.injury;
   const occ = v === 'lad' ? qAt(LADP, LAD_OCC) : qAt(RCAP, RCA_OCC);
   const vStroke = (id: StructureId, w: number) => (sel(id) ? w + 3 : w);
 
   return (
-    <svg viewBox="0 0 820 560" role="img" aria-label={title ?? `Illustrative anterior heart with coronary arteries, mid-ventricular short-axis territory map and 12-lead territory concept: ${v === 'lad' ? 'LAD' : 'RCA'} occlusion`} className="block h-auto w-full rounded-lg patho-scene" style={{ background: pv('bg') }}
+    <svg viewBox="-70 0 900 560" role="img" aria-label={title ?? `Illustrative anterior heart with coronary arteries, mid-ventricular short-axis territory map and 12-lead territory concept: ${v === 'lad' ? 'LAD' : 'RCA'} occlusion`} className="block h-auto w-full rounded-lg patho-scene" style={{ background: pv('bg') }}
       data-variant={v} data-flow={s.flow.toFixed(2)} data-injury={s.injury.toFixed(2)} data-contractility={s.contractility.toFixed(2)} data-rv={s.rvIschemia.toFixed(2)}>
       <defs>
         {(['lad', 'rca', 'lcx'] as const).map(a => <pattern key={a} id={`${pid}-hatch-${a}`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="none" /><rect width="3" height="6" fill={pv(ART_COLOR[a], 0.55)} /></pattern>)}
       </defs>
-      <text x="14" y="20" fontSize="11" fill={pv('ink', 0.75)}>Illustrative, anatomically informed drawing · anterior view, patient facing you (patient’s right = your left) · not an angiogram, echo or ECG</text>
+      <text x="-56" y="20" fontSize="11" fill={pv('ink', 0.75)}>Illustrative, anatomically informed drawing · anterior view, patient facing you (patient’s right = your left) · not an angiogram, echo or ECG</text>
 
       {/* Great vessels */}
       <g aria-hidden>
@@ -131,9 +131,9 @@ export default function LadScene({ time, normal = false, showLabels, selected, o
       <Label show={showLabels} x={SX} y={SY - RO - 6} anchor="middle" size={10}>Anterior</Label>
       <Label show={showLabels} x={SX} y={SY + RO + 15} anchor="middle" size={10}>Inferior</Label>
       <Label show={showLabels} x={SX + RO + 6} y={SY + 4} size={10}>Lateral</Label>
-      <Label show={showLabels} x={SX - RO - 50} y={SY + 4} anchor="middle" size={10}>RV</Label>
-      <Label show={showLabels} x={SX - RI + 4} y={SY + 4} size={9}>Septum</Label>
-      <Label show={showLabels} x={SX} y={SY + 4} anchor="middle" size={9}>LV cavity</Label>
+      <Label show={showLabels} x={SX - RO - 12} y={SY + 4} anchor="middle" size={10}>RV</Label>
+      <Label show={showLabels} x={SX - RO + 2} y={SY + RO - 8} anchor="end" size={9}>Septum</Label>
+      <Label show={showLabels} x={SX} y={SY + 4} anchor="middle" size={9}>LV</Label>
       <g {...hit('dominance')} transform="translate(520 262)">
         {[['LAD', 'fluid'], ['RCA', 'contents'], ['LCx', 'lcx']].map(([n, c], i) => <g key={n} transform={`translate(${i * 70} 0)`}><rect width="12" height="12" fill={pv(c, 0.6)} /><text x="16" y="10" fontSize="10" fill={pv('ink', 0.85)}>{n}</text></g>)}
         <rect x="210" width="12" height="12" fill={`url(#${pid}-hatch-lcx)`} stroke={pv('ink', 0.3)} /><text x="226" y="10" fontSize="10" fill={pv('ink', 0.85)}>variable / dominance</text>

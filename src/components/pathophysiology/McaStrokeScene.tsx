@@ -82,8 +82,8 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
         <clipPath id={`${pid}-clip-med`}>{clipFor}</clipPath>
       </defs>
       <text x="14" y="20" fontSize="11" fill={pv('ink', 0.75)}>Illustrative, anatomically informed drawing · territories from average atlases, variable between people · not a scan or 3D model</text>
-      <text x="210" y="40" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · lateral surface</text>
-      <text x="620" y="40" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · medial surface (midline cut)</text>
+      <text x="210" y="36" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · lateral surface</text>
+      <text x="620" y="36" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · medial surface (midline cut)</text>
       {(['lat', 'med'] as const).map(k => <g key={k}>
         <text x={X(k, 40)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>◀ anterior</text>
         <text x={X(k, 380)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>posterior ▶</text>
@@ -120,7 +120,7 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
       </g>
       {L('lat', 120, 100, 'Frontal')}{L('lat', 296, 92, 'Parietal')}{L('lat', 226, 262, 'Temporal')}{L('lat', 382, 140, 'Occipital', 'middle', 10)}
       {L('lat', 330, 306, 'Cerebellum', 'middle', 10)}{L('lat', 200, 120, 'leg↑ arm face↓', 'start', 9)}
-      {L('lat', 286, 160, 'Sylvian fissure', 'start', 9)}{L('lat', 244, 40, 'Central sulcus', 'middle', 9)}
+      {L('lat', 286, 160, 'Sylvian fissure', 'start', 9)}{L('lat', 252, 70, 'Central sulcus', 'start', 9)}
       {L('lat', 150, 348, 'ICA (deep)', 'middle', 10)}{L('lat', 300, 214, 'MCA branches', 'start', 10)}
       {showLabels && v === 'mca' && s.clot > 0.2 && L('lat', 134, 250, 'M1 occlusion', 'end', 10)}
 
@@ -156,7 +156,7 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
       </g>
       {L('med', 150, 104, 'ACA territory', 'middle', 10)}{L('med', 372, 120, 'PCA territory', 'middle', 10)}{L('med', 210, 140, 'Corpus callosum', 'middle', 9)}
       {L('med', 226, 186, 'Thalamus', 'middle', 9)}{L('med', 350, 165, 'Calcarine', 'middle', 9)}{L('med', 322, 316, 'Cerebellum', 'middle', 10)}
-      {L('med', 274, 350, 'Brainstem', 'start', 10)}{L('med', 226, 380, 'Basilar / vertebral', 'end', 10)}{L('med', 176, 222, 'Pcomm', 'middle', 9)}
+      {L('med', 270, 236, 'Brainstem', 'start', 9)}{L('med', 226, 326, 'Basilar / vertebral', 'end', 10)}{L('med', 176, 222, 'Pcomm', 'middle', 9)}
       {L('med', 110, 250, 'ICA', 'end', 9)}
 
       {/* Legend */}
