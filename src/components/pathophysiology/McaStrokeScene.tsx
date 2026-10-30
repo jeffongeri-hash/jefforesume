@@ -10,7 +10,7 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
   const hit = makeHit(STRUCTURES, selected, onSelect, compact);
   const sel = (id: StructureId) => selected === id;
   const branches = ['M 230 300 Q 260 220 250 150', 'M 230 300 Q 300 230 330 160', 'M 230 300 Q 330 270 400 230', 'M 230 300 Q 320 320 390 330'];
-  const coreR = 10 + 70 * s.core, penR = coreR + 75 * s.penumbra * (1 - 0.6 * s.core / 0.6 * 0.5);
+  const coreR = 10 + 70 * s.core, penR = coreR + 75 * s.penumbra * (1 - 0.7 * s.core);
   const ripple = 1 + 0.03 * Math.sin(time * 2.5);
   const dot = (i: number, n: number, sp: number) => ((i / n) + time * 0.2 * sp) % 1;
 
