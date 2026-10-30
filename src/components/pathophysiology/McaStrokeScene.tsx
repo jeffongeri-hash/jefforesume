@@ -63,13 +63,13 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
     <path d={qd(p)} fill="none" stroke={pv('vessel', 0.3 + 0.7 * flowFor(t))} strokeWidth={sel(id) ? width + 3 : width} strokeLinecap="round" />
     {Array.from({ length: 4 }, (_, i) => { const [x, y] = qAt(p, dot(i, 4)); return <circle key={i} cx={x} cy={y} r={2.4} fill={pv('rbc', flowFor(t))} />; })}
   </>;
-  const lesion = (k: 'lat' | 'med'): ReactNode => occ.view === k && !normal && <g>
+  const lesion = (k: 'lat' | 'med'): ReactNode => occ.view === k && !normal && v !== 'basilar' && <g>
     <g {...hit('oligemia')}>{s.oligemia > 0.05 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={penR + 26 * s.oligemia * r} fill={pv('fluid', 0.12 * s.oligemia)} stroke={pv('fluid', 0.45 * s.oligemia)} strokeDasharray="4 4" clipPath={`url(#${pid}-clip-${k})`} />}</g>
     <g {...hit('penumbra')}>{s.penumbra > 0.02 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={penR} fill={pv('alert', 0.5 * s.penumbra)} stroke={pv('alert', sel('penumbra') ? 1 : 0.7)} strokeWidth={sel('penumbra') ? 3 : 1.2} clipPath={`url(#${pid}-clip-${k})`} />}</g>
     <g {...hit('core')}>{s.core > 0.01 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={coreR} fill={pv('inflame', 0.92)} stroke={pv('ink', sel('core') ? 1 : 0.3)} strokeWidth={sel('core') ? 3 : 1} clipPath={`url(#${pid}-clip-${k})`} />}</g>
   </g>;
   const clot = (k: 'lat' | 'med') => occ.view === k && <g {...hit('clot')}><ellipse cx={occ.at[0]} cy={occ.at[1]} rx={3 + 6 * s.clot} ry={3 + 5 * s.clot} fill={pv('ink', 0.15 + 0.8 * s.clot)} stroke={pv('alert', sel('clot') ? 1 : 0.6)} strokeWidth={sel('clot') ? 2.5 : 1.2} /></g>;
-  const clipFor = v === 'mca' ? <path d={OUT} mask={`url(#${pid}-mca-mask)`} /> : v === 'aca' ? <path d={ACA_M} /> : v === 'pca' ? <path d={PCA_M} /> : <path d={POST_FOSSA} />;
+  const clipFor = v === 'mca' ? <path d={OUT} /> : v === 'aca' ? <path d={ACA_M} /> : v === 'pca' ? <path d={PCA_M} /> : <path d={POST_FOSSA} />;
   const hemi = side === 'left' ? 'Left' : 'Right';
 
   return (
@@ -78,8 +78,8 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
       <defs>
         <clipPath id={`${pid}-out`}><path d={OUT} /></clipPath>
         <mask id={`${pid}-mca-mask`}><path d={OUT} fill="white" /><path d={ACA_L} fill="black" /><path d={PCA_L} fill="black" /></mask>
-        <clipPath id={`${pid}-clip-lat`}>{v === 'mca' ? <path d={OUT} /> : <path d={OUT} />}</clipPath>
-        <clipPath id={`${pid}-clip-med`}>{v === 'mca' ? <path d={OUT} /> : clipFor}</clipPath>
+        <clipPath id={`${pid}-clip-lat`}><path d={`${OUT} ${ACA_L} ${PCA_L}`} clipRule="evenodd" /></clipPath>
+        <clipPath id={`${pid}-clip-med`}>{clipFor}</clipPath>
       </defs>
       <text x="14" y="20" fontSize="11" fill={pv('ink', 0.75)}>Illustrative, anatomically informed drawing · territories from average atlases, variable between people · not a scan or 3D model</text>
       <text x="210" y="40" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · lateral surface</text>
@@ -139,7 +139,6 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
         <g aria-hidden fill="none" stroke={pv('ink', 0.55)}><path d="M 335 64 Q 318 120 300 170" strokeWidth="2" /><path d="M 392 168 Q 350 170 304 176" strokeWidth="2" /></g>
         <g {...hit('cerebellum')}><ellipse cx={322} cy={278} rx={52} ry={30} fill={pv('serosa', active('post') ? 0.5 : 0.22)} stroke={pv('ink', sel('cerebellum') ? 1 : 0.35)} />{[0, 1, 2, 3].map(i => <path key={i} d={`M 322 278 L ${360 - i * 6} ${252 + i * 16}`} stroke={pv('ink', 0.3)} strokeWidth="0.8" />)}</g>
         <g {...hit('brainstem')}><path d="M 250 196 Q 252 260 258 340" stroke={pv('serosa', active('post') ? 0.65 : 0.32)} strokeWidth="28" fill="none" strokeLinecap="round" /><ellipse cx={248} cy={262} rx={18} ry={26} fill={pv('serosa', active('post') ? 0.5 : 0.25)} /></g>
-        {lesion('med') && v === 'basilar' ? null : null}
         {v === 'basilar' && !normal && <g clipPath={`url(#${pid}-clip-med)`}>
           <path d={POST_FOSSA} fill={pv('membrane', 0.5 * (1 - s.flow) * (1 - 0.35 * s.collateral))} />
           <g {...hit('penumbra')}>{s.penumbra > 0.02 && <circle cx={256} cy={262} r={penR} fill={pv('alert', 0.5 * s.penumbra)} />}</g>
