@@ -26,7 +26,7 @@ describe('coronary LAD vs RCA', () => {
     expect(lad.cardiacState('rca', 24, true)).toMatchObject({ rvIschemia: 0, inferiorIschemia: 0, injury: 0 });
   });
   it('venodilation lowers cardiac output more when the RV is ischemic (preload dependence)', () => {
-    const drop = (rv: number) => lad.preloadChain(rv, 1, false).cardiacOutput - lad.preloadChain(rv, 1, true).cardiacOutput;
+    const drop = (rv: number) => 1 - lad.preloadChain(rv, 1, true).cardiacOutput / lad.preloadChain(rv, 1, false).cardiacOutput; // relative fall
     expect(drop(0.85)).toBeGreaterThan(drop(0) * 1.5);
     expect(lad.preloadChain(0.85, 1, false).lvFilling).toBeLessThan(lad.preloadChain(0, 1, false).lvFilling);
   });

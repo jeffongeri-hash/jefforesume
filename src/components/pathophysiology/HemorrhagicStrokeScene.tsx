@@ -64,16 +64,16 @@ export default function HemorrhagicStrokeScene({ time, normal = false, showLabel
       {/* ICH haematoma and oedema */}
       {v === 'ich' && !normal && <g transform={`translate(${dx * 0.4} 0)`}>
         <g {...hit('edema')}>{s.edema > 0.01 && <circle cx={H.x} cy={H.y} r={eR} fill={pv('membrane', 0.35 * s.edema)} stroke={pv('membrane', 0.7 * s.edema)} strokeDasharray="4 3" />}{s.edema > 0.3 && <Label show={showLabels} x={H.x + eR + 6} y={H.y - eR + 6}>Oedema</Label>}</g>
-        <g {...hit('hematoma')}>{s.hematoma > 0.01 && <circle cx={H.x} cy={H.y} r={hR * pulse} fill={blood(0.92)} stroke={pv('ink', sel('hematoma') ? 1 : 0.3)} strokeWidth={sel('hematoma') ? 3 : 1} />}{s.expansion > 0.02 && <circle cx={H.x} cy={H.y} r={hR + 6} fill="none" stroke={pv('alert', 0.9)} strokeDasharray="3 3" />}{s.hematoma > 0.1 && <Label show={showLabels} x={H.x + hR + 10} y={H.y + 4}>{s.expansion > 0.05 ? 'Haematoma (expanding?)' : 'Haematoma'}</Label>}</g>
+        <g {...hit('hematoma')}>{s.hematoma > 0.01 && <circle cx={H.x} cy={H.y} r={hR * pulse} fill={blood(0.92)} stroke={pv('ink', sel('hematoma') ? 1 : 0.3)} strokeWidth={sel('hematoma') ? 3 : 1} />}{s.expansion > 0.02 && <circle cx={H.x} cy={H.y} r={hR + 6} fill="none" stroke={pv('alert', 0.9)} strokeDasharray="3 3" />}{s.hematoma > 0.1 && <Label show={showLabels} x={H.x} y={H.y + hR + 16} anchor="middle">{s.expansion > 0.05 ? 'Haematoma ± expansion' : 'Haematoma'}</Label>}</g>
       </g>}
-      {v === 'ich' && s.icp > 0.75 && <g aria-hidden><path d={`M ${CX + 30} 140 Q ${CX} 150 ${CX - 30} 150`} fill="none" stroke={pv('alert')} strokeWidth="2" markerEnd="" /><Label show={showLabels} x={CX - 36} y={140} anchor="end" size={10}>possible herniation risk</Label></g>}
+      {v === 'ich' && s.icp > 0.75 && <g aria-hidden><path d={`M ${CX + 30} 140 Q ${CX} 150 ${CX - 30} 150`} fill="none" stroke={pv('alert')} strokeWidth="2" /><Label show={showLabels} x={CX - 36} y={140} anchor="end" size={10}>possible herniation risk</Label></g>}
 
       {/* ICP + Monro–Kellie */}
       <g {...hit('icp')}>
         <rect x="520" y="60" width="285" height="170" rx="8" fill={pv('panel')} stroke={pv('ink', sel('icp') ? 1 : 0.2)} strokeWidth={sel('icp') ? 2.5 : 1} />
         <text x="534" y="80" fontSize="11" fill={pv('ink', 0.9)}>Monro–Kellie concept (qualitative)</text>
-        {(() => { const added = Math.min(0.35, 0.2 * s.hematoma + 0.12 * s.edema + 0.08 * s.sahSpread + 0.12 * s.hydro); const csf = 0.12 * compliance; const venous = 0.1 * (0.5 + 0.5 * compliance); const brain = 1 - added - csf - venous; let x = 534; return [['Brain', brain, 'brain'], ['Venous blood', venous, 'vein'], ['CSF reserve', csf, 'fluid'], [v === 'ich' ? 'Haematoma + oedema' : 'Blood + CSF block', added, 'rbc']].map(([n, w, c]) => { const width = 255 * (w as number); const el = <g key={n as string}><rect x={x} y={92} width={Math.max(0, width)} height={22} fill={pv(c as string, 0.75)} />{width > 40 && <text x={x + 4} y={107} fontSize="9" fill={pv('bg')}>{n as string}</text>}</g>; x += width; return el; }); })()}
-        <text x="534" y="132" fontSize="9" fill={pv('ink', 0.75)}>Added volume first displaces CSF and venous blood; once reserve is used, ICP rises steeply.</text>
+        {(() => { const added = Math.min(0.35, 0.2 * s.hematoma + 0.12 * s.edema + 0.08 * s.sahSpread + 0.12 * s.hydro); const csf = 0.12 * compliance; const venous = 0.1 * (0.5 + 0.5 * compliance); const brain = 1 - added - csf - venous; let x = 534; return [['Brain', brain, 'brain'], ['Venous blood', venous, 'vein'], ['CSF reserve', csf, 'fluid'], ['Added', added, 'rbc']].map(([n, w, c]) => { const width = 255 * (w as number); const el = <g key={n as string}><rect x={x} y={92} width={Math.max(0, width)} height={22} fill={pv(c as string, 0.75)} />{width > 40 && <text x={x + 4} y={107} fontSize="9" fill={pv('bg')}>{n as string}</text>}</g>; x += width; return el; }); })()}
+        <text x="534" y="132" fontSize="9" fill={pv('ink', 0.75)}>Added volume displaces CSF/venous blood first; then ICP rises.</text>
         <Meter x={534} y={160} w={255} label="Intracranial pressure (concept)" value={s.icp} color={pv('alert')} />
         <Meter x={534} y={198} w={255} label="Compensatory reserve (concept)" value={compliance} color={pv('fluid')} />
       </g>
@@ -86,7 +86,7 @@ export default function HemorrhagicStrokeScene({ time, normal = false, showLabel
           <rect width="122" height="120" rx="6" fill={pv('bg')} stroke={pv(k === v ? 'alert' : 'ink', k === v ? 0.9 : 0.3)} />
           <ellipse cx="61" cy="58" rx="46" ry="44" fill={pv('ink', 0.28)} stroke={pv('ink', 0.85)} strokeWidth="4" />
           <path d="M 49 46 Q 61 40 73 46 L 73 60 Q 61 56 49 60 Z" fill={pv('bg', 0.9)} />
-          {k === 'ich' ? <circle cx="80" cy="56" r={k === v ? 6 + 10 * s.hematoma : 12} fill={pv('ink', 0.95)} /> : <path d="M 40 86 Q 61 76 82 86 M 20 60 Q 30 58 38 64 M 102 60 Q 92 58 84 64 M 30 34 l 8 6 M 92 34 l -8 6" fill="none" stroke={pv('ink', 0.95)} strokeWidth={k === v ? 1.5 + 3 * s.sahSpread : 3} />}
+          {k === 'ich' ? <circle cx="80" cy="56" r={k === v ? 6 + 10 * s.hematoma : 12} fill={pv('ink', 0.95)} /> : <path d="M 61 60 L 61 80 M 61 72 L 47 82 M 61 72 L 75 82 M 61 64 L 45 58 M 61 64 L 77 58 M 18 50 l 8 2 M 104 50 l -8 2 M 34 22 l 5 7 M 88 22 l -5 7" fill="none" stroke={pv('ink', 0.95)} strokeWidth={k === v ? 1.5 + 2.5 * s.sahSpread : 3} strokeLinecap="round" />}
           <text x="61" y="114" fontSize="9" textAnchor="middle" fill={pv('ink', 0.8)}>{k === 'ich' ? 'ICH: bright blood in tissue' : 'SAH: bright cisterns/sulci'}</text>
         </g>)}
         <text x="534" y="424" fontSize="9" fill={pv('ink', 0.75)}>Acute blood is hyperdense. SAH sensitivity is highest early</text>
