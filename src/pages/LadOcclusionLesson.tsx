@@ -1,10 +1,11 @@
+import { CORONARY_DEEP } from '@/data/pathophysiology/deepMechanisms';
 import PathoLessonPage from '@/components/pathophysiology/PathoLessonPage';
 import LadScene from '@/components/pathophysiology/LadScene';
 import CardiacPreloadPanel from '@/components/pathophysiology/CardiacPreloadPanel';
 import * as data from '@/data/pathophysiology/ladOcclusion';
 
 export default function LadOcclusionLesson() {
-  return <PathoLessonPage config={{
+  return <PathoLessonPage config={{ deep: (v: string, id: string) => CORONARY_DEEP[v === 'rca' ? 'rca' : 'lad'][id],
     path: data.LAD_PATH, lessonNo: 4, crumb: 'Coronary occlusion: LAD vs RCA',
     title: 'Coronary Occlusion → Myocardial Ischemia → Possible Infarction: LAD vs RCA',
     metaTitle: 'LAD vs RCA Occlusion, Inferior MI & RV Involvement | Emergency Pathophysiology Atlas',
