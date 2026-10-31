@@ -11,8 +11,10 @@ import { HEMORRHAGIC_STROKE_PATH } from '@/data/pathophysiology/hemorrhagicStrok
 import { UPPER_AIRWAY_PATH } from '@/data/pathophysiology/upperAirway';
 import { RESPIRATORY_LESSONS } from '@/data/pathophysiology/respiratory';
 import { ECTOPIC_PATH } from '@/data/pathophysiology/ectopicPregnancy';
+import { HEMORRHAGIC_SHOCK_PATH } from '@/data/pathophysiology/hemorrhagicShock';
 
 export const PATHO_LESSONS = [
+  { path: HEMORRHAGIC_SHOCK_PATH, system: 'Shock & Circulation · Hemorrhage', title: 'Hemorrhagic Shock', blurb: 'Circulatory filling, blood loss, preload and sympathetic compensation, with possible organ dysfunction and detailed hemoglobin, lactate and coagulation limits.' },
   { path: ECTOPIC_PATH, system: 'OB/GYN · Pregnancy · Hemorrhage', title: 'Ruptured Ectopic Pregnancy', blurb: 'Normal versus tubal implantation, trophoblast invasion, possible hemoperitoneum and shock, with detailed hCG, ultrasound and acute blood-loss limitations.' },
   ...RESPIRATORY_LESSONS.map(l => ({ path: l.path, title: l.title, blurb: l.blurb, system: l.id === 'pulmonary-hypertension' ? 'Pulmonary vascular · Right heart' : 'Respiratory · Lower airway' })),
   { path: UPPER_AIRWAY_PATH, system: 'Pediatric · ENT · Airway', title: 'Upper-Airway Obstruction: Croup, Epiglottitis & Foreign Body', blurb: 'Sagittal airway comparison, subglottic vs supraglottic inflammation, variable object levels, airflow and effort, with phase-specific clinical mechanisms.' },
@@ -29,7 +31,7 @@ export default function PathophysiologyAtlas() {
     <div className="min-h-screen bg-background text-foreground">
       <Helmet>
         <title>Emergency Pathophysiology Atlas | Jefney Ongeri, PA-C</title>
-        <meta name="description" content="Interactive source-cited emergency lessons: ectopic pregnancy, respiratory, upper-airway, sepsis, cardiac and neurologic emergencies, with detailed mechanisms and clinical signals." />
+        <meta name="description" content="Interactive source-cited emergency lessons: hemorrhagic shock, ectopic pregnancy, respiratory, upper-airway, sepsis, cardiac and neurologic emergencies, with detailed mechanisms and clinical signals." />
         <link rel="canonical" href={`https://jeffongeri.com${PATHO_HUB_PATH}`} />
         <meta property="og:title" content="Emergency Pathophysiology Atlas" />
         <meta property="og:description" content="Conceptual, phase-by-phase emergency pathophysiology lessons with clinical signals and sources." />
