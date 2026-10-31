@@ -2,7 +2,7 @@ import { makePhases, makeDeep, lactate, renal, troponin, bnp, shockState, type P
 export { STRUCTURES, CANNOT_DETERMINE, ESCALATION_NOTE, LESSON_DURATION, clampTime, phaseAt, phaseStart, tick } from './shockCore';
 export const CARDIOGENIC_PATH = '/pathophysiology-atlas/cardiogenic-shock';
 export const SOURCES = [
-  { name: 'ACC (2025): Concise Clinical Guidance on cardiogenic shock — key points', url: 'https://www.acc.org/Latest-in-Cardiology/ten-points-to-remember/2025/04/01/16/19/2025-concise-clinical-guidance' },
+  { name: 'ACC (2025): Concise Clinical Guidance on cardiogenic shock — key points', url: 'https://www.acc.org/latest-in-cardiology/journal-scans/2025/03/17/18/39/accs-first-concise-clinical-guidance-focuses-on-evaluation-and-management-of-cardiogenic-shock' },
   { name: 'AHA Scientific Statement: Contemporary Management of Cardiogenic Shock (2017)', url: 'https://doi.org/10.1161/CIR.0000000000000525' },
   { name: 'Fourth Universal Definition of Myocardial Infarction (2018)', url: 'https://doi.org/10.1161/CIR.0000000000000617' },
 ];

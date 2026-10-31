@@ -3,7 +3,7 @@ export { STRUCTURES, CANNOT_DETERMINE, ESCALATION_NOTE, LESSON_DURATION, clampTi
 export const ANAPHYLACTIC_PATH = '/pathophysiology-atlas/anaphylactic-shock';
 export const SOURCES = [
  { name: 'World Allergy Organization Anaphylaxis Guidance 2020 — open full text', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7607509/' },
- { name: 'Resuscitation Council UK: Emergency treatment of anaphylaxis (2021 guideline)', url: 'https://www.resus.org.uk/library/additional-guidance/guidance-anaphylaxis/emergency-treatment' },
+ { name: 'Resuscitation Council UK: Emergency treatment of anaphylaxis (2021 guideline)', url: 'https://www.resus.org.uk/library/additional-guidance/guidance-anaphylaxis/emergency-treatment-anaphylactic-reactions' },
  { name: 'AAAAI/ACAAI: Anaphylaxis — a 2023 practice parameter update', url: 'https://doi.org/10.1016/j.anai.2023.09.015' },
 ];
 const tryptase = { name: 'Serum tryptase', trend: 'May transiently rise; may remain normal', mechanism: 'Activated mast cells can release tryptase. Acute and baseline paired samples can support mast-cell activation with timing-dependent interpretation.', limit: 'A normal result does not exclude anaphylaxis, particularly some food-triggered reactions. Elevated baseline values have other causes; testing must not delay emergency assessment.' };
