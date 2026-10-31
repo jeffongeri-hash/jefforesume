@@ -15,7 +15,7 @@ export const STRUCTURES = {
 };
 export type StructureId = keyof typeof STRUCTURES;
 export const SOURCES = [
-  { name: 'European guideline on major bleeding and coagulopathy following trauma: sixth edition (2023)', url: 'https://ccforum.biomedcentral.com/articles/10.1186/s13054-023-04327-7' },
+  { name: 'European guideline on major bleeding and coagulopathy following trauma: sixth edition (2023), recommendations 9–11 — open full text', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9977110/' },
   { name: 'MSD Manual Professional: Shock — oxygen delivery, compensation and clinical limitations', url: 'https://www.msdmanuals.com/professional/critical-care-medicine/shock-and-fluid-resuscitation/shock' },
   { name: 'NCBI Bookshelf: Acute Anemia — initial hemoglobin/hematocrit after whole-blood loss', url: 'https://www.ncbi.nlm.nih.gov/books/NBK537232/' },
   { name: 'Andersen et al., Mayo Clinic Proceedings (2013): Etiology and therapeutic approach to elevated lactate — mechanism review, not a treatment guide here', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3975915/' },
