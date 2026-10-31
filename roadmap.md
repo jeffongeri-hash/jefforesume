@@ -1,5 +1,11 @@
 # Emergency Pathophysiology Atlas
 
+## Active: Ectopic pregnancy (preview only)
+- [ ] Standalone pelvic animation, normal implantation comparison, phase-linked mechanisms and clinical signals
+- [ ] Hub, route, metadata, sitemap and authoritative functioning sources
+- [ ] Automated tests, desktop/phone interaction, accessibility and prior-lesson regression
+- [ ] Report preview URL, limitations, commit availability and credits; no publication
+
 ## Active: Respiratory expansion (preview only)
 - [x] Four dedicated respiratory routes and ten scenarios, phase-specific mechanisms/signals and shared conceptual anatomy
 - [x] Hub, metadata and 185-entry sitemap; seven source links HTTP 200, ESC/ERS DOI registry verified (publisher 403); current GINA CO2 guidance checked
