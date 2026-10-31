@@ -15,11 +15,11 @@ export const STRUCTURES = {
 };
 export type StructureId = keyof typeof STRUCTURES;
 export const SOURCES = [
-  { name: 'NICE NG126: Ectopic pregnancy and miscarriage — diagnosis, ultrasound and pregnancy of unknown location', url: 'https://www.nice.org.uk/guidance/ng126/chapter/recommendations' },
-  { name: 'RCOG: Ectopic pregnancy — symptoms, locations and diagnostic uncertainty', url: 'https://www.rcog.org.uk/for-the-public/browse-our-patient-information/ectopic-pregnancy/' },
-  { name: 'ACOG Practice Bulletin No. 193: Tubal Ectopic Pregnancy (professional guidance)', url: 'https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/03/tubal-ectopic-pregnancy' },
-  { name: 'MSD Manual Professional: Ectopic Pregnancy — tubal invasion, rupture and heterotopic pregnancy', url: 'https://www.msdmanuals.com/professional/gynecology-and-obstetrics/abnormalities-of-pregnancy/ectopic-pregnancy' },
-  { name: 'MSD Manual Professional: Overview of Anemia — acute blood-loss hemoglobin limitations', url: 'https://www.msdmanuals.com/professional/hematology-and-oncology/anemias-caused-by-hemolysis/overview-of-hemolytic-anemia' },
+  { name: 'NICE NG126 (updated 2026): Diagnosis, ultrasound and pregnancy of unknown location', url: 'https://www.nice.org.uk/guidance/ng126/chapter/diagnosis-of-viable-intrauterine-pregnancy-and-of-tubal-ectopic-pregnancy' },
+  { name: 'NICE NG126: Symptoms, signs and initial assessment of ectopic pregnancy', url: 'https://www.nice.org.uk/guidance/ng126/chapter/symptoms-and-signs-of-ectopic-pregnancy-and-initial-assessment' },
+  { name: 'ACOG Practice Bulletin No. 193 (2018): Tubal Ectopic Pregnancy — professional guidance; full text may require access', url: 'https://www.acog.org/clinical/guidance/practice-bulletin/2018/03/tubal-ectopic-pregnancy/' },
+  { name: 'MSD Manual Professional: Ectopic Pregnancy — tubal invasion, rupture and heterotopic pregnancy', url: 'https://www.msdmanuals.com/professional/gynecology-and-obstetrics/early-pregnancy-disorders/ectopic-pregnancy' },
+  { name: 'NCBI Bookshelf: Acute Anemia — general acute blood-loss physiology, not an ectopic guideline', url: 'https://www.ncbi.nlm.nih.gov/books/NBK537232/' },
   { name: 'MSD Manual Professional: Shock — perfusion physiology and lactate limitations', url: 'https://www.msdmanuals.com/professional/critical-care-medicine/shock-and-fluid-resuscitation/shock' },
 ];
 const pregnancy: Lab = { name: 'Pregnancy test / serum β-hCG', trend: 'May be positive; level and serial change vary', mechanism: 'Syncytiotrophoblast produces hCG regardless of whether implantation is intrauterine or ectopic. Early urine testing is less sensitive than serum testing and may be negative.', limit: 'A single value, low value or apparently reassuring rise does not locate a pregnancy or alone exclude ectopic pregnancy. A declining trend does not by itself establish that risk has ended.' };
