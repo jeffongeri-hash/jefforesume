@@ -1,5 +1,11 @@
 # Emergency Pathophysiology Atlas
 
+## Next priority: Shock & Circulation — hemorrhagic shock (preview only)
+- [ ] Build only /pathophysiology-atlas/hemorrhagic-shock with conceptual circulation, phase-linked mechanisms/signals and shared accessible controls
+- [ ] Add hub, route, metadata, sitemap and verified professional sources; preserve completed ectopic lesson and all prior modules
+- [ ] Run automated tests, desktop/phone, keyboard/reduced motion and prior-lesson regressions
+- [ ] Report preview URL, exact checks, limitations and available cost information; no production publication; subsequent topics await feedback
+
 ## Active: Ectopic pregnancy (preview only)
 - [x] Standalone pelvic animation, normal implantation comparison, phase-linked mechanisms and clinical signals
 - [x] Hub, route, metadata, 186-entry sitemap; six direct source destinations HTTP 200 (ACOG full text may require access)
