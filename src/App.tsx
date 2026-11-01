@@ -61,6 +61,7 @@ const UpperAirwayLesson = lazy(() => import("./pages/UpperAirwayLesson"));
 const RespiratoryLesson = lazy(() => import("./pages/RespiratoryLesson"));
 const EctopicPregnancyLesson = lazy(() => import("./pages/EctopicPregnancyLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
+const PostpartumEndometritisLesson = lazy(() => import("./pages/PostpartumEndometritisLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -119,6 +120,7 @@ const App = () => (
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
                 <Route path="/pathophysiology-atlas/hemorrhagic-shock" element={<HemorrhagicShockLesson />} />
+                <Route path="/pathophysiology-atlas/postpartum-endometritis" element={<PostpartumEndometritisLesson />} />
                 <Route path="/pathophysiology-atlas/ectopic-pregnancy" element={<EctopicPregnancyLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
