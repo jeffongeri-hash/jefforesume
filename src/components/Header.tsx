@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope, ChevronRight, House, Earth } from 'lucide-react';
+import { Search, Facebook, Twitter, Instagram, Menu, X, User, FileText, Award, TrendingUp, Calculator, MapPin, Plane, BookOpen, DollarSign, Stethoscope, ChevronRight, House, Earth, Bone, HeartPulse } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from './ThemeToggle';
 import { cn } from '@/lib/utils';
@@ -54,6 +54,13 @@ const Header = () => {
         { name: 'Sumerlin Trails', href: '/sumerlin-trails', icon: House, desc: 'Home projects and HOA guide' },
         { name: 'Kenya Trip', href: '/kenya-trip', icon: Earth, desc: 'UK stop and Nairobi planning' },
         { name: 'Vacation', href: '/vacation', icon: Plane, desc: 'Trip planning' },
+      ],
+    },
+    {
+      label: 'Clinical',
+      items: [
+        { name: 'Anatomy Atlas', href: '/msk-anatomy-atlas', icon: Bone, desc: 'Interactive 3D anatomy modules' },
+        { name: 'Pathophysiology Atlas', href: '/pathophysiology-atlas', icon: HeartPulse, desc: 'Animated emergency lessons' },
       ],
     },
     {

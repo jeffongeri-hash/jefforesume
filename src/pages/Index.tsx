@@ -45,6 +45,10 @@ const chapters = [
     href: '/posts',
     cta: 'Browse the atlases',
     image: sectionAtlas,
+    links: [
+      { name: 'Anatomy Atlas', href: '/msk-anatomy-atlas' },
+      { name: 'Emergency Pathophysiology Atlas', href: '/pathophysiology-atlas' },
+    ],
   },
 ];
 
@@ -187,6 +191,20 @@ const Index = () => {
                       {c.cta}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
+                    {'links' in c && c.links && (
+                      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                        {c.links.map((l) => (
+                          <Link
+                            key={l.href}
+                            to={l.href}
+                            className="group inline-flex items-center gap-1.5 text-sm font-medium text-ink/70 transition-colors hover:text-editorial"
+                          >
+                            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5" />
+                            {l.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </AnimatedSection>
