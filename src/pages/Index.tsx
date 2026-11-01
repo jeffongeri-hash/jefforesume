@@ -45,6 +45,10 @@ const chapters = [
     href: '/posts',
     cta: 'Browse the atlases',
     image: sectionAtlas,
+    links: [
+      { name: 'Anatomy Atlas', href: '/msk-anatomy-atlas' },
+      { name: 'Emergency Pathophysiology Atlas', href: '/pathophysiology-atlas' },
+    ],
   },
 ];
 
