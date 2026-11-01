@@ -62,6 +62,7 @@ const RespiratoryLesson = lazy(() => import("./pages/RespiratoryLesson"));
 const EctopicPregnancyLesson = lazy(() => import("./pages/EctopicPregnancyLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const PostpartumEndometritisLesson = lazy(() => import("./pages/PostpartumEndometritisLesson"));
+const ObEmergencyLesson = lazy(() => import("./pages/ObEmergencyLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -122,6 +123,11 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/hemorrhagic-shock" element={<HemorrhagicShockLesson />} />
                 <Route path="/pathophysiology-atlas/postpartum-endometritis" element={<PostpartumEndometritisLesson />} />
                 <Route path="/pathophysiology-atlas/ectopic-pregnancy" element={<EctopicPregnancyLesson />} />
+                <Route path="/pathophysiology-atlas/postpartum-hemorrhage" element={<ObEmergencyLesson kind="postpartum-hemorrhage" lessonNo={18} />} />
+                <Route path="/pathophysiology-atlas/preeclampsia-eclampsia" element={<ObEmergencyLesson kind="preeclampsia-eclampsia" lessonNo={19} />} />
+                <Route path="/pathophysiology-atlas/placental-abruption" element={<ObEmergencyLesson kind="placental-abruption" lessonNo={20} />} />
+                <Route path="/pathophysiology-atlas/chorioamnionitis" element={<ObEmergencyLesson kind="chorioamnionitis" lessonNo={21} />} />
+                <Route path="/pathophysiology-atlas/amniotic-fluid-embolism" element={<ObEmergencyLesson kind="amniotic-fluid-embolism" lessonNo={22} />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />
