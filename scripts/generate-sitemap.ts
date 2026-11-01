@@ -6,6 +6,7 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/pathophysiology-atlas/hemorrhagic-shock",
+  "/pathophysiology-atlas/cardiogenic-shock", "/pathophysiology-atlas/obstructive-shock", "/pathophysiology-atlas/anaphylactic-shock",
   "/pathophysiology-atlas/ectopic-pregnancy",
   "/pathophysiology-atlas/bronchiolitis", "/pathophysiology-atlas/asthma-exacerbation", "/pathophysiology-atlas/copd-exacerbation", "/pathophysiology-atlas/pulmonary-hypertension",
   "/pathophysiology-atlas/upper-airway-obstruction",
