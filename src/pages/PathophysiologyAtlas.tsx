@@ -12,8 +12,10 @@ import { UPPER_AIRWAY_PATH } from '@/data/pathophysiology/upperAirway';
 import { RESPIRATORY_LESSONS } from '@/data/pathophysiology/respiratory';
 import { ECTOPIC_PATH } from '@/data/pathophysiology/ectopicPregnancy';
 import { HEMORRHAGIC_SHOCK_PATH } from '@/data/pathophysiology/hemorrhagicShock';
+import { MESENTERIC_PATH } from '@/data/pathophysiology/mesentericIschemia';
 
 export const PATHO_LESSONS = [
+  { path: MESENTERIC_PATH, system: 'Gastrointestinal · Surgical abdomen', title: 'Acute Mesenteric Ischemia', blurb: 'SMA embolism, mucosal injury, bowel infarction, clinical signals and the limitations of lactate.' },
   { path: HEMORRHAGIC_SHOCK_PATH, system: 'Shock & Circulation · Hemorrhage', title: 'Hemorrhagic Shock', blurb: 'Circulatory filling, blood loss, preload and sympathetic compensation, with possible organ dysfunction and detailed hemoglobin, lactate and coagulation limits.' },
   { path: ECTOPIC_PATH, system: 'OB/GYN · Pregnancy · Hemorrhage', title: 'Ruptured Ectopic Pregnancy', blurb: 'Normal versus tubal implantation, trophoblast invasion, possible hemoperitoneum and shock, with detailed hCG, ultrasound and acute blood-loss limitations.' },
   ...RESPIRATORY_LESSONS.map(l => ({ path: l.path, title: l.title, blurb: l.blurb, system: l.id === 'pulmonary-hypertension' ? 'Pulmonary vascular · Right heart' : 'Respiratory · Lower airway' })),
