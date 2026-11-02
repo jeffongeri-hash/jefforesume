@@ -14,8 +14,10 @@ import { ECTOPIC_PATH } from '@/data/pathophysiology/ectopicPregnancy';
 import { HEMORRHAGIC_SHOCK_PATH } from '@/data/pathophysiology/hemorrhagicShock';
 import { POSTPARTUM_PATH } from '@/data/pathophysiology/postpartumEndometritis';
 import { OB_EMERGENCIES } from '@/data/pathophysiology/obEmergencies';
+import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatricCongenitalHeart';
 
 export const PATHO_LESSONS = [
+  { path: PEDIATRIC_CONGENITAL_HEART_PATH, system: 'Pediatric · Congenital cardiology', title: 'Critical Congenital Heart Disease', blurb: 'Anatomically oriented duct-dependent systemic flow and d-TGA mixing physiology from transition to decompensation.' },
   { path: OB_EMERGENCIES['postpartum-hemorrhage'].path, system: 'OB/GYN · Hemorrhage', title: 'Postpartum Hemorrhage', blurb: 'Tone, trauma, tissue and thrombin mechanisms, circulatory compensation and coagulopathy risk.' },
   { path: OB_EMERGENCIES['preeclampsia-eclampsia'].path, system: 'OB/GYN · Hypertension', title: 'Preeclampsia & Eclampsia', blurb: 'Placental signaling, endothelial dysfunction, organ injury and seizure risk.' },
   { path: OB_EMERGENCIES['placental-abruption'].path, system: 'OB/GYN · Obstetric hemorrhage', title: 'Placental Abruption', blurb: 'Maternal–placental interface hemorrhage, concealed loss, fetal-maternal risk and coagulopathy.' },
