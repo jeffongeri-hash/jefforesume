@@ -47,6 +47,16 @@ import imgOffTheClock from '@/assets/blog/off-the-clock.jpg';
 
 export const blogPosts: Post[] = [
   {
+    title: "12-Lead ECG Atlas — Lead by Lead",
+    category: "HEALTHCARE",
+    subcategory: "Clinical Education",
+    date: "November 2, 2026",
+    excerpt: "Interactive 12-lead ECG patterns, lead anatomy and territories, waveform exploration, interpretation pitfalls, and source-linked clinical context.",
+    image: imgCardiology,
+    slug: "12-lead-ecg-atlas",
+    tags: ["Cardiology", "ECG", "Clinical Education"]
+  },
+  {
     title: "Guideline Changes Atlas — Master Collection",
     category: "HEALTHCARE",
     subcategory: "Clinical Education",
@@ -1472,6 +1482,7 @@ const AllPosts = () => {
   // Map each post slug to a clinical system for grouping.
   const systemBySlug: Record<string, string> = {
     // Cardiology
+    "12-lead-ecg-atlas": "Cardiology",
     "ekg-strip-atlas": "Cardiology",
     "arrhythmia-origin-atlas": "Cardiology",
     // Pulmonary & Critical Care

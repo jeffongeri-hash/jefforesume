@@ -1,5 +1,9 @@
 # Emergency Pathophysiology Atlas
 
+## Current request: Cardiology ECG atlas
+- [x] Add uploaded lead-by-lead ECG release candidate as a Cardiology atlas volume, preserving its interactive HTML
+- [x] Verified Cardiology link → blog → embedded atlas, 61 rendered SVGs, ECG case/overlay/lead zoom and conduction selection/playback; phone layout without page overflow, no browser errors, sitemap entry and clean preview build; uploaded HTML unchanged
+
 ## Active: Remaining core Shock & Circulation (preview only)
 - [ ] Cardiogenic shock: separate route, pump failure/congestion, detailed mechanisms and signals
 - [ ] Obstructive shock: separate route with PE, tamponade and tension pneumothorax mechanisms

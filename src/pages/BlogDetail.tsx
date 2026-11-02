@@ -36,6 +36,22 @@ import imgFinanceFire from '@/assets/blog/finance-fire.jpg';
 import { RetirementAnimations, StockAnimations, FireAnimations } from '@/components/finance/FinanceAnimations';
 
 const blogPosts = {
+  "12-lead-ecg-atlas": {
+    title: "12-Lead ECG Atlas — Lead by Lead",
+    category: "HEALTHCARE",
+    date: "November 2, 2026",
+    readTime: "Interactive atlas",
+    author: "Jefney Ongeri",
+    authorAvatar: "/placeholder-avatar.jpg",
+    heroImage: businessPost,
+    content: `
+      <p>A lead-by-lead ECG reference with interactive patterns, cardiac lead anatomy and territories, waveform exploration, interpretation pitfalls, and clinical context. The uploaded prepublication release candidate is preserved; its synthetic tracings are educational illustrations, not patient ECGs or a diagnostic tool.</p>
+      <div class="my-8 overflow-hidden border border-border bg-card">
+        <iframe src="/embeds/12-lead-ecg-atlas.html" title="12-Lead ECG Atlas — Lead by Lead" style="width:100%;height:1600px;border:0;display:block;" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"></iframe>
+      </div>
+      <p><a href="/embeds/12-lead-ecg-atlas.html" target="_blank" rel="noopener noreferrer">Open the full ECG atlas in a new tab →</a></p>
+    `
+  },
   "retirement-accounts-401k-ira-explained": {
     title: "Retirement Accounts, Explained — 401(k), IRA & the Employer Match",
     category: "FINANCE",
