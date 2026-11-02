@@ -12,8 +12,18 @@ import { UPPER_AIRWAY_PATH } from '@/data/pathophysiology/upperAirway';
 import { RESPIRATORY_LESSONS } from '@/data/pathophysiology/respiratory';
 import { ECTOPIC_PATH } from '@/data/pathophysiology/ectopicPregnancy';
 import { HEMORRHAGIC_SHOCK_PATH } from '@/data/pathophysiology/hemorrhagicShock';
+import { POSTPARTUM_PATH } from '@/data/pathophysiology/postpartumEndometritis';
+import { OB_EMERGENCIES } from '@/data/pathophysiology/obEmergencies';
+import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatricCongenitalHeart';
 
 export const PATHO_LESSONS = [
+  { path: PEDIATRIC_CONGENITAL_HEART_PATH, system: 'Pediatric · Congenital cardiology', title: 'Critical Congenital Heart Disease', blurb: 'Anatomically oriented duct-dependent systemic flow and d-TGA mixing physiology from transition to decompensation.' },
+  { path: OB_EMERGENCIES['postpartum-hemorrhage'].path, system: 'OB/GYN · Hemorrhage', title: 'Postpartum Hemorrhage', blurb: 'Tone, trauma, tissue and thrombin mechanisms, circulatory compensation and coagulopathy risk.' },
+  { path: OB_EMERGENCIES['preeclampsia-eclampsia'].path, system: 'OB/GYN · Hypertension', title: 'Preeclampsia & Eclampsia', blurb: 'Placental signaling, endothelial dysfunction, organ injury and seizure risk.' },
+  { path: OB_EMERGENCIES['placental-abruption'].path, system: 'OB/GYN · Obstetric hemorrhage', title: 'Placental Abruption', blurb: 'Maternal–placental interface hemorrhage, concealed loss, fetal-maternal risk and coagulopathy.' },
+  { path: OB_EMERGENCIES['chorioamnionitis'].path, system: 'OB/GYN · Infection', title: 'Intraamniotic Infection', blurb: 'Ascending infection, fetal-maternal inflammation and possible systemic deterioration.' },
+  { path: OB_EMERGENCIES['amniotic-fluid-embolism'].path, system: 'OB/GYN · Critical care', title: 'Amniotic Fluid Embolism', blurb: 'Rare abrupt cardiopulmonary collapse and consumptive coagulopathy in a conceptual immune-mediated model.' },
+  { path: POSTPARTUM_PATH, system: 'OB/GYN · Infection', title: 'Postpartum Endometritis', blurb: 'Postpartum uterine infection, inflammatory findings and possible systemic deterioration.' },
   { path: HEMORRHAGIC_SHOCK_PATH, system: 'Shock & Circulation · Hemorrhage', title: 'Hemorrhagic Shock', blurb: 'Circulatory filling, blood loss, preload and sympathetic compensation, with possible organ dysfunction and detailed hemoglobin, lactate and coagulation limits.' },
   { path: ECTOPIC_PATH, system: 'OB/GYN · Pregnancy · Hemorrhage', title: 'Ruptured Ectopic Pregnancy', blurb: 'Normal versus tubal implantation, trophoblast invasion, possible hemoperitoneum and shock, with detailed hCG, ultrasound and acute blood-loss limitations.' },
   ...RESPIRATORY_LESSONS.map(l => ({ path: l.path, title: l.title, blurb: l.blurb, system: l.id === 'pulmonary-hypertension' ? 'Pulmonary vascular · Right heart' : 'Respiratory · Lower airway' })),
