@@ -6,6 +6,7 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/pathophysiology-atlas/postpartum-endometritis",
+  "/pathophysiology-atlas/critical-congenital-heart-disease",
   "/pathophysiology-atlas/postpartum-hemorrhage", "/pathophysiology-atlas/preeclampsia-eclampsia", "/pathophysiology-atlas/placental-abruption", "/pathophysiology-atlas/chorioamnionitis", "/pathophysiology-atlas/amniotic-fluid-embolism",
   "/pathophysiology-atlas/hemorrhagic-shock",
   "/pathophysiology-atlas/ectopic-pregnancy",
