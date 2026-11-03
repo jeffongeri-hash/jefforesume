@@ -6,7 +6,7 @@ type Props = { time: number; normal?: boolean; showLabels: boolean; selected: St
 const CX = 260, CY = 235;
 const DURA = `M ${CX - 198} ${CY} a 198 188 0 1 0 396 0 a 198 188 0 1 0 -396 0 Z`;
 const BRAIN = 'M 260 62 Q 330 50 390 92 Q 446 140 446 220 Q 448 286 410 322 Q 380 352 330 352 L 290 362 Q 260 372 230 362 L 190 352 Q 140 352 110 322 Q 72 286 74 220 Q 74 140 130 92 Q 190 50 260 62 Z';
-const SULCI = ['M 120 120 l 22 14', 'M 96 180 l 26 6', 'M 92 260 l 26 -6', 'M 400 120 l -22 14', 'M 424 180 l -26 6', 'M 428 260 l -26 -6', 'M 200 72 l 6 22', 'M 320 72 l -6 22'];
+const SULCI = ['M 120 120 q 18 5 25 20 t 10 17', 'M 96 180 q 16 0 24 10 t 13 13', 'M 92 260 q 15 -4 27 5 t 14 10', 'M 145 98 q 17 5 24 23 t 7 20', 'M 200 72 q 4 12 14 22 t 4 18', 'M 400 120 q -18 5 -25 20 t -10 17', 'M 424 180 q -16 0 -24 10 t -13 13', 'M 428 260 q -15 -4 -27 5 t -14 10', 'M 375 98 q -17 5 -24 23 t -7 20', 'M 320 72 q -4 12 -14 22 t -4 18'];
 
 export default function HemorrhagicStrokeScene({ time, normal = false, showLabels, selected, onSelect, compact, title, variant = 'ich' }: Props) {
   const v = asHem(variant);
@@ -63,8 +63,8 @@ export default function HemorrhagicStrokeScene({ time, normal = false, showLabel
 
       {/* ICH haematoma and oedema */}
       {v === 'ich' && !normal && <g transform={`translate(${dx * 0.4} 0)`}>
-        <g {...hit('edema')}>{s.edema > 0.01 && <circle cx={H.x} cy={H.y} r={eR} fill={pv('membrane', 0.35 * s.edema)} stroke={pv('membrane', 0.7 * s.edema)} strokeDasharray="4 3" />}{s.edema > 0.3 && <Label show={showLabels} x={H.x + eR + 6} y={H.y - eR + 6}>Oedema</Label>}</g>
-        <g {...hit('hematoma')}>{s.hematoma > 0.01 && <circle cx={H.x} cy={H.y} r={hR * pulse} fill={blood(0.92)} stroke={pv('ink', sel('hematoma') ? 1 : 0.3)} strokeWidth={sel('hematoma') ? 3 : 1} />}{s.expansion > 0.02 && <circle cx={H.x} cy={H.y} r={hR + 6} fill="none" stroke={pv('alert', 0.9)} strokeDasharray="3 3" />}{s.hematoma > 0.1 && <Label show={showLabels} x={H.x} y={H.y + hR + 16} anchor="middle">{s.expansion > 0.05 ? 'Haematoma ± expansion' : 'Haematoma'}</Label>}</g>
+        <g {...hit('edema')}>{s.edema > 0.01 && <ellipse cx={H.x} cy={H.y} rx={eR * 1.1} ry={eR * 0.82} fill={pv('membrane', 0.35 * s.edema)} stroke={pv('membrane', 0.7 * s.edema)} strokeDasharray="4 3" />}{s.edema > 0.3 && <Label show={showLabels} x={H.x + eR + 6} y={H.y - eR + 6}>Perihaematomal oedema</Label>}</g>
+        <g {...hit('hematoma')}>{s.hematoma > 0.01 && <path d="M -1 0 Q -0.9 -0.7 -0.3 -0.85 Q 0.28 -1.07 0.8 -0.54 Q 1.04 -0.1 0.86 0.42 Q 0.42 0.91 -0.2 0.84 Q -0.8 0.7 -1 0 Z" transform={`translate(${H.x} ${H.y}) scale(${hR * pulse} ${hR * pulse * 0.75})`} fill={blood(0.92)} stroke={pv('ink', sel('hematoma') ? 1 : 0.3)} strokeWidth="0.04" />}{s.expansion > 0.02 && <ellipse cx={H.x} cy={H.y} rx={hR + 6} ry={(hR + 6)*0.8} fill="none" stroke={pv('alert', 0.9)} strokeDasharray="3 3" />}{s.hematoma > 0.1 && <Label show={showLabels} x={H.x} y={H.y + hR + 16} anchor="middle">{s.expansion > 0.05 ? 'Haematoma ± expansion' : 'Haematoma'}</Label>}</g>
       </g>}
       {v === 'ich' && s.icp > 0.75 && <g aria-hidden><path d={`M ${CX + 30} 140 Q ${CX} 150 ${CX - 30} 150`} fill="none" stroke={pv('alert')} strokeWidth="2" /><Label show={showLabels} x={CX - 36} y={140} anchor="end" size={10}>possible herniation risk</Label></g>}
 
