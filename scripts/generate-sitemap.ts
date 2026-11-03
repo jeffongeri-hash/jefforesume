@@ -6,6 +6,7 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/pathophysiology-atlas/acute-mesenteric-ischemia",
+  "/pathophysiology-atlas/bowel-obstruction", "/pathophysiology-atlas/intra-abdominal-abscess",
   "/pathophysiology-atlas/hemorrhagic-shock",
   "/pathophysiology-atlas/ectopic-pregnancy",
   "/pathophysiology-atlas/bronchiolitis", "/pathophysiology-atlas/asthma-exacerbation", "/pathophysiology-atlas/copd-exacerbation", "/pathophysiology-atlas/pulmonary-hypertension",
