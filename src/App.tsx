@@ -61,6 +61,7 @@ const UpperAirwayLesson = lazy(() => import("./pages/UpperAirwayLesson"));
 const RespiratoryLesson = lazy(() => import("./pages/RespiratoryLesson"));
 const EctopicPregnancyLesson = lazy(() => import("./pages/EctopicPregnancyLesson"));
 const MesentericIschemiaLesson = lazy(() => import("./pages/MesentericIschemiaLesson"));
+const SurgicalAbdomenLesson = lazy(() => import("./pages/SurgicalAbdomenLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -122,6 +123,8 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/hemorrhagic-shock" element={<HemorrhagicShockLesson />} />
                 <Route path="/pathophysiology-atlas/ectopic-pregnancy" element={<EctopicPregnancyLesson />} />
                 <Route path="/pathophysiology-atlas/acute-mesenteric-ischemia" element={<MesentericIschemiaLesson />} />
+                <Route path="/pathophysiology-atlas/bowel-obstruction" element={<SurgicalAbdomenLesson kind="bowel-obstruction" />} />
+                <Route path="/pathophysiology-atlas/intra-abdominal-abscess" element={<SurgicalAbdomenLesson kind="intra-abdominal-abscess" />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />
