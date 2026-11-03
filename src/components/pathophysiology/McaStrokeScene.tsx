@@ -65,8 +65,10 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
   </>;
   const lesion = (k: 'lat' | 'med'): ReactNode => occ.view === k && !normal && v !== 'basilar' && <g>
     <g {...hit('oligemia')}>{s.oligemia > 0.05 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={penR + 26 * s.oligemia * r} fill={pv('fluid', 0.12 * s.oligemia)} stroke={pv('fluid', 0.45 * s.oligemia)} strokeDasharray="4 4" clipPath={`url(#${pid}-clip-${k})`} />}</g>
-    <g {...hit('penumbra')}>{s.penumbra > 0.02 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={penR} fill={pv('alert', 0.5 * s.penumbra)} stroke={pv('alert', sel('penumbra') ? 1 : 0.7)} strokeWidth={sel('penumbra') ? 3 : 1.2} clipPath={`url(#${pid}-clip-${k})`} />}</g>
-    <g {...hit('core')}>{s.core > 0.01 && <circle cx={occ.lesion[0]} cy={occ.lesion[1]} r={coreR} fill={pv('inflame', 0.92)} stroke={pv('ink', sel('core') ? 1 : 0.3)} strokeWidth={sel('core') ? 3 : 1} clipPath={`url(#${pid}-clip-${k})`} />}</g>
+    <g clipPath={`url(#${pid}-clip-${k})`}>
+      <g {...hit('penumbra')}>{s.penumbra > 0.02 && <path d="M -1 0 C -1 -0.55 -0.48 -0.92 0.08 -0.96 C 0.62 -1.06 0.95 -0.52 0.94 -0.1 C 1.06 0.38 0.59 0.72 0.12 0.91 C -0.4 0.98 -0.92 0.56 -1 0 Z" transform={`translate(${occ.lesion[0]} ${occ.lesion[1]}) scale(${penR} ${penR * 0.72})`} fill={pv('alert', 0.5 * s.penumbra)} stroke={pv('alert', sel('penumbra') ? 1 : 0.7)} strokeWidth={0.025} />}</g>
+      <g {...hit('core')}>{s.core > 0.01 && <path d="M -0.95 0.04 Q -0.91 -0.65 -0.28 -0.83 Q 0.12 -1.02 0.65 -0.6 Q 1 -0.2 0.84 0.31 Q 0.49 0.84 -0.08 0.9 Q -0.68 0.8 -0.95 0.04 Z" transform={`translate(${occ.lesion[0]} ${occ.lesion[1]}) scale(${coreR} ${coreR * 0.72})`} fill={pv('inflame', 0.92)} stroke={pv('ink', sel('core') ? 1 : 0.3)} strokeWidth={0.025} />}</g>
+    </g>
   </g>;
   const clot = (k: 'lat' | 'med') => occ.view === k && <g {...hit('clot')}><ellipse cx={occ.at[0]} cy={occ.at[1]} rx={3 + 6 * s.clot} ry={3 + 5 * s.clot} fill={pv('ink', 0.15 + 0.8 * s.clot)} stroke={pv('alert', sel('clot') ? 1 : 0.6)} strokeWidth={sel('clot') ? 2.5 : 1.2} /></g>;
   const clipFor = v === 'mca' ? <path d={OUT} /> : v === 'aca' ? <path d={ACA_M} /> : v === 'pca' ? <path d={PCA_M} /> : <path d={POST_FOSSA} />;
@@ -85,8 +87,8 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
       <text x="210" y="36" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · lateral surface</text>
       <text x="620" y="36" fontSize="12" textAnchor="middle" fill={pv('ink', 0.9)}>{hemi} hemisphere · medial surface (midline cut)</text>
       {(['lat', 'med'] as const).map(k => <g key={k}>
-        <text x={X(k, 40)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>◀ anterior</text>
-        <text x={X(k, 380)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>posterior ▶</text>
+        <text x={X(k, 40)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>{view[k].m ? 'anterior ▶' : '◀ anterior'}</text>
+        <text x={X(k, 380)} y={334} fontSize="10" textAnchor="middle" fill={pv('ink', 0.65)}>{view[k].m ? '◀ posterior' : 'posterior ▶'}</text>
       </g>)}
 
       {/* ---------- Lateral view ---------- */}
@@ -108,7 +110,7 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
           <path d="M 128 228 Q 200 214 286 168" strokeWidth="2.5" />
           <path d="M 240 46 Q 228 110 208 200" strokeWidth="2" />
           <path d="M 352 70 Q 345 170 340 238" strokeWidth="1" strokeDasharray="3 4" />
-          {['M 110 120 Q 150 110 190 130', 'M 92 170 Q 140 160 180 185', 'M 270 90 Q 300 120 320 110', 'M 170 250 Q 230 245 290 225'].map(d => <path key={d} d={d} strokeWidth="0.8" opacity="0.6" />)}
+          {['M 94 140 Q 112 121 137 128 T 188 142', 'M 86 165 Q 119 151 151 167 T 190 175', 'M 100 192 Q 128 181 161 192 T 196 191', 'M 125 105 Q 158 91 190 112', 'M 153 81 Q 177 73 204 92', 'M 253 78 Q 274 89 266 113 T 248 147', 'M 277 74 Q 304 93 292 117 T 269 157', 'M 305 80 Q 328 104 316 127 T 294 164', 'M 329 105 Q 343 130 326 153 T 311 174', 'M 149 239 Q 182 228 205 235 T 260 215', 'M 158 258 Q 194 249 225 251 T 285 225', 'M 344 180 Q 366 165 382 173'].map(d => <path key={d} d={d} strokeWidth="1.3" opacity="0.7" />)}
         </g>
         <g {...hit('motorStrip')}><path d="M 228 50 Q 216 112 198 196" fill="none" stroke={pv('alert', sel('motorStrip') ? 0.9 : 0.35)} strokeWidth={sel('motorStrip') ? 9 : 6} strokeLinecap="round" /></g>
         <g {...hit('cerebellum')}><ellipse cx={330} cy={282} rx={56} ry={27} fill={pv('serosa', active('post') ? 0.45 : 0.22)} stroke={pv('ink', sel('cerebellum') ? 1 : 0.35)} />{[0, 1, 2].map(i => <path key={i} d={`M ${284 + i * 4} ${272 + i * 8} Q 330 ${262 + i * 8} 380 ${274 + i * 6}`} fill="none" stroke={pv('ink', 0.3)} strokeWidth="0.8" />)}</g>
@@ -182,7 +184,7 @@ export default function McaStrokeScene({ time, normal = false, showLabels, selec
           <text x="10" y="98" fontSize="9" fill={pv('ink', 0.75)}>{note}</text>
         </g>)}
       </g>
-      <text x="20" y="540" fontSize="10" fill={pv('ink', 0.65)}>Lesion drawn in the {v === 'mca' ? 'lateral' : 'medial'} view; {v === 'basilar' ? 'basilar occlusion affects both hemispheres and the posterior fossa.' : `the opposite (${side === 'left' ? 'right' : 'left'}) side of the body is affected.`}</text>
+      <text x="20" y="540" fontSize="10" fill={pv('ink', 0.65)}>Injury zones are conceptual, not a scan or a prediction; {v === 'basilar' ? 'posterior circulation findings may be crossed, unilateral or bilateral.' : `when present, motor or sensory deficits are often contralateral (${side === 'left' ? 'right' : 'left'} body).`}</text>
     </svg>
   );
 }
