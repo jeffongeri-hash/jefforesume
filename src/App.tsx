@@ -128,6 +128,7 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/bowel-obstruction" element={<SurgicalAbdomenLesson kind="bowel-obstruction" />} />
                 <Route path="/pathophysiology-atlas/intra-abdominal-abscess" element={<SurgicalAbdomenLesson kind="intra-abdominal-abscess" />} />
                 <Route path="/pathophysiology-atlas/diabetic-ketoacidosis" element={<DiabeticKetoacidosisLesson />} />
+                <Route path="/pathophysiology-atlas/spinal-cord-pathways-injury" element={<SpinalCordLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />
