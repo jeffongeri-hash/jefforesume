@@ -63,6 +63,7 @@ const EctopicPregnancyLesson = lazy(() => import("./pages/EctopicPregnancyLesson
 const MesentericIschemiaLesson = lazy(() => import("./pages/MesentericIschemiaLesson"));
 const SurgicalAbdomenLesson = lazy(() => import("./pages/SurgicalAbdomenLesson"));
 const DiabeticKetoacidosisLesson = lazy(() => import("./pages/DiabeticKetoacidosisLesson"));
+const SpinalCordLesson = lazy(() => import("./pages/SpinalCordLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
