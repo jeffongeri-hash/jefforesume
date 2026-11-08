@@ -6,6 +6,9 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/pathophysiology-atlas/adrenal-crisis",
+  "/pathophysiology-atlas/hyperosmolar-hyperglycemic-state",
+  "/pathophysiology-atlas/severe-hypoglycemia",
+  "/pathophysiology-atlas/myxedema-coma",
   "/pathophysiology-atlas/thyroid-storm",
   "/pathophysiology-atlas/status-epilepticus",
   "/pathophysiology-atlas/spinal-cord-pathways-injury",

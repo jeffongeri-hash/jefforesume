@@ -67,6 +67,7 @@ const SpinalCordLesson = lazy(() => import("./pages/SpinalCordLesson"));
 const StatusEpilepticusLesson = lazy(() => import("./pages/StatusEpilepticusLesson"));
 const ThyroidStormLesson = lazy(() => import("./pages/ThyroidStormLesson"));
 const AdrenalCrisisLesson = lazy(() => import("./pages/AdrenalCrisisLesson"));
+const EndocrineEmergencyLesson = lazy(() => import("./pages/EndocrineEmergencyLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -135,6 +136,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/status-epilepticus" element={<StatusEpilepticusLesson />} />
                 <Route path="/pathophysiology-atlas/thyroid-storm" element={<ThyroidStormLesson />} />
                 <Route path="/pathophysiology-atlas/adrenal-crisis" element={<AdrenalCrisisLesson />} />
+                <Route path="/pathophysiology-atlas/hyperosmolar-hyperglycemic-state" element={<EndocrineEmergencyLesson kind="hhs" />} />
+                <Route path="/pathophysiology-atlas/severe-hypoglycemia" element={<EndocrineEmergencyLesson kind="hypoglycemia" />} />
+                <Route path="/pathophysiology-atlas/myxedema-coma" element={<EndocrineEmergencyLesson kind="myxedema-coma" />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />

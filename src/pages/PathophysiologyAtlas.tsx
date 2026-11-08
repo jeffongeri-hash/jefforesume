@@ -19,8 +19,12 @@ import { SPINAL_CORD_PATH } from '@/data/pathophysiology/spinalCord';
 import { STATUS_EPILEPTICUS_PATH } from '@/data/pathophysiology/statusEpilepticus';
 import { THYROID_STORM_PATH } from '@/data/pathophysiology/thyroidStorm';
 import { ADRENAL_CRISIS_PATH } from '@/data/pathophysiology/adrenalCrisis';
+import { PATHS as ENDOCRINE_PATHS } from '@/data/pathophysiology/endocrineEmergencies';
 
 export const PATHO_LESSONS = [
+  { path: ENDOCRINE_PATHS['myxedema-coma'], system: 'Endocrine · Thyroid emergency', title: 'Myxedema Coma', blurb: 'Severe hypothyroid decompensation: temperature, ventilation, water balance and cardiac slowing.' },
+  { path: ENDOCRINE_PATHS.hypoglycemia, system: 'Endocrine · Glucose emergency', title: 'Severe Hypoglycemia', blurb: 'Counterregulation, neuroglycopenia, recurrence and important laboratory limits.' },
+  { path: ENDOCRINE_PATHS.hhs, system: 'Endocrine · Glucose emergency', title: 'Hyperosmolar Hyperglycemic State', blurb: 'Hyperglycemia, osmotic diuresis, hyperosmolarity and cerebral dysfunction.' },
   { path: ADRENAL_CRISIS_PATH, system: 'Endocrine · Adrenal emergency', title: 'Adrenal Crisis', blurb: 'Cortisol deficiency, primary vs central disease, electrolytes and circulatory collapse.' },
   { path: THYROID_STORM_PATH, system: 'Endocrine · Thyroid emergency', title: 'Thyroid Storm', blurb: 'Thyroid hormone excess, adrenergic effects, fever and laboratory interpretation.' },
   { path: STATUS_EPILEPTICUS_PATH, system: 'Neurologic · Seizure emergency', title: 'Status Epilepticus', blurb: 'Network recruitment, declining inhibition, systemic stress and secondary-injury risk.' },
