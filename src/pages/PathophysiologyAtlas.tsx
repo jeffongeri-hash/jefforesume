@@ -16,8 +16,10 @@ import { MESENTERIC_PATH } from '@/data/pathophysiology/mesentericIschemia';
 import { LESSONS as SURGICAL_ABDOMEN } from '@/data/pathophysiology/surgicalAbdomen';
 import { DKA_PATH } from '@/data/pathophysiology/diabeticKetoacidosis';
 import { SPINAL_CORD_PATH } from '@/data/pathophysiology/spinalCord';
+import { STATUS_EPILEPTICUS_PATH } from '@/data/pathophysiology/statusEpilepticus';
 
 export const PATHO_LESSONS = [
+  { path: STATUS_EPILEPTICUS_PATH, system: 'Neurologic · Seizure emergency', title: 'Status Epilepticus', blurb: 'Network recruitment, declining inhibition, systemic stress and secondary-injury risk.' },
   { path: SPINAL_CORD_PATH, system: 'Neurologic · Spinal cord', title: 'Spinal Cord Injury: Tracts, Sensory Patterns & UMN Signs', blurb: 'Normal pathways first, then selectable cord-injury patterns linked to a motor and sensation body map.' },
   {path:DKA_PATH,system:'Endocrine · Metabolic emergency',title:'Diabetic Ketoacidosis',blurb:'Insulin deficiency, ketone formation, fluid losses, potassium shifts and laboratory interpretation.'},
   {path:SURGICAL_ABDOMEN['bowel-obstruction'].path,system:'Gastrointestinal · Surgical abdomen',title:'Small-Bowel Obstruction',blurb:'Mechanical obstruction, distension, fluid loss and possible strangulation.'},
