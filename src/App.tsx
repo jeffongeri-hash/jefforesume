@@ -68,6 +68,7 @@ const StatusEpilepticusLesson = lazy(() => import("./pages/StatusEpilepticusLess
 const ThyroidStormLesson = lazy(() => import("./pages/ThyroidStormLesson"));
 const AdrenalCrisisLesson = lazy(() => import("./pages/AdrenalCrisisLesson"));
 const EndocrineEmergencyLesson = lazy(() => import("./pages/EndocrineEmergencyLesson"));
+const RenalElectrolyteLesson = lazy(() => import("./pages/RenalElectrolyteLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -139,6 +140,12 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/hyperosmolar-hyperglycemic-state" element={<EndocrineEmergencyLesson kind="hhs" />} />
                 <Route path="/pathophysiology-atlas/severe-hypoglycemia" element={<EndocrineEmergencyLesson kind="hypoglycemia" />} />
                 <Route path="/pathophysiology-atlas/myxedema-coma" element={<EndocrineEmergencyLesson kind="myxedema-coma" />} />
+                <Route path="/pathophysiology-atlas/acute-kidney-injury" element={<RenalElectrolyteLesson kind="acute-kidney-injury" />} />
+                <Route path="/pathophysiology-atlas/hyperkalemia" element={<RenalElectrolyteLesson kind="hyperkalemia" />} />
+                <Route path="/pathophysiology-atlas/acid-base-disorders" element={<RenalElectrolyteLesson kind="acid-base" />} />
+                <Route path="/pathophysiology-atlas/rhabdomyolysis" element={<RenalElectrolyteLesson kind="rhabdomyolysis" />} />
+                <Route path="/pathophysiology-atlas/hyponatremia" element={<RenalElectrolyteLesson kind="hyponatremia" />} />
+                <Route path="/pathophysiology-atlas/hypernatremia" element={<RenalElectrolyteLesson kind="hypernatremia" />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />

@@ -20,8 +20,15 @@ import { STATUS_EPILEPTICUS_PATH } from '@/data/pathophysiology/statusEpilepticu
 import { THYROID_STORM_PATH } from '@/data/pathophysiology/thyroidStorm';
 import { ADRENAL_CRISIS_PATH } from '@/data/pathophysiology/adrenalCrisis';
 import { PATHS as ENDOCRINE_PATHS } from '@/data/pathophysiology/endocrineEmergencies';
+import { PATHS as RENAL_PATHS } from '@/data/pathophysiology/renalElectrolytes';
 
 export const PATHO_LESSONS = [
+  { path: RENAL_PATHS.hypernatremia, system: 'Renal & Electrolyte · Sodium', title: 'Hypernatremia', blurb: 'Water deficit, cellular dehydration, brain adaptation and correction-risk concepts.' },
+  { path: RENAL_PATHS.hyponatremia, system: 'Renal & Electrolyte · Sodium', title: 'Hyponatremia', blurb: 'Tonicity, brain water, cerebral edema and correction-risk concepts.' },
+  { path: RENAL_PATHS.rhabdomyolysis, system: 'Renal & Electrolyte · Muscle–kidney', title: 'Rhabdomyolysis', blurb: 'Myocyte injury, CK, myoglobin, electrolyte release and acute tubular injury.' },
+  { path: RENAL_PATHS['acid-base'], system: 'Renal & Electrolyte · Acid–base', title: 'Acid–Base Disorders', blurb: 'Buffers, respiratory compensation, anion-gap logic, cell shifts and medication-handling limits.' },
+  { path: RENAL_PATHS.hyperkalemia, system: 'Renal & Electrolyte · Cardiac', title: 'Hyperkalemia', blurb: 'Intracellular shifts, cardiac membrane potential and conceptual ECG progression.' },
+  { path: RENAL_PATHS['acute-kidney-injury'], system: 'Renal & Electrolyte · Kidney', title: 'Acute Kidney Injury', blurb: 'Hemodynamic, intrinsic tubular and postrenal mechanisms through the nephron.' },
   { path: ENDOCRINE_PATHS['myxedema-coma'], system: 'Endocrine · Thyroid emergency', title: 'Myxedema Coma', blurb: 'Severe hypothyroid decompensation: temperature, ventilation, water balance and cardiac slowing.' },
   { path: ENDOCRINE_PATHS.hypoglycemia, system: 'Endocrine · Glucose emergency', title: 'Severe Hypoglycemia', blurb: 'Counterregulation, neuroglycopenia, recurrence and important laboratory limits.' },
   { path: ENDOCRINE_PATHS.hhs, system: 'Endocrine · Glucose emergency', title: 'Hyperosmolar Hyperglycemic State', blurb: 'Hyperglycemia, osmotic diuresis, hyperosmolarity and cerebral dysfunction.' },
