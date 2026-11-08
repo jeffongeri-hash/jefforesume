@@ -18,8 +18,10 @@ import { DKA_PATH } from '@/data/pathophysiology/diabeticKetoacidosis';
 import { SPINAL_CORD_PATH } from '@/data/pathophysiology/spinalCord';
 import { STATUS_EPILEPTICUS_PATH } from '@/data/pathophysiology/statusEpilepticus';
 import { THYROID_STORM_PATH } from '@/data/pathophysiology/thyroidStorm';
+import { ADRENAL_CRISIS_PATH } from '@/data/pathophysiology/adrenalCrisis';
 
 export const PATHO_LESSONS = [
+  { path: ADRENAL_CRISIS_PATH, system: 'Endocrine · Adrenal emergency', title: 'Adrenal Crisis', blurb: 'Cortisol deficiency, primary vs central disease, electrolytes and circulatory collapse.' },
   { path: THYROID_STORM_PATH, system: 'Endocrine · Thyroid emergency', title: 'Thyroid Storm', blurb: 'Thyroid hormone excess, adrenergic effects, fever and laboratory interpretation.' },
   { path: STATUS_EPILEPTICUS_PATH, system: 'Neurologic · Seizure emergency', title: 'Status Epilepticus', blurb: 'Network recruitment, declining inhibition, systemic stress and secondary-injury risk.' },
   { path: SPINAL_CORD_PATH, system: 'Neurologic · Spinal cord', title: 'Spinal Cord Injury: Tracts, Sensory Patterns & UMN Signs', blurb: 'Normal pathways first, then selectable cord-injury patterns linked to a motor and sensation body map.' },
