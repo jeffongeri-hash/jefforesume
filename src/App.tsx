@@ -74,6 +74,7 @@ const DicLesson = lazy(() => import("./pages/DicLesson"));
 const HemostasisLesson = lazy(() => import("./pages/HemostasisLesson"));
 const VascularFlowLesson = lazy(() => import("./pages/VascularFlowLesson"));
 const BloodCellLesson = lazy(() => import("./pages/BloodCellLesson"));
+const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -163,6 +164,8 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/hemostasis-and-antithrombotics" element={<HemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/arterial-venous-flow-avm" element={<VascularFlowLesson />} />
                 <Route path="/pathophysiology-atlas/blood-cell-disorders" element={<BloodCellLesson />} />
+                <Route path="/pathophysiology-atlas/immune-response" element={<ImmuneMechanismLesson />} />
+                <Route path="/pathophysiology-atlas/antimicrobial-mechanisms" element={<ImmuneMechanismLesson antimicrobial />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
