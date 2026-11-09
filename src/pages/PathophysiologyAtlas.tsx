@@ -25,8 +25,12 @@ import { PATHS as TOX_PATHS } from '@/data/pathophysiology/toxicology';
 import { DIC_PATH } from '@/data/pathophysiology/disseminatedCoagulation';
 import { HEMOSTASIS_PATH } from '@/data/pathophysiology/hemostasis';
 import { VASCULAR_FLOW_PATH } from '@/data/pathophysiology/vascularFlow';
+import { BLOOD_CELLS_PATH } from '@/data/pathophysiology/bloodCells';
+import { INHERITED_HEMOSTASIS_PATH } from '@/data/pathophysiology/inheritedHemostasis';
 
 export const PATHO_LESSONS = [
+  { path: BLOOD_CELLS_PATH, system: 'Hematology · Blood cells', title: 'Blood Cell Disorders', blurb: 'Marrow and lymphoid changes in leukemia, lymphoma, reactive leukocytosis, megaloblastic anemia and thrombocytopenia.' },
+  { path: INHERITED_HEMOSTASIS_PATH, system: 'Hematology · Hemostasis', title: 'Inherited Bleeding and Clotting', blurb: 'Compare platelet adhesion, fibrin stabilization and inherited venous thrombosis mechanisms.' },
   { path: VASCULAR_FLOW_PATH, system: 'Vascular · Circulation', title: 'Arteries, Veins and AVMs', blurb: 'Vessel wall thickness, pulsatile flow, venous valves and AVM physiology.' },
   { path: HEMOSTASIS_PATH, system: 'Hematology · Hemostasis', title: 'Hemostasis and Antithrombotics', blurb: 'Platelet aggregation, intrinsic and extrinsic cascade, and medication targets.' },
   { path: DIC_PATH, system: 'Hematology · Coagulation', title: 'Disseminated Intravascular Coagulation', blurb: 'Microvascular clotting, platelet and factor consumption, fibrinolysis and bleeding risk.' },
