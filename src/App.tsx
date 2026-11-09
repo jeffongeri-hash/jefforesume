@@ -76,6 +76,7 @@ const VascularFlowLesson = lazy(() => import("./pages/VascularFlowLesson"));
 const BloodCellLesson = lazy(() => import("./pages/BloodCellLesson"));
 const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson"));
 const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson"));
+const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -171,6 +172,10 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/necrotizing-soft-tissue-infection" element={<ImmuneEmergencyLesson kind="softTissue" />} />
                 <Route path="/pathophysiology-atlas/febrile-neutropenia" element={<ImmuneEmergencyLesson kind="febrileNeutropenia" />} />
                 <Route path="/pathophysiology-atlas/infective-endocarditis" element={<ImmuneEmergencyLesson kind="endocarditis" />} />
+                <Route path="/pathophysiology-atlas/ureteral-stones" element={<GenitourinaryLesson kind="stones" />} />
+                <Route path="/pathophysiology-atlas/acute-urinary-retention" element={<GenitourinaryLesson kind="retention" />} />
+                <Route path="/pathophysiology-atlas/pyelonephritis-urosepsis" element={<GenitourinaryLesson kind="infection" />} />
+                <Route path="/pathophysiology-atlas/scrotal-pathophysiology" element={<GenitourinaryLesson kind="scrotum" />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />

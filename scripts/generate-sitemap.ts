@@ -5,6 +5,8 @@ import { resolve } from "path"
 const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
+  "/pathophysiology-atlas/ureteral-stones", "/pathophysiology-atlas/acute-urinary-retention",
+  "/pathophysiology-atlas/pyelonephritis-urosepsis", "/pathophysiology-atlas/scrotal-pathophysiology",
   "/pathophysiology-atlas/immune-response", "/pathophysiology-atlas/antimicrobial-mechanisms",
   "/pathophysiology-atlas/bacterial-meningitis",
   "/pathophysiology-atlas/necrotizing-soft-tissue-infection",

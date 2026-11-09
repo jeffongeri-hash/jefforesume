@@ -27,8 +27,12 @@ import { HEMOSTASIS_PATH } from '@/data/pathophysiology/hemostasis';
 import { VASCULAR_FLOW_PATH } from '@/data/pathophysiology/vascularFlow';
 import { BLOOD_CELLS_PATH } from '@/data/pathophysiology/bloodCells';
 import { INHERITED_HEMOSTASIS_PATH } from '@/data/pathophysiology/inheritedHemostasis';
+import { GU_LESSONS, GU_PATHS, type GuKind } from '@/data/pathophysiology/genitourinary';
 
 export const PATHO_LESSONS = [
+  ...(Object.keys(GU_PATHS) as GuKind[]).map(kind => ({
+    path: GU_PATHS[kind], system: GU_LESSONS[kind].system, title: GU_LESSONS[kind].title, blurb: GU_LESSONS[kind].intro,
+  })),
   { path: '/pathophysiology-atlas/immune-response', system: 'Immune · Host response', title: 'Immune Response and Blood Count Changes', blurb: 'Viral neutropenia, reactive leukocytosis and acute-phase proteins.' },
   { path: '/pathophysiology-atlas/antimicrobial-mechanisms', system: 'Infectious · Pharmacology', title: 'How Antimicrobials Work', blurb: 'Visualize the targets of antibiotics, antivirals and antiparasitics.' },
   { path: '/pathophysiology-atlas/bacterial-meningitis', system: 'Infectious · CNS', title: 'Bacterial Meningitis', blurb: 'Bacterial entry into CSF, meningeal inflammation, and edema.' },
