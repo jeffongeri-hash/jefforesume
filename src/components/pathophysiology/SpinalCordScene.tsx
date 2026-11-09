@@ -1,8 +1,23 @@
 import { asCord, sceneState, STRUCTURES, type CordStructure } from '@/data/pathophysiology/spinalCord';
 import { makeHit, pv } from './sceneKit';
+import FlowParticles from './FlowParticles';
 type Props = { time: number; normal?: boolean; compact?: boolean; showLabels: boolean; selected: CordStructure | null; onSelect: (id: CordStructure) => void; variant?: string; side?: 'left' | 'right'; title?: string };
 export default function SpinalCordScene({ time, normal = false, compact, showLabels, selected, onSelect, variant = 'complete', side = 'left', title }: Props) {
   const v = asCord(variant), s = normal ? { injury: 0, sensory: 0, motor: 0, umn: 0 } : sceneState(time), hit = makeHit(STRUCTURES, selected, onSelect, compact), left = side === 'left', ipsi = left ? 'left' : 'right', contra = left ? 'right' : 'left';
+  const t = normal ? 0 : time;
+  const tractLine = (mod: 'motor' | 'dcml' | 'st', y: number, color: string) => {
+    const ascending = mod !== 'motor';
+    return (['right', 'left'] as const).map((patientSide, i) => {
+      const lane = y - 5 + i*10;
+      const blocked = s.injury > .25 && (v === 'complete' || (v === 'anterior' && mod !== 'dcml') || (v === 'hemicord' && patientSide === side));
+      return <g key={patientSide}>
+        <text x="13" y={lane+3} fill={pv('ink', .8)} fontSize="8">{patientSide === 'left' ? 'L' : 'R'}</text>
+        <path d={`M26 ${lane} H205`} stroke={color} strokeWidth="2" opacity={blocked ? .24 : .6}/>
+        <FlowParticles from={[ascending ? 26 : 205, lane]} to={[blocked ? 115 : ascending ? 205 : 26, lane]} time={t} color={color} count={3} radius={2.5} speed={.48}/>
+        {blocked && <path d={`M112 ${lane-3} l6 6 m-6 0 l6 -6`} stroke={pv('alert')} strokeWidth="1.5"/>}
+      </g>;
+    });
+  };
   const lesion = v === 'complete' ? 'M 126 107 Q 180 62 234 107 L 216 174 Q 180 198 144 174 Z' : v === 'hemicord' ? (left ? 'M 180 107 Q 180 62 234 107 L 234 178 Q 215 178 180 178 Z' : 'M 126 107 Q 180 62 180 107 L 180 178 Q 145 178 126 107 Z') : v === 'anterior' ? 'M 130 132 Q 180 184 230 132 L 220 176 Q 180 204 140 176 Z' : 'M 157 113 Q 180 94 203 113 L 205 151 Q 180 170 155 151 Z';
   const bodyFill = (mod: 'motor' | 'dcml' | 'st', bodySide: 'left' | 'right') => {
     // Central cord is deliberately segmental: it is not painted as a whole-body deficit.
@@ -28,6 +43,6 @@ export default function SpinalCordScene({ time, normal = false, compact, showLab
       {silhouette('motor',0,'Motor / UMN below')}{silhouette('dcml',96,'Vibration / position')}{silhouette('st',192,'Pain / temperature')}
       <rect x="0" y="278" width="292" height="70" rx="10" fill={pv('panel')} stroke={pv('ink',.35)}/><text x="12" y="301" fill={pv('ink',.75)} fontSize="10">Color is a classic pathway pattern, not a measured deficit.</text><text x="12" y="319" fill={pv('ink',.75)} fontSize="10">{v==='hemicord'?`Cord lesion: ${side}; DCML/motor ipsilateral, pain-temperature contralateral below.`:v==='central'?'Central: only the segmental pain-temperature band is highlighted; motor/DCML are not implied.':'Complete/anterior: distribution varies with lesion level and completeness.'}</text><text x="12" y="337" fill={pv('ink',.75)} fontSize="10">Face is intentionally not colored: these are cord, not brainstem/cortical, patterns.</text>
     </g>
-    <g transform="translate(25 465)"><rect width="820" height="162" rx="12" fill={pv('panel')} stroke={pv('ink', .25)}/><text x="18" y="27" fontSize="13" fill={pv('ink')}>Pathway logic</text><path d="M26 51 H205" stroke={pv('fluid')} strokeWidth="6"/><text x="215" y="55" fontSize="12" fill={pv('ink')}>DCML: ascends ipsilateral → crosses in medulla</text><path d="M26 86 H205" stroke={pv('alert')} strokeWidth="6"/><text x="215" y="90" fontSize="12" fill={pv('ink')}>Pain / temperature: crosses near entry → ascends contralateral</text><path d="M26 121 H205" stroke={pv('inflame')} strokeWidth="6"/><text x="215" y="125" fontSize="12" fill={pv('ink')}>Corticospinal: mostly crossed in medulla → descends ipsilateral in cord</text><text x="18" y="148" fontSize="10" fill={pv('ink', .65)}>Central lesions may disrupt crossing pain-temperature fibers at the lesion level; complete and anterior patterns are commonly bilateral.</text></g>
+    <g transform="translate(25 465)"><rect width="820" height="162" rx="12" fill={pv('panel')} stroke={pv('ink', .25)}/><text x="18" y="27" fontSize="13" fill={pv('ink')}>Signal travel in cord · left of track is caudal, right is rostral</text>{tractLine("dcml",51,pv("fluid"))}<text x="215" y="55" fontSize="12" fill={pv('ink')}>DCML: ascends ipsilateral → crosses in medulla</text>{tractLine("st",86,pv("alert"))}<text x="215" y="90" fontSize="12" fill={pv('ink')}>Pain / temperature: crosses near entry → ascends contralateral</text>{tractLine("motor",121,pv("inflame"))}<text x="215" y="125" fontSize="12" fill={pv('ink')}>Corticospinal: mostly crossed in medulla → descends ipsilateral in cord</text><text x="18" y="148" fontSize="10" fill={pv('ink', .65)}>Tracks show tract side, not body side. The central example affects segmental crossing fibers.</text></g>
   </svg>;
 }
