@@ -5,6 +5,8 @@ import { resolve } from "path"
 const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
+  "/pathophysiology-atlas/tetralogy-of-fallot", "/pathophysiology-atlas/measles-complications",
+  "/pathophysiology-atlas/intussusception", "/pathophysiology-atlas/critical-congenital-heart-disease",
   "/pathophysiology-atlas/ureteral-stones", "/pathophysiology-atlas/acute-urinary-retention",
   "/pathophysiology-atlas/pyelonephritis-urosepsis", "/pathophysiology-atlas/scrotal-pathophysiology",
   "/pathophysiology-atlas/immune-response", "/pathophysiology-atlas/antimicrobial-mechanisms",

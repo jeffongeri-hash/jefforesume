@@ -77,6 +77,8 @@ const BloodCellLesson = lazy(() => import("./pages/BloodCellLesson"));
 const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson"));
 const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson"));
 const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
+const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLesson"));
+const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -176,6 +178,10 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/acute-urinary-retention" element={<GenitourinaryLesson kind="retention" />} />
                 <Route path="/pathophysiology-atlas/pyelonephritis-urosepsis" element={<GenitourinaryLesson kind="infection" />} />
                 <Route path="/pathophysiology-atlas/scrotal-pathophysiology" element={<GenitourinaryLesson kind="scrotum" />} />
+                <Route path="/pathophysiology-atlas/tetralogy-of-fallot" element={<PediatricEmergencyLesson kind="tetralogy" />} />
+                <Route path="/pathophysiology-atlas/measles-complications" element={<PediatricEmergencyLesson kind="measles" />} />
+                <Route path="/pathophysiology-atlas/intussusception" element={<PediatricEmergencyLesson kind="intussusception" />} />
+                <Route path="/pathophysiology-atlas/critical-congenital-heart-disease" element={<CongenitalHeartLesson />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
