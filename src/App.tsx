@@ -80,6 +80,7 @@ const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
 const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLesson"));
 const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
 const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
+const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -186,6 +187,10 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/acute-compartment-syndrome" element={<TraumaEmergencyLesson kind="compartment" />} />
                 <Route path="/pathophysiology-atlas/traumatic-vascular-injury" element={<TraumaEmergencyLesson kind="vascular" />} />
                 <Route path="/pathophysiology-atlas/tension-pneumothorax" element={<TraumaEmergencyLesson kind="pneumothorax" />} />
+                <Route path="/pathophysiology-atlas/acute-angle-closure" element={<HeadNeckEmergencyLesson kind="angle" />} />
+                <Route path="/pathophysiology-atlas/retinal-detachment" element={<HeadNeckEmergencyLesson kind="retina" />} />
+                <Route path="/pathophysiology-atlas/orbital-cellulitis" element={<HeadNeckEmergencyLesson kind="orbit" />} />
+                <Route path="/pathophysiology-atlas/peritonsillar-abscess" element={<HeadNeckEmergencyLesson kind="tonsil" />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
