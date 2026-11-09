@@ -30,8 +30,10 @@ import { INHERITED_HEMOSTASIS_PATH } from '@/data/pathophysiology/inheritedHemos
 import { GU_LESSONS, GU_PATHS, type GuKind } from '@/data/pathophysiology/genitourinary';
 import { PEDIATRIC_LESSONS } from '@/data/pathophysiology/pediatricEmergencies';
 import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatricCongenitalHeart';
+import { TRAUMA_LESSONS } from '@/data/pathophysiology/traumaEmergencies';
 
 export const PATHO_LESSONS = [
+  ...Object.values(TRAUMA_LESSONS).map(lesson => ({ path: lesson.path, system: 'Trauma · Emergencies', title: lesson.title, blurb: lesson.intro })),
   ...Object.values(PEDIATRIC_LESSONS).map(lesson => ({ path: lesson.path, system: 'Pediatric · Emergencies', title: lesson.title, blurb: lesson.intro })),
   { path: PEDIATRIC_CONGENITAL_HEART_PATH, system: 'Pediatric · Congenital cardiology', title: 'Critical Congenital Heart Disease', blurb: 'Duct-dependent systemic flow and d-transposition physiology during the newborn transition.' },
   ...(Object.keys(GU_PATHS) as GuKind[]).map(kind => ({

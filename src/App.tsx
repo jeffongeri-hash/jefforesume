@@ -79,6 +79,7 @@ const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson")
 const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
 const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLesson"));
 const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
+const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -182,6 +183,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/measles-complications" element={<PediatricEmergencyLesson kind="measles" />} />
                 <Route path="/pathophysiology-atlas/intussusception" element={<PediatricEmergencyLesson kind="intussusception" />} />
                 <Route path="/pathophysiology-atlas/critical-congenital-heart-disease" element={<CongenitalHeartLesson />} />
+                <Route path="/pathophysiology-atlas/acute-compartment-syndrome" element={<TraumaEmergencyLesson kind="compartment" />} />
+                <Route path="/pathophysiology-atlas/traumatic-vascular-injury" element={<TraumaEmergencyLesson kind="vascular" />} />
+                <Route path="/pathophysiology-atlas/tension-pneumothorax" element={<TraumaEmergencyLesson kind="pneumothorax" />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
