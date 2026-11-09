@@ -22,8 +22,10 @@ import { ADRENAL_CRISIS_PATH } from '@/data/pathophysiology/adrenalCrisis';
 import { PATHS as ENDOCRINE_PATHS } from '@/data/pathophysiology/endocrineEmergencies';
 import { PATHS as RENAL_PATHS } from '@/data/pathophysiology/renalElectrolytes';
 import { PATHS as TOX_PATHS } from '@/data/pathophysiology/toxicology';
+import { DIC_PATH } from '@/data/pathophysiology/disseminatedCoagulation';
 
 export const PATHO_LESSONS = [
+  { path: DIC_PATH, system: 'Hematology · Coagulation', title: 'Disseminated Intravascular Coagulation', blurb: 'Microvascular clotting, platelet and factor consumption, fibrinolysis and bleeding risk.' },
   {path:TOX_PATHS.environmental,system:'Toxicology & Environmental',title:'Environmental Emergencies',blurb:'Heat, cold, drowning and electrical injury with mechanism-linked correction concepts.'},
   {path:TOX_PATHS.envenomation,system:'Toxicology & Environmental · Envenomation',title:'Envenomation & Severe Arthropod Reactions',blurb:'Snake venom, scorpion toxicity, hives, anaphylaxis and antivenom concepts.'},
   {path:TOX_PATHS['carbon-monoxide-cyanide'],system:'Toxicology · Cellular oxygen',title:'Carbon Monoxide & Cyanide',blurb:'Oxygen delivery versus utilization failure.'},

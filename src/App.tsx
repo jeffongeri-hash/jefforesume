@@ -70,6 +70,7 @@ const AdrenalCrisisLesson = lazy(() => import("./pages/AdrenalCrisisLesson"));
 const EndocrineEmergencyLesson = lazy(() => import("./pages/EndocrineEmergencyLesson"));
 const RenalElectrolyteLesson = lazy(() => import("./pages/RenalElectrolyteLesson"));
 const ToxicologyLesson = lazy(() => import("./pages/ToxicologyLesson"));
+const DicLesson = lazy(() => import("./pages/DicLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -154,6 +155,7 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/carbon-monoxide-cyanide" element={<ToxicologyLesson kind="carbon-monoxide-cyanide" />} />
                 <Route path="/pathophysiology-atlas/envenomation" element={<ToxicologyLesson kind="envenomation" />} />
                 <Route path="/pathophysiology-atlas/environmental-emergencies" element={<ToxicologyLesson kind="environmental" />} />
+                <Route path="/pathophysiology-atlas/disseminated-intravascular-coagulation" element={<DicLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />
