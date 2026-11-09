@@ -15,6 +15,7 @@ const staticPaths = [
   "/pathophysiology-atlas/rhabdomyolysis",
   "/pathophysiology-atlas/hyponatremia",
   "/pathophysiology-atlas/hypernatremia",
+  "/pathophysiology-atlas/opioid-toxicity", "/pathophysiology-atlas/acetaminophen-toxicity", "/pathophysiology-atlas/salicylate-toxicity", "/pathophysiology-atlas/toxic-alcohols", "/pathophysiology-atlas/carbon-monoxide-cyanide", "/pathophysiology-atlas/envenomation", "/pathophysiology-atlas/environmental-emergencies",
   "/pathophysiology-atlas/thyroid-storm",
   "/pathophysiology-atlas/status-epilepticus",
   "/pathophysiology-atlas/spinal-cord-pathways-injury",

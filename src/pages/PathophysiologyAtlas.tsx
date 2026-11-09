@@ -21,8 +21,16 @@ import { THYROID_STORM_PATH } from '@/data/pathophysiology/thyroidStorm';
 import { ADRENAL_CRISIS_PATH } from '@/data/pathophysiology/adrenalCrisis';
 import { PATHS as ENDOCRINE_PATHS } from '@/data/pathophysiology/endocrineEmergencies';
 import { PATHS as RENAL_PATHS } from '@/data/pathophysiology/renalElectrolytes';
+import { PATHS as TOX_PATHS } from '@/data/pathophysiology/toxicology';
 
 export const PATHO_LESSONS = [
+  {path:TOX_PATHS.environmental,system:'Toxicology & Environmental',title:'Environmental Emergencies',blurb:'Heat, cold, drowning and electrical injury with mechanism-linked correction concepts.'},
+  {path:TOX_PATHS.envenomation,system:'Toxicology & Environmental · Envenomation',title:'Envenomation & Severe Arthropod Reactions',blurb:'Snake venom, scorpion toxicity, hives, anaphylaxis and antivenom concepts.'},
+  {path:TOX_PATHS['carbon-monoxide-cyanide'],system:'Toxicology · Cellular oxygen',title:'Carbon Monoxide & Cyanide',blurb:'Oxygen delivery versus utilization failure.'},
+  {path:TOX_PATHS['toxic-alcohols'],system:'Toxicology · Metabolic',title:'Toxic Alcohols',blurb:'Toxic metabolism, acidosis and metabolic blockade.'},
+  {path:TOX_PATHS.salicylate,system:'Toxicology · Acid–base',title:'Salicylate Toxicity',blurb:'Mixed acid–base physiology and tissue penetration.'},
+  {path:TOX_PATHS.acetaminophen,system:'Toxicology · Hepatic',title:'Acetaminophen Toxicity',blurb:'NAPQI, glutathione depletion and N-acetylcysteine.'},
+  {path:TOX_PATHS.opioid,system:'Toxicology · Respiratory',title:'Opioid Toxicity',blurb:'Ventilatory failure, hypercapnia and receptor reversal.'},
   { path: RENAL_PATHS.hypernatremia, system: 'Renal & Electrolyte · Sodium', title: 'Hypernatremia', blurb: 'Water deficit, cellular dehydration, brain adaptation and correction-risk concepts.' },
   { path: RENAL_PATHS.hyponatremia, system: 'Renal & Electrolyte · Sodium', title: 'Hyponatremia', blurb: 'Tonicity, brain water, cerebral edema and correction-risk concepts.' },
   { path: RENAL_PATHS.rhabdomyolysis, system: 'Renal & Electrolyte · Muscle–kidney', title: 'Rhabdomyolysis', blurb: 'Myocyte injury, CK, myoglobin, electrolyte release and acute tubular injury.' },
