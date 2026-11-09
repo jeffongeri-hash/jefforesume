@@ -31,6 +31,10 @@ import { INHERITED_HEMOSTASIS_PATH } from '@/data/pathophysiology/inheritedHemos
 export const PATHO_LESSONS = [
   { path: '/pathophysiology-atlas/immune-response', system: 'Immune · Host response', title: 'Immune Response and Blood Count Changes', blurb: 'Viral neutropenia, reactive leukocytosis and acute-phase proteins.' },
   { path: '/pathophysiology-atlas/antimicrobial-mechanisms', system: 'Infectious · Pharmacology', title: 'How Antimicrobials Work', blurb: 'Visualize the targets of antibiotics, antivirals and antiparasitics.' },
+  { path: '/pathophysiology-atlas/bacterial-meningitis', system: 'Infectious · CNS', title: 'Bacterial Meningitis', blurb: 'Bacterial entry into CSF, meningeal inflammation, and edema.' },
+  { path: '/pathophysiology-atlas/necrotizing-soft-tissue-infection', system: 'Infectious · Soft tissue', title: 'Necrotizing Soft-Tissue Infection', blurb: 'Deep fascial spread, tissue ischemia, and surgical source control.' },
+  { path: '/pathophysiology-atlas/febrile-neutropenia', system: 'Immune · Host defense', title: 'Febrile Neutropenia', blurb: 'Marrow suppression, barrier disruption, and infection risk.' },
+  { path: '/pathophysiology-atlas/infective-endocarditis', system: 'Infectious · Cardiac', title: 'Infective Endocarditis and Septic Emboli', blurb: 'Valve seeding, vegetation growth, and systemic versus pulmonary embolization.' },
   { path: BLOOD_CELLS_PATH, system: 'Hematology · Blood cells', title: 'Blood Cell Disorders', blurb: 'Marrow and lymphoid changes in leukemia, lymphoma, reactive leukocytosis, megaloblastic anemia and thrombocytopenia.' },
   { path: INHERITED_HEMOSTASIS_PATH, system: 'Hematology · Hemostasis', title: 'Inherited Bleeding and Clotting', blurb: 'Compare platelet adhesion, fibrin stabilization and inherited venous thrombosis mechanisms.' },
   { path: VASCULAR_FLOW_PATH, system: 'Vascular · Circulation', title: 'Arteries, Veins and AVMs', blurb: 'Vessel wall thickness, pulsatile flow, venous valves and AVM physiology.' },

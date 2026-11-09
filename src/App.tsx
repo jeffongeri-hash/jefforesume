@@ -75,6 +75,7 @@ const HemostasisLesson = lazy(() => import("./pages/HemostasisLesson"));
 const VascularFlowLesson = lazy(() => import("./pages/VascularFlowLesson"));
 const BloodCellLesson = lazy(() => import("./pages/BloodCellLesson"));
 const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson"));
+const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -166,6 +167,10 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/blood-cell-disorders" element={<BloodCellLesson />} />
                 <Route path="/pathophysiology-atlas/immune-response" element={<ImmuneMechanismLesson />} />
                 <Route path="/pathophysiology-atlas/antimicrobial-mechanisms" element={<ImmuneMechanismLesson antimicrobial />} />
+                <Route path="/pathophysiology-atlas/bacterial-meningitis" element={<ImmuneEmergencyLesson kind="meningitis" />} />
+                <Route path="/pathophysiology-atlas/necrotizing-soft-tissue-infection" element={<ImmuneEmergencyLesson kind="softTissue" />} />
+                <Route path="/pathophysiology-atlas/febrile-neutropenia" element={<ImmuneEmergencyLesson kind="febrileNeutropenia" />} />
+                <Route path="/pathophysiology-atlas/infective-endocarditis" element={<ImmuneEmergencyLesson kind="endocarditis" />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />

@@ -6,6 +6,10 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/pathophysiology-atlas/immune-response", "/pathophysiology-atlas/antimicrobial-mechanisms",
+  "/pathophysiology-atlas/bacterial-meningitis",
+  "/pathophysiology-atlas/necrotizing-soft-tissue-infection",
+  "/pathophysiology-atlas/febrile-neutropenia",
+  "/pathophysiology-atlas/infective-endocarditis",
   "/pathophysiology-atlas/blood-cell-disorders", "/pathophysiology-atlas/inherited-bleeding-and-clotting",
   "/pathophysiology-atlas/arterial-venous-flow-avm",
   "/pathophysiology-atlas/hemostasis-and-antithrombotics",
