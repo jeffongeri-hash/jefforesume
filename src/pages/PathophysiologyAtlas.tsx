@@ -23,8 +23,10 @@ import { PATHS as ENDOCRINE_PATHS } from '@/data/pathophysiology/endocrineEmerge
 import { PATHS as RENAL_PATHS } from '@/data/pathophysiology/renalElectrolytes';
 import { PATHS as TOX_PATHS } from '@/data/pathophysiology/toxicology';
 import { DIC_PATH } from '@/data/pathophysiology/disseminatedCoagulation';
+import { HEMOSTASIS_PATH } from '@/data/pathophysiology/hemostasis';
 
 export const PATHO_LESSONS = [
+  { path: HEMOSTASIS_PATH, system: 'Hematology · Hemostasis', title: 'Hemostasis and Antithrombotics', blurb: 'Platelet aggregation, intrinsic and extrinsic cascade, and medication targets.' },
   { path: DIC_PATH, system: 'Hematology · Coagulation', title: 'Disseminated Intravascular Coagulation', blurb: 'Microvascular clotting, platelet and factor consumption, fibrinolysis and bleeding risk.' },
   {path:TOX_PATHS.environmental,system:'Toxicology & Environmental',title:'Environmental Emergencies',blurb:'Heat, cold, drowning and electrical injury with mechanism-linked correction concepts.'},
   {path:TOX_PATHS.envenomation,system:'Toxicology & Environmental · Envenomation',title:'Envenomation & Severe Arthropod Reactions',blurb:'Snake venom, scorpion toxicity, hives, anaphylaxis and antivenom concepts.'},
