@@ -7,8 +7,14 @@ const labels: Record<string, [string,string,string]> = {
   neutropenia:['Viral illness','Bone marrow precursors','Circulating neutrophils ↓'],
   leukocytosis:['Stress / inflammation','Vessel margin + marrow','Circulating neutrophils ↑'],
   'acute-phase':['Innate immune cells · IL-6','Hepatocytes','CRP, SAA and fibrinogen ↑'],
-  wall:['Beta-lactam','PBPs / wall cross-links','Peptidoglycan weakened'],
-  ribosome:['Macrolide','Bacterial 50S subunit','Peptide elongation stalls'],
+  'beta-lactam':['Beta-lactam','PBPs / wall cross-links','Peptidoglycan weakened'],
+  macrolide:['Macrolide','Bacterial 50S subunit','Peptide elongation stalls'],
+  fosfomycin:['Fosfomycin','MurA / early wall precursor','Precursor supply decreases'],
+  glycopeptide:['Vancomycin and related agents','D-Ala-D-Ala / wall assembly','Wall synthesis decreases'],
+  bacitracin:['Bacitracin','Bactoprenol carrier recycling','Wall precursor transport decreases'],
+  sulfonamide:['Sulfonamide','Dihydropteroate synthase','Dihydrofolate synthesis decreases'],
+  trimethoprim:['Trimethoprim','Dihydrofolate reductase','Tetrahydrofolate synthesis decreases'],
+  bedaquiline:['Bedaquiline','Mycobacterial ATP synthase','ATP production decreases'],
   dna:['Activated acyclovir','Viral DNA polymerase','DNA extension stops'],
   release:['Oseltamivir metabolite','Influenza neuraminidase','Virion release decreases'],
   tubulin:['Albendazole','Helminth beta-tubulin','Microtubule assembly falls'],
@@ -40,6 +46,7 @@ function MechanismScene({time, normal, compact, selected, onSelect, variant = ''
   const immune = data.immuneCases.some(c=>c.id===variant);
   const increasing = variant==='leukocytosis' || variant==='acute-phase';
   const strength = increasing ? .25+.75*effect : 1-.84*effect;
+  const ribosomeX = 165+155*(1-effect)*((t*.33)%1);
   return <svg viewBox="0 0 760 360" role="group" aria-label={label.join(', ')} className="block h-auto w-full rounded-lg patho-scene" style={{background:pv('bg')}}>
     <g {...hit('signal')}>
       <text x="27" y="48" fill={pv('ink')} fontSize="17">{label[0]}</text>
@@ -55,8 +62,8 @@ function MechanismScene({time, normal, compact, selected, onSelect, variant = ''
       </g>)}
       {(visual==='ribosome30' || visual==='ribosome50') && <>
         <path d="M48 211H697" stroke={pv('fluid')} strokeWidth="3"/>
-        <ellipse cx={165+155*(1-effect)*((t*.33)%1)} cy="189" rx={visual==='ribosome30'?48:63} ry="26" fill={pv('serosa')}/>
-        <path d={visual==='ribosome30' ? 'M112 175q53-37 104 0' : 'M102 175q63-44 126 0'} fill="none" stroke={pv('alert')} strokeWidth="5" opacity={.45+.55*effect}/>
+        <ellipse cx={ribosomeX} cy="189" rx={visual==='ribosome30'?48:63} ry="26" fill={pv('serosa')}/>
+        <path d={visual==='ribosome30' ? 'M-53 175q53-37 104 0' : 'M-63 175q63-44 126 0'} transform={`translate(${ribosomeX} 0)`} fill="none" stroke={pv('alert')} strokeWidth="5" opacity={effect}/>
         <text x="82" y="231" fill={pv('ink')} fontSize="11">mRNA</text>
         <FlowParticles from={[260,181]} to={[680,181]} time={t} strength={strength} color={pv('alert')} count={9}/>
       </>}
@@ -67,9 +74,11 @@ function MechanismScene({time, normal, compact, selected, onSelect, variant = ''
         {Array.from({length:14},(_,i)=><circle key={i} cx={85+i*43} cy={190} r={3+10*effect*((i%3)+1)/3} fill={pv('alert')} opacity={effect}/>) }
         <FlowParticles from={[84,190]} to={[690,190]} time={t} strength={1-effect} color={pv('serosa')} count={11}/>
       </>}
-      {visual==='folate' && <><text x="72" y="170" fill={pv('ink')} fontSize="14">PABA</text><text x="306" y="170" fill={pv('ink')} fontSize="14">DHF</text><text x="548" y="170" fill={pv('ink')} fontSize="14">THF</text><path d="M135 180H290 M370 180H530" stroke={pv('alert')} strokeWidth="5" strokeDasharray={effect>.1?'10 7':'0'} /></>}
-      {visual==='mycobacterial' && <><rect x="102" y="148" width="530" height="72" rx="35" fill="none" stroke={pv('serosa')} strokeWidth="16"/><path d="M118 184H618" stroke={pv('alert')} strokeWidth="5" strokeDasharray={effect>.1?'14 8':'0'} /><text x="306" y="192" fill={pv('ink')} fontSize="14">lipid-rich envelope / ATP</text></>}
-      {(variant==='release' || visual==='viral') && <>
+      {visual==='folate' && <><text x="72" y="170" fill={pv('ink')} fontSize="14">PABA</text><text x="306" y="170" fill={pv('ink')} fontSize="14">DHF</text><text x="548" y="170" fill={pv('ink')} fontSize="14">THF</text><path d="M135 180H290" stroke={pv('alert')} strokeWidth="5" strokeDasharray={variant==='sulfonamide'&&effect>.1?'10 7':'0'}/><path d="M370 180H530" stroke={pv('alert')} strokeWidth="5" strokeDasharray={variant==='trimethoprim'&&effect>.1?'10 7':'0'}/><path d={variant==='sulfonamide'?'M215 165V195':'M450 165V195'} stroke={pv('ink')} strokeWidth="5" opacity={effect}/></>}
+      {visual==='mycobacterial' && variant!=='bedaquiline' && <><rect x="102" y="148" width="530" height="72" rx="35" fill="none" stroke={pv('serosa')} strokeWidth="16"/><path d="M118 184H618" stroke={pv('alert')} strokeWidth="5" strokeDasharray={effect>.1?'14 8':'0'} /><text x="306" y="192" fill={pv('ink')} fontSize="14">lipid-rich envelope</text></>}
+      {variant==='bedaquiline' && <><path d="M70 208H690" stroke={pv('fluid')} strokeWidth="8"/><circle cx="365" cy="184" r="24" fill={pv('serosa')} stroke={pv('ink')} strokeWidth="3"/><path d={`M365 164v40 M345 184h40`} transform={`rotate(${t*100*(1-effect)} 365 184)`} stroke={pv('alert')} strokeWidth="4"/><text x="414" y="190" fill={pv('ink')} fontSize="13">ATP synthase</text></>}
+      {variant==='dna' && <><path d="M65 180H690 M65 208H690" stroke={pv('fluid')} strokeWidth="3"/><FlowParticles from={[70,194]} to={[680,194]} time={t} strength={strength} color={pv('alert')} count={10}/><path d="M360 169v48" stroke={pv('alert')} strokeWidth="6" opacity={effect}/><text x="390" y="196" fill={pv('ink')} fontSize="13">Viral DNA extension</text></>}
+      {variant==='release' && <>
         <path d="M47 216 H710" stroke={pv('fluid')} strokeWidth="5"/>
         {[0,1,2,3,4,5].map(i=><circle key={i} cx={95+i*111} cy={205-44*((t*.44+i*.17)%1)*(1-effect)} r="9" fill={pv('alert')}/>)}
       </>}
@@ -94,7 +103,7 @@ export default function ImmuneMechanismLesson({antimicrobial = false}:{antimicro
     path:antimicrobial ? data.ANTIMICROBIAL_PATH : data.IMMUNE_PATH, lessonNo:antimicrobial ? 54 : 53,
     crumb:title, title, metaTitle:title+' | Emergency Pathophysiology Atlas', metaDescription:description,
     ogDescription:description, intro:description, variationsIntro:'Select a case to compare mechanisms.',
-    variants:{param:'mechanism',legend:antimicrobial ? 'Drug class / mechanism' : 'Mechanism',options:cases.map(c=>({id:c.id,label:c.label,hint:c.steps[1]}))},
+    variants:{param:'mechanism',legend:antimicrobial ? 'Drug class / mechanism' : 'Mechanism',aliases:antimicrobial ? {wall:'beta-lactam',ribosome:'macrolide'} : undefined,options:cases.map(c=>({id:c.id,label:c.label,hint:c.steps[1]}))},
     data:antimicrobial ? drugs : immune, Scene:MechanismScene,
   }}/>;
 }

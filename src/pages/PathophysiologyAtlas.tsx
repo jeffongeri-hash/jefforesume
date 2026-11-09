@@ -33,8 +33,14 @@ import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatri
 import { TRAUMA_LESSONS } from '@/data/pathophysiology/traumaEmergencies';
 import { HEAD_NECK_LESSONS } from '@/data/pathophysiology/headNeckEmergencies';
 import { DERM_LESSONS } from '@/data/pathophysiology/dermatologicEmergencies';
+import { CARDIOGENIC_PATH } from '@/data/pathophysiology/cardiogenicShock';
+import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
+import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: CARDIOGENIC_PATH, system: 'Shock & Circulation · Cardiac', title: 'Cardiogenic Shock', blurb: 'Pump dysfunction, reduced forward flow, congestion and systemic perfusion.' },
+  { path: OBSTRUCTIVE_PATH, system: 'Shock & Circulation · Obstruction', title: 'Obstructive Shock', blurb: 'Compare pulmonary embolism, tamponade and tension pneumothorax.' },
+  { path: ANAPHYLACTIC_PATH, system: 'Shock & Circulation · Allergy', title: 'Anaphylactic Shock', blurb: 'Mediator release, vasodilation, capillary leak and airway effects.' },
   ...Object.values(DERM_LESSONS).map(lesson => ({ path: lesson.path, system: 'Dermatologic · Emergencies', title: lesson.title, blurb: lesson.intro })),
   ...Object.values(HEAD_NECK_LESSONS).map(lesson => ({ path: lesson.path, system: 'Eye & ENT · Emergencies', title: lesson.title, blurb: lesson.intro })),
   ...Object.values(TRAUMA_LESSONS).map(lesson => ({ path: lesson.path, system: 'Trauma · Emergencies', title: lesson.title, blurb: lesson.intro })),

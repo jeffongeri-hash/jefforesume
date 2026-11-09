@@ -35,7 +35,7 @@ export default function SpinalCordScene({ time, normal = false, compact, showLab
       <path {...hit('corticospinal')} d="M124 126 Q140 113 156 128 L151 169 Q130 175 120 153Z M236 126 Q220 113 204 128 L209 169 Q230 175 240 153Z" fill={pv('inflame', .68)} stroke={pv('ink', selected === 'corticospinal' ? 1 : .35)} strokeWidth="2"/>
       <path {...hit('spinothalamic')} d="M122 163 Q145 177 161 178 L153 188 Q128 184 116 170Z M238 163 Q215 177 199 178 L207 188 Q232 184 244 170Z" fill={pv('alert', .68)} stroke={pv('ink', selected === 'spinothalamic' ? 1 : .35)} strokeWidth="2"/>
       <path {...hit('grayMatter')} d="M164 111 Q180 128 196 111 Q207 126 193 142 Q208 163 190 167 Q180 153 170 167 Q152 163 167 142 Q153 126 164 111Z" fill={pv('contents', .7)} stroke={pv('ink', selected === 'grayMatter' ? 1 : .5)} strokeWidth="2"/>
-      <path {...hit('anteriorCommissure')} d="M159 145 Q180 136 201 145 L198 153 Q180 147 162 153Z" fill={pv('serosa', .85)} stroke={pv('ink', selected === 'anteriorCommissure' ? 1 : .35)} />
+      <path {...hit('commissure')} d="M159 145 Q180 136 201 145 L198 153 Q180 147 162 153Z" fill={pv('serosa', .85)} stroke={pv('ink', selected === 'commissure' ? 1 : .35)} />
       {s.injury > .02 && <path {...hit('lesion')} d={lesion} fill={pv('ink', .12 + .65 * s.injury)} stroke={pv('alert', .9)} strokeWidth="3" opacity={s.injury} />}
       {showLabels && <g fontSize="11" fill={pv('ink', .92)}><text x="180" y="84" textAnchor="middle">DCML</text><text x="108" y="124" textAnchor="end">CST</text><text x="252" y="124">CST</text><text x="99" y="193">STT</text><text x="264" y="193">STT</text><text x="180" y="200" textAnchor="middle">anterior commissure</text></g>}
     </g>

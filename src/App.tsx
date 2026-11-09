@@ -82,6 +82,7 @@ const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson")
 const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
+const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
 const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
@@ -195,6 +196,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/stevens-johnson-ten" element={<DermatologicEmergencyLesson kind="sjs" />} />
                 <Route path="/pathophysiology-atlas/dress-syndrome" element={<DermatologicEmergencyLesson kind="dress" />} />
                 <Route path="/pathophysiology-atlas/thermal-burn-injury" element={<DermatologicEmergencyLesson kind="burn" />} />
+                <Route path="/pathophysiology-atlas/cardiogenic-shock" element={<CoreShockLesson condition="cardiogenic" />} />
+                <Route path="/pathophysiology-atlas/obstructive-shock" element={<CoreShockLesson condition="obstructive" />} />
+                <Route path="/pathophysiology-atlas/anaphylactic-shock" element={<CoreShockLesson condition="anaphylactic" />} />
                 <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
