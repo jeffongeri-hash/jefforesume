@@ -29,6 +29,7 @@ import { BLOOD_CELLS_PATH } from '@/data/pathophysiology/bloodCells';
 import { INHERITED_HEMOSTASIS_PATH } from '@/data/pathophysiology/inheritedHemostasis';
 import { GU_LESSONS, GU_PATHS, type GuKind } from '@/data/pathophysiology/genitourinary';
 import { PEDIATRIC_LESSONS } from '@/data/pathophysiology/pediatricEmergencies';
+import { DIGESTIVE_LESSONS } from '@/data/pathophysiology/pediatricDigestiveEmergencies';
 import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatricCongenitalHeart';
 import { TRAUMA_LESSONS } from '@/data/pathophysiology/traumaEmergencies';
 import { HEAD_NECK_LESSONS } from '@/data/pathophysiology/headNeckEmergencies';
@@ -38,6 +39,7 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  ...Object.values(DIGESTIVE_LESSONS).map(lesson => ({ path: lesson.path, system: 'Pediatric · Digestive emergencies', title: lesson.title, blurb: lesson.intro })),
   { path: CARDIOGENIC_PATH, system: 'Shock & Circulation · Cardiac', title: 'Cardiogenic Shock', blurb: 'Pump dysfunction, reduced forward flow, congestion and systemic perfusion.' },
   { path: OBSTRUCTIVE_PATH, system: 'Shock & Circulation · Obstruction', title: 'Obstructive Shock', blurb: 'Compare pulmonary embolism, tamponade and tension pneumothorax.' },
   { path: ANAPHYLACTIC_PATH, system: 'Shock & Circulation · Allergy', title: 'Anaphylactic Shock', blurb: 'Mediator release, vasodilation, capillary leak and airway effects.' },

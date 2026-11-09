@@ -78,6 +78,7 @@ const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson")
 const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson"));
 const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
 const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLesson"));
+const PediatricDigestiveLesson = lazy(() => import("./pages/PediatricDigestiveLesson"));
 const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
 const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
@@ -185,6 +186,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/tetralogy-of-fallot" element={<PediatricEmergencyLesson kind="tetralogy" />} />
                 <Route path="/pathophysiology-atlas/measles-complications" element={<PediatricEmergencyLesson kind="measles" />} />
                 <Route path="/pathophysiology-atlas/intussusception" element={<PediatricEmergencyLesson kind="intussusception" />} />
+                <Route path="/pathophysiology-atlas/infantile-pyloric-stenosis" element={<PediatricDigestiveLesson kind="pyloric" />} />
+                <Route path="/pathophysiology-atlas/malrotation-midgut-volvulus" element={<PediatricDigestiveLesson kind="volvulus" />} />
+                <Route path="/pathophysiology-atlas/pediatric-dehydration" element={<PediatricDigestiveLesson kind="dehydration" />} />
                 <Route path="/pathophysiology-atlas/critical-congenital-heart-disease" element={<CongenitalHeartLesson />} />
                 <Route path="/pathophysiology-atlas/acute-compartment-syndrome" element={<TraumaEmergencyLesson kind="compartment" />} />
                 <Route path="/pathophysiology-atlas/traumatic-vascular-injury" element={<TraumaEmergencyLesson kind="vascular" />} />
