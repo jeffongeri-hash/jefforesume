@@ -44,6 +44,7 @@ const staticPaths = [
   "/pathophysiology-atlas/hemorrhagic-shock",
   "/pathophysiology-atlas/ear-examination", "/pathophysiology-atlas/eye-inflammation-examination", "/pathophysiology-atlas/nose-throat-examination",
   "/pathophysiology-atlas/skin-infection-swelling", "/pathophysiology-atlas/obstetric-emergencies", "/pathophysiology-atlas/vascular-emergencies",
+  "/dermatology-atlas", "/dermatology-atlas/conditions", "/dermatology-atlas/medications", "/dermatology-atlas/skincare",
   "/pathophysiology-atlas/ectopic-pregnancy",
   "/pathophysiology-atlas/bronchiolitis", "/pathophysiology-atlas/asthma-exacerbation", "/pathophysiology-atlas/copd-exacerbation", "/pathophysiology-atlas/pulmonary-hypertension",
   "/pathophysiology-atlas/upper-airway-obstruction",

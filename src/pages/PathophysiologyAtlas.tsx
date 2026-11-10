@@ -42,6 +42,7 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: '/dermatology-atlas', system: 'Dermatology · Outpatient learning', title: 'Dermatology Learning Atlas', blurb: 'Skin conditions and rash morphology, separate medication mechanisms, and OTC skincare ingredient science.' },
   { path: FINAL_PATHS.derm, system: 'Dermatologic · Infection and swelling', title: FINAL_TITLES.derm, blurb: 'Cellulitis, abscess, histamine and bradykinin pathways with treatment mechanisms.' },
   { path: FINAL_PATHS.ob, system: 'OB/GYN · Emergencies', title: FINAL_TITLES.ob, blurb: 'Preeclampsia/eclampsia, HELLP, abruption, previa, atony and postpartum endometritis.' },
   { path: FINAL_PATHS.vascular, system: 'Vascular · Emergencies', title: FINAL_TITLES.vascular, blurb: 'Acute limb ischemia, DVT, PE, abdominal aortic aneurysm and dissection.' },
