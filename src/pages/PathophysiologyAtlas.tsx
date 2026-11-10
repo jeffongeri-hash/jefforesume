@@ -34,6 +34,7 @@ import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatri
 import { TRAUMA_LESSONS } from '@/data/pathophysiology/traumaEmergencies';
 import { TRAUMA_DETAIL_LESSONS } from '@/data/pathophysiology/traumaDetails';
 import { PATHS as HEENT_PATHS } from '@/data/pathophysiology/heentAtlas';
+import { PATHS as FINAL_PATHS, TITLES as FINAL_TITLES } from '@/data/pathophysiology/finalSystems';
 import { HEAD_NECK_LESSONS } from '@/data/pathophysiology/headNeckEmergencies';
 import { DERM_LESSONS } from '@/data/pathophysiology/dermatologicEmergencies';
 import { CARDIOGENIC_PATH } from '@/data/pathophysiology/cardiogenicShock';
@@ -41,6 +42,9 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: FINAL_PATHS.derm, system: 'Dermatologic · Infection and swelling', title: FINAL_TITLES.derm, blurb: 'Cellulitis, abscess, histamine and bradykinin pathways with treatment mechanisms.' },
+  { path: FINAL_PATHS.ob, system: 'OB/GYN · Emergencies', title: FINAL_TITLES.ob, blurb: 'Preeclampsia/eclampsia, HELLP, abruption, previa, atony and postpartum endometritis.' },
+  { path: FINAL_PATHS.vascular, system: 'Vascular · Emergencies', title: FINAL_TITLES.vascular, blurb: 'Acute limb ischemia, DVT, PE, abdominal aortic aneurysm and dissection.' },
   { path: HEENT_PATHS.eye, system: 'Eye & ENT · Examination', title: 'Eye Anatomy, Inflammation and Fluorescein Examination', blurb: 'Compare abrasion, perforation, keratitis, uveitis, scleritis and retinitis.' },
   { path: HEENT_PATHS.ear, system: 'Eye & ENT · Examination', title: 'Ear Anatomy and Otoscopic Findings', blurb: 'Compare redness, bulging, effusion, otitis externa and mastoiditis.' },
   { path: HEENT_PATHS.nose, system: 'Eye & ENT · Examination', title: 'Nose and Throat Anatomy and Examination', blurb: 'Explore epistaxis, rhinosinusitis and pharyngeal findings.' },
