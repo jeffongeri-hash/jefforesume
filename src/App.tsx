@@ -1,3 +1,4 @@
+import PinGate from '@/components/PinGate';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -131,8 +132,8 @@ const App = () => (
                 <Route path="/ca-move-planner" element={<CAMovePlanner />} />
                 <Route path="/care-abroad" element={<CareAbroad />} />
                 <Route path="/care-abroad/timeline" element={<CareAbroadTimeline />} />
-                <Route path="/sumerlin-trails" element={<SumerlinTrails />} />
-                <Route path="/kenya-trip" element={<KenyaTrip />} />
+                <Route path="/sumerlin-trails" element={<PinGate id="sumerlin" title="Sumerlin Trails"><SumerlinTrails /></PinGate>} />
+                <Route path="/kenya-trip" element={<PinGate id="kenya" title="Kenya Trip"><KenyaTrip /></PinGate>} />
                 <Route path="/trading-volatility" element={<TradingVolatility />} />
                 <Route path="/family-directive" element={<FamilyDirective />} />
                 <Route path="/paycheck-analyzer" element={<PaycheckAnalyzer />} />
