@@ -82,6 +82,7 @@ const PediatricDigestiveLesson = lazy(() => import("./pages/PediatricDigestiveLe
 const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
 const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
 const TraumaDetailLesson = lazy(() => import("./pages/TraumaDetailLesson"));
+const HeentAtlasLesson = lazy(() => import("./pages/HeentAtlasLesson"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
 const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
@@ -197,6 +198,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/traumatic-intracranial-hemorrhage" element={<TraumaDetailLesson kind="head" />} />
                 <Route path="/pathophysiology-atlas/pelvic-fracture-hemorrhage" element={<TraumaDetailLesson kind="pelvis" />} />
                 <Route path="/pathophysiology-atlas/open-fracture" element={<TraumaDetailLesson kind="openFracture" />} />
+                <Route path="/pathophysiology-atlas/ear-examination" element={<HeentAtlasLesson kind="ear" />} />
+                <Route path="/pathophysiology-atlas/eye-inflammation-examination" element={<HeentAtlasLesson kind="eye" />} />
+                <Route path="/pathophysiology-atlas/nose-throat-examination" element={<HeentAtlasLesson kind="nose" />} />
                 <Route path="/pathophysiology-atlas/acute-angle-closure" element={<HeadNeckEmergencyLesson kind="angle" />} />
                 <Route path="/pathophysiology-atlas/retinal-detachment" element={<HeadNeckEmergencyLesson kind="retina" />} />
                 <Route path="/pathophysiology-atlas/orbital-cellulitis" element={<HeadNeckEmergencyLesson kind="orbit" />} />

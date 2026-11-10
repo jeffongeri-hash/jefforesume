@@ -33,6 +33,7 @@ import { DIGESTIVE_LESSONS } from '@/data/pathophysiology/pediatricDigestiveEmer
 import { PEDIATRIC_CONGENITAL_HEART_PATH } from '@/data/pathophysiology/pediatricCongenitalHeart';
 import { TRAUMA_LESSONS } from '@/data/pathophysiology/traumaEmergencies';
 import { TRAUMA_DETAIL_LESSONS } from '@/data/pathophysiology/traumaDetails';
+import { PATHS as HEENT_PATHS } from '@/data/pathophysiology/heentAtlas';
 import { HEAD_NECK_LESSONS } from '@/data/pathophysiology/headNeckEmergencies';
 import { DERM_LESSONS } from '@/data/pathophysiology/dermatologicEmergencies';
 import { CARDIOGENIC_PATH } from '@/data/pathophysiology/cardiogenicShock';
@@ -40,6 +41,9 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: HEENT_PATHS.eye, system: 'Eye & ENT · Examination', title: 'Eye Anatomy, Inflammation and Fluorescein Examination', blurb: 'Compare abrasion, perforation, keratitis, uveitis, scleritis and retinitis.' },
+  { path: HEENT_PATHS.ear, system: 'Eye & ENT · Examination', title: 'Ear Anatomy and Otoscopic Findings', blurb: 'Compare redness, bulging, effusion, otitis externa and mastoiditis.' },
+  { path: HEENT_PATHS.nose, system: 'Eye & ENT · Examination', title: 'Nose and Throat Anatomy and Examination', blurb: 'Explore epistaxis, rhinosinusitis and pharyngeal findings.' },
   ...Object.values(TRAUMA_DETAIL_LESSONS).map(lesson => ({ path: lesson.path, system: 'Trauma · Emergencies', title: lesson.title, blurb: lesson.intro })),
   ...Object.values(DIGESTIVE_LESSONS).map(lesson => ({ path: lesson.path, system: 'Pediatric · Digestive emergencies', title: lesson.title, blurb: lesson.intro })),
   { path: CARDIOGENIC_PATH, system: 'Shock & Circulation · Cardiac', title: 'Cardiogenic Shock', blurb: 'Pump dysfunction, reduced forward flow, congestion and systemic perfusion.' },
