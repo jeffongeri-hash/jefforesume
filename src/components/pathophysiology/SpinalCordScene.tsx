@@ -1,0 +1,48 @@
+import { asCord, sceneState, STRUCTURES, type CordStructure } from '@/data/pathophysiology/spinalCord';
+import { makeHit, pv } from './sceneKit';
+import FlowParticles from './FlowParticles';
+type Props = { time: number; normal?: boolean; compact?: boolean; showLabels: boolean; selected: CordStructure | null; onSelect: (id: CordStructure) => void; variant?: string; side?: 'left' | 'right'; title?: string };
+export default function SpinalCordScene({ time, normal = false, compact, showLabels, selected, onSelect, variant = 'complete', side = 'left', title }: Props) {
+  const v = asCord(variant), s = normal ? { injury: 0, sensory: 0, motor: 0, umn: 0 } : sceneState(time), hit = makeHit(STRUCTURES, selected, onSelect, compact), left = side === 'left', ipsi = left ? 'left' : 'right', contra = left ? 'right' : 'left';
+  const t = normal ? 0 : time;
+  const tractLine = (mod: 'motor' | 'dcml' | 'st', y: number, color: string) => {
+    const ascending = mod !== 'motor';
+    return (['right', 'left'] as const).map((patientSide, i) => {
+      const lane = y - 5 + i*10;
+      const blocked = s.injury > .25 && (v === 'complete' || (v === 'anterior' && mod !== 'dcml') || (v === 'hemicord' && patientSide === side));
+      return <g key={patientSide}>
+        <text x="13" y={lane+3} fill={pv('ink', .8)} fontSize="8">{patientSide === 'left' ? 'L' : 'R'}</text>
+        <path d={`M26 ${lane} H205`} stroke={color} strokeWidth="2" opacity={blocked ? .24 : .6}/>
+        <FlowParticles from={[ascending ? 26 : 205, lane]} to={[blocked ? 115 : ascending ? 205 : 26, lane]} time={t} color={color} count={3} radius={2.5} speed={.48}/>
+        {blocked && <path d={`M112 ${lane-3} l6 6 m-6 0 l6 -6`} stroke={pv('alert')} strokeWidth="1.5"/>}
+      </g>;
+    });
+  };
+  const lesion = v === 'complete' ? 'M 126 107 Q 180 62 234 107 L 216 174 Q 180 198 144 174 Z' : v === 'hemicord' ? (left ? 'M 180 107 Q 180 62 234 107 L 234 178 Q 215 178 180 178 Z' : 'M 126 107 Q 180 62 180 107 L 180 178 Q 145 178 126 107 Z') : v === 'anterior' ? 'M 130 132 Q 180 184 230 132 L 220 176 Q 180 204 140 176 Z' : 'M 157 113 Q 180 94 203 113 L 205 151 Q 180 170 155 151 Z';
+  const bodyFill = (mod: 'motor' | 'dcml' | 'st', bodySide: 'left' | 'right') => {
+    // Central cord is deliberately segmental: it is not painted as a whole-body deficit.
+    const bilateral = v === 'complete' || (v === 'anterior' && mod !== 'dcml');
+    const affected = bilateral || (v === 'hemicord' && (mod === 'st' ? bodySide === contra : bodySide === ipsi));
+    const intensity = mod === 'motor' ? s.motor : s.sensory;
+    return affected && intensity > .01 ? pv(mod === 'motor' ? 'inflame' : mod === 'dcml' ? 'fluid' : 'alert', .12 + .72 * intensity) : pv('panel', .25);
+  };
+  const silhouette = (mod: 'motor' | 'dcml' | 'st', x: number, label: string) => <g transform={`translate(${x} 34)`}><text x="45" y="0" textAnchor="middle" fill={pv('ink', .85)} fontSize="11">{label}</text>{(['right','left'] as const).map((b,i)=><g key={b}><path d={i?'M45 12 A18 20 0 0 1 45 52 Z':'M45 12 A18 20 0 0 0 45 52 Z'} fill={pv('panel',.25)} stroke={pv('ink',.5)}/><path d={i?'M45 58 L72 64 L68 142 L45 146Z':'M45 58 L18 64 L22 142 L45 146Z'} fill={bodyFill(mod,b)} stroke={pv('ink',.5)}/><path d={i?'M70 65 L89 85 L81 137 L69 130Z':'M20 65 L1 85 L9 137 L21 130Z'} fill={bodyFill(mod,b)} stroke={pv('ink',.5)}/><path d={i?'M67 147 L51 147 L57 230 L71 230Z':'M23 147 L39 147 L33 230 L19 230Z'} fill={bodyFill(mod,b)} stroke={pv('ink',.5)}/></g>)}{v==='central'&&mod==='st'&&s.sensory>.01&&<path d="M6 65 L84 65 L78 105 L12 105Z" fill={pv('alert',.65*s.sensory)} stroke={pv('alert',.9*s.sensory)} strokeWidth="2"/>}</g>;
+  return <svg viewBox="0 0 900 660" role="img" aria-label={title ?? `Conceptual ${v} spinal cord tract lesion with linked body map`} className="block h-auto w-full rounded-lg patho-scene" style={{ background: pv('bg') }} data-variant={v} data-side={side}>
+    <text x="20" y="28" fill={pv('ink', .9)} fontSize="15">Spinal-cord cross-section and body map · posterior at top · conceptual, not MRI</text>
+    <text x="180" y="58" textAnchor="middle" fill={pv('ink', .7)} fontSize="12">Posterior / dorsal · patient R on left</text><text x="180" y="222" textAnchor="middle" fill={pv('ink', .7)} fontSize="12">Anterior / ventral</text>
+    <g transform="translate(0 35)"><path d="M180 58 C245 58 267 116 242 166 C220 208 140 208 118 166 C93 116 115 58 180 58Z" fill={pv('membrane', .32)} stroke={pv('ink', .7)} strokeWidth="3"/>
+      <path {...hit('dorsalColumns')} d="M138 87 Q180 62 222 87 L210 117 Q180 102 150 117Z" fill={pv('fluid', .72)} stroke={pv('ink', selected === 'dorsalColumns' ? 1 : .35)} strokeWidth="2"/>
+      <path {...hit('corticospinal')} d="M124 126 Q140 113 156 128 L151 169 Q130 175 120 153Z M236 126 Q220 113 204 128 L209 169 Q230 175 240 153Z" fill={pv('inflame', .68)} stroke={pv('ink', selected === 'corticospinal' ? 1 : .35)} strokeWidth="2"/>
+      <path {...hit('spinothalamic')} d="M122 163 Q145 177 161 178 L153 188 Q128 184 116 170Z M238 163 Q215 177 199 178 L207 188 Q232 184 244 170Z" fill={pv('alert', .68)} stroke={pv('ink', selected === 'spinothalamic' ? 1 : .35)} strokeWidth="2"/>
+      <path {...hit('grayMatter')} d="M164 111 Q180 128 196 111 Q207 126 193 142 Q208 163 190 167 Q180 153 170 167 Q152 163 167 142 Q153 126 164 111Z" fill={pv('contents', .7)} stroke={pv('ink', selected === 'grayMatter' ? 1 : .5)} strokeWidth="2"/>
+      <path {...hit('commissure')} d="M159 145 Q180 136 201 145 L198 153 Q180 147 162 153Z" fill={pv('serosa', .85)} stroke={pv('ink', selected === 'commissure' ? 1 : .35)} />
+      {s.injury > .02 && <path {...hit('lesion')} d={lesion} fill={pv('ink', .12 + .65 * s.injury)} stroke={pv('alert', .9)} strokeWidth="3" opacity={s.injury} />}
+      {showLabels && <g fontSize="11" fill={pv('ink', .92)}><text x="180" y="84" textAnchor="middle">DCML</text><text x="108" y="124" textAnchor="end">CST</text><text x="252" y="124">CST</text><text x="99" y="193">STT</text><text x="264" y="193">STT</text><text x="180" y="200" textAnchor="middle">anterior commissure</text></g>}
+    </g>
+    <g transform="translate(400 60)" {...hit('bodyMap')}><text x="145" y="0" textAnchor="middle" fill={pv('ink', .9)} fontSize="14">Linked body patterns</text><text x="145" y="18" textAnchor="middle" fill={pv('ink', .65)} fontSize="11">Patient’s right is on your left · separate modalities</text>
+      {silhouette('motor',0,'Motor / UMN below')}{silhouette('dcml',96,'Vibration / position')}{silhouette('st',192,'Pain / temperature')}
+      <rect x="0" y="278" width="292" height="70" rx="10" fill={pv('panel')} stroke={pv('ink',.35)}/><text x="12" y="301" fill={pv('ink',.75)} fontSize="10">Color is a classic pathway pattern, not a measured deficit.</text><text x="12" y="319" fill={pv('ink',.75)} fontSize="10">{v==='hemicord'?`Cord lesion: ${side}; DCML/motor ipsilateral, pain-temperature contralateral below.`:v==='central'?'Central: only the segmental pain-temperature band is highlighted; motor/DCML are not implied.':'Complete/anterior: distribution varies with lesion level and completeness.'}</text><text x="12" y="337" fill={pv('ink',.75)} fontSize="10">Face is intentionally not colored: these are cord, not brainstem/cortical, patterns.</text>
+    </g>
+    <g transform="translate(25 465)"><rect width="820" height="162" rx="12" fill={pv('panel')} stroke={pv('ink', .25)}/><text x="18" y="27" fontSize="13" fill={pv('ink')}>Signal travel in cord · left of track is caudal, right is rostral</text>{tractLine("dcml",51,pv("fluid"))}<text x="215" y="55" fontSize="12" fill={pv('ink')}>DCML: ascends ipsilateral → crosses in medulla</text>{tractLine("st",86,pv("alert"))}<text x="215" y="90" fontSize="12" fill={pv('ink')}>Pain / temperature: crosses near entry → ascends contralateral</text>{tractLine("motor",121,pv("inflame"))}<text x="215" y="125" fontSize="12" fill={pv('ink')}>Corticospinal: mostly crossed in medulla → descends ipsilateral in cord</text><text x="18" y="148" fontSize="10" fill={pv('ink', .65)}>Tracks show tract side, not body side. The central example affects segmental crossing fibers.</text></g>
+  </svg>;
+}

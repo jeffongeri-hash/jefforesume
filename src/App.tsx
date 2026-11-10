@@ -60,6 +60,35 @@ const HemorrhagicStrokeLesson = lazy(() => import("./pages/HemorrhagicStrokeLess
 const UpperAirwayLesson = lazy(() => import("./pages/UpperAirwayLesson"));
 const RespiratoryLesson = lazy(() => import("./pages/RespiratoryLesson"));
 const EctopicPregnancyLesson = lazy(() => import("./pages/EctopicPregnancyLesson"));
+const MesentericIschemiaLesson = lazy(() => import("./pages/MesentericIschemiaLesson"));
+const SurgicalAbdomenLesson = lazy(() => import("./pages/SurgicalAbdomenLesson"));
+const DiabeticKetoacidosisLesson = lazy(() => import("./pages/DiabeticKetoacidosisLesson"));
+const SpinalCordLesson = lazy(() => import("./pages/SpinalCordLesson"));
+const StatusEpilepticusLesson = lazy(() => import("./pages/StatusEpilepticusLesson"));
+const ThyroidStormLesson = lazy(() => import("./pages/ThyroidStormLesson"));
+const AdrenalCrisisLesson = lazy(() => import("./pages/AdrenalCrisisLesson"));
+const EndocrineEmergencyLesson = lazy(() => import("./pages/EndocrineEmergencyLesson"));
+const RenalElectrolyteLesson = lazy(() => import("./pages/RenalElectrolyteLesson"));
+const ToxicologyLesson = lazy(() => import("./pages/ToxicologyLesson"));
+const DicLesson = lazy(() => import("./pages/DicLesson"));
+const HemostasisLesson = lazy(() => import("./pages/HemostasisLesson"));
+const VascularFlowLesson = lazy(() => import("./pages/VascularFlowLesson"));
+const BloodCellLesson = lazy(() => import("./pages/BloodCellLesson"));
+const ImmuneMechanismLesson = lazy(() => import("./pages/ImmuneMechanismLesson"));
+const ImmuneEmergencyLesson = lazy(() => import("./pages/ImmuneEmergencyLesson"));
+const GenitourinaryLesson = lazy(() => import("./pages/GenitourinaryLesson"));
+const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLesson"));
+const PediatricDigestiveLesson = lazy(() => import("./pages/PediatricDigestiveLesson"));
+const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
+const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
+const TraumaDetailLesson = lazy(() => import("./pages/TraumaDetailLesson"));
+const HeentAtlasLesson = lazy(() => import("./pages/HeentAtlasLesson"));
+const FinalSystemsLesson = lazy(() => import("./pages/FinalSystemsLesson"));
+const DermatologyAtlas = lazy(() => import("./pages/DermatologyAtlas"));
+const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
+const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
+const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
+const InheritedHemostasisLesson = lazy(() => import("./pages/InheritedHemostasisLesson"));
 const HemorrhagicShockLesson = lazy(() => import("./pages/HemorrhagicShockLesson"));
 const MskMovementMechanics = lazy(() => import("./pages/MskMovementMechanics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -118,8 +147,80 @@ const App = () => (
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
+                <Route path="/dermatology-atlas" element={<DermatologyAtlas />} />
+                <Route path="/dermatology-atlas/conditions" element={<DermatologyAtlas section="conditions" />} />
+                <Route path="/dermatology-atlas/medications" element={<DermatologyAtlas section="medications" />} />
+                <Route path="/dermatology-atlas/skincare" element={<DermatologyAtlas section="skincare" />} />
                 <Route path="/pathophysiology-atlas/hemorrhagic-shock" element={<HemorrhagicShockLesson />} />
                 <Route path="/pathophysiology-atlas/ectopic-pregnancy" element={<EctopicPregnancyLesson />} />
+                <Route path="/pathophysiology-atlas/acute-mesenteric-ischemia" element={<MesentericIschemiaLesson />} />
+                <Route path="/pathophysiology-atlas/bowel-obstruction" element={<SurgicalAbdomenLesson kind="bowel-obstruction" />} />
+                <Route path="/pathophysiology-atlas/intra-abdominal-abscess" element={<SurgicalAbdomenLesson kind="intra-abdominal-abscess" />} />
+                <Route path="/pathophysiology-atlas/diabetic-ketoacidosis" element={<DiabeticKetoacidosisLesson />} />
+                <Route path="/pathophysiology-atlas/spinal-cord-pathways-injury" element={<SpinalCordLesson />} />
+                <Route path="/pathophysiology-atlas/status-epilepticus" element={<StatusEpilepticusLesson />} />
+                <Route path="/pathophysiology-atlas/thyroid-storm" element={<ThyroidStormLesson />} />
+                <Route path="/pathophysiology-atlas/adrenal-crisis" element={<AdrenalCrisisLesson />} />
+                <Route path="/pathophysiology-atlas/hyperosmolar-hyperglycemic-state" element={<EndocrineEmergencyLesson kind="hhs" />} />
+                <Route path="/pathophysiology-atlas/severe-hypoglycemia" element={<EndocrineEmergencyLesson kind="hypoglycemia" />} />
+                <Route path="/pathophysiology-atlas/myxedema-coma" element={<EndocrineEmergencyLesson kind="myxedema-coma" />} />
+                <Route path="/pathophysiology-atlas/acute-kidney-injury" element={<RenalElectrolyteLesson kind="acute-kidney-injury" />} />
+                <Route path="/pathophysiology-atlas/hyperkalemia" element={<RenalElectrolyteLesson kind="hyperkalemia" />} />
+                <Route path="/pathophysiology-atlas/acid-base-disorders" element={<RenalElectrolyteLesson kind="acid-base" />} />
+                <Route path="/pathophysiology-atlas/rhabdomyolysis" element={<RenalElectrolyteLesson kind="rhabdomyolysis" />} />
+                <Route path="/pathophysiology-atlas/hyponatremia" element={<RenalElectrolyteLesson kind="hyponatremia" />} />
+                <Route path="/pathophysiology-atlas/hypernatremia" element={<RenalElectrolyteLesson kind="hypernatremia" />} />
+                <Route path="/pathophysiology-atlas/opioid-toxicity" element={<ToxicologyLesson kind="opioid" />} />
+                <Route path="/pathophysiology-atlas/acetaminophen-toxicity" element={<ToxicologyLesson kind="acetaminophen" />} />
+                <Route path="/pathophysiology-atlas/salicylate-toxicity" element={<ToxicologyLesson kind="salicylate" />} />
+                <Route path="/pathophysiology-atlas/toxic-alcohols" element={<ToxicologyLesson kind="toxic-alcohols" />} />
+                <Route path="/pathophysiology-atlas/carbon-monoxide-cyanide" element={<ToxicologyLesson kind="carbon-monoxide-cyanide" />} />
+                <Route path="/pathophysiology-atlas/envenomation" element={<ToxicologyLesson kind="envenomation" />} />
+                <Route path="/pathophysiology-atlas/environmental-emergencies" element={<ToxicologyLesson kind="environmental" />} />
+                <Route path="/pathophysiology-atlas/disseminated-intravascular-coagulation" element={<DicLesson />} />
+                <Route path="/pathophysiology-atlas/hemostasis-and-antithrombotics" element={<HemostasisLesson />} />
+                <Route path="/pathophysiology-atlas/arterial-venous-flow-avm" element={<VascularFlowLesson />} />
+                <Route path="/pathophysiology-atlas/blood-cell-disorders" element={<BloodCellLesson />} />
+                <Route path="/pathophysiology-atlas/immune-response" element={<ImmuneMechanismLesson />} />
+                <Route path="/pathophysiology-atlas/antimicrobial-mechanisms" element={<ImmuneMechanismLesson antimicrobial />} />
+                <Route path="/pathophysiology-atlas/bacterial-meningitis" element={<ImmuneEmergencyLesson kind="meningitis" />} />
+                <Route path="/pathophysiology-atlas/necrotizing-soft-tissue-infection" element={<ImmuneEmergencyLesson kind="softTissue" />} />
+                <Route path="/pathophysiology-atlas/febrile-neutropenia" element={<ImmuneEmergencyLesson kind="febrileNeutropenia" />} />
+                <Route path="/pathophysiology-atlas/infective-endocarditis" element={<ImmuneEmergencyLesson kind="endocarditis" />} />
+                <Route path="/pathophysiology-atlas/ureteral-stones" element={<GenitourinaryLesson kind="stones" />} />
+                <Route path="/pathophysiology-atlas/acute-urinary-retention" element={<GenitourinaryLesson kind="retention" />} />
+                <Route path="/pathophysiology-atlas/pyelonephritis-urosepsis" element={<GenitourinaryLesson kind="infection" />} />
+                <Route path="/pathophysiology-atlas/scrotal-pathophysiology" element={<GenitourinaryLesson kind="scrotum" />} />
+                <Route path="/pathophysiology-atlas/tetralogy-of-fallot" element={<PediatricEmergencyLesson kind="tetralogy" />} />
+                <Route path="/pathophysiology-atlas/measles-complications" element={<PediatricEmergencyLesson kind="measles" />} />
+                <Route path="/pathophysiology-atlas/intussusception" element={<PediatricEmergencyLesson kind="intussusception" />} />
+                <Route path="/pathophysiology-atlas/infantile-pyloric-stenosis" element={<PediatricDigestiveLesson kind="pyloric" />} />
+                <Route path="/pathophysiology-atlas/malrotation-midgut-volvulus" element={<PediatricDigestiveLesson kind="volvulus" />} />
+                <Route path="/pathophysiology-atlas/pediatric-dehydration" element={<PediatricDigestiveLesson kind="dehydration" />} />
+                <Route path="/pathophysiology-atlas/critical-congenital-heart-disease" element={<CongenitalHeartLesson />} />
+                <Route path="/pathophysiology-atlas/acute-compartment-syndrome" element={<TraumaEmergencyLesson kind="compartment" />} />
+                <Route path="/pathophysiology-atlas/traumatic-vascular-injury" element={<TraumaEmergencyLesson kind="vascular" />} />
+                <Route path="/pathophysiology-atlas/tension-pneumothorax" element={<TraumaEmergencyLesson kind="pneumothorax" />} />
+                <Route path="/pathophysiology-atlas/traumatic-intracranial-hemorrhage" element={<TraumaDetailLesson kind="head" />} />
+                <Route path="/pathophysiology-atlas/pelvic-fracture-hemorrhage" element={<TraumaDetailLesson kind="pelvis" />} />
+                <Route path="/pathophysiology-atlas/open-fracture" element={<TraumaDetailLesson kind="openFracture" />} />
+                <Route path="/pathophysiology-atlas/ear-examination" element={<HeentAtlasLesson kind="ear" />} />
+                <Route path="/pathophysiology-atlas/skin-infection-swelling" element={<FinalSystemsLesson system="derm" />} />
+                <Route path="/pathophysiology-atlas/obstetric-emergencies" element={<FinalSystemsLesson system="ob" />} />
+                <Route path="/pathophysiology-atlas/vascular-emergencies" element={<FinalSystemsLesson system="vascular" />} />
+                <Route path="/pathophysiology-atlas/eye-inflammation-examination" element={<HeentAtlasLesson kind="eye" />} />
+                <Route path="/pathophysiology-atlas/nose-throat-examination" element={<HeentAtlasLesson kind="nose" />} />
+                <Route path="/pathophysiology-atlas/acute-angle-closure" element={<HeadNeckEmergencyLesson kind="angle" />} />
+                <Route path="/pathophysiology-atlas/retinal-detachment" element={<HeadNeckEmergencyLesson kind="retina" />} />
+                <Route path="/pathophysiology-atlas/orbital-cellulitis" element={<HeadNeckEmergencyLesson kind="orbit" />} />
+                <Route path="/pathophysiology-atlas/peritonsillar-abscess" element={<HeadNeckEmergencyLesson kind="tonsil" />} />
+                <Route path="/pathophysiology-atlas/stevens-johnson-ten" element={<DermatologicEmergencyLesson kind="sjs" />} />
+                <Route path="/pathophysiology-atlas/dress-syndrome" element={<DermatologicEmergencyLesson kind="dress" />} />
+                <Route path="/pathophysiology-atlas/thermal-burn-injury" element={<DermatologicEmergencyLesson kind="burn" />} />
+                <Route path="/pathophysiology-atlas/cardiogenic-shock" element={<CoreShockLesson condition="cardiogenic" />} />
+                <Route path="/pathophysiology-atlas/obstructive-shock" element={<CoreShockLesson condition="obstructive" />} />
+                <Route path="/pathophysiology-atlas/anaphylactic-shock" element={<CoreShockLesson condition="anaphylactic" />} />
+                <Route path="/pathophysiology-atlas/inherited-bleeding-and-clotting" element={<InheritedHemostasisLesson />} />
                 <Route path="/pathophysiology-atlas/bronchiolitis" element={<RespiratoryLesson condition="bronchiolitis" />} />
                 <Route path="/pathophysiology-atlas/asthma-exacerbation" element={<RespiratoryLesson condition="asthma-exacerbation" />} />
                 <Route path="/pathophysiology-atlas/copd-exacerbation" element={<RespiratoryLesson condition="copd-exacerbation" />} />

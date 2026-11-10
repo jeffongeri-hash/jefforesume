@@ -36,7 +36,7 @@ export default function StrokeSymptomPanel({ time, variant, side, phaseIndex }: 
       <p className="mt-1 text-sm text-muted-foreground">Classic associations for the selected territory and hemisphere. They appear once the occlusion phase begins. Symptoms overlap between territories and never establish which vessel is occluded — that needs vascular imaging.</p>
       {v !== 'basilar' && <div className="mt-3 flex flex-wrap items-center gap-2 text-sm"><span className="text-xs font-semibold uppercase text-muted-foreground">Language-dominant hemisphere (assumption)</span>{(['left', 'right'] as const).map(h => <Button key={h} size="sm" variant={dominant === h ? 'secondary' : 'outline'} aria-pressed={dominant === h} onClick={() => setDominant(h)} className="capitalize">{h}{h === 'left' ? ' (most people)' : ''}</Button>)}</div>}
       <div className="mt-3 grid items-start gap-4 md:grid-cols-[220px_1fr]">
-        <svg viewBox="0 0 220 300" role="img" aria-label={`Body figure facing you: ${d.bilateral ? 'bilateral or crossed' : `${contra}-sided`} deficits highlighted — face ${Math.round(d.face * 100)}%, arm ${Math.round(d.arm * 100)}%, leg ${Math.round(d.leg * 100)}% emphasis`} className="block h-auto w-full rounded" style={{ background: pv('bg') }} data-affected={d.bilateral ? 'both' : contra} data-on={on.toFixed(2)}>
+        <svg viewBox="0 0 220 300" role="img" aria-label={`Body figure facing you: possible ${d.bilateral ? 'bilateral or crossed' : `${contra}-sided`} deficits. Shading illustrates patterns, not measured impairment.`} className="block h-auto w-full rounded" style={{ background: pv('bg') }} data-affected={d.bilateral ? 'both' : contra} data-on={on.toFixed(2)}>
           <text x="10" y="16" fontSize="9" fill={pv('ink', 0.7)}>Patient’s R</text><text x="210" y="16" fontSize="9" textAnchor="end" fill={pv('ink', 0.7)}>Patient’s L</text>
           {(['right', 'left'] as const).map(bs => <g key={bs}>
             <path d={bx(bs, 'M 110 30 A 22 26 0 0 0 110 82 Z', 'M 110 30 A 22 26 0 0 1 110 82 Z')} fill={fill(d.face, bs)} stroke={pv('ink', 0.5)} />
@@ -53,7 +53,7 @@ export default function StrokeSymptomPanel({ time, variant, side, phaseIndex }: 
           </div>
           <svg viewBox="0 0 210 108" role="img" aria-label={`Visual fields as seen by the patient: ${d.hemianopia ? (d.bilateral ? 'possible bilateral loss' : `possible ${contra} homonymous hemianopia`) : 'no classic field loss for this territory'}`} className="mt-3 block h-auto w-full max-w-[260px] rounded" style={{ background: pv('bg') }}>{[0, 1].map(field)}</svg>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">{SYMPTOM_NOTES[v].map(n => <li key={n}>{n}</li>)}</ul>
-          <p className="mt-2 text-xs text-muted-foreground">{v === 'basilar' ? 'Posterior-circulation strokes are frequently bilateral or crossed and are easily missed; mimics include vestibular disorders, intoxication and seizure.' : `Lesion side: ${side}. Motor and sensory signs are contralateral (${contra} body). Language vs neglect depends on hemispheric dominance, which varies.`}</p>
+          <p className="mt-2 text-xs text-muted-foreground">{v === 'basilar' ? 'Posterior-circulation strokes may have unilateral, bilateral or crossed findings and can be missed; mimics include vestibular disorders, intoxication and seizure.' : `Lesion side: ${side}. When motor or sensory signs occur they are often contralateral (${contra} body). Language vs neglect depends on hemispheric dominance and lesion location.`}</p>
         </div>
       </div>
     </div>
