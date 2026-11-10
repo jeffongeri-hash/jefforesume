@@ -81,6 +81,7 @@ const PediatricEmergencyLesson = lazy(() => import("./pages/PediatricEmergencyLe
 const PediatricDigestiveLesson = lazy(() => import("./pages/PediatricDigestiveLesson"));
 const CongenitalHeartLesson = lazy(() => import("./pages/CongenitalHeartLesson"));
 const TraumaEmergencyLesson = lazy(() => import("./pages/TraumaEmergencyLesson"));
+const TraumaDetailLesson = lazy(() => import("./pages/TraumaDetailLesson"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
 const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
@@ -193,6 +194,9 @@ const App = () => (
                 <Route path="/pathophysiology-atlas/acute-compartment-syndrome" element={<TraumaEmergencyLesson kind="compartment" />} />
                 <Route path="/pathophysiology-atlas/traumatic-vascular-injury" element={<TraumaEmergencyLesson kind="vascular" />} />
                 <Route path="/pathophysiology-atlas/tension-pneumothorax" element={<TraumaEmergencyLesson kind="pneumothorax" />} />
+                <Route path="/pathophysiology-atlas/traumatic-intracranial-hemorrhage" element={<TraumaDetailLesson kind="head" />} />
+                <Route path="/pathophysiology-atlas/pelvic-fracture-hemorrhage" element={<TraumaDetailLesson kind="pelvis" />} />
+                <Route path="/pathophysiology-atlas/open-fracture" element={<TraumaDetailLesson kind="openFracture" />} />
                 <Route path="/pathophysiology-atlas/acute-angle-closure" element={<HeadNeckEmergencyLesson kind="angle" />} />
                 <Route path="/pathophysiology-atlas/retinal-detachment" element={<HeadNeckEmergencyLesson kind="retina" />} />
                 <Route path="/pathophysiology-atlas/orbital-cellulitis" element={<HeadNeckEmergencyLesson kind="orbit" />} />
