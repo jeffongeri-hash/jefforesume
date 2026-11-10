@@ -109,7 +109,32 @@ export const PATHO_LESSONS = [
   { path: RETROPHARYNGEAL_PATH, system: 'Head & neck · Airway', title: 'Retropharyngeal Abscess', blurb: 'Sagittal fascial-space anatomy, node infection, phlegmon vs abscess, possible airway narrowing and mediastinal spread risk.' },
 ];
 
+const SYSTEM_GROUPS: { id: string; label: string; match: RegExp }[] = [
+  { id: 'shock', label: 'Shock & Circulation', match: /^Shock|^Infection · Shock/ },
+  { id: 'cardiac', label: 'Cardiovascular', match: /^Cardiac|^Vascular|congenital cardiology|^Pulmonary vascular|^Infectious · Cardiac/i },
+  { id: 'respiratory', label: 'Respiratory & Airway', match: /^Respiratory|Airway/i },
+  { id: 'neuro', label: 'Neurologic', match: /^Neuro|^Infectious · CNS/ },
+  { id: 'gi', label: 'Gastrointestinal', match: /^Gastro|Digestive/ },
+  { id: 'renal', label: 'Renal, Electrolyte & Genitourinary', match: /^Renal|^Genito|^GU|Urolog|Testic|Kidney/i },
+  { id: 'endocrine', label: 'Endocrine & Metabolic', match: /^Endocrine/ },
+  { id: 'heme', label: 'Hematology & Immunology', match: /^Hematology|^Immune/ },
+  { id: 'infectious', label: 'Infectious Disease', match: /^Infect/ },
+  { id: 'obgyn', label: 'OB/GYN', match: /^OB/ },
+  { id: 'heent', label: 'Eye, ENT, Head & Neck', match: /^Eye|^Head/ },
+  { id: 'derm', label: 'Dermatologic', match: /^Derm/ },
+  { id: 'trauma', label: 'Trauma', match: /^Trauma/ },
+  { id: 'tox', label: 'Toxicology & Environmental', match: /^Tox/ },
+  { id: 'peds', label: 'Pediatric', match: /^Pediatric/ },
+];
+export function groupLessonsBySystem<T extends { system: string }>(lessons: T[]) {
+  const groups = SYSTEM_GROUPS.map(g => ({ ...g, lessons: [] as T[] }));
+  const other = { id: 'other', label: 'Other', match: /.*/, lessons: [] as T[] };
+  lessons.forEach(l => (groups.find(g => g.match.test(l.system)) ?? other).lessons.push(l));
+  return [...groups, other].filter(g => g.lessons.length).map(g => ({ ...g, lessons: [...g.lessons].sort((a: any, b: any) => a.title.localeCompare(b.title)) }));
+}
+
 export default function PathophysiologyAtlas() {
+  const groups = groupLessonsBySystem(PATHO_LESSONS);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Helmet>
@@ -127,18 +152,26 @@ export default function PathophysiologyAtlas() {
         <p className="mt-6 text-xs font-semibold uppercase text-muted-foreground">Clinician-facing conceptual education</p>
         <h1 className="mt-2 font-journal text-3xl md:text-5xl">Emergency Pathophysiology Atlas</h1>
         <p className="mt-3 max-w-3xl text-sm text-muted-foreground">Code-native teaching animations of how emergencies can evolve. Not diagnostic tools, patient simulations or treatment protocols.</p>
-        <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {PATHO_LESSONS.map(l => (
-            <li key={l.path}>
-              <Link to={l.path} className="dark block h-full rounded-lg border border-border bg-card p-5 text-card-foreground transition-colors hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">{l.system}</p>
-                <h2 className="mt-2 font-journal text-xl">{l.title}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{l.blurb}</p>
-                <span className="mt-4 inline-block text-sm font-semibold text-primary">Open lesson →</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <nav aria-label="Jump to system" className="mt-6 flex flex-wrap gap-2">
+          {groups.map(g => <a key={g.id} href={`#sys-${g.id}`} className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:border-primary">{g.label} <span className="text-muted-foreground">({g.lessons.length})</span></a>)}
+        </nav>
+        {groups.map(g => (
+          <section key={g.id} id={`sys-${g.id}`} aria-labelledby={`sys-${g.id}-h`} className="mt-10 scroll-mt-24">
+            <h2 id={`sys-${g.id}-h`} className="border-b border-border pb-2 font-journal text-2xl">{g.label}</h2>
+            <ul className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {g.lessons.map(l => (
+                <li key={l.path}>
+                  <Link to={l.path} className="dark block h-full rounded-lg border border-border bg-card p-5 text-card-foreground transition-colors hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{l.system}</p>
+                    <h3 className="mt-2 font-journal text-xl">{l.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{l.blurb}</p>
+                    <span className="mt-4 inline-block text-sm font-semibold text-primary">Open lesson →</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
         <p className="mt-6 text-xs text-muted-foreground">More lessons will be added one at a time.</p>
       </main>
       <Footer />
