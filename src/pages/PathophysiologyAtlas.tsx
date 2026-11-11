@@ -42,6 +42,7 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: '/dermatology-atlas/immune-pathways', system: 'Dermatology · Immunology', title: 'Dermatology Immune Pathways', blurb: 'Explore cytokines, cells, autoantibodies and the mechanisms of targeted treatments.' },
   { path: '/neurology-atlas/visual-pathways', system: 'Neurology · Visual pathways', title: 'Visual Pathways & Field Defects', blurb: 'Trace retinal crossing, optic radiations, the visual cortex and predicted field patterns.' },
   { path: '/cta-learning-atlas', system: 'Imaging · Vascular anatomy', title: 'CTA: Brain, Neck & Pulmonary Arteries', blurb: 'Selectable head and neck vessels, schematic normal and occlusion examples, and a systematic approach to CTPA.' },
   { path: '/dermatology-atlas', system: 'Dermatology · Outpatient learning', title: 'Dermatology Learning Atlas', blurb: 'Skin conditions and rash morphology, separate medication mechanisms, and OTC skincare ingredient science.' },
