@@ -6,6 +6,7 @@ const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
   "/cta-learning-atlas",
+  "/neurology-atlas/visual-pathways",
   "/pathophysiology-atlas/traumatic-intracranial-hemorrhage", "/pathophysiology-atlas/pelvic-fracture-hemorrhage", "/pathophysiology-atlas/open-fracture",
   "/pathophysiology-atlas/infantile-pyloric-stenosis", "/pathophysiology-atlas/malrotation-midgut-volvulus", "/pathophysiology-atlas/pediatric-dehydration",
   "/pathophysiology-atlas/cardiogenic-shock", "/pathophysiology-atlas/obstructive-shock", "/pathophysiology-atlas/anaphylactic-shock",
