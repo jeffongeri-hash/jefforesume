@@ -51,6 +51,8 @@ const DroneGallery = lazy(() => import("./drone/DroneGallery"));
 const DroneProject = lazy(() => import("./drone/DroneProject"));
 const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
 const PhysiologyAnimationLab = lazy(() => import("./pages/PhysiologyAnimationLab"));
+const CtaLearningAtlas = lazy(() => import("./pages/CtaLearningAtlas"));
+const VisualPathwaysAtlas = lazy(() => import("./pages/VisualPathwaysAtlas"));
 const PathophysiologyAtlas = lazy(() => import("./pages/PathophysiologyAtlas"));
 const BowelPerforationLesson = lazy(() => import("./pages/BowelPerforationLesson"));
 const RetropharyngealAbscessLesson = lazy(() => import("./pages/RetropharyngealAbscessLesson"));
@@ -148,6 +150,8 @@ const App = () => (
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
+                <Route path="/cta-learning-atlas" element={<CtaLearningAtlas />} />
+                <Route path="/neurology-atlas/visual-pathways" element={<VisualPathwaysAtlas />} />
                 <Route path="/dermatology-atlas" element={<DermatologyAtlas />} />
                 <Route path="/dermatology-atlas/conditions" element={<DermatologyAtlas section="conditions" />} />
                 <Route path="/dermatology-atlas/medications" element={<DermatologyAtlas section="medications" />} />
