@@ -5,6 +5,7 @@ import { resolve } from "path"
 const BASE_URL = "https://jeffongeri.com"
 
 const staticPaths = [
+  "/cta-learning-atlas",
   "/pathophysiology-atlas/traumatic-intracranial-hemorrhage", "/pathophysiology-atlas/pelvic-fracture-hemorrhage", "/pathophysiology-atlas/open-fracture",
   "/pathophysiology-atlas/infantile-pyloric-stenosis", "/pathophysiology-atlas/malrotation-midgut-volvulus", "/pathophysiology-atlas/pediatric-dehydration",
   "/pathophysiology-atlas/cardiogenic-shock", "/pathophysiology-atlas/obstructive-shock", "/pathophysiology-atlas/anaphylactic-shock",
@@ -45,7 +46,6 @@ const staticPaths = [
   "/pathophysiology-atlas/ear-examination", "/pathophysiology-atlas/eye-inflammation-examination", "/pathophysiology-atlas/nose-throat-examination",
   "/pathophysiology-atlas/skin-infection-swelling", "/pathophysiology-atlas/obstetric-emergencies", "/pathophysiology-atlas/vascular-emergencies",
   "/dermatology-atlas", "/dermatology-atlas/conditions", "/dermatology-atlas/medications", "/dermatology-atlas/skincare",
-  "/cta-learning-atlas",
   "/pathophysiology-atlas/ectopic-pregnancy",
   "/pathophysiology-atlas/bronchiolitis", "/pathophysiology-atlas/asthma-exacerbation", "/pathophysiology-atlas/copd-exacerbation", "/pathophysiology-atlas/pulmonary-hypertension",
   "/pathophysiology-atlas/upper-airway-obstruction",

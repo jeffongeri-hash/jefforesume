@@ -132,7 +132,7 @@ const Resume = () => {
             Dedicated to a lifelong journey of education within medicine and the Physician Assistant profession.
           </p>
           <p className="text-sm text-muted-foreground mb-6">
-            jeffongeri@gmail.com | 317-435-3165 | Fishers, IN
+            jeffongeri@gmail.com | Fishers, IN
           </p>
           <Button onClick={handleDownload} className="gap-2">
             <Download className="h-4 w-4" />

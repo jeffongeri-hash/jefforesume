@@ -1,3 +1,4 @@
+import PinGate from '@/components/PinGate';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,6 +51,7 @@ const DroneGallery = lazy(() => import("./drone/DroneGallery"));
 const DroneProject = lazy(() => import("./drone/DroneProject"));
 const MskAnatomyAtlas = lazy(() => import("./pages/MskAnatomyAtlas"));
 const PhysiologyAnimationLab = lazy(() => import("./pages/PhysiologyAnimationLab"));
+const CtaLearningAtlas = lazy(() => import("./pages/CtaLearningAtlas"));
 const PathophysiologyAtlas = lazy(() => import("./pages/PathophysiologyAtlas"));
 const BowelPerforationLesson = lazy(() => import("./pages/BowelPerforationLesson"));
 const RetropharyngealAbscessLesson = lazy(() => import("./pages/RetropharyngealAbscessLesson"));
@@ -85,7 +87,6 @@ const TraumaDetailLesson = lazy(() => import("./pages/TraumaDetailLesson"));
 const HeentAtlasLesson = lazy(() => import("./pages/HeentAtlasLesson"));
 const FinalSystemsLesson = lazy(() => import("./pages/FinalSystemsLesson"));
 const DermatologyAtlas = lazy(() => import("./pages/DermatologyAtlas"));
-const CtaLearningAtlas = lazy(() => import("./pages/CtaLearningAtlas"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
 const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
@@ -132,8 +133,8 @@ const App = () => (
                 <Route path="/ca-move-planner" element={<CAMovePlanner />} />
                 <Route path="/care-abroad" element={<CareAbroad />} />
                 <Route path="/care-abroad/timeline" element={<CareAbroadTimeline />} />
-                <Route path="/sumerlin-trails" element={<SumerlinTrails />} />
-                <Route path="/kenya-trip" element={<KenyaTrip />} />
+                <Route path="/sumerlin-trails" element={<PinGate id="sumerlin" title="Sumerlin Trails"><SumerlinTrails /></PinGate>} />
+                <Route path="/kenya-trip" element={<PinGate id="kenya" title="Kenya Trip"><KenyaTrip /></PinGate>} />
                 <Route path="/trading-volatility" element={<TradingVolatility />} />
                 <Route path="/family-directive" element={<FamilyDirective />} />
                 <Route path="/paycheck-analyzer" element={<PaycheckAnalyzer />} />
@@ -148,8 +149,8 @@ const App = () => (
                 <Route path="/msk-anatomy-atlas" element={<MskAnatomyAtlas />} />
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
-                <Route path="/dermatology-atlas" element={<DermatologyAtlas />} />
                 <Route path="/cta-learning-atlas" element={<CtaLearningAtlas />} />
+                <Route path="/dermatology-atlas" element={<DermatologyAtlas />} />
                 <Route path="/dermatology-atlas/conditions" element={<DermatologyAtlas section="conditions" />} />
                 <Route path="/dermatology-atlas/medications" element={<DermatologyAtlas section="medications" />} />
                 <Route path="/dermatology-atlas/skincare" element={<DermatologyAtlas section="skincare" />} />
