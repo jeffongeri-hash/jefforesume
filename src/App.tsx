@@ -85,6 +85,7 @@ const TraumaDetailLesson = lazy(() => import("./pages/TraumaDetailLesson"));
 const HeentAtlasLesson = lazy(() => import("./pages/HeentAtlasLesson"));
 const FinalSystemsLesson = lazy(() => import("./pages/FinalSystemsLesson"));
 const DermatologyAtlas = lazy(() => import("./pages/DermatologyAtlas"));
+const CtaLearningAtlas = lazy(() => import("./pages/CtaLearningAtlas"));
 const HeadNeckEmergencyLesson = lazy(() => import("./pages/HeadNeckEmergencyLesson"));
 const DermatologicEmergencyLesson = lazy(() => import("./pages/DermatologicEmergencyLesson"));
 const CoreShockLesson = lazy(() => import("./pages/CoreShockLesson"));
@@ -148,6 +149,7 @@ const App = () => (
                 <Route path="/physiology-animation-lab" element={<PhysiologyAnimationLab />} />
                 <Route path="/pathophysiology-atlas" element={<PathophysiologyAtlas />} />
                 <Route path="/dermatology-atlas" element={<DermatologyAtlas />} />
+                <Route path="/cta-learning-atlas" element={<CtaLearningAtlas />} />
                 <Route path="/dermatology-atlas/conditions" element={<DermatologyAtlas section="conditions" />} />
                 <Route path="/dermatology-atlas/medications" element={<DermatologyAtlas section="medications" />} />
                 <Route path="/dermatology-atlas/skincare" element={<DermatologyAtlas section="skincare" />} />

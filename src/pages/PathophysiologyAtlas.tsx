@@ -42,6 +42,7 @@ import { OBSTRUCTIVE_PATH } from '@/data/pathophysiology/obstructiveShock';
 import { ANAPHYLACTIC_PATH } from '@/data/pathophysiology/anaphylacticShock';
 
 export const PATHO_LESSONS = [
+  { path: '/cta-learning-atlas', system: 'Imaging · Vascular anatomy', title: 'CTA: Brain, Neck & Pulmonary Arteries', blurb: 'Selectable head and neck vessels, schematic normal and occlusion examples, and a systematic approach to CTPA.' },
   { path: '/dermatology-atlas', system: 'Dermatology · Outpatient learning', title: 'Dermatology Learning Atlas', blurb: 'Skin conditions and rash morphology, separate medication mechanisms, and OTC skincare ingredient science.' },
   { path: FINAL_PATHS.derm, system: 'Dermatologic · Infection and swelling', title: FINAL_TITLES.derm, blurb: 'Cellulitis, abscess, histamine and bradykinin pathways with treatment mechanisms.' },
   { path: FINAL_PATHS.ob, system: 'OB/GYN · Emergencies', title: FINAL_TITLES.ob, blurb: 'Preeclampsia/eclampsia, HELLP, abruption, previa, atony and postpartum endometritis.' },
