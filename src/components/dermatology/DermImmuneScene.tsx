@@ -15,6 +15,7 @@ export default function DermImmuneScene({item:c,time,normal,target,selected,onSe
   <rect x="35" y="220" width="420" height="125" fill={pv('serosa',.45)}/><path d="M48 302H440" stroke={pink} strokeWidth="11"/><FlowParticles from={[54,302]} to={[435,302]} time={s.time} color={pink} count={8}/>
   <path d={`M35 ${174-(kind==='plaque'?16*activity:0)}H455V220H35Z`} fill={pv('serosa',.9)} stroke={pv('ink',.45)} strokeWidth="2"/><path d={`M35 ${174-(kind==='plaque'?16*activity:0)}H455`} stroke={pv('ink',.7)} strokeWidth="7"/>
   {kind==='plaque'&&Array.from({length:8},(_,i)=><path key={i} d={`M${70+i*42} ${160-16*activity}l24-5`} stroke={pv('ink')} strokeWidth="5" opacity={activity}/>)}
+  {c.id==='gpp'&&Array.from({length:8},(_,i)=><circle key={i} cx={80+i*45} cy="172" r="6" fill={gold} opacity={activity}/>)}
   {kind==='barrier'&&<><path d="M116 171l8 14-6 10M233 171l7 14-7 10M354 171l7 14-7 10" fill="none" stroke={pink} strokeWidth="4" opacity={activity}/>{spots(198,blue,activity)}</>}
   {kind==='phototoxic'&&<><path d="M150 67l-9 42h16l-10 33M249 67l-9 42h16l-10 33" stroke={gold} strokeWidth="4" fill="none" opacity={s.signal}/><path d="M116 176l16 12m71-12 17 12m70-12 16 12" stroke={pink} strokeWidth="7" opacity={activity}/>{spots(212,violet,s.treatment)}</>}
   {kind==='pigment'&&Array.from({length:8},(_,i)=><g key={i}><circle cx={65+i*50} cy="217" r="6" fill={violet} opacity={1-.85*activity}/><path d={`M${65+i*50} 217l-7-7m7 7 7-7`} stroke={violet} strokeWidth="2" opacity={1-.85*activity}/></g>)}
