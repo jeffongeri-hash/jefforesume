@@ -20,11 +20,11 @@ export default function RespiratoryScene({ condition, time, variant, normal = fa
     <g transform={`translate(0 ${breathe * (1 + s.burden)})`}>
       <path d="M 135 90 Q 84 105 54 185 Q 24 280 41 329 Q 86 348 145 315 L 149 155 Z" fill={pv('serosa', 0.18)} stroke={pv('serosa')} strokeWidth="2" />
       <path d="M 196 90 Q 248 116 271 198 Q 289 269 275 327 Q 239 339 207 314 L 204 275 Q 170 254 188 221 L 185 153 Z" fill={pv('serosa', 0.18)} stroke={pv('serosa')} strokeWidth="2" />
-      <path d="M 52 225 L 133 220 M 48 305 Q 87 258 133 198 M 209 185 L 276 301" stroke={pv('membrane', 0.65)} fill="none" />
+      <path d="M 52 225 L 119 220 M 48 305 Q 87 258 119 220 L 133 198 M 209 185 L 276 301" stroke={pv('membrane', 0.65)} fill="none" />
       <path d={`M 35 ${348 + s.trapping * 15} Q 154 ${320 + s.trapping * 32} 278 ${348 + s.trapping * 15}`} stroke={pv('membrane')} strokeWidth="3" fill="none" />
       <g {...hit('bronchi')}>
         <path d="M 167 82 L 167 164 M 167 164 L 112 212 M 167 164 L 224 212" stroke={pv('mucosa')} strokeWidth="19" fill="none" strokeLinecap="round" />
-        <path d="M 167 82 L 167 164 M 167 164 L 112 212 M 167 164 L 224 212" stroke={pv('bg')} strokeWidth={11 * (1 - s.airwayNarrowing * 0.55)} fill="none" />
+        <path d="M 167 82 L 167 164 M 167 164 L 112 212 M 167 164 L 224 212" stroke={pv('bg')} strokeWidth="11" fill="none" />
         {[97, 116, 135, 154].map(y => <path key={y} d={`M 157 ${y} L 177 ${y}`} stroke={pv('membrane')} strokeWidth="2" />)}
         {label(27, 78, 'Trachea → bronchi')}
       </g>
