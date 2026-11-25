@@ -252,6 +252,7 @@ const App = () => (
                 <Route path="/msk-anatomy-atlas/upper-extremity/shoulder" element={<MskAnatomyAtlas />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/fair-value-monitor" element={<iframe title="Fair Value Monitor" src="/fair-value-monitor.html" style={{ width: "100%", height: "100dvh", border: 0, display: "block" }} />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
