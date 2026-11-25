@@ -1,5 +1,10 @@
 # Emergency Pathophysiology Atlas
 
+## Current request: Accolades and Fair Value Monitor
+- [x] Add the supplied patient testimonial verbatim without changing historical satisfaction metrics
+- [x] Integrated the GitHub Fair Value Monitor at /fair-value-monitor with Yahoo Finance quote batches, five-minute refresh, explicit provider timestamps and failure/stale states; unlisted footer “Ongeri” link preserves hidden API-tool navigation
+- [x] Three quote validation tests passed; real 65/65 Yahoo quotes verified on desktop/phone, calculator and local save/reload, filters, export, direct-file redirect, hidden link and simulated failed refresh; no page-wide overflow or browser errors, preview build OK
+
 ## Current request: Cardiology ECG atlas
 - [x] Add uploaded lead-by-lead ECG release candidate as a Cardiology atlas volume, preserving its interactive HTML
 - [x] Verified Cardiology link → blog → embedded atlas, 61 rendered SVGs, ECG case/overlay/lead zoom and conduction selection/playback; phone layout without page overflow, no browser errors, sitemap entry and clean preview build; uploaded HTML unchanged

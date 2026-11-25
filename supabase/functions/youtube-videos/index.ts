@@ -4,7 +4,7 @@
 //   YOUTUBE_API_KEY  - your YouTube Data API v3 key
 //   YOUTUBE_CHANNEL  - your channel ID (starts with "UC") OR your @handle (e.g. "@yourname")
 
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { corsHeaders } from "npm:@supabase/supabase-js@2.119.2/cors";
 const _unusedCors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":

@@ -11,6 +11,10 @@ import { Award, Quote, Star, TrendingUp } from 'lucide-react';
 const Accolades = () => {
   const testimonials = [
     {
+      quote: "Check in was quick and easy. Triage process was exceptional. Nurses were kind and efficient. CT process was very quick and easy. Very friendly and considerate of my pain. PA Ongeri was very thorough and kind. He questioned me about my pain. I was in so much pain from my ribs that I forgot about hitting my head and needed another scan. He also saw that I have a large kidney stone and suggested I call my dr next day since I did not want to do a urine test right away. Even though ER visit took hours because they were busy, it was obvious the whole staff was using time efficiently. Impressed. Kindness is important to me. It was evident in the ER.",
+      type: "Emergency Dept"
+    },
+    {
       quote: "The physician's assistant was absolutely amazing. His calm and knowledgeable demeanor was comforting.",
       type: "Patient Testimony"
     },

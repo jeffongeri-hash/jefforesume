@@ -1,4 +1,4 @@
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { corsHeaders } from 'npm:@supabase/supabase-js@2.119.2/cors';
 
 // IV Strike Selector AI proxy.
 // Anthropic (Claude) primary, OpenAI (GPT) fallback.
@@ -78,7 +78,8 @@ function anthropicPassthroughStream(upstream: Response): Response {
 }
 
 function openAIToAnthropicStream(upstream: Response): Response {
-  const reader = upstream.body!.getReader();
+  if (!upstream.body) throw new Error('Missing response stream');
+  const reader = upstream.body.getReader();
   const dec = new TextDecoder();
   const enc = new TextEncoder();
   let buf = '';
@@ -153,11 +154,11 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({
         provider: 'openai',
         text,
-        fallback_reason: String(anthropicErr?.message || anthropicErr),
+        fallback_reason: anthropicErr instanceof Error ? anthropicErr.message : String(anthropicErr),
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
   } catch (err) {
-    return new Response(JSON.stringify({ error: String(err?.message || err) }), {
+    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
